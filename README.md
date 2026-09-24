@@ -72,9 +72,9 @@ Optional arguments:
 .\build-android.ps1 -UnityPath "C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Unity.exe" -Clean -Version 0.1.0
 ```
 
-The build script invokes `Gravivore.Editor.Build.AndroidBuild.BuildDev`, writes `Builds/Logs/android-build.log`, and outputs APKs as `Builds/Android/gravivore-dev-<version>+<versionCode>.apk`.
+The build script invokes `Gravivore.Editor.Build.AndroidBuild.BuildDev`, applies the project configuration, writes `Builds/Logs/android-build.log`, and outputs APKs as `Builds/Android/gravivore-dev-<version>+<versionCode>.apk`.
 
-Project validation is available in the Unity Editor menu at `Gravivore/Validation/Validate Project` and is also run before Android builds.
+Run `Gravivore/Configuration/Configure Project` once after a clean clone to generate the canonical URP pipeline and Universal Renderer Data assets with Unity's URP APIs. Project validation is available at `Gravivore/Validation/Validate Project`; it is read-only and is also run after configuration before Android builds.
 
 ## Vertical Slice v0.1 success criterion
 

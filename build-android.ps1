@@ -69,9 +69,10 @@ if ($Version) {
 Write-Host "Using Unity: $unity"
 Write-Host "Writing build log: $logPath"
 
-$process = Start-Process -FilePath $unity -ArgumentList $unityArgs -Wait -PassThru -NoNewWindow
-if ($process.ExitCode -ne 0) {
-    throw "Android build failed with exit code $($process.ExitCode). See $logPath"
+& $unity @unityArgs
+$unityExitCode = $LASTEXITCODE
+if ($unityExitCode -ne 0) {
+    throw "Android build failed with exit code $unityExitCode. See $logPath"
 }
 
 Write-Host "Android build completed. APK output is under Builds\Android."

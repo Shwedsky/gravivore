@@ -3,6 +3,8 @@ using System.IO;
 using Gravivore.Core;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 namespace Gravivore.Editor
 {
@@ -17,7 +19,8 @@ namespace Gravivore.Editor
             "Assets/_Game/Runtime/Presentation/Gravivore.Presentation.asmdef",
             "Assets/_Game/Content/Scenes/Bootstrap.unity",
             "Assets/_Game/Content/Scenes/Chapter01_ScrapExclusion.unity",
-            "Assets/_Game/Content/Settings",
+            UrpConfigurator.UrpAssetPath,
+            UrpConfigurator.RendererDataPath,
             "build-android.ps1"
         };
 
@@ -39,9 +42,39 @@ namespace Gravivore.Editor
             }
 
             ValidateEditorBuildSettings();
-            UrpBootstrapper.EnsureUrpConfigured();
+            ValidateUrpConfiguration();
             ValidateAndroidPlayerSettings();
             ValidateVersion();
+        }
+
+        private static void ValidateUrpConfiguration()
+        {
+            var pipelineAsset = AssetDatabase.LoadAssetAtPath<UniversalRenderPipelineAsset>(UrpConfigurator.UrpAssetPath);
+            if (pipelineAsset == null)
+            {
+                throw new InvalidOperationException($"A valid URP pipeline asset is required at {UrpConfigurator.UrpAssetPath}.");
+            }
+
+            var rendererData = AssetDatabase.LoadAssetAtPath<UniversalRendererData>(UrpConfigurator.RendererDataPath);
+            if (rendererData == null)
+            {
+                throw new InvalidOperationException($"A valid Universal Renderer Data asset is required at {UrpConfigurator.RendererDataPath}.");
+            }
+
+            if (!UrpConfigurator.ReferencesRenderer(pipelineAsset, rendererData))
+            {
+                throw new InvalidOperationException("The URP pipeline asset must reference the canonical Universal Renderer Data asset.");
+            }
+
+            if (GraphicsSettings.defaultRenderPipeline != pipelineAsset)
+            {
+                throw new InvalidOperationException("Graphics settings must use the canonical URP pipeline asset.");
+            }
+
+            if (QualitySettings.renderPipeline != pipelineAsset)
+            {
+                throw new InvalidOperationException("Quality settings must use the canonical URP pipeline asset.");
+            }
         }
 
         private static void ValidateEditorBuildSettings()
@@ -68,8 +101,6 @@ namespace Gravivore.Editor
 
         private static void ValidateAndroidPlayerSettings()
         {
-            Build.AndroidBuild.ApplyAndroidPlayerSettings();
-
             if (PlayerSettings.defaultInterfaceOrientation != UIOrientation.Portrait)
             {
                 throw new InvalidOperationException("Android orientation must be portrait.");

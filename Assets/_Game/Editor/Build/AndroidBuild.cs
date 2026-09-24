@@ -21,8 +21,8 @@ namespace Gravivore.Editor.Build
 
         public static void BuildDev()
         {
+            ProjectConfigurator.ConfigureOrThrow();
             ProjectValidator.ValidateOrThrow();
-            ApplyAndroidPlayerSettings();
 
             var version = ReadCommandLineValue(BuildMethodVersionArg, GravivoreVersion.AppVersion);
             var outputPath = GetOutputPath(version, GravivoreVersion.AndroidVersionCode);
