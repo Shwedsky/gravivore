@@ -78,7 +78,7 @@ After a clean clone, the Editor bootstrap automatically generates the canonical 
 
 ## S01 input, movement, and camera
 
-The Bootstrap scene loads Chapter 01, whose composition root wires the S01 player, floating joystick, portrait follow camera, and safe-area HUD root from project-owned configuration assets under `Assets/_Game/Content/Definitions`.
+The Bootstrap scene loads Chapter 01, whose composition root wires the S01 player, uGUI floating joystick, portrait follow camera, and safe-area HUD root from project-owned configuration assets under `Assets/_Game/Content/Definitions`. The HUD uses a 1080x1920 portrait reference resolution so joystick size and drag radius scale consistently across Android resolutions.
 
 - On Android, the first valid touch in the lower gameplay area places the floating joystick; releasing it stops movement.
 - In the Editor, hold and drag the left mouse button to simulate the joystick.

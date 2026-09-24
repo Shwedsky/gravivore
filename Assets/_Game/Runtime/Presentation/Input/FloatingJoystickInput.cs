@@ -10,24 +10,25 @@ namespace Gravivore.Presentation.Input
     {
         private const int NoPointer = -1;
         private const int MousePointer = -2;
-        private const int TextureSize = 64;
 
         private FloatingJoystickSettings _settings;
         private IUiTouchExclusion _uiTouchExclusion;
-        private Texture2D _circleTexture;
+        private FloatingJoystickView _view;
         private Vector2 _origin;
-        private Vector2 _pointerPosition;
         private Vector2 _movement;
         private int _activePointerId = NoPointer;
         private bool _isInitialized;
 
         public Vector2 Movement => _movement;
 
-        public void Initialize(FloatingJoystickSettings settings, IUiTouchExclusion uiTouchExclusion)
+        public void Initialize(
+            FloatingJoystickSettings settings,
+            IUiTouchExclusion uiTouchExclusion,
+            FloatingJoystickView view)
         {
             _settings = settings != null ? settings : throw new ArgumentNullException(nameof(settings));
             _uiTouchExclusion = uiTouchExclusion ?? throw new ArgumentNullException(nameof(uiTouchExclusion));
-            _circleTexture = CreateCircleTexture();
+            _view = view != null ? view : throw new ArgumentNullException(nameof(view));
             _isInitialized = true;
         }
 
@@ -45,30 +46,9 @@ namespace Gravivore.Presentation.Input
 #endif
         }
 
-        private void OnGUI()
-        {
-            if (!_isInitialized || _activePointerId == NoPointer || _circleTexture == null)
-            {
-                return;
-            }
-
-            var guiOrigin = ToGuiPosition(_origin);
-            var guiPointer = ToGuiPosition(_pointerPosition);
-            DrawCircle(guiOrigin, _settings.BaseDiameter, _settings.BaseColor);
-            DrawCircle(guiPointer, _settings.KnobDiameter, _settings.KnobColor);
-        }
-
         private void OnDisable()
         {
             ResetPointer();
-        }
-
-        private void OnDestroy()
-        {
-            if (_circleTexture != null)
-            {
-                Destroy(_circleTexture);
-            }
         }
 
         private void UpdateTouchInput()
@@ -146,75 +126,39 @@ namespace Gravivore.Presentation.Input
         private bool TryBeginPointer(int pointerId, Vector2 screenPosition)
         {
             if (screenPosition.y > Screen.height * _settings.ActivationMaxScreenHeight ||
-                _uiTouchExclusion.Blocks(screenPosition))
+                _uiTouchExclusion.Blocks(screenPosition) ||
+                !_view.ContainsScreenPoint(screenPosition) ||
+                !_view.TryScreenToLocal(screenPosition, out _origin))
             {
                 return false;
             }
 
             _activePointerId = pointerId;
-            _origin = screenPosition;
+            _view.Show(_origin);
             UpdatePointer(screenPosition);
             return true;
         }
 
         private void UpdatePointer(Vector2 screenPosition)
         {
-            var rawInput = MovementInputMath.NormalizeDrag(_origin, screenPosition, _settings.Radius);
+            if (!_view.TryScreenToLocal(screenPosition, out var localPosition))
+            {
+                return;
+            }
+
+            var rawInput = MovementInputMath.NormalizeDrag(_origin, localPosition, _settings.Radius);
             _movement = MovementInputMath.ApplyRadialDeadZone(rawInput, _settings.DeadZone);
-            _pointerPosition = _origin + (rawInput * _settings.Radius);
+            _view.SetPositions(_origin, _origin + (rawInput * _settings.Radius));
         }
 
         private void ResetPointer()
         {
             _activePointerId = NoPointer;
             _movement = Vector2.zero;
-            _pointerPosition = _origin;
-        }
-
-        private void DrawCircle(Vector2 center, float diameter, Color color)
-        {
-            var previousColor = GUI.color;
-            GUI.color = color;
-            GUI.DrawTexture(
-                new Rect(center.x - (diameter * 0.5f), center.y - (diameter * 0.5f), diameter, diameter),
-                _circleTexture);
-            GUI.color = previousColor;
-        }
-
-        private static Vector2 ToGuiPosition(Vector2 screenPosition)
-        {
-            return new Vector2(screenPosition.x, Screen.height - screenPosition.y);
-        }
-
-        private static Texture2D CreateCircleTexture()
-        {
-            var texture = new Texture2D(TextureSize, TextureSize, TextureFormat.RGBA32, false)
+            if (_view != null)
             {
-                name = "Floating Joystick Circle",
-                filterMode = FilterMode.Bilinear,
-                wrapMode = TextureWrapMode.Clamp,
-                hideFlags = HideFlags.HideAndDontSave
-            };
-
-            var pixels = new Color32[TextureSize * TextureSize];
-            var center = (TextureSize - 1) * 0.5f;
-            var radiusSquared = center * center;
-
-            for (var y = 0; y < TextureSize; y++)
-            {
-                for (var x = 0; x < TextureSize; x++)
-                {
-                    var deltaX = x - center;
-                    var deltaY = y - center;
-                    pixels[(y * TextureSize) + x] = deltaX * deltaX + deltaY * deltaY <= radiusSquared
-                        ? new Color32(255, 255, 255, 255)
-                        : new Color32(255, 255, 255, 0);
-                }
+                _view.Hide();
             }
-
-            texture.SetPixels32(pixels);
-            texture.Apply(false, true);
-            return texture;
         }
     }
 }

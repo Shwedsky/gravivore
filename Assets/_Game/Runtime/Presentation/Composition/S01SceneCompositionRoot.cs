@@ -4,12 +4,15 @@ using Gravivore.Presentation.Camera;
 using Gravivore.Presentation.Input;
 using Gravivore.Presentation.UI;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Gravivore.Presentation.Composition
 {
     [DisallowMultipleComponent]
     public sealed class S01SceneCompositionRoot : MonoBehaviour
     {
+        private static readonly Vector2 HudReferenceResolution = new Vector2(1080f, 1920f);
+
         [SerializeField] private PlayerMovementSettings _movementSettings;
         [SerializeField] private FloatingJoystickSettings _joystickSettings;
         [SerializeField] private CameraFollowSettings _cameraSettings;
@@ -38,8 +41,8 @@ namespace Gravivore.Presentation.Composition
                 throw new InvalidOperationException("S01 composition requires movement, joystick, and camera settings.");
             }
 
-            var uiTouchExclusion = CreateHud();
-            var movementInput = CreateMovementInput(uiTouchExclusion);
+            CreateHud(out var uiTouchExclusion, out var joystickView);
+            var movementInput = CreateMovementInput(uiTouchExclusion, joystickView);
             var locomotion = CreatePlayer();
             var cameraTransform = CreateCamera(PlayerObject.transform);
 
@@ -49,13 +52,27 @@ namespace Gravivore.Presentation.Composition
             _isComposed = true;
         }
 
-        private UiTouchExclusion CreateHud()
+        private void CreateHud(
+            out UiTouchExclusion uiTouchExclusion,
+            out FloatingJoystickView joystickView)
         {
-            var canvasObject = new GameObject("HUD Canvas", typeof(RectTransform), typeof(Canvas));
+            var canvasObject = new GameObject(
+                "HUD Canvas",
+                typeof(RectTransform),
+                typeof(Canvas),
+                typeof(CanvasScaler),
+                typeof(GraphicRaycaster));
             canvasObject.transform.SetParent(transform, false);
             var canvas = canvasObject.GetComponent<Canvas>();
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
             canvas.sortingOrder = 10;
+
+            var canvasScaler = canvasObject.GetComponent<CanvasScaler>();
+            canvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+            canvasScaler.referenceResolution = HudReferenceResolution;
+            canvasScaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
+            canvasScaler.matchWidthOrHeight = 0.5f;
+            canvasScaler.referencePixelsPerUnit = 100f;
 
             var safeAreaObject = new GameObject("Safe Area", typeof(RectTransform));
             var safeAreaTransform = safeAreaObject.GetComponent<RectTransform>();
@@ -74,17 +91,31 @@ namespace Gravivore.Presentation.Composition
             exclusionTransform.offsetMin = Vector2.zero;
             exclusionTransform.offsetMax = Vector2.zero;
 
-            var blocker = gameObject.AddComponent<UiTouchExclusion>();
-            blocker.Initialize(new[] { exclusionTransform });
-            return blocker;
+            var joystickViewObject = new GameObject(
+                "Floating Joystick View",
+                typeof(RectTransform),
+                typeof(FloatingJoystickView));
+            var joystickViewTransform = joystickViewObject.GetComponent<RectTransform>();
+            joystickViewTransform.SetParent(safeAreaTransform, false);
+            joystickViewTransform.anchorMin = Vector2.zero;
+            joystickViewTransform.anchorMax = Vector2.one;
+            joystickViewTransform.offsetMin = Vector2.zero;
+            joystickViewTransform.offsetMax = Vector2.zero;
+            joystickView = joystickViewObject.GetComponent<FloatingJoystickView>();
+            joystickView.Initialize(safeAreaTransform, _joystickSettings);
+
+            uiTouchExclusion = gameObject.AddComponent<UiTouchExclusion>();
+            uiTouchExclusion.Initialize(new[] { exclusionTransform });
         }
 
-        private FloatingJoystickInput CreateMovementInput(IUiTouchExclusion uiTouchExclusion)
+        private FloatingJoystickInput CreateMovementInput(
+            IUiTouchExclusion uiTouchExclusion,
+            FloatingJoystickView joystickView)
         {
             var inputObject = new GameObject("Floating Joystick Input");
             inputObject.transform.SetParent(transform, false);
             var movementInput = inputObject.AddComponent<FloatingJoystickInput>();
-            movementInput.Initialize(_joystickSettings, uiTouchExclusion);
+            movementInput.Initialize(_joystickSettings, uiTouchExclusion, joystickView);
             return movementInput;
         }
 

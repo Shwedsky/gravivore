@@ -1,11 +1,13 @@
 using System.Collections;
 using Gravivore.Gameplay.Player;
 using Gravivore.Presentation.Composition;
+using Gravivore.Presentation.Input;
 using Gravivore.Presentation.UI;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
+using UnityEngine.UI;
 
 namespace Gravivore.Tests.PlayMode
 {
@@ -33,6 +35,22 @@ namespace Gravivore.Tests.PlayMode
             Assert.IsNotNull(compositionRoot.PlayerObject);
             Assert.IsNotNull(UnityEngine.Camera.main);
             Assert.IsNotNull(compositionRoot.GetComponentInChildren<SafeAreaHudRoot>());
+
+            var canvasScaler = compositionRoot.GetComponentInChildren<CanvasScaler>();
+            Assert.IsNotNull(canvasScaler);
+            Assert.That(canvasScaler.uiScaleMode, Is.EqualTo(CanvasScaler.ScaleMode.ScaleWithScreenSize));
+            Assert.That(canvasScaler.referenceResolution, Is.EqualTo(new Vector2(1080f, 1920f)));
+
+            var joystickView = compositionRoot.GetComponentInChildren<FloatingJoystickView>(true);
+            Assert.IsNotNull(joystickView);
+            var joystickImages = joystickView.GetComponentsInChildren<Image>(true);
+            Assert.That(joystickImages, Has.Length.EqualTo(2));
+            for (var i = 0; i < joystickImages.Length; i++)
+            {
+                Assert.IsFalse(joystickImages[i].raycastTarget);
+            }
+
+            Assert.IsNotNull(compositionRoot.GetComponent<UiTouchExclusion>());
         }
 
         [UnityTest]
