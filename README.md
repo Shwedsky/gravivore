@@ -76,6 +76,15 @@ The build script invokes `Gravivore.Editor.Build.AndroidBuild.BuildDev`, applies
 
 After a clean clone, the Editor bootstrap automatically generates the canonical URP pipeline and Universal Renderer Data assets with Unity's URP APIs before validation or tests run. `Gravivore/Configuration/Configure Project` remains available for an explicit rerun. Project validation is available at `Gravivore/Validation/Validate Project`; it is read-only and is also run after configuration before Android builds.
 
+## S01 input, movement, and camera
+
+The Bootstrap scene loads Chapter 01, whose composition root wires the S01 player, floating joystick, portrait follow camera, and safe-area HUD root from project-owned configuration assets under `Assets/_Game/Content/Definitions`.
+
+- On Android, the first valid touch in the lower gameplay area places the floating joystick; releasing it stops movement.
+- In the Editor, hold and drag the left mouse button to simulate the joystick.
+- Touches inside registered HUD exclusion regions do not feed movement input.
+- Movement speed, turn rate, joystick response, and camera follow values are configured in the S01 definition assets rather than in runtime control flow.
+
 ## Vertical Slice v0.1 success criterion
 
 A tester can install the APK, launch without registration, understand movement with no explanation, clear five distinct enemy spots, feel permanent power growth, see the player model evolve visually at least twice, unlock an elite and a boss, dodge boss telegraphs, defeat the boss, close/reopen the app without losing progress, and receive a bounded offline reward after being away.

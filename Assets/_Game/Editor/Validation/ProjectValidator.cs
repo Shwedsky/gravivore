@@ -19,6 +19,9 @@ namespace Gravivore.Editor
             "Assets/_Game/Runtime/Presentation/Gravivore.Presentation.asmdef",
             "Assets/_Game/Content/Scenes/Bootstrap.unity",
             "Assets/_Game/Content/Scenes/Chapter01_ScrapExclusion.unity",
+            "Assets/_Game/Content/Definitions/S01_PlayerMovementSettings.asset",
+            "Assets/_Game/Content/Definitions/S01_FloatingJoystickSettings.asset",
+            "Assets/_Game/Content/Definitions/S01_CameraFollowSettings.asset",
             UrpConfigurator.UrpAssetPath,
             UrpConfigurator.RendererDataPath,
             "build-android.ps1"
