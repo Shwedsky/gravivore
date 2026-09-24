@@ -6,7 +6,7 @@ namespace Gravivore.Gameplay.Player
     public sealed class PlayerStatsState : IMoveSpeedProvider
     {
         private readonly PlayerStatsConfiguration _configuration;
-        private readonly IReadOnlyList<IPlayerDerivedStatsModifier> _modifiers;
+        private IReadOnlyList<IPlayerDerivedStatsModifier> _modifiers;
         private PlayerStatLevels _baseLevels;
 
         public PlayerStatsState(
@@ -21,6 +21,8 @@ namespace Gravivore.Gameplay.Player
         }
 
         public event Action<PlayerStatChange> StatChanged;
+
+        public event Action<PlayerDerivedStatsChange> DerivedStatsChanged;
 
         public PlayerStatLevels BaseLevels => _baseLevels;
 
@@ -41,13 +43,48 @@ namespace Gravivore.Gameplay.Player
             var nextLevels = _baseLevels.WithLevel(stat, level);
             var nextDerivedStats = PlayerStatsCalculator.Calculate(_configuration, nextLevels, _modifiers);
             _baseLevels = nextLevels;
-            DerivedStats = nextDerivedStats;
+            SetDerivedStats(nextDerivedStats, PlayerDerivedStatsChangeReason.LevelChanged);
             StatChanged?.Invoke(new PlayerStatChange(
                 stat,
                 previousLevel,
                 level,
                 previousDerivedStats,
                 DerivedStats));
+            return true;
+        }
+
+        public bool SetModifiers(IReadOnlyList<IPlayerDerivedStatsModifier> modifiers)
+        {
+            var nextModifiers = SnapshotModifiers(modifiers);
+            var nextDerivedStats = PlayerStatsCalculator.Calculate(
+                _configuration,
+                _baseLevels,
+                nextModifiers);
+            _modifiers = nextModifiers;
+            return SetDerivedStats(nextDerivedStats, PlayerDerivedStatsChangeReason.ModifiersChanged);
+        }
+
+        public bool RecalculateDerivedStats()
+        {
+            var nextDerivedStats = PlayerStatsCalculator.Calculate(
+                _configuration,
+                _baseLevels,
+                _modifiers);
+            return SetDerivedStats(nextDerivedStats, PlayerDerivedStatsChangeReason.Recalculated);
+        }
+
+        private bool SetDerivedStats(
+            PlayerDerivedStats nextValues,
+            PlayerDerivedStatsChangeReason reason)
+        {
+            var previousValues = DerivedStats;
+            if (previousValues.HasSameValues(nextValues))
+            {
+                return false;
+            }
+
+            DerivedStats = nextValues;
+            DerivedStatsChanged?.Invoke(new PlayerDerivedStatsChange(previousValues, nextValues, reason));
             return true;
         }
 

@@ -87,7 +87,7 @@ The Bootstrap scene loads Chapter 01, whose composition root wires the S01 playe
 
 ## S02 player stats
 
-The five integer player stat levels and their derived values are owned by `PlayerStatsState`. Power, Hull, Armor, Flux, and Mobility curves are authored as ScriptableObject definitions. Flux is constrained by a hard minimum attack interval, and Mobility by a maximum move speed. Locomotion consumes only the derived move-speed provider and does not depend on progression concerns.
+The five integer player stat levels and their derived values are owned by `PlayerStatsState`. Power, Hull, Armor, Flux, and Mobility curves are authored as ScriptableObject definitions. Flux is constrained by a hard minimum attack interval, and Mobility by a maximum move speed. Runtime modifier snapshots can be replaced or recalculated without changing base levels, with typed notifications for actual derived-value changes. Locomotion consumes only the derived move-speed provider and does not depend on progression concerns.
 
 ## Vertical Slice v0.1 success criterion
 

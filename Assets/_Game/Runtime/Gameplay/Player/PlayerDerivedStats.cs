@@ -34,6 +34,15 @@ namespace Gravivore.Gameplay.Player
 
         public float MoveSpeed { get; }
 
+        public bool HasSameValues(PlayerDerivedStats other)
+        {
+            return BaseDamage == other.BaseDamage &&
+                   MaxHp == other.MaxHp &&
+                   ArmorValue == other.ArmorValue &&
+                   AttackInterval == other.AttackInterval &&
+                   MoveSpeed == other.MoveSpeed;
+        }
+
         private static void ValidateNonNegative(float value, string parameterName)
         {
             ValidateFinite(value, parameterName);

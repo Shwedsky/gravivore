@@ -123,6 +123,121 @@ namespace Gravivore.Tests.EditMode
             Assert.That(state.DerivedStats.MoveSpeed, Is.EqualTo(6f).Within(0.0001f));
         }
 
+        [Test]
+        public void SetModifiers_ReplacesModifiersAndPreservesBaseLevelsAndCaps()
+        {
+            var levels = new PlayerStatLevels(2, 3, 4, 5, 6);
+            var state = new PlayerStatsState(CreateConfiguration(), levels);
+            var eventCount = 0;
+            var lastChange = default(PlayerDerivedStatsChange);
+            state.DerivedStatsChanged += change =>
+            {
+                eventCount++;
+                lastChange = change;
+            };
+
+            Assert.IsTrue(state.SetModifiers(new IPlayerDerivedStatsModifier[]
+            {
+                new ConfigurableModifier(5f, 0.05f, 100f)
+            }));
+            Assert.That(state.DerivedStats.BaseDamage, Is.EqualTo(17.5f).Within(0.0001f));
+            Assert.That(state.DerivedStats.AttackInterval, Is.EqualTo(0.4f).Within(0.0001f));
+            Assert.That(state.DerivedStats.MoveSpeed, Is.EqualTo(6f).Within(0.0001f));
+
+            Assert.IsTrue(state.SetModifiers(new IPlayerDerivedStatsModifier[]
+            {
+                new ConfigurableModifier(2f, 0.7f, 5f)
+            }));
+            Assert.That(state.DerivedStats.BaseDamage, Is.EqualTo(14.5f).Within(0.0001f));
+            Assert.That(state.DerivedStats.AttackInterval, Is.EqualTo(0.7f).Within(0.0001f));
+            Assert.That(state.DerivedStats.MoveSpeed, Is.EqualTo(5f).Within(0.0001f));
+            AssertLevelsEqual(levels, state.BaseLevels);
+            Assert.That(eventCount, Is.EqualTo(2));
+            Assert.That(lastChange.Reason, Is.EqualTo(PlayerDerivedStatsChangeReason.ModifiersChanged));
+            Assert.That(lastChange.PreviousValues.BaseDamage, Is.EqualTo(17.5f).Within(0.0001f));
+            Assert.That(lastChange.CurrentValues.BaseDamage, Is.EqualTo(14.5f).Within(0.0001f));
+        }
+
+        [Test]
+        public void SetModifiers_NullRemovesModifiersAndOnlyRaisesForActualChange()
+        {
+            var configuration = CreateConfiguration();
+            var levels = new PlayerStatLevels(2, 2, 2, 2, 2);
+            var state = new PlayerStatsState(
+                configuration,
+                levels,
+                new IPlayerDerivedStatsModifier[] { new ConfigurableModifier(5f, 0.7f, 5f) });
+            var eventCount = 0;
+            state.DerivedStatsChanged += _ => eventCount++;
+
+            Assert.IsTrue(state.SetModifiers(null));
+            var expected = PlayerStatsCalculator.Calculate(configuration, levels);
+            Assert.That(state.DerivedStats.BaseDamage, Is.EqualTo(expected.BaseDamage).Within(0.0001f));
+            Assert.That(state.DerivedStats.AttackInterval, Is.EqualTo(expected.AttackInterval).Within(0.0001f));
+            Assert.That(state.DerivedStats.MoveSpeed, Is.EqualTo(expected.MoveSpeed).Within(0.0001f));
+            AssertLevelsEqual(levels, state.BaseLevels);
+            Assert.That(eventCount, Is.EqualTo(1));
+
+            Assert.IsFalse(state.SetModifiers(Array.Empty<IPlayerDerivedStatsModifier>()));
+            Assert.That(eventCount, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void RecalculateDerivedStats_UsesCurrentModifiersAndOnlyRaisesForActualChange()
+        {
+            var levels = new PlayerStatLevels(3, 2, 1, 1, 1);
+            var modifier = new MutableDamageModifier(1f);
+            var state = new PlayerStatsState(
+                CreateConfiguration(),
+                levels,
+                new IPlayerDerivedStatsModifier[] { modifier });
+            var eventCount = 0;
+            var lastChange = default(PlayerDerivedStatsChange);
+            state.DerivedStatsChanged += change =>
+            {
+                eventCount++;
+                lastChange = change;
+            };
+
+            Assert.IsFalse(state.RecalculateDerivedStats());
+            Assert.That(eventCount, Is.Zero);
+
+            modifier.DamageBonus = 4f;
+            Assert.IsTrue(state.RecalculateDerivedStats());
+            Assert.That(state.DerivedStats.BaseDamage, Is.EqualTo(20f).Within(0.0001f));
+            AssertLevelsEqual(levels, state.BaseLevels);
+            Assert.That(eventCount, Is.EqualTo(1));
+            Assert.That(lastChange.Reason, Is.EqualTo(PlayerDerivedStatsChangeReason.Recalculated));
+
+            Assert.IsFalse(state.RecalculateDerivedStats());
+            Assert.That(eventCount, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void SetLevel_DerivedEventOnlyRaisesWhenCappedValuesActuallyChange()
+        {
+            var state = new PlayerStatsState(
+                CreateConfiguration(),
+                new PlayerStatLevels(1, 1, 1, 1, 1));
+            var eventCount = 0;
+            var lastChange = default(PlayerDerivedStatsChange);
+            state.DerivedStatsChanged += change =>
+            {
+                eventCount++;
+                lastChange = change;
+            };
+
+            Assert.IsTrue(state.SetLevel(PlayerStatType.Mobility, 5));
+            Assert.That(eventCount, Is.EqualTo(1));
+            Assert.That(lastChange.Reason, Is.EqualTo(PlayerDerivedStatsChangeReason.LevelChanged));
+            Assert.That(state.DerivedStats.MoveSpeed, Is.EqualTo(6f).Within(0.0001f));
+
+            Assert.IsTrue(state.SetLevel(PlayerStatType.Mobility, 6));
+            Assert.That(state.BaseLevels.Mobility, Is.EqualTo(6));
+            Assert.That(state.DerivedStats.MoveSpeed, Is.EqualTo(6f).Within(0.0001f));
+            Assert.That(eventCount, Is.EqualTo(1));
+        }
+
         private static PlayerStatsConfiguration CreateConfiguration()
         {
             return new PlayerStatsConfiguration(
@@ -136,6 +251,15 @@ namespace Gravivore.Tests.EditMode
                 new PlayerStatLevels(1, 1, 1, 1, 1));
         }
 
+        private static void AssertLevelsEqual(PlayerStatLevels expected, PlayerStatLevels actual)
+        {
+            Assert.That(actual.Power, Is.EqualTo(expected.Power));
+            Assert.That(actual.Hull, Is.EqualTo(expected.Hull));
+            Assert.That(actual.Armor, Is.EqualTo(expected.Armor));
+            Assert.That(actual.Flux, Is.EqualTo(expected.Flux));
+            Assert.That(actual.Mobility, Is.EqualTo(expected.Mobility));
+        }
+
         private sealed class TestModifier : IPlayerDerivedStatsModifier
         {
             public PlayerDerivedStats Apply(in PlayerDerivedStats currentValues)
@@ -146,6 +270,50 @@ namespace Gravivore.Tests.EditMode
                     currentValues.ArmorValue,
                     0.05f,
                     100f);
+            }
+        }
+
+        private sealed class ConfigurableModifier : IPlayerDerivedStatsModifier
+        {
+            private readonly float _damageBonus;
+            private readonly float _attackInterval;
+            private readonly float _moveSpeed;
+
+            public ConfigurableModifier(float damageBonus, float attackInterval, float moveSpeed)
+            {
+                _damageBonus = damageBonus;
+                _attackInterval = attackInterval;
+                _moveSpeed = moveSpeed;
+            }
+
+            public PlayerDerivedStats Apply(in PlayerDerivedStats currentValues)
+            {
+                return new PlayerDerivedStats(
+                    currentValues.BaseDamage + _damageBonus,
+                    currentValues.MaxHp,
+                    currentValues.ArmorValue,
+                    _attackInterval,
+                    _moveSpeed);
+            }
+        }
+
+        private sealed class MutableDamageModifier : IPlayerDerivedStatsModifier
+        {
+            public MutableDamageModifier(float damageBonus)
+            {
+                DamageBonus = damageBonus;
+            }
+
+            public float DamageBonus { get; set; }
+
+            public PlayerDerivedStats Apply(in PlayerDerivedStats currentValues)
+            {
+                return new PlayerDerivedStats(
+                    currentValues.BaseDamage + DamageBonus,
+                    currentValues.MaxHp,
+                    currentValues.ArmorValue,
+                    currentValues.AttackInterval,
+                    currentValues.MoveSpeed);
             }
         }
     }
