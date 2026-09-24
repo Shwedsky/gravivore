@@ -10,7 +10,9 @@ namespace Gravivore.Gameplay.Player
         private CharacterController _characterController;
         private IMovementInput _movementInput;
         private Transform _cameraBasis;
-        private PlayerMovementParameters _parameters;
+        private IMoveSpeedProvider _moveSpeedProvider;
+        private float _fixedMoveSpeed;
+        private float _rotationDegreesPerSecond;
         private bool _isInitialized;
 
         public void Initialize(
@@ -20,7 +22,29 @@ namespace Gravivore.Gameplay.Player
         {
             _movementInput = movementInput ?? throw new ArgumentNullException(nameof(movementInput));
             _cameraBasis = cameraBasis != null ? cameraBasis : throw new ArgumentNullException(nameof(cameraBasis));
-            _parameters = parameters;
+            _moveSpeedProvider = null;
+            _fixedMoveSpeed = parameters.MoveSpeed;
+            _rotationDegreesPerSecond = parameters.RotationDegreesPerSecond;
+            _characterController = GetComponent<CharacterController>();
+            _isInitialized = true;
+        }
+
+        public void Initialize(
+            IMovementInput movementInput,
+            Transform cameraBasis,
+            IMoveSpeedProvider moveSpeedProvider,
+            float rotationDegreesPerSecond)
+        {
+            if (rotationDegreesPerSecond < 0f)
+            {
+                throw new ArgumentOutOfRangeException(nameof(rotationDegreesPerSecond));
+            }
+
+            _movementInput = movementInput ?? throw new ArgumentNullException(nameof(movementInput));
+            _cameraBasis = cameraBasis != null ? cameraBasis : throw new ArgumentNullException(nameof(cameraBasis));
+            _moveSpeedProvider = moveSpeedProvider ?? throw new ArgumentNullException(nameof(moveSpeedProvider));
+            _fixedMoveSpeed = 0f;
+            _rotationDegreesPerSecond = rotationDegreesPerSecond;
             _characterController = GetComponent<CharacterController>();
             _isInitialized = true;
         }
@@ -55,13 +79,14 @@ namespace Gravivore.Gameplay.Player
             var cameraRight = Vector3.ProjectOnPlane(_cameraBasis.right, Vector3.up).normalized;
             var movement = (cameraRight * input.x) + (cameraForward * input.y);
 
-            _characterController.Move(movement * (_parameters.MoveSpeed * deltaTime));
+            var moveSpeed = _moveSpeedProvider != null ? _moveSpeedProvider.MoveSpeed : _fixedMoveSpeed;
+            _characterController.Move(movement * (moveSpeed * deltaTime));
 
             var targetRotation = Quaternion.LookRotation(movement.normalized, Vector3.up);
             transform.rotation = Quaternion.RotateTowards(
                 transform.rotation,
                 targetRotation,
-                _parameters.RotationDegreesPerSecond * deltaTime);
+                _rotationDegreesPerSecond * deltaTime);
         }
     }
 }

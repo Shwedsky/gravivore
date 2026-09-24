@@ -9,7 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09a8c932125140b887046e390bc80322, type: 3}
-  m_Name: S01_PlayerMovementSettings
+  m_Script: {fileID: 11500000, guid: 3b96c9db83634af4ba98c40dfde7aec5, type: 3}
+  m_Name: S02_PowerCurve
   m_EditorClassIdentifier:
-  _rotationDegreesPerSecond: 540
+  _maximumLevel: 1000
+  _levelOneValue: 10
+  _linearGrowthPerLevel: 2
+  _quadraticGrowthPerLevelSquared: 0.01
+  _minimumValue: 0
+  _maximumValue: 1000000
