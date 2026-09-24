@@ -33,6 +33,8 @@ namespace Gravivore.Tests.PlayMode
 
             Assert.IsNotNull(compositionRoot);
             Assert.IsNotNull(compositionRoot.PlayerObject);
+            Assert.IsNotNull(compositionRoot.PlayerStats);
+            Assert.That(compositionRoot.PlayerStats.MoveSpeed, Is.EqualTo(4.5f).Within(0.0001f));
             Assert.IsNotNull(UnityEngine.Camera.main);
             Assert.IsNotNull(compositionRoot.GetComponentInChildren<SafeAreaHudRoot>());
 

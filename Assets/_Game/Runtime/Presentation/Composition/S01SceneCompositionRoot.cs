@@ -14,6 +14,7 @@ namespace Gravivore.Presentation.Composition
         private static readonly Vector2 HudReferenceResolution = new Vector2(1080f, 1920f);
 
         [SerializeField] private PlayerMovementSettings _movementSettings;
+        [SerializeField] private PlayerStatsDefinition _playerStatsDefinition;
         [SerializeField] private FloatingJoystickSettings _joystickSettings;
         [SerializeField] private CameraFollowSettings _cameraSettings;
         [SerializeField] private Vector3 _playerSpawn = Vector3.zero;
@@ -23,6 +24,8 @@ namespace Gravivore.Presentation.Composition
         private bool _isComposed;
 
         public GameObject PlayerObject { get; private set; }
+
+        public PlayerStatsState PlayerStats { get; private set; }
 
         private void Start()
         {
@@ -36,17 +39,23 @@ namespace Gravivore.Presentation.Composition
                 return;
             }
 
-            if (_movementSettings == null || _joystickSettings == null || _cameraSettings == null)
+            if (_movementSettings == null || _playerStatsDefinition == null ||
+                _joystickSettings == null || _cameraSettings == null)
             {
-                throw new InvalidOperationException("S01 composition requires movement, joystick, and camera settings.");
+                throw new InvalidOperationException("Scene composition requires movement, stats, joystick, and camera settings.");
             }
 
+            PlayerStats = _playerStatsDefinition.CreateState();
             CreateHud(out var uiTouchExclusion, out var joystickView);
             var movementInput = CreateMovementInput(uiTouchExclusion, joystickView);
             var locomotion = CreatePlayer();
             var cameraTransform = CreateCamera(PlayerObject.transform);
 
-            locomotion.Initialize(movementInput, cameraTransform, _movementSettings.Parameters);
+            locomotion.Initialize(
+                movementInput,
+                cameraTransform,
+                PlayerStats,
+                _movementSettings.RotationDegreesPerSecond);
             CreateGround();
             CreateLight();
             _isComposed = true;

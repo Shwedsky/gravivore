@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using Gravivore.Core;
+using Gravivore.Gameplay.Player;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -22,6 +23,12 @@ namespace Gravivore.Editor
             "Assets/_Game/Content/Definitions/S01_PlayerMovementSettings.asset",
             "Assets/_Game/Content/Definitions/S01_FloatingJoystickSettings.asset",
             "Assets/_Game/Content/Definitions/S01_CameraFollowSettings.asset",
+            "Assets/_Game/Content/Definitions/S02_PowerCurve.asset",
+            "Assets/_Game/Content/Definitions/S02_HullCurve.asset",
+            "Assets/_Game/Content/Definitions/S02_ArmorCurve.asset",
+            "Assets/_Game/Content/Definitions/S02_FluxCurve.asset",
+            "Assets/_Game/Content/Definitions/S02_MobilityCurve.asset",
+            "Assets/_Game/Content/Definitions/S02_PlayerStats.asset",
             UrpConfigurator.UrpAssetPath,
             UrpConfigurator.RendererDataPath,
             "build-android.ps1"
@@ -48,6 +55,19 @@ namespace Gravivore.Editor
             ValidateUrpConfiguration();
             ValidateAndroidPlayerSettings();
             ValidateVersion();
+            ValidatePlayerStats();
+        }
+
+        private static void ValidatePlayerStats()
+        {
+            const string playerStatsPath = "Assets/_Game/Content/Definitions/S02_PlayerStats.asset";
+            var definition = AssetDatabase.LoadAssetAtPath<PlayerStatsDefinition>(playerStatsPath);
+            if (definition == null)
+            {
+                throw new InvalidOperationException($"A valid player stats definition is required at {playerStatsPath}.");
+            }
+
+            definition.ValidateOrThrow();
         }
 
         private static void ValidateUrpConfiguration()
