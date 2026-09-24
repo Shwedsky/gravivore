@@ -74,7 +74,7 @@ Optional arguments:
 
 The build script invokes `Gravivore.Editor.Build.AndroidBuild.BuildDev`, applies the project configuration, writes `Builds/Logs/android-build.log`, and outputs APKs as `Builds/Android/gravivore-dev-<version>+<versionCode>.apk`.
 
-Run `Gravivore/Configuration/Configure Project` once after a clean clone to generate the canonical URP pipeline and Universal Renderer Data assets with Unity's URP APIs. Project validation is available at `Gravivore/Validation/Validate Project`; it is read-only and is also run after configuration before Android builds.
+After a clean clone, the Editor bootstrap automatically generates the canonical URP pipeline and Universal Renderer Data assets with Unity's URP APIs before validation or tests run. `Gravivore/Configuration/Configure Project` remains available for an explicit rerun. Project validation is available at `Gravivore/Validation/Validate Project`; it is read-only and is also run after configuration before Android builds.
 
 ## Vertical Slice v0.1 success criterion
 

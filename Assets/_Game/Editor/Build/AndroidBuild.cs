@@ -21,6 +21,12 @@ namespace Gravivore.Editor.Build
 
         public static void BuildDev()
         {
+            if (!EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android, BuildTarget.Android))
+            {
+                throw new InvalidOperationException(
+                    "Unable to activate the Android build target. Install Android Build Support for this Unity Editor.");
+            }
+
             ProjectConfigurator.ConfigureOrThrow();
             ProjectValidator.ValidateOrThrow();
 
@@ -57,8 +63,6 @@ namespace Gravivore.Editor.Build
 
         public static void ApplyAndroidPlayerSettings()
         {
-            EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android, BuildTarget.Android);
-
             PlayerSettings.companyName = GravivoreVersion.CompanyName;
             PlayerSettings.productName = GravivoreVersion.ProductName;
             PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.Android, GravivoreVersion.AndroidPackageId);

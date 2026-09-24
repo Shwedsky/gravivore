@@ -1,3 +1,4 @@
+using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -17,6 +18,31 @@ namespace Gravivore.Editor
             UrpConfigurator.ConfigureUrp();
             Build.AndroidBuild.ApplyAndroidPlayerSettings();
             AssetDatabase.SaveAssets();
+        }
+    }
+
+    internal sealed class ProjectBootstrapAssetPostprocessor : AssetPostprocessor
+    {
+        private static void OnPostprocessAllAssets(
+            string[] importedAssets,
+            string[] deletedAssets,
+            string[] movedAssets,
+            string[] movedFromAssetPaths,
+            bool didDomainReload)
+        {
+            if (!didDomainReload)
+            {
+                return;
+            }
+
+            try
+            {
+                ProjectConfigurator.ConfigureOrThrow();
+            }
+            catch (Exception exception)
+            {
+                Debug.LogError($"GRAVIVORE automatic project configuration failed: {exception.Message}");
+            }
         }
     }
 }

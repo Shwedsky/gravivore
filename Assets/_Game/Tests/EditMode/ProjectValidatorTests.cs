@@ -6,6 +6,12 @@ namespace Gravivore.Tests.EditMode
 {
     public sealed class ProjectValidatorTests
     {
+        [OneTimeSetUp]
+        public void ConfigureCleanCheckout()
+        {
+            Gravivore.Editor.ProjectConfigurator.ConfigureOrThrow();
+        }
+
         [Test]
         public void ValidateOrThrow_DoesNotRepairInvalidOrientation()
         {
