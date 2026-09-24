@@ -1,9 +1,9 @@
 # Project GRAVIVORE — Android Vertical Slice Specification
 
-Status: **architecture frozen for Vertical Slice v0.1**  
-Target: **Android sideload APK**, portrait, single-player, anonymous local profile  
-Engine: **Unity 6.3 LTS + C# + URP**  
-Primary implementation agent: **Codex**  
+Status: **architecture frozen for Vertical Slice v0.1**
+Target: **Android sideload APK**, portrait, single-player, anonymous local profile
+Engine: **Unity 6.3 LTS + C# + URP**
+Primary implementation agent: **Codex**
 Repository: **GitHub**
 
 > `GRAVIVORE` is a working codename. A public web search on 2026-09-24 did not surface a directly competing game with that exact name, but this is **not** legal/trademark clearance. The previously proposed `COREVORE` is not suitable as the public name because a separate Steam game already uses `CoreVore`.
@@ -55,6 +55,26 @@ Core loop:
 8. `docs/BUILD_AND_RELEASE.md`
 
 Do not implement later specifications opportunistically. Complete specs in dependency order.
+
+## Bootstrap build commands
+
+This repository is initialized as a Unity 6.3 LTS Android project. Install Unity with Android Build Support, Android SDK & NDK Tools, and OpenJDK.
+
+Run the development Android build from the repository root:
+
+```powershell
+.\build-android.ps1
+```
+
+Optional arguments:
+
+```powershell
+.\build-android.ps1 -UnityPath "C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Unity.exe" -Clean -Version 0.1.0
+```
+
+The build script invokes `Gravivore.Editor.Build.AndroidBuild.BuildDev`, applies the project configuration, writes `Builds/Logs/android-build.log`, and outputs APKs as `Builds/Android/gravivore-dev-<version>+<versionCode>.apk`.
+
+After a clean clone, the Editor bootstrap automatically generates the canonical URP pipeline and Universal Renderer Data assets with Unity's URP APIs before validation or tests run. `Gravivore/Configuration/Configure Project` remains available for an explicit rerun. Project validation is available at `Gravivore/Validation/Validate Project`; it is read-only and is also run after configuration before Android builds.
 
 ## Vertical Slice v0.1 success criterion
 
