@@ -3,6 +3,7 @@ using Gravivore.Gameplay.Combat;
 using Gravivore.Gameplay.Player;
 using Gravivore.Presentation.Composition;
 using Gravivore.Presentation.Input;
+using Gravivore.Presentation.Evolution;
 using Gravivore.Presentation.UI;
 using NUnit.Framework;
 using UnityEngine;
@@ -47,6 +48,9 @@ namespace Gravivore.Tests.PlayMode
             Assert.That(compositionRoot.EnemyPopulation.SpotCount, Is.EqualTo(5));
             Assert.IsNotNull(compositionRoot.Progression);
             Assert.That(compositionRoot.Progression.State.TotalAssimilationScore, Is.Zero);
+            Assert.IsNotNull(compositionRoot.EvolutionPresenter);
+            Assert.That(compositionRoot.EvolutionPresenter.CurrentTier, Is.EqualTo(EvolutionTier.Tier0));
+            Assert.IsNotNull(compositionRoot.PlayerObject.GetComponent<PlayerEvolutionView>());
             Assert.IsNotNull(compositionRoot.PlayerObject.GetComponent<GravityAttackController>());
             Assert.IsNotNull(UnityEngine.Camera.main);
             Assert.IsNotNull(compositionRoot.GetComponentInChildren<SafeAreaHudRoot>());
