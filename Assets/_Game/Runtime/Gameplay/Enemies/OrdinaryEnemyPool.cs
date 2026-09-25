@@ -60,7 +60,13 @@ namespace Gravivore.Gameplay.Enemies
                 throw new InvalidOperationException("Enemy pool lease tracking is inconsistent.");
             }
 
-            enemy.Activate(configuration, aggroTarget, attackTarget, position, recycleRequested);
+            enemy.Activate(
+                configuration,
+                new EnemyLifeId(Guid.NewGuid()),
+                aggroTarget,
+                attackTarget,
+                position,
+                recycleRequested);
             return enemy;
         }
 

@@ -5,6 +5,7 @@ using Gravivore.Core;
 using Gravivore.Gameplay.Combat;
 using Gravivore.Gameplay.Enemies;
 using Gravivore.Gameplay.Player;
+using Gravivore.Gameplay.Progression;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -43,6 +44,13 @@ namespace Gravivore.Editor
             "Assets/_Game/Content/Definitions/S04_SpawnSpot_ShieldDump.asset",
             "Assets/_Game/Content/Definitions/S04_SpawnSpot_CapacitorField.asset",
             "Assets/_Game/Content/Definitions/S04_SpawnSpot_HaulerGraveyard.asset",
+            "Assets/_Game/Content/Definitions/S06_ProgressionThresholds.asset",
+            "Assets/_Game/Content/Definitions/S06_CoreReward_ScoutDrone.asset",
+            "Assets/_Game/Content/Definitions/S06_CoreReward_CutterUnit.asset",
+            "Assets/_Game/Content/Definitions/S06_CoreReward_Warden.asset",
+            "Assets/_Game/Content/Definitions/S06_CoreReward_ArcDrone.asset",
+            "Assets/_Game/Content/Definitions/S06_CoreReward_Carrier.asset",
+            "Assets/_Game/Content/Definitions/S06_PlayerProgression.asset",
             UrpConfigurator.UrpAssetPath,
             UrpConfigurator.RendererDataPath,
             "build-android.ps1"
@@ -72,6 +80,50 @@ namespace Gravivore.Editor
             ValidatePlayerStats();
             ValidateGravityAttack();
             ValidateEnemySpawnSpots();
+            ValidateProgression();
+        }
+
+        private static void ValidateProgression()
+        {
+            const string path = "Assets/_Game/Content/Definitions/S06_PlayerProgression.asset";
+            var definition = AssetDatabase.LoadAssetAtPath<PlayerProgressionDefinition>(path);
+            if (definition == null)
+            {
+                throw new InvalidOperationException($"A valid player progression definition is required at {path}.");
+            }
+
+            var configuration = definition.Configuration;
+            var expectedRoutes = new[]
+            {
+                "scout-drone",
+                "cutter-unit",
+                "warden",
+                "arc-drone",
+                "carrier"
+            };
+            if (configuration.RewardCount != expectedRoutes.Length)
+            {
+                throw new InvalidOperationException("The vertical slice requires exactly five ordinary-enemy reward routes.");
+            }
+
+            var routedStats = new HashSet<PlayerStatType>();
+            for (var i = 0; i < expectedRoutes.Length; i++)
+            {
+                if (!configuration.TryGetReward(expectedRoutes[i], out var reward))
+                {
+                    throw new InvalidOperationException($"Missing progression reward route for {expectedRoutes[i]}.");
+                }
+
+                if (!routedStats.Add(reward.Stat))
+                {
+                    throw new InvalidOperationException($"Multiple ordinary enemy routes reward {reward.Stat}.");
+                }
+            }
+
+            if (routedStats.Count != 5)
+            {
+                throw new InvalidOperationException("The five ordinary enemies must route to all five player stats.");
+            }
         }
 
         private static void ValidateEnemySpawnSpots()

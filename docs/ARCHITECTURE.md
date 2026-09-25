@@ -300,3 +300,11 @@ They must be excluded/disabled in non-development release configuration.
 - Player and enemy components compose `HealthState`; controllers do not duplicate damage math.
 - Enemy death is published as a typed, scoped event before the enemy returns to its pool. Reward systems may observe that event later, but health does not grant rewards.
 - `PlayerHealthController` owns the configured central respawn position and post-respawn invulnerability window. Respawn restores health and publishes a typed hook for transient combat reset without changing `PlayerStatsState.BaseLevels`.
+
+## 21. Assimilation progression
+
+- Every pooled enemy activation receives an immutable `EnemyLifeId`; reward deduplication uses this life token rather than a Unity object or instance id.
+- `EnemyDeathEvent` is an immutable death snapshot containing the life id, enemy archetype id, and death position. It remains valid after the enemy returns to its pool.
+- `AssimilationProgressionService` subscribes to the scoped `EnemyPopulationController.EnemyDied` event and routes rewards through `PlayerProgressionDefinition` data.
+- `ProgressionState` owns stat XP, total assimilation, first-kill state, and processed life ids. `PlayerStatsState` remains the authority for permanent integer stat levels and derived values.
+- Reward state is committed before presentation events. `ProgressionDirtyEvent` is only a persistence boundary notification; S06 does not implement save storage.

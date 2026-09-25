@@ -2,6 +2,7 @@ using System;
 using Gravivore.Gameplay.Combat;
 using Gravivore.Gameplay.Enemies;
 using Gravivore.Gameplay.Player;
+using Gravivore.Gameplay.Progression;
 using Gravivore.Presentation.Camera;
 using Gravivore.Presentation.Combat;
 using Gravivore.Presentation.Input;
@@ -20,6 +21,7 @@ namespace Gravivore.Presentation.Composition
         [SerializeField] private PlayerStatsDefinition _playerStatsDefinition;
         [SerializeField] private GravityAttackSettings _gravityAttackSettings;
         [SerializeField] private SpawnSpotDefinition[] _spawnSpotDefinitions;
+        [SerializeField] private PlayerProgressionDefinition _progressionDefinition;
         [SerializeField, Min(1)] private int _globalLiveEnemyCap = 25;
         [SerializeField] private FloatingJoystickSettings _joystickSettings;
         [SerializeField] private CameraFollowSettings _cameraSettings;
@@ -38,6 +40,8 @@ namespace Gravivore.Presentation.Composition
 
         public EnemyPopulationController EnemyPopulation { get; private set; }
 
+        public AssimilationProgressionService Progression { get; private set; }
+
         private void Start()
         {
             Compose();
@@ -52,6 +56,7 @@ namespace Gravivore.Presentation.Composition
 
             if (_movementSettings == null || _playerStatsDefinition == null || _gravityAttackSettings == null ||
                 _spawnSpotDefinitions == null || _spawnSpotDefinitions.Length != 5 || _globalLiveEnemyCap < 1 ||
+                _progressionDefinition == null ||
                 _joystickSettings == null || _cameraSettings == null ||
                 float.IsNaN(_postRespawnInvulnerabilitySeconds) ||
                 float.IsInfinity(_postRespawnInvulnerabilitySeconds) ||
@@ -77,6 +82,11 @@ namespace Gravivore.Presentation.Composition
             CreateGround();
             CreateLight();
             InitializeEnemyPopulation();
+            Progression = new AssimilationProgressionService(
+                PlayerStats,
+                new ProgressionState(),
+                _progressionDefinition.Configuration,
+                EnemyPopulation);
             _isComposed = true;
         }
 
@@ -300,6 +310,8 @@ namespace Gravivore.Presentation.Composition
 
         private void OnDestroy()
         {
+            Progression?.Dispose();
+
             if (PlayerHealth != null)
             {
                 PlayerHealth.Respawned -= HandlePlayerRespawned;

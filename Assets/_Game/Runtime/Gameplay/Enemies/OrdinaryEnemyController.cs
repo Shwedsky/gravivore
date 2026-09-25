@@ -6,14 +6,24 @@ namespace Gravivore.Gameplay.Enemies
 {
     public readonly struct EnemyDeathEvent
     {
-        public EnemyDeathEvent(OrdinaryEnemyController enemy, string enemyId, Vector3 position)
+        public EnemyDeathEvent(EnemyLifeId lifeId, string enemyId, Vector3 position)
         {
-            Enemy = enemy;
+            if (!lifeId.IsValid)
+            {
+                throw new ArgumentException("A valid enemy life id is required.", nameof(lifeId));
+            }
+
+            if (string.IsNullOrWhiteSpace(enemyId))
+            {
+                throw new ArgumentException("Enemy id is required.", nameof(enemyId));
+            }
+
+            LifeId = lifeId;
             EnemyId = enemyId;
             Position = position;
         }
 
-        public OrdinaryEnemyController Enemy { get; }
+        public EnemyLifeId LifeId { get; }
 
         public string EnemyId { get; }
 
@@ -32,6 +42,7 @@ namespace Gravivore.Gameplay.Enemies
         private Transform _aggroTarget;
         private IDamageable _attackTarget;
         private EnemyRuntimeConfiguration _configuration;
+        private EnemyLifeId _lifeId;
         private Action<OrdinaryEnemyController> _recycleRequested;
         private bool _isActive;
         private bool _isInitialized;
@@ -79,6 +90,7 @@ namespace Gravivore.Gameplay.Enemies
 
         public void Activate(
             EnemyRuntimeConfiguration configuration,
+            EnemyLifeId lifeId,
             Transform aggroTarget,
             IDamageable attackTarget,
             Vector3 position,
@@ -89,6 +101,12 @@ namespace Gravivore.Gameplay.Enemies
                 throw new InvalidOperationException("Enemy infrastructure must be initialized before activation.");
             }
 
+            if (!lifeId.IsValid)
+            {
+                throw new ArgumentException("A valid enemy life id is required.", nameof(lifeId));
+            }
+
+            _lifeId = lifeId;
             _aggroTarget = aggroTarget != null ? aggroTarget : throw new ArgumentNullException(nameof(aggroTarget));
             _attackTarget = attackTarget ?? throw new ArgumentNullException(nameof(attackTarget));
             _recycleRequested = recycleRequested ?? throw new ArgumentNullException(nameof(recycleRequested));
@@ -122,6 +140,7 @@ namespace Gravivore.Gameplay.Enemies
             _aggroTarget = null;
             _attackTarget = null;
             _recycleRequested = null;
+            _lifeId = default;
             AttackRequested = null;
             Died = null;
             _body.enabled = false;
@@ -150,7 +169,7 @@ namespace Gravivore.Gameplay.Enemies
                 var recycleRequested = _recycleRequested;
                 try
                 {
-                    Died?.Invoke(new EnemyDeathEvent(this, _configuration.Id, transform.position));
+                    Died?.Invoke(new EnemyDeathEvent(_lifeId, _configuration.Id, transform.position));
                 }
                 finally
                 {
