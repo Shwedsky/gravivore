@@ -4,7 +4,8 @@ namespace Gravivore.Gameplay.Combat
 {
     public enum DamageType
     {
-        Gravity = 0
+        Gravity = 0,
+        Physical = 1
     }
 
     public readonly struct DamageRequest

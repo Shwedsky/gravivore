@@ -93,6 +93,10 @@ The five integer player stat levels and their derived values are owned by `Playe
 
 The player automatically selects hostile capability-based targets using distance/front scoring, acquisition/release radii, and sticky switching. Targeting, line of sight, and lash VFX use `ITargetable.TargetPoint`; pull geometry and movement use the independent `IDisplaceable.DisplacementRoot`. Gravity Lash cadence and raw damage come from `PlayerStatsState`; standard targets receive full safe pull, elites a configured fraction, and bosses none. Hard blockers use the `HardBlocker` layer. Each entity must have exactly one dedicated sensing collider on the `CombatTarget` layer; body and hitbox colliders must remain on other layers so the fixed non-alloc scan capacity counts entities. The placeholder lash renderer is prewarmed and reused from a fixed pool.
 
+## S04 ordinary enemies and spawn spots
+
+Five data-authored spawn spots maintain four ordinary enemies each from a shared pool under an explicit global cap of 25. Every ordinary enemy has independent runtime HP/AI state, implements the S03 targeting, damage, and displacement capabilities, and resets HP, state, target, timers, and position on reuse. Its offset target point owns the only `CombatTarget` sensing collider; the displacement root and body controller remain on the default layer. Spawn anchors are selected deterministically, exclude positions near the player, and schedule recycled enemies with configured 8–14 second jitter. Basic attacks publish typed physical damage requests; player health and death handling remain deferred to S05.
+
 ## Vertical Slice v0.1 success criterion
 
 A tester can install the APK, launch without registration, understand movement with no explanation, clear five distinct enemy spots, feel permanent power growth, see the player model evolve visually at least twice, unlock an elite and a boss, dodge boss telegraphs, defeat the boss, close/reopen the app without losing progress, and receive a bounded offline reward after being away.

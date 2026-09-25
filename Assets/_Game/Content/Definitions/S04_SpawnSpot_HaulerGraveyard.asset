@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bbceca6f95542ebbc94ee34ce2e12c7, type: 3}
+  m_Name: S04_SpawnSpot_HaulerGraveyard
+  m_EditorClassIdentifier:
+  _id: hauler-graveyard
+  _enemy: {fileID: 11400000, guid: a4100000000000000000000000000005, type: 2}
+  _worldOrigin: {x: 7, y: 0, z: -7}
+  _anchorOffsets:
+  - {x: -1.5, y: 0, z: -1.5}
+  - {x: 1.5, y: 0, z: -1.5}
+  - {x: -1.5, y: 0, z: 1.5}
+  - {x: 1.5, y: 0, z: 1.5}
+  _desiredPopulation: 4
+  _minimumPlayerDistance: 3
+  _minimumRespawnDelay: 8
+  _maximumRespawnDelay: 14
