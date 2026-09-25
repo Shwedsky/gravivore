@@ -25,7 +25,7 @@ namespace Gravivore.Gameplay.Enemies
         private readonly Transform _player;
         private readonly IRandomSource _random;
         private readonly SpawnPopulationState _population;
-        private readonly Queue<float> _respawnReadyTimes;
+        private readonly RespawnSchedule _respawnSchedule;
         private readonly List<LiveEntry> _liveEnemies;
         private readonly bool[] _occupiedAnchors;
         private readonly float[] _anchorDistances;
@@ -46,14 +46,14 @@ namespace Gravivore.Gameplay.Enemies
             _player = player != null ? player : throw new ArgumentNullException(nameof(player));
             _random = random ?? throw new ArgumentNullException(nameof(random));
             _population = new SpawnPopulationState(configuration.Population);
-            _respawnReadyTimes = new Queue<float>(configuration.Population.DesiredPopulation);
+            _respawnSchedule = new RespawnSchedule(configuration.Population.DesiredPopulation);
             _liveEnemies = new List<LiveEntry>(configuration.Population.DesiredPopulation);
             _occupiedAnchors = new bool[configuration.AnchorOffsets.Length];
             _anchorDistances = new float[configuration.AnchorOffsets.Length];
 
             for (var i = 0; i < configuration.Population.DesiredPopulation; i++)
             {
-                _respawnReadyTimes.Enqueue(0f);
+                _respawnSchedule.Schedule(0f);
             }
         }
 
@@ -78,13 +78,14 @@ namespace Gravivore.Gameplay.Enemies
             }
 
             _elapsedTime += deltaTime;
-            while (_population.NeedsSpawn && _respawnReadyTimes.Count > 0 &&
-                   _respawnReadyTimes.Peek() <= _elapsedTime)
+            while (_population.NeedsSpawn && _respawnSchedule.HasReady(_elapsedTime))
             {
                 if (!TrySpawnOne())
                 {
                     break;
                 }
+
+                _respawnSchedule.ConsumeEarliest();
             }
         }
 
@@ -112,7 +113,7 @@ namespace Gravivore.Gameplay.Enemies
             }
 
             _liveEnemies.Clear();
-            _respawnReadyTimes.Clear();
+            _respawnSchedule.Clear();
             _isDisposed = true;
         }
 
@@ -151,7 +152,6 @@ namespace Gravivore.Gameplay.Enemies
                 return false;
             }
 
-            _respawnReadyTimes.Dequeue();
             _population.RegisterSpawn();
             _occupiedAnchors[anchorIndex] = true;
             _liveEnemies.Add(new LiveEntry(enemy, anchorIndex));
@@ -183,7 +183,7 @@ namespace Gravivore.Gameplay.Enemies
             _globalCapacity.Release();
             _pool.Return(enemy);
             var delay = _configuration.RespawnDelay.Sample(_random.NextUnit());
-            _respawnReadyTimes.Enqueue(_elapsedTime + delay);
+            _respawnSchedule.Schedule(_elapsedTime + delay);
         }
     }
 }

@@ -143,6 +143,25 @@ namespace Gravivore.Tests.EditMode
         }
 
         [Test]
+        public void RespawnSchedule_LaterDeathWithShorterDelayBecomesReadyFirst()
+        {
+            var jitter = new RespawnDelayPolicy(8f, 14f);
+            var schedule = new RespawnSchedule(2);
+            schedule.Schedule(0f + jitter.Sample(1f));
+            schedule.Schedule(1f + jitter.Sample(0f));
+
+            Assert.That(schedule.EarliestReadyTime, Is.EqualTo(9f));
+            Assert.IsTrue(schedule.HasReady(9f));
+            Assert.That(schedule.Count, Is.EqualTo(2));
+            Assert.That(schedule.ConsumeEarliest(), Is.EqualTo(9f));
+
+            Assert.That(schedule.Count, Is.EqualTo(1));
+            Assert.That(schedule.EarliestReadyTime, Is.EqualTo(14f));
+            Assert.IsFalse(schedule.HasReady(13.99f));
+            Assert.IsTrue(schedule.HasReady(14f));
+        }
+
+        [Test]
         public void SensingColliderContract_RequiresOneDedicatedColliderOnly()
         {
             Assert.DoesNotThrow(() => SensingColliderContract.ValidateCounts(1, 0));

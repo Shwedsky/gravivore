@@ -101,7 +101,7 @@ namespace Gravivore.Tests.PlayMode
         }
 
         [UnityTest]
-        public IEnumerator FiveSpawnSpots_CoexistAndRespectGlobalCap()
+        public IEnumerator FiveSpawnSpots_ExceedDemandCapAndReuseReleasedSlot()
         {
             var root = new GameObject("Five Spots Smoke Root", typeof(EnemyPopulationController));
             var player = new GameObject("Five Spots Smoke Player");
@@ -112,22 +112,34 @@ namespace Gravivore.Tests.PlayMode
                 configurations[i] = CreateSpotConfiguration(
                     $"spot-{i}",
                     new Vector3(i * 8f, 0f, 0f),
-                    3,
+                    4,
                     8f,
                     14f);
             }
 
             var population = root.GetComponent<EnemyPopulationController>();
-            population.Initialize(configurations, player.transform, 15, 9);
+            population.Initialize(configurations, player.transform, 17, 9);
             population.Tick(0f);
 
             Assert.That(population.SpotCount, Is.EqualTo(5));
-            Assert.That(population.LiveEnemyCount, Is.EqualTo(15));
+            Assert.That(population.LiveEnemyCount, Is.EqualTo(17));
             Assert.That(population.LiveEnemyCount, Is.LessThanOrEqualTo(population.GlobalLiveEnemyCap));
             for (var i = 0; i < population.SpotCount; i++)
             {
-                Assert.That(population.GetSpot(i).LiveCount, Is.EqualTo(3));
+                Assert.That(population.GetSpot(i).LiveCount, Is.GreaterThan(0));
             }
+
+            var finalSpotBeforeRecycle = population.GetSpot(4).LiveCount;
+            population.GetSpot(0).GetLiveEnemy(0).ApplyDamage(
+                new DamageRequest(1000f, DamageType.Gravity));
+            Assert.That(population.LiveEnemyCount, Is.EqualTo(16));
+
+            population.Tick(0f);
+            Assert.That(population.LiveEnemyCount, Is.EqualTo(17));
+            Assert.That(population.GetSpot(4).LiveCount, Is.EqualTo(finalSpotBeforeRecycle + 1));
+            population.Tick(100f);
+            Assert.That(population.LiveEnemyCount, Is.EqualTo(17));
+            Assert.That(population.LiveEnemyCount, Is.LessThanOrEqualTo(population.GlobalLiveEnemyCap));
 
             Object.Destroy(root);
             Object.Destroy(player);

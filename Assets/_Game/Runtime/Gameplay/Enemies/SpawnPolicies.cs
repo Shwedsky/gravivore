@@ -98,6 +98,93 @@ namespace Gravivore.Gameplay.Enemies
         }
     }
 
+    public sealed class RespawnSchedule
+    {
+        private readonly float[] _readyTimes;
+
+        public RespawnSchedule(int capacity)
+        {
+            if (capacity < 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(capacity));
+            }
+
+            _readyTimes = new float[capacity];
+        }
+
+        public int Count { get; private set; }
+
+        public float EarliestReadyTime
+        {
+            get
+            {
+                if (Count == 0)
+                {
+                    throw new InvalidOperationException("The respawn schedule is empty.");
+                }
+
+                return _readyTimes[0];
+            }
+        }
+
+        public void Schedule(float readyTime)
+        {
+            ValidateTime(readyTime, nameof(readyTime));
+            if (Count >= _readyTimes.Length)
+            {
+                throw new InvalidOperationException("The respawn schedule is at capacity.");
+            }
+
+            var insertionIndex = Count;
+            while (insertionIndex > 0 && _readyTimes[insertionIndex - 1] > readyTime)
+            {
+                _readyTimes[insertionIndex] = _readyTimes[insertionIndex - 1];
+                insertionIndex--;
+            }
+
+            _readyTimes[insertionIndex] = readyTime;
+            Count++;
+        }
+
+        public bool HasReady(float elapsedTime)
+        {
+            ValidateTime(elapsedTime, nameof(elapsedTime));
+            return Count > 0 && _readyTimes[0] <= elapsedTime;
+        }
+
+        public float ConsumeEarliest()
+        {
+            if (Count == 0)
+            {
+                throw new InvalidOperationException("Cannot consume an empty respawn schedule.");
+            }
+
+            var consumedReadyTime = _readyTimes[0];
+            Count--;
+            for (var i = 0; i < Count; i++)
+            {
+                _readyTimes[i] = _readyTimes[i + 1];
+            }
+
+            _readyTimes[Count] = 0f;
+            return consumedReadyTime;
+        }
+
+        public void Clear()
+        {
+            Array.Clear(_readyTimes, 0, Count);
+            Count = 0;
+        }
+
+        private static void ValidateTime(float value, string parameterName)
+        {
+            if (float.IsNaN(value) || float.IsInfinity(value) || value < 0f)
+            {
+                throw new ArgumentOutOfRangeException(parameterName);
+            }
+        }
+    }
+
     public static class SpawnAnchorSelector
     {
         public static bool TrySelect(
