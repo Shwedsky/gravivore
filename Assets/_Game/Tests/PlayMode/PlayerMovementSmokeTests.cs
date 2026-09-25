@@ -45,6 +45,8 @@ namespace Gravivore.Tests.PlayMode
                 Is.EqualTo(compositionRoot.PlayerStats.DerivedStats.ArmorValue));
             Assert.IsNotNull(compositionRoot.EnemyPopulation);
             Assert.That(compositionRoot.EnemyPopulation.SpotCount, Is.EqualTo(5));
+            Assert.IsNotNull(compositionRoot.Progression);
+            Assert.That(compositionRoot.Progression.State.TotalAssimilationScore, Is.Zero);
             Assert.IsNotNull(compositionRoot.PlayerObject.GetComponent<GravityAttackController>());
             Assert.IsNotNull(UnityEngine.Camera.main);
             Assert.IsNotNull(compositionRoot.GetComponentInChildren<SafeAreaHudRoot>());

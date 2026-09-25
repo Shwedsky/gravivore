@@ -30,6 +30,11 @@ namespace Gravivore.Gameplay.Player
 
         public float MoveSpeed => DerivedStats.MoveSpeed;
 
+        public int GetMaximumLevel(PlayerStatType stat)
+        {
+            return _configuration.GetCurve(stat).MaximumLevel;
+        }
+
         public bool SetLevel(PlayerStatType stat, int level)
         {
             _configuration.ValidateLevel(stat, level);
