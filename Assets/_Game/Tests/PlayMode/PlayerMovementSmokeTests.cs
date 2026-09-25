@@ -36,6 +36,15 @@ namespace Gravivore.Tests.PlayMode
             Assert.IsNotNull(compositionRoot.PlayerObject);
             Assert.IsNotNull(compositionRoot.PlayerStats);
             Assert.That(compositionRoot.PlayerStats.MoveSpeed, Is.EqualTo(4.5f).Within(0.0001f));
+            Assert.IsNotNull(compositionRoot.PlayerHealth);
+            Assert.That(
+                compositionRoot.PlayerHealth.MaximumHitPoints,
+                Is.EqualTo(compositionRoot.PlayerStats.DerivedStats.MaxHp));
+            Assert.That(
+                compositionRoot.PlayerHealth.Armor,
+                Is.EqualTo(compositionRoot.PlayerStats.DerivedStats.ArmorValue));
+            Assert.IsNotNull(compositionRoot.EnemyPopulation);
+            Assert.That(compositionRoot.EnemyPopulation.SpotCount, Is.EqualTo(5));
             Assert.IsNotNull(compositionRoot.PlayerObject.GetComponent<GravityAttackController>());
             Assert.IsNotNull(UnityEngine.Camera.main);
             Assert.IsNotNull(compositionRoot.GetComponentInChildren<SafeAreaHudRoot>());
@@ -55,6 +64,15 @@ namespace Gravivore.Tests.PlayMode
             }
 
             Assert.IsNotNull(compositionRoot.GetComponent<UiTouchExclusion>());
+
+            compositionRoot.PlayerStats.SetLevel(PlayerStatType.Hull, 2);
+            compositionRoot.PlayerStats.SetLevel(PlayerStatType.Armor, 2);
+            Assert.That(
+                compositionRoot.PlayerHealth.MaximumHitPoints,
+                Is.EqualTo(compositionRoot.PlayerStats.DerivedStats.MaxHp));
+            Assert.That(
+                compositionRoot.PlayerHealth.Armor,
+                Is.EqualTo(compositionRoot.PlayerStats.DerivedStats.ArmorValue));
         }
 
         [UnityTest]
@@ -112,6 +130,49 @@ namespace Gravivore.Tests.PlayMode
                 yield return null;
             }
 
+            Assert.IsFalse(attackController.HasCurrentTarget);
+
+            Object.Destroy(targetObject);
+        }
+
+        [UnityTest]
+        public IEnumerator GravityAttack_LethalResultClearsPooledIdentityBeforeDisplacement()
+        {
+            var loadOperation = SceneManager.LoadSceneAsync("Chapter01_ScrapExclusion", LoadSceneMode.Single);
+            Assert.IsNotNull(loadOperation);
+            yield return loadOperation;
+            yield return null;
+
+            S01SceneCompositionRoot compositionRoot = null;
+            var rootObjects = SceneManager.GetActiveScene().GetRootGameObjects();
+            for (var i = 0; i < rootObjects.Length; i++)
+            {
+                if (rootObjects[i].TryGetComponent(out compositionRoot))
+                {
+                    break;
+                }
+            }
+
+            Assert.IsNotNull(compositionRoot);
+            var attackController = compositionRoot.PlayerObject.GetComponent<GravityAttackController>();
+            var targetObject = new GameObject(
+                "Lethal Pool Identity Target",
+                typeof(SphereCollider),
+                typeof(FakeCombatTarget));
+            targetObject.layer = 9;
+            targetObject.transform.position = new Vector3(0f, 0f, 3f);
+            var target = targetObject.GetComponent<FakeCombatTarget>();
+            target.ReturnLethalWhileRemainingAlive = true;
+            Physics.SyncTransforms();
+
+            var timeout = Time.realtimeSinceStartup + 2f;
+            while (target.DamageCount == 0 && Time.realtimeSinceStartup < timeout)
+            {
+                yield return null;
+            }
+
+            Assert.That(target.DamageCount, Is.EqualTo(1));
+            Assert.That(target.DisplacementCount, Is.Zero);
             Assert.IsFalse(attackController.HasCurrentTarget);
 
             Object.Destroy(targetObject);
@@ -188,6 +249,10 @@ namespace Gravivore.Tests.PlayMode
 
             public int DamageCount { get; private set; }
 
+            public int DisplacementCount { get; private set; }
+
+            public bool ReturnLethalWhileRemainingAlive { get; set; }
+
             public DamageRequest LastDamage { get; private set; }
 
             public bool IsHostileTo(CombatFaction faction)
@@ -199,11 +264,12 @@ namespace Gravivore.Tests.PlayMode
             {
                 DamageCount++;
                 LastDamage = request;
-                return new DamageResult(request.RawDamage, false);
+                return new DamageResult(request.RawDamage, ReturnLethalWhileRemainingAlive);
             }
 
             public bool TryDisplace(Vector3 destination, in DisplacementContext context)
             {
+                DisplacementCount++;
                 transform.position = destination;
                 return true;
             }
