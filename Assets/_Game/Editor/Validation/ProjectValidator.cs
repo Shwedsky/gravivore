@@ -6,7 +6,9 @@ using Gravivore.Gameplay.Combat;
 using Gravivore.Gameplay.Enemies;
 using Gravivore.Gameplay.Player;
 using Gravivore.Gameplay.Progression;
+using Gravivore.Gameplay.World;
 using Gravivore.Presentation.Evolution;
+using Gravivore.Presentation.World;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -53,6 +55,7 @@ namespace Gravivore.Editor
             "Assets/_Game/Content/Definitions/S06_CoreReward_Carrier.asset",
             "Assets/_Game/Content/Definitions/S06_PlayerProgression.asset",
             "Assets/_Game/Content/Definitions/S07_Evolution.asset",
+            "Assets/_Game/Content/Definitions/S08_Chapter01World.asset",
             UrpConfigurator.UrpAssetPath,
             UrpConfigurator.RendererDataPath,
             "build-android.ps1"
@@ -84,6 +87,102 @@ namespace Gravivore.Editor
             ValidateEnemySpawnSpots();
             ValidateProgression();
             ValidateEvolution();
+            ValidateChapter01World();
+        }
+
+        private static void ValidateChapter01World()
+        {
+            const string definitionPath = "Assets/_Game/Content/Definitions/S08_Chapter01World.asset";
+            const string scenePath = "Assets/_Game/Content/Scenes/Chapter01_ScrapExclusion.unity";
+            var definition = AssetDatabase.LoadAssetAtPath<Chapter01WorldDefinition>(definitionPath);
+            if (definition == null)
+            {
+                throw new InvalidOperationException($"A valid Chapter 01 world definition is required at {definitionPath}.");
+            }
+
+            var configuration = definition.Configuration;
+            var expected = new Dictionary<string, Vector3>(StringComparer.Ordinal)
+            {
+                { "relay-yard", new Vector3(-8f, 0f, 6f) },
+                { "cutting-floor", new Vector3(0f, 0f, 10f) },
+                { "shield-dump", new Vector3(8f, 0f, 6f) },
+                { "capacitor-field", new Vector3(-7f, 0f, -7f) },
+                { "hauler-graveyard", new Vector3(7f, 0f, -7f) }
+            };
+            var spawnOrigins = new Dictionary<string, Vector3>(StringComparer.Ordinal);
+            var spawnPaths = new[]
+            {
+                "Assets/_Game/Content/Definitions/S04_SpawnSpot_RelayYard.asset",
+                "Assets/_Game/Content/Definitions/S04_SpawnSpot_CuttingFloor.asset",
+                "Assets/_Game/Content/Definitions/S04_SpawnSpot_ShieldDump.asset",
+                "Assets/_Game/Content/Definitions/S04_SpawnSpot_CapacitorField.asset",
+                "Assets/_Game/Content/Definitions/S04_SpawnSpot_HaulerGraveyard.asset"
+            };
+            for (var i = 0; i < spawnPaths.Length; i++)
+            {
+                var spawn = AssetDatabase.LoadAssetAtPath<SpawnSpotDefinition>(spawnPaths[i]);
+                var spawnConfiguration = spawn.CreateRuntimeConfiguration();
+                spawnOrigins.Add(spawn.Id, spawnConfiguration.WorldOrigin);
+            }
+            if (configuration.ZoneCount != expected.Count || configuration.EliteRequirement.RequiredFirstKillCount != expected.Count)
+            {
+                throw new InvalidOperationException("Chapter 01 requires five canonical zones and five first-kill requirements.");
+            }
+
+            var zoneColors = new HashSet<Color>();
+            for (var i = 0; i < configuration.ZoneCount; i++)
+            {
+                var zone = configuration.GetZone(i);
+                if (!expected.TryGetValue(zone.Id, out var expectedCenter) ||
+                    Vector3.Distance(zone.Center, expectedCenter) > 0.01f ||
+                    !spawnOrigins.TryGetValue(zone.Id, out var spawnOrigin) ||
+                    Vector3.Distance(zone.Center, spawnOrigin) > 0.01f)
+                {
+                    throw new InvalidOperationException($"World zone {zone.Id} does not match its S04 spawn origin.");
+                }
+
+                if (Vector3.Distance(zone.Center, zone.LandmarkPosition) < 2.5f)
+                {
+                    throw new InvalidOperationException($"World landmark {zone.Id} overlaps its spawn anchors.");
+                }
+
+                var halfWidth = configuration.GroundSize.x * 0.5f;
+                var halfDepth = configuration.GroundSize.y * 0.5f;
+                if (Mathf.Abs(zone.Center.x - configuration.GroundCenter.x) >= halfWidth ||
+                    Mathf.Abs(zone.Center.z - configuration.GroundCenter.z) >= halfDepth)
+                {
+                    throw new InvalidOperationException($"World zone {zone.Id} is outside the movement ground.");
+                }
+
+                if (!zoneColors.Add(zone.Color))
+                {
+                    throw new InvalidOperationException("Each canonical zone requires a distinct visual landmark color.");
+                }
+            }
+
+            for (var i = 0; i < configuration.EliteRequirement.RequiredFirstKillCount; i++)
+            {
+                var enemyId = configuration.EliteRequirement.GetRequiredEnemyId(i);
+                if (enemyId != "scout-drone" && enemyId != "cutter-unit" && enemyId != "warden" &&
+                    enemyId != "arc-drone" && enemyId != "carrier")
+                {
+                    throw new InvalidOperationException("Elite gate requirements must use the five canonical enemy ids.");
+                }
+            }
+
+            if (configuration.EliteRequirement.MinimumAssimilationScore < 1 ||
+                string.Equals(configuration.EliteGate.Id, configuration.BossGate.Id, StringComparison.Ordinal) ||
+                configuration.EliteGate.Position.z >= configuration.BossGate.Position.z ||
+                configuration.BossGate.Position.z >= configuration.BossArenaCenter.z)
+            {
+                throw new InvalidOperationException("World gate ids and elite gate requirement are invalid.");
+            }
+
+            var dependencies = AssetDatabase.GetDependencies(scenePath, true);
+            if (Array.IndexOf(dependencies, definitionPath) < 0)
+            {
+                throw new InvalidOperationException("The canonical chapter scene must reference the canonical world definition.");
+            }
         }
 
         private static void ValidateEvolution()

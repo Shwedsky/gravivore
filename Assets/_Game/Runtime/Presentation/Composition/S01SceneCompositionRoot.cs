@@ -3,11 +3,13 @@ using Gravivore.Gameplay.Combat;
 using Gravivore.Gameplay.Enemies;
 using Gravivore.Gameplay.Player;
 using Gravivore.Gameplay.Progression;
+using Gravivore.Gameplay.World;
 using Gravivore.Presentation.Camera;
 using Gravivore.Presentation.Combat;
 using Gravivore.Presentation.Evolution;
 using Gravivore.Presentation.Input;
 using Gravivore.Presentation.UI;
+using Gravivore.Presentation.World;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -24,6 +26,7 @@ namespace Gravivore.Presentation.Composition
         [SerializeField] private SpawnSpotDefinition[] _spawnSpotDefinitions;
         [SerializeField] private PlayerProgressionDefinition _progressionDefinition;
         [SerializeField] private EvolutionDefinition _evolutionDefinition;
+        [SerializeField] private Chapter01WorldDefinition _worldDefinition;
         [SerializeField, Min(1)] private int _globalLiveEnemyCap = 25;
         [SerializeField] private FloatingJoystickSettings _joystickSettings;
         [SerializeField] private CameraFollowSettings _cameraSettings;
@@ -31,7 +34,6 @@ namespace Gravivore.Presentation.Composition
         [SerializeField, Min(0f)] private float _postRespawnInvulnerabilitySeconds = 1.5f;
 
         private Material _playerMaterial;
-        private Material _groundMaterial;
         private Transform _playerVisualRoot;
         private bool _isComposed;
 
@@ -47,6 +49,10 @@ namespace Gravivore.Presentation.Composition
 
         public PlayerEvolutionPresenter EvolutionPresenter { get; private set; }
 
+        public WorldUnlockService WorldUnlocks { get; private set; }
+
+        public Chapter01WorldPresenter WorldPresenter { get; private set; }
+
         private void Start()
         {
             Compose();
@@ -61,14 +67,14 @@ namespace Gravivore.Presentation.Composition
 
             if (_movementSettings == null || _playerStatsDefinition == null || _gravityAttackSettings == null ||
                 _spawnSpotDefinitions == null || _spawnSpotDefinitions.Length != 5 || _globalLiveEnemyCap < 1 ||
-                _progressionDefinition == null || _evolutionDefinition == null ||
+                _progressionDefinition == null || _evolutionDefinition == null || _worldDefinition == null ||
                 _joystickSettings == null || _cameraSettings == null ||
                 float.IsNaN(_postRespawnInvulnerabilitySeconds) ||
                 float.IsInfinity(_postRespawnInvulnerabilitySeconds) ||
                 _postRespawnInvulnerabilitySeconds < 0f)
             {
                 throw new InvalidOperationException(
-                    "Scene composition requires movement, stats, attack, five spawn spots, joystick, and camera settings.");
+                    "Scene composition requires movement, stats, attack, progression, evolution, world, five spawn spots, joystick, and camera settings.");
             }
 
             PlayerStats = _playerStatsDefinition.CreateState();
@@ -84,7 +90,6 @@ namespace Gravivore.Presentation.Composition
                 _movementSettings.RotationDegreesPerSecond);
             InitializePlayerHealth();
             InitializeGravityAttack();
-            CreateGround();
             CreateLight();
             InitializeEnemyPopulation();
             Progression = new AssimilationProgressionService(
@@ -92,6 +97,7 @@ namespace Gravivore.Presentation.Composition
                 new ProgressionState(),
                 _progressionDefinition.Configuration,
                 EnemyPopulation);
+            InitializeWorld();
             InitializeEvolution();
             _isComposed = true;
         }
@@ -219,6 +225,21 @@ namespace Gravivore.Presentation.Composition
                 PlayerObject.GetComponent<EvolutionVfxRelay>());
         }
 
+        private void InitializeWorld()
+        {
+            var configuration = _worldDefinition.Configuration;
+            var state = new WorldUnlockState(
+                configuration.EliteGate.Id,
+                configuration.BossGate.Id,
+                configuration.EliteEnemyId);
+            WorldUnlocks = new WorldUnlockService(Progression, configuration.EliteRequirement, state);
+
+            var worldObject = new GameObject("Chapter 01 World", typeof(Chapter01WorldPresenter));
+            worldObject.transform.SetParent(transform, false);
+            WorldPresenter = worldObject.GetComponent<Chapter01WorldPresenter>();
+            WorldPresenter.Initialize(configuration, state);
+        }
+
         private void InitializeGravityAttack()
         {
             var vfxObject = new GameObject("Gravity Lash VFX Pool", typeof(GravityLashVfxPool));
@@ -308,21 +329,6 @@ namespace Gravivore.Presentation.Composition
             return cameraObject.transform;
         }
 
-        private void CreateGround()
-        {
-            var ground = GameObject.CreatePrimitive(PrimitiveType.Plane);
-            ground.name = "Movement Ground";
-            ground.transform.SetParent(transform, false);
-            ground.transform.localPosition = new Vector3(0f, -0.01f, 0f);
-            ground.transform.localScale = new Vector3(3f, 1f, 3f);
-
-            _groundMaterial = CreateMaterial(new Color(0.09f, 0.12f, 0.14f, 1f));
-            if (_groundMaterial != null)
-            {
-                ground.GetComponent<Renderer>().sharedMaterial = _groundMaterial;
-            }
-        }
-
         private void CreateLight()
         {
             var lightObject = new GameObject("Directional Light", typeof(Light));
@@ -338,6 +344,8 @@ namespace Gravivore.Presentation.Composition
         private void OnDestroy()
         {
             EvolutionPresenter?.Shutdown();
+            WorldPresenter?.Shutdown();
+            WorldUnlocks?.Dispose();
             Progression?.Dispose();
 
             if (PlayerHealth != null)
@@ -350,10 +358,6 @@ namespace Gravivore.Presentation.Composition
                 Destroy(_playerMaterial);
             }
 
-            if (_groundMaterial != null)
-            {
-                Destroy(_groundMaterial);
-            }
         }
 
         private static Material CreateMaterial(Color color)
