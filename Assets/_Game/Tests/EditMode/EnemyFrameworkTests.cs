@@ -1,4 +1,5 @@
 using System;
+using Gravivore.Gameplay.Combat;
 using Gravivore.Gameplay.Enemies;
 using NUnit.Framework;
 
@@ -45,9 +46,9 @@ namespace Gravivore.Tests.EditMode
         [Test]
         public void RuntimeStateAndBrain_ResetCleanlyForPoolReuse()
         {
-            var state = new EnemyRuntimeState();
+            var state = new HealthState();
             state.Reset(40f);
-            state.ApplyDamage(17f);
+            state.ApplyDamage(new DamageRequest(17f, DamageType.Physical), 0f);
             state.MarkPooled();
             state.Reset(40f);
             var brain = CreateBrain();

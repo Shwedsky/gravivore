@@ -8,6 +8,11 @@ namespace Gravivore.Gameplay.Combat
 
         public float RemainingCooldown => _remainingCooldown;
 
+        public void Reset()
+        {
+            _remainingCooldown = 0f;
+        }
+
         public bool Advance(float deltaTime, bool hasValidTarget, float attackInterval)
         {
             ValidateFiniteNonNegative(deltaTime, nameof(deltaTime));

@@ -4,16 +4,33 @@ using UnityEngine;
 
 namespace Gravivore.Gameplay.Enemies
 {
+    public readonly struct EnemyDeathEvent
+    {
+        public EnemyDeathEvent(OrdinaryEnemyController enemy, string enemyId, Vector3 position)
+        {
+            Enemy = enemy;
+            EnemyId = enemyId;
+            Position = position;
+        }
+
+        public OrdinaryEnemyController Enemy { get; }
+
+        public string EnemyId { get; }
+
+        public Vector3 Position { get; }
+    }
+
     [DisallowMultipleComponent]
     public sealed class OrdinaryEnemyController : MonoBehaviour, ITargetable, IDamageable, IDisplaceable
     {
-        private readonly EnemyRuntimeState _runtimeState = new EnemyRuntimeState();
+        private readonly HealthState _health = new HealthState();
         private readonly OrdinaryEnemyStateMachine _brain = new OrdinaryEnemyStateMachine();
 
         private CharacterController _body;
         private Transform _targetPoint;
         private Collider _sensingCollider;
         private Transform _aggroTarget;
+        private IDamageable _attackTarget;
         private EnemyRuntimeConfiguration _configuration;
         private Action<OrdinaryEnemyController> _recycleRequested;
         private bool _isActive;
@@ -21,21 +38,23 @@ namespace Gravivore.Gameplay.Enemies
 
         public event Action<DamageRequest> AttackRequested;
 
+        public event Action<EnemyDeathEvent> Died;
+
         public Transform TargetPoint => _targetPoint;
 
         public Transform DisplacementRoot => transform;
 
-        public bool CanBeTargeted => _isActive && _runtimeState.IsAlive;
+        public bool CanBeTargeted => _isActive && _health.IsAlive;
 
-        public bool IsAlive => _isActive && _runtimeState.IsAlive;
+        public bool IsAlive => _isActive && _health.IsAlive;
 
         public DisplacementClass DisplacementClass => DisplacementClass.Standard;
 
         public float CollisionRadius => _configuration.CollisionRadius;
 
-        public float CurrentHitPoints => _runtimeState.CurrentHitPoints;
+        public float CurrentHitPoints => _health.CurrentHitPoints;
 
-        public float MaximumHitPoints => _runtimeState.MaximumHitPoints;
+        public float MaximumHitPoints => _health.MaximumHitPoints;
 
         public OrdinaryEnemyBrainState BrainState => _brain.State;
 
@@ -61,6 +80,7 @@ namespace Gravivore.Gameplay.Enemies
         public void Activate(
             EnemyRuntimeConfiguration configuration,
             Transform aggroTarget,
+            IDamageable attackTarget,
             Vector3 position,
             Action<OrdinaryEnemyController> recycleRequested)
         {
@@ -70,9 +90,10 @@ namespace Gravivore.Gameplay.Enemies
             }
 
             _aggroTarget = aggroTarget != null ? aggroTarget : throw new ArgumentNullException(nameof(aggroTarget));
+            _attackTarget = attackTarget ?? throw new ArgumentNullException(nameof(attackTarget));
             _recycleRequested = recycleRequested ?? throw new ArgumentNullException(nameof(recycleRequested));
             _configuration = configuration;
-            _runtimeState.Reset(configuration.MaximumHitPoints);
+            _health.Reset(configuration.MaximumHitPoints);
             _brain.Configure(configuration.Behavior);
             _targetPoint.localPosition = new Vector3(0f, configuration.TargetPointHeight, 0f);
             _sensingCollider.transform.localPosition = _targetPoint.localPosition;
@@ -97,10 +118,12 @@ namespace Gravivore.Gameplay.Enemies
         {
             _isActive = false;
             _brain.Reset();
-            _runtimeState.MarkPooled();
+            _health.MarkInactive();
             _aggroTarget = null;
+            _attackTarget = null;
             _recycleRequested = null;
             AttackRequested = null;
+            Died = null;
             _body.enabled = false;
             transform.position = poolPosition;
             transform.rotation = Quaternion.identity;
@@ -114,19 +137,25 @@ namespace Gravivore.Gameplay.Enemies
 
         public DamageResult ApplyDamage(in DamageRequest request)
         {
-            if (!_isActive || !_runtimeState.IsAlive)
+            if (!_isActive || !_health.IsAlive)
             {
                 return new DamageResult(0f, false);
             }
 
-            var appliedDamage = _runtimeState.ApplyDamage(request.RawDamage);
-            var wasLethal = !_runtimeState.IsAlive;
-            var result = new DamageResult(appliedDamage, wasLethal);
-            if (wasLethal)
+            var result = _health.ApplyDamage(request, 0f);
+            if (result.WasLethal)
             {
                 _isActive = false;
                 _brain.Reset();
-                _recycleRequested(this);
+                var recycleRequested = _recycleRequested;
+                try
+                {
+                    Died?.Invoke(new EnemyDeathEvent(this, _configuration.Id, transform.position));
+                }
+                finally
+                {
+                    recycleRequested(this);
+                }
             }
 
             return result;
@@ -134,7 +163,7 @@ namespace Gravivore.Gameplay.Enemies
 
         public bool TryDisplace(Vector3 destination, in DisplacementContext context)
         {
-            if (!_isActive || !_runtimeState.IsAlive)
+            if (!_isActive || !_health.IsAlive)
             {
                 return false;
             }
@@ -145,7 +174,7 @@ namespace Gravivore.Gameplay.Enemies
 
         private void Update()
         {
-            if (!_isActive || !_runtimeState.IsAlive || _aggroTarget == null)
+            if (!_isActive || !_health.IsAlive || _aggroTarget == null || _attackTarget == null)
             {
                 return;
             }
@@ -162,7 +191,12 @@ namespace Gravivore.Gameplay.Enemies
 
             if (decision.ShouldAttack)
             {
-                AttackRequested?.Invoke(new DamageRequest(_configuration.AttackDamage, DamageType.Physical));
+                var request = new DamageRequest(_configuration.AttackDamage, DamageType.Physical);
+                AttackRequested?.Invoke(request);
+                if (_isActive && _attackTarget.IsAlive)
+                {
+                    _attackTarget.ApplyDamage(request);
+                }
             }
         }
 

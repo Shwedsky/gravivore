@@ -148,45 +148,4 @@ namespace Gravivore.Gameplay.Enemies
         }
     }
 
-    public sealed class EnemyRuntimeState
-    {
-        public float CurrentHitPoints { get; private set; }
-
-        public float MaximumHitPoints { get; private set; }
-
-        public bool IsAlive => CurrentHitPoints > 0f;
-
-        public void Reset(float maximumHitPoints)
-        {
-            if (float.IsNaN(maximumHitPoints) || float.IsInfinity(maximumHitPoints) || maximumHitPoints <= 0f)
-            {
-                throw new ArgumentOutOfRangeException(nameof(maximumHitPoints));
-            }
-
-            MaximumHitPoints = maximumHitPoints;
-            CurrentHitPoints = maximumHitPoints;
-        }
-
-        public float ApplyDamage(float rawDamage)
-        {
-            if (float.IsNaN(rawDamage) || float.IsInfinity(rawDamage) || rawDamage < 0f)
-            {
-                throw new ArgumentOutOfRangeException(nameof(rawDamage));
-            }
-
-            if (!IsAlive)
-            {
-                return 0f;
-            }
-
-            var appliedDamage = Math.Min(CurrentHitPoints, rawDamage);
-            CurrentHitPoints -= appliedDamage;
-            return appliedDamage;
-        }
-
-        public void MarkPooled()
-        {
-            CurrentHitPoints = 0f;
-        }
-    }
 }

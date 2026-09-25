@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Gravivore.Gameplay.Combat;
 using UnityEngine;
 
 namespace Gravivore.Gameplay.Enemies
@@ -23,6 +24,7 @@ namespace Gravivore.Gameplay.Enemies
         private readonly OrdinaryEnemyPool _pool;
         private readonly ILiveEnemyCapacity _globalCapacity;
         private readonly Transform _player;
+        private readonly IDamageable _playerDamageable;
         private readonly IRandomSource _random;
         private readonly SpawnPopulationState _population;
         private readonly RespawnSchedule _respawnSchedule;
@@ -38,12 +40,14 @@ namespace Gravivore.Gameplay.Enemies
             OrdinaryEnemyPool pool,
             ILiveEnemyCapacity globalCapacity,
             Transform player,
+            IDamageable playerDamageable,
             IRandomSource random)
         {
             _configuration = configuration;
             _pool = pool ?? throw new ArgumentNullException(nameof(pool));
             _globalCapacity = globalCapacity ?? throw new ArgumentNullException(nameof(globalCapacity));
             _player = player != null ? player : throw new ArgumentNullException(nameof(player));
+            _playerDamageable = playerDamageable ?? throw new ArgumentNullException(nameof(playerDamageable));
             _random = random ?? throw new ArgumentNullException(nameof(random));
             _population = new SpawnPopulationState(configuration.Population);
             _respawnSchedule = new RespawnSchedule(configuration.Population.DesiredPopulation);
@@ -64,6 +68,8 @@ namespace Gravivore.Gameplay.Enemies
         public int DesiredPopulation => _population.DesiredPopulation;
 
         public int PendingRespawns => _population.PendingRespawns;
+
+        public event Action<EnemyDeathEvent> EnemyDied;
 
         public void Tick(float deltaTime)
         {
@@ -144,6 +150,7 @@ namespace Gravivore.Gameplay.Enemies
             var enemy = _pool.Acquire(
                 _configuration.Enemy,
                 _player,
+                _playerDamageable,
                 _configuration.GetAnchorWorldPosition(anchorIndex),
                 HandleRecycleRequested);
             if (enemy == null)
@@ -153,6 +160,7 @@ namespace Gravivore.Gameplay.Enemies
             }
 
             _population.RegisterSpawn();
+            enemy.Died += HandleEnemyDied;
             _occupiedAnchors[anchorIndex] = true;
             _liveEnemies.Add(new LiveEntry(enemy, anchorIndex));
             _nextAnchorIndex = (anchorIndex + 1) % _configuration.AnchorOffsets.Length;
@@ -184,6 +192,11 @@ namespace Gravivore.Gameplay.Enemies
             _pool.Return(enemy);
             var delay = _configuration.RespawnDelay.Sample(_random.NextUnit());
             _respawnSchedule.Schedule(_elapsedTime + delay);
+        }
+
+        private void HandleEnemyDied(EnemyDeathEvent death)
+        {
+            EnemyDied?.Invoke(death);
         }
     }
 }
