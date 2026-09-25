@@ -132,15 +132,21 @@ namespace Gravivore.Gameplay.Combat
                 return;
             }
 
-            ApplyDisplacement(origin, targetPoint, _currentTarget.Displaceable);
+            ApplyDisplacement(origin, _currentTarget.Displaceable);
         }
 
         private void ApplyDisplacement(
             Vector3 sourcePosition,
-            Vector3 targetPosition,
             IDisplaceable displaceable)
         {
-            var distanceToSource = Vector3.Distance(targetPosition, sourcePosition);
+            var displacementRoot = displaceable.DisplacementRoot;
+            if (displacementRoot == null)
+            {
+                return;
+            }
+
+            var displacementPosition = displacementRoot.position;
+            var distanceToSource = Vector3.Distance(displacementPosition, sourcePosition);
             var requestedDistance = _settings.Displacement.CalculatePullDistance(
                 distanceToSource,
                 _settings.PullStopDistance,
@@ -150,13 +156,13 @@ namespace Gravivore.Gameplay.Combat
                 return;
             }
 
-            var pullDirection = (sourcePosition - targetPosition).normalized;
-            var requestedDestination = targetPosition + (pullDirection * requestedDistance);
+            var pullDirection = (sourcePosition - displacementPosition).normalized;
+            var requestedDestination = displacementPosition + (pullDirection * requestedDistance);
             var resolvedDestination = _pullDestinationResolver.Resolve(
-                targetPosition,
+                displacementPosition,
                 requestedDestination,
                 displaceable.CollisionRadius);
-            var resolvedDistance = Vector3.Distance(targetPosition, resolvedDestination);
+            var resolvedDistance = Vector3.Distance(displacementPosition, resolvedDestination);
             displaceable.TryDisplace(
                 resolvedDestination,
                 new DisplacementContext(sourcePosition, requestedDistance, resolvedDistance));

@@ -27,6 +27,8 @@ namespace Gravivore.Gameplay.Combat
 
     public interface IDisplaceable
     {
+        Transform DisplacementRoot { get; }
+
         DisplacementClass DisplacementClass { get; }
 
         float CollisionRadius { get; }

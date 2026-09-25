@@ -91,7 +91,7 @@ The five integer player stat levels and their derived values are owned by `Playe
 
 ## S03 targeting and Gravity Lash
 
-The player automatically selects hostile capability-based targets using distance/front scoring, acquisition/release radii, and sticky switching. Gravity Lash cadence and raw damage come from `PlayerStatsState`; standard targets receive full safe pull, elites a configured fraction, and bosses none. Hard blockers use the `HardBlocker` layer, target colliders use `CombatTarget`, and the placeholder lash renderer is prewarmed and reused from a fixed pool.
+The player automatically selects hostile capability-based targets using distance/front scoring, acquisition/release radii, and sticky switching. Targeting, line of sight, and lash VFX use `ITargetable.TargetPoint`; pull geometry and movement use the independent `IDisplaceable.DisplacementRoot`. Gravity Lash cadence and raw damage come from `PlayerStatsState`; standard targets receive full safe pull, elites a configured fraction, and bosses none. Hard blockers use the `HardBlocker` layer. Each entity must have exactly one dedicated sensing collider on the `CombatTarget` layer; body and hitbox colliders must remain on other layers so the fixed non-alloc scan capacity counts entities. The placeholder lash renderer is prewarmed and reused from a fixed pool.
 
 ## Vertical Slice v0.1 success criterion
 

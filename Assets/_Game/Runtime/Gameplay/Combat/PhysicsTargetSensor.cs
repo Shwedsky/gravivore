@@ -14,6 +14,9 @@ namespace Gravivore.Gameplay.Combat
         bool HasLineOfSight(Vector3 origin, Vector3 destination);
     }
 
+    // Authoring contract: each entity contributes exactly one dedicated sensing collider to
+    // the configured target layer. Body and hitbox colliders must use other layers so the
+    // fixed non-alloc buffer represents entities rather than an arbitrary collider count.
     public sealed class PhysicsTargetSensor : ITargetSensor
     {
         private readonly Collider[] _colliderBuffer;

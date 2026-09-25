@@ -14,7 +14,8 @@ namespace Gravivore.Gameplay.Combat
         [SerializeField, Min(0f)] private float _switchScoreAdvantage = 0.15f;
         [SerializeField, Min(0.01f)] private float _targetScanInterval = 0.1f;
         [SerializeField, Min(1)] private int _targetColliderCapacity = 32;
-        [SerializeField] private LayerMask _targetLayers = ~0;
+        [SerializeField, Tooltip("Exactly one dedicated sensing layer. Put one sensing collider per target entity on it; keep body and hitbox colliders off it.")]
+        private LayerMask _targetLayers = ~0;
         [SerializeField] private LayerMask _hardBlockerLayers = 256;
 
         [Header("Gravity Pull")]
@@ -70,6 +71,17 @@ namespace Gravivore.Gameplay.Combat
             if (_targetColliderCapacity < 1 || _vfxPoolSize < 1)
             {
                 throw new InvalidOperationException("Target capacity and VFX pool size must be positive.");
+            }
+
+            var targetMask = _targetLayers.value;
+            if (targetMask == 0 || (targetMask & (targetMask - 1)) != 0)
+            {
+                throw new InvalidOperationException("Target layers must contain exactly one dedicated sensing layer.");
+            }
+
+            if ((_hardBlockerLayers.value & targetMask) != 0)
+            {
+                throw new InvalidOperationException("Target sensing and hard-blocker layers must not overlap.");
             }
         }
 

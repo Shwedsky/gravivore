@@ -86,6 +86,10 @@ namespace Gravivore.Tests.PlayMode
             targetObject.layer = 9;
             targetObject.transform.position = new Vector3(0f, 0f, 3f);
             var target = targetObject.GetComponent<FakeCombatTarget>();
+            var aimPoint = new GameObject("Offset Aim Point").transform;
+            aimPoint.SetParent(targetObject.transform, false);
+            aimPoint.localPosition = new Vector3(0f, 1.25f, 0f);
+            target.AimPoint = aimPoint;
             Physics.SyncTransforms();
 
             var timeout = Time.realtimeSinceStartup + 2f;
@@ -96,7 +100,9 @@ namespace Gravivore.Tests.PlayMode
 
             Assert.That(target.DamageCount, Is.GreaterThan(0));
             Assert.That(target.LastDamage.RawDamage, Is.EqualTo(compositionRoot.PlayerStats.DerivedStats.BaseDamage));
-            Assert.That(targetObject.transform.position.z, Is.LessThan(3f));
+            Assert.That(targetObject.transform.position.z, Is.EqualTo(1.2f).Within(0.0001f));
+            Assert.That(targetObject.transform.position.y, Is.EqualTo(0f).Within(0.0001f));
+            Assert.That(target.TargetPoint.position.y, Is.EqualTo(1.25f).Within(0.0001f));
             Assert.IsTrue(attackController.HasCurrentTarget);
 
             target.IsAlive = false;
@@ -166,7 +172,11 @@ namespace Gravivore.Tests.PlayMode
 
         private sealed class FakeCombatTarget : MonoBehaviour, ITargetable, IDamageable, IDisplaceable
         {
-            public Transform TargetPoint => transform;
+            public Transform AimPoint { get; set; }
+
+            public Transform TargetPoint => AimPoint != null ? AimPoint : transform;
+
+            public Transform DisplacementRoot => transform;
 
             public bool CanBeTargeted => true;
 
