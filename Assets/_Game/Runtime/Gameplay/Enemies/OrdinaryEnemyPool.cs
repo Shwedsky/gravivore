@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Gravivore.Gameplay.Combat;
 using UnityEngine;
 
 namespace Gravivore.Gameplay.Enemies
@@ -44,6 +45,7 @@ namespace Gravivore.Gameplay.Enemies
         public OrdinaryEnemyController Acquire(
             EnemyRuntimeConfiguration configuration,
             Transform aggroTarget,
+            IDamageable attackTarget,
             Vector3 position,
             Action<OrdinaryEnemyController> recycleRequested)
         {
@@ -58,7 +60,7 @@ namespace Gravivore.Gameplay.Enemies
                 throw new InvalidOperationException("Enemy pool lease tracking is inconsistent.");
             }
 
-            enemy.Activate(configuration, aggroTarget, position, recycleRequested);
+            enemy.Activate(configuration, aggroTarget, attackTarget, position, recycleRequested);
             return enemy;
         }
 

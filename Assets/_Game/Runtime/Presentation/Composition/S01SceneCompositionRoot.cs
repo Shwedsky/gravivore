@@ -24,6 +24,7 @@ namespace Gravivore.Presentation.Composition
         [SerializeField] private FloatingJoystickSettings _joystickSettings;
         [SerializeField] private CameraFollowSettings _cameraSettings;
         [SerializeField] private Vector3 _playerSpawn = Vector3.zero;
+        [SerializeField, Min(0f)] private float _postRespawnInvulnerabilitySeconds = 1.5f;
 
         private Material _playerMaterial;
         private Material _groundMaterial;
@@ -32,6 +33,8 @@ namespace Gravivore.Presentation.Composition
         public GameObject PlayerObject { get; private set; }
 
         public PlayerStatsState PlayerStats { get; private set; }
+
+        public PlayerHealthController PlayerHealth { get; private set; }
 
         public EnemyPopulationController EnemyPopulation { get; private set; }
 
@@ -49,7 +52,10 @@ namespace Gravivore.Presentation.Composition
 
             if (_movementSettings == null || _playerStatsDefinition == null || _gravityAttackSettings == null ||
                 _spawnSpotDefinitions == null || _spawnSpotDefinitions.Length != 5 || _globalLiveEnemyCap < 1 ||
-                _joystickSettings == null || _cameraSettings == null)
+                _joystickSettings == null || _cameraSettings == null ||
+                float.IsNaN(_postRespawnInvulnerabilitySeconds) ||
+                float.IsInfinity(_postRespawnInvulnerabilitySeconds) ||
+                _postRespawnInvulnerabilitySeconds < 0f)
             {
                 throw new InvalidOperationException(
                     "Scene composition requires movement, stats, attack, five spawn spots, joystick, and camera settings.");
@@ -66,6 +72,7 @@ namespace Gravivore.Presentation.Composition
                 cameraTransform,
                 PlayerStats,
                 _movementSettings.RotationDegreesPerSecond);
+            InitializePlayerHealth();
             InitializeGravityAttack();
             CreateGround();
             CreateLight();
@@ -146,6 +153,7 @@ namespace Gravivore.Presentation.Composition
                 "Player",
                 typeof(CharacterController),
                 typeof(PlayerLocomotion),
+                typeof(PlayerHealthController),
                 typeof(GravityAttackController));
             PlayerObject.transform.SetParent(transform, false);
             PlayerObject.transform.position = _playerSpawn;
@@ -197,6 +205,22 @@ namespace Gravivore.Presentation.Composition
                 vfxPool);
         }
 
+        private void InitializePlayerHealth()
+        {
+            PlayerHealth = PlayerObject.GetComponent<PlayerHealthController>();
+            PlayerHealth.Initialize(
+                PlayerObject.GetComponent<CharacterController>(),
+                PlayerStats,
+                _playerSpawn,
+                _postRespawnInvulnerabilitySeconds);
+            PlayerHealth.Respawned += HandlePlayerRespawned;
+        }
+
+        private void HandlePlayerRespawned(PlayerRespawnEvent respawn)
+        {
+            PlayerObject.GetComponent<GravityAttackController>().ResetTransientState();
+        }
+
         private void InitializeEnemyPopulation()
         {
             var targetLayer = LayerMask.NameToLayer("CombatTarget");
@@ -222,6 +246,7 @@ namespace Gravivore.Presentation.Composition
             EnemyPopulation.Initialize(
                 configurations,
                 PlayerObject.transform,
+                PlayerHealth,
                 _globalLiveEnemyCap,
                 targetLayer);
         }
@@ -275,6 +300,11 @@ namespace Gravivore.Presentation.Composition
 
         private void OnDestroy()
         {
+            if (PlayerHealth != null)
+            {
+                PlayerHealth.Respawned -= HandlePlayerRespawned;
+            }
+
             if (_playerMaterial != null)
             {
                 Destroy(_playerMaterial);

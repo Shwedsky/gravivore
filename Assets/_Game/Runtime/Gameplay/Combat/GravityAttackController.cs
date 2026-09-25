@@ -22,6 +22,14 @@ namespace Gravivore.Gameplay.Combat
 
         public bool HasCurrentTarget => _hasCurrentTarget;
 
+        public void ResetTransientState()
+        {
+            _hasCurrentTarget = false;
+            _currentTarget = default;
+            _scanRemaining = 0f;
+            _cadence.Reset();
+        }
+
         public void Initialize(
             Transform attackOrigin,
             PlayerStatsState playerStats,

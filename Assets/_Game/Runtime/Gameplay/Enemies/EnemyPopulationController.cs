@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Gravivore.Gameplay.Combat;
 using UnityEngine;
 
 namespace Gravivore.Gameplay.Enemies
@@ -17,9 +18,12 @@ namespace Gravivore.Gameplay.Enemies
 
         public int GlobalLiveEnemyCap => _globalCapacity != null ? _globalCapacity.MaximumLiveCount : 0;
 
+        public event Action<EnemyDeathEvent> EnemyDied;
+
         public void Initialize(
             IReadOnlyList<SpawnSpotRuntimeConfiguration> spotConfigurations,
             Transform player,
+            IDamageable playerDamageable,
             int globalLiveEnemyCap,
             int targetLayer)
         {
@@ -38,6 +42,11 @@ namespace Gravivore.Gameplay.Enemies
                 throw new ArgumentNullException(nameof(player));
             }
 
+            if (playerDamageable == null)
+            {
+                throw new ArgumentNullException(nameof(playerDamageable));
+            }
+
             _globalCapacity = new LiveEnemyCapCoordinator(globalLiveEnemyCap);
             var poolObject = new GameObject("Ordinary Enemy Pool");
             poolObject.transform.SetParent(transform, false);
@@ -50,7 +59,9 @@ namespace Gravivore.Gameplay.Enemies
                     pool,
                     _globalCapacity,
                     player,
+                    playerDamageable,
                     new SystemRandomSource(1709 + (i * 7919)));
+                _spots[i].EnemyDied += HandleEnemyDied;
             }
 
             _isInitialized = true;
@@ -96,8 +107,14 @@ namespace Gravivore.Gameplay.Enemies
 
             for (var i = 0; i < _spots.Length; i++)
             {
+                _spots[i].EnemyDied -= HandleEnemyDied;
                 _spots[i].Dispose();
             }
+        }
+
+        private void HandleEnemyDied(EnemyDeathEvent death)
+        {
+            EnemyDied?.Invoke(death);
         }
     }
 }

@@ -1,6 +1,8 @@
 using System.Collections;
+using Gravivore.Core.Stats;
 using Gravivore.Gameplay.Combat;
 using Gravivore.Gameplay.Enemies;
+using Gravivore.Gameplay.Player;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -10,6 +12,98 @@ namespace Gravivore.Tests.PlayMode
     public sealed class EnemyPopulationSmokeTests
     {
         [UnityTest]
+        public IEnumerator OrdinaryEnemyAttack_AppliesDamageToPlayerHealth()
+        {
+            var root = new GameObject("Enemy Attack Smoke Root");
+            var player = new GameObject("Enemy Attack Smoke Player", typeof(CharacterController), typeof(PlayerHealthController));
+            var stats = CreatePlayerStats();
+            var playerHealth = player.GetComponent<PlayerHealthController>();
+            playerHealth.Initialize(player.GetComponent<CharacterController>(), stats, Vector3.zero, 1f);
+            var pool = new OrdinaryEnemyPool(root.transform, 1, 9);
+            var enemy = pool.Acquire(
+                CreateEnemyConfiguration(),
+                player.transform,
+                playerHealth,
+                new Vector3(0f, 0f, 1f),
+                pool.Return);
+            var initialHitPoints = playerHealth.CurrentHitPoints;
+
+            yield return null;
+
+            Assert.That(playerHealth.CurrentHitPoints, Is.LessThan(initialHitPoints));
+            pool.Return(enemy);
+            Object.Destroy(root);
+            Object.Destroy(player);
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator PlayerDeath_RespawnsOnceAtConfiguredPointWithStatsAndFullHealth()
+        {
+            var respawnPosition = new Vector3(4f, 0f, -3f);
+            var player = new GameObject("Player Respawn Smoke", typeof(CharacterController), typeof(PlayerHealthController));
+            player.transform.position = new Vector3(2f, 0f, 2f);
+            var stats = CreatePlayerStats();
+            var originalLevels = stats.BaseLevels;
+            var health = player.GetComponent<PlayerHealthController>();
+            health.Initialize(player.GetComponent<CharacterController>(), stats, respawnPosition, 1f);
+            var deathCount = 0;
+            var respawnCount = 0;
+            health.Died += _ => deathCount++;
+            health.Respawned += _ => respawnCount++;
+
+            var lethal = health.ApplyDamage(new DamageRequest(10000f, DamageType.Physical));
+            var blockedRepeat = health.ApplyDamage(new DamageRequest(10000f, DamageType.Physical));
+
+            Assert.IsTrue(lethal.WasLethal);
+            Assert.That(blockedRepeat.AppliedDamage, Is.Zero);
+            Assert.That(deathCount, Is.EqualTo(1));
+            Assert.That(respawnCount, Is.EqualTo(1));
+            Assert.That(player.transform.position, Is.EqualTo(respawnPosition));
+            Assert.That(health.CurrentHitPoints, Is.EqualTo(health.MaximumHitPoints));
+            Assert.That(stats.BaseLevels.Power, Is.EqualTo(originalLevels.Power));
+            Assert.That(stats.BaseLevels.Hull, Is.EqualTo(originalLevels.Hull));
+            Assert.That(stats.BaseLevels.Armor, Is.EqualTo(originalLevels.Armor));
+            Assert.That(stats.BaseLevels.Flux, Is.EqualTo(originalLevels.Flux));
+            Assert.That(stats.BaseLevels.Mobility, Is.EqualTo(originalLevels.Mobility));
+
+            Object.Destroy(player);
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator EnemyDeath_IsUniquePerLifeAndPooledReuseStartsWithFullHealth()
+        {
+            var root = new GameObject("Enemy Death Smoke Root");
+            var player = new GameObject("Enemy Death Smoke Player");
+            var pool = new OrdinaryEnemyPool(root.transform, 1, 9);
+            var target = new RecordingDamageable();
+            var configuration = CreateEnemyConfiguration();
+            var deathCount = 0;
+            var first = pool.Acquire(configuration, player.transform, target, Vector3.one, pool.Return);
+            first.Died += _ => deathCount++;
+
+            var firstLethal = first.ApplyDamage(new DamageRequest(1000f, DamageType.Gravity));
+            var repeated = first.ApplyDamage(new DamageRequest(1000f, DamageType.Gravity));
+            Assert.IsTrue(firstLethal.WasLethal);
+            Assert.IsFalse(repeated.WasLethal);
+            Assert.That(deathCount, Is.EqualTo(1));
+            Assert.That(pool.AvailableCount, Is.EqualTo(1));
+
+            var second = pool.Acquire(configuration, player.transform, target, Vector3.forward, pool.Return);
+            Assert.AreSame(first, second);
+            Assert.That(second.CurrentHitPoints, Is.EqualTo(second.MaximumHitPoints));
+            second.Died += _ => deathCount++;
+            second.ApplyDamage(new DamageRequest(1000f, DamageType.Gravity));
+            Assert.That(deathCount, Is.EqualTo(2));
+            Assert.That(pool.AvailableCount, Is.EqualTo(1));
+
+            Object.Destroy(root);
+            Object.Destroy(player);
+            yield return null;
+        }
+
+        [UnityTest]
         public IEnumerator OrdinaryEnemyPool_ReusesInstanceWithCleanRuntimeState()
         {
             var root = new GameObject("Pool Smoke Root");
@@ -17,7 +111,13 @@ namespace Gravivore.Tests.PlayMode
             player.transform.position = Vector3.zero;
             var pool = new OrdinaryEnemyPool(root.transform, 1, 9);
             var configuration = CreateEnemyConfiguration();
-            var first = pool.Acquire(configuration, player.transform, new Vector3(0f, 0f, 1f), _ => { });
+            var damageTarget = new RecordingDamageable();
+            var first = pool.Acquire(
+                configuration,
+                player.transform,
+                damageTarget,
+                new Vector3(0f, 0f, 1f),
+                _ => { });
             var attackCount = 0;
             first.AttackRequested += _ => attackCount++;
             yield return null;
@@ -34,7 +134,12 @@ namespace Gravivore.Tests.PlayMode
             Assert.That(first.AttackCooldown, Is.Zero);
             Assert.That(first.CurrentHitPoints, Is.Zero);
 
-            var second = pool.Acquire(configuration, player.transform, new Vector3(7f, 0f, 8f), _ => { });
+            var second = pool.Acquire(
+                configuration,
+                player.transform,
+                damageTarget,
+                new Vector3(7f, 0f, 8f),
+                _ => { });
             Assert.AreSame(first, second);
             Assert.That(second.CurrentHitPoints, Is.EqualTo(40f));
             Assert.That(second.BrainState, Is.EqualTo(OrdinaryEnemyBrainState.Idle));
@@ -74,6 +179,7 @@ namespace Gravivore.Tests.PlayMode
                 pool,
                 cap,
                 player.transform,
+                new RecordingDamageable(),
                 new FixedRandomSource(0.5f));
             spot.Tick(0f);
             Assert.That(spot.LiveCount, Is.EqualTo(3));
@@ -118,7 +224,7 @@ namespace Gravivore.Tests.PlayMode
             }
 
             var population = root.GetComponent<EnemyPopulationController>();
-            population.Initialize(configurations, player.transform, 17, 9);
+            population.Initialize(configurations, player.transform, new RecordingDamageable(), 17, 9);
             population.Tick(0f);
 
             Assert.That(population.SpotCount, Is.EqualTo(5));
@@ -158,6 +264,20 @@ namespace Gravivore.Tests.PlayMode
                 new EnemyBehaviorParameters(5f, 7f, 1.2f, 1f));
         }
 
+        private static PlayerStatsState CreatePlayerStats()
+        {
+            var configuration = new PlayerStatsConfiguration(
+                new StatCurve(10, 10f, 2f, 0.5f, 0f, 1000f),
+                new StatCurve(10, 100f, 10f, 1f, 1f, 10000f),
+                new StatCurve(10, 5f, 3f, 0f, 0f, 1000f),
+                new StatCurve(10, 1f, -0.1f, 0f, 0.05f, 10f),
+                new StatCurve(10, 4f, 0.5f, 0f, 0f, 20f),
+                0.4f,
+                6f,
+                new PlayerStatLevels(1, 1, 1, 1, 1));
+            return new PlayerStatsState(configuration, configuration.StartingLevels);
+        }
+
         private static SpawnSpotRuntimeConfiguration CreateSpotConfiguration(
             string id,
             Vector3 origin,
@@ -195,6 +315,16 @@ namespace Gravivore.Tests.PlayMode
             public float NextUnit()
             {
                 return _value;
+            }
+        }
+
+        private sealed class RecordingDamageable : IDamageable
+        {
+            public bool IsAlive => true;
+
+            public DamageResult ApplyDamage(in DamageRequest request)
+            {
+                return new DamageResult(request.RawDamage, false);
             }
         }
     }

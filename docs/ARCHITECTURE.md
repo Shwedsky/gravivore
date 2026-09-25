@@ -292,3 +292,11 @@ Simple local dev flags are allowed for:
 - show debug overlay.
 
 They must be excluded/disabled in non-development release configuration.
+
+## 20. Combat health and death
+
+- `DamageResolver` is the single deterministic implementation of physical armor mitigation.
+- `HealthState` owns reusable hit-point, clamp, reset, and once-per-life death semantics.
+- Player and enemy components compose `HealthState`; controllers do not duplicate damage math.
+- Enemy death is published as a typed, scoped event before the enemy returns to its pool. Reward systems may observe that event later, but health does not grant rewards.
+- `PlayerHealthController` owns the configured central respawn position and post-respawn invulnerability window. Respawn restores health and publishes a typed hook for transient combat reset without changing `PlayerStatsState.BaseLevels`.
