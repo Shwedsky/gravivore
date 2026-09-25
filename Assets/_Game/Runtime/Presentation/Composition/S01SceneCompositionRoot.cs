@@ -1,5 +1,6 @@
 using System;
 using Gravivore.Gameplay.Combat;
+using Gravivore.Gameplay.Enemies;
 using Gravivore.Gameplay.Player;
 using Gravivore.Presentation.Camera;
 using Gravivore.Presentation.Combat;
@@ -18,6 +19,8 @@ namespace Gravivore.Presentation.Composition
         [SerializeField] private PlayerMovementSettings _movementSettings;
         [SerializeField] private PlayerStatsDefinition _playerStatsDefinition;
         [SerializeField] private GravityAttackSettings _gravityAttackSettings;
+        [SerializeField] private SpawnSpotDefinition[] _spawnSpotDefinitions;
+        [SerializeField, Min(1)] private int _globalLiveEnemyCap = 25;
         [SerializeField] private FloatingJoystickSettings _joystickSettings;
         [SerializeField] private CameraFollowSettings _cameraSettings;
         [SerializeField] private Vector3 _playerSpawn = Vector3.zero;
@@ -29,6 +32,8 @@ namespace Gravivore.Presentation.Composition
         public GameObject PlayerObject { get; private set; }
 
         public PlayerStatsState PlayerStats { get; private set; }
+
+        public EnemyPopulationController EnemyPopulation { get; private set; }
 
         private void Start()
         {
@@ -43,10 +48,11 @@ namespace Gravivore.Presentation.Composition
             }
 
             if (_movementSettings == null || _playerStatsDefinition == null || _gravityAttackSettings == null ||
+                _spawnSpotDefinitions == null || _spawnSpotDefinitions.Length != 5 || _globalLiveEnemyCap < 1 ||
                 _joystickSettings == null || _cameraSettings == null)
             {
                 throw new InvalidOperationException(
-                    "Scene composition requires movement, stats, attack, joystick, and camera settings.");
+                    "Scene composition requires movement, stats, attack, five spawn spots, joystick, and camera settings.");
             }
 
             PlayerStats = _playerStatsDefinition.CreateState();
@@ -63,6 +69,7 @@ namespace Gravivore.Presentation.Composition
             InitializeGravityAttack();
             CreateGround();
             CreateLight();
+            InitializeEnemyPopulation();
             _isComposed = true;
         }
 
@@ -188,6 +195,35 @@ namespace Gravivore.Presentation.Composition
                 targetSensor,
                 pullResolver,
                 vfxPool);
+        }
+
+        private void InitializeEnemyPopulation()
+        {
+            var targetLayer = LayerMask.NameToLayer("CombatTarget");
+            if (targetLayer < 0)
+            {
+                throw new InvalidOperationException("The CombatTarget layer is required for enemy sensing colliders.");
+            }
+
+            var configurations = new SpawnSpotRuntimeConfiguration[_spawnSpotDefinitions.Length];
+            for (var i = 0; i < _spawnSpotDefinitions.Length; i++)
+            {
+                if (_spawnSpotDefinitions[i] == null)
+                {
+                    throw new InvalidOperationException($"Spawn spot definition {i} is not assigned.");
+                }
+
+                configurations[i] = _spawnSpotDefinitions[i].CreateRuntimeConfiguration();
+            }
+
+            var populationObject = new GameObject("Enemy Population", typeof(EnemyPopulationController));
+            populationObject.transform.SetParent(transform, false);
+            EnemyPopulation = populationObject.GetComponent<EnemyPopulationController>();
+            EnemyPopulation.Initialize(
+                configurations,
+                PlayerObject.transform,
+                _globalLiveEnemyCap,
+                targetLayer);
         }
 
         private Transform CreateCamera(Transform target)

@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Gravivore.Core;
 using Gravivore.Gameplay.Combat;
+using Gravivore.Gameplay.Enemies;
 using Gravivore.Gameplay.Player;
 using UnityEditor;
 using UnityEngine;
@@ -31,6 +33,16 @@ namespace Gravivore.Editor
             "Assets/_Game/Content/Definitions/S02_MobilityCurve.asset",
             "Assets/_Game/Content/Definitions/S02_PlayerStats.asset",
             "Assets/_Game/Content/Definitions/S03_GravityAttackSettings.asset",
+            "Assets/_Game/Content/Definitions/S04_Enemy_ScoutDrone.asset",
+            "Assets/_Game/Content/Definitions/S04_Enemy_CutterUnit.asset",
+            "Assets/_Game/Content/Definitions/S04_Enemy_Warden.asset",
+            "Assets/_Game/Content/Definitions/S04_Enemy_ArcDrone.asset",
+            "Assets/_Game/Content/Definitions/S04_Enemy_Carrier.asset",
+            "Assets/_Game/Content/Definitions/S04_SpawnSpot_RelayYard.asset",
+            "Assets/_Game/Content/Definitions/S04_SpawnSpot_CuttingFloor.asset",
+            "Assets/_Game/Content/Definitions/S04_SpawnSpot_ShieldDump.asset",
+            "Assets/_Game/Content/Definitions/S04_SpawnSpot_CapacitorField.asset",
+            "Assets/_Game/Content/Definitions/S04_SpawnSpot_HaulerGraveyard.asset",
             UrpConfigurator.UrpAssetPath,
             UrpConfigurator.RendererDataPath,
             "build-android.ps1"
@@ -59,6 +71,41 @@ namespace Gravivore.Editor
             ValidateVersion();
             ValidatePlayerStats();
             ValidateGravityAttack();
+            ValidateEnemySpawnSpots();
+        }
+
+        private static void ValidateEnemySpawnSpots()
+        {
+            var spotPaths = new[]
+            {
+                "Assets/_Game/Content/Definitions/S04_SpawnSpot_RelayYard.asset",
+                "Assets/_Game/Content/Definitions/S04_SpawnSpot_CuttingFloor.asset",
+                "Assets/_Game/Content/Definitions/S04_SpawnSpot_ShieldDump.asset",
+                "Assets/_Game/Content/Definitions/S04_SpawnSpot_CapacitorField.asset",
+                "Assets/_Game/Content/Definitions/S04_SpawnSpot_HaulerGraveyard.asset"
+            };
+            var ids = new HashSet<string>(StringComparer.Ordinal);
+            var enemyIds = new HashSet<string>(StringComparer.Ordinal);
+            for (var i = 0; i < spotPaths.Length; i++)
+            {
+                var definition = AssetDatabase.LoadAssetAtPath<SpawnSpotDefinition>(spotPaths[i]);
+                if (definition == null)
+                {
+                    throw new InvalidOperationException($"A valid spawn spot definition is required at {spotPaths[i]}.");
+                }
+
+                var configuration = definition.CreateRuntimeConfiguration();
+                if (!ids.Add(definition.Id))
+                {
+                    throw new InvalidOperationException($"Duplicate spawn spot id: {definition.Id}.");
+                }
+
+                if (!enemyIds.Add(configuration.Enemy.Id))
+                {
+                    throw new InvalidOperationException(
+                        $"Each vertical-slice spot requires a distinct ordinary enemy definition: {configuration.Enemy.Id}.");
+                }
+            }
         }
 
         private static void ValidateGravityAttack()
