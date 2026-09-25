@@ -1,4 +1,5 @@
 using System.Collections;
+using Gravivore.Gameplay.Combat;
 using Gravivore.Gameplay.Player;
 using Gravivore.Presentation.Composition;
 using Gravivore.Presentation.Input;
@@ -35,6 +36,7 @@ namespace Gravivore.Tests.PlayMode
             Assert.IsNotNull(compositionRoot.PlayerObject);
             Assert.IsNotNull(compositionRoot.PlayerStats);
             Assert.That(compositionRoot.PlayerStats.MoveSpeed, Is.EqualTo(4.5f).Within(0.0001f));
+            Assert.IsNotNull(compositionRoot.PlayerObject.GetComponent<GravityAttackController>());
             Assert.IsNotNull(UnityEngine.Camera.main);
             Assert.IsNotNull(compositionRoot.GetComponentInChildren<SafeAreaHudRoot>());
 
@@ -53,6 +55,89 @@ namespace Gravivore.Tests.PlayMode
             }
 
             Assert.IsNotNull(compositionRoot.GetComponent<UiTouchExclusion>());
+        }
+
+        [UnityTest]
+        public IEnumerator GravityAttack_AcquiresDamagesPullsAndReleasesDeadTarget()
+        {
+            var loadOperation = SceneManager.LoadSceneAsync("Chapter01_ScrapExclusion", LoadSceneMode.Single);
+            Assert.IsNotNull(loadOperation);
+            yield return loadOperation;
+            yield return null;
+
+            S01SceneCompositionRoot compositionRoot = null;
+            var rootObjects = SceneManager.GetActiveScene().GetRootGameObjects();
+            for (var i = 0; i < rootObjects.Length; i++)
+            {
+                if (rootObjects[i].TryGetComponent(out compositionRoot))
+                {
+                    break;
+                }
+            }
+
+            Assert.IsNotNull(compositionRoot);
+            var attackController = compositionRoot.PlayerObject.GetComponent<GravityAttackController>();
+            Assert.IsNotNull(attackController);
+
+            var targetObject = new GameObject(
+                "Gravity Attack Smoke Target",
+                typeof(SphereCollider),
+                typeof(FakeCombatTarget));
+            targetObject.layer = 9;
+            targetObject.transform.position = new Vector3(0f, 0f, 3f);
+            var target = targetObject.GetComponent<FakeCombatTarget>();
+            var aimPoint = new GameObject("Offset Aim Point").transform;
+            aimPoint.SetParent(targetObject.transform, false);
+            aimPoint.localPosition = new Vector3(0f, 1.25f, 0f);
+            target.AimPoint = aimPoint;
+            Physics.SyncTransforms();
+
+            var timeout = Time.realtimeSinceStartup + 2f;
+            while (target.DamageCount == 0 && Time.realtimeSinceStartup < timeout)
+            {
+                yield return null;
+            }
+
+            Assert.That(target.DamageCount, Is.GreaterThan(0));
+            Assert.That(target.LastDamage.RawDamage, Is.EqualTo(compositionRoot.PlayerStats.DerivedStats.BaseDamage));
+            Assert.That(targetObject.transform.position.z, Is.EqualTo(1.2f).Within(0.0001f));
+            Assert.That(targetObject.transform.position.y, Is.EqualTo(0f).Within(0.0001f));
+            Assert.That(target.TargetPoint.position.y, Is.EqualTo(1.25f).Within(0.0001f));
+            Assert.IsTrue(attackController.HasCurrentTarget);
+
+            target.IsAlive = false;
+            timeout = Time.realtimeSinceStartup + 0.5f;
+            while (attackController.HasCurrentTarget && Time.realtimeSinceStartup < timeout)
+            {
+                yield return null;
+            }
+
+            Assert.IsFalse(attackController.HasCurrentTarget);
+
+            Object.Destroy(targetObject);
+        }
+
+        [UnityTest]
+        public IEnumerator PullDestinationResolver_StopsTargetBeforeHardBlocker()
+        {
+            var blocker = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            blocker.name = "Hard Blocker Smoke Wall";
+            blocker.layer = 8;
+            blocker.transform.position = new Vector3(0f, 0f, 1.5f);
+            blocker.transform.localScale = new Vector3(2f, 2f, 0.2f);
+            Physics.SyncTransforms();
+
+            var resolver = new PhysicsPullDestinationResolver(1 << 8, 0.05f);
+            var resolved = resolver.Resolve(
+                new Vector3(0f, 0f, 3f),
+                Vector3.zero,
+                0.4f);
+
+            Assert.That(resolved.z, Is.GreaterThanOrEqualTo(2.04f));
+            Assert.That(resolved.z, Is.LessThan(3f));
+
+            Object.Destroy(blocker);
+            yield return null;
         }
 
         [UnityTest]
@@ -83,6 +168,45 @@ namespace Gravivore.Tests.PlayMode
         private sealed class StubMovementInput : IMovementInput
         {
             public Vector2 Movement { get; set; }
+        }
+
+        private sealed class FakeCombatTarget : MonoBehaviour, ITargetable, IDamageable, IDisplaceable
+        {
+            public Transform AimPoint { get; set; }
+
+            public Transform TargetPoint => AimPoint != null ? AimPoint : transform;
+
+            public Transform DisplacementRoot => transform;
+
+            public bool CanBeTargeted => true;
+
+            public bool IsAlive { get; set; } = true;
+
+            public DisplacementClass DisplacementClass => DisplacementClass.Standard;
+
+            public float CollisionRadius => 0.4f;
+
+            public int DamageCount { get; private set; }
+
+            public DamageRequest LastDamage { get; private set; }
+
+            public bool IsHostileTo(CombatFaction faction)
+            {
+                return faction == CombatFaction.Player;
+            }
+
+            public DamageResult ApplyDamage(in DamageRequest request)
+            {
+                DamageCount++;
+                LastDamage = request;
+                return new DamageResult(request.RawDamage, false);
+            }
+
+            public bool TryDisplace(Vector3 destination, in DisplacementContext context)
+            {
+                transform.position = destination;
+                return true;
+            }
         }
     }
 }

@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3311b1e00f4e4c02ae8cfe9fbeaa2094, type: 3}
+  m_Name: S03_GravityAttackSettings
+  m_EditorClassIdentifier:
+  _acquisitionRadius: 5
+  _releaseRadius: 6
+  _distanceWeight: 1
+  _frontBiasWeight: 0.35
+  _switchScoreAdvantage: 0.15
+  _targetScanInterval: 0.1
+  _targetColliderCapacity: 32
+  _targetLayers:
+    serializedVersion: 2
+    m_Bits: 512
+  _hardBlockerLayers:
+    serializedVersion: 2
+    m_Bits: 256
+  _pullStopDistance: 1.2
+  _elitePullFraction: 0.35
+  _blockerClearance: 0.05
+  _vfxPoolSize: 4
+  _vfxDuration: 0.12
+  _vfxWidth: 0.08
+  _vfxColor: {r: 0.2, g: 0.95, b: 0.85, a: 0.9}

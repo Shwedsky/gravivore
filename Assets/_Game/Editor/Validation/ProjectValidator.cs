@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using Gravivore.Core;
+using Gravivore.Gameplay.Combat;
 using Gravivore.Gameplay.Player;
 using UnityEditor;
 using UnityEngine;
@@ -29,6 +30,7 @@ namespace Gravivore.Editor
             "Assets/_Game/Content/Definitions/S02_FluxCurve.asset",
             "Assets/_Game/Content/Definitions/S02_MobilityCurve.asset",
             "Assets/_Game/Content/Definitions/S02_PlayerStats.asset",
+            "Assets/_Game/Content/Definitions/S03_GravityAttackSettings.asset",
             UrpConfigurator.UrpAssetPath,
             UrpConfigurator.RendererDataPath,
             "build-android.ps1"
@@ -56,6 +58,20 @@ namespace Gravivore.Editor
             ValidateAndroidPlayerSettings();
             ValidateVersion();
             ValidatePlayerStats();
+            ValidateGravityAttack();
+        }
+
+        private static void ValidateGravityAttack()
+        {
+            const string attackSettingsPath = "Assets/_Game/Content/Definitions/S03_GravityAttackSettings.asset";
+            var settings = AssetDatabase.LoadAssetAtPath<GravityAttackSettings>(attackSettingsPath);
+            if (settings == null)
+            {
+                throw new InvalidOperationException(
+                    $"A valid gravity attack definition is required at {attackSettingsPath}.");
+            }
+
+            settings.ValidateOrThrow();
         }
 
         private static void ValidatePlayerStats()
