@@ -5,6 +5,7 @@ using Gravivore.Gameplay.Player;
 using Gravivore.Gameplay.Progression;
 using Gravivore.Presentation.Camera;
 using Gravivore.Presentation.Combat;
+using Gravivore.Presentation.Evolution;
 using Gravivore.Presentation.Input;
 using Gravivore.Presentation.UI;
 using UnityEngine;
@@ -22,6 +23,7 @@ namespace Gravivore.Presentation.Composition
         [SerializeField] private GravityAttackSettings _gravityAttackSettings;
         [SerializeField] private SpawnSpotDefinition[] _spawnSpotDefinitions;
         [SerializeField] private PlayerProgressionDefinition _progressionDefinition;
+        [SerializeField] private EvolutionDefinition _evolutionDefinition;
         [SerializeField, Min(1)] private int _globalLiveEnemyCap = 25;
         [SerializeField] private FloatingJoystickSettings _joystickSettings;
         [SerializeField] private CameraFollowSettings _cameraSettings;
@@ -30,6 +32,7 @@ namespace Gravivore.Presentation.Composition
 
         private Material _playerMaterial;
         private Material _groundMaterial;
+        private Transform _playerVisualRoot;
         private bool _isComposed;
 
         public GameObject PlayerObject { get; private set; }
@@ -41,6 +44,8 @@ namespace Gravivore.Presentation.Composition
         public EnemyPopulationController EnemyPopulation { get; private set; }
 
         public AssimilationProgressionService Progression { get; private set; }
+
+        public PlayerEvolutionPresenter EvolutionPresenter { get; private set; }
 
         private void Start()
         {
@@ -56,7 +61,7 @@ namespace Gravivore.Presentation.Composition
 
             if (_movementSettings == null || _playerStatsDefinition == null || _gravityAttackSettings == null ||
                 _spawnSpotDefinitions == null || _spawnSpotDefinitions.Length != 5 || _globalLiveEnemyCap < 1 ||
-                _progressionDefinition == null ||
+                _progressionDefinition == null || _evolutionDefinition == null ||
                 _joystickSettings == null || _cameraSettings == null ||
                 float.IsNaN(_postRespawnInvulnerabilitySeconds) ||
                 float.IsInfinity(_postRespawnInvulnerabilitySeconds) ||
@@ -87,6 +92,7 @@ namespace Gravivore.Presentation.Composition
                 new ProgressionState(),
                 _progressionDefinition.Configuration,
                 EnemyPopulation);
+            InitializeEvolution();
             _isComposed = true;
         }
 
@@ -164,7 +170,10 @@ namespace Gravivore.Presentation.Composition
                 typeof(CharacterController),
                 typeof(PlayerLocomotion),
                 typeof(PlayerHealthController),
-                typeof(GravityAttackController));
+                typeof(GravityAttackController),
+                typeof(PlayerEvolutionView),
+                typeof(PlayerEvolutionPresenter),
+                typeof(EvolutionVfxRelay));
             PlayerObject.transform.SetParent(transform, false);
             PlayerObject.transform.position = _playerSpawn;
 
@@ -174,9 +183,13 @@ namespace Gravivore.Presentation.Composition
             characterController.center = new Vector3(0f, 0.7f, 0f);
             characterController.stepOffset = 0.25f;
 
+            var visualRoot = new GameObject("Player Visual Root");
+            visualRoot.transform.SetParent(PlayerObject.transform, false);
+            _playerVisualRoot = visualRoot.transform;
+
             var visual = GameObject.CreatePrimitive(PrimitiveType.Capsule);
             visual.name = "Player Visual";
-            visual.transform.SetParent(PlayerObject.transform, false);
+            visual.transform.SetParent(_playerVisualRoot, false);
             visual.transform.localPosition = new Vector3(0f, 0.7f, 0f);
             visual.transform.localScale = new Vector3(0.65f, 0.7f, 0.65f);
             var visualCollider = visual.GetComponent<Collider>();
@@ -190,6 +203,20 @@ namespace Gravivore.Presentation.Composition
             }
 
             return PlayerObject.GetComponent<PlayerLocomotion>();
+        }
+
+        private void InitializeEvolution()
+        {
+            var catalog = _evolutionDefinition.Catalog;
+            var view = PlayerObject.GetComponent<PlayerEvolutionView>();
+            view.Initialize(_playerVisualRoot, catalog);
+            EvolutionPresenter = PlayerObject.GetComponent<PlayerEvolutionPresenter>();
+            EvolutionPresenter.Initialize(
+                Progression,
+                PlayerStats,
+                catalog.Selection,
+                view,
+                PlayerObject.GetComponent<EvolutionVfxRelay>());
         }
 
         private void InitializeGravityAttack()
@@ -310,6 +337,7 @@ namespace Gravivore.Presentation.Composition
 
         private void OnDestroy()
         {
+            EvolutionPresenter?.Shutdown();
             Progression?.Dispose();
 
             if (PlayerHealth != null)

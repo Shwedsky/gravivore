@@ -308,3 +308,11 @@ They must be excluded/disabled in non-development release configuration.
 - `AssimilationProgressionService` subscribes to the scoped `EnemyPopulationController.EnemyDied` event and routes rewards through `PlayerProgressionDefinition` data.
 - `ProgressionState` owns stat XP, total assimilation, first-kill state, and processed life ids. `PlayerStatsState` remains the authority for permanent integer stat levels and derived values.
 - Reward state is committed before presentation events. `ProgressionDirtyEvent` is only a persistence boundary notification; S06 does not implement save storage.
+
+## 22. Visual evolution
+
+- `EvolutionStateSelector` deterministically derives Tier0/Tier1/Tier2 from total assimilation and a dominant stat from permanent base levels plus configured tie priority.
+- `PlayerEvolutionPresenter` is a presentation read-model over `ProgressionState` and `PlayerStatsState`; it never grants stats or mutates progression.
+- `PlayerEvolutionView` owns explicit Core/Left/Right/Rear sockets and idempotently activates the exact current tier module set plus one dominant-stat accent.
+- Reinitializing the presenter performs a full state apply and does not replay milestone VFX. Tier-change events and VFX hooks only fire for runtime transitions.
+- Canonical thresholds `10` and `30` are provisional absolute vertical-slice balance values. Final tuning is deferred to S20.

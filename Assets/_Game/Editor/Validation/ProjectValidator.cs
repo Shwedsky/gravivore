@@ -6,6 +6,7 @@ using Gravivore.Gameplay.Combat;
 using Gravivore.Gameplay.Enemies;
 using Gravivore.Gameplay.Player;
 using Gravivore.Gameplay.Progression;
+using Gravivore.Presentation.Evolution;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -51,6 +52,7 @@ namespace Gravivore.Editor
             "Assets/_Game/Content/Definitions/S06_CoreReward_ArcDrone.asset",
             "Assets/_Game/Content/Definitions/S06_CoreReward_Carrier.asset",
             "Assets/_Game/Content/Definitions/S06_PlayerProgression.asset",
+            "Assets/_Game/Content/Definitions/S07_Evolution.asset",
             UrpConfigurator.UrpAssetPath,
             UrpConfigurator.RendererDataPath,
             "build-android.ps1"
@@ -81,6 +83,35 @@ namespace Gravivore.Editor
             ValidateGravityAttack();
             ValidateEnemySpawnSpots();
             ValidateProgression();
+            ValidateEvolution();
+        }
+
+        private static void ValidateEvolution()
+        {
+            const string definitionPath = "Assets/_Game/Content/Definitions/S07_Evolution.asset";
+            const string scenePath = "Assets/_Game/Content/Scenes/Chapter01_ScrapExclusion.unity";
+            var definition = AssetDatabase.LoadAssetAtPath<EvolutionDefinition>(definitionPath);
+            if (definition == null)
+            {
+                throw new InvalidOperationException($"A valid evolution definition is required at {definitionPath}.");
+            }
+
+            definition.ValidateOrThrow();
+            var dependencies = AssetDatabase.GetDependencies(scenePath, true);
+            var found = false;
+            for (var i = 0; i < dependencies.Length; i++)
+            {
+                if (string.Equals(dependencies[i], definitionPath, StringComparison.Ordinal))
+                {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found)
+            {
+                throw new InvalidOperationException("The canonical chapter scene must reference the canonical evolution definition.");
+            }
         }
 
         private static void ValidateProgression()
