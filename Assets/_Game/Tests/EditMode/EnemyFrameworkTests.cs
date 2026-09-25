@@ -49,7 +49,7 @@ namespace Gravivore.Tests.EditMode
             var state = new HealthState();
             state.Reset(40f);
             state.ApplyDamage(new DamageRequest(17f, DamageType.Physical), 0f);
-            state.MarkPooled();
+            state.MarkInactive();
             state.Reset(40f);
             var brain = CreateBrain();
             brain.Tick(0f, true, 1f);

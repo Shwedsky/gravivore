@@ -24,8 +24,7 @@ namespace Gravivore.Gameplay.Combat
 
         public void ResetTransientState()
         {
-            _hasCurrentTarget = false;
-            _currentTarget = default;
+            ClearCurrentTarget();
             _scanRemaining = 0f;
             _cadence.Reset();
         }
@@ -74,7 +73,7 @@ namespace Gravivore.Gameplay.Combat
 
             if (_hasCurrentTarget && !IsCurrentTargetValid())
             {
-                _hasCurrentTarget = false;
+                ClearCurrentTarget();
             }
 
             _scanRemaining -= deltaTime;
@@ -124,18 +123,24 @@ namespace Gravivore.Gameplay.Combat
         {
             if (!IsCurrentTargetValid())
             {
-                _hasCurrentTarget = false;
+                ClearCurrentTarget();
                 return;
             }
 
             var origin = _attackOrigin.position;
             var targetPoint = _currentTarget.Targetable.TargetPoint.position;
             _lashVfx.Play(origin, targetPoint);
-            _currentTarget.Damageable.ApplyDamage(new DamageRequest(
+            var damageResult = _currentTarget.Damageable.ApplyDamage(new DamageRequest(
                 _playerStats.DerivedStats.BaseDamage,
                 DamageType.Gravity));
 
-            if (!_currentTarget.Damageable.IsAlive || _currentTarget.Displaceable == null)
+            if (damageResult.WasLethal || !_currentTarget.Damageable.IsAlive)
+            {
+                ClearCurrentTarget();
+                return;
+            }
+
+            if (_currentTarget.Displaceable == null)
             {
                 return;
             }
@@ -174,6 +179,12 @@ namespace Gravivore.Gameplay.Combat
             displaceable.TryDisplace(
                 resolvedDestination,
                 new DisplacementContext(sourcePosition, requestedDistance, resolvedDistance));
+        }
+
+        private void ClearCurrentTarget()
+        {
+            _hasCurrentTarget = false;
+            _currentTarget = default;
         }
     }
 }
