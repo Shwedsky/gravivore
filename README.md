@@ -89,6 +89,10 @@ The Bootstrap scene loads Chapter 01, whose composition root wires the S01 playe
 
 The five integer player stat levels and their derived values are owned by `PlayerStatsState`. Power, Hull, Armor, Flux, and Mobility curves are authored as ScriptableObject definitions. Flux is constrained by a hard minimum attack interval, and Mobility by a maximum move speed. Runtime modifier snapshots can be replaced or recalculated without changing base levels, with typed notifications for actual derived-value changes. Locomotion consumes only the derived move-speed provider and does not depend on progression concerns.
 
+## S03 targeting and Gravity Lash
+
+The player automatically selects hostile capability-based targets using distance/front scoring, acquisition/release radii, and sticky switching. Gravity Lash cadence and raw damage come from `PlayerStatsState`; standard targets receive full safe pull, elites a configured fraction, and bosses none. Hard blockers use the `HardBlocker` layer, target colliders use `CombatTarget`, and the placeholder lash renderer is prewarmed and reused from a fixed pool.
+
 ## Vertical Slice v0.1 success criterion
 
 A tester can install the APK, launch without registration, understand movement with no explanation, clear five distinct enemy spots, feel permanent power growth, see the player model evolve visually at least twice, unlock an elite and a boss, dodge boss telegraphs, defeat the boss, close/reopen the app without losing progress, and receive a bounded offline reward after being away.

@@ -1,6 +1,8 @@
 using System;
+using Gravivore.Gameplay.Combat;
 using Gravivore.Gameplay.Player;
 using Gravivore.Presentation.Camera;
+using Gravivore.Presentation.Combat;
 using Gravivore.Presentation.Input;
 using Gravivore.Presentation.UI;
 using UnityEngine;
@@ -15,6 +17,7 @@ namespace Gravivore.Presentation.Composition
 
         [SerializeField] private PlayerMovementSettings _movementSettings;
         [SerializeField] private PlayerStatsDefinition _playerStatsDefinition;
+        [SerializeField] private GravityAttackSettings _gravityAttackSettings;
         [SerializeField] private FloatingJoystickSettings _joystickSettings;
         [SerializeField] private CameraFollowSettings _cameraSettings;
         [SerializeField] private Vector3 _playerSpawn = Vector3.zero;
@@ -39,10 +42,11 @@ namespace Gravivore.Presentation.Composition
                 return;
             }
 
-            if (_movementSettings == null || _playerStatsDefinition == null ||
+            if (_movementSettings == null || _playerStatsDefinition == null || _gravityAttackSettings == null ||
                 _joystickSettings == null || _cameraSettings == null)
             {
-                throw new InvalidOperationException("Scene composition requires movement, stats, joystick, and camera settings.");
+                throw new InvalidOperationException(
+                    "Scene composition requires movement, stats, attack, joystick, and camera settings.");
             }
 
             PlayerStats = _playerStatsDefinition.CreateState();
@@ -56,6 +60,7 @@ namespace Gravivore.Presentation.Composition
                 cameraTransform,
                 PlayerStats,
                 _movementSettings.RotationDegreesPerSecond);
+            InitializeGravityAttack();
             CreateGround();
             CreateLight();
             _isComposed = true;
@@ -130,7 +135,11 @@ namespace Gravivore.Presentation.Composition
 
         private PlayerLocomotion CreatePlayer()
         {
-            PlayerObject = new GameObject("Player", typeof(CharacterController), typeof(PlayerLocomotion));
+            PlayerObject = new GameObject(
+                "Player",
+                typeof(CharacterController),
+                typeof(PlayerLocomotion),
+                typeof(GravityAttackController));
             PlayerObject.transform.SetParent(transform, false);
             PlayerObject.transform.position = _playerSpawn;
 
@@ -156,6 +165,29 @@ namespace Gravivore.Presentation.Composition
             }
 
             return PlayerObject.GetComponent<PlayerLocomotion>();
+        }
+
+        private void InitializeGravityAttack()
+        {
+            var vfxObject = new GameObject("Gravity Lash VFX Pool", typeof(GravityLashVfxPool));
+            vfxObject.transform.SetParent(transform, false);
+            var vfxPool = vfxObject.GetComponent<GravityLashVfxPool>();
+            vfxPool.Initialize(_gravityAttackSettings);
+
+            var targetSensor = new PhysicsTargetSensor(
+                _gravityAttackSettings.TargetColliderCapacity,
+                _gravityAttackSettings.TargetLayers,
+                _gravityAttackSettings.HardBlockerLayers);
+            var pullResolver = new PhysicsPullDestinationResolver(
+                _gravityAttackSettings.HardBlockerLayers,
+                _gravityAttackSettings.BlockerClearance);
+            PlayerObject.GetComponent<GravityAttackController>().Initialize(
+                PlayerObject.transform,
+                PlayerStats,
+                _gravityAttackSettings,
+                targetSensor,
+                pullResolver,
+                vfxPool);
         }
 
         private Transform CreateCamera(Transform target)
