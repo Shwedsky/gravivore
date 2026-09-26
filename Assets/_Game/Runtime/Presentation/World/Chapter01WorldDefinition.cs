@@ -38,6 +38,8 @@ namespace Gravivore.Presentation.World
         [SerializeField] private Vector3 _basinCenter;
         [SerializeField] private Vector3 _groundCenter = new Vector3(0f, 0f, 8f);
         [SerializeField] private Vector2 _groundSize = new Vector2(40f, 48f);
+        [SerializeField, Min(0.1f)] private float _boundaryThickness = 0.6f;
+        [SerializeField, Min(0.5f)] private float _boundaryHeight = 2.5f;
         [SerializeField] private WorldZoneAuthoring[] _zones = Array.Empty<WorldZoneAuthoring>();
         [SerializeField] private WorldGateAuthoring _eliteGate;
         [SerializeField] private WorldGateAuthoring _bossGate;
@@ -66,6 +68,7 @@ namespace Gravivore.Presentation.World
                 _basinCenter,
                 _groundCenter,
                 _groundSize,
+                new WorldBoundaryConfiguration(_boundaryThickness, _boundaryHeight),
                 zones,
                 _eliteGate.CreateConfiguration(),
                 _bossGate.CreateConfiguration(),

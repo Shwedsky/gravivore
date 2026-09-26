@@ -109,7 +109,7 @@ namespace Gravivore.Editor
                 { "capacitor-field", new Vector3(-7f, 0f, -7f) },
                 { "hauler-graveyard", new Vector3(7f, 0f, -7f) }
             };
-            var spawnOrigins = new Dictionary<string, Vector3>(StringComparer.Ordinal);
+            var spawnConfigurations = new Dictionary<string, SpawnSpotRuntimeConfiguration>(StringComparer.Ordinal);
             var spawnPaths = new[]
             {
                 "Assets/_Game/Content/Definitions/S04_SpawnSpot_RelayYard.asset",
@@ -122,7 +122,7 @@ namespace Gravivore.Editor
             {
                 var spawn = AssetDatabase.LoadAssetAtPath<SpawnSpotDefinition>(spawnPaths[i]);
                 var spawnConfiguration = spawn.CreateRuntimeConfiguration();
-                spawnOrigins.Add(spawn.Id, spawnConfiguration.WorldOrigin);
+                spawnConfigurations.Add(spawn.Id, spawnConfiguration);
             }
             if (configuration.ZoneCount != expected.Count || configuration.EliteRequirement.RequiredFirstKillCount != expected.Count)
             {
@@ -135,8 +135,8 @@ namespace Gravivore.Editor
                 var zone = configuration.GetZone(i);
                 if (!expected.TryGetValue(zone.Id, out var expectedCenter) ||
                     Vector3.Distance(zone.Center, expectedCenter) > 0.01f ||
-                    !spawnOrigins.TryGetValue(zone.Id, out var spawnOrigin) ||
-                    Vector3.Distance(zone.Center, spawnOrigin) > 0.01f)
+                    !spawnConfigurations.TryGetValue(zone.Id, out var spawnConfiguration) ||
+                    Vector3.Distance(zone.Center, spawnConfiguration.WorldOrigin) > 0.01f)
                 {
                     throw new InvalidOperationException($"World zone {zone.Id} does not match its S04 spawn origin.");
                 }
@@ -146,12 +146,18 @@ namespace Gravivore.Editor
                     throw new InvalidOperationException($"World landmark {zone.Id} overlaps its spawn anchors.");
                 }
 
-                var halfWidth = configuration.GroundSize.x * 0.5f;
-                var halfDepth = configuration.GroundSize.y * 0.5f;
-                if (Mathf.Abs(zone.Center.x - configuration.GroundCenter.x) >= halfWidth ||
-                    Mathf.Abs(zone.Center.z - configuration.GroundCenter.z) >= halfDepth)
+                if (!configuration.Bounds.Contains(zone.Center))
                 {
                     throw new InvalidOperationException($"World zone {zone.Id} is outside the movement ground.");
+                }
+
+                for (var anchorIndex = 0; anchorIndex < spawnConfiguration.AnchorOffsets.Length; anchorIndex++)
+                {
+                    if (!configuration.Bounds.Contains(spawnConfiguration.GetAnchorWorldPosition(anchorIndex), 0.1f))
+                    {
+                        throw new InvalidOperationException(
+                            $"Spawn anchor {anchorIndex} in {zone.Id} intersects or exceeds the world boundaries.");
+                    }
                 }
 
                 if (!zoneColors.Add(zone.Color))
@@ -173,9 +179,18 @@ namespace Gravivore.Editor
             if (configuration.EliteRequirement.MinimumAssimilationScore < 1 ||
                 string.Equals(configuration.EliteGate.Id, configuration.BossGate.Id, StringComparison.Ordinal) ||
                 configuration.EliteGate.Position.z >= configuration.BossGate.Position.z ||
-                configuration.BossGate.Position.z >= configuration.BossArenaCenter.z)
+                configuration.BossGate.Position.z >= configuration.BossArenaCenter.z ||
+                !configuration.Bounds.ContainsRectangle(
+                    configuration.EliteGate.Position,
+                    new Vector2(configuration.EliteGate.Size.x, configuration.EliteGate.Size.z)) ||
+                !configuration.Bounds.ContainsRectangle(
+                    configuration.BossGate.Position,
+                    new Vector2(configuration.BossGate.Size.x, configuration.BossGate.Size.z)) ||
+                !configuration.Bounds.ContainsCircle(configuration.BossArenaCenter, configuration.BossArenaRadius) ||
+                configuration.Boundary.Height < configuration.EliteGate.Size.y ||
+                configuration.Boundary.Height < configuration.BossGate.Size.y)
             {
-                throw new InvalidOperationException("World gate ids and elite gate requirement are invalid.");
+                throw new InvalidOperationException("World bounds, gate geometry, or elite gate requirement are invalid.");
             }
 
             var dependencies = AssetDatabase.GetDependencies(scenePath, true);

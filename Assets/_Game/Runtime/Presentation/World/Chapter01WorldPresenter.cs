@@ -11,6 +11,7 @@ namespace Gravivore.Presentation.World
         private readonly List<Material> _materials = new List<Material>();
         private Chapter01WorldConfiguration _configuration;
         private WorldUnlockState _state;
+        private Collider[] _perimeterColliders;
         private bool _initialized;
 
         public WorldGateView EliteGate { get; private set; }
@@ -24,6 +25,7 @@ namespace Gravivore.Presentation.World
             _state = state ?? throw new ArgumentNullException(nameof(state));
 
             BuildGround();
+            BuildPerimeterBoundaries();
             BuildBasin();
             BuildZonesAndPaths();
             BuildBossArena();
@@ -36,11 +38,11 @@ namespace Gravivore.Presentation.World
 
         public Vector3 GetZoneCenter(int index) => _configuration.GetZone(index).Center;
 
-        public bool HasDirectRouteToZone(int index)
-        {
-            var zone = _configuration.GetZone(index);
-            return Vector3.Distance(_configuration.BasinCenter, zone.Center) > 0.01f;
-        }
+        public WorldBounds Bounds => _configuration.Bounds;
+
+        public int PerimeterColliderCount => _perimeterColliders?.Length ?? 0;
+
+        public Collider GetPerimeterCollider(int index) => _perimeterColliders[index];
 
         public void ApplyState()
         {
@@ -75,6 +77,46 @@ namespace Gravivore.Presentation.World
             var basin = CreateVisualPrimitive("Central Basin", PrimitiveType.Cylinder, _configuration.BasinCenter);
             basin.transform.localScale = new Vector3(3.4f, 0.08f, 3.4f);
             SetMaterial(basin, new Color(0.12f, 0.32f, 0.34f, 1f));
+        }
+
+        private void BuildPerimeterBoundaries()
+        {
+            var hardBlockerLayer = LayerMask.NameToLayer("HardBlocker");
+            if (hardBlockerLayer < 0) throw new InvalidOperationException("HardBlocker layer is required for world boundaries.");
+
+            var bounds = _configuration.Bounds;
+            var boundary = _configuration.Boundary;
+            var thickness = boundary.Thickness;
+            var height = boundary.Height;
+            var y = _configuration.GroundCenter.y + height * 0.5f;
+            var material = CreateMaterial(new Color(0.12f, 0.16f, 0.17f, 1f));
+            _perimeterColliders = new[]
+            {
+                BuildPermanentBlocker(
+                    "West World Boundary",
+                    new Vector3(bounds.MinX - thickness * 0.5f, y, bounds.Center.z),
+                    new Vector3(thickness, height, bounds.Size.y + thickness * 2f),
+                    hardBlockerLayer,
+                    material),
+                BuildPermanentBlocker(
+                    "East World Boundary",
+                    new Vector3(bounds.MaxX + thickness * 0.5f, y, bounds.Center.z),
+                    new Vector3(thickness, height, bounds.Size.y + thickness * 2f),
+                    hardBlockerLayer,
+                    material),
+                BuildPermanentBlocker(
+                    "South World Boundary",
+                    new Vector3(bounds.Center.x, y, bounds.MinZ - thickness * 0.5f),
+                    new Vector3(bounds.Size.x + thickness * 2f, height, thickness),
+                    hardBlockerLayer,
+                    material),
+                BuildPermanentBlocker(
+                    "North World Boundary",
+                    new Vector3(bounds.Center.x, y, bounds.MaxZ + thickness * 0.5f),
+                    new Vector3(bounds.Size.x + thickness * 2f, height, thickness),
+                    hardBlockerLayer,
+                    material)
+            };
         }
 
         private void BuildZonesAndPaths()
@@ -116,8 +158,25 @@ namespace Gravivore.Presentation.World
             gateObject.transform.SetParent(transform, false);
             gateObject.transform.position = configuration.Position;
             var view = gateObject.GetComponent<WorldGateView>();
-            view.Build(configuration.Size, _configuration.GroundSize.x, color, CreateMaterial);
+            view.Build(configuration.Size, _configuration.Bounds, color, CreateMaterial);
             return view;
+        }
+
+        private Collider BuildPermanentBlocker(
+            string name,
+            Vector3 position,
+            Vector3 size,
+            int layer,
+            Material material)
+        {
+            var blocker = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            blocker.name = name;
+            blocker.layer = layer;
+            blocker.transform.SetParent(transform, false);
+            blocker.transform.position = position;
+            blocker.transform.localScale = size;
+            if (material != null) blocker.GetComponent<Renderer>().sharedMaterial = material;
+            return blocker.GetComponent<Collider>();
         }
 
         private void CreatePath(string name, Vector3 from, Vector3 to)
@@ -171,7 +230,7 @@ namespace Gravivore.Presentation.World
         public Collider BlockingCollider { get; private set; }
         public bool IsLocked => _barrier != null && _barrier.activeSelf;
 
-        public void Build(Vector3 size, float worldWidth, Color color, Func<Color, Material> materialFactory)
+        public void Build(Vector3 size, WorldBounds bounds, Color color, Func<Color, Material> materialFactory)
         {
             var hardBlockerLayer = LayerMask.NameToLayer("HardBlocker");
             if (hardBlockerLayer < 0) throw new InvalidOperationException("HardBlocker layer is required for world gates.");
@@ -186,11 +245,27 @@ namespace Gravivore.Presentation.World
             var material = materialFactory(color);
             if (material != null) _barrier.GetComponent<Renderer>().sharedMaterial = material;
 
-            var flankWidth = (worldWidth - size.x) * 0.5f;
-            if (flankWidth <= 0f) throw new InvalidOperationException("Gate opening must be narrower than the world.");
-            var flankCenter = size.x * 0.5f + flankWidth * 0.5f;
-            BuildFlank("Left Gate Wall", -flankCenter, flankWidth, size, material);
-            BuildFlank("Right Gate Wall", flankCenter, flankWidth, size, material);
+            var openingMinX = transform.position.x - size.x * 0.5f;
+            var openingMaxX = transform.position.x + size.x * 0.5f;
+            var leftWidth = openingMinX - bounds.MinX;
+            var rightWidth = bounds.MaxX - openingMaxX;
+            if (leftWidth <= 0f || rightWidth <= 0f)
+            {
+                throw new InvalidOperationException("Gate opening must fit strictly inside the world boundaries.");
+            }
+
+            BuildFlank(
+                "Left Gate Wall",
+                (bounds.MinX + openingMinX) * 0.5f - transform.position.x,
+                leftWidth,
+                size,
+                material);
+            BuildFlank(
+                "Right Gate Wall",
+                (openingMaxX + bounds.MaxX) * 0.5f - transform.position.x,
+                rightWidth,
+                size,
+                material);
         }
 
         public void SetLocked(bool locked)

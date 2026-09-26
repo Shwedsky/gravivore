@@ -13,35 +13,96 @@ namespace Gravivore.Tests.PlayMode
     public sealed class WorldGateSmokeTests
     {
         [UnityTest]
-        public IEnumerator FiveZonesAreReachable_AndGateCollidersFollowMonotonicState()
+        public IEnumerator LockedGatesAndWorldBoundary_BlockBypassUntilAuthoritativeUnlocks()
         {
             var root = new GameObject("World Test Root");
             var presenter = root.AddComponent<Chapter01WorldPresenter>();
             var state = new WorldUnlockState("elite-gate", "boss-gate", "magnetar-guard");
             presenter.Initialize(CreateConfiguration(), state);
 
-            Assert.That(presenter.ZoneCount, Is.EqualTo(5));
             Physics.SyncTransforms();
             var hardBlockers = LayerMask.GetMask("HardBlocker");
-            for (var i = 0; i < presenter.ZoneCount; i++)
-            {
-                Assert.IsTrue(presenter.HasDirectRouteToZone(i));
-                Assert.IsFalse(Physics.Linecast(
-                    Vector3.up,
-                    presenter.GetZoneCenter(i) + Vector3.up,
-                    hardBlockers), $"Zone {i} route is blocked.");
-            }
+            var walker = CreateWalker(new Vector3(0f, 0f, 14f));
 
             Assert.IsTrue(presenter.EliteGate.IsLocked);
             Assert.IsTrue(presenter.EliteGate.BlockingCollider.enabled);
             Assert.IsTrue(presenter.BossGate.IsLocked);
+            Move(walker, Vector3.forward * 3f);
+            Assert.That(walker.transform.position.z, Is.LessThan(15f), "Locked elite gate allowed a direct passage.");
+
+            ResetWalker(walker, new Vector3(19f, 0f, 14f));
+            Move(walker, Vector3.right * 4f);
+            Assert.That(
+                walker.transform.position.x,
+                Is.LessThan(presenter.Bounds.MaxX),
+                "CharacterController escaped past the east world boundary.");
+
             state.TryUnlockEliteGate();
             Assert.IsFalse(presenter.EliteGate.IsLocked);
             Assert.IsFalse(presenter.EliteGate.BlockingCollider.enabled);
             Assert.IsTrue(presenter.BossGate.IsLocked);
+            Assert.IsTrue(Physics.Linecast(
+                new Vector3(10f, 1f, 14f),
+                new Vector3(10f, 1f, 16f),
+                hardBlockers), "Elite flank wall was disabled with the central opening.");
+            ResetWalker(walker, new Vector3(0f, 0f, 14f));
+            Move(walker, Vector3.forward * 3f);
+            Assert.That(walker.transform.position.z, Is.GreaterThan(15.5f), "Unlocked elite opening remained blocked.");
+
+            ResetWalker(walker, new Vector3(0f, 0f, 20f));
+            Move(walker, Vector3.forward * 3f);
+            Assert.That(walker.transform.position.z, Is.LessThan(21f), "Boss gate opened before elite defeat.");
+
             state.RecordEliteDefeated("magnetar-guard");
             Assert.IsFalse(presenter.BossGate.IsLocked);
             Assert.IsFalse(presenter.BossGate.BlockingCollider.enabled);
+            ResetWalker(walker, new Vector3(0f, 0f, 20f));
+            Move(walker, Vector3.forward * 3f);
+            Assert.That(walker.transform.position.z, Is.GreaterThan(21.5f), "Unlocked boss opening remained blocked.");
+
+            Object.Destroy(walker.gameObject);
+            Object.Destroy(root);
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator OrdinaryZonesAndSpawnAnchors_StayInsideUnobstructedPlayableBounds()
+        {
+            var root = new GameObject("World Bounds Test Root");
+            var presenter = root.AddComponent<Chapter01WorldPresenter>();
+            presenter.Initialize(
+                CreateConfiguration(),
+                new WorldUnlockState("elite-gate", "boss-gate", "magnetar-guard"));
+            Physics.SyncTransforms();
+
+            Assert.That(presenter.PerimeterColliderCount, Is.EqualTo(4));
+            var hardBlockers = LayerMask.GetMask("HardBlocker");
+            var offsets = new[]
+            {
+                new Vector3(-1.5f, 0f, -1.5f),
+                new Vector3(1.5f, 0f, -1.5f),
+                new Vector3(-1.5f, 0f, 1.5f),
+                new Vector3(1.5f, 0f, 1.5f)
+            };
+            for (var i = 0; i < presenter.ZoneCount; i++)
+            {
+                var center = presenter.GetZoneCenter(i);
+                Assert.IsTrue(presenter.Bounds.Contains(center));
+                Assert.IsFalse(Physics.Linecast(Vector3.up, center + Vector3.up, hardBlockers));
+                for (var anchorIndex = 0; anchorIndex < offsets.Length; anchorIndex++)
+                {
+                    var anchor = center + offsets[anchorIndex];
+                    Assert.IsTrue(presenter.Bounds.Contains(anchor, 0.1f));
+                    Assert.IsFalse(Physics.CheckSphere(anchor + Vector3.up, 0.1f, hardBlockers));
+                }
+            }
+
+            for (var i = 0; i < presenter.PerimeterColliderCount; i++)
+            {
+                var boundary = presenter.GetPerimeterCollider(i);
+                Assert.IsTrue(boundary.enabled);
+                Assert.That(boundary.gameObject.layer, Is.EqualTo(LayerMask.NameToLayer("HardBlocker")));
+            }
 
             Object.Destroy(root);
             yield return null;
@@ -100,6 +161,7 @@ namespace Gravivore.Tests.PlayMode
                 Vector3.zero,
                 new Vector3(0f, 0f, 8f),
                 new Vector2(40f, 48f),
+                new WorldBoundaryConfiguration(0.6f, 2.5f),
                 zones,
                 new WorldGateConfiguration("elite-gate", new Vector3(0f, 0f, 15f), new Vector3(5f, 2.5f, 0.6f)),
                 new WorldGateConfiguration("boss-gate", new Vector3(0f, 0f, 21f), new Vector3(5f, 2.5f, 0.6f)),
@@ -131,6 +193,34 @@ namespace Gravivore.Tests.PlayMode
                 20f,
                 new PlayerStatLevels(1, 1, 1, 1, 1));
             return new PlayerStatsState(configuration, configuration.StartingLevels);
+        }
+
+        private static CharacterController CreateWalker(Vector3 position)
+        {
+            var walkerObject = new GameObject("Boundary Test Walker", typeof(CharacterController));
+            var walker = walkerObject.GetComponent<CharacterController>();
+            walker.radius = 0.35f;
+            walker.height = 1.8f;
+            walker.center = new Vector3(0f, 0.9f, 0f);
+            walker.skinWidth = 0.03f;
+            walkerObject.transform.position = position;
+            return walker;
+        }
+
+        private static void ResetWalker(CharacterController walker, Vector3 position)
+        {
+            walker.enabled = false;
+            walker.transform.position = position;
+            walker.enabled = true;
+            Physics.SyncTransforms();
+        }
+
+        private static void Move(CharacterController walker, Vector3 displacement)
+        {
+            const int steps = 12;
+            var step = displacement / steps;
+            for (var i = 0; i < steps; i++) walker.Move(step);
+            Physics.SyncTransforms();
         }
     }
 }
