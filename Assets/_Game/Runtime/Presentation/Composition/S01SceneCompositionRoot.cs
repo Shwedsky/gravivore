@@ -1,6 +1,7 @@
 using System;
 using Gravivore.Gameplay.Combat;
 using Gravivore.Gameplay.Enemies;
+using Gravivore.Gameplay.Encounters;
 using Gravivore.Gameplay.Player;
 using Gravivore.Gameplay.Progression;
 using Gravivore.Gameplay.World;
@@ -27,6 +28,8 @@ namespace Gravivore.Presentation.Composition
         [SerializeField] private PlayerProgressionDefinition _progressionDefinition;
         [SerializeField] private EvolutionDefinition _evolutionDefinition;
         [SerializeField] private Chapter01WorldDefinition _worldDefinition;
+        [SerializeField] private MagnetarGuardDefinition _magnetarGuardDefinition;
+        [SerializeField] private CustodianBossDefinition _custodianBossDefinition;
         [SerializeField, Min(1)] private int _globalLiveEnemyCap = 25;
         [SerializeField] private FloatingJoystickSettings _joystickSettings;
         [SerializeField] private CameraFollowSettings _cameraSettings;
@@ -34,7 +37,11 @@ namespace Gravivore.Presentation.Composition
         [SerializeField, Min(0f)] private float _postRespawnInvulnerabilitySeconds = 1.5f;
 
         private Material _playerMaterial;
+        private Material _eliteMaterial;
+        private Material _bossMaterial;
         private Transform _playerVisualRoot;
+        private EliteEncounterActivationBridge _eliteActivationBridge;
+        private EliteWorldUnlockBridge _eliteWorldUnlockBridge;
         private bool _isComposed;
 
         public GameObject PlayerObject { get; private set; }
@@ -53,6 +60,14 @@ namespace Gravivore.Presentation.Composition
 
         public Chapter01WorldPresenter WorldPresenter { get; private set; }
 
+        public MagnetarGuardController MagnetarGuard { get; private set; }
+
+        public CustodianBossController CustodianBoss { get; private set; }
+
+        public BossCompletionState BossCompletion { get; private set; }
+
+        public EncounterTelegraphPresenter EncounterTelegraphs { get; private set; }
+
         private void Start()
         {
             Compose();
@@ -68,13 +83,14 @@ namespace Gravivore.Presentation.Composition
             if (_movementSettings == null || _playerStatsDefinition == null || _gravityAttackSettings == null ||
                 _spawnSpotDefinitions == null || _spawnSpotDefinitions.Length != 5 || _globalLiveEnemyCap < 1 ||
                 _progressionDefinition == null || _evolutionDefinition == null || _worldDefinition == null ||
+                _magnetarGuardDefinition == null || _custodianBossDefinition == null ||
                 _joystickSettings == null || _cameraSettings == null ||
                 float.IsNaN(_postRespawnInvulnerabilitySeconds) ||
                 float.IsInfinity(_postRespawnInvulnerabilitySeconds) ||
                 _postRespawnInvulnerabilitySeconds < 0f)
             {
                 throw new InvalidOperationException(
-                    "Scene composition requires movement, stats, attack, progression, evolution, world, five spawn spots, joystick, and camera settings.");
+                    "Scene composition requires movement, stats, attack, progression, evolution, world, elite, boss, five spawn spots, joystick, and camera settings.");
             }
 
             PlayerStats = _playerStatsDefinition.CreateState();
@@ -98,6 +114,7 @@ namespace Gravivore.Presentation.Composition
                 _progressionDefinition.Configuration,
                 EnemyPopulation);
             InitializeWorld();
+            InitializeEncounters();
             InitializeEvolution();
             _isComposed = true;
         }
@@ -240,6 +257,102 @@ namespace Gravivore.Presentation.Composition
             WorldPresenter.Initialize(configuration, state);
         }
 
+        private void InitializeEncounters()
+        {
+            var targetLayer = LayerMask.NameToLayer("CombatTarget");
+            if (targetLayer < 0) throw new InvalidOperationException("CombatTarget layer is required for encounters.");
+            var world = _worldDefinition.Configuration;
+
+            var eliteObject = CreateEncounterObject(
+                "Magnetar Guard",
+                typeof(MagnetarGuardController),
+                targetLayer,
+                new Color(0.95f, 0.55f, 0.12f, 1f),
+                new Vector3(1.05f, 1f, 1.05f),
+                out var eliteBody,
+                out var eliteTargetPoint,
+                out var eliteSensor,
+                out _eliteMaterial);
+            MagnetarGuard = eliteObject.GetComponent<MagnetarGuardController>();
+            MagnetarGuard.Initialize(
+                eliteBody,
+                eliteTargetPoint,
+                eliteSensor,
+                targetLayer,
+                _magnetarGuardDefinition.Configuration,
+                PlayerObject.transform,
+                PlayerHealth);
+            _eliteActivationBridge = new EliteEncounterActivationBridge(WorldUnlocks.State, MagnetarGuard);
+            _eliteWorldUnlockBridge = new EliteWorldUnlockBridge(MagnetarGuard, WorldUnlocks);
+
+            var bossObject = CreateEncounterObject(
+                "Custodian M-0",
+                typeof(CustodianBossController),
+                targetLayer,
+                new Color(0.72f, 0.16f, 0.2f, 1f),
+                new Vector3(1.6f, 1.2f, 1.6f),
+                out var bossBody,
+                out var bossTargetPoint,
+                out var bossSensor,
+                out _bossMaterial);
+            var bossConfiguration = _custodianBossDefinition.CreateConfiguration(world);
+            BossCompletion = new BossCompletionState(bossConfiguration.Id);
+            CustodianBoss = bossObject.GetComponent<CustodianBossController>();
+            CustodianBoss.Initialize(
+                bossBody,
+                bossTargetPoint,
+                bossSensor,
+                targetLayer,
+                bossConfiguration,
+                PlayerObject.transform,
+                PlayerHealth,
+                new PhysicsPullDestinationResolver(
+                    _gravityAttackSettings.HardBlockerLayers,
+                    _gravityAttackSettings.BlockerClearance),
+                BossCompletion);
+
+            var presentationObject = new GameObject("Encounter Telegraph Presentation", typeof(EncounterTelegraphPresenter));
+            presentationObject.transform.SetParent(transform, false);
+            EncounterTelegraphs = presentationObject.GetComponent<EncounterTelegraphPresenter>();
+            EncounterTelegraphs.Initialize(MagnetarGuard, CustodianBoss, BossCompletion);
+        }
+
+        private GameObject CreateEncounterObject(
+            string name,
+            Type controllerType,
+            int targetLayer,
+            Color color,
+            Vector3 visualScale,
+            out CharacterController body,
+            out Transform targetPoint,
+            out Collider sensingCollider,
+            out Material material)
+        {
+            var encounterObject = new GameObject(name, typeof(CharacterController), controllerType);
+            encounterObject.transform.SetParent(transform, false);
+            body = encounterObject.GetComponent<CharacterController>();
+            body.stepOffset = 0.2f;
+
+            var visual = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+            visual.name = $"{name} Visual";
+            visual.transform.SetParent(encounterObject.transform, false);
+            visual.transform.localPosition = new Vector3(0f, 1f, 0f);
+            visual.transform.localScale = visualScale;
+            var visualCollider = visual.GetComponent<Collider>();
+            visualCollider.enabled = false;
+            Destroy(visualCollider);
+            material = CreateMaterial(color);
+            if (material != null) visual.GetComponent<Renderer>().sharedMaterial = material;
+
+            var targetObject = new GameObject("Combat Target Sensor", typeof(SphereCollider));
+            targetObject.layer = targetLayer;
+            targetObject.transform.SetParent(encounterObject.transform, false);
+            targetPoint = targetObject.transform;
+            sensingCollider = targetObject.GetComponent<SphereCollider>();
+            sensingCollider.isTrigger = true;
+            return encounterObject;
+        }
+
         private void InitializeGravityAttack()
         {
             var vfxObject = new GameObject("Gravity Lash VFX Pool", typeof(GravityLashVfxPool));
@@ -344,6 +457,10 @@ namespace Gravivore.Presentation.Composition
         private void OnDestroy()
         {
             EvolutionPresenter?.Shutdown();
+            EncounterTelegraphs?.Shutdown();
+            CustodianBoss?.Shutdown();
+            _eliteActivationBridge?.Dispose();
+            _eliteWorldUnlockBridge?.Dispose();
             WorldPresenter?.Shutdown();
             WorldUnlocks?.Dispose();
             Progression?.Dispose();
@@ -357,6 +474,9 @@ namespace Gravivore.Presentation.Composition
             {
                 Destroy(_playerMaterial);
             }
+
+            if (_eliteMaterial != null) Destroy(_eliteMaterial);
+            if (_bossMaterial != null) Destroy(_bossMaterial);
 
         }
 

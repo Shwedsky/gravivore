@@ -4,6 +4,7 @@ using System.IO;
 using Gravivore.Core;
 using Gravivore.Gameplay.Combat;
 using Gravivore.Gameplay.Enemies;
+using Gravivore.Gameplay.Encounters;
 using Gravivore.Gameplay.Player;
 using Gravivore.Gameplay.Progression;
 using Gravivore.Gameplay.World;
@@ -56,6 +57,8 @@ namespace Gravivore.Editor
             "Assets/_Game/Content/Definitions/S06_PlayerProgression.asset",
             "Assets/_Game/Content/Definitions/S07_Evolution.asset",
             "Assets/_Game/Content/Definitions/S08_Chapter01World.asset",
+            "Assets/_Game/Content/Definitions/S09_MagnetarGuard.asset",
+            "Assets/_Game/Content/Definitions/S09_CustodianM0.asset",
             UrpConfigurator.UrpAssetPath,
             UrpConfigurator.RendererDataPath,
             "build-android.ps1"
@@ -88,6 +91,76 @@ namespace Gravivore.Editor
             ValidateProgression();
             ValidateEvolution();
             ValidateChapter01World();
+            ValidateEliteAndBossEncounters();
+        }
+
+        private static void ValidateEliteAndBossEncounters()
+        {
+            const string elitePath = "Assets/_Game/Content/Definitions/S09_MagnetarGuard.asset";
+            const string bossPath = "Assets/_Game/Content/Definitions/S09_CustodianM0.asset";
+            const string worldPath = "Assets/_Game/Content/Definitions/S08_Chapter01World.asset";
+            const string scenePath = "Assets/_Game/Content/Scenes/Chapter01_ScrapExclusion.unity";
+            var eliteDefinition = AssetDatabase.LoadAssetAtPath<MagnetarGuardDefinition>(elitePath);
+            var bossDefinition = AssetDatabase.LoadAssetAtPath<CustodianBossDefinition>(bossPath);
+            var worldDefinition = AssetDatabase.LoadAssetAtPath<Chapter01WorldDefinition>(worldPath);
+            if (eliteDefinition == null || bossDefinition == null || worldDefinition == null)
+            {
+                throw new InvalidOperationException("Canonical S08/S09 encounter definitions are required.");
+            }
+
+            eliteDefinition.ValidateOrThrow();
+            var world = worldDefinition.Configuration;
+            bossDefinition.ValidateOrThrow(world);
+            var elite = eliteDefinition.Configuration;
+            var boss = bossDefinition.CreateConfiguration(world);
+            if (!string.Equals(elite.Id, "magnetar-guard", StringComparison.Ordinal) ||
+                !string.Equals(elite.Id, world.EliteEnemyId, StringComparison.Ordinal) ||
+                elite.DisplacementClass == DisplacementClass.Standard ||
+                elite.DisplacementClass == DisplacementClass.Boss)
+            {
+                throw new InvalidOperationException("Magnetar Guard id and reduced-displacement class must match the S08 world contract.");
+            }
+
+            var eliteClearance = elite.CollisionRadius;
+            if (!world.Bounds.Contains(elite.SpawnPosition, eliteClearance) ||
+                elite.SpawnPosition.z <= world.EliteGate.Position.z + world.EliteGate.Size.z * 0.5f ||
+                elite.SpawnPosition.z >= world.BossGate.Position.z - world.BossGate.Size.z * 0.5f ||
+                Mathf.Abs(elite.SpawnPosition.x - world.EliteGate.Position.x) + eliteClearance > world.EliteGate.Size.x * 0.5f)
+            {
+                throw new InvalidOperationException("Magnetar Guard must fit between the elite and boss gates in the canonical encounter lane.");
+            }
+
+            if (!string.Equals(boss.Id, "custodian-m0", StringComparison.Ordinal) ||
+                boss.DisplacementClass != DisplacementClass.Boss ||
+                !world.Bounds.Contains(boss.StartPosition, boss.CollisionRadius) ||
+                Vector3.Distance(boss.StartPosition, world.BossArenaCenter) > world.BossArenaRadius - boss.CollisionRadius ||
+                boss.AttackSequenceCount != 3)
+            {
+                throw new InvalidOperationException("Custodian M-0 id, immunity, sequence, start position, or arena placement is invalid.");
+            }
+
+            var attacks = new[] { BossAttackType.CirclePulse, BossAttackType.ConeSweep, BossAttackType.LineCharge };
+            for (var i = 0; i < attacks.Length; i++)
+            {
+                var attack = boss.GetAttack(attacks[i]);
+                if (attack.TelegraphDuration < CustodianBossConfiguration.MinimumTelegraphDuration ||
+                    attack.TelegraphDuration > CustodianBossConfiguration.MaximumTelegraphDuration ||
+                    float.IsNaN(attack.Damage) || float.IsInfinity(attack.Damage) || attack.Damage <= 0f)
+                {
+                    throw new InvalidOperationException($"Boss attack {attacks[i]} has invalid damage or warning timing.");
+                }
+
+                if (boss.GetAttackAtSequenceIndex(i) != attacks[i])
+                {
+                    throw new InvalidOperationException("The canonical deterministic boss sequence must include all three attacks in design order.");
+                }
+            }
+
+            var dependencies = AssetDatabase.GetDependencies(scenePath, true);
+            if (Array.IndexOf(dependencies, elitePath) < 0 || Array.IndexOf(dependencies, bossPath) < 0)
+            {
+                throw new InvalidOperationException("The canonical chapter scene must reference both S09 encounter definitions.");
+            }
         }
 
         private static void ValidateChapter01World()
