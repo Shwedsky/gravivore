@@ -4,6 +4,11 @@ using Gravivore.Gameplay.Progression;
 
 namespace Gravivore.Gameplay.World
 {
+    public interface IEliteDefeatRecorder
+    {
+        bool RecordEliteDefeated(string eliteEnemyId);
+    }
+
     public readonly struct WorldGateUnlockedEvent
     {
         public WorldGateUnlockedEvent(string gateId) => GateId = gateId;
@@ -190,7 +195,7 @@ namespace Gravivore.Gameplay.World
         }
     }
 
-    public sealed class WorldUnlockService : IDisposable
+    public sealed class WorldUnlockService : IDisposable, IEliteDefeatRecorder
     {
         private readonly AssimilationProgressionService _progression;
         private readonly EliteGateRequirement _requirement;

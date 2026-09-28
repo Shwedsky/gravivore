@@ -1,0 +1,276 @@
+using System;
+using Gravivore.Gameplay.Combat;
+using Gravivore.Gameplay.Enemies;
+using Gravivore.Gameplay.Player;
+using UnityEngine;
+
+namespace Gravivore.Gameplay.Encounters
+{
+    [DisallowMultipleComponent]
+    public sealed class CustodianBossController : MonoBehaviour, ITargetable, IDamageable, IDisplaceable
+    {
+        private readonly HealthState _health = new HealthState();
+        private CharacterController _body;
+        private Transform _targetPoint;
+        private Collider _sensingCollider;
+        private Transform _player;
+        private PlayerHealthController _playerHealth;
+        private IPullDestinationResolver _chargeResolver;
+        private CustodianBossConfiguration _configuration;
+        private CustodianBossStateMachine _stateMachine;
+        private BossCompletionState _completion;
+        private Vector3 _telegraphOrigin;
+        private Vector3 _telegraphDirection;
+        private bool _initialized;
+
+        public event Action<BossTelegraphEvent> TelegraphStarted;
+        public event Action<BossAttackResolvedEvent> AttackResolved;
+        public event Action<BossPhaseChangedEvent> PhaseChanged;
+        public event Action<BossEncounterResetEvent> EncounterReset;
+
+        public Transform TargetPoint => _targetPoint;
+        public Transform DisplacementRoot => transform;
+        public bool CanBeTargeted => IsAlive && State != CustodianBossState.Dormant && State != CustodianBossState.Resetting;
+        public bool IsAlive => _initialized && _health.IsAlive;
+        public DisplacementClass DisplacementClass => DisplacementClass.Boss;
+        public float CollisionRadius => _configuration.CollisionRadius;
+        public float CurrentHitPoints => _health.CurrentHitPoints;
+        public float MaximumHitPoints => _health.MaximumHitPoints;
+        public CustodianBossState State => _stateMachine?.State ?? CustodianBossState.Dormant;
+        public bool IsLowHealthPhase => _stateMachine != null && _stateMachine.IsLowHealthPhase;
+        public BossCompletionState Completion => _completion;
+
+        public void Initialize(
+            CharacterController body,
+            Transform targetPoint,
+            Collider sensingCollider,
+            int targetLayer,
+            CustodianBossConfiguration configuration,
+            Transform player,
+            PlayerHealthController playerHealth,
+            IPullDestinationResolver chargeResolver,
+            BossCompletionState completion)
+        {
+            if (_initialized) throw new InvalidOperationException("Custodian boss is already initialized.");
+            _body = body != null ? body : throw new ArgumentNullException(nameof(body));
+            _targetPoint = targetPoint != null ? targetPoint : throw new ArgumentNullException(nameof(targetPoint));
+            _sensingCollider = sensingCollider != null ? sensingCollider : throw new ArgumentNullException(nameof(sensingCollider));
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            _player = player != null ? player : throw new ArgumentNullException(nameof(player));
+            _playerHealth = playerHealth != null ? playerHealth : throw new ArgumentNullException(nameof(playerHealth));
+            _chargeResolver = chargeResolver ?? throw new ArgumentNullException(nameof(chargeResolver));
+            _completion = completion ?? throw new ArgumentNullException(nameof(completion));
+            ValidateSensingCollider(targetLayer);
+            ConfigureBody();
+            _health.Reset(configuration.MaximumHitPoints);
+            _stateMachine = new CustodianBossStateMachine(configuration);
+            SetPosition(configuration.StartPosition);
+            _playerHealth.Died += HandlePlayerDied;
+            _initialized = true;
+        }
+
+        public bool IsHostileTo(CombatFaction faction) => faction == CombatFaction.Player;
+
+        public DamageResult ApplyDamage(in DamageRequest request)
+        {
+            if (!CanBeTargeted) return new DamageResult(0f, false);
+            var result = _health.ApplyDamage(request, _configuration.Armor);
+            if (!result.WasLethal) return result;
+            _stateMachine.MarkDead();
+            try
+            {
+                _completion.TryRecordDefeat(_configuration.Id, transform.position);
+            }
+            catch (Exception exception)
+            {
+                Debug.LogException(exception);
+            }
+
+            return result;
+        }
+
+        public bool TryDisplace(Vector3 destination, in DisplacementContext context)
+        {
+            return false;
+        }
+
+        public void Tick(float deltaTime)
+        {
+            if (!_initialized) throw new InvalidOperationException("Custodian boss must be initialized before ticking.");
+            if (State == CustodianBossState.Dead) return;
+            var playerInsideArena = BossAttackGeometry.IsInsideCircle(
+                _configuration.ArenaCenter,
+                _player.position,
+                _configuration.ArenaRadius);
+            if (State == CustodianBossState.Dormant)
+            {
+                if (!playerInsideArena || !_playerHealth.IsAlive) return;
+                _stateMachine.Engage();
+            }
+            else if (!playerInsideArena || !_playerHealth.IsAlive)
+            {
+                ResetEncounter();
+                return;
+            }
+
+            var healthFraction = _health.CurrentHitPoints / _health.MaximumHitPoints;
+            var decision = _stateMachine.Tick(deltaTime, healthFraction);
+            if (decision.PhaseChanged)
+            {
+                EncounterEventDispatch.Publish(
+                    PhaseChanged,
+                    new BossPhaseChangedEvent(_configuration.Id, true));
+            }
+
+            if (decision.TelegraphBegan) BeginTelegraph(decision.Attack);
+            if (decision.ResolveAttack) ResolveAttack(decision.Attack);
+        }
+
+        public bool ResetEncounter()
+        {
+            if (!_initialized || !_stateMachine.BeginReset()) return false;
+            _health.Reset(_configuration.MaximumHitPoints);
+            SetPosition(_configuration.StartPosition);
+            _telegraphOrigin = default;
+            _telegraphDirection = default;
+            _stateMachine.CompleteReset();
+            EncounterEventDispatch.Publish(
+                EncounterReset,
+                new BossEncounterResetEvent(_configuration.Id, _configuration.StartPosition));
+            return true;
+        }
+
+        public void Shutdown()
+        {
+            if (_playerHealth != null) _playerHealth.Died -= HandlePlayerDied;
+            _playerHealth = null;
+        }
+
+        private void Update()
+        {
+            if (_initialized) Tick(Time.deltaTime);
+        }
+
+        private void BeginTelegraph(BossAttackType attackType)
+        {
+            var attack = _configuration.GetAttack(attackType);
+            _telegraphOrigin = transform.position;
+            _telegraphDirection = _player.position - _telegraphOrigin;
+            _telegraphDirection.y = 0f;
+            if (_telegraphDirection.sqrMagnitude <= Mathf.Epsilon) _telegraphDirection = transform.forward;
+            _telegraphDirection.Normalize();
+            transform.rotation = Quaternion.LookRotation(_telegraphDirection, Vector3.up);
+            EncounterEventDispatch.Publish(
+                TelegraphStarted,
+                new BossTelegraphEvent(
+                    attack.Type,
+                    _telegraphOrigin,
+                    _telegraphDirection,
+                    attack.Range,
+                    attack.HalfAngleDegrees,
+                    attack.Width,
+                    attack.TelegraphDuration));
+        }
+
+        private void ResolveAttack(BossAttackType attackType)
+        {
+            var attack = _configuration.GetAttack(attackType);
+            var playerPosition = _player.position;
+            var hit = false;
+            switch (attackType)
+            {
+                case BossAttackType.CirclePulse:
+                    hit = BossAttackGeometry.IsInsideCircle(_telegraphOrigin, playerPosition, attack.Range);
+                    break;
+                case BossAttackType.ConeSweep:
+                    hit = BossAttackGeometry.IsInsideCone(
+                        _telegraphOrigin,
+                        _telegraphDirection,
+                        playerPosition,
+                        attack.Range,
+                        attack.HalfAngleDegrees);
+                    break;
+                case BossAttackType.LineCharge:
+                    var requestedEnd = BossAttackGeometry.ClampChargeDestination(
+                        _telegraphOrigin,
+                        _telegraphDirection,
+                        attack.Range,
+                        _configuration.WorldBounds,
+                        _configuration.CollisionRadius);
+                    var safeEnd = _chargeResolver.Resolve(
+                        _telegraphOrigin,
+                        requestedEnd,
+                        _configuration.CollisionRadius);
+                    hit = BossAttackGeometry.IsInsideLine(
+                        _telegraphOrigin,
+                        safeEnd,
+                        playerPosition,
+                        attack.Width * 0.5f);
+                    var requestedCharge = BossAttackGeometry.ClampChargeDestination(
+                        _telegraphOrigin,
+                        _telegraphDirection,
+                        attack.ChargeDistance,
+                        _configuration.WorldBounds,
+                        _configuration.CollisionRadius);
+                    var safeCharge = _chargeResolver.Resolve(
+                        _telegraphOrigin,
+                        requestedCharge,
+                        _configuration.CollisionRadius);
+                    _body.Move(safeCharge - transform.position);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(attackType));
+            }
+
+            if (hit && _playerHealth.IsAlive)
+            {
+                _playerHealth.ApplyDamage(new DamageRequest(attack.Damage, DamageType.Physical));
+                if (State == CustodianBossState.Dormant)
+                {
+                    return;
+                }
+            }
+
+            EncounterEventDispatch.Publish(AttackResolved, new BossAttackResolvedEvent(attackType, hit));
+        }
+
+        private void HandlePlayerDied(PlayerDeathEvent death)
+        {
+            ResetEncounter();
+        }
+
+        private void ConfigureBody()
+        {
+            _targetPoint.localPosition = new Vector3(0f, _configuration.TargetPointHeight, 0f);
+            _sensingCollider.transform.localPosition = _targetPoint.localPosition;
+            if (_sensingCollider is SphereCollider sphere) sphere.radius = _configuration.CollisionRadius;
+            _body.radius = _configuration.CollisionRadius;
+            _body.height = Mathf.Max(_configuration.TargetPointHeight * 1.8f, _configuration.CollisionRadius * 2f);
+            _body.center = new Vector3(0f, _body.height * 0.5f, 0f);
+        }
+
+        private void SetPosition(Vector3 position)
+        {
+            _body.enabled = false;
+            transform.position = position;
+            transform.rotation = Quaternion.identity;
+            _body.enabled = true;
+        }
+
+        private void ValidateSensingCollider(int targetLayer)
+        {
+            var colliders = GetComponentsInChildren<Collider>(true);
+            var sensing = 0;
+            var other = 0;
+            for (var i = 0; i < colliders.Length; i++)
+            {
+                if (colliders[i] == _sensingCollider && colliders[i].gameObject.layer == targetLayer) sensing++;
+                else if (colliders[i].gameObject.layer == targetLayer) other++;
+            }
+
+            SensingColliderContract.ValidateCounts(sensing, other);
+        }
+
+        private void OnDestroy() => Shutdown();
+    }
+}
