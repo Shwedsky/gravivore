@@ -7,7 +7,7 @@ namespace Gravivore.Gameplay.Encounters
 {
     [DisallowMultipleComponent]
     public sealed class MagnetarGuardController : MonoBehaviour, ITargetable, IDamageable, IDisplaceable,
-        IMagnetarGuardDefeatSource
+        IMagnetarGuardDefeatSource, IMagnetarGuardActivationTarget
     {
         private readonly HealthState _health = new HealthState();
         private readonly MagnetarGuardStateMachine _brain = new MagnetarGuardStateMachine();
@@ -17,16 +17,22 @@ namespace Gravivore.Gameplay.Encounters
         private Transform _player;
         private IDamageable _playerDamageable;
         private MagnetarGuardConfiguration _configuration;
+        private EliteShockwaveSnapshot _activeShockwave;
+        private bool _hasActiveShockwave;
+        private bool _encounterActive;
         private bool _initialized;
 
+        public event Action<MagnetarGuardActivatedEvent> Activated;
         public event Action<EliteShockwaveTelegraphEvent> TelegraphStarted;
         public event Action<EliteShockwaveResolvedEvent> ShockwaveResolved;
+        public event Action<EliteShockwaveCancelledEvent> ShockwaveCancelled;
         public event Action<MagnetarGuardDefeatedEvent> Defeated;
 
         public Transform TargetPoint => _targetPoint;
         public Transform DisplacementRoot => transform;
-        public bool CanBeTargeted => _initialized && _health.IsAlive;
-        public bool IsAlive => _initialized && _health.IsAlive;
+        public bool CanBeTargeted => IsAlive;
+        public bool IsAlive => _initialized && _encounterActive && _health.IsAlive;
+        public bool IsEncounterActive => _initialized && _encounterActive;
         public DisplacementClass DisplacementClass => DisplacementClass.Elite;
         public float CollisionRadius => _configuration.CollisionRadius;
         public float CurrentHitPoints => _health.CurrentHitPoints;
@@ -56,8 +62,20 @@ namespace Gravivore.Gameplay.Encounters
             _body.enabled = false;
             transform.position = configuration.SpawnPosition;
             transform.rotation = Quaternion.identity;
-            _body.enabled = true;
+            _sensingCollider.enabled = false;
             _initialized = true;
+        }
+
+        public bool ActivateEncounter()
+        {
+            if (!_initialized) throw new InvalidOperationException("Magnetar Guard must be initialized before activation.");
+            if (_encounterActive || !_health.IsAlive) return false;
+            _encounterActive = true;
+            _brain.Reset();
+            _body.enabled = true;
+            _sensingCollider.enabled = true;
+            EncounterEventDispatch.Publish(Activated, new MagnetarGuardActivatedEvent(_configuration.Id));
+            return true;
         }
 
         public bool IsHostileTo(CombatFaction faction) => faction == CombatFaction.Player;
@@ -68,6 +86,9 @@ namespace Gravivore.Gameplay.Encounters
             var result = _health.ApplyDamage(request, _configuration.Armor);
             if (!result.WasLethal) return result;
             _brain.MarkDead();
+            CancelActiveShockwave();
+            _sensingCollider.enabled = false;
+            _body.enabled = false;
             EncounterEventDispatch.Publish(
                 Defeated,
                 new MagnetarGuardDefeatedEvent(_configuration.Id, transform.position));
@@ -76,7 +97,7 @@ namespace Gravivore.Gameplay.Encounters
 
         public bool TryDisplace(Vector3 destination, in DisplacementContext context)
         {
-            if (!IsAlive) return false;
+            if (!CanBeTargeted) return false;
             _body.Move(destination - transform.position);
             return true;
         }
@@ -84,7 +105,7 @@ namespace Gravivore.Gameplay.Encounters
         public void Tick(float deltaTime)
         {
             if (!_initialized) throw new InvalidOperationException("Magnetar Guard must be initialized before ticking.");
-            if (!IsAlive) return;
+            if (!IsEncounterActive || !IsAlive) return;
             var offset = _player.position - transform.position;
             offset.y = 0f;
             var decision = _brain.Tick(deltaTime, offset.magnitude);
@@ -97,23 +118,31 @@ namespace Gravivore.Gameplay.Encounters
 
             if (decision.TelegraphBegan)
             {
+                _activeShockwave = new EliteShockwaveSnapshot(
+                    transform.position,
+                    _configuration.ShockwaveRadius,
+                    _configuration.AttackDamage);
+                _hasActiveShockwave = true;
                 EncounterEventDispatch.Publish(
                     TelegraphStarted,
                     new EliteShockwaveTelegraphEvent(
-                        transform.position,
-                        _configuration.ShockwaveRadius,
+                        _activeShockwave.Origin,
+                        _activeShockwave.Radius,
                         _configuration.TelegraphDuration));
             }
 
             if (decision.ResolveShockwave)
             {
+                if (!_hasActiveShockwave) return;
+                var shockwave = _activeShockwave;
+                _hasActiveShockwave = false;
                 var hit = _playerDamageable.IsAlive && BossAttackGeometry.IsInsideCircle(
-                    transform.position,
+                    shockwave.Origin,
                     _player.position,
-                    _configuration.ShockwaveRadius);
+                    shockwave.Radius);
                 if (hit)
                 {
-                    _playerDamageable.ApplyDamage(new DamageRequest(_configuration.AttackDamage, DamageType.Physical));
+                    _playerDamageable.ApplyDamage(new DamageRequest(shockwave.Damage, DamageType.Physical));
                 }
 
                 EncounterEventDispatch.Publish(ShockwaveResolved, new EliteShockwaveResolvedEvent(hit));
@@ -147,6 +176,30 @@ namespace Gravivore.Gameplay.Encounters
             }
 
             SensingColliderContract.ValidateCounts(sensing, other);
+        }
+
+        private void CancelActiveShockwave()
+        {
+            if (!_hasActiveShockwave) return;
+            var shockwave = _activeShockwave;
+            _hasActiveShockwave = false;
+            EncounterEventDispatch.Publish(
+                ShockwaveCancelled,
+                new EliteShockwaveCancelledEvent(shockwave.Origin, shockwave.Radius));
+        }
+
+        private readonly struct EliteShockwaveSnapshot
+        {
+            public EliteShockwaveSnapshot(Vector3 origin, float radius, float damage)
+            {
+                Origin = origin;
+                Radius = radius;
+                Damage = damage;
+            }
+
+            public Vector3 Origin { get; }
+            public float Radius { get; }
+            public float Damage { get; }
         }
     }
 

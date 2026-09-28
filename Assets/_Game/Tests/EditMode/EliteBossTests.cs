@@ -172,6 +172,80 @@ namespace Gravivore.Tests.EditMode
         }
 
         [Test]
+        public void LockedEliteGate_KeepsMagnetarCapabilitiesAiAndDamageInactiveUntilUnlock()
+        {
+            using var rig = new MagnetarControllerRig(new Vector3(0f, 0f, 14.9f));
+            var world = new WorldUnlockState("elite-gate", "boss-gate", "magnetar-guard");
+            var activations = 0;
+            rig.Elite.Activated += _ => activations++;
+            using var activation = new EliteEncounterActivationBridge(world, rig.Elite);
+            var start = rig.Elite.transform.position;
+
+            Assert.IsFalse(rig.Elite.IsEncounterActive);
+            Assert.IsFalse(rig.Elite.CanBeTargeted);
+            var lockedHealth = rig.Elite.CurrentHitPoints;
+            Assert.That(rig.Elite.ApplyDamage(new DamageRequest(100f, DamageType.Gravity)).AppliedDamage, Is.Zero);
+            Assert.That(rig.Elite.CurrentHitPoints, Is.EqualTo(lockedHealth));
+            Assert.IsFalse(rig.Elite.TryDisplace(start + Vector3.forward, default));
+            rig.Elite.Tick(10f);
+            Assert.That(rig.Elite.State, Is.EqualTo(MagnetarGuardState.Waiting));
+            Assert.That(rig.Elite.transform.position, Is.EqualTo(start));
+            Assert.That(rig.PlayerDamage.DamageCount, Is.Zero, "Locked-gate player received a shockwave through the barrier.");
+
+            Assert.IsTrue(world.TryUnlockEliteGate());
+            Assert.IsTrue(rig.Elite.IsEncounterActive);
+            Assert.IsTrue(rig.Elite.CanBeTargeted);
+            Assert.That(activations, Is.EqualTo(1));
+            Assert.IsFalse(world.TryUnlockEliteGate());
+            Assert.IsFalse(activation.Synchronize());
+            Assert.That(activations, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void RestoredUnlockedEliteGate_ActivatesImmediatelyWithoutMilestoneReplay()
+        {
+            using var rig = new MagnetarControllerRig(Vector3.zero);
+            var world = WorldUnlockState.Restore(
+                "elite-gate",
+                "boss-gate",
+                "magnetar-guard",
+                new WorldUnlockSnapshot(true, false, false));
+            var gateEvents = 0;
+            var activations = 0;
+            world.GateUnlocked += _ => gateEvents++;
+            rig.Elite.Activated += _ => activations++;
+
+            using var activation = new EliteEncounterActivationBridge(world, rig.Elite);
+
+            Assert.IsTrue(rig.Elite.IsEncounterActive);
+            Assert.That(activations, Is.EqualTo(1));
+            Assert.That(gateEvents, Is.Zero);
+        }
+
+        [Test]
+        public void MagnetarShockwave_ResolvesAgainstImmutableTelegraphSnapshotAfterPull()
+        {
+            using var rig = new MagnetarControllerRig(new Vector3(0f, 0f, 18f));
+            rig.Elite.ActivateEncounter();
+            EliteShockwaveTelegraphEvent telegraph = default;
+            var telegraphCount = 0;
+            rig.Elite.TelegraphStarted += value =>
+            {
+                telegraph = value;
+                telegraphCount++;
+            };
+
+            rig.Elite.Tick(0f);
+            Assert.That(telegraphCount, Is.EqualTo(1));
+            Assert.IsTrue(rig.Elite.TryDisplace(telegraph.Origin + Vector3.forward * 5f, default));
+            rig.Player.transform.position = telegraph.Origin;
+            rig.Elite.Tick(1.01f);
+
+            Assert.That(Vector3.Distance(rig.Elite.transform.position, telegraph.Origin), Is.GreaterThan(telegraph.Radius));
+            Assert.That(rig.PlayerDamage.DamageCount, Is.EqualTo(1));
+        }
+
+        [Test]
         public void BossController_DoesNotDamageDuringTelegraphAndNeverDisplaces()
         {
             using var rig = new BossControllerRig(new Vector3(0f, 0f, 27f));
@@ -325,6 +399,56 @@ namespace Gravivore.Tests.EditMode
             public void Dispose()
             {
                 if (_root != null) UnityEngine.Object.DestroyImmediate(_root);
+            }
+        }
+
+        private sealed class MagnetarControllerRig : IDisposable
+        {
+            private readonly GameObject _root;
+
+            public MagnetarControllerRig(Vector3 playerPosition)
+            {
+                _root = new GameObject("S09 EditMode Magnetar Rig");
+                Player = new GameObject("Player");
+                Player.transform.SetParent(_root.transform, false);
+                Player.transform.position = playerPosition;
+                PlayerDamage = new RecordingDamageable();
+
+                var eliteObject = new GameObject("Magnetar Guard", typeof(CharacterController), typeof(MagnetarGuardController));
+                eliteObject.transform.SetParent(_root.transform, false);
+                var sensorObject = new GameObject("Combat Target Sensor", typeof(SphereCollider));
+                sensorObject.layer = 9;
+                sensorObject.transform.SetParent(eliteObject.transform, false);
+                Elite = eliteObject.GetComponent<MagnetarGuardController>();
+                Elite.Initialize(
+                    eliteObject.GetComponent<CharacterController>(),
+                    sensorObject.transform,
+                    sensorObject.GetComponent<Collider>(),
+                    9,
+                    CreateEliteConfiguration(),
+                    Player.transform,
+                    PlayerDamage);
+            }
+
+            public GameObject Player { get; }
+            public RecordingDamageable PlayerDamage { get; }
+            public MagnetarGuardController Elite { get; }
+
+            public void Dispose()
+            {
+                if (_root != null) UnityEngine.Object.DestroyImmediate(_root);
+            }
+        }
+
+        private sealed class RecordingDamageable : IDamageable
+        {
+            public bool IsAlive => true;
+            public int DamageCount { get; private set; }
+
+            public DamageResult ApplyDamage(in DamageRequest request)
+            {
+                DamageCount++;
+                return new DamageResult(request.RawDamage, false);
             }
         }
 

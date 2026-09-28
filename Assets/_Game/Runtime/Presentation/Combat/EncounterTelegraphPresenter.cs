@@ -39,6 +39,8 @@ namespace Gravivore.Presentation.Combat
             _impact = CreateIndicator("Boss Damage Impact", PrimitiveType.Cylinder, new Color(1f, 0.9f, 0.3f, 1f));
             _elite.TelegraphStarted += HandleEliteTelegraph;
             _elite.ShockwaveResolved += HandleEliteResolved;
+            _elite.ShockwaveCancelled += HandleEliteCancelled;
+            _elite.Defeated += HandleEliteDefeated;
             _boss.TelegraphStarted += HandleBossTelegraph;
             _boss.AttackResolved += HandleBossResolved;
             _boss.EncounterReset += HandleBossReset;
@@ -51,6 +53,8 @@ namespace Gravivore.Presentation.Combat
             {
                 _elite.TelegraphStarted -= HandleEliteTelegraph;
                 _elite.ShockwaveResolved -= HandleEliteResolved;
+                _elite.ShockwaveCancelled -= HandleEliteCancelled;
+                _elite.Defeated -= HandleEliteDefeated;
             }
 
             if (_boss != null)
@@ -79,7 +83,16 @@ namespace Gravivore.Presentation.Combat
 
         private void HandleEliteResolved(EliteShockwaveResolvedEvent resolved)
         {
-            _eliteTelegraph.SetActive(false);
+            HideEliteTelegraph();
+        }
+
+        private void HandleEliteCancelled(EliteShockwaveCancelledEvent cancelled) => HideEliteTelegraph();
+
+        private void HandleEliteDefeated(MagnetarGuardDefeatedEvent defeated) => HideEliteTelegraph();
+
+        private void HideEliteTelegraph()
+        {
+            if (_eliteTelegraph != null) _eliteTelegraph.SetActive(false);
         }
 
         private void HandleBossTelegraph(BossTelegraphEvent telegraph)

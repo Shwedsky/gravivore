@@ -157,6 +157,38 @@ namespace Gravivore.Tests.PlayMode
             yield return null;
         }
 
+        [UnityTest]
+        public IEnumerator MagnetarDeathDuringTelegraph_HidesIndicatorAndCannotResolveDamage()
+        {
+            var root = new GameObject("S09 Elite Telegraph Death Root");
+            var player = CreatePlayer(root.transform, new Vector3(0f, 0f, 18f), Vector3.zero);
+            var elite = CreateElite(root.transform, player);
+            var boss = CreateBoss(root.transform, player, out var completion);
+            var presentation = new GameObject("Encounter Telegraphs", typeof(EncounterTelegraphPresenter))
+                .GetComponent<EncounterTelegraphPresenter>();
+            presentation.transform.SetParent(root.transform, false);
+            presentation.Initialize(elite, boss, completion);
+            var initialHealth = player.CurrentHitPoints;
+            var cancellationCount = 0;
+            var resolveCount = 0;
+            elite.ShockwaveCancelled += _ => cancellationCount++;
+            elite.ShockwaveResolved += _ => resolveCount++;
+
+            elite.Tick(0f);
+            Assert.IsTrue(presentation.EliteTelegraphVisible);
+            elite.ApplyDamage(new DamageRequest(10000f, DamageType.Gravity));
+            elite.ApplyDamage(new DamageRequest(10000f, DamageType.Gravity));
+            Assert.IsFalse(presentation.EliteTelegraphVisible);
+            elite.Tick(2f);
+            Assert.That(player.CurrentHitPoints, Is.EqualTo(initialHealth));
+            Assert.That(cancellationCount, Is.EqualTo(1));
+            Assert.That(resolveCount, Is.Zero);
+
+            presentation.Shutdown();
+            UnityEngine.Object.Destroy(root);
+            yield return null;
+        }
+
         private static void AdvanceToNextTelegraph(CustodianBossController boss)
         {
             boss.Tick(0f);
@@ -185,6 +217,7 @@ namespace Gravivore.Tests.PlayMode
             controller.Initialize(
                 gameObject.GetComponent<CharacterController>(), target.transform, target.GetComponent<Collider>(), 9,
                 CreateEliteConfiguration(), player.transform, player);
+            controller.ActivateEncounter();
             return controller;
         }
 

@@ -40,6 +40,7 @@ namespace Gravivore.Presentation.Composition
         private Material _eliteMaterial;
         private Material _bossMaterial;
         private Transform _playerVisualRoot;
+        private EliteEncounterActivationBridge _eliteActivationBridge;
         private EliteWorldUnlockBridge _eliteWorldUnlockBridge;
         private bool _isComposed;
 
@@ -281,6 +282,7 @@ namespace Gravivore.Presentation.Composition
                 _magnetarGuardDefinition.Configuration,
                 PlayerObject.transform,
                 PlayerHealth);
+            _eliteActivationBridge = new EliteEncounterActivationBridge(WorldUnlocks.State, MagnetarGuard);
             _eliteWorldUnlockBridge = new EliteWorldUnlockBridge(MagnetarGuard, WorldUnlocks);
 
             var bossObject = CreateEncounterObject(
@@ -457,6 +459,7 @@ namespace Gravivore.Presentation.Composition
             EvolutionPresenter?.Shutdown();
             EncounterTelegraphs?.Shutdown();
             CustodianBoss?.Shutdown();
+            _eliteActivationBridge?.Dispose();
             _eliteWorldUnlockBridge?.Dispose();
             WorldPresenter?.Shutdown();
             WorldUnlocks?.Dispose();

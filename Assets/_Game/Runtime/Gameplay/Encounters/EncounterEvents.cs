@@ -8,6 +8,19 @@ namespace Gravivore.Gameplay.Encounters
         event Action<MagnetarGuardDefeatedEvent> Defeated;
     }
 
+    public interface IMagnetarGuardActivationTarget
+    {
+        bool IsEncounterActive { get; }
+
+        bool ActivateEncounter();
+    }
+
+    public readonly struct MagnetarGuardActivatedEvent
+    {
+        public MagnetarGuardActivatedEvent(string eliteId) => EliteId = eliteId;
+        public string EliteId { get; }
+    }
+
     public readonly struct MagnetarGuardDefeatedEvent
     {
         public MagnetarGuardDefeatedEvent(string eliteId, Vector3 position)
@@ -38,6 +51,18 @@ namespace Gravivore.Gameplay.Encounters
     {
         public EliteShockwaveResolvedEvent(bool playerWasHit) => PlayerWasHit = playerWasHit;
         public bool PlayerWasHit { get; }
+    }
+
+    public readonly struct EliteShockwaveCancelledEvent
+    {
+        public EliteShockwaveCancelledEvent(Vector3 origin, float radius)
+        {
+            Origin = origin;
+            Radius = radius;
+        }
+
+        public Vector3 Origin { get; }
+        public float Radius { get; }
     }
 
     public readonly struct BossTelegraphEvent
