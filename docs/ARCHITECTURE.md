@@ -316,3 +316,10 @@ They must be excluded/disabled in non-development release configuration.
 - `PlayerEvolutionView` owns explicit Core/Left/Right/Rear sockets and idempotently activates the exact current tier module set plus one dominant-stat accent.
 - Reinitializing the presenter performs a full state apply and does not replay milestone VFX. Tier-change events and VFX hooks only fire for runtime transitions.
 - Canonical thresholds `10` and `30` are provisional absolute vertical-slice balance values. Final tuning is deferred to S20.
+
+## 23. Minimal equipment
+
+- `EquipmentDefinition` and `EquipmentCatalogDefinition` author immutable item data; runtime identity is the stable item id, never a mutable ScriptableObject reference.
+- `InventoryState` owns non-stackable item ownership and one equipped item for each of the three v0.1 slots. `EquipmentService` validates mutations, applies the equipped set, and publishes scoped typed events after mutation.
+- `PlayerStatsState` keeps deterministic modifier sources. Equipment replaces only the `Equipment` source, while progression continues to own permanent `BaseLevels` and other systems retain the `External` source.
+- `InventorySaveMapper` maps runtime state to a dedicated DTO and validates restore data. S10 does not implement file storage, migrations, or the S12 save repository.

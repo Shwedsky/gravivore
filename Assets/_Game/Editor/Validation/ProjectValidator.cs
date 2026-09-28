@@ -5,6 +5,7 @@ using Gravivore.Core;
 using Gravivore.Gameplay.Combat;
 using Gravivore.Gameplay.Enemies;
 using Gravivore.Gameplay.Encounters;
+using Gravivore.Gameplay.Equipment;
 using Gravivore.Gameplay.Player;
 using Gravivore.Gameplay.Progression;
 using Gravivore.Gameplay.World;
@@ -59,6 +60,13 @@ namespace Gravivore.Editor
             "Assets/_Game/Content/Definitions/S08_Chapter01World.asset",
             "Assets/_Game/Content/Definitions/S09_MagnetarGuard.asset",
             "Assets/_Game/Content/Definitions/S09_CustodianM0.asset",
+            "Assets/_Game/Content/Definitions/S10_Equipment_GraviticFang.asset",
+            "Assets/_Game/Content/Definitions/S10_Equipment_PulseCapacitor.asset",
+            "Assets/_Game/Content/Definitions/S10_Equipment_LayeredCarapace.asset",
+            "Assets/_Game/Content/Definitions/S10_Equipment_ImpactFrame.asset",
+            "Assets/_Game/Content/Definitions/S10_Equipment_VectorFins.asset",
+            "Assets/_Game/Content/Definitions/S10_Equipment_FluxVanes.asset",
+            "Assets/_Game/Content/Definitions/S10_EquipmentCatalog.asset",
             UrpConfigurator.UrpAssetPath,
             UrpConfigurator.RendererDataPath,
             "build-android.ps1"
@@ -92,6 +100,57 @@ namespace Gravivore.Editor
             ValidateEvolution();
             ValidateChapter01World();
             ValidateEliteAndBossEncounters();
+            ValidateEquipment();
+        }
+
+        private static void ValidateEquipment()
+        {
+            const string catalogPath = "Assets/_Game/Content/Definitions/S10_EquipmentCatalog.asset";
+            const string scenePath = "Assets/_Game/Content/Scenes/Chapter01_ScrapExclusion.unity";
+            var definition = AssetDatabase.LoadAssetAtPath<EquipmentCatalogDefinition>(catalogPath);
+            if (definition == null)
+            {
+                throw new InvalidOperationException($"A valid equipment catalog is required at {catalogPath}.");
+            }
+
+            definition.ValidateOrThrow();
+            var catalog = definition.Catalog;
+            if (catalog.Count < 4 || catalog.Count > 6 || Enum.GetValues(typeof(EquipmentSlot)).Length > 3)
+            {
+                throw new InvalidOperationException("The S10 catalog requires four to six canonical items and at most three slot types.");
+            }
+
+            var expectedIds = new HashSet<string>(StringComparer.Ordinal)
+            {
+                "gravitic-fang",
+                "pulse-capacitor",
+                "layered-carapace",
+                "impact-frame",
+                "vector-fins",
+                "flux-vanes"
+            };
+            var representedSlots = new HashSet<EquipmentSlot>();
+            for (var i = 0; i < catalog.Count; i++)
+            {
+                var item = catalog.GetAt(i);
+                if (!expectedIds.Remove(item.Id))
+                {
+                    throw new InvalidOperationException($"Unexpected or duplicate canonical equipment id: {item.Id}.");
+                }
+
+                representedSlots.Add(item.Slot);
+            }
+
+            if (expectedIds.Count != 0 || representedSlots.Count != 3)
+            {
+                throw new InvalidOperationException("Canonical equipment must contain six known items across exactly three slots.");
+            }
+
+            var dependencies = AssetDatabase.GetDependencies(scenePath, true);
+            if (Array.IndexOf(dependencies, catalogPath) < 0)
+            {
+                throw new InvalidOperationException("The canonical chapter scene must reference the S10 equipment catalog.");
+            }
         }
 
         private static void ValidateEliteAndBossEncounters()

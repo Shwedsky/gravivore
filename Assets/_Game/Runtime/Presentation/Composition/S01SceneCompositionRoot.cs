@@ -2,6 +2,7 @@ using System;
 using Gravivore.Gameplay.Combat;
 using Gravivore.Gameplay.Enemies;
 using Gravivore.Gameplay.Encounters;
+using Gravivore.Gameplay.Equipment;
 using Gravivore.Gameplay.Player;
 using Gravivore.Gameplay.Progression;
 using Gravivore.Gameplay.World;
@@ -23,6 +24,7 @@ namespace Gravivore.Presentation.Composition
 
         [SerializeField] private PlayerMovementSettings _movementSettings;
         [SerializeField] private PlayerStatsDefinition _playerStatsDefinition;
+        [SerializeField] private EquipmentCatalogDefinition _equipmentCatalogDefinition;
         [SerializeField] private GravityAttackSettings _gravityAttackSettings;
         [SerializeField] private SpawnSpotDefinition[] _spawnSpotDefinitions;
         [SerializeField] private PlayerProgressionDefinition _progressionDefinition;
@@ -47,6 +49,12 @@ namespace Gravivore.Presentation.Composition
         public GameObject PlayerObject { get; private set; }
 
         public PlayerStatsState PlayerStats { get; private set; }
+
+        public EquipmentCatalog EquipmentCatalog { get; private set; }
+
+        public InventoryState Inventory { get; private set; }
+
+        public EquipmentService Equipment { get; private set; }
 
         public PlayerHealthController PlayerHealth { get; private set; }
 
@@ -80,7 +88,8 @@ namespace Gravivore.Presentation.Composition
                 return;
             }
 
-            if (_movementSettings == null || _playerStatsDefinition == null || _gravityAttackSettings == null ||
+            if (_movementSettings == null || _playerStatsDefinition == null || _equipmentCatalogDefinition == null ||
+                _gravityAttackSettings == null ||
                 _spawnSpotDefinitions == null || _spawnSpotDefinitions.Length != 5 || _globalLiveEnemyCap < 1 ||
                 _progressionDefinition == null || _evolutionDefinition == null || _worldDefinition == null ||
                 _magnetarGuardDefinition == null || _custodianBossDefinition == null ||
@@ -90,10 +99,13 @@ namespace Gravivore.Presentation.Composition
                 _postRespawnInvulnerabilitySeconds < 0f)
             {
                 throw new InvalidOperationException(
-                    "Scene composition requires movement, stats, attack, progression, evolution, world, elite, boss, five spawn spots, joystick, and camera settings.");
+                    "Scene composition requires movement, stats, equipment, attack, progression, evolution, world, elite, boss, five spawn spots, joystick, and camera settings.");
             }
 
             PlayerStats = _playerStatsDefinition.CreateState();
+            EquipmentCatalog = _equipmentCatalogDefinition.Catalog;
+            Inventory = new InventoryState();
+            Equipment = new EquipmentService(PlayerStats, EquipmentCatalog, Inventory);
             CreateHud(out var uiTouchExclusion, out var joystickView);
             var movementInput = CreateMovementInput(uiTouchExclusion, joystickView);
             var locomotion = CreatePlayer();
