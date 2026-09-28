@@ -6,6 +6,7 @@ namespace Gravivore.Gameplay.Player
     public sealed class PlayerStatsState : IMoveSpeedProvider
     {
         private readonly PlayerStatsConfiguration _configuration;
+        private readonly IReadOnlyList<IPlayerDerivedStatsModifier>[] _modifierSources;
         private IReadOnlyList<IPlayerDerivedStatsModifier> _modifiers;
         private PlayerStatLevels _baseLevels;
 
@@ -15,7 +16,10 @@ namespace Gravivore.Gameplay.Player
             IReadOnlyList<IPlayerDerivedStatsModifier> modifiers = null)
         {
             _configuration = configuration;
-            _modifiers = SnapshotModifiers(modifiers);
+            _modifierSources = new IReadOnlyList<IPlayerDerivedStatsModifier>[2];
+            _modifierSources[(int)PlayerStatsModifierSource.External] = SnapshotModifiers(modifiers);
+            _modifierSources[(int)PlayerStatsModifierSource.Equipment] = Array.Empty<IPlayerDerivedStatsModifier>();
+            _modifiers = CombineModifiers();
             _baseLevels = baseLevels;
             DerivedStats = PlayerStatsCalculator.Calculate(_configuration, _baseLevels, _modifiers);
         }
@@ -60,12 +64,22 @@ namespace Gravivore.Gameplay.Player
 
         public bool SetModifiers(IReadOnlyList<IPlayerDerivedStatsModifier> modifiers)
         {
+            return SetModifiers(PlayerStatsModifierSource.External, modifiers);
+        }
+
+        public bool SetModifiers(
+            PlayerStatsModifierSource source,
+            IReadOnlyList<IPlayerDerivedStatsModifier> modifiers)
+        {
+            ValidateSource(source);
             var nextModifiers = SnapshotModifiers(modifiers);
+            var combinedModifiers = CombineModifiers(source, nextModifiers);
             var nextDerivedStats = PlayerStatsCalculator.Calculate(
                 _configuration,
                 _baseLevels,
-                nextModifiers);
-            _modifiers = nextModifiers;
+                combinedModifiers);
+            _modifierSources[(int)source] = nextModifiers;
+            _modifiers = combinedModifiers;
             return SetDerivedStats(nextDerivedStats, PlayerDerivedStatsChangeReason.ModifiersChanged);
         }
 
@@ -111,6 +125,50 @@ namespace Gravivore.Gameplay.Player
             }
 
             return snapshot;
+        }
+
+        private IReadOnlyList<IPlayerDerivedStatsModifier> CombineModifiers()
+        {
+            return CombineModifiers(
+                PlayerStatsModifierSource.External,
+                _modifierSources[(int)PlayerStatsModifierSource.External]);
+        }
+
+        private IReadOnlyList<IPlayerDerivedStatsModifier> CombineModifiers(
+            PlayerStatsModifierSource overrideSource,
+            IReadOnlyList<IPlayerDerivedStatsModifier> overrideModifiers)
+        {
+            var count = 0;
+            for (var sourceIndex = 0; sourceIndex < _modifierSources.Length; sourceIndex++)
+            {
+                count += sourceIndex == (int)overrideSource
+                    ? overrideModifiers.Count
+                    : _modifierSources[sourceIndex].Count;
+            }
+
+            if (count == 0) return Array.Empty<IPlayerDerivedStatsModifier>();
+            var combined = new IPlayerDerivedStatsModifier[count];
+            var destinationIndex = 0;
+            for (var sourceIndex = 0; sourceIndex < _modifierSources.Length; sourceIndex++)
+            {
+                var source = sourceIndex == (int)overrideSource
+                    ? overrideModifiers
+                    : _modifierSources[sourceIndex];
+                for (var modifierIndex = 0; modifierIndex < source.Count; modifierIndex++)
+                {
+                    combined[destinationIndex++] = source[modifierIndex];
+                }
+            }
+
+            return combined;
+        }
+
+        private static void ValidateSource(PlayerStatsModifierSource source)
+        {
+            if (!Enum.IsDefined(typeof(PlayerStatsModifierSource), source))
+            {
+                throw new ArgumentOutOfRangeException(nameof(source));
+            }
         }
     }
 }
