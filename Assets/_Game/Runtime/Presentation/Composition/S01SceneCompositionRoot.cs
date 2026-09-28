@@ -135,9 +135,10 @@ namespace Gravivore.Presentation.Composition
                 new ProgressionState(),
                 _progressionDefinition.Configuration,
                 EnemyPopulation);
-            InitializeEncounters();
+            InitializeEncounterActors();
             InitializeQuests();
             InitializeWorld();
+            WireEncounterWorldBridges();
             InitializeEvolution();
             _isComposed = true;
         }
@@ -307,7 +308,7 @@ namespace Gravivore.Presentation.Composition
                 CreateMaterial);
         }
 
-        private void InitializeEncounters()
+        private void InitializeEncounterActors()
         {
             var targetLayer = LayerMask.NameToLayer("CombatTarget");
             if (targetLayer < 0) throw new InvalidOperationException("CombatTarget layer is required for encounters.");
@@ -332,9 +333,6 @@ namespace Gravivore.Presentation.Composition
                 _magnetarGuardDefinition.Configuration,
                 PlayerObject.transform,
                 PlayerHealth);
-            _eliteActivationBridge = new EliteEncounterActivationBridge(WorldUnlocks.State, MagnetarGuard);
-            _eliteWorldUnlockBridge = new EliteWorldUnlockBridge(MagnetarGuard, WorldUnlocks);
-
             var bossObject = CreateEncounterObject(
                 "Custodian M-0",
                 typeof(CustodianBossController),
@@ -365,6 +363,12 @@ namespace Gravivore.Presentation.Composition
             presentationObject.transform.SetParent(transform, false);
             EncounterTelegraphs = presentationObject.GetComponent<EncounterTelegraphPresenter>();
             EncounterTelegraphs.Initialize(MagnetarGuard, CustodianBoss, BossCompletion);
+        }
+
+        private void WireEncounterWorldBridges()
+        {
+            _eliteActivationBridge = new EliteEncounterActivationBridge(WorldUnlocks.State, MagnetarGuard);
+            _eliteWorldUnlockBridge = new EliteWorldUnlockBridge(MagnetarGuard, WorldUnlocks);
         }
 
         private GameObject CreateEncounterObject(

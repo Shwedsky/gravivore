@@ -110,8 +110,13 @@ namespace Gravivore.Gameplay.Quests
                 }
             }
 
-            ExpandedObjectivesUnlocked = snapshot.ExpandedObjectivesUnlocked;
-            Completed = snapshot.Completed;
+            for (var i = 0; i < _catalog.ObjectiveCount; i++)
+            {
+                var objective = _catalog.GetObjective(i);
+                if (!_completed.Contains(objective.Id)) continue;
+                if (objective.ExpandsObjectiveUi) ExpandedObjectivesUnlocked = true;
+                if (objective.Type == QuestObjectiveType.BossDefeated) Completed = true;
+            }
         }
 
         public string QuestId => _catalog.QuestId;

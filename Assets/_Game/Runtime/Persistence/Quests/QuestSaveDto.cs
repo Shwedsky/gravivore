@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Gravivore.Gameplay.Enemies;
 using Gravivore.Gameplay.Quests;
 
@@ -67,8 +68,9 @@ namespace Gravivore.Persistence.Quests
                 throw new ArgumentException("Quest DTO id does not match the quest definition.", nameof(dto));
             }
 
-            var progress = new System.Collections.Generic.Dictionary<string, int>(StringComparer.Ordinal);
-            var completed = new System.Collections.Generic.List<string>();
+            var progress = new Dictionary<string, int>(StringComparer.Ordinal);
+            var completed = new List<string>();
+            var objectiveIds = new HashSet<string>(StringComparer.Ordinal);
             if (dto.objectives != null)
             {
                 for (var i = 0; i < dto.objectives.Length; i++)
@@ -79,17 +81,29 @@ namespace Gravivore.Persistence.Quests
                         throw new ArgumentException("Quest DTO contains an unknown objective id.", nameof(dto));
                     }
 
+                    if (!objectiveIds.Add(entry.objectiveId))
+                    {
+                        throw new ArgumentException("Quest DTO contains a duplicate objective entry.", nameof(dto));
+                    }
+
                     if (entry.progress < 0 || entry.progress > objective.RequiredCount)
                     {
                         throw new ArgumentOutOfRangeException(nameof(dto), $"Invalid progress for {entry.objectiveId}.");
                     }
 
-                    progress[entry.objectiveId] = entry.completed ? objective.RequiredCount : entry.progress;
+                    if (entry.completed != (entry.progress == objective.RequiredCount))
+                    {
+                        throw new ArgumentException(
+                            $"Quest DTO completion does not match progress for {entry.objectiveId}.",
+                            nameof(dto));
+                    }
+
+                    progress[entry.objectiveId] = entry.progress;
                     if (entry.completed) completed.Add(entry.objectiveId);
                 }
             }
 
-            var lives = new System.Collections.Generic.List<EnemyLifeId>();
+            var lives = new List<EnemyLifeId>();
             if (dto.processedEnemyLifeIds != null)
             {
                 for (var i = 0; i < dto.processedEnemyLifeIds.Length; i++)
@@ -110,8 +124,8 @@ namespace Gravivore.Persistence.Quests
                     progress,
                     completed,
                     lives,
-                    dto.expandedObjectivesUnlocked,
-                    dto.completed));
+                    false,
+                    false));
         }
     }
 }

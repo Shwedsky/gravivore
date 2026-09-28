@@ -5,6 +5,7 @@ using Gravivore.Gameplay.Enemies;
 using Gravivore.Gameplay.Player;
 using Gravivore.Gameplay.Progression;
 using Gravivore.Gameplay.Quests;
+using Gravivore.Gameplay.World;
 using Gravivore.Persistence.Quests;
 using NUnit.Framework;
 using UnityEngine;
@@ -56,6 +57,34 @@ namespace Gravivore.Tests.EditMode
             Assert.IsTrue(rig.Quests.State.IsObjectiveCompleted("intro-relay-yard"));
             Assert.IsTrue(rig.Quests.State.IsObjectiveCompleted("first-assimilation"));
             Assert.That(rig.Quests.ActiveObjective.Value.Id, Is.EqualTo("intro-cutting-floor"));
+        }
+
+        [Test]
+        public void RewardObserverFailure_DoesNotInterruptMutationsOrLaterCriticalListeners()
+        {
+            var observerErrors = new System.Collections.Generic.List<Exception>();
+            using var rig = QuestRig.Create(observerErrorReporter: observerErrors.Add);
+            rig.Quests.RecordMovementPerformed();
+            rig.Quests.ObjectiveCompleted += _ => throw new InvalidOperationException("presentation failed");
+            var laterListenerCalls = 0;
+            rig.Quests.ObjectiveCompleted += _ => laterListenerCalls++;
+            var worldState = new WorldUnlockState("elite-gate", "boss-gate", "magnetar-guard");
+            using var world = new WorldUnlockService(
+                rig.Progression,
+                rig.Quests,
+                new EliteGateRequirement(new[] { "intro-relay-yard" }, 1),
+                worldState);
+
+            Assert.IsTrue(rig.Progression.TryGrant(Death(1, "scout-drone")));
+
+            Assert.IsTrue(rig.Quests.State.IsObjectiveCompleted("intro-relay-yard"));
+            Assert.IsTrue(rig.Quests.State.IsObjectiveCompleted("first-assimilation"));
+            Assert.That(rig.Quests.ActiveObjective.Value.Id, Is.EqualTo("intro-cutting-floor"));
+            Assert.That(laterListenerCalls, Is.EqualTo(2));
+            Assert.IsTrue(worldState.EliteGateUnlocked);
+            Assert.That(observerErrors, Has.Count.EqualTo(1));
+            Assert.That(observerErrors[0], Is.TypeOf<AggregateException>());
+            Assert.That(((AggregateException)observerErrors[0]).InnerExceptions, Has.Count.EqualTo(2));
         }
 
         [Test]
@@ -147,6 +176,81 @@ namespace Gravivore.Tests.EditMode
             Assert.Throws<ArgumentException>(() => QuestSaveMapper.Restore(rig.Catalog, dto));
         }
 
+        [Test]
+        public void Restore_DerivesIncompleteFlagsFromObjectiveState()
+        {
+            using var rig = QuestRig.Create();
+            var dto = QuestSaveMapper.ToDto(rig.Quests.State, rig.Catalog);
+            dto.completed = true;
+            dto.expandedObjectivesUnlocked = true;
+
+            var restored = QuestSaveMapper.Restore(rig.Catalog, dto);
+
+            Assert.IsFalse(restored.Completed);
+            Assert.IsFalse(restored.ExpandedObjectivesUnlocked);
+        }
+
+        [Test]
+        public void Restore_DerivesCompletedFlagsFromObjectiveState()
+        {
+            using var rig = QuestRig.Create();
+            CompleteAllSpotObjectives(rig);
+            rig.Elite.Raise("magnetar-guard");
+            rig.Boss.TryRecordDefeat("custodian-m0", Vector3.zero);
+            var dto = QuestSaveMapper.ToDto(rig.Quests.State, rig.Catalog);
+            dto.completed = false;
+            dto.expandedObjectivesUnlocked = false;
+
+            var restored = QuestSaveMapper.Restore(rig.Catalog, dto);
+
+            Assert.IsTrue(restored.Completed);
+            Assert.IsTrue(restored.ExpandedObjectivesUnlocked);
+        }
+
+        [Test]
+        public void Restore_RejectsDuplicateObjectiveEntries()
+        {
+            using var rig = QuestRig.Create();
+            var dto = QuestSaveMapper.ToDto(rig.Quests.State, rig.Catalog);
+            dto.objectives = new[]
+            {
+                dto.objectives[0],
+                new QuestObjectiveSaveDto
+                {
+                    objectiveId = dto.objectives[0].objectiveId,
+                    progress = 1,
+                    completed = true
+                }
+            };
+
+            Assert.Throws<ArgumentException>(() => QuestSaveMapper.Restore(rig.Catalog, dto));
+        }
+
+        [Test]
+        public void Restore_RejectsObjectiveCompletionThatContradictsProgress()
+        {
+            using var rig = QuestRig.Create();
+            var dto = QuestSaveMapper.ToDto(rig.Quests.State, rig.Catalog);
+            dto.objectives[0].completed = true;
+
+            Assert.Throws<ArgumentException>(() => QuestSaveMapper.Restore(rig.Catalog, dto));
+        }
+
+        [Test]
+        public void CompletedRewardObjectives_DoNotGrowProcessedLifeHistory()
+        {
+            using var rig = QuestRig.Create();
+            CompleteAllSpotObjectives(rig);
+            var before = QuestSaveMapper.ToDto(rig.Quests.State, rig.Catalog).processedEnemyLifeIds.Length;
+
+            rig.Progression.TryGrant(Death(101, "scout-drone"));
+            rig.Progression.TryGrant(Death(102, "cutter-unit"));
+            rig.Progression.TryGrant(Death(103, "carrier"));
+
+            var after = QuestSaveMapper.ToDto(rig.Quests.State, rig.Catalog).processedEnemyLifeIds.Length;
+            Assert.That(after, Is.EqualTo(before));
+        }
+
         private static void CompleteMovementAndScout(QuestRig rig)
         {
             rig.Quests.RecordMovementPerformed();
@@ -166,13 +270,18 @@ namespace Gravivore.Tests.EditMode
 
         private sealed class QuestRig : IDisposable
         {
-            private QuestRig(QuestCatalog catalog, AssimilationProgressionService progression, FakeEliteDefeatSource elite, BossCompletionState boss)
+            private QuestRig(
+                QuestCatalog catalog,
+                AssimilationProgressionService progression,
+                FakeEliteDefeatSource elite,
+                BossCompletionState boss,
+                Action<Exception> observerErrorReporter)
             {
                 Catalog = catalog;
                 Progression = progression;
                 Elite = elite;
                 Boss = boss;
-                Quests = new QuestService(catalog, new QuestState(catalog), progression, elite, boss);
+                Quests = new QuestService(catalog, new QuestState(catalog), progression, elite, boss, observerErrorReporter);
             }
 
             public QuestCatalog Catalog { get; }
@@ -181,9 +290,14 @@ namespace Gravivore.Tests.EditMode
             public BossCompletionState Boss { get; }
             public QuestService Quests { get; }
 
-            public static QuestRig Create(int requiredSpotCount = 1)
+            public static QuestRig Create(int requiredSpotCount = 1, Action<Exception> observerErrorReporter = null)
             {
-                return new QuestRig(CreateCatalog(requiredSpotCount), CreateProgression(), new FakeEliteDefeatSource(), new BossCompletionState("custodian-m0"));
+                return new QuestRig(
+                    CreateCatalog(requiredSpotCount),
+                    CreateProgression(),
+                    new FakeEliteDefeatSource(),
+                    new BossCompletionState("custodian-m0"),
+                    observerErrorReporter);
             }
 
             public void Dispose()

@@ -8,16 +8,36 @@ using Gravivore.Gameplay.Progression;
 using Gravivore.Gameplay.Quests;
 using Gravivore.Gameplay.World;
 using Gravivore.Persistence.Quests;
+using Gravivore.Presentation.Composition;
 using Gravivore.Presentation.Quests;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 namespace Gravivore.Tests.PlayMode
 {
     public sealed class QuestOnboardingSmokeTests
     {
+        [UnityTest]
+        public IEnumerator CanonicalChapter_ComposesQuestWorldAndInactiveEliteAfterOneFrame()
+        {
+            var operation = SceneManager.LoadSceneAsync("Chapter01_ScrapExclusion", LoadSceneMode.Single);
+            Assert.IsNotNull(operation);
+            yield return operation;
+            yield return null;
+
+            var composition = FindCompositionRoot();
+            Assert.IsNotNull(composition.Quests);
+            Assert.IsNotNull(composition.WorldUnlocks);
+            Assert.IsNotNull(composition.MagnetarGuard);
+            Assert.IsNotNull(composition.BossCompletion);
+            Assert.IsFalse(composition.WorldUnlocks.State.EliteGateUnlocked);
+            Assert.IsFalse(composition.MagnetarGuard.IsEncounterActive);
+            LogAssert.NoUnexpectedReceived();
+        }
+
         [UnityTest]
         public IEnumerator Chapter01Onboarding_TracksMarkersUnlockAndRestore()
         {
@@ -95,6 +115,18 @@ namespace Gravivore.Tests.PlayMode
         private static EnemyDeathEvent Death(int seed, string enemyId)
         {
             return new EnemyDeathEvent(new EnemyLifeId(new Guid(seed, 0, 0, new byte[8])), enemyId, Vector3.zero);
+        }
+
+        private static S01SceneCompositionRoot FindCompositionRoot()
+        {
+            var roots = SceneManager.GetActiveScene().GetRootGameObjects();
+            for (var i = 0; i < roots.Length; i++)
+            {
+                if (roots[i].TryGetComponent<S01SceneCompositionRoot>(out var root)) return root;
+            }
+
+            Assert.Fail("Chapter scene composition root was not found.");
+            return null;
         }
 
         private static Chapter01WorldConfiguration CreateWorld()
