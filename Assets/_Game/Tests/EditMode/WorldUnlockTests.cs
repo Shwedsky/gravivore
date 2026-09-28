@@ -156,7 +156,8 @@ namespace Gravivore.Tests.EditMode
         public void QuestObserverFailure_DoesNotBlockEliteUnlockEvaluation()
         {
             using var progression = CreateProgression(1);
-            using var quests = CreateQuestService(progression);
+            var observerErrors = new System.Collections.Generic.List<Exception>();
+            using var quests = CreateQuestService(progression, observerErrors.Add);
             quests.ObjectiveCompleted += _ => throw new InvalidOperationException("quest presentation failure");
             var state = CreateWorldState();
             using var world = new WorldUnlockService(
@@ -167,10 +168,11 @@ namespace Gravivore.Tests.EditMode
 
             for (var i = 0; i < EnemyIds.Length; i++)
             {
-                Assert.Throws<AggregateException>(() => progression.TryGrant(Death(i + 1, EnemyIds[i])));
+                Assert.IsTrue(progression.TryGrant(Death(i + 1, EnemyIds[i])));
             }
 
             Assert.IsTrue(state.EliteGateUnlocked);
+            Assert.That(observerErrors, Has.Count.EqualTo(5));
         }
 
         [Test]
@@ -208,10 +210,16 @@ namespace Gravivore.Tests.EditMode
             return new QuestService(catalog, state);
         }
 
-        private static QuestService CreateQuestService(AssimilationProgressionService progression)
+        private static QuestService CreateQuestService(
+            AssimilationProgressionService progression,
+            Action<Exception> observerErrorReporter = null)
         {
             var catalog = CreateQuestCatalog();
-            return new QuestService(catalog, new QuestState(catalog), progression);
+            return new QuestService(
+                catalog,
+                new QuestState(catalog),
+                progression,
+                observerErrorReporter: observerErrorReporter);
         }
 
         private static QuestCatalog CreateQuestCatalog()

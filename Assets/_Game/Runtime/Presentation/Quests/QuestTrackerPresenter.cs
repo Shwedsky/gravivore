@@ -1,4 +1,5 @@
 using System;
+using Gravivore.Gameplay.Progression;
 using Gravivore.Gameplay.Quests;
 using Gravivore.Gameplay.World;
 using UnityEngine;
@@ -6,10 +7,111 @@ using UnityEngine.UI;
 
 namespace Gravivore.Presentation.Quests
 {
+    public enum QuestTrackerGuidanceMode
+    {
+        Objective = 0,
+        Assimilation = 1,
+        Complete = 2
+    }
+
+    public readonly struct QuestTrackerGuidance
+    {
+        public QuestTrackerGuidance(
+            QuestTrackerGuidanceMode mode,
+            string text,
+            QuestObjective? markerObjective)
+        {
+            Mode = mode;
+            Text = text;
+            MarkerObjective = markerObjective;
+        }
+
+        public QuestTrackerGuidanceMode Mode { get; }
+        public string Text { get; }
+        public QuestObjective? MarkerObjective { get; }
+    }
+
+    public static class QuestTrackerGuidanceResolver
+    {
+        public static QuestTrackerGuidance Resolve(
+            QuestService quests,
+            ProgressionState progression,
+            EliteGateRequirement eliteRequirement)
+        {
+            if (quests == null) throw new ArgumentNullException(nameof(quests));
+            if (progression == null) throw new ArgumentNullException(nameof(progression));
+            if (eliteRequirement == null) throw new ArgumentNullException(nameof(eliteRequirement));
+
+            var active = quests.ActiveObjective;
+            if (!active.HasValue)
+            {
+                return new QuestTrackerGuidance(
+                    QuestTrackerGuidanceMode.Complete,
+                    "Primary sequence complete",
+                    null);
+            }
+
+            var objective = active.Value;
+            if (objective.Type == QuestObjectiveType.EliteDefeated &&
+                AreRequiredIntroObjectivesCompleted(quests.State, eliteRequirement) &&
+                progression.TotalAssimilationScore < eliteRequirement.MinimumAssimilationScore)
+            {
+                return new QuestTrackerGuidance(
+                    QuestTrackerGuidanceMode.Assimilation,
+                    $"Assimilation {progression.TotalAssimilationScore}/{eliteRequirement.MinimumAssimilationScore}",
+                    null);
+            }
+
+            var progress = quests.GetProgress(objective.Id);
+            var text = progress.Required > 1
+                ? $"{objective.Title} {progress.Progress}/{progress.Required}"
+                : objective.Title;
+            if (quests.State.ExpandedObjectivesUnlocked && IsRequiredIntroObjective(objective.Id, eliteRequirement))
+            {
+                text += $" | Intro {CountCompletedIntroObjectives(quests.State, eliteRequirement)}/{eliteRequirement.RequiredObjectiveCount}";
+            }
+
+            return new QuestTrackerGuidance(QuestTrackerGuidanceMode.Objective, text, objective);
+        }
+
+        private static bool AreRequiredIntroObjectivesCompleted(
+            QuestState quests,
+            EliteGateRequirement requirement)
+        {
+            return CountCompletedIntroObjectives(quests, requirement) == requirement.RequiredObjectiveCount;
+        }
+
+        private static int CountCompletedIntroObjectives(QuestState quests, EliteGateRequirement requirement)
+        {
+            var completed = 0;
+            for (var i = 0; i < requirement.RequiredObjectiveCount; i++)
+            {
+                if (quests.IsObjectiveCompleted(requirement.GetRequiredObjectiveId(i))) completed++;
+            }
+
+            return completed;
+        }
+
+        private static bool IsRequiredIntroObjective(string objectiveId, EliteGateRequirement requirement)
+        {
+            for (var i = 0; i < requirement.RequiredObjectiveCount; i++)
+            {
+                if (string.Equals(objectiveId, requirement.GetRequiredObjectiveId(i), StringComparison.Ordinal))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+    }
+
     [DisallowMultipleComponent]
     public sealed class QuestTrackerPresenter : MonoBehaviour
     {
         private QuestService _quests;
+        private AssimilationProgressionService _progression;
+        private EliteGateRequirement _eliteRequirement;
         private Chapter01WorldConfiguration _world;
         private Vector3 _eliteTargetPosition;
         private Text _trackerText;
@@ -24,41 +126,49 @@ namespace Gravivore.Presentation.Quests
 
         public void Initialize(
             QuestService quests,
+            AssimilationProgressionService progression,
+            EliteGateRequirement eliteRequirement,
             Chapter01WorldConfiguration world,
             Vector3 eliteTargetPosition,
             RectTransform hudRoot,
             Func<Color, Material> materialFactory)
         {
-            _quests = quests ?? throw new ArgumentNullException(nameof(quests));
-            _world = world ?? throw new ArgumentNullException(nameof(world));
-            _eliteTargetPosition = eliteTargetPosition;
+            if (quests == null) throw new ArgumentNullException(nameof(quests));
+            if (progression == null) throw new ArgumentNullException(nameof(progression));
+            if (eliteRequirement == null) throw new ArgumentNullException(nameof(eliteRequirement));
+            if (world == null) throw new ArgumentNullException(nameof(world));
             if (hudRoot == null) throw new ArgumentNullException(nameof(hudRoot));
             if (materialFactory == null) throw new ArgumentNullException(nameof(materialFactory));
+
+            _quests = quests;
+            _progression = progression;
+            _eliteRequirement = eliteRequirement;
+            _world = world;
+            _eliteTargetPosition = eliteTargetPosition;
 
             CreateUi(hudRoot);
             CreateMarker(materialFactory);
             _quests.ObjectiveProgressed += HandleQuestChanged;
             _quests.ObjectiveCompleted += HandleQuestChanged;
             _quests.AssimilationFeedback += HandleAssimilationFeedback;
+            _progression.RewardGranted += HandleRewardGranted;
             ApplyState();
         }
 
         public void ApplyState()
         {
-            var active = _quests.ActiveObjective;
-            if (!active.HasValue)
+            var guidance = QuestTrackerGuidanceResolver.Resolve(
+                _quests,
+                _progression.State,
+                _eliteRequirement);
+            _trackerText.text = guidance.Text;
+            if (!guidance.MarkerObjective.HasValue)
             {
-                _trackerText.text = "Primary sequence complete";
                 SetMarker(false, default);
                 return;
             }
 
-            var objective = active.Value;
-            var progress = _quests.GetProgress(objective.Id);
-            _trackerText.text = progress.Required > 1
-                ? $"{objective.Title} {progress.Progress}/{progress.Required}"
-                : objective.Title;
-            SetMarkerTarget(objective);
+            SetMarkerTarget(guidance.MarkerObjective.Value);
         }
 
         public void Shutdown()
@@ -67,7 +177,10 @@ namespace Gravivore.Presentation.Quests
             _quests.ObjectiveProgressed -= HandleQuestChanged;
             _quests.ObjectiveCompleted -= HandleQuestChanged;
             _quests.AssimilationFeedback -= HandleAssimilationFeedback;
+            _progression.RewardGranted -= HandleRewardGranted;
             _quests = null;
+            _progression = null;
+            _eliteRequirement = null;
         }
 
         private void Update()
@@ -83,6 +196,7 @@ namespace Gravivore.Presentation.Quests
 
         private void HandleQuestChanged(QuestObjectiveProgressedEvent _) => ApplyState();
         private void HandleQuestChanged(QuestObjectiveCompletedEvent _) => ApplyState();
+        private void HandleRewardGranted(CoreRewardGrantedEvent _) => ApplyState();
 
         private void HandleAssimilationFeedback(QuestAssimilationFeedbackEvent feedback)
         {

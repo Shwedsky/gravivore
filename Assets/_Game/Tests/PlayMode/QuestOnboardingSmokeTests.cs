@@ -51,21 +51,24 @@ namespace Gravivore.Tests.PlayMode
             var boss = new BossCompletionState("custodian-m0");
             using var quests = new QuestService(catalog, new QuestState(catalog), progression, elite, boss);
             var worldState = new WorldUnlockState("elite-gate", "boss-gate", "magnetar-guard");
-            using var world = new WorldUnlockService(
-                progression,
-                quests,
-                new EliteGateRequirement(new[]
+            var requirement = new EliteGateRequirement(
+                new[]
                 {
                     "intro-relay-yard",
                     "intro-cutting-floor",
                     "intro-shield-dump",
                     "intro-capacitor-field",
                     "intro-hauler-graveyard"
-                }, 6),
+                },
+                25);
+            using var world = new WorldUnlockService(
+                progression,
+                quests,
+                requirement,
                 worldState);
             var tracker = new GameObject("Tracker", typeof(QuestTrackerPresenter)).GetComponent<QuestTrackerPresenter>();
             tracker.transform.SetParent(root.transform, false);
-            tracker.Initialize(quests, CreateWorld(), new Vector3(0f, 0f, 18f), hud, _ => null);
+            tracker.Initialize(quests, progression, requirement, CreateWorld(), new Vector3(0f, 0f, 18f), hud, _ => null);
             var movement = new GameObject("Movement", typeof(QuestMovementSignal)).GetComponent<QuestMovementSignal>();
             movement.Initialize(input, quests, 0.2f, 0.25f);
 
@@ -85,11 +88,44 @@ namespace Gravivore.Tests.PlayMode
             progression.TryGrant(Death(3, "warden"));
             progression.TryGrant(Death(4, "arc-drone"));
             progression.TryGrant(Death(5, "carrier"));
+            Assert.That(progression.State.TotalAssimilationScore, Is.EqualTo(5));
             Assert.IsFalse(worldState.EliteGateUnlocked);
+            Assert.That(tracker.CurrentTrackerText, Is.EqualTo("Assimilation 5/25"));
+            Assert.IsFalse(tracker.CurrentTrackerText.Contains("Magnetar Guard"));
+            Assert.IsFalse(tracker.MarkerActive);
 
-            progression.TryGrant(Death(6, "scout-drone"));
+            var dtoBeforeElite = QuestSaveMapper.ToDto(quests.State, catalog);
+            var restoredBeforeEliteState = QuestSaveMapper.Restore(catalog, dtoBeforeElite);
+            using var restoredBeforeElite = new QuestService(catalog, restoredBeforeEliteState);
+            var restoredBeforeEliteTracker = new GameObject("Restored Farming Tracker", typeof(QuestTrackerPresenter)).GetComponent<QuestTrackerPresenter>();
+            restoredBeforeEliteTracker.transform.SetParent(root.transform, false);
+            restoredBeforeEliteTracker.Initialize(
+                restoredBeforeElite,
+                progression,
+                requirement,
+                CreateWorld(),
+                new Vector3(0f, 0f, 18f),
+                hud,
+                _ => null);
+            Assert.That(restoredBeforeEliteTracker.CurrentTrackerText, Is.EqualTo("Assimilation 5/25"));
+            Assert.IsFalse(restoredBeforeEliteTracker.MarkerActive);
+
+            for (var score = 6; score <= 24; score++)
+            {
+                progression.TryGrant(Death(100 + score, "scout-drone"));
+            }
+
+            Assert.That(progression.State.TotalAssimilationScore, Is.EqualTo(24));
+            Assert.IsFalse(worldState.EliteGateUnlocked);
+            Assert.That(tracker.CurrentTrackerText, Is.EqualTo("Assimilation 24/25"));
+            Assert.IsFalse(tracker.MarkerActive);
+
+            progression.TryGrant(Death(125, "scout-drone"));
             Assert.IsTrue(worldState.EliteGateUnlocked);
             Assert.That(quests.ActiveObjective.Value.Id, Is.EqualTo("defeat-magnetar-guard"));
+            Assert.That(tracker.CurrentTrackerText, Is.EqualTo("Magnetar Guard"));
+            Assert.IsTrue(tracker.MarkerActive);
+            Assert.That(tracker.MarkerPosition, Is.EqualTo(new Vector3(0f, 3.4f, 18f)));
 
             elite.Raise("magnetar-guard");
             world.RecordEliteDefeated("magnetar-guard");
@@ -100,7 +136,7 @@ namespace Gravivore.Tests.PlayMode
             using var restoredQuests = new QuestService(catalog, restoredState);
             var restoredTracker = new GameObject("Restored Tracker", typeof(QuestTrackerPresenter)).GetComponent<QuestTrackerPresenter>();
             restoredTracker.transform.SetParent(root.transform, false);
-            restoredTracker.Initialize(restoredQuests, CreateWorld(), new Vector3(0f, 0f, 18f), hud, _ => null);
+            restoredTracker.Initialize(restoredQuests, progression, requirement, CreateWorld(), new Vector3(0f, 0f, 18f), hud, _ => null);
             Assert.That(restoredTracker.CurrentTrackerText, Is.EqualTo("Custodian M-0"));
             Assert.IsTrue(restoredTracker.MarkerActive);
 
@@ -157,7 +193,7 @@ namespace Gravivore.Tests.PlayMode
                     "intro-shield-dump",
                     "intro-capacitor-field",
                     "intro-hauler-graveyard"
-                }, 6));
+                }, 25));
         }
 
         private static QuestCatalog CreateCatalog()

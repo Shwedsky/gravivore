@@ -302,6 +302,8 @@ namespace Gravivore.Presentation.Composition
             QuestTracker = trackerObject.GetComponent<QuestTrackerPresenter>();
             QuestTracker.Initialize(
                 Quests,
+                Progression,
+                _worldDefinition.Configuration.EliteRequirement,
                 _worldDefinition.Configuration,
                 _magnetarGuardDefinition.Configuration.SpawnPosition,
                 _hudRoot,

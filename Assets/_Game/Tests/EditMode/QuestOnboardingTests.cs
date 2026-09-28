@@ -7,6 +7,7 @@ using Gravivore.Gameplay.Progression;
 using Gravivore.Gameplay.Quests;
 using Gravivore.Gameplay.World;
 using Gravivore.Persistence.Quests;
+using Gravivore.Presentation.Quests;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -97,6 +98,71 @@ namespace Gravivore.Tests.EditMode
                 rig.Progression.TryGrant(Death(10 + i, EnemyIds[i]));
                 Assert.IsTrue(rig.Quests.State.IsObjectiveCompleted(SpotObjectiveIds[i]));
             }
+        }
+
+        [Test]
+        public void EliteGuidance_WaitsForExactAssimilationThresholdAndRestoresWithoutReplay()
+        {
+            using var rig = QuestRig.Create();
+            var requirement = new EliteGateRequirement(SpotObjectiveIds, 25);
+            var worldState = new WorldUnlockState("elite-gate", "boss-gate", "magnetar-guard");
+            using var world = new WorldUnlockService(rig.Progression, rig.Quests, requirement, worldState);
+            CompleteAllSpotObjectives(rig);
+
+            var guidance = QuestTrackerGuidanceResolver.Resolve(rig.Quests, rig.Progression.State, requirement);
+            Assert.That(rig.Progression.State.TotalAssimilationScore, Is.EqualTo(5));
+            Assert.IsFalse(worldState.EliteGateUnlocked);
+            Assert.That(guidance.Mode, Is.EqualTo(QuestTrackerGuidanceMode.Assimilation));
+            Assert.That(guidance.Text, Is.EqualTo("Assimilation 5/25"));
+            Assert.IsFalse(guidance.MarkerObjective.HasValue);
+
+            var dto = QuestSaveMapper.ToDto(rig.Quests.State, rig.Catalog);
+            var restoredState = QuestSaveMapper.Restore(rig.Catalog, dto);
+            using var restoredQuests = new QuestService(rig.Catalog, restoredState);
+            var restoredGuidance = QuestTrackerGuidanceResolver.Resolve(
+                restoredQuests,
+                rig.Progression.State,
+                requirement);
+            Assert.That(restoredGuidance.Mode, Is.EqualTo(QuestTrackerGuidanceMode.Assimilation));
+            Assert.That(restoredGuidance.Text, Is.EqualTo("Assimilation 5/25"));
+
+            for (var score = 6; score <= 24; score++)
+            {
+                rig.Progression.TryGrant(Death(100 + score, "scout-drone"));
+            }
+
+            guidance = QuestTrackerGuidanceResolver.Resolve(rig.Quests, rig.Progression.State, requirement);
+            Assert.That(rig.Progression.State.TotalAssimilationScore, Is.EqualTo(24));
+            Assert.IsFalse(worldState.EliteGateUnlocked);
+            Assert.That(guidance.Mode, Is.EqualTo(QuestTrackerGuidanceMode.Assimilation));
+            Assert.That(guidance.Text, Is.EqualTo("Assimilation 24/25"));
+
+            rig.Progression.TryGrant(Death(125, "scout-drone"));
+
+            guidance = QuestTrackerGuidanceResolver.Resolve(rig.Quests, rig.Progression.State, requirement);
+            Assert.That(rig.Progression.State.TotalAssimilationScore, Is.EqualTo(25));
+            Assert.IsTrue(worldState.EliteGateUnlocked);
+            Assert.That(guidance.Mode, Is.EqualTo(QuestTrackerGuidanceMode.Objective));
+            Assert.That(guidance.Text, Is.EqualTo("Magnetar Guard"));
+            Assert.IsTrue(guidance.MarkerObjective.HasValue);
+            Assert.That(guidance.MarkerObjective.Value.TargetType, Is.EqualTo(QuestTargetType.Elite));
+        }
+
+        [Test]
+        public void ExpandedObjectives_AddCompactIntroProgressToGuidance()
+        {
+            using var rig = QuestRig.Create();
+            rig.Quests.RecordMovementPerformed();
+            rig.Progression.TryGrant(Death(1, "scout-drone"));
+            rig.Progression.TryGrant(Death(2, "cutter-unit"));
+
+            var guidance = QuestTrackerGuidanceResolver.Resolve(
+                rig.Quests,
+                rig.Progression.State,
+                new EliteGateRequirement(SpotObjectiveIds, 25));
+
+            Assert.IsTrue(rig.Quests.State.ExpandedObjectivesUnlocked);
+            Assert.That(guidance.Text, Is.EqualTo("Shield Dump | Intro 2/5"));
         }
 
         [Test]
