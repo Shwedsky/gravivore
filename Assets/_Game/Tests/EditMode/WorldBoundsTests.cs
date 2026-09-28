@@ -99,7 +99,7 @@ namespace Gravivore.Tests.EditMode
                 bossArenaCenter ?? new Vector3(0f, 0f, 27f),
                 5f,
                 "magnetar-guard",
-                new EliteGateRequirement(new[] { "a", "b", "c", "d", "e" }, 5));
+                new EliteGateRequirement(new[] { "qa", "qb", "qc", "qd", "qe" }, 5));
         }
 
         private static WorldZoneConfiguration Zone(

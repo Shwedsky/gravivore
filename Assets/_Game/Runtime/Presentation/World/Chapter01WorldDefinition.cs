@@ -46,7 +46,7 @@ namespace Gravivore.Presentation.World
         [SerializeField] private Vector3 _bossArenaCenter = new Vector3(0f, 0f, 27f);
         [SerializeField, Min(1f)] private float _bossArenaRadius = 5f;
         [SerializeField] private string _eliteEnemyId = "magnetar-guard";
-        [SerializeField] private string[] _requiredFirstKillEnemyIds = Array.Empty<string>();
+        [SerializeField] private string[] _requiredQuestObjectiveIds = Array.Empty<string>();
         [SerializeField, Min(1)] private long _minimumAssimilationScore = 25;
 
         public Chapter01WorldConfiguration Configuration => CreateConfiguration();
@@ -75,7 +75,7 @@ namespace Gravivore.Presentation.World
                 _bossArenaCenter,
                 _bossArenaRadius,
                 _eliteEnemyId,
-                new EliteGateRequirement(_requiredFirstKillEnemyIds, _minimumAssimilationScore));
+                new EliteGateRequirement(_requiredQuestObjectiveIds, _minimumAssimilationScore));
         }
 
         public void ValidateOrThrow() => _ = CreateConfiguration();

@@ -5,11 +5,13 @@ using Gravivore.Gameplay.Encounters;
 using Gravivore.Gameplay.Equipment;
 using Gravivore.Gameplay.Player;
 using Gravivore.Gameplay.Progression;
+using Gravivore.Gameplay.Quests;
 using Gravivore.Gameplay.World;
 using Gravivore.Presentation.Camera;
 using Gravivore.Presentation.Combat;
 using Gravivore.Presentation.Evolution;
 using Gravivore.Presentation.Input;
+using Gravivore.Presentation.Quests;
 using Gravivore.Presentation.UI;
 using Gravivore.Presentation.World;
 using UnityEngine;
@@ -28,6 +30,8 @@ namespace Gravivore.Presentation.Composition
         [SerializeField] private GravityAttackSettings _gravityAttackSettings;
         [SerializeField] private SpawnSpotDefinition[] _spawnSpotDefinitions;
         [SerializeField] private PlayerProgressionDefinition _progressionDefinition;
+        [SerializeField] private QuestDefinition _questDefinition;
+        [SerializeField] private QuestOnboardingDefinition _questOnboardingDefinition;
         [SerializeField] private EvolutionDefinition _evolutionDefinition;
         [SerializeField] private Chapter01WorldDefinition _worldDefinition;
         [SerializeField] private MagnetarGuardDefinition _magnetarGuardDefinition;
@@ -44,7 +48,10 @@ namespace Gravivore.Presentation.Composition
         private Transform _playerVisualRoot;
         private EliteEncounterActivationBridge _eliteActivationBridge;
         private EliteWorldUnlockBridge _eliteWorldUnlockBridge;
+        private QuestMovementSignal _questMovementSignal;
         private bool _isComposed;
+        private RectTransform _hudRoot;
+        private FloatingJoystickInput _movementInput;
 
         public GameObject PlayerObject { get; private set; }
 
@@ -61,6 +68,8 @@ namespace Gravivore.Presentation.Composition
         public EnemyPopulationController EnemyPopulation { get; private set; }
 
         public AssimilationProgressionService Progression { get; private set; }
+        public QuestService Quests { get; private set; }
+        public QuestTrackerPresenter QuestTracker { get; private set; }
 
         public PlayerEvolutionPresenter EvolutionPresenter { get; private set; }
 
@@ -91,7 +100,8 @@ namespace Gravivore.Presentation.Composition
             if (_movementSettings == null || _playerStatsDefinition == null || _equipmentCatalogDefinition == null ||
                 _gravityAttackSettings == null ||
                 _spawnSpotDefinitions == null || _spawnSpotDefinitions.Length != 5 || _globalLiveEnemyCap < 1 ||
-                _progressionDefinition == null || _evolutionDefinition == null || _worldDefinition == null ||
+                _progressionDefinition == null || _questDefinition == null || _questOnboardingDefinition == null ||
+                _evolutionDefinition == null || _worldDefinition == null ||
                 _magnetarGuardDefinition == null || _custodianBossDefinition == null ||
                 _joystickSettings == null || _cameraSettings == null ||
                 float.IsNaN(_postRespawnInvulnerabilitySeconds) ||
@@ -99,7 +109,7 @@ namespace Gravivore.Presentation.Composition
                 _postRespawnInvulnerabilitySeconds < 0f)
             {
                 throw new InvalidOperationException(
-                    "Scene composition requires movement, stats, equipment, attack, progression, evolution, world, elite, boss, five spawn spots, joystick, and camera settings.");
+                    "Scene composition requires movement, stats, equipment, attack, progression, quests, evolution, world, elite, boss, five spawn spots, joystick, and camera settings.");
             }
 
             PlayerStats = _playerStatsDefinition.CreateState();
@@ -107,12 +117,12 @@ namespace Gravivore.Presentation.Composition
             Inventory = new InventoryState();
             Equipment = new EquipmentService(PlayerStats, EquipmentCatalog, Inventory);
             CreateHud(out var uiTouchExclusion, out var joystickView);
-            var movementInput = CreateMovementInput(uiTouchExclusion, joystickView);
+            _movementInput = CreateMovementInput(uiTouchExclusion, joystickView);
             var locomotion = CreatePlayer();
             var cameraTransform = CreateCamera(PlayerObject.transform);
 
             locomotion.Initialize(
-                movementInput,
+                _movementInput,
                 cameraTransform,
                 PlayerStats,
                 _movementSettings.RotationDegreesPerSecond);
@@ -125,8 +135,9 @@ namespace Gravivore.Presentation.Composition
                 new ProgressionState(),
                 _progressionDefinition.Configuration,
                 EnemyPopulation);
-            InitializeWorld();
             InitializeEncounters();
+            InitializeQuests();
+            InitializeWorld();
             InitializeEvolution();
             _isComposed = true;
         }
@@ -161,6 +172,7 @@ namespace Gravivore.Presentation.Composition
             safeAreaTransform.offsetMin = Vector2.zero;
             safeAreaTransform.offsetMax = Vector2.zero;
             safeAreaObject.AddComponent<SafeAreaHudRoot>();
+            _hudRoot = safeAreaTransform;
 
             var exclusionObject = new GameObject("HUD Touch Exclusion", typeof(RectTransform));
             var exclusionTransform = exclusionObject.GetComponent<RectTransform>();
@@ -261,12 +273,38 @@ namespace Gravivore.Presentation.Composition
                 configuration.EliteGate.Id,
                 configuration.BossGate.Id,
                 configuration.EliteEnemyId);
-            WorldUnlocks = new WorldUnlockService(Progression, configuration.EliteRequirement, state);
+            WorldUnlocks = new WorldUnlockService(Progression, Quests, configuration.EliteRequirement, state);
 
             var worldObject = new GameObject("Chapter 01 World", typeof(Chapter01WorldPresenter));
             worldObject.transform.SetParent(transform, false);
             WorldPresenter = worldObject.GetComponent<Chapter01WorldPresenter>();
             WorldPresenter.Initialize(configuration, state);
+        }
+
+        private void InitializeQuests()
+        {
+            var catalog = _questDefinition.Catalog;
+            var state = new QuestState(catalog);
+            Quests = new QuestService(catalog, state, Progression, MagnetarGuard, BossCompletion);
+
+            var movementObject = new GameObject("Quest Movement Signal", typeof(QuestMovementSignal));
+            movementObject.transform.SetParent(transform, false);
+            _questMovementSignal = movementObject.GetComponent<QuestMovementSignal>();
+            _questMovementSignal.Initialize(
+                _movementInput,
+                Quests,
+                _questOnboardingDefinition.MovementInputDeadZone,
+                _questOnboardingDefinition.MovementInputSeconds);
+
+            var trackerObject = new GameObject("Quest Tracker Presentation", typeof(QuestTrackerPresenter));
+            trackerObject.transform.SetParent(transform, false);
+            QuestTracker = trackerObject.GetComponent<QuestTrackerPresenter>();
+            QuestTracker.Initialize(
+                Quests,
+                _worldDefinition.Configuration,
+                _magnetarGuardDefinition.Configuration.SpawnPosition,
+                _hudRoot,
+                CreateMaterial);
         }
 
         private void InitializeEncounters()
@@ -470,7 +508,9 @@ namespace Gravivore.Presentation.Composition
         {
             EvolutionPresenter?.Shutdown();
             EncounterTelegraphs?.Shutdown();
+            QuestTracker?.Shutdown();
             CustodianBoss?.Shutdown();
+            Quests?.Dispose();
             _eliteActivationBridge?.Dispose();
             _eliteWorldUnlockBridge?.Dispose();
             WorldPresenter?.Shutdown();

@@ -1,0 +1,106 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7110000000000000000000000000014, type: 3}
+  m_Name: S11_Chapter01OnboardingQuest
+  m_EditorClassIdentifier:
+  _questId: chapter01-onboarding
+  _objectives:
+  - _id: chapter01-movement
+    _title: Move
+    _type: 0
+    _requiredCount: 1
+    _enemyId:
+    _spotId:
+    _encounterId:
+    _targetType: 0
+    _targetId:
+    _expandsObjectiveUi: 0
+  - _id: intro-relay-yard
+    _title: Relay Yard
+    _type: 1
+    _requiredCount: 1
+    _enemyId: scout-drone
+    _spotId: relay-yard
+    _encounterId:
+    _targetType: 1
+    _targetId: relay-yard
+    _expandsObjectiveUi: 0
+  - _id: first-assimilation
+    _title: Assimilate core
+    _type: 2
+    _requiredCount: 1
+    _enemyId: scout-drone
+    _spotId:
+    _encounterId:
+    _targetType: 1
+    _targetId: cutting-floor
+    _expandsObjectiveUi: 0
+  - _id: intro-cutting-floor
+    _title: Cutting Floor
+    _type: 1
+    _requiredCount: 1
+    _enemyId: cutter-unit
+    _spotId: cutting-floor
+    _encounterId:
+    _targetType: 1
+    _targetId: cutting-floor
+    _expandsObjectiveUi: 1
+  - _id: intro-shield-dump
+    _title: Shield Dump
+    _type: 1
+    _requiredCount: 1
+    _enemyId: warden
+    _spotId: shield-dump
+    _encounterId:
+    _targetType: 1
+    _targetId: shield-dump
+    _expandsObjectiveUi: 0
+  - _id: intro-capacitor-field
+    _title: Capacitor Field
+    _type: 1
+    _requiredCount: 1
+    _enemyId: arc-drone
+    _spotId: capacitor-field
+    _encounterId:
+    _targetType: 1
+    _targetId: capacitor-field
+    _expandsObjectiveUi: 0
+  - _id: intro-hauler-graveyard
+    _title: Hauler Graveyard
+    _type: 1
+    _requiredCount: 1
+    _enemyId: carrier
+    _spotId: hauler-graveyard
+    _encounterId:
+    _targetType: 1
+    _targetId: hauler-graveyard
+    _expandsObjectiveUi: 0
+  - _id: defeat-magnetar-guard
+    _title: Magnetar Guard
+    _type: 3
+    _requiredCount: 1
+    _enemyId:
+    _spotId:
+    _encounterId: magnetar-guard
+    _targetType: 2
+    _targetId: magnetar-guard
+    _expandsObjectiveUi: 0
+  - _id: defeat-custodian-m0
+    _title: Custodian M-0
+    _type: 4
+    _requiredCount: 1
+    _enemyId:
+    _spotId:
+    _encounterId: custodian-m0
+    _targetType: 3
+    _targetId: custodian-m0
+    _expandsObjectiveUi: 0

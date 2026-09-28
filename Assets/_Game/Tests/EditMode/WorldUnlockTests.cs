@@ -3,6 +3,7 @@ using Gravivore.Core.Stats;
 using Gravivore.Gameplay.Enemies;
 using Gravivore.Gameplay.Player;
 using Gravivore.Gameplay.Progression;
+using Gravivore.Gameplay.Quests;
 using Gravivore.Gameplay.World;
 using NUnit.Framework;
 using UnityEngine;
@@ -14,6 +15,10 @@ namespace Gravivore.Tests.EditMode
         private static readonly string[] EnemyIds =
         {
             "scout-drone", "cutter-unit", "warden", "arc-drone", "carrier"
+        };
+        private static readonly string[] ObjectiveIds =
+        {
+            "intro-relay-yard", "intro-cutting-floor", "intro-shield-dump", "intro-capacitor-field", "intro-hauler-graveyard"
         };
 
         [Test]
@@ -28,9 +33,10 @@ namespace Gravivore.Tests.EditMode
         public void EliteRequirement_RequiresScoreAndEveryFirstKill()
         {
             using var progression = CreateProgression(1);
-            var requirement = new EliteGateRequirement(EnemyIds, 5);
+            using var quests = CreateQuestService(progression);
+            var requirement = new EliteGateRequirement(ObjectiveIds, 5);
             var state = CreateWorldState();
-            using var world = new WorldUnlockService(progression, requirement, state);
+            using var world = new WorldUnlockService(progression, quests, requirement, state);
 
             for (var i = 0; i < 5; i++) progression.TryGrant(Death(i + 1, "scout-drone"));
             Assert.IsFalse(state.EliteGateUnlocked, "Assimilation score alone must not unlock the gate.");
@@ -44,9 +50,11 @@ namespace Gravivore.Tests.EditMode
         {
             using var progression = CreateProgression(1);
             var state = CreateWorldState();
+            var quests = CreateCompletedQuestService(ObjectiveIds.Length);
             using var world = new WorldUnlockService(
                 progression,
-                new EliteGateRequirement(EnemyIds, 6),
+                quests,
+                new EliteGateRequirement(ObjectiveIds, 6),
                 state);
 
             GrantFirstKills(progression);
@@ -58,11 +66,13 @@ namespace Gravivore.Tests.EditMode
         {
             using var progression = CreateProgression(1);
             var state = CreateWorldState();
+            var quests = CreateCompletedQuestService(ObjectiveIds.Length);
             var eventCount = 0;
             state.GateUnlocked += _ => eventCount++;
             using var world = new WorldUnlockService(
                 progression,
-                new EliteGateRequirement(EnemyIds, 5),
+                quests,
+                new EliteGateRequirement(ObjectiveIds, 5),
                 state);
 
             GrantFirstKills(progression);
@@ -126,11 +136,34 @@ namespace Gravivore.Tests.EditMode
         {
             using var progression = CreateProgression(1);
             var state = CreateWorldState();
+            var quests = CreateCompletedQuestService(ObjectiveIds.Length);
             using var world = new WorldUnlockService(
                 progression,
-                new EliteGateRequirement(EnemyIds, 5),
+                quests,
+                new EliteGateRequirement(ObjectiveIds, 5),
                 state);
             progression.Dirty += _ => throw new InvalidOperationException("presentation failure");
+
+            for (var i = 0; i < EnemyIds.Length; i++)
+            {
+                Assert.Throws<AggregateException>(() => progression.TryGrant(Death(i + 1, EnemyIds[i])));
+            }
+
+            Assert.IsTrue(state.EliteGateUnlocked);
+        }
+
+        [Test]
+        public void QuestObserverFailure_DoesNotBlockEliteUnlockEvaluation()
+        {
+            using var progression = CreateProgression(1);
+            using var quests = CreateQuestService(progression);
+            quests.ObjectiveCompleted += _ => throw new InvalidOperationException("quest presentation failure");
+            var state = CreateWorldState();
+            using var world = new WorldUnlockService(
+                progression,
+                quests,
+                new EliteGateRequirement(ObjectiveIds, 5),
+                state);
 
             for (var i = 0; i < EnemyIds.Length; i++)
             {
@@ -147,6 +180,59 @@ namespace Gravivore.Tests.EditMode
             Assert.Throws<ArgumentOutOfRangeException>(() => new EliteGateRequirement(new[] { "a" }, 0));
             Assert.Throws<ArgumentException>(() => new WorldUnlockSnapshot(false, true, true));
             Assert.Throws<ArgumentException>(() => new WorldUnlockSnapshot(true, false, true));
+        }
+
+        private static QuestService CreateCompletedQuestService(int completedCount)
+        {
+            var catalog = CreateQuestCatalog();
+            var completed = new System.Collections.Generic.List<string>();
+            var progress = new System.Collections.Generic.Dictionary<string, int>(StringComparer.Ordinal);
+            for (var i = 0; i < completedCount; i++)
+            {
+                if (i < ObjectiveIds.Length)
+                {
+                    completed.Add(ObjectiveIds[i]);
+                    progress[ObjectiveIds[i]] = 1;
+                }
+            }
+
+            var state = QuestState.Restore(
+                catalog,
+                new QuestSnapshot(
+                    catalog.QuestId,
+                    progress,
+                    completed,
+                    Array.Empty<EnemyLifeId>(),
+                    completedCount >= 2,
+                    false));
+            return new QuestService(catalog, state);
+        }
+
+        private static QuestService CreateQuestService(AssimilationProgressionService progression)
+        {
+            var catalog = CreateQuestCatalog();
+            return new QuestService(catalog, new QuestState(catalog), progression);
+        }
+
+        private static QuestCatalog CreateQuestCatalog()
+        {
+            var objectives = new QuestObjective[ObjectiveIds.Length];
+            for (var i = 0; i < objectives.Length; i++)
+            {
+                objectives[i] = new QuestObjective(
+                    ObjectiveIds[i],
+                    ObjectiveIds[i],
+                    QuestObjectiveType.EnemyDefeated,
+                    1,
+                    EnemyIds[i],
+                    "spot-" + i,
+                    string.Empty,
+                    QuestTargetType.FarmingZone,
+                    "spot-" + i,
+                    false);
+            }
+
+            return new QuestCatalog("chapter01-onboarding", objectives);
         }
 
         private static void GrantFirstKills(AssimilationProgressionService progression)
