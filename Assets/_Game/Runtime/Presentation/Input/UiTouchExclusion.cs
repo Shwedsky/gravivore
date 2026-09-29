@@ -7,9 +7,9 @@ namespace Gravivore.Presentation.Input
     public sealed class UiTouchExclusion : MonoBehaviour, IUiTouchExclusion
     {
         [SerializeField] private RectTransform[] _excludedRegions = Array.Empty<RectTransform>();
-        [SerializeField] private Camera _uiCamera;
+        [SerializeField] private UnityEngine.Camera _uiCamera;
 
-        public void Initialize(RectTransform[] excludedRegions, Camera uiCamera = null)
+        public void Initialize(RectTransform[] excludedRegions, UnityEngine.Camera uiCamera = null)
         {
             _excludedRegions = excludedRegions ?? Array.Empty<RectTransform>();
             _uiCamera = uiCamera;
