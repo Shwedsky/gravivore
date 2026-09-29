@@ -10,6 +10,7 @@ using Gravivore.Gameplay.Player;
 using Gravivore.Gameplay.Progression;
 using Gravivore.Gameplay.Quests;
 using Gravivore.Gameplay.World;
+using Gravivore.Persistence.Profile;
 using Gravivore.Presentation.Evolution;
 using Gravivore.Presentation.Quests;
 using Gravivore.Presentation.World;
@@ -71,6 +72,7 @@ namespace Gravivore.Editor
             "Assets/_Game/Content/Definitions/S10_EquipmentCatalog.asset",
             "Assets/_Game/Content/Definitions/S11_Chapter01OnboardingQuest.asset",
             "Assets/_Game/Content/Definitions/S11_OnboardingPresentation.asset",
+            "Assets/_Game/Content/Definitions/S12_SaveOffline.asset",
             UrpConfigurator.UrpAssetPath,
             UrpConfigurator.RendererDataPath,
             "build-android.ps1"
@@ -106,6 +108,41 @@ namespace Gravivore.Editor
             ValidateEliteAndBossEncounters();
             ValidateEquipment();
             ValidateQuests();
+            ValidateSaveOffline();
+        }
+
+        private static void ValidateSaveOffline()
+        {
+            const string definitionPath = "Assets/_Game/Content/Definitions/S12_SaveOffline.asset";
+            const string scenePath = "Assets/_Game/Content/Scenes/Chapter01_ScrapExclusion.unity";
+            var definition = AssetDatabase.LoadAssetAtPath<SaveOfflineDefinition>(definitionPath);
+            if (definition == null)
+            {
+                throw new InvalidOperationException("Canonical S12 save/offline definition is required.");
+            }
+
+            definition.ValidateOrThrow();
+            var configuration = definition.Configuration;
+            if (configuration.CurrentSchemaVersion <= 0 ||
+                configuration.OfflineReward.MaximumEligibleDuration != TimeSpan.FromHours(2) ||
+                configuration.OfflineReward.Efficiency <= 0d ||
+                configuration.OfflineReward.Efficiency > 1d ||
+                double.IsNaN(configuration.OfflineReward.ActiveBaselineUnitsPerHour) ||
+                double.IsInfinity(configuration.OfflineReward.ActiveBaselineUnitsPerHour) ||
+                configuration.OfflineReward.ActiveBaselineUnitsPerHour < 0d ||
+                float.IsNaN(configuration.AutosaveDelaySeconds) ||
+                float.IsInfinity(configuration.AutosaveDelaySeconds) ||
+                configuration.AutosaveDelaySeconds < 0.1f ||
+                configuration.AutosaveDelaySeconds > 10f)
+            {
+                throw new InvalidOperationException("Canonical S12 save/offline values are invalid.");
+            }
+
+            var dependencies = AssetDatabase.GetDependencies(scenePath, true);
+            if (Array.IndexOf(dependencies, definitionPath) < 0)
+            {
+                throw new InvalidOperationException("The canonical chapter scene must reference the S12 save/offline definition.");
+            }
         }
 
         private static void ValidateQuests()

@@ -67,6 +67,12 @@ namespace Gravivore.Gameplay.Encounters
             SetPosition(configuration.StartPosition);
             _playerHealth.Died += HandlePlayerDied;
             _initialized = true;
+            if (_completion.IsDefeated)
+            {
+                _stateMachine.MarkDead();
+                _body.enabled = false;
+                _sensingCollider.enabled = false;
+            }
         }
 
         public bool IsHostileTo(CombatFaction faction) => faction == CombatFaction.Player;

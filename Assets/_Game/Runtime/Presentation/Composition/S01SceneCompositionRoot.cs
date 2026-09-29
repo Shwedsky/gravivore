@@ -1,12 +1,15 @@
 using System;
+using Gravivore.Core.Time;
 using Gravivore.Gameplay.Combat;
 using Gravivore.Gameplay.Enemies;
 using Gravivore.Gameplay.Encounters;
 using Gravivore.Gameplay.Equipment;
+using Gravivore.Gameplay.Offline;
 using Gravivore.Gameplay.Player;
 using Gravivore.Gameplay.Progression;
 using Gravivore.Gameplay.Quests;
 using Gravivore.Gameplay.World;
+using Gravivore.Persistence.Profile;
 using Gravivore.Presentation.Camera;
 using Gravivore.Presentation.Combat;
 using Gravivore.Presentation.Evolution;
@@ -32,6 +35,7 @@ namespace Gravivore.Presentation.Composition
         [SerializeField] private PlayerProgressionDefinition _progressionDefinition;
         [SerializeField] private QuestDefinition _questDefinition;
         [SerializeField] private QuestOnboardingDefinition _questOnboardingDefinition;
+        [SerializeField] private SaveOfflineDefinition _saveOfflineDefinition;
         [SerializeField] private EvolutionDefinition _evolutionDefinition;
         [SerializeField] private Chapter01WorldDefinition _worldDefinition;
         [SerializeField] private MagnetarGuardDefinition _magnetarGuardDefinition;
@@ -52,6 +56,9 @@ namespace Gravivore.Presentation.Composition
         private bool _isComposed;
         private RectTransform _hudRoot;
         private FloatingJoystickInput _movementInput;
+        private string _profileDirectoryOverride;
+        private ITimeProvider _timeProviderOverride;
+        private ProfileSession _profileSession;
 
         public GameObject PlayerObject { get; private set; }
 
@@ -83,6 +90,15 @@ namespace Gravivore.Presentation.Composition
 
         public BossCompletionState BossCompletion { get; private set; }
 
+        public SaveCoordinator SaveCoordinator { get; private set; }
+
+        public OfflineRewardService OfflineRewards => _profileSession?.OfflineRewards;
+
+        public OfflineReturnSummary OfflineReturnSummary =>
+            _profileSession != null ? _profileSession.ReturnSummary : default;
+
+        public Guid ProfileId => _profileSession != null ? _profileSession.State.ProfileId : Guid.Empty;
+
         public EncounterTelegraphPresenter EncounterTelegraphs { get; private set; }
 
         private void Start()
@@ -101,6 +117,7 @@ namespace Gravivore.Presentation.Composition
                 _gravityAttackSettings == null ||
                 _spawnSpotDefinitions == null || _spawnSpotDefinitions.Length != 5 || _globalLiveEnemyCap < 1 ||
                 _progressionDefinition == null || _questDefinition == null || _questOnboardingDefinition == null ||
+                _saveOfflineDefinition == null ||
                 _evolutionDefinition == null || _worldDefinition == null ||
                 _magnetarGuardDefinition == null || _custodianBossDefinition == null ||
                 _joystickSettings == null || _cameraSettings == null ||
@@ -112,9 +129,20 @@ namespace Gravivore.Presentation.Composition
                     "Scene composition requires movement, stats, equipment, attack, progression, quests, evolution, world, elite, boss, five spawn spots, joystick, and camera settings.");
             }
 
-            PlayerStats = _playerStatsDefinition.CreateState();
+            var statsConfiguration = _playerStatsDefinition.Configuration;
+            var progressionConfiguration = _progressionDefinition.Configuration;
+            var worldConfiguration = _worldDefinition.Configuration;
+            var questCatalog = _questDefinition.Catalog;
             EquipmentCatalog = _equipmentCatalogDefinition.Catalog;
-            Inventory = new InventoryState();
+            var bossConfiguration = _custodianBossDefinition.CreateConfiguration(worldConfiguration);
+            InitializeProfile(
+                statsConfiguration,
+                progressionConfiguration,
+                worldConfiguration,
+                questCatalog,
+                bossConfiguration.Id);
+            PlayerStats = _profileSession.State.PlayerStats;
+            Inventory = _profileSession.State.Inventory;
             Equipment = new EquipmentService(PlayerStats, EquipmentCatalog, Inventory);
             CreateHud(out var uiTouchExclusion, out var joystickView);
             _movementInput = CreateMovementInput(uiTouchExclusion, joystickView);
@@ -132,15 +160,70 @@ namespace Gravivore.Presentation.Composition
             InitializeEnemyPopulation();
             Progression = new AssimilationProgressionService(
                 PlayerStats,
-                new ProgressionState(),
-                _progressionDefinition.Configuration,
+                _profileSession.State.Progression,
+                progressionConfiguration,
                 EnemyPopulation);
-            InitializeEncounterActors();
-            InitializeQuests();
-            InitializeWorld();
+            InitializeEncounterActors(worldConfiguration, bossConfiguration);
+            InitializeQuests(questCatalog, worldConfiguration);
+            InitializeWorld(worldConfiguration);
             WireEncounterWorldBridges();
             InitializeEvolution();
+            SaveCoordinator = new SaveCoordinator(
+                _profileSession,
+                PlayerStats,
+                Progression,
+                Equipment,
+                Quests,
+                WorldUnlocks.State,
+                BossCompletion,
+                _profileSession.State.Offline,
+                _saveOfflineDefinition.Configuration.AutosaveDelaySeconds);
             _isComposed = true;
+        }
+
+        public void ConfigurePersistence(string directory, ITimeProvider timeProvider)
+        {
+            if (_isComposed) throw new InvalidOperationException("Persistence must be configured before composition.");
+            _profileDirectoryOverride = !string.IsNullOrWhiteSpace(directory)
+                ? directory
+                : throw new ArgumentException("Profile directory is required.", nameof(directory));
+            _timeProviderOverride = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
+        }
+
+        public bool FlushNow() => SaveCoordinator != null && SaveCoordinator.FlushNow();
+
+        private void InitializeProfile(
+            PlayerStatsConfiguration stats,
+            ProgressionConfiguration progression,
+            Chapter01WorldConfiguration world,
+            QuestCatalog quests,
+            string bossId)
+        {
+            _saveOfflineDefinition.ValidateOrThrow();
+            var configuration = _saveOfflineDefinition.Configuration;
+            var time = _timeProviderOverride ?? new SystemUtcTimeProvider();
+            var serializer = new UnityJsonSaveSerializer();
+            var migrations = new SaveMigrationPipeline(
+                configuration.CurrentSchemaVersion,
+                serializer,
+                new ISaveMigration[] { new SaveMigrationV0ToV1() });
+            var diagnostics = new UnitySaveDiagnostics();
+            var repository = new JsonProfileRepository(
+                _profileDirectoryOverride ?? Application.persistentDataPath,
+                serializer,
+                migrations,
+                time,
+                diagnostics);
+            var context = new ProfileRestoreContext(
+                stats,
+                progression,
+                EquipmentCatalog,
+                quests,
+                world.EliteGate.Id,
+                world.BossGate.Id,
+                world.EliteEnemyId,
+                bossId);
+            _profileSession = ProfileSession.Start(repository, context, configuration, time, diagnostics);
         }
 
         private void CreateHud(
@@ -267,13 +350,9 @@ namespace Gravivore.Presentation.Composition
                 PlayerObject.GetComponent<EvolutionVfxRelay>());
         }
 
-        private void InitializeWorld()
+        private void InitializeWorld(Chapter01WorldConfiguration configuration)
         {
-            var configuration = _worldDefinition.Configuration;
-            var state = new WorldUnlockState(
-                configuration.EliteGate.Id,
-                configuration.BossGate.Id,
-                configuration.EliteEnemyId);
+            var state = _profileSession.State.World;
             WorldUnlocks = new WorldUnlockService(Progression, Quests, configuration.EliteRequirement, state);
 
             var worldObject = new GameObject("Chapter 01 World", typeof(Chapter01WorldPresenter));
@@ -282,10 +361,9 @@ namespace Gravivore.Presentation.Composition
             WorldPresenter.Initialize(configuration, state);
         }
 
-        private void InitializeQuests()
+        private void InitializeQuests(QuestCatalog catalog, Chapter01WorldConfiguration world)
         {
-            var catalog = _questDefinition.Catalog;
-            var state = new QuestState(catalog);
+            var state = _profileSession.State.Quests;
             Quests = new QuestService(catalog, state, Progression, MagnetarGuard, BossCompletion);
 
             var movementObject = new GameObject("Quest Movement Signal", typeof(QuestMovementSignal));
@@ -303,18 +381,19 @@ namespace Gravivore.Presentation.Composition
             QuestTracker.Initialize(
                 Quests,
                 Progression,
-                _worldDefinition.Configuration.EliteRequirement,
-                _worldDefinition.Configuration,
+                world.EliteRequirement,
+                world,
                 _magnetarGuardDefinition.Configuration.SpawnPosition,
                 _hudRoot,
                 CreateMaterial);
         }
 
-        private void InitializeEncounterActors()
+        private void InitializeEncounterActors(
+            Chapter01WorldConfiguration world,
+            CustodianBossConfiguration bossConfiguration)
         {
             var targetLayer = LayerMask.NameToLayer("CombatTarget");
             if (targetLayer < 0) throw new InvalidOperationException("CombatTarget layer is required for encounters.");
-            var world = _worldDefinition.Configuration;
 
             var eliteObject = CreateEncounterObject(
                 "Magnetar Guard",
@@ -345,8 +424,7 @@ namespace Gravivore.Presentation.Composition
                 out var bossTargetPoint,
                 out var bossSensor,
                 out _bossMaterial);
-            var bossConfiguration = _custodianBossDefinition.CreateConfiguration(world);
-            BossCompletion = new BossCompletionState(bossConfiguration.Id);
+            BossCompletion = _profileSession.State.Boss;
             CustodianBoss = bossObject.GetComponent<CustodianBossController>();
             CustodianBoss.Initialize(
                 bossBody,
@@ -512,6 +590,8 @@ namespace Gravivore.Presentation.Composition
 
         private void OnDestroy()
         {
+            SaveCoordinator?.FlushNow();
+            SaveCoordinator?.Dispose();
             EvolutionPresenter?.Shutdown();
             EncounterTelegraphs?.Shutdown();
             QuestTracker?.Shutdown();
@@ -536,6 +616,21 @@ namespace Gravivore.Presentation.Composition
             if (_eliteMaterial != null) Destroy(_eliteMaterial);
             if (_bossMaterial != null) Destroy(_bossMaterial);
 
+        }
+
+        private void Update()
+        {
+            SaveCoordinator?.Tick(Time.unscaledDeltaTime);
+        }
+
+        private void OnApplicationPause(bool paused)
+        {
+            if (paused) SaveCoordinator?.FlushNow();
+        }
+
+        private void OnApplicationQuit()
+        {
+            SaveCoordinator?.FlushNow();
         }
 
         private static Material CreateMaterial(Color color)

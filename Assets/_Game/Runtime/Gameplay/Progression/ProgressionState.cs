@@ -5,6 +5,48 @@ using Gravivore.Gameplay.Player;
 
 namespace Gravivore.Gameplay.Progression
 {
+    public readonly struct ProgressionSnapshot
+    {
+        public ProgressionSnapshot(
+            float powerExperience,
+            float hullExperience,
+            float armorExperience,
+            float fluxExperience,
+            float mobilityExperience,
+            long totalAssimilationScore,
+            IReadOnlyCollection<string> firstKillEnemyIds)
+        {
+            PowerExperience = powerExperience;
+            HullExperience = hullExperience;
+            ArmorExperience = armorExperience;
+            FluxExperience = fluxExperience;
+            MobilityExperience = mobilityExperience;
+            TotalAssimilationScore = totalAssimilationScore;
+            FirstKillEnemyIds = firstKillEnemyIds;
+        }
+
+        public float PowerExperience { get; }
+        public float HullExperience { get; }
+        public float ArmorExperience { get; }
+        public float FluxExperience { get; }
+        public float MobilityExperience { get; }
+        public long TotalAssimilationScore { get; }
+        public IReadOnlyCollection<string> FirstKillEnemyIds { get; }
+
+        public float GetStatExperience(PlayerStatType stat)
+        {
+            switch (stat)
+            {
+                case PlayerStatType.Power: return PowerExperience;
+                case PlayerStatType.Hull: return HullExperience;
+                case PlayerStatType.Armor: return ArmorExperience;
+                case PlayerStatType.Flux: return FluxExperience;
+                case PlayerStatType.Mobility: return MobilityExperience;
+                default: throw new ArgumentOutOfRangeException(nameof(stat));
+            }
+        }
+    }
+
     public sealed class ProgressionState
     {
         private const int StatCount = 5;
@@ -16,6 +58,40 @@ namespace Gravivore.Gameplay.Progression
         public long TotalAssimilationScore { get; private set; }
 
         public int ProcessedLifeCount => _processedLives.Count;
+
+        public static ProgressionState Restore(in ProgressionSnapshot snapshot)
+        {
+            if (snapshot.TotalAssimilationScore < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(snapshot), "Total assimilation cannot be negative.");
+            }
+
+            var state = new ProgressionState { TotalAssimilationScore = snapshot.TotalAssimilationScore };
+            for (var i = 0; i < StatCount; i++)
+            {
+                var stat = (PlayerStatType)i;
+                var experience = snapshot.GetStatExperience(stat);
+                if (float.IsNaN(experience) || float.IsInfinity(experience) || experience < 0f)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(snapshot), $"Invalid experience for {stat}.");
+                }
+
+                state._statExperience[i] = experience;
+            }
+
+            if (snapshot.FirstKillEnemyIds != null)
+            {
+                foreach (var enemyId in snapshot.FirstKillEnemyIds)
+                {
+                    if (string.IsNullOrWhiteSpace(enemyId) || !state._firstKills.Add(enemyId))
+                    {
+                        throw new ArgumentException("First-kill ids must be non-empty and unique.", nameof(snapshot));
+                    }
+                }
+            }
+
+            return state;
+        }
 
         public float GetStatExperience(PlayerStatType stat)
         {
@@ -56,6 +132,20 @@ namespace Gravivore.Gameplay.Progression
             {
                 throw new InvalidOperationException("First-kill state is inconsistent.");
             }
+        }
+
+        public ProgressionSnapshot ExportSnapshot()
+        {
+            var firstKills = new List<string>(_firstKills);
+            firstKills.Sort(StringComparer.Ordinal);
+            return new ProgressionSnapshot(
+                GetStatExperience(PlayerStatType.Power),
+                GetStatExperience(PlayerStatType.Hull),
+                GetStatExperience(PlayerStatType.Armor),
+                GetStatExperience(PlayerStatType.Flux),
+                GetStatExperience(PlayerStatType.Mobility),
+                TotalAssimilationScore,
+                firstKills);
         }
 
         private static int GetStatIndex(PlayerStatType stat)

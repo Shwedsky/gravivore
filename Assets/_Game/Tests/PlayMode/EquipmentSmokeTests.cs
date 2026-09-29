@@ -4,10 +4,8 @@ using Gravivore.Gameplay.Combat;
 using Gravivore.Gameplay.Equipment;
 using Gravivore.Gameplay.Player;
 using Gravivore.Persistence;
-using Gravivore.Presentation.Composition;
 using NUnit.Framework;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
 namespace Gravivore.Tests.PlayMode
@@ -17,8 +15,9 @@ namespace Gravivore.Tests.PlayMode
         [UnityTest]
         public IEnumerator ChapterScene_EquipmentUpdatesCombatHealthAndMovementStats()
         {
-            yield return LoadChapter();
-            var root = FindCompositionRoot();
+            var scene = new CanonicalSceneTestScope();
+            yield return scene.Load();
+            var root = scene.Root;
             Assert.IsNotNull(root.EquipmentCatalog);
             Assert.IsNotNull(root.Inventory);
             Assert.IsNotNull(root.Equipment);
@@ -41,13 +40,15 @@ namespace Gravivore.Tests.PlayMode
             root.Equipment.Equip("pulse-capacitor", EquipmentSlot.Core);
             Assert.That(root.PlayerStats.DerivedStats.BaseDamage, Is.EqualTo(baseDamage).Within(0.0001f));
             Assert.That(root.PlayerStats.DerivedStats.AttackInterval, Is.EqualTo(baseInterval - 0.15f).Within(0.0001f));
+            yield return scene.Cleanup();
         }
 
         [UnityTest]
         public IEnumerator DeathRespawn_PreservesEquippedEffectsAndPermanentLevels()
         {
-            yield return LoadChapter();
-            var root = FindCompositionRoot();
+            var scene = new CanonicalSceneTestScope();
+            yield return scene.Load();
+            var root = scene.Root;
             GrantAndEquip(root.Equipment, "layered-carapace", EquipmentSlot.Chassis);
             var expectedLevels = root.PlayerStats.BaseLevels;
             var expectedMaximumHp = root.PlayerHealth.MaximumHitPoints;
@@ -60,6 +61,7 @@ namespace Gravivore.Tests.PlayMode
             Assert.That(root.PlayerStats.BaseLevels.Hull, Is.EqualTo(expectedLevels.Hull));
             Assert.IsTrue(root.Inventory.TryGetEquipped(EquipmentSlot.Chassis, out var itemId));
             Assert.That(itemId, Is.EqualTo("layered-carapace"));
+            yield return scene.Cleanup();
         }
 
         [UnityTest]
@@ -80,26 +82,6 @@ namespace Gravivore.Tests.PlayMode
 
             Assert.IsTrue(restoredStats.DerivedStats.HasSameValues(expected));
             yield return null;
-        }
-
-        private static IEnumerator LoadChapter()
-        {
-            var operation = SceneManager.LoadSceneAsync("Chapter01_ScrapExclusion", LoadSceneMode.Single);
-            Assert.IsNotNull(operation);
-            yield return operation;
-            yield return null;
-        }
-
-        private static S01SceneCompositionRoot FindCompositionRoot()
-        {
-            var roots = SceneManager.GetActiveScene().GetRootGameObjects();
-            for (var i = 0; i < roots.Length; i++)
-            {
-                if (roots[i].TryGetComponent<S01SceneCompositionRoot>(out var root)) return root;
-            }
-
-            Assert.Fail("Chapter scene composition root was not found.");
-            return null;
         }
 
         private static void GrantAndEquip(EquipmentService service, string itemId, EquipmentSlot slot)
