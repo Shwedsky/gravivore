@@ -1,4 +1,5 @@
 using System;
+using System.Text.RegularExpressions;
 using Gravivore.Core.Stats;
 using Gravivore.Gameplay.Combat;
 using Gravivore.Gameplay.Enemies;
@@ -6,6 +7,7 @@ using Gravivore.Gameplay.Player;
 using Gravivore.Gameplay.Progression;
 using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.TestTools;
 
 namespace Gravivore.Tests.EditMode
 {
@@ -186,11 +188,33 @@ namespace Gravivore.Tests.EditMode
             var dirtyEvents = 0;
             service.RewardGranted += _ => throw new InvalidOperationException("presentation failed");
             service.Dirty += _ => dirtyEvents++;
+            LogAssert.Expect(LogType.Exception, new Regex("InvalidOperationException: presentation failed"));
 
             Assert.Throws<AggregateException>(() => service.TryGrant(Death(1, "enemy")));
 
             Assert.That(service.State.TotalAssimilationScore, Is.EqualTo(2));
             Assert.That(service.State.ProcessedLifeCount, Is.EqualTo(1));
+            Assert.That(dirtyEvents, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void RewardObserverFailure_DoesNotBlockLaterRewardObserversOrDirtyBoundary()
+        {
+            var service = CreateService(
+                CreateStats(),
+                new[] { new CoreReward("enemy", PlayerStatType.Power, 3f, 2) },
+                3f);
+            var laterRewardObservers = 0;
+            var dirtyEvents = 0;
+            service.RewardGranted += _ => throw new InvalidOperationException("presentation failed");
+            service.RewardGranted += _ => laterRewardObservers++;
+            service.Dirty += _ => dirtyEvents++;
+            LogAssert.Expect(LogType.Exception, new Regex("InvalidOperationException: presentation failed"));
+
+            Assert.Throws<AggregateException>(() => service.TryGrant(Death(1, "enemy")));
+
+            Assert.That(service.State.TotalAssimilationScore, Is.EqualTo(2));
+            Assert.That(laterRewardObservers, Is.EqualTo(1));
             Assert.That(dirtyEvents, Is.EqualTo(1));
         }
 

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Gravivore.Gameplay.Quests;
 using Gravivore.Gameplay.Progression;
+using UnityEngine;
 
 namespace Gravivore.Gameplay.World
 {
@@ -165,7 +166,7 @@ namespace Gravivore.Gameplay.World
             }
 
             EliteGateUnlocked = true;
-            GateUnlocked?.Invoke(new WorldGateUnlockedEvent(_eliteGateId));
+            Publish(GateUnlocked, new WorldGateUnlockedEvent(_eliteGateId));
             return true;
         }
 
@@ -179,8 +180,8 @@ namespace Gravivore.Gameplay.World
 
             EliteDefeated = true;
             BossGateUnlocked = true;
-            EliteWasDefeated?.Invoke(new EliteDefeatedEvent(_eliteEnemyId));
-            GateUnlocked?.Invoke(new WorldGateUnlockedEvent(_bossGateId));
+            Publish(EliteWasDefeated, new EliteDefeatedEvent(_eliteEnemyId));
+            Publish(GateUnlocked, new WorldGateUnlockedEvent(_bossGateId));
             return true;
         }
 
@@ -197,6 +198,23 @@ namespace Gravivore.Gameplay.World
             }
 
             return value;
+        }
+
+        private static void Publish<T>(Action<T> handlers, T value)
+        {
+            if (handlers == null) return;
+            var invocationList = handlers.GetInvocationList();
+            for (var i = 0; i < invocationList.Length; i++)
+            {
+                try
+                {
+                    ((Action<T>)invocationList[i])(value);
+                }
+                catch (Exception exception)
+                {
+                    Debug.LogException(exception);
+                }
+            }
         }
     }
 
