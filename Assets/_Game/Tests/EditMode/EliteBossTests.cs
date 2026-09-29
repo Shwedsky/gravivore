@@ -299,6 +299,28 @@ namespace Gravivore.Tests.EditMode
             Assert.That(rig.Player.CurrentHitPoints, Is.EqualTo(playerHealth));
         }
 
+        [Test]
+        public void BossController_ClosedGateBlocksArenaBypassTargetingDamageAndCompletion()
+        {
+            using var rig = new BossControllerRig(new Vector3(0f, 0f, 27f), false);
+
+            rig.Boss.Tick(0f);
+            var blocked = rig.Boss.ApplyDamage(new DamageRequest(10000f, DamageType.Gravity));
+
+            Assert.That(rig.Boss.State, Is.EqualTo(CustodianBossState.Dormant));
+            Assert.IsFalse(rig.Boss.CanBeTargeted);
+            Assert.That(blocked.AppliedDamage, Is.Zero);
+            Assert.IsFalse(rig.Completion.IsDefeated);
+
+            rig.Access.CanEngage = true;
+            rig.Boss.Tick(0f);
+
+            Assert.IsTrue(rig.Boss.CanBeTargeted);
+            Assert.IsTrue(rig.Boss.ApplyDamage(
+                new DamageRequest(10000f, DamageType.Gravity)).WasLethal);
+            Assert.IsTrue(rig.Completion.IsDefeated);
+        }
+
         internal static MagnetarGuardConfiguration CreateEliteConfiguration()
         {
             return new MagnetarGuardConfiguration(
@@ -396,7 +418,7 @@ namespace Gravivore.Tests.EditMode
         {
             private readonly GameObject _root;
 
-            public BossControllerRig(Vector3 playerPosition)
+            public BossControllerRig(Vector3 playerPosition, bool canEngage = true)
             {
                 _root = new GameObject("S09 EditMode Boss Rig");
                 var playerObject = new GameObject("Player", typeof(CharacterController), typeof(PlayerHealthController));
@@ -415,6 +437,7 @@ namespace Gravivore.Tests.EditMode
                 sensorObject.layer = 9;
                 sensorObject.transform.SetParent(bossObject.transform, false);
                 Completion = new BossCompletionState("custodian-m0");
+                Access = new MutableBossEncounterAccess(canEngage);
                 Boss = bossObject.GetComponent<CustodianBossController>();
                 Boss.Initialize(
                     bossObject.GetComponent<CharacterController>(),
@@ -425,12 +448,14 @@ namespace Gravivore.Tests.EditMode
                     playerObject.transform,
                     Player,
                     new PassthroughPullResolver(),
+                    Access,
                     Completion);
             }
 
             public PlayerHealthController Player { get; }
             public CustodianBossController Boss { get; }
             public BossCompletionState Completion { get; }
+            public MutableBossEncounterAccess Access { get; }
 
             public void Dispose()
             {
@@ -508,6 +533,12 @@ namespace Gravivore.Tests.EditMode
             {
                 return requestedDestination;
             }
+        }
+
+        private sealed class MutableBossEncounterAccess : IBossEncounterAccess
+        {
+            public MutableBossEncounterAccess(bool canEngage) => CanEngage = canEngage;
+            public bool CanEngage { get; set; }
         }
     }
 }

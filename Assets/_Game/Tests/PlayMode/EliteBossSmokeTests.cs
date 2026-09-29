@@ -267,7 +267,8 @@ namespace Gravivore.Tests.PlayMode
             var controller = gameObject.GetComponent<CustodianBossController>();
             controller.Initialize(
                 gameObject.GetComponent<CharacterController>(), target.transform, target.GetComponent<Collider>(), 9,
-                CreateBossConfiguration(), player.transform, player, new PassthroughPullResolver(), completion);
+                CreateBossConfiguration(), player.transform, player, new PassthroughPullResolver(),
+                AlwaysBossEncounterAccess.Instance, completion);
             return controller;
         }
 
@@ -356,6 +357,12 @@ namespace Gravivore.Tests.PlayMode
             {
                 return requestedDestination;
             }
+        }
+
+        private sealed class AlwaysBossEncounterAccess : IBossEncounterAccess
+        {
+            public static readonly AlwaysBossEncounterAccess Instance = new AlwaysBossEncounterAccess();
+            public bool CanEngage => true;
         }
     }
 }

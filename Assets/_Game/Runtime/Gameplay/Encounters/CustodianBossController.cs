@@ -6,6 +6,11 @@ using UnityEngine;
 
 namespace Gravivore.Gameplay.Encounters
 {
+    public interface IBossEncounterAccess
+    {
+        bool CanEngage { get; }
+    }
+
     [DisallowMultipleComponent]
     public sealed class CustodianBossController : MonoBehaviour, ITargetable, IDamageable, IDisplaceable
     {
@@ -19,6 +24,7 @@ namespace Gravivore.Gameplay.Encounters
         private CustodianBossConfiguration _configuration;
         private CustodianBossStateMachine _stateMachine;
         private BossCompletionState _completion;
+        private IBossEncounterAccess _encounterAccess;
         private Vector3 _telegraphOrigin;
         private Vector3 _telegraphDirection;
         private bool _initialized;
@@ -30,7 +36,9 @@ namespace Gravivore.Gameplay.Encounters
 
         public Transform TargetPoint => _targetPoint;
         public Transform DisplacementRoot => transform;
-        public bool CanBeTargeted => IsAlive && State != CustodianBossState.Dormant && State != CustodianBossState.Resetting;
+        public bool CanBeTargeted => _encounterAccess != null && _encounterAccess.CanEngage &&
+                                     IsAlive && State != CustodianBossState.Dormant &&
+                                     State != CustodianBossState.Resetting;
         public bool IsAlive => _initialized && _health.IsAlive;
         public DisplacementClass DisplacementClass => DisplacementClass.Boss;
         public float CollisionRadius => _configuration.CollisionRadius;
@@ -49,6 +57,7 @@ namespace Gravivore.Gameplay.Encounters
             Transform player,
             PlayerHealthController playerHealth,
             IPullDestinationResolver chargeResolver,
+            IBossEncounterAccess encounterAccess,
             BossCompletionState completion)
         {
             if (_initialized) throw new InvalidOperationException("Custodian boss is already initialized.");
@@ -59,6 +68,7 @@ namespace Gravivore.Gameplay.Encounters
             _player = player != null ? player : throw new ArgumentNullException(nameof(player));
             _playerHealth = playerHealth != null ? playerHealth : throw new ArgumentNullException(nameof(playerHealth));
             _chargeResolver = chargeResolver ?? throw new ArgumentNullException(nameof(chargeResolver));
+            _encounterAccess = encounterAccess ?? throw new ArgumentNullException(nameof(encounterAccess));
             _completion = completion ?? throw new ArgumentNullException(nameof(completion));
             ValidateSensingCollider(targetLayer);
             ConfigureBody();
@@ -104,6 +114,11 @@ namespace Gravivore.Gameplay.Encounters
         {
             if (!_initialized) throw new InvalidOperationException("Custodian boss must be initialized before ticking.");
             if (State == CustodianBossState.Dead) return;
+            if (!_encounterAccess.CanEngage)
+            {
+                if (State != CustodianBossState.Dormant) ResetEncounter();
+                return;
+            }
             var playerInsideArena = BossAttackGeometry.IsInsideCircle(
                 _configuration.ArenaCenter,
                 _player.position,

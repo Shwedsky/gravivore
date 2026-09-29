@@ -56,14 +56,14 @@ namespace Gravivore.Persistence.Profile
             _world.EliteWasDefeated += HandleEliteDefeated;
             _boss.Defeated += HandleBossDefeated;
             _offline.Changed += MarkDirty;
-            if (!session.StartupCheckpointSucceeded) MarkDirty();
+            if (!session.StartupCheckpointSucceeded && !session.PersistenceSuspended) MarkDirty();
         }
 
         public bool IsDirty { get; private set; }
 
         public void Tick(float deltaTime)
         {
-            if (_disposed || !IsDirty) return;
+            if (_disposed || _session.PersistenceSuspended || !IsDirty) return;
             if (float.IsNaN(deltaTime) || float.IsInfinity(deltaTime) || deltaTime < 0f)
             {
                 throw new ArgumentOutOfRangeException(nameof(deltaTime));
@@ -82,9 +82,17 @@ namespace Gravivore.Persistence.Profile
             return saved;
         }
 
+        public OfflineReturnSummary ProcessResume()
+        {
+            if (_disposed) throw new ObjectDisposedException(nameof(SaveCoordinator));
+            var summary = _session.ProcessResume();
+            FlushNow();
+            return summary;
+        }
+
         public void MarkDirty()
         {
-            if (_disposed || IsDirty) return;
+            if (_disposed || _session.PersistenceSuspended || IsDirty) return;
             IsDirty = true;
             _remainingDelay = _autosaveDelaySeconds;
         }

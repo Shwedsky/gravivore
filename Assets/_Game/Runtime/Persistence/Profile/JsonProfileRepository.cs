@@ -46,6 +46,30 @@ namespace Gravivore.Persistence.Profile
         void Save(SaveRootDto save, Func<SaveRootDto> freshFactory, Action<SaveRootDto> validate);
     }
 
+    public interface IProfileFileSystem
+    {
+        void CreateDirectory(string path);
+        bool FileExists(string path);
+        string ReadAllText(string path);
+        void WriteAllText(string path, string contents);
+        void CopyFile(string source, string destination, bool overwrite);
+        void MoveFile(string source, string destination);
+        void DeleteFile(string path);
+        void ReplaceFile(string source, string destination);
+    }
+
+    public sealed class SystemProfileFileSystem : IProfileFileSystem
+    {
+        public void CreateDirectory(string path) => Directory.CreateDirectory(path);
+        public bool FileExists(string path) => File.Exists(path);
+        public string ReadAllText(string path) => File.ReadAllText(path);
+        public void WriteAllText(string path, string contents) => File.WriteAllText(path, contents);
+        public void CopyFile(string source, string destination, bool overwrite) => File.Copy(source, destination, overwrite);
+        public void MoveFile(string source, string destination) => File.Move(source, destination);
+        public void DeleteFile(string path) => File.Delete(path);
+        public void ReplaceFile(string source, string destination) => File.Replace(source, destination, null);
+    }
+
     public sealed class JsonProfileRepository : IProfileRepository
     {
         private const string MainFileName = "profile.json";
@@ -57,13 +81,15 @@ namespace Gravivore.Persistence.Profile
         private readonly SaveMigrationPipeline _migrations;
         private readonly ITimeProvider _time;
         private readonly ISaveDiagnostics _diagnostics;
+        private readonly IProfileFileSystem _fileSystem;
 
         public JsonProfileRepository(
             string directory,
             ISaveSerializer serializer,
             SaveMigrationPipeline migrations,
             ITimeProvider time,
-            ISaveDiagnostics diagnostics)
+            ISaveDiagnostics diagnostics,
+            IProfileFileSystem fileSystem = null)
         {
             if (string.IsNullOrWhiteSpace(directory)) throw new ArgumentException("Profile directory is required.", nameof(directory));
             _directory = Path.GetFullPath(directory);
@@ -71,6 +97,7 @@ namespace Gravivore.Persistence.Profile
             _migrations = migrations ?? throw new ArgumentNullException(nameof(migrations));
             _time = time ?? throw new ArgumentNullException(nameof(time));
             _diagnostics = diagnostics ?? throw new ArgumentNullException(nameof(diagnostics));
+            _fileSystem = fileSystem ?? new SystemProfileFileSystem();
         }
 
         public string MainPath => Path.Combine(_directory, MainFileName);
@@ -81,7 +108,7 @@ namespace Gravivore.Persistence.Profile
         {
             if (freshFactory == null) throw new ArgumentNullException(nameof(freshFactory));
             if (validate == null) throw new ArgumentNullException(nameof(validate));
-            Directory.CreateDirectory(_directory);
+            _fileSystem.CreateDirectory(_directory);
             var defaults = freshFactory();
 
             if (TryReadValid(MainPath, defaults, validate, out var main, out var mainMigrated, out var mainError))
@@ -90,18 +117,18 @@ namespace Gravivore.Persistence.Profile
                 return new ProfileLoadResult(main, false, false, mainMigrated);
             }
 
-            if (File.Exists(MainPath)) _diagnostics.Warning("Main profile is invalid; trying backup.", mainError);
+            if (_fileSystem.FileExists(MainPath)) _diagnostics.Warning("Main profile is invalid; trying backup.", mainError);
             if (TryReadValid(BackupPath, defaults, validate, out var backup, out var backupMigrated, out var backupError))
             {
-                if (File.Exists(MainPath)) PreserveCorrupt(MainPath);
+                if (_fileSystem.FileExists(MainPath)) PreserveCorruptCopy(MainPath);
                 WriteMainFromValidatedSave(backup, defaults, validate);
                 _diagnostics.Warning("Recovered profile from backup.");
                 return new ProfileLoadResult(backup, false, true, backupMigrated);
             }
 
-            if (File.Exists(BackupPath)) _diagnostics.Warning("Backup profile is invalid; creating a fresh profile.", backupError);
-            if (File.Exists(MainPath)) PreserveCorrupt(MainPath);
-            if (File.Exists(BackupPath)) PreserveCorrupt(BackupPath);
+            if (_fileSystem.FileExists(BackupPath)) _diagnostics.Warning("Backup profile is invalid; creating a fresh profile.", backupError);
+            if (_fileSystem.FileExists(MainPath)) PreserveCorrupt(MainPath);
+            if (_fileSystem.FileExists(BackupPath)) PreserveCorrupt(BackupPath);
             var fresh = freshFactory();
             validate(fresh);
             Save(fresh, freshFactory, validate);
@@ -113,18 +140,18 @@ namespace Gravivore.Persistence.Profile
             if (save == null) throw new ArgumentNullException(nameof(save));
             if (freshFactory == null) throw new ArgumentNullException(nameof(freshFactory));
             if (validate == null) throw new ArgumentNullException(nameof(validate));
-            Directory.CreateDirectory(_directory);
+            _fileSystem.CreateDirectory(_directory);
             validate(save);
-            File.WriteAllText(TempPath, _serializer.Serialize(save));
+            _fileSystem.WriteAllText(TempPath, _serializer.Serialize(save));
             if (!TryReadValid(TempPath, freshFactory(), validate, out _, out _, out var tempError))
             {
                 throw new InvalidDataException("Temporary profile failed read-back validation.", tempError);
             }
 
-            if (File.Exists(MainPath))
+            if (_fileSystem.FileExists(MainPath))
             {
                 var backupCandidate = BackupPath + ".candidate";
-                File.Copy(MainPath, backupCandidate, true);
+                _fileSystem.CopyFile(MainPath, backupCandidate, true);
                 if (!TryReadValid(backupCandidate, freshFactory(), validate, out _, out _, out var backupError))
                 {
                     throw new InvalidDataException("Existing main profile is not valid enough to become backup.", backupError);
@@ -147,16 +174,17 @@ namespace Gravivore.Persistence.Profile
             save = null;
             migrated = false;
             error = null;
-            if (!File.Exists(path)) return false;
+            if (!_fileSystem.FileExists(path)) return false;
+            var json = _fileSystem.ReadAllText(path);
             try
             {
-                var result = _migrations.MigrateToCurrent(File.ReadAllText(path), defaults);
+                var result = _migrations.MigrateToCurrent(json, defaults);
                 validate(result.Save);
                 save = result.Save;
                 migrated = result.WasMigrated;
                 return true;
             }
-            catch (Exception exception)
+            catch (Exception exception) when (IsInvalidProfile(exception))
             {
                 error = exception;
                 return false;
@@ -168,7 +196,7 @@ namespace Gravivore.Persistence.Profile
             SaveRootDto defaults,
             Action<SaveRootDto> validate)
         {
-            File.WriteAllText(TempPath, _serializer.Serialize(save));
+            _fileSystem.WriteAllText(TempPath, _serializer.Serialize(save));
             if (!TryReadValid(TempPath, defaults, validate, out _, out _, out var error))
             {
                 throw new InvalidDataException("Recovered profile failed temporary validation.", error);
@@ -179,29 +207,40 @@ namespace Gravivore.Persistence.Profile
 
         private void PreserveCorrupt(string path)
         {
+            _fileSystem.MoveFile(path, GetCorruptDestination(path));
+        }
+
+        private void PreserveCorruptCopy(string path)
+        {
+            var destination = GetCorruptDestination(path);
+            _fileSystem.CopyFile(path, destination, false);
+        }
+
+        private string GetCorruptDestination(string path)
+        {
             var timestamp = _time.UtcNow.ToString("yyyyMMddTHHmmssfffZ");
             var baseName = Path.GetFileNameWithoutExtension(path);
             var destination = Path.Combine(_directory, $"{baseName}.corrupt.{timestamp}.json");
             var suffix = 1;
-            while (File.Exists(destination))
+            while (_fileSystem.FileExists(destination))
             {
                 destination = Path.Combine(_directory, $"{baseName}.corrupt.{timestamp}.{suffix++}.json");
             }
 
-            File.Move(path, destination);
+            return destination;
         }
 
-        private static void ReplacePortable(string source, string destination)
+        private void ReplacePortable(string source, string destination)
         {
-            if (!File.Exists(destination))
+            if (!_fileSystem.FileExists(destination))
             {
-                File.Move(source, destination);
+                _fileSystem.MoveFile(source, destination);
                 return;
             }
 
             try
             {
-                File.Replace(source, destination, null);
+                _fileSystem.ReplaceFile(source, destination);
             }
             catch (PlatformNotSupportedException)
             {
@@ -215,21 +254,33 @@ namespace Gravivore.Persistence.Profile
 
         // Android filesystems may not support File.Replace. The backup is committed first,
         // so an interruption during this fallback still leaves a validated recovery file.
-        private static void ReplaceFallback(string source, string destination)
+        private void ReplaceFallback(string source, string destination)
         {
             var previous = destination + ".previous";
-            if (File.Exists(previous)) File.Delete(previous);
-            File.Move(destination, previous);
+            if (_fileSystem.FileExists(previous)) _fileSystem.DeleteFile(previous);
+            _fileSystem.MoveFile(destination, previous);
             try
             {
-                File.Move(source, destination);
-                File.Delete(previous);
+                _fileSystem.MoveFile(source, destination);
+                _fileSystem.DeleteFile(previous);
             }
             catch
             {
-                if (!File.Exists(destination) && File.Exists(previous)) File.Move(previous, destination);
+                if (!_fileSystem.FileExists(destination) && _fileSystem.FileExists(previous))
+                {
+                    _fileSystem.MoveFile(previous, destination);
+                }
                 throw;
             }
+        }
+
+        private static bool IsInvalidProfile(Exception exception)
+        {
+            return exception is ArgumentException ||
+                   exception is InvalidOperationException ||
+                   exception is NotSupportedException ||
+                   exception is FormatException ||
+                   exception is OverflowException;
         }
     }
 }

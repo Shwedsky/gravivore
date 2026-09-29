@@ -437,6 +437,7 @@ namespace Gravivore.Presentation.Composition
                 new PhysicsPullDestinationResolver(
                     _gravityAttackSettings.HardBlockerLayers,
                     _gravityAttackSettings.BlockerClearance),
+                _profileSession.State.World,
                 BossCompletion);
 
             var presentationObject = new GameObject("Encounter Telegraph Presentation", typeof(EncounterTelegraphPresenter));
@@ -625,7 +626,14 @@ namespace Gravivore.Presentation.Composition
 
         private void OnApplicationPause(bool paused)
         {
-            if (paused) SaveCoordinator?.FlushNow();
+            if (paused)
+            {
+                SaveCoordinator?.FlushNow();
+            }
+            else
+            {
+                SaveCoordinator?.ProcessResume();
+            }
         }
 
         private void OnApplicationQuit()

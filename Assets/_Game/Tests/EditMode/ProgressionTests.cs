@@ -231,8 +231,9 @@ namespace Gravivore.Tests.EditMode
             stats.StatChanged += _ => throw new InvalidOperationException("stat observer failed");
             service.RewardGranted += _ => rewardEvents++;
             service.Dirty += _ => dirtyEvents++;
+            LogAssert.Expect(LogType.Exception, new Regex("InvalidOperationException: stat observer failed"));
 
-            Assert.Throws<AggregateException>(() => service.TryGrant(Death(1, "enemy")));
+            Assert.IsTrue(service.TryGrant(Death(1, "enemy")));
 
             Assert.That(stats.BaseLevels.Power, Is.EqualTo(2));
             Assert.That(service.State.TotalAssimilationScore, Is.EqualTo(2));

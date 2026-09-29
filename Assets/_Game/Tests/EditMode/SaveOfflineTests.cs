@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 using Gravivore.Core.Stats;
 using Gravivore.Core.Time;
 using Gravivore.Gameplay.Enemies;
@@ -12,6 +13,7 @@ using Gravivore.Gameplay.Quests;
 using Gravivore.Persistence.Profile;
 using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.TestTools;
 
 namespace Gravivore.Tests.EditMode
 {
@@ -313,6 +315,110 @@ namespace Gravivore.Tests.EditMode
             Assert.That(Directory.GetFiles(directory, "profile.corrupt.*.json").Length, Is.EqualTo(1));
         }
 
+        [TestCase(true)]
+        [TestCase(false)]
+        public void Repository_TransientReadIOExceptionPropagatesWithoutPreservingSave(bool failMainRead)
+        {
+            var directory = CreateTemporaryDirectory();
+            var context = CreateContext();
+            var time = new ManualTimeProvider(Utc(2026, 9, 29, 12));
+            var repository = CreateRepository(directory, time);
+            Func<SaveRootDto> fresh = () => FreshDto(context, time.UtcNow);
+            Action<SaveRootDto> validate = dto => { _ = ProfileSaveMapper.Restore(dto, context); };
+            var valid = repository.LoadOrCreate(fresh, validate).Save;
+            repository.Save(valid, fresh, validate);
+            if (!failMainRead) File.WriteAllText(repository.MainPath, "{broken-main");
+            var mainBefore = File.ReadAllText(repository.MainPath);
+            var backupBefore = File.ReadAllText(repository.BackupPath);
+            var fileSystem = new FaultingProfileFileSystem
+            {
+                ReadFailurePath = failMainRead ? repository.MainPath : repository.BackupPath
+            };
+            var faultingRepository = CreateRepository(directory, time, null, fileSystem);
+
+            Assert.Throws<IOException>(() => faultingRepository.LoadOrCreate(fresh, validate));
+
+            Assert.That(File.ReadAllText(repository.MainPath), Is.EqualTo(mainBefore));
+            Assert.That(File.ReadAllText(repository.BackupPath), Is.EqualTo(backupBefore));
+            Assert.That(Directory.GetFiles(directory, "*.corrupt.*.json"), Is.Empty);
+        }
+
+        [Test]
+        public void ProfileSession_RecoveryWriteFailureSuspendsPersistenceWithoutDestroyingBackup()
+        {
+            var directory = CreateTemporaryDirectory();
+            var context = CreateContext();
+            var time = new ManualTimeProvider(Utc(2026, 9, 29, 12));
+            var repository = CreateRepository(directory, time);
+            Func<SaveRootDto> fresh = () => FreshDto(context, time.UtcNow);
+            Action<SaveRootDto> validate = dto => { _ = ProfileSaveMapper.Restore(dto, context); };
+            var valid = repository.LoadOrCreate(fresh, validate).Save;
+            repository.Save(valid, fresh, validate);
+            File.WriteAllText(repository.MainPath, "{broken-main");
+            var mainBefore = File.ReadAllText(repository.MainPath);
+            var backupBefore = File.ReadAllText(repository.BackupPath);
+            var fileSystem = new FaultingProfileFileSystem { WriteFailurePath = repository.TempPath };
+            var diagnostics = new RecordingDiagnostics();
+            var faultingRepository = CreateRepository(directory, time, diagnostics, fileSystem);
+
+            var session = ProfileSession.Start(
+                faultingRepository,
+                context,
+                new SaveOfflineConfiguration(1, 2f, OfflineConfiguration()),
+                time,
+                diagnostics);
+
+            Assert.IsTrue(session.PersistenceSuspended);
+            Assert.IsFalse(session.StartupCheckpointSucceeded);
+            Assert.That(fileSystem.WriteCount, Is.EqualTo(1));
+            Assert.That(diagnostics.LastErrorMessage, Does.Contain("Persistence is suspended"));
+            Assert.That(File.ReadAllText(repository.MainPath), Is.EqualTo(mainBefore));
+            Assert.That(File.ReadAllText(repository.BackupPath), Is.EqualTo(backupBefore));
+            var writesAfterFailure = fileSystem.WriteCount;
+            var equipment = new EquipmentService(session.State.PlayerStats, context.Equipment, session.State.Inventory);
+            using var progression = new AssimilationProgressionService(
+                session.State.PlayerStats,
+                session.State.Progression,
+                context.Progression);
+            using var quests = new QuestService(context.Quests, session.State.Quests, progression);
+            using var coordinator = new SaveCoordinator(
+                session,
+                session.State.PlayerStats,
+                progression,
+                equipment,
+                quests,
+                session.State.World,
+                session.State.Boss,
+                session.State.Offline,
+                2f);
+            session.State.PlayerStats.SetLevel(PlayerStatType.Power, 2);
+            coordinator.Tick(10f);
+            Assert.IsFalse(coordinator.FlushNow());
+            Assert.That(fileSystem.WriteCount, Is.EqualTo(writesAfterFailure));
+            Assert.That(File.ReadAllText(repository.MainPath), Is.EqualTo(mainBefore));
+            Assert.That(File.ReadAllText(repository.BackupPath), Is.EqualTo(backupBefore));
+        }
+
+        [Test]
+        public void ProfileSession_ValidatedMainAndBackupCorruptionKeepsPersistenceEnabled()
+        {
+            var directory = CreateTemporaryDirectory();
+            var context = CreateContext();
+            var time = new ManualTimeProvider(Utc(2026, 9, 29, 12));
+            var diagnostics = new RecordingDiagnostics();
+            var repository = CreateRepository(directory, time, diagnostics);
+            var configuration = new SaveOfflineConfiguration(1, 2f, OfflineConfiguration());
+            _ = ProfileSession.Start(repository, context, configuration, time, diagnostics);
+            File.WriteAllText(repository.MainPath, "{broken-main");
+            File.WriteAllText(repository.BackupPath, "{broken-backup");
+
+            var recovered = ProfileSession.Start(repository, context, configuration, time, diagnostics);
+
+            Assert.IsFalse(recovered.PersistenceSuspended);
+            Assert.IsTrue(recovered.LoadResult.WasCreated);
+            Assert.IsTrue(recovered.StartupCheckpointSucceeded);
+        }
+
         [Test]
         public void ProfileSession_LockedOnboardingDoesNotBankTimeThenEligibleProfileAccrues()
         {
@@ -506,6 +612,108 @@ namespace Gravivore.Tests.EditMode
             Assert.IsFalse(coordinator.IsDirty);
         }
 
+        [Test]
+        public void EquipmentDerivedStatsObserverFailureStillPublishesInventoryDirtyBoundary()
+        {
+            var context = CreateContext();
+            var time = new ManualTimeProvider(Utc(2026, 9, 29, 12));
+            var repository = new RecordingRepository();
+            var diagnostics = new RecordingDiagnostics();
+            var session = ProfileSession.Start(
+                repository,
+                context,
+                new SaveOfflineConfiguration(1, 2f, OfflineConfiguration()),
+                time,
+                diagnostics);
+            var equipment = new EquipmentService(session.State.PlayerStats, context.Equipment, session.State.Inventory);
+            using var progression = new AssimilationProgressionService(
+                session.State.PlayerStats,
+                session.State.Progression,
+                context.Progression);
+            using var quests = new QuestService(context.Quests, session.State.Quests, progression);
+            using var coordinator = new SaveCoordinator(
+                session,
+                session.State.PlayerStats,
+                progression,
+                equipment,
+                quests,
+                session.State.World,
+                session.State.Boss,
+                session.State.Offline,
+                2f);
+            equipment.GrantEquipment("power-core");
+            Assert.IsTrue(coordinator.FlushNow());
+            var laterDerivedObserverCalled = false;
+            session.State.PlayerStats.DerivedStatsChanged += _ =>
+                throw new InvalidOperationException("derived stats presentation failed");
+            session.State.PlayerStats.DerivedStatsChanged += _ => laterDerivedObserverCalled = true;
+            LogAssert.Expect(
+                LogType.Exception,
+                new Regex("InvalidOperationException: derived stats presentation failed"));
+
+            Assert.IsTrue(equipment.Equip("power-core", EquipmentSlot.Core));
+
+            Assert.IsTrue(session.State.Inventory.TryGetEquipped(EquipmentSlot.Core, out var equippedId));
+            Assert.That(equippedId, Is.EqualTo("power-core"));
+            Assert.IsTrue(laterDerivedObserverCalled);
+            Assert.IsTrue(coordinator.IsDirty);
+        }
+
+        [Test]
+        public void ResumeProcessingUsesThresholdEligibilityAndCheckpointsPendingWithoutDuplicates()
+        {
+            var directory = CreateTemporaryDirectory();
+            var context = CreateContext();
+            var time = new ManualTimeProvider(Utc(2026, 9, 29, 12));
+            var diagnostics = new RecordingDiagnostics();
+            var repository = CreateRepository(directory, time, diagnostics);
+            var configuration = new SaveOfflineConfiguration(1, 2f, OfflineConfiguration());
+            var session = ProfileSession.Start(repository, context, configuration, time, diagnostics);
+
+            using (var progression = new AssimilationProgressionService(
+                       session.State.PlayerStats,
+                       session.State.Progression,
+                       context.Progression))
+            using (var quests = new QuestService(context.Quests, session.State.Quests, progression))
+            using (var coordinator = new SaveCoordinator(
+                       session,
+                       session.State.PlayerStats,
+                       progression,
+                       new EquipmentService(session.State.PlayerStats, context.Equipment, session.State.Inventory),
+                       quests,
+                       session.State.World,
+                       session.State.Boss,
+                       session.State.Offline,
+                       2f))
+            {
+                time.UtcNow = time.UtcNow.AddMinutes(10);
+                var locked = coordinator.ProcessResume();
+                Assert.That(locked.EarnedAmount, Is.Zero);
+                Assert.That(session.State.Offline.PendingReward, Is.Zero);
+
+                quests.RecordMovementPerformed();
+                progression.TryGrant(Death(900, "scout-drone"));
+                Assert.IsTrue(session.State.Quests.ExpandedObjectivesUnlocked);
+                Assert.IsTrue(coordinator.FlushNow());
+
+                time.UtcNow = time.UtcNow.AddSeconds(30);
+                var shortAbsence = coordinator.ProcessResume();
+                Assert.That(shortAbsence.EarnedAmount, Is.Zero);
+
+                time.UtcNow = time.UtcNow.AddMinutes(10);
+                var eligible = coordinator.ProcessResume();
+                var repeated = coordinator.ProcessResume();
+
+                Assert.That(eligible.EarnedAmount, Is.EqualTo(5));
+                Assert.That(session.State.Offline.PendingReward, Is.EqualTo(5));
+                Assert.That(repeated.EarnedAmount, Is.Zero);
+                Assert.That(session.State.Offline.PendingReward, Is.EqualTo(5));
+            }
+
+            var reloaded = ProfileSession.Start(repository, context, configuration, time, diagnostics);
+            Assert.That(reloaded.State.Offline.PendingReward, Is.EqualTo(5));
+        }
+
         private string CreateTemporaryDirectory()
         {
             var path = Path.Combine(Path.GetTempPath(), "gravivore-s12-" + Guid.NewGuid().ToString("N"));
@@ -517,7 +725,8 @@ namespace Gravivore.Tests.EditMode
         private static JsonProfileRepository CreateRepository(
             string directory,
             ITimeProvider time,
-            ISaveDiagnostics diagnostics = null)
+            ISaveDiagnostics diagnostics = null,
+            IProfileFileSystem fileSystem = null)
         {
             var serializer = new UnityJsonSaveSerializer();
             return new JsonProfileRepository(
@@ -525,7 +734,8 @@ namespace Gravivore.Tests.EditMode
                 serializer,
                 new SaveMigrationPipeline(1, serializer, new ISaveMigration[] { new SaveMigrationV0ToV1() }),
                 time,
-                diagnostics ?? new RecordingDiagnostics());
+                diagnostics ?? new RecordingDiagnostics(),
+                fileSystem);
         }
 
         private static ProfileRestoreContext CreateContext()
@@ -628,8 +838,51 @@ namespace Gravivore.Tests.EditMode
         {
             public int WarningCount { get; private set; }
             public int ErrorCount { get; private set; }
+            public string LastErrorMessage { get; private set; }
             public void Warning(string message, Exception exception = null) => WarningCount++;
-            public void Error(string message, Exception exception) => ErrorCount++;
+            public void Error(string message, Exception exception)
+            {
+                ErrorCount++;
+                LastErrorMessage = message;
+            }
+        }
+
+        private sealed class FaultingProfileFileSystem : IProfileFileSystem
+        {
+            private readonly SystemProfileFileSystem _inner = new SystemProfileFileSystem();
+
+            public string ReadFailurePath { get; set; }
+            public string WriteFailurePath { get; set; }
+            public int WriteCount { get; private set; }
+
+            public void CreateDirectory(string path) => _inner.CreateDirectory(path);
+            public bool FileExists(string path) => _inner.FileExists(path);
+
+            public string ReadAllText(string path)
+            {
+                if (PathEquals(path, ReadFailurePath)) throw new IOException("simulated transient read failure");
+                return _inner.ReadAllText(path);
+            }
+
+            public void WriteAllText(string path, string contents)
+            {
+                WriteCount++;
+                if (PathEquals(path, WriteFailurePath)) throw new IOException("simulated recovery write failure");
+                _inner.WriteAllText(path, contents);
+            }
+
+            public void CopyFile(string source, string destination, bool overwrite) =>
+                _inner.CopyFile(source, destination, overwrite);
+
+            public void MoveFile(string source, string destination) => _inner.MoveFile(source, destination);
+            public void DeleteFile(string path) => _inner.DeleteFile(path);
+            public void ReplaceFile(string source, string destination) => _inner.ReplaceFile(source, destination);
+
+            private static bool PathEquals(string left, string right) =>
+                right != null && string.Equals(
+                    Path.GetFullPath(left),
+                    Path.GetFullPath(right),
+                    StringComparison.OrdinalIgnoreCase);
         }
 
         private sealed class RecordingRepository : IProfileRepository

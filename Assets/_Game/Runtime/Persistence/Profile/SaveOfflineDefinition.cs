@@ -9,7 +9,8 @@ namespace Gravivore.Persistence.Profile
         public SaveOfflineConfiguration(
             int currentSchemaVersion,
             float autosaveDelaySeconds,
-            OfflineRewardConfiguration offlineReward)
+            OfflineRewardConfiguration offlineReward,
+            TimeSpan minimumResumeAbsence = default)
         {
             if (currentSchemaVersion < 1) throw new ArgumentOutOfRangeException(nameof(currentSchemaVersion));
             if (float.IsNaN(autosaveDelaySeconds) || float.IsInfinity(autosaveDelaySeconds) ||
@@ -21,11 +22,20 @@ namespace Gravivore.Persistence.Profile
             CurrentSchemaVersion = currentSchemaVersion;
             AutosaveDelaySeconds = autosaveDelaySeconds;
             OfflineReward = offlineReward;
+            MinimumResumeAbsence = minimumResumeAbsence == default
+                ? TimeSpan.FromSeconds(60d)
+                : minimumResumeAbsence;
+            if (MinimumResumeAbsence < TimeSpan.Zero ||
+                MinimumResumeAbsence > offlineReward.MaximumEligibleDuration)
+            {
+                throw new ArgumentOutOfRangeException(nameof(minimumResumeAbsence));
+            }
         }
 
         public int CurrentSchemaVersion { get; }
         public float AutosaveDelaySeconds { get; }
         public OfflineRewardConfiguration OfflineReward { get; }
+        public TimeSpan MinimumResumeAbsence { get; }
     }
 
     [CreateAssetMenu(fileName = "SaveOffline", menuName = "Gravivore/Persistence/Save and Offline")]
@@ -36,6 +46,7 @@ namespace Gravivore.Persistence.Profile
         [SerializeField, Min(0f)] private float _activeBaselineUnitsPerHour = 120f;
         [SerializeField, Range(0.01f, 1f)] private float _offlineEfficiency = 0.25f;
         [SerializeField, Min(0.1f)] private float _offlineCapHours = 2f;
+        [SerializeField, Min(1f)] private float _minimumResumeAbsenceSeconds = 60f;
 
         public SaveOfflineConfiguration Configuration => new SaveOfflineConfiguration(
             _currentSchemaVersion,
@@ -43,7 +54,10 @@ namespace Gravivore.Persistence.Profile
             new OfflineRewardConfiguration(
                 _activeBaselineUnitsPerHour,
                 _offlineEfficiency,
-                TimeSpan.FromHours(_offlineCapHours)));
+                TimeSpan.FromHours(_offlineCapHours)),
+            TimeSpan.FromSeconds(_minimumResumeAbsenceSeconds > 0f
+                ? _minimumResumeAbsenceSeconds
+                : 60f));
 
         public void ValidateOrThrow()
         {
