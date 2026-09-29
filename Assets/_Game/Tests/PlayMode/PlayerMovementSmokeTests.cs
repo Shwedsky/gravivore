@@ -1,6 +1,7 @@
 using System.Collections;
 using Gravivore.Gameplay.Combat;
 using Gravivore.Gameplay.Player;
+using Gravivore.Gameplay.Progression;
 using Gravivore.Presentation.Input;
 using Gravivore.Presentation.Evolution;
 using Gravivore.Presentation.UI;

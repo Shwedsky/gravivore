@@ -6,6 +6,7 @@ using Gravivore.Core.Time;
 using Gravivore.Gameplay.Combat;
 using Gravivore.Gameplay.Enemies;
 using Gravivore.Gameplay.Equipment;
+using Gravivore.Gameplay.Player;
 using Gravivore.Presentation.Composition;
 using NUnit.Framework;
 using UnityEngine;
