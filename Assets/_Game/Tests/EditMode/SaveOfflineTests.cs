@@ -472,6 +472,7 @@ namespace Gravivore.Tests.EditMode
             var configuration = new SaveOfflineConfiguration(1, 2f, OfflineConfiguration());
             var initial = ProfileSession.Start(repository, context, configuration, time, diagnostics);
             UnlockOfflineReward(initial, context, 600);
+            var progressionBeforeOffline = initial.State.Progression.TotalAssimilationScore;
             time.UtcNow = time.UtcNow.AddMinutes(30);
 
             var firstReturn = ProfileSession.Start(repository, context, configuration, time, diagnostics);
@@ -491,7 +492,9 @@ namespace Gravivore.Tests.EditMode
             var reloaded = ProfileSession.Start(repository, context, configuration, time, diagnostics);
             Assert.That(reloaded.State.Offline.MaterialBalance, Is.EqualTo(30));
             Assert.That(reloaded.State.Offline.PendingReward, Is.Zero);
-            Assert.That(reloaded.State.Progression.TotalAssimilationScore, Is.Zero);
+            Assert.That(
+                reloaded.State.Progression.TotalAssimilationScore,
+                Is.EqualTo(progressionBeforeOffline));
         }
 
         [Test]

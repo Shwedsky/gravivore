@@ -1,4 +1,5 @@
 using System;
+using System.Text.RegularExpressions;
 using Gravivore.Core.Stats;
 using Gravivore.Gameplay.Enemies;
 using Gravivore.Gameplay.Player;
@@ -6,6 +7,7 @@ using Gravivore.Gameplay.Progression;
 using Gravivore.Presentation.Evolution;
 using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.TestTools;
 
 namespace Gravivore.Tests.EditMode
 {
@@ -199,6 +201,9 @@ namespace Gravivore.Tests.EditMode
                 view,
                 new ThrowingVfx());
 
+            LogAssert.Expect(
+                LogType.Exception,
+                new Regex("InvalidOperationException: VFX failed"));
             Assert.Throws<AggregateException>(() => progression.TryGrant(Death(1)));
 
             Assert.That(progression.State.TotalAssimilationScore, Is.EqualTo(10));

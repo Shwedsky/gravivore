@@ -187,6 +187,9 @@ namespace Gravivore.Tests.EditMode
 
             for (var i = 0; i < EnemyIds.Length; i++)
             {
+                LogAssert.Expect(
+                    LogType.Exception,
+                    new Regex("InvalidOperationException: presentation failure"));
                 Assert.Throws<AggregateException>(() => progression.TryGrant(Death(i + 1, EnemyIds[i])));
             }
 
