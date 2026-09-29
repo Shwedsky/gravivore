@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Gravivore.Gameplay.Enemies;
 using Gravivore.Gameplay.Player;
+using UnityEngine;
 
 namespace Gravivore.Gameplay.Progression
 {
@@ -155,24 +156,21 @@ namespace Gravivore.Gameplay.Progression
 
             if (previousExperience != nextExperience || previousLevel != nextLevel)
             {
-                try
-                {
-                    StatExperienceChanged?.Invoke(new StatExperienceChangedEvent(
+                PublishEach(
+                    ref errors,
+                    StatExperienceChanged,
+                    new StatExperienceChangedEvent(
                         reward.Stat,
                         previousExperience,
                         nextExperience,
                         previousLevel,
                         nextLevel));
-                }
-                catch (Exception exception)
-                {
-                    AddError(ref errors, exception);
-                }
             }
 
-            try
-            {
-                RewardGranted?.Invoke(new CoreRewardGrantedEvent(
+            PublishEach(
+                ref errors,
+                RewardGranted,
+                new CoreRewardGrantedEvent(
                     death.LifeId,
                     death.EnemyId,
                     death.Position,
@@ -183,36 +181,38 @@ namespace Gravivore.Gameplay.Progression
                     nextLevel,
                     nextExperience,
                     isFirstKill));
-            }
-            catch (Exception exception)
-            {
-                AddError(ref errors, exception);
-            }
 
             if (isFirstKill)
             {
-                try
-                {
-                    FirstKill?.Invoke(new FirstEnemyKillEvent(death.EnemyId, reward.Stat, death.Position));
-                }
-                catch (Exception exception)
-                {
-                    AddError(ref errors, exception);
-                }
+                PublishEach(
+                    ref errors,
+                    FirstKill,
+                    new FirstEnemyKillEvent(death.EnemyId, reward.Stat, death.Position));
             }
 
-            try
-            {
-                Dirty?.Invoke(new ProgressionDirtyEvent(death.LifeId, nextTotal));
-            }
-            catch (Exception exception)
-            {
-                AddError(ref errors, exception);
-            }
+            PublishEach(ref errors, Dirty, new ProgressionDirtyEvent(death.LifeId, nextTotal));
 
             if (errors != null)
             {
                 throw new AggregateException("One or more progression observers failed after the reward was committed.", errors);
+            }
+        }
+
+        private static void PublishEach<T>(ref List<Exception> errors, Action<T> handlers, T value)
+        {
+            if (handlers == null) return;
+            var invocationList = handlers.GetInvocationList();
+            for (var i = 0; i < invocationList.Length; i++)
+            {
+                try
+                {
+                    ((Action<T>)invocationList[i])(value);
+                }
+                catch (Exception exception)
+                {
+                    AddError(ref errors, exception);
+                    Debug.LogException(exception);
+                }
             }
         }
 

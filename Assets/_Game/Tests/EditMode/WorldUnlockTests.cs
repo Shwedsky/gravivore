@@ -1,4 +1,5 @@
 using System;
+using System.Text.RegularExpressions;
 using Gravivore.Core.Stats;
 using Gravivore.Gameplay.Enemies;
 using Gravivore.Gameplay.Encounters;
@@ -8,6 +9,7 @@ using Gravivore.Gameplay.Quests;
 using Gravivore.Gameplay.World;
 using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.TestTools;
 
 namespace Gravivore.Tests.EditMode
 {
@@ -100,6 +102,26 @@ namespace Gravivore.Tests.EditMode
             Assert.That(eliteCount, Is.EqualTo(1));
             Assert.IsTrue(state.EliteGateUnlocked);
             Assert.IsTrue(state.BossGateUnlocked);
+        }
+
+        [Test]
+        public void EliteDefeatObserverFailure_DoesNotBlockBossGateUnlockEvent()
+        {
+            var state = CreateWorldState();
+            var bossGateEvents = 0;
+            state.TryUnlockEliteGate();
+            state.EliteWasDefeated += _ => throw new InvalidOperationException("presentation failure");
+            state.GateUnlocked += unlocked =>
+            {
+                if (unlocked.GateId == "boss-gate") bossGateEvents++;
+            };
+            LogAssert.Expect(LogType.Exception, new Regex("InvalidOperationException: presentation failure"));
+
+            Assert.IsTrue(state.RecordEliteDefeated("magnetar-guard"));
+
+            Assert.IsTrue(state.EliteDefeated);
+            Assert.IsTrue(state.BossGateUnlocked);
+            Assert.That(bossGateEvents, Is.EqualTo(1));
         }
 
         [Test]
