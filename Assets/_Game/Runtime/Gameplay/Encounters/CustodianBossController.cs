@@ -38,7 +38,8 @@ namespace Gravivore.Gameplay.Encounters
         public Transform DisplacementRoot => transform;
         public bool CanBeTargeted => _encounterAccess != null && _encounterAccess.CanEngage &&
                                      IsAlive && State != CustodianBossState.Dormant &&
-                                     State != CustodianBossState.Resetting;
+                                     State != CustodianBossState.Resetting &&
+                                     State != CustodianBossState.Dead;
         public bool IsAlive => _initialized && _health.IsAlive;
         public DisplacementClass DisplacementClass => DisplacementClass.Boss;
         public float CollisionRadius => _configuration.CollisionRadius;

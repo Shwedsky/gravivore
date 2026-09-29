@@ -26,6 +26,7 @@ namespace Gravivore.Tests.PlayMode
                 1,
                 9);
             population.Tick(0f);
+            Assert.That(population.GetSpot(0).LiveCount, Is.EqualTo(1));
 
             var stats = CreateStats();
             var progression = new AssimilationProgressionService(
@@ -59,6 +60,7 @@ namespace Gravivore.Tests.PlayMode
             Assert.That(rewardCount, Is.EqualTo(1));
 
             population.Tick(0f);
+            Assert.That(population.GetSpot(0).LiveCount, Is.EqualTo(1));
             var reusedInstance = population.GetSpot(0).GetLiveEnemy(0);
             Assert.AreSame(firstInstance, reusedInstance);
             reusedInstance.ApplyDamage(new DamageRequest(1000f, DamageType.Gravity));
@@ -88,8 +90,8 @@ namespace Gravivore.Tests.PlayMode
                     0.9f,
                     new EnemyBehaviorParameters(5f, 7f, 1f, 1f)),
                 Vector3.zero,
-                new[] { Vector3.zero },
-                1,
+                new[] { Vector3.zero, Vector3.right, Vector3.forward },
+                3,
                 2f,
                 0f,
                 0f);

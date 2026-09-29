@@ -25,7 +25,7 @@ namespace Gravivore.Gameplay.Player
             _moveSpeedProvider = null;
             _fixedMoveSpeed = parameters.MoveSpeed;
             _rotationDegreesPerSecond = parameters.RotationDegreesPerSecond;
-            _characterController = GetComponent<CharacterController>();
+            SynchronizeControllerToTransform();
             _isInitialized = true;
         }
 
@@ -45,8 +45,19 @@ namespace Gravivore.Gameplay.Player
             _moveSpeedProvider = moveSpeedProvider ?? throw new ArgumentNullException(nameof(moveSpeedProvider));
             _fixedMoveSpeed = 0f;
             _rotationDegreesPerSecond = rotationDegreesPerSecond;
-            _characterController = GetComponent<CharacterController>();
+            SynchronizeControllerToTransform();
             _isInitialized = true;
+        }
+
+        private void SynchronizeControllerToTransform()
+        {
+            _characterController = GetComponent<CharacterController>();
+            var position = transform.position;
+            var rotation = transform.rotation;
+            var wasEnabled = _characterController.enabled;
+            _characterController.enabled = false;
+            transform.SetPositionAndRotation(position, rotation);
+            _characterController.enabled = wasEnabled;
         }
 
         private void Update()
