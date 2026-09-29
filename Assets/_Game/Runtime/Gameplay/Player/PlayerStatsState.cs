@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Gravivore.Gameplay.Player
 {
@@ -53,7 +54,7 @@ namespace Gravivore.Gameplay.Player
             var nextDerivedStats = PlayerStatsCalculator.Calculate(_configuration, nextLevels, _modifiers);
             _baseLevels = nextLevels;
             SetDerivedStats(nextDerivedStats, PlayerDerivedStatsChangeReason.LevelChanged);
-            StatChanged?.Invoke(new PlayerStatChange(
+            Publish(StatChanged, new PlayerStatChange(
                 stat,
                 previousLevel,
                 level,
@@ -103,8 +104,25 @@ namespace Gravivore.Gameplay.Player
             }
 
             DerivedStats = nextValues;
-            DerivedStatsChanged?.Invoke(new PlayerDerivedStatsChange(previousValues, nextValues, reason));
+            Publish(DerivedStatsChanged, new PlayerDerivedStatsChange(previousValues, nextValues, reason));
             return true;
+        }
+
+        private static void Publish<T>(Action<T> handlers, T value)
+        {
+            if (handlers == null) return;
+            var invocationList = handlers.GetInvocationList();
+            for (var i = 0; i < invocationList.Length; i++)
+            {
+                try
+                {
+                    ((Action<T>)invocationList[i])(value);
+                }
+                catch (Exception exception)
+                {
+                    Debug.LogException(exception);
+                }
+            }
         }
 
         private static IReadOnlyList<IPlayerDerivedStatsModifier> SnapshotModifiers(

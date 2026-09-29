@@ -78,7 +78,7 @@ namespace Gravivore.Gameplay.Player
             var result = _runtime.ApplyDamage(request);
             if (result.AppliedDamage > 0f)
             {
-                Damaged?.Invoke(result);
+                Publish(Damaged, result);
             }
 
             if (result.WasLethal && !_respawnInProgress)
@@ -108,7 +108,7 @@ namespace Gravivore.Gameplay.Player
             _respawnInProgress = true;
             try
             {
-                Died?.Invoke(new PlayerDeathEvent(transform.position));
+                Publish(Died, new PlayerDeathEvent(transform.position));
             }
             finally
             {
@@ -118,7 +118,7 @@ namespace Gravivore.Gameplay.Player
                     transform.position = _respawnPosition;
                     _body.enabled = true;
                     _runtime.Respawn();
-                    Respawned?.Invoke(new PlayerRespawnEvent(_respawnPosition, _runtime.CurrentHitPoints));
+                    Publish(Respawned, new PlayerRespawnEvent(_respawnPosition, _runtime.CurrentHitPoints));
                 }
                 finally
                 {
@@ -145,6 +145,23 @@ namespace Gravivore.Gameplay.Player
             if (!_isInitialized)
             {
                 throw new InvalidOperationException("Player health must be initialized before use.");
+            }
+        }
+
+        private static void Publish<T>(Action<T> handlers, T value)
+        {
+            if (handlers == null) return;
+            var invocationList = handlers.GetInvocationList();
+            for (var i = 0; i < invocationList.Length; i++)
+            {
+                try
+                {
+                    ((Action<T>)invocationList[i])(value);
+                }
+                catch (Exception exception)
+                {
+                    Debug.LogException(exception);
+                }
             }
         }
     }

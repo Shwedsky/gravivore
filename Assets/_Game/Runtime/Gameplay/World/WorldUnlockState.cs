@@ -112,7 +112,7 @@ namespace Gravivore.Gameplay.World
         }
     }
 
-    public sealed class WorldUnlockState
+    public sealed class WorldUnlockState : Gravivore.Gameplay.Encounters.IBossEncounterAccess
     {
         private readonly string _eliteGateId;
         private readonly string _bossGateId;
@@ -148,6 +148,7 @@ namespace Gravivore.Gameplay.World
         public bool EliteGateUnlocked { get; private set; }
         public bool EliteDefeated { get; private set; }
         public bool BossGateUnlocked { get; private set; }
+        public bool CanEngage => BossGateUnlocked;
 
         public static WorldUnlockState Restore(
             string eliteGateId,

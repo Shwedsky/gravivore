@@ -259,7 +259,7 @@ namespace Gravivore.Presentation.Quests
             trackerTransform.offsetMin = Vector2.zero;
             trackerTransform.offsetMax = Vector2.zero;
             _trackerText = trackerObject.GetComponent<Text>();
-            _trackerText.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+            _trackerText.font = GetLegacyRuntimeFont();
             _trackerText.fontSize = 34;
             _trackerText.alignment = TextAnchor.MiddleCenter;
             _trackerText.color = Color.white;
@@ -272,7 +272,7 @@ namespace Gravivore.Presentation.Quests
             feedbackTransform.offsetMin = Vector2.zero;
             feedbackTransform.offsetMax = Vector2.zero;
             _feedbackText = feedbackObject.GetComponent<Text>();
-            _feedbackText.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+            _feedbackText.font = GetLegacyRuntimeFont();
             _feedbackText.fontSize = 30;
             _feedbackText.alignment = TextAnchor.MiddleCenter;
             _feedbackText.color = new Color(0.65f, 1f, 0.86f, 1f);
@@ -291,6 +291,14 @@ namespace Gravivore.Presentation.Quests
             if (_markerMaterial != null) markerObject.GetComponent<Renderer>().sharedMaterial = _markerMaterial;
             _marker = markerObject.transform;
             _marker.gameObject.SetActive(false);
+        }
+
+        private static Font GetLegacyRuntimeFont()
+        {
+            var font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            return font != null
+                ? font
+                : throw new InvalidOperationException("Unity built-in font LegacyRuntime.ttf is unavailable.");
         }
 
         private void OnDestroy()

@@ -1,8 +1,11 @@
 using System;
+using System.Text.RegularExpressions;
 using Gravivore.Core.Stats;
 using Gravivore.Gameplay.Combat;
 using Gravivore.Gameplay.Player;
 using NUnit.Framework;
+using UnityEngine;
+using UnityEngine.TestTools;
 
 namespace Gravivore.Tests.EditMode
 {
@@ -47,6 +50,64 @@ namespace Gravivore.Tests.EditMode
             Assert.IsFalse(repeated.WasLethal);
             Assert.Throws<ArgumentOutOfRangeException>(
                 () => health.ApplyDamage(new DamageRequest(1f, DamageType.Physical), float.NaN));
+        }
+
+        [Test]
+        public void Health_ThrowingChangedObserverCannotCancelCommittedDeath()
+        {
+            var health = new HealthState();
+            health.Reset(10f);
+            var deathCount = 0;
+            health.Changed += _ => throw new InvalidOperationException("health presentation failed");
+            health.Died += () => deathCount++;
+            LogAssert.Expect(LogType.Exception, new Regex("InvalidOperationException: health presentation failed"));
+
+            var lethal = health.ApplyDamage(new DamageRequest(100f, DamageType.Physical), 0f);
+            var repeated = health.ApplyDamage(new DamageRequest(100f, DamageType.Physical), 0f);
+
+            Assert.IsTrue(lethal.WasLethal);
+            Assert.That(health.CurrentHitPoints, Is.Zero);
+            Assert.That(deathCount, Is.EqualTo(1));
+            Assert.IsFalse(repeated.WasLethal);
+            Assert.That(deathCount, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void PlayerHealth_ThrowingDamagedObserverCannotBlockLethalRespawn()
+        {
+            var respawnPosition = new Vector3(3f, 0f, -2f);
+            var player = new GameObject(
+                "Player Health Observer Test",
+                typeof(CharacterController),
+                typeof(PlayerHealthController));
+            try
+            {
+                var health = player.GetComponent<PlayerHealthController>();
+                health.Initialize(
+                    player.GetComponent<CharacterController>(),
+                    new PlayerStatsState(CreateStatsConfiguration(), new PlayerStatLevels(1, 1, 1, 1, 1)),
+                    respawnPosition,
+                    1f);
+                var deathCount = 0;
+                var respawnCount = 0;
+                health.Damaged += _ => throw new InvalidOperationException("damage presentation failed");
+                health.Died += _ => deathCount++;
+                health.Respawned += _ => respawnCount++;
+                LogAssert.Expect(LogType.Exception, new Regex("InvalidOperationException: damage presentation failed"));
+
+                var result = health.ApplyDamage(new DamageRequest(10000f, DamageType.Physical));
+
+                Assert.IsTrue(result.WasLethal);
+                Assert.That(deathCount, Is.EqualTo(1));
+                Assert.That(respawnCount, Is.EqualTo(1));
+                Assert.That(health.CurrentHitPoints, Is.EqualTo(health.MaximumHitPoints));
+                Assert.That(player.transform.position, Is.EqualTo(respawnPosition));
+                Assert.IsTrue(health.IsInvulnerable);
+            }
+            finally
+            {
+                UnityEngine.Object.DestroyImmediate(player);
+            }
         }
 
         [Test]

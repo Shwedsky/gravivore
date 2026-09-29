@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace Gravivore.Gameplay.Combat
 {
@@ -42,15 +43,16 @@ namespace Gravivore.Gameplay.Combat
 
             var previousHitPoints = CurrentHitPoints;
             var appliedDamage = Math.Min(CurrentHitPoints, resolvedDamage);
-            CurrentHitPoints -= appliedDamage;
-            Changed?.Invoke(new HealthChangedEvent(previousHitPoints, CurrentHitPoints, MaximumHitPoints));
-
-            var wasLethal = !IsAlive && !_deathSignaled;
+            var finalHitPoints = CurrentHitPoints - appliedDamage;
+            var wasLethal = finalHitPoints <= 0f && !_deathSignaled;
+            CurrentHitPoints = finalHitPoints;
             if (wasLethal)
             {
                 _deathSignaled = true;
-                Died?.Invoke();
             }
+
+            Publish(Changed, new HealthChangedEvent(previousHitPoints, CurrentHitPoints, MaximumHitPoints));
+            if (wasLethal) Publish(Died);
 
             return new DamageResult(appliedDamage, wasLethal);
         }
@@ -62,7 +64,7 @@ namespace Gravivore.Gameplay.Combat
             MaximumHitPoints = maximumHitPoints;
             CurrentHitPoints = maximumHitPoints;
             _deathSignaled = false;
-            Changed?.Invoke(new HealthChangedEvent(previousHitPoints, CurrentHitPoints, MaximumHitPoints));
+            Publish(Changed, new HealthChangedEvent(previousHitPoints, CurrentHitPoints, MaximumHitPoints));
         }
 
         public void SetMaximum(float maximumHitPoints)
@@ -76,7 +78,7 @@ namespace Gravivore.Gameplay.Combat
             var previousHitPoints = CurrentHitPoints;
             MaximumHitPoints = maximumHitPoints;
             CurrentHitPoints = Math.Min(CurrentHitPoints, MaximumHitPoints);
-            Changed?.Invoke(new HealthChangedEvent(previousHitPoints, CurrentHitPoints, MaximumHitPoints));
+            Publish(Changed, new HealthChangedEvent(previousHitPoints, CurrentHitPoints, MaximumHitPoints));
         }
 
         public void HealToFull()
@@ -90,7 +92,7 @@ namespace Gravivore.Gameplay.Combat
             CurrentHitPoints = MaximumHitPoints;
             if (previousHitPoints != CurrentHitPoints)
             {
-                Changed?.Invoke(new HealthChangedEvent(previousHitPoints, CurrentHitPoints, MaximumHitPoints));
+                Publish(Changed, new HealthChangedEvent(previousHitPoints, CurrentHitPoints, MaximumHitPoints));
             }
         }
 
@@ -105,6 +107,40 @@ namespace Gravivore.Gameplay.Combat
             if (float.IsNaN(value) || float.IsInfinity(value) || value <= 0f)
             {
                 throw new ArgumentOutOfRangeException(parameterName);
+            }
+        }
+
+        private static void Publish(Action handlers)
+        {
+            if (handlers == null) return;
+            var invocationList = handlers.GetInvocationList();
+            for (var i = 0; i < invocationList.Length; i++)
+            {
+                try
+                {
+                    ((Action)invocationList[i])();
+                }
+                catch (Exception exception)
+                {
+                    Debug.LogException(exception);
+                }
+            }
+        }
+
+        private static void Publish<T>(Action<T> handlers, T value)
+        {
+            if (handlers == null) return;
+            var invocationList = handlers.GetInvocationList();
+            for (var i = 0; i < invocationList.Length; i++)
+            {
+                try
+                {
+                    ((Action<T>)invocationList[i])(value);
+                }
+                catch (Exception exception)
+                {
+                    Debug.LogException(exception);
+                }
             }
         }
     }

@@ -125,6 +125,7 @@ namespace Gravivore.Editor
             var configuration = definition.Configuration;
             if (configuration.CurrentSchemaVersion <= 0 ||
                 configuration.OfflineReward.MaximumEligibleDuration != TimeSpan.FromHours(2) ||
+                configuration.MinimumResumeAbsence != TimeSpan.FromSeconds(60) ||
                 configuration.OfflineReward.Efficiency <= 0d ||
                 configuration.OfflineReward.Efficiency > 1d ||
                 double.IsNaN(configuration.OfflineReward.ActiveBaselineUnitsPerHour) ||

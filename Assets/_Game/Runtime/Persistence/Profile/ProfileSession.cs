@@ -10,6 +10,7 @@ namespace Gravivore.Persistence.Profile
         private readonly ProfileRestoreContext _context;
         private readonly ITimeProvider _time;
         private readonly ISaveDiagnostics _diagnostics;
+        private readonly TimeSpan _minimumResumeAbsence;
 
         private ProfileSession(
             IProfileRepository repository,
@@ -19,7 +20,9 @@ namespace Gravivore.Persistence.Profile
             ProfileRuntimeState state,
             OfflineRewardService offlineRewards,
             OfflineReturnSummary returnSummary,
-            ProfileLoadResult loadResult)
+            ProfileLoadResult loadResult,
+            bool persistenceSuspended,
+            TimeSpan minimumResumeAbsence)
         {
             _repository = repository;
             _context = context;
@@ -29,6 +32,8 @@ namespace Gravivore.Persistence.Profile
             OfflineRewards = offlineRewards;
             ReturnSummary = returnSummary;
             LoadResult = loadResult;
+            PersistenceSuspended = persistenceSuspended;
+            _minimumResumeAbsence = minimumResumeAbsence;
         }
 
         public ProfileRuntimeState State { get; }
@@ -36,6 +41,7 @@ namespace Gravivore.Persistence.Profile
         public OfflineReturnSummary ReturnSummary { get; }
         public ProfileLoadResult LoadResult { get; }
         public bool StartupCheckpointSucceeded { get; private set; }
+        public bool PersistenceSuspended { get; }
 
         public static ProfileSession Start(
             IProfileRepository repository,
@@ -57,14 +63,18 @@ namespace Gravivore.Persistence.Profile
             };
 
             ProfileLoadResult loadResult;
+            var persistenceSuspended = false;
             try
             {
                 loadResult = repository.LoadOrCreate(freshFactory, validate);
             }
-            catch (Exception exception)
+            catch (Exception exception) when (IsStorageFailure(exception))
             {
-                diagnostics.Error("Profile load failed; continuing with a fresh in-memory profile.", exception);
+                diagnostics.Error(
+                    "Profile storage failed during load or recovery. Persistence is suspended for this session; continuing with a fresh in-memory profile without writing main or backup.",
+                    exception);
                 loadResult = new ProfileLoadResult(freshFactory(), true, false, false);
+                persistenceSuspended = true;
             }
 
             var state = ProfileSaveMapper.Restore(loadResult.Save, context);
@@ -90,13 +100,55 @@ namespace Gravivore.Persistence.Profile
                 state,
                 offlineRewards,
                 summary,
-                loadResult);
-            session.StartupCheckpointSucceeded = session.FlushNow();
+                loadResult,
+                persistenceSuspended,
+                configuration.MinimumResumeAbsence);
+            if (!persistenceSuspended)
+            {
+                session.StartupCheckpointSucceeded = session.FlushNow();
+            }
             return session;
+        }
+
+        public OfflineReturnSummary ProcessResume()
+        {
+            var now = _time.UtcNow;
+            var elapsed = now - State.LastSeenUtc;
+            OfflineReturnSummary summary;
+            if (elapsed <= TimeSpan.Zero)
+            {
+                summary = new OfflineReturnSummary(
+                    elapsed,
+                    TimeSpan.Zero,
+                    0,
+                    State.Offline.PendingReward,
+                    false,
+                    OfflineClockAnomaly.NonPositiveElapsed);
+                _diagnostics.Warning("Offline resume clock delta was non-positive; no reward was granted.");
+            }
+            else if (elapsed < _minimumResumeAbsence || !OfflineRewardEligibility.IsUnlocked(State.Quests))
+            {
+                summary = new OfflineReturnSummary(
+                    elapsed,
+                    TimeSpan.Zero,
+                    0,
+                    State.Offline.PendingReward,
+                    false,
+                    OfflineClockAnomaly.None);
+            }
+            else
+            {
+                summary = OfflineRewards.Accrue(State.LastSeenUtc, now);
+                if (summary.WasCapped) _diagnostics.Warning("Offline resume elapsed time exceeded the configured cap and was clamped.");
+            }
+
+            State.SetLastSeenUtc(now);
+            return summary;
         }
 
         public bool FlushNow()
         {
+            if (PersistenceSuspended) return false;
             State.SetLastSeenUtc(_time.UtcNow);
             Func<SaveRootDto> freshFactory = () =>
                 ProfileSaveMapper.ToDto(ProfileSaveMapper.CreateFresh(_context, State.LastSeenUtc), _context);
@@ -116,6 +168,13 @@ namespace Gravivore.Persistence.Profile
                 _diagnostics.Error("Profile save failed; committed gameplay state remains active and will be retried.", exception);
                 return false;
             }
+        }
+
+        private static bool IsStorageFailure(Exception exception)
+        {
+            return exception is System.IO.IOException ||
+                   exception is UnauthorizedAccessException ||
+                   exception is System.Security.SecurityException;
         }
     }
 }
