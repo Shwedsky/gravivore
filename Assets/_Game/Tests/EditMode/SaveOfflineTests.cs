@@ -248,6 +248,114 @@ namespace Gravivore.Tests.EditMode
         }
 
         [Test]
+        public void ProfileRestore_RejectsEncounterQuestContradictionsAndAcceptsCompletedGraph()
+        {
+            var context = CreateContext();
+            var now = Utc(2026, 9, 29, 12);
+
+            var defeatedEliteWithoutQuest = FreshDto(context, now);
+            SetEliteDefeated(defeatedEliteWithoutQuest);
+            Assert.Throws<ArgumentException>(() => ProfileSaveMapper.Restore(defeatedEliteWithoutQuest, context));
+
+            var eliteQuestWithoutDefeat = FreshDto(context, now);
+            CompleteObjective(eliteQuestWithoutDefeat, context.EliteObjectiveId);
+            Assert.Throws<ArgumentException>(() => ProfileSaveMapper.Restore(eliteQuestWithoutDefeat, context));
+
+            var defeatedBossWithoutQuest = FreshDto(context, now);
+            SetEliteDefeated(defeatedBossWithoutQuest);
+            CompleteObjective(defeatedBossWithoutQuest, context.EliteObjectiveId);
+            defeatedBossWithoutQuest.boss.defeated = true;
+            Assert.Throws<ArgumentException>(() => ProfileSaveMapper.Restore(defeatedBossWithoutQuest, context));
+
+            var bossQuestWithoutDefeat = FreshDto(context, now);
+            SetEliteDefeated(bossQuestWithoutDefeat);
+            CompleteObjective(bossQuestWithoutDefeat, context.EliteObjectiveId);
+            CompleteObjective(bossQuestWithoutDefeat, context.BossObjectiveId);
+            Assert.Throws<ArgumentException>(() => ProfileSaveMapper.Restore(bossQuestWithoutDefeat, context));
+
+            var validCompleted = FreshDto(context, now);
+            SetEliteDefeated(validCompleted);
+            CompleteObjective(validCompleted, context.EliteObjectiveId);
+            CompleteObjective(validCompleted, context.BossObjectiveId);
+            validCompleted.boss.defeated = true;
+
+            var restored = ProfileSaveMapper.Restore(validCompleted, context);
+            var roundTripped = ProfileSaveMapper.Restore(ProfileSaveMapper.ToDto(restored, context), context);
+
+            Assert.IsTrue(roundTripped.World.EliteDefeated);
+            Assert.IsTrue(roundTripped.World.BossGateUnlocked);
+            Assert.IsTrue(roundTripped.Boss.IsDefeated);
+            Assert.IsTrue(roundTripped.Quests.IsObjectiveCompleted(context.EliteObjectiveId));
+            Assert.IsTrue(roundTripped.Quests.IsObjectiveCompleted(context.BossObjectiveId));
+        }
+
+        [Test]
+        public void Repository_SemanticallyCorruptMainRecoversValidBackup()
+        {
+            var directory = CreateTemporaryDirectory();
+            var context = CreateContext();
+            var time = new ManualTimeProvider(Utc(2026, 9, 29, 12));
+            var repository = CreateRepository(directory, time);
+            var serializer = new UnityJsonSaveSerializer();
+            Func<SaveRootDto> fresh = () => FreshDto(context, time.UtcNow);
+            Action<SaveRootDto> validate = dto => { _ = ProfileSaveMapper.Restore(dto, context); };
+            var valid = repository.LoadOrCreate(fresh, validate).Save;
+            repository.Save(valid, fresh, validate);
+            var corrupt = serializer.Deserialize<SaveRootDto>(serializer.Serialize(valid));
+            SetEliteDefeated(corrupt);
+            File.WriteAllText(repository.MainPath, serializer.Serialize(corrupt));
+
+            var recovered = repository.LoadOrCreate(fresh, validate);
+
+            Assert.IsTrue(recovered.RecoveredFromBackup);
+            Assert.That(recovered.Save.profileId, Is.EqualTo(valid.profileId));
+            Assert.IsFalse(recovered.Save.world.eliteDefeated);
+            Assert.That(Directory.GetFiles(directory, "profile.corrupt.*.json").Length, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void ProfileSession_LockedOnboardingDoesNotBankTimeThenEligibleProfileAccrues()
+        {
+            var directory = CreateTemporaryDirectory();
+            var context = CreateContext();
+            var time = new ManualTimeProvider(Utc(2026, 9, 29, 12));
+            var diagnostics = new RecordingDiagnostics();
+            var repository = CreateRepository(directory, time, diagnostics);
+            var configuration = new SaveOfflineConfiguration(1, 2f, OfflineConfiguration());
+            var freshSession = ProfileSession.Start(repository, context, configuration, time, diagnostics);
+            Assert.That(freshSession.ReturnSummary.EarnedAmount, Is.Zero);
+            Assert.That(freshSession.State.Offline.PendingReward, Is.Zero);
+
+            time.UtcNow = time.UtcNow.AddHours(2);
+            var firstLockedReturn = ProfileSession.Start(repository, context, configuration, time, diagnostics);
+            Assert.IsFalse(OfflineRewardEligibility.IsUnlocked(firstLockedReturn.State.Quests));
+            Assert.That(firstLockedReturn.ReturnSummary.EarnedAmount, Is.Zero);
+            Assert.That(firstLockedReturn.State.Offline.PendingReward, Is.Zero);
+            Assert.That(firstLockedReturn.State.LastSeenUtc, Is.EqualTo(time.UtcNow));
+
+            time.UtcNow = time.UtcNow.AddHours(2);
+            var repeatedLockedReturn = ProfileSession.Start(repository, context, configuration, time, diagnostics);
+            Assert.That(repeatedLockedReturn.ReturnSummary.EarnedAmount, Is.Zero);
+            Assert.That(repeatedLockedReturn.State.Offline.PendingReward, Is.Zero);
+            UnlockOfflineReward(repeatedLockedReturn, context, 500);
+            var assimilationBeforeReturn = repeatedLockedReturn.State.Progression.TotalAssimilationScore;
+            var completedObjectivesBeforeReturn = repeatedLockedReturn.State.Quests.CompletedObjectiveCount;
+            var worldBeforeReturn = repeatedLockedReturn.State.World.ExportSnapshot();
+
+            time.UtcNow = time.UtcNow.AddMinutes(30);
+            var eligibleReturn = ProfileSession.Start(repository, context, configuration, time, diagnostics);
+
+            Assert.IsTrue(OfflineRewardEligibility.IsUnlocked(eligibleReturn.State.Quests));
+            Assert.That(eligibleReturn.ReturnSummary.EarnedAmount, Is.EqualTo(15));
+            Assert.That(eligibleReturn.State.Offline.PendingReward, Is.EqualTo(15));
+            Assert.That(eligibleReturn.State.Progression.TotalAssimilationScore, Is.EqualTo(assimilationBeforeReturn));
+            Assert.That(eligibleReturn.State.Quests.CompletedObjectiveCount, Is.EqualTo(completedObjectivesBeforeReturn));
+            Assert.That(eligibleReturn.State.World.EliteGateUnlocked, Is.EqualTo(worldBeforeReturn.EliteGateUnlocked));
+            Assert.That(eligibleReturn.State.World.EliteDefeated, Is.EqualTo(worldBeforeReturn.EliteDefeated));
+            Assert.That(eligibleReturn.State.World.BossGateUnlocked, Is.EqualTo(worldBeforeReturn.BossGateUnlocked));
+        }
+
+        [Test]
         public void ProfileSession_RepeatedTimestampDoesNotDuplicatePendingAndClaimPersists()
         {
             var directory = CreateTemporaryDirectory();
@@ -256,7 +364,8 @@ namespace Gravivore.Tests.EditMode
             var diagnostics = new RecordingDiagnostics();
             var repository = CreateRepository(directory, time, diagnostics);
             var configuration = new SaveOfflineConfiguration(1, 2f, OfflineConfiguration());
-            _ = ProfileSession.Start(repository, context, configuration, time, diagnostics);
+            var initial = ProfileSession.Start(repository, context, configuration, time, diagnostics);
+            UnlockOfflineReward(initial, context, 600);
             time.UtcNow = time.UtcNow.AddMinutes(30);
 
             var firstReturn = ProfileSession.Start(repository, context, configuration, time, diagnostics);
@@ -288,7 +397,8 @@ namespace Gravivore.Tests.EditMode
             var diagnostics = new RecordingDiagnostics();
             var repository = CreateRepository(directory, time, diagnostics);
             var configuration = new SaveOfflineConfiguration(1, 2f, OfflineConfiguration());
-            _ = ProfileSession.Start(repository, context, configuration, time, diagnostics);
+            var initial = ProfileSession.Start(repository, context, configuration, time, diagnostics);
+            UnlockOfflineReward(initial, context, 700);
             time.UtcNow = time.UtcNow.AddHours(-1);
 
             var rollback = ProfileSession.Start(repository, context, configuration, time, diagnostics);
@@ -328,14 +438,25 @@ namespace Gravivore.Tests.EditMode
                 2f);
             var startupSaves = repository.SaveCount;
 
-            Assert.IsTrue(equipment.GrantEquipment("power-core"));
+            coordinator.MarkDirty();
             Assert.IsTrue(coordinator.IsDirty);
-            coordinator.Tick(1.99f);
+            coordinator.Tick(0.5f);
+            coordinator.MarkDirty();
+            coordinator.Tick(0.5f);
+            coordinator.MarkDirty();
+            coordinator.Tick(0.5f);
+            coordinator.MarkDirty();
             Assert.That(repository.SaveCount, Is.EqualTo(startupSaves));
-            coordinator.Tick(0.01f);
+            coordinator.Tick(0.5f);
 
             Assert.IsFalse(coordinator.IsDirty);
             Assert.That(repository.SaveCount, Is.EqualTo(startupSaves + 1));
+            coordinator.MarkDirty();
+            coordinator.Tick(1.5f);
+            Assert.That(repository.SaveCount, Is.EqualTo(startupSaves + 1));
+            coordinator.Tick(0.5f);
+            Assert.IsFalse(coordinator.IsDirty);
+            Assert.That(repository.SaveCount, Is.EqualTo(startupSaves + 2));
         }
 
         [Test]
@@ -375,6 +496,14 @@ namespace Gravivore.Tests.EditMode
             Assert.IsTrue(coordinator.IsDirty);
             Assert.That(session.State.Offline.PendingReward, Is.EqualTo(15));
             Assert.That(diagnostics.ErrorCount, Is.EqualTo(1));
+            var savesAfterFailure = repository.SaveCount;
+            repository.ThrowOnSave = false;
+            coordinator.Tick(1.5f);
+            Assert.That(repository.SaveCount, Is.EqualTo(savesAfterFailure));
+            Assert.IsTrue(coordinator.IsDirty);
+            coordinator.Tick(0.5f);
+            Assert.That(repository.SaveCount, Is.EqualTo(savesAfterFailure + 1));
+            Assert.IsFalse(coordinator.IsDirty);
         }
 
         private string CreateTemporaryDirectory()
@@ -431,7 +560,7 @@ namespace Gravivore.Tests.EditMode
             {
                 new QuestObjective("movement", "Move", QuestObjectiveType.MovementPerformed, 1, string.Empty, string.Empty, string.Empty, QuestTargetType.None, string.Empty, false),
                 new QuestObjective("intro-relay-yard", "Relay", QuestObjectiveType.EnemyDefeated, 1, "scout-drone", "relay-yard", string.Empty, QuestTargetType.FarmingZone, "relay-yard", false),
-                new QuestObjective("assimilation", "Assimilate", QuestObjectiveType.AssimilationReceived, 1, "scout-drone", string.Empty, string.Empty, QuestTargetType.None, string.Empty, false),
+                new QuestObjective("assimilation", "Assimilate", QuestObjectiveType.AssimilationReceived, 1, "scout-drone", string.Empty, string.Empty, QuestTargetType.None, string.Empty, true),
                 new QuestObjective("elite", "Elite", QuestObjectiveType.EliteDefeated, 1, string.Empty, string.Empty, "magnetar-guard", QuestTargetType.Elite, "magnetar-guard", false),
                 new QuestObjective("boss", "Boss", QuestObjectiveType.BossDefeated, 1, string.Empty, string.Empty, "custodian-m0", QuestTargetType.BossArena, "custodian-m0", false)
             });
@@ -443,6 +572,48 @@ namespace Gravivore.Tests.EditMode
 
         private static EnemyDeathEvent Death(int seed, string enemyId) =>
             new EnemyDeathEvent(new EnemyLifeId(new Guid(seed, 0, 0, new byte[8])), enemyId, Vector3.zero);
+
+        private static SaveRootDto FreshDto(ProfileRestoreContext context, DateTime now)
+        {
+            return ProfileSaveMapper.ToDto(ProfileSaveMapper.CreateFresh(context, now), context);
+        }
+
+        private static void SetEliteDefeated(SaveRootDto dto)
+        {
+            dto.world.eliteGateUnlocked = true;
+            dto.world.eliteDefeated = true;
+            dto.world.bossGateUnlocked = true;
+        }
+
+        private static void CompleteObjective(SaveRootDto dto, string objectiveId)
+        {
+            for (var i = 0; i < dto.quest.objectives.Length; i++)
+            {
+                var objective = dto.quest.objectives[i];
+                if (!string.Equals(objective.objectiveId, objectiveId, StringComparison.Ordinal)) continue;
+                objective.progress = 1;
+                objective.completed = true;
+                return;
+            }
+
+            Assert.Fail($"Objective {objectiveId} was not present in the test profile.");
+        }
+
+        private static void UnlockOfflineReward(
+            ProfileSession session,
+            ProfileRestoreContext context,
+            int lifeSeed)
+        {
+            using var progression = new AssimilationProgressionService(
+                session.State.PlayerStats,
+                session.State.Progression,
+                context.Progression);
+            using var quests = new QuestService(context.Quests, session.State.Quests, progression);
+            quests.RecordMovementPerformed();
+            progression.TryGrant(Death(lifeSeed, "scout-drone"));
+            Assert.IsTrue(session.State.Quests.ExpandedObjectivesUnlocked);
+            Assert.IsTrue(session.FlushNow());
+        }
 
         private static DateTime Utc(int year, int month, int day, int hour) =>
             new DateTime(year, month, day, hour, 0, 0, DateTimeKind.Utc);

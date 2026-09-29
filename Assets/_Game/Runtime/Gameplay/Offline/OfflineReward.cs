@@ -1,7 +1,18 @@
 using System;
+using Gravivore.Gameplay.Quests;
 
 namespace Gravivore.Gameplay.Offline
 {
+    public static class OfflineRewardEligibility
+    {
+        public static bool IsUnlocked(QuestState quests)
+        {
+            return quests != null
+                ? quests.ExpandedObjectivesUnlocked
+                : throw new ArgumentNullException(nameof(quests));
+        }
+    }
+
     public readonly struct OfflineRewardConfiguration
     {
         public OfflineRewardConfiguration(

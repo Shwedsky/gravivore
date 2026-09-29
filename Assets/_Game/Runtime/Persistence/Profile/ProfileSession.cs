@@ -70,7 +70,7 @@ namespace Gravivore.Persistence.Profile
             var state = ProfileSaveMapper.Restore(loadResult.Save, context);
             var offlineRewards = new OfflineRewardService(configuration.OfflineReward, state.Offline);
             OfflineReturnSummary summary;
-            if (loadResult.WasCreated)
+            if (loadResult.WasCreated || !OfflineRewardEligibility.IsUnlocked(state.Quests))
             {
                 summary = new OfflineReturnSummary(TimeSpan.Zero, TimeSpan.Zero, 0, state.Offline.PendingReward, false, OfflineClockAnomaly.None);
             }

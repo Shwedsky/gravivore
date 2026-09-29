@@ -31,6 +31,14 @@ namespace Gravivore.Persistence.Profile
             BossGateId = RequireId(bossGateId, nameof(bossGateId));
             EliteEnemyId = RequireId(eliteEnemyId, nameof(eliteEnemyId));
             BossId = RequireId(bossId, nameof(bossId));
+            EliteObjectiveId = FindEncounterObjectiveId(
+                quests,
+                QuestObjectiveType.EliteDefeated,
+                EliteEnemyId);
+            BossObjectiveId = FindEncounterObjectiveId(
+                quests,
+                QuestObjectiveType.BossDefeated,
+                BossId);
         }
 
         public PlayerStatsConfiguration PlayerStats { get; }
@@ -41,9 +49,41 @@ namespace Gravivore.Persistence.Profile
         public string BossGateId { get; }
         public string EliteEnemyId { get; }
         public string BossId { get; }
+        public string EliteObjectiveId { get; }
+        public string BossObjectiveId { get; }
 
         private static string RequireId(string value, string name) =>
             !string.IsNullOrWhiteSpace(value) ? value : throw new ArgumentException("A stable id is required.", name);
+
+        private static string FindEncounterObjectiveId(
+            QuestCatalog catalog,
+            QuestObjectiveType type,
+            string encounterId)
+        {
+            string objectiveId = null;
+            for (var i = 0; i < catalog.ObjectiveCount; i++)
+            {
+                var objective = catalog.GetObjective(i);
+                if (objective.Type != type ||
+                    !string.Equals(objective.EncounterId, encounterId, StringComparison.Ordinal))
+                {
+                    continue;
+                }
+
+                if (objectiveId != null)
+                {
+                    throw new ArgumentException(
+                        $"Quest catalog contains multiple {type} objectives for encounter {encounterId}.",
+                        nameof(catalog));
+                }
+
+                objectiveId = objective.Id;
+            }
+
+            return objectiveId ?? throw new ArgumentException(
+                $"Quest catalog requires a {type} objective for encounter {encounterId}.",
+                nameof(catalog));
+        }
     }
 
     public sealed class ProfileRuntimeState
@@ -154,6 +194,7 @@ namespace Gravivore.Persistence.Profile
             }
 
             var boss = BossCompletionState.Restore(context.BossId, new BossCompletionSnapshot(bossDto.defeated));
+            ValidateEncounterQuestConsistency(quests, world, boss, context);
             var offlineDto = dto.offline ?? throw new ArgumentException("Offline section is required.", nameof(dto));
             var offline = new OfflineRewardState(offlineDto.materialBalance, offlineDto.pendingReward);
             return new ProfileRuntimeState(
@@ -273,6 +314,27 @@ namespace Gravivore.Persistence.Profile
                 {
                     throw new ArgumentException($"Saved experience is inconsistent for {stat}.");
                 }
+            }
+        }
+
+        private static void ValidateEncounterQuestConsistency(
+            QuestState quests,
+            WorldUnlockState world,
+            BossCompletionState boss,
+            ProfileRestoreContext context)
+        {
+            if (quests.IsObjectiveCompleted(context.EliteObjectiveId) != world.EliteDefeated)
+            {
+                throw new ArgumentException(
+                    "Elite quest completion must match the authoritative elite defeat state.",
+                    nameof(quests));
+            }
+
+            if (quests.IsObjectiveCompleted(context.BossObjectiveId) != boss.IsDefeated)
+            {
+                throw new ArgumentException(
+                    "Boss quest completion must match the authoritative boss completion state.",
+                    nameof(quests));
             }
         }
 

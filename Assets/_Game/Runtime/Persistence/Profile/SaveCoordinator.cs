@@ -84,7 +84,7 @@ namespace Gravivore.Persistence.Profile
 
         public void MarkDirty()
         {
-            if (_disposed) return;
+            if (_disposed || IsDirty) return;
             IsDirty = true;
             _remainingDelay = _autosaveDelaySeconds;
         }
