@@ -52,7 +52,7 @@ namespace Gravivore.Tests.PlayMode
             Assert.IsTrue(rig.View.IsAccentActive(PlayerStatType.Mobility));
             Assert.IsFalse(rig.View.IsAccentActive(PlayerStatType.Power));
 
-            Object.Destroy(rig.Presenter);
+            UnityEngine.Object.Destroy(rig.Presenter);
             yield return null;
             rig.Presenter = rig.Player.AddComponent<PlayerEvolutionPresenter>();
             rig.Presenter.Initialize(
@@ -238,7 +238,7 @@ namespace Gravivore.Tests.PlayMode
                 }
 
                 Progression.Dispose();
-                Object.Destroy(Player);
+                UnityEngine.Object.Destroy(Player);
             }
         }
     }
