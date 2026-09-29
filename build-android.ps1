@@ -46,6 +46,24 @@ function Find-Unity {
     throw "Unity 6.3 LTS was not found. Install Unity 6.3 with Android Build Support, or pass -UnityPath."
 }
 
+function ConvertTo-ProcessArgument {
+    param([AllowEmptyString()][string]$Value)
+
+    if ($Value.Contains('"')) {
+        throw "Unity arguments cannot contain double quotes: $Value"
+    }
+
+    if ($Value.Length -eq 0 -or $Value -match '\s') {
+        $escapedValue = [regex]::Replace(
+            $Value,
+            '\\+$',
+            { param($match) $match.Value + $match.Value })
+        return '"' + $escapedValue + '"'
+    }
+
+    return $Value
+}
+
 New-Item -ItemType Directory -Force -Path $logDir | Out-Null
 $unity = Find-Unity -ConfiguredPath $UnityPath
 
@@ -67,12 +85,53 @@ if ($Version) {
 }
 
 Write-Host "Using Unity: $unity"
+Write-Host "Project root: $projectRoot"
 Write-Host "Writing build log: $logPath"
 
-& $unity @unityArgs
-$unityExitCode = $LASTEXITCODE
+$processArguments = @($unityArgs | ForEach-Object { ConvertTo-ProcessArgument $_ })
+try {
+    $unityProcess = Start-Process `
+        -FilePath $unity `
+        -ArgumentList $processArguments `
+        -WorkingDirectory $projectRoot `
+        -Wait `
+        -PassThru `
+        -ErrorAction Stop
+}
+catch {
+    throw "Unable to start Unity process '$unity': $($_.Exception.Message)"
+}
+
+$unityExitCode = $unityProcess.ExitCode
+Write-Host "Unity process exit code: $unityExitCode"
 if ($unityExitCode -ne 0) {
     throw "Android build failed with exit code $unityExitCode. See $logPath"
 }
 
-Write-Host "Android build completed. APK output is under Builds\Android."
+if (-not (Test-Path -LiteralPath $logPath -PathType Leaf)) {
+    throw "Unity exited with code 0, but the build log does not exist: $logPath"
+}
+
+$artifactLogEntry = Select-String `
+    -LiteralPath $logPath `
+    -Pattern 'Android development build written to (?<path>.+\.apk)\s*$' |
+    Select-Object -Last 1
+if ($null -eq $artifactLogEntry) {
+    throw "Unity exited with code 0, but BuildDev did not report an APK path in $logPath."
+}
+
+$reportedApkPath = $artifactLogEntry.Matches[0].Groups['path'].Value.Trim()
+$apkPath = if ([IO.Path]::IsPathRooted($reportedApkPath)) {
+    $reportedApkPath
+}
+else {
+    Join-Path $projectRoot $reportedApkPath
+}
+
+if (-not (Test-Path -LiteralPath $apkPath -PathType Leaf)) {
+    throw "Unity exited with code 0, but the expected APK does not exist: $apkPath"
+}
+
+$apkPath = (Resolve-Path -LiteralPath $apkPath).Path
+Write-Host "APK path: $apkPath"
+Write-Host "Android build completed successfully."
