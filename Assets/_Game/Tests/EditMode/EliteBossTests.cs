@@ -5,6 +5,7 @@ using Gravivore.Gameplay.Encounters;
 using Gravivore.Gameplay.Enemies;
 using Gravivore.Gameplay.Player;
 using Gravivore.Gameplay.Progression;
+using Gravivore.Gameplay.Quests;
 using Gravivore.Gameplay.World;
 using NUnit.Framework;
 using UnityEngine;
@@ -144,9 +145,11 @@ namespace Gravivore.Tests.EditMode
         {
             using var progression = CreateProgression();
             var state = new WorldUnlockState("elite-gate", "boss-gate", "magnetar-guard");
+            using var quests = CreateCompletedQuestService();
             using var world = new WorldUnlockService(
                 progression,
-                new EliteGateRequirement(new[] { "scout-drone" }, 1),
+                quests,
+                new EliteGateRequirement(new[] { "intro-relay-yard" }, 1),
                 state);
             progression.TryGrant(new EnemyDeathEvent(
                 new EnemyLifeId(Guid.NewGuid()), "scout-drone", Vector3.zero));
@@ -340,6 +343,39 @@ namespace Gravivore.Tests.EditMode
                 new ProgressionConfiguration(
                     new ProgressionThresholdCurve(100f, 0f, 0f, 1000f),
                     new[] { new CoreReward("scout-drone", PlayerStatType.Power, 1f, 1) }));
+        }
+
+        private static QuestService CreateCompletedQuestService()
+        {
+            var catalog = new QuestCatalog(
+                "chapter01-onboarding",
+                new[]
+                {
+                    new QuestObjective(
+                        "intro-relay-yard",
+                        "Relay Yard",
+                        QuestObjectiveType.EnemyDefeated,
+                        1,
+                        "scout-drone",
+                        "relay-yard",
+                        string.Empty,
+                        QuestTargetType.FarmingZone,
+                        "relay-yard",
+                        false)
+                });
+            var state = QuestState.Restore(
+                catalog,
+                new QuestSnapshot(
+                    catalog.QuestId,
+                    new System.Collections.Generic.Dictionary<string, int>(StringComparer.Ordinal)
+                    {
+                        { "intro-relay-yard", 1 }
+                    },
+                    new[] { "intro-relay-yard" },
+                    Array.Empty<EnemyLifeId>(),
+                    false,
+                    false));
+            return new QuestService(catalog, state);
         }
 
         private sealed class FakeEliteDefeatSource : IMagnetarGuardDefeatSource

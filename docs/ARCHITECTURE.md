@@ -323,3 +323,11 @@ They must be excluded/disabled in non-development release configuration.
 - `InventoryState` owns non-stackable item ownership and one equipped item for each of the three v0.1 slots. `EquipmentService` validates mutations, applies the equipped set, and publishes scoped typed events after mutation.
 - `PlayerStatsState` keeps deterministic modifier sources. Equipment replaces only the `Equipment` source, while progression continues to own permanent `BaseLevels` and other systems retain the `External` source.
 - `InventorySaveMapper` maps runtime state to a dedicated DTO and validates restore data. S10 does not implement file storage, migrations, or the S12 save repository.
+
+## 24. Quests and onboarding
+
+- `QuestDefinition` authors stable quest/objective ids, generic objective types, target references, and data-driven counts. Runtime objective identity never uses Unity instance ids.
+- `QuestState` owns authoritative objective progress, completed ids, processed enemy life ids, expanded-onboarding state, and primary sequence completion.
+- `QuestService` observes committed progression, elite, boss, and movement signals; it mutates state before publishing quest events so presentation failures cannot roll back progress.
+- S11 persistence stops at `QuestSaveDto` and `QuestSaveMapper`. It exports/restores runtime state and validates quest/objective ids, but it does not write files or implement S12 migration/repository logic.
+- Chapter 01 elite unlock reads completed canonical spot objective ids plus `ProgressionState.TotalAssimilationScore`; it no longer uses first-kill enemy ids as the gate requirement.

@@ -8,8 +8,10 @@ using Gravivore.Gameplay.Encounters;
 using Gravivore.Gameplay.Equipment;
 using Gravivore.Gameplay.Player;
 using Gravivore.Gameplay.Progression;
+using Gravivore.Gameplay.Quests;
 using Gravivore.Gameplay.World;
 using Gravivore.Presentation.Evolution;
+using Gravivore.Presentation.Quests;
 using Gravivore.Presentation.World;
 using UnityEditor;
 using UnityEngine;
@@ -67,6 +69,8 @@ namespace Gravivore.Editor
             "Assets/_Game/Content/Definitions/S10_Equipment_VectorFins.asset",
             "Assets/_Game/Content/Definitions/S10_Equipment_FluxVanes.asset",
             "Assets/_Game/Content/Definitions/S10_EquipmentCatalog.asset",
+            "Assets/_Game/Content/Definitions/S11_Chapter01OnboardingQuest.asset",
+            "Assets/_Game/Content/Definitions/S11_OnboardingPresentation.asset",
             UrpConfigurator.UrpAssetPath,
             UrpConfigurator.RendererDataPath,
             "build-android.ps1"
@@ -101,6 +105,89 @@ namespace Gravivore.Editor
             ValidateChapter01World();
             ValidateEliteAndBossEncounters();
             ValidateEquipment();
+            ValidateQuests();
+        }
+
+        private static void ValidateQuests()
+        {
+            const string questPath = "Assets/_Game/Content/Definitions/S11_Chapter01OnboardingQuest.asset";
+            const string presentationPath = "Assets/_Game/Content/Definitions/S11_OnboardingPresentation.asset";
+            const string worldPath = "Assets/_Game/Content/Definitions/S08_Chapter01World.asset";
+            const string scenePath = "Assets/_Game/Content/Scenes/Chapter01_ScrapExclusion.unity";
+            var questDefinition = AssetDatabase.LoadAssetAtPath<QuestDefinition>(questPath);
+            var presentation = AssetDatabase.LoadAssetAtPath<QuestOnboardingDefinition>(presentationPath);
+            var worldDefinition = AssetDatabase.LoadAssetAtPath<Chapter01WorldDefinition>(worldPath);
+            if (questDefinition == null || presentation == null || worldDefinition == null)
+            {
+                throw new InvalidOperationException("Canonical S11 quest, onboarding presentation, and S08 world definitions are required.");
+            }
+
+            presentation.ValidateOrThrow();
+            var catalog = questDefinition.Catalog;
+            if (!string.Equals(catalog.QuestId, "chapter01-onboarding", StringComparison.Ordinal))
+            {
+                throw new InvalidOperationException("Canonical S11 quest id is invalid.");
+            }
+
+            var expectedSpotObjectives = new Dictionary<string, string>(StringComparer.Ordinal)
+            {
+                { "intro-relay-yard", "relay-yard|scout-drone" },
+                { "intro-cutting-floor", "cutting-floor|cutter-unit" },
+                { "intro-shield-dump", "shield-dump|warden" },
+                { "intro-capacitor-field", "capacitor-field|arc-drone" },
+                { "intro-hauler-graveyard", "hauler-graveyard|carrier" }
+            };
+            var foundSpotObjectives = new HashSet<string>(StringComparer.Ordinal);
+            var hasMovement = false;
+            var hasElite = false;
+            var hasBoss = false;
+            for (var i = 0; i < catalog.ObjectiveCount; i++)
+            {
+                var objective = catalog.GetObjective(i);
+                if (objective.Type == QuestObjectiveType.MovementPerformed) hasMovement = true;
+                if (objective.Type == QuestObjectiveType.EliteDefeated &&
+                    string.Equals(objective.EncounterId, "magnetar-guard", StringComparison.Ordinal)) hasElite = true;
+                if (objective.Type == QuestObjectiveType.BossDefeated &&
+                    string.Equals(objective.EncounterId, "custodian-m0", StringComparison.Ordinal)) hasBoss = true;
+                if (expectedSpotObjectives.TryGetValue(objective.Id, out var expected))
+                {
+                    var actual = objective.SpotId + "|" + objective.EnemyId;
+                    if (!string.Equals(actual, expected, StringComparison.Ordinal) ||
+                        objective.TargetType != QuestTargetType.FarmingZone ||
+                        !string.Equals(objective.TargetId, objective.SpotId, StringComparison.Ordinal))
+                    {
+                        throw new InvalidOperationException($"Canonical spot objective {objective.Id} has invalid mapping.");
+                    }
+
+                    foundSpotObjectives.Add(objective.Id);
+                }
+            }
+
+            if (!hasMovement || !hasElite || !hasBoss || foundSpotObjectives.Count != 5)
+            {
+                throw new InvalidOperationException("S11 requires movement, five spot, elite, and boss objectives.");
+            }
+
+            var world = worldDefinition.Configuration;
+            if (world.EliteRequirement.RequiredObjectiveCount != expectedSpotObjectives.Count)
+            {
+                throw new InvalidOperationException("Elite requirement must reference exactly the five S11 introductory spot objectives.");
+            }
+
+            for (var i = 0; i < world.EliteRequirement.RequiredObjectiveCount; i++)
+            {
+                var objectiveId = world.EliteRequirement.GetRequiredObjectiveId(i);
+                if (!expectedSpotObjectives.ContainsKey(objectiveId))
+                {
+                    throw new InvalidOperationException("Elite requirement references an unexpected S11 objective id.");
+                }
+            }
+
+            var dependencies = AssetDatabase.GetDependencies(scenePath, true);
+            if (Array.IndexOf(dependencies, questPath) < 0 || Array.IndexOf(dependencies, presentationPath) < 0)
+            {
+                throw new InvalidOperationException("The canonical chapter scene must reference the S11 quest and presentation definitions.");
+            }
         }
 
         private static void ValidateEquipment()
@@ -256,9 +343,9 @@ namespace Gravivore.Editor
                 var spawnConfiguration = spawn.CreateRuntimeConfiguration();
                 spawnConfigurations.Add(spawn.Id, spawnConfiguration);
             }
-            if (configuration.ZoneCount != expected.Count || configuration.EliteRequirement.RequiredFirstKillCount != expected.Count)
+            if (configuration.ZoneCount != expected.Count || configuration.EliteRequirement.RequiredObjectiveCount != expected.Count)
             {
-                throw new InvalidOperationException("Chapter 01 requires five canonical zones and five first-kill requirements.");
+                throw new InvalidOperationException("Chapter 01 requires five canonical zones and five quest-objective requirements.");
             }
 
             var zoneColors = new HashSet<Color>();
@@ -298,13 +385,19 @@ namespace Gravivore.Editor
                 }
             }
 
-            for (var i = 0; i < configuration.EliteRequirement.RequiredFirstKillCount; i++)
+            var expectedObjectiveIds = new HashSet<string>(StringComparer.Ordinal)
             {
-                var enemyId = configuration.EliteRequirement.GetRequiredEnemyId(i);
-                if (enemyId != "scout-drone" && enemyId != "cutter-unit" && enemyId != "warden" &&
-                    enemyId != "arc-drone" && enemyId != "carrier")
+                "intro-relay-yard",
+                "intro-cutting-floor",
+                "intro-shield-dump",
+                "intro-capacitor-field",
+                "intro-hauler-graveyard"
+            };
+            for (var i = 0; i < configuration.EliteRequirement.RequiredObjectiveCount; i++)
+            {
+                if (!expectedObjectiveIds.Remove(configuration.EliteRequirement.GetRequiredObjectiveId(i)))
                 {
-                    throw new InvalidOperationException("Elite gate requirements must use the five canonical enemy ids.");
+                    throw new InvalidOperationException("Elite gate requirements must use the five canonical S11 spot objective ids.");
                 }
             }
 

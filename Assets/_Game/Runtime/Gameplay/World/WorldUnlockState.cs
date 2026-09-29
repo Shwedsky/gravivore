@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Gravivore.Gameplay.Quests;
 using Gravivore.Gameplay.Progression;
 
 namespace Gravivore.Gameplay.World
@@ -47,13 +48,13 @@ namespace Gravivore.Gameplay.World
 
     public sealed class EliteGateRequirement
     {
-        private readonly string[] _requiredFirstKillEnemyIds;
+        private readonly string[] _requiredObjectiveIds;
 
-        public EliteGateRequirement(IReadOnlyList<string> requiredFirstKillEnemyIds, long minimumAssimilationScore)
+        public EliteGateRequirement(IReadOnlyList<string> requiredObjectiveIds, long minimumAssimilationScore)
         {
-            if (requiredFirstKillEnemyIds == null || requiredFirstKillEnemyIds.Count == 0)
+            if (requiredObjectiveIds == null || requiredObjectiveIds.Count == 0)
             {
-                throw new ArgumentException("At least one required enemy id is required.", nameof(requiredFirstKillEnemyIds));
+                throw new ArgumentException("At least one required objective id is required.", nameof(requiredObjectiveIds));
             }
 
             if (minimumAssimilationScore < 1)
@@ -62,31 +63,35 @@ namespace Gravivore.Gameplay.World
             }
 
             var unique = new HashSet<string>(StringComparer.Ordinal);
-            _requiredFirstKillEnemyIds = new string[requiredFirstKillEnemyIds.Count];
-            for (var i = 0; i < requiredFirstKillEnemyIds.Count; i++)
+            _requiredObjectiveIds = new string[requiredObjectiveIds.Count];
+            for (var i = 0; i < requiredObjectiveIds.Count; i++)
             {
-                var enemyId = requiredFirstKillEnemyIds[i];
-                if (string.IsNullOrWhiteSpace(enemyId) || !unique.Add(enemyId))
+                var objectiveId = requiredObjectiveIds[i];
+                if (string.IsNullOrWhiteSpace(objectiveId) || !unique.Add(objectiveId))
                 {
-                    throw new ArgumentException("Required enemy ids must be non-empty and unique.", nameof(requiredFirstKillEnemyIds));
+                    throw new ArgumentException("Required objective ids must be non-empty and unique.", nameof(requiredObjectiveIds));
                 }
 
-                _requiredFirstKillEnemyIds[i] = enemyId;
+                _requiredObjectiveIds[i] = objectiveId;
             }
 
             MinimumAssimilationScore = minimumAssimilationScore;
         }
 
-        public int RequiredFirstKillCount => _requiredFirstKillEnemyIds.Length;
+        public int RequiredObjectiveCount => _requiredObjectiveIds.Length;
         public long MinimumAssimilationScore { get; }
 
-        public string GetRequiredEnemyId(int index) => _requiredFirstKillEnemyIds[index];
+        public string GetRequiredObjectiveId(int index) => _requiredObjectiveIds[index];
 
-        public bool IsSatisfied(ProgressionState progression)
+        public bool IsSatisfied(ProgressionState progression, QuestState quests)
         {
             if (progression == null)
             {
                 throw new ArgumentNullException(nameof(progression));
+            }
+            if (quests == null)
+            {
+                throw new ArgumentNullException(nameof(quests));
             }
 
             if (progression.TotalAssimilationScore < MinimumAssimilationScore)
@@ -94,9 +99,9 @@ namespace Gravivore.Gameplay.World
                 return false;
             }
 
-            for (var i = 0; i < _requiredFirstKillEnemyIds.Length; i++)
+            for (var i = 0; i < _requiredObjectiveIds.Length; i++)
             {
-                if (!progression.HasFirstKill(_requiredFirstKillEnemyIds[i]))
+                if (!quests.IsObjectiveCompleted(_requiredObjectiveIds[i]))
                 {
                     return false;
                 }
@@ -198,18 +203,22 @@ namespace Gravivore.Gameplay.World
     public sealed class WorldUnlockService : IDisposable, IEliteDefeatRecorder
     {
         private readonly AssimilationProgressionService _progression;
+        private readonly QuestService _quests;
         private readonly EliteGateRequirement _requirement;
         private bool _disposed;
 
         public WorldUnlockService(
             AssimilationProgressionService progression,
+            QuestService quests,
             EliteGateRequirement requirement,
             WorldUnlockState state)
         {
             _progression = progression ?? throw new ArgumentNullException(nameof(progression));
+            _quests = quests ?? throw new ArgumentNullException(nameof(quests));
             _requirement = requirement ?? throw new ArgumentNullException(nameof(requirement));
             State = state ?? throw new ArgumentNullException(nameof(state));
             _progression.RewardGranted += HandleRewardGranted;
+            _quests.ObjectiveCompleted += HandleObjectiveCompleted;
             EvaluateEliteGate();
         }
 
@@ -217,7 +226,7 @@ namespace Gravivore.Gameplay.World
 
         public bool EvaluateEliteGate()
         {
-            return _requirement.IsSatisfied(_progression.State) && State.TryUnlockEliteGate();
+            return _requirement.IsSatisfied(_progression.State, _quests.State) && State.TryUnlockEliteGate();
         }
 
         public bool RecordEliteDefeated(string eliteEnemyId) => State.RecordEliteDefeated(eliteEnemyId);
@@ -231,8 +240,10 @@ namespace Gravivore.Gameplay.World
 
             _disposed = true;
             _progression.RewardGranted -= HandleRewardGranted;
+            _quests.ObjectiveCompleted -= HandleObjectiveCompleted;
         }
 
         private void HandleRewardGranted(CoreRewardGrantedEvent reward) => EvaluateEliteGate();
+        private void HandleObjectiveCompleted(QuestObjectiveCompletedEvent completed) => EvaluateEliteGate();
     }
 }
