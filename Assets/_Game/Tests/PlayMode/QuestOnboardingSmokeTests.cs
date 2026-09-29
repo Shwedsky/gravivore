@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
+using System.IO;
 using Gravivore.Core.Stats;
+using Gravivore.Core.Time;
 using Gravivore.Gameplay.Encounters;
 using Gravivore.Gameplay.Enemies;
 using Gravivore.Gameplay.Player;
@@ -23,18 +25,41 @@ namespace Gravivore.Tests.PlayMode
         [UnityTest]
         public IEnumerator CanonicalChapter_ComposesQuestWorldAndInactiveEliteAfterOneFrame()
         {
+            var directory = Path.Combine(
+                Path.GetTempPath(),
+                "gravivore-s11-playmode-" + Guid.NewGuid().ToString("N"));
+            S01SceneCompositionRoot configured = null;
+            void Configure(Scene scene, LoadSceneMode mode)
+            {
+                var roots = scene.GetRootGameObjects();
+                for (var i = 0; i < roots.Length; i++)
+                {
+                    if (!roots[i].TryGetComponent(out configured)) continue;
+                    configured.ConfigurePersistence(
+                        directory,
+                        new FixedTimeProvider(new DateTime(2031, 4, 5, 12, 0, 0, DateTimeKind.Utc)));
+                    return;
+                }
+            }
+
+            SceneManager.sceneLoaded += Configure;
             var operation = SceneManager.LoadSceneAsync("Chapter01_ScrapExclusion", LoadSceneMode.Single);
             Assert.IsNotNull(operation);
             yield return operation;
+            SceneManager.sceneLoaded -= Configure;
             yield return null;
 
             var composition = FindCompositionRoot();
+            Assert.That(composition, Is.SameAs(configured));
             Assert.IsNotNull(composition.Quests);
             Assert.IsNotNull(composition.WorldUnlocks);
             Assert.IsNotNull(composition.MagnetarGuard);
             Assert.IsNotNull(composition.BossCompletion);
             Assert.IsFalse(composition.WorldUnlocks.State.EliteGateUnlocked);
             Assert.IsFalse(composition.MagnetarGuard.IsEncounterActive);
+            UnityEngine.Object.Destroy(composition.gameObject);
+            yield return null;
+            if (Directory.Exists(directory)) Directory.Delete(directory, true);
             LogAssert.NoUnexpectedReceived();
         }
 
@@ -251,6 +276,12 @@ namespace Gravivore.Tests.PlayMode
         {
             public event Action<MagnetarGuardDefeatedEvent> Defeated;
             public void Raise(string id) => Defeated?.Invoke(new MagnetarGuardDefeatedEvent(id, Vector3.zero));
+        }
+
+        private sealed class FixedTimeProvider : ITimeProvider
+        {
+            public FixedTimeProvider(DateTime utcNow) => UtcNow = utcNow;
+            public DateTime UtcNow { get; }
         }
     }
 }

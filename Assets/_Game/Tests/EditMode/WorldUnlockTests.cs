@@ -1,6 +1,7 @@
 using System;
 using Gravivore.Core.Stats;
 using Gravivore.Gameplay.Enemies;
+using Gravivore.Gameplay.Encounters;
 using Gravivore.Gameplay.Player;
 using Gravivore.Gameplay.Progression;
 using Gravivore.Gameplay.Quests;
@@ -129,6 +130,24 @@ namespace Gravivore.Tests.EditMode
             Assert.That(eventCount, Is.Zero);
             Assert.IsFalse(restored.TryUnlockEliteGate());
             Assert.IsFalse(restored.RecordEliteDefeated("magnetar-guard"));
+        }
+
+        [Test]
+        public void RestoredEliteDefeat_DoesNotReactivateEncounter()
+        {
+            var state = WorldUnlockState.Restore(
+                "elite-gate",
+                "boss-gate",
+                "magnetar-guard",
+                new WorldUnlockSnapshot(true, true, true));
+            var elite = new RecordingEliteActivationTarget();
+
+            using var bridge = new EliteEncounterActivationBridge(state, elite);
+
+            Assert.IsFalse(elite.IsEncounterActive);
+            Assert.That(elite.ActivationAttempts, Is.Zero);
+            Assert.IsFalse(bridge.Synchronize());
+            Assert.That(elite.ActivationAttempts, Is.Zero);
         }
 
         [Test]
@@ -283,6 +302,19 @@ namespace Gravivore.Tests.EditMode
         private static EnemyDeathEvent Death(int seed, string enemyId)
         {
             return new EnemyDeathEvent(new EnemyLifeId(new Guid(seed, 0, 0, new byte[8])), enemyId, Vector3.zero);
+        }
+
+        private sealed class RecordingEliteActivationTarget : IMagnetarGuardActivationTarget
+        {
+            public bool IsEncounterActive { get; private set; }
+            public int ActivationAttempts { get; private set; }
+
+            public bool ActivateEncounter()
+            {
+                ActivationAttempts++;
+                IsEncounterActive = true;
+                return true;
+            }
         }
     }
 }

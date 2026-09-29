@@ -1,13 +1,11 @@
 using System.Collections;
 using Gravivore.Gameplay.Combat;
 using Gravivore.Gameplay.Player;
-using Gravivore.Presentation.Composition;
 using Gravivore.Presentation.Input;
 using Gravivore.Presentation.Evolution;
 using Gravivore.Presentation.UI;
 using NUnit.Framework;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 using UnityEngine.UI;
 
@@ -18,22 +16,9 @@ namespace Gravivore.Tests.PlayMode
         [UnityTest]
         public IEnumerator ChapterScene_ComposesPlayerCameraAndSafeAreaHud()
         {
-            var loadOperation = SceneManager.LoadSceneAsync("Chapter01_ScrapExclusion", LoadSceneMode.Single);
-            Assert.IsNotNull(loadOperation);
-            yield return loadOperation;
-            yield return null;
-
-            S01SceneCompositionRoot compositionRoot = null;
-            var rootObjects = SceneManager.GetActiveScene().GetRootGameObjects();
-            for (var i = 0; i < rootObjects.Length; i++)
-            {
-                if (rootObjects[i].TryGetComponent(out compositionRoot))
-                {
-                    break;
-                }
-            }
-
-            Assert.IsNotNull(compositionRoot);
+            var scene = new CanonicalSceneTestScope();
+            yield return scene.Load();
+            var compositionRoot = scene.Root;
             Assert.IsNotNull(compositionRoot.PlayerObject);
             Assert.IsNotNull(compositionRoot.PlayerStats);
             Assert.That(compositionRoot.PlayerStats.MoveSpeed, Is.EqualTo(4.5f).Within(0.0001f));
@@ -79,27 +64,15 @@ namespace Gravivore.Tests.PlayMode
             Assert.That(
                 compositionRoot.PlayerHealth.Armor,
                 Is.EqualTo(compositionRoot.PlayerStats.DerivedStats.ArmorValue));
+            yield return scene.Cleanup();
         }
 
         [UnityTest]
         public IEnumerator GravityAttack_AcquiresDamagesPullsAndReleasesDeadTarget()
         {
-            var loadOperation = SceneManager.LoadSceneAsync("Chapter01_ScrapExclusion", LoadSceneMode.Single);
-            Assert.IsNotNull(loadOperation);
-            yield return loadOperation;
-            yield return null;
-
-            S01SceneCompositionRoot compositionRoot = null;
-            var rootObjects = SceneManager.GetActiveScene().GetRootGameObjects();
-            for (var i = 0; i < rootObjects.Length; i++)
-            {
-                if (rootObjects[i].TryGetComponent(out compositionRoot))
-                {
-                    break;
-                }
-            }
-
-            Assert.IsNotNull(compositionRoot);
+            var scene = new CanonicalSceneTestScope();
+            yield return scene.Load();
+            var compositionRoot = scene.Root;
             var attackController = compositionRoot.PlayerObject.GetComponent<GravityAttackController>();
             Assert.IsNotNull(attackController);
 
@@ -139,27 +112,15 @@ namespace Gravivore.Tests.PlayMode
             Assert.IsFalse(attackController.HasCurrentTarget);
 
             Object.Destroy(targetObject);
+            yield return scene.Cleanup();
         }
 
         [UnityTest]
         public IEnumerator GravityAttack_LethalResultClearsPooledIdentityBeforeDisplacement()
         {
-            var loadOperation = SceneManager.LoadSceneAsync("Chapter01_ScrapExclusion", LoadSceneMode.Single);
-            Assert.IsNotNull(loadOperation);
-            yield return loadOperation;
-            yield return null;
-
-            S01SceneCompositionRoot compositionRoot = null;
-            var rootObjects = SceneManager.GetActiveScene().GetRootGameObjects();
-            for (var i = 0; i < rootObjects.Length; i++)
-            {
-                if (rootObjects[i].TryGetComponent(out compositionRoot))
-                {
-                    break;
-                }
-            }
-
-            Assert.IsNotNull(compositionRoot);
+            var scene = new CanonicalSceneTestScope();
+            yield return scene.Load();
+            var compositionRoot = scene.Root;
             var attackController = compositionRoot.PlayerObject.GetComponent<GravityAttackController>();
             var targetObject = new GameObject(
                 "Lethal Pool Identity Target",
@@ -182,6 +143,7 @@ namespace Gravivore.Tests.PlayMode
             Assert.IsFalse(attackController.HasCurrentTarget);
 
             Object.Destroy(targetObject);
+            yield return scene.Cleanup();
         }
 
         [UnityTest]

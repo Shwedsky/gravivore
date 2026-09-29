@@ -161,6 +161,27 @@ namespace Gravivore.Tests.PlayMode
         }
 
         [UnityTest]
+        public IEnumerator RestoredBossDefeat_StartsDeadAndCannotReengage()
+        {
+            var root = new GameObject("S12 Restored Boss Root");
+            var player = CreatePlayer(root.transform, new Vector3(0f, 0f, 27f), Vector3.zero);
+            var completion = BossCompletionState.Restore(
+                "custodian-m0",
+                new BossCompletionSnapshot(true));
+            var boss = CreateBoss(root.transform, player, completion);
+
+            Assert.IsTrue(completion.IsDefeated);
+            Assert.That(boss.State, Is.EqualTo(CustodianBossState.Dead));
+            Assert.IsFalse(boss.CanBeTargeted);
+            boss.Tick(100f);
+            Assert.That(boss.State, Is.EqualTo(CustodianBossState.Dead));
+            Assert.That(boss.ApplyDamage(new DamageRequest(10000f, DamageType.Gravity)).AppliedDamage, Is.Zero);
+
+            UnityEngine.Object.Destroy(root);
+            yield return null;
+        }
+
+        [UnityTest]
         public IEnumerator MagnetarDeathDuringTelegraph_HidesIndicatorAndCannotResolveDamage()
         {
             var root = new GameObject("S09 Elite Telegraph Death Root");
@@ -229,12 +250,20 @@ namespace Gravivore.Tests.PlayMode
             PlayerHealthController player,
             out BossCompletionState completion)
         {
+            completion = new BossCompletionState("custodian-m0");
+            return CreateBoss(parent, player, completion);
+        }
+
+        private static CustodianBossController CreateBoss(
+            Transform parent,
+            PlayerHealthController player,
+            BossCompletionState completion)
+        {
             var gameObject = new GameObject("Custodian M-0 Test", typeof(CharacterController), typeof(CustodianBossController));
             gameObject.transform.SetParent(parent, false);
             var target = new GameObject("Combat Target Sensor", typeof(SphereCollider));
             target.layer = 9;
             target.transform.SetParent(gameObject.transform, false);
-            completion = new BossCompletionState("custodian-m0");
             var controller = gameObject.GetComponent<CustodianBossController>();
             controller.Initialize(
                 gameObject.GetComponent<CharacterController>(), target.transform, target.GetComponent<Collider>(), 9,

@@ -21,7 +21,10 @@ namespace Gravivore.Gameplay.Encounters
 
         public bool Synchronize()
         {
-            return !_disposed && _worldState.EliteGateUnlocked && _elite.ActivateEncounter();
+            return !_disposed &&
+                   _worldState.EliteGateUnlocked &&
+                   !_worldState.EliteDefeated &&
+                   _elite.ActivateEncounter();
         }
 
         public void Dispose()
