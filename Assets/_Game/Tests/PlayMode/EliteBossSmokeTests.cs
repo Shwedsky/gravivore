@@ -67,7 +67,7 @@ namespace Gravivore.Tests.PlayMode
             var presentation = new GameObject("Encounter Telegraphs", typeof(EncounterTelegraphPresenter))
                 .GetComponent<EncounterTelegraphPresenter>();
             presentation.transform.SetParent(root.transform, false);
-            presentation.Initialize(elite, boss, completion);
+            presentation.Initialize(elite, boss, completion, TestMaterialFactory.Lit);
             var initialHp = player.CurrentHitPoints;
 
             boss.Tick(0f);
@@ -194,7 +194,7 @@ namespace Gravivore.Tests.PlayMode
             var presentation = new GameObject("Encounter Telegraphs", typeof(EncounterTelegraphPresenter))
                 .GetComponent<EncounterTelegraphPresenter>();
             presentation.transform.SetParent(root.transform, false);
-            presentation.Initialize(elite, boss, completion);
+            presentation.Initialize(elite, boss, completion, TestMaterialFactory.Lit);
             var initialHealth = player.CurrentHitPoints;
             var cancellationCount = 0;
             var resolveCount = 0;

@@ -93,7 +93,7 @@ namespace Gravivore.Tests.PlayMode
                 worldState);
             var tracker = new GameObject("Tracker", typeof(QuestTrackerPresenter)).GetComponent<QuestTrackerPresenter>();
             tracker.transform.SetParent(root.transform, false);
-            tracker.Initialize(quests, progression, requirement, CreateWorld(), new Vector3(0f, 0f, 18f), hud, _ => null);
+            tracker.Initialize(quests, progression, requirement, CreateWorld(), new Vector3(0f, 0f, 18f), hud, _ => TestMaterialFactory.CreateLitInstance());
             var movement = new GameObject("Movement", typeof(QuestMovementSignal)).GetComponent<QuestMovementSignal>();
             movement.Initialize(input, quests, 0.2f, 0.25f);
 
@@ -131,7 +131,7 @@ namespace Gravivore.Tests.PlayMode
                 CreateWorld(),
                 new Vector3(0f, 0f, 18f),
                 hud,
-                _ => null);
+                _ => TestMaterialFactory.CreateLitInstance());
             Assert.That(restoredBeforeEliteTracker.CurrentTrackerText, Is.EqualTo("Assimilation 5/25"));
             Assert.IsFalse(restoredBeforeEliteTracker.MarkerActive);
 
@@ -161,7 +161,7 @@ namespace Gravivore.Tests.PlayMode
             using var restoredQuests = new QuestService(catalog, restoredState);
             var restoredTracker = new GameObject("Restored Tracker", typeof(QuestTrackerPresenter)).GetComponent<QuestTrackerPresenter>();
             restoredTracker.transform.SetParent(root.transform, false);
-            restoredTracker.Initialize(restoredQuests, progression, requirement, CreateWorld(), new Vector3(0f, 0f, 18f), hud, _ => null);
+            restoredTracker.Initialize(restoredQuests, progression, requirement, CreateWorld(), new Vector3(0f, 0f, 18f), hud, _ => TestMaterialFactory.CreateLitInstance());
             Assert.That(restoredTracker.CurrentTrackerText, Is.EqualTo("Custodian M-0"));
             Assert.IsTrue(restoredTracker.MarkerActive);
 

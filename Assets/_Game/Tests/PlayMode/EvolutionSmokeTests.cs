@@ -116,7 +116,7 @@ namespace Gravivore.Tests.PlayMode
                     new[] { new CoreReward("enemy", PlayerStatType.Power, 1f, 15) }));
             var catalog = CreateCatalog();
             var view = player.GetComponent<PlayerEvolutionView>();
-            view.Initialize(visualRoot, catalog);
+            view.Initialize(visualRoot, catalog, TestMaterialFactory.Lit);
             var presenter = player.GetComponent<PlayerEvolutionPresenter>();
             presenter.Initialize(progression, stats, catalog.Selection, view);
             if (withHealth)

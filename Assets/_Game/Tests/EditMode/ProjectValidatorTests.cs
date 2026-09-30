@@ -1,3 +1,5 @@
+using System.IO;
+using Gravivore.Presentation.Composition;
 using NUnit.Framework;
 using UnityEditor;
 using UnityEngine;
@@ -31,6 +33,41 @@ namespace Gravivore.Tests.EditMode
             finally
             {
                 PlayerSettings.defaultInterfaceOrientation = originalOrientation;
+            }
+        }
+
+        [Test]
+        public void PresentationMaterialPalette_RejectsMissingMaterials()
+        {
+            var palette = ScriptableObject.CreateInstance<PresentationMaterialPalette>();
+            try
+            {
+                Assert.Throws<System.InvalidOperationException>(() => palette.ValidateOrThrow());
+            }
+            finally
+            {
+                UnityEngine.Object.DestroyImmediate(palette);
+            }
+        }
+
+        [Test]
+        public void CanonicalPresentationPalette_HasRequiredUrpMaterials()
+        {
+            var palette = AssetDatabase.LoadAssetAtPath<PresentationMaterialPalette>(
+                Gravivore.Editor.PresentationMaterialAssetConfigurator.PalettePath);
+
+            Assert.IsNotNull(palette);
+            Assert.DoesNotThrow(() => palette.ValidateOrThrow());
+            Assert.That(palette.LitMaterial.shader.name, Is.EqualTo("Universal Render Pipeline/Lit"));
+            Assert.That(palette.UnlitMaterial.shader.name, Is.EqualTo("Universal Render Pipeline/Unlit"));
+        }
+
+        [Test]
+        public void ProductionRuntime_DoesNotUseShaderFind()
+        {
+            foreach (var path in Directory.GetFiles("Assets/_Game/Runtime", "*.cs", SearchOption.AllDirectories))
+            {
+                StringAssert.DoesNotContain("Shader.Find(", File.ReadAllText(path), path);
             }
         }
     }

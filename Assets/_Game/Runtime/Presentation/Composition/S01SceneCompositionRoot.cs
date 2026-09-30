@@ -43,6 +43,7 @@ namespace Gravivore.Presentation.Composition
         [SerializeField, Min(1)] private int _globalLiveEnemyCap = 25;
         [SerializeField] private FloatingJoystickSettings _joystickSettings;
         [SerializeField] private CameraFollowSettings _cameraSettings;
+        [SerializeField] private PresentationMaterialPalette _materialPalette;
         [SerializeField] private Vector3 _playerSpawn = Vector3.zero;
         [SerializeField, Min(0f)] private float _postRespawnInvulnerabilitySeconds = 1.5f;
 
@@ -120,14 +121,16 @@ namespace Gravivore.Presentation.Composition
                 _saveOfflineDefinition == null ||
                 _evolutionDefinition == null || _worldDefinition == null ||
                 _magnetarGuardDefinition == null || _custodianBossDefinition == null ||
-                _joystickSettings == null || _cameraSettings == null ||
+                _joystickSettings == null || _cameraSettings == null || _materialPalette == null ||
                 float.IsNaN(_postRespawnInvulnerabilitySeconds) ||
                 float.IsInfinity(_postRespawnInvulnerabilitySeconds) ||
                 _postRespawnInvulnerabilitySeconds < 0f)
             {
                 throw new InvalidOperationException(
-                    "Scene composition requires movement, stats, equipment, attack, progression, quests, evolution, world, elite, boss, five spawn spots, joystick, and camera settings.");
+                    "Scene composition requires movement, stats, equipment, attack, progression, quests, evolution, world, elite, boss, five spawn spots, joystick, camera, and material settings.");
             }
+
+            _materialPalette.ValidateOrThrow();
 
             var statsConfiguration = _playerStatsDefinition.Configuration;
             var progressionConfiguration = _progressionDefinition.Configuration;
@@ -328,10 +331,7 @@ namespace Gravivore.Presentation.Composition
             Destroy(visualCollider);
 
             _playerMaterial = CreateMaterial(new Color(0.12f, 0.82f, 0.68f, 1f));
-            if (_playerMaterial != null)
-            {
-                visual.GetComponent<Renderer>().sharedMaterial = _playerMaterial;
-            }
+            visual.GetComponent<Renderer>().sharedMaterial = _playerMaterial;
 
             return PlayerObject.GetComponent<PlayerLocomotion>();
         }
@@ -340,7 +340,7 @@ namespace Gravivore.Presentation.Composition
         {
             var catalog = _evolutionDefinition.Catalog;
             var view = PlayerObject.GetComponent<PlayerEvolutionView>();
-            view.Initialize(_playerVisualRoot, catalog);
+            view.Initialize(_playerVisualRoot, catalog, _materialPalette.LitMaterial);
             EvolutionPresenter = PlayerObject.GetComponent<PlayerEvolutionPresenter>();
             EvolutionPresenter.Initialize(
                 Progression,
@@ -358,7 +358,7 @@ namespace Gravivore.Presentation.Composition
             var worldObject = new GameObject("Chapter 01 World", typeof(Chapter01WorldPresenter));
             worldObject.transform.SetParent(transform, false);
             WorldPresenter = worldObject.GetComponent<Chapter01WorldPresenter>();
-            WorldPresenter.Initialize(configuration, state);
+            WorldPresenter.Initialize(configuration, state, _materialPalette.LitMaterial);
         }
 
         private void InitializeQuests(QuestCatalog catalog, Chapter01WorldConfiguration world)
@@ -443,7 +443,7 @@ namespace Gravivore.Presentation.Composition
             var presentationObject = new GameObject("Encounter Telegraph Presentation", typeof(EncounterTelegraphPresenter));
             presentationObject.transform.SetParent(transform, false);
             EncounterTelegraphs = presentationObject.GetComponent<EncounterTelegraphPresenter>();
-            EncounterTelegraphs.Initialize(MagnetarGuard, CustodianBoss, BossCompletion);
+            EncounterTelegraphs.Initialize(MagnetarGuard, CustodianBoss, BossCompletion, _materialPalette.LitMaterial);
         }
 
         private void WireEncounterWorldBridges()
@@ -477,7 +477,7 @@ namespace Gravivore.Presentation.Composition
             visualCollider.enabled = false;
             Destroy(visualCollider);
             material = CreateMaterial(color);
-            if (material != null) visual.GetComponent<Renderer>().sharedMaterial = material;
+            visual.GetComponent<Renderer>().sharedMaterial = material;
 
             var targetObject = new GameObject("Combat Target Sensor", typeof(SphereCollider));
             targetObject.layer = targetLayer;
@@ -493,7 +493,7 @@ namespace Gravivore.Presentation.Composition
             var vfxObject = new GameObject("Gravity Lash VFX Pool", typeof(GravityLashVfxPool));
             vfxObject.transform.SetParent(transform, false);
             var vfxPool = vfxObject.GetComponent<GravityLashVfxPool>();
-            vfxPool.Initialize(_gravityAttackSettings);
+            vfxPool.Initialize(_gravityAttackSettings, _materialPalette.UnlitMaterial);
 
             var targetSensor = new PhysicsTargetSensor(
                 _gravityAttackSettings.TargetColliderCapacity,
@@ -554,7 +554,8 @@ namespace Gravivore.Presentation.Composition
                 PlayerObject.transform,
                 PlayerHealth,
                 _globalLiveEnemyCap,
-                targetLayer);
+                targetLayer,
+                _materialPalette.LitMaterial);
         }
 
         private Transform CreateCamera(Transform target)
@@ -641,19 +642,9 @@ namespace Gravivore.Presentation.Composition
             SaveCoordinator?.FlushNow();
         }
 
-        private static Material CreateMaterial(Color color)
+        private Material CreateMaterial(Color color)
         {
-            var shader = Shader.Find("Universal Render Pipeline/Lit");
-            if (shader == null)
-            {
-                return null;
-            }
-
-            return new Material(shader)
-            {
-                color = color,
-                hideFlags = HideFlags.HideAndDontSave
-            };
+            return _materialPalette.CreateLitInstance(color);
         }
     }
 }

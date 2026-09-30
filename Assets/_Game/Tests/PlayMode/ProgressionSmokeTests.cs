@@ -24,7 +24,8 @@ namespace Gravivore.Tests.PlayMode
                 player.transform,
                 new RecordingDamageable(),
                 1,
-                9);
+                9,
+                TestMaterialFactory.Lit);
             population.Tick(0f);
             Assert.That(population.GetSpot(0).LiveCount, Is.EqualTo(1));
 

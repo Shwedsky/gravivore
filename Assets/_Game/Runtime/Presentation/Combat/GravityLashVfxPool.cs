@@ -20,16 +20,21 @@ namespace Gravivore.Presentation.Combat
         private int _reuseCursor;
         private bool _isInitialized;
 
-        public void Initialize(GravityAttackSettings settings)
+        public void Initialize(GravityAttackSettings settings, Material unlitMaterial)
         {
             if (settings == null)
             {
                 throw new ArgumentNullException(nameof(settings));
             }
 
+            if (unlitMaterial == null)
+            {
+                throw new ArgumentNullException(nameof(unlitMaterial));
+            }
+
             settings.ValidateOrThrow();
             _duration = settings.VfxDuration;
-            _material = CreateMaterial(settings.VfxColor);
+            _material = CreateMaterial(unlitMaterial, settings.VfxColor);
             _beams = new Beam[settings.VfxPoolSize];
 
             for (var i = 0; i < _beams.Length; i++)
@@ -133,20 +138,9 @@ namespace Gravivore.Presentation.Combat
             }
         }
 
-        private static Material CreateMaterial(Color color)
+        private static Material CreateMaterial(Material source, Color color)
         {
-            var shader = Shader.Find("Universal Render Pipeline/Unlit");
-            if (shader == null)
-            {
-                shader = Shader.Find("Sprites/Default");
-            }
-
-            if (shader == null)
-            {
-                throw new InvalidOperationException("A shader is required for the Gravity Lash placeholder VFX.");
-            }
-
-            return new Material(shader)
+            return new Material(source)
             {
                 name = "Gravity Lash Placeholder Material",
                 color = color,

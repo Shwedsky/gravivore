@@ -27,16 +27,18 @@ namespace Gravivore.Presentation.Combat
         public void Initialize(
             MagnetarGuardController elite,
             CustodianBossController boss,
-            BossCompletionState completion)
+            BossCompletionState completion,
+            Material litMaterial)
         {
             _elite = elite != null ? elite : throw new ArgumentNullException(nameof(elite));
             _boss = boss != null ? boss : throw new ArgumentNullException(nameof(boss));
             _completion = completion ?? throw new ArgumentNullException(nameof(completion));
-            _eliteTelegraph = CreateIndicator("Elite Shockwave Telegraph", PrimitiveType.Cylinder, new Color(0.95f, 0.65f, 0.12f, 1f));
-            _bossCircle = CreateIndicator("Boss Circle Telegraph", PrimitiveType.Cylinder, new Color(0.92f, 0.18f, 0.18f, 1f));
-            _bossCone = CreateIndicator("Boss Cone Telegraph", PrimitiveType.Cube, new Color(0.92f, 0.18f, 0.18f, 1f));
-            _bossLine = CreateIndicator("Boss Line Telegraph", PrimitiveType.Cube, new Color(0.92f, 0.18f, 0.18f, 1f));
-            _impact = CreateIndicator("Boss Damage Impact", PrimitiveType.Cylinder, new Color(1f, 0.9f, 0.3f, 1f));
+            if (litMaterial == null) throw new ArgumentNullException(nameof(litMaterial));
+            _eliteTelegraph = CreateIndicator("Elite Shockwave Telegraph", PrimitiveType.Cylinder, new Color(0.95f, 0.65f, 0.12f, 1f), litMaterial);
+            _bossCircle = CreateIndicator("Boss Circle Telegraph", PrimitiveType.Cylinder, new Color(0.92f, 0.18f, 0.18f, 1f), litMaterial);
+            _bossCone = CreateIndicator("Boss Cone Telegraph", PrimitiveType.Cube, new Color(0.92f, 0.18f, 0.18f, 1f), litMaterial);
+            _bossLine = CreateIndicator("Boss Line Telegraph", PrimitiveType.Cube, new Color(0.92f, 0.18f, 0.18f, 1f), litMaterial);
+            _impact = CreateIndicator("Boss Damage Impact", PrimitiveType.Cylinder, new Color(1f, 0.9f, 0.3f, 1f), litMaterial);
             _elite.TelegraphStarted += HandleEliteTelegraph;
             _elite.ShockwaveResolved += HandleEliteResolved;
             _elite.ShockwaveCancelled += HandleEliteCancelled;
@@ -158,20 +160,16 @@ namespace Gravivore.Presentation.Combat
             if (_impactRemaining <= 0f) _impact.SetActive(false);
         }
 
-        private GameObject CreateIndicator(string name, PrimitiveType type, Color color)
+        private GameObject CreateIndicator(string name, PrimitiveType type, Color color, Material litMaterial)
         {
             var indicator = GameObject.CreatePrimitive(type);
             indicator.name = name;
             indicator.transform.SetParent(transform, false);
             var collider = indicator.GetComponent<Collider>();
             if (collider != null) collider.enabled = false;
-            var shader = Shader.Find("Universal Render Pipeline/Lit");
-            if (shader != null)
-            {
-                var material = new Material(shader) { color = color, hideFlags = HideFlags.HideAndDontSave };
-                _materials.Add(material);
-                indicator.GetComponent<Renderer>().sharedMaterial = material;
-            }
+            var material = new Material(litMaterial) { color = color, hideFlags = HideFlags.HideAndDontSave };
+            _materials.Add(material);
+            indicator.GetComponent<Renderer>().sharedMaterial = material;
 
             indicator.SetActive(false);
             return indicator;
