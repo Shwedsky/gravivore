@@ -12,7 +12,7 @@ namespace Gravivore.Gameplay.Encounters
     }
 
     [DisallowMultipleComponent]
-    public sealed class CustodianBossController : MonoBehaviour, ITargetable, IDamageable, IDisplaceable
+    public sealed class CustodianBossController : MonoBehaviour, ITargetable, IDamageable, IDisplaceable, IBossHealthSource
     {
         private readonly HealthState _health = new HealthState();
         private CharacterController _body;
@@ -33,6 +33,8 @@ namespace Gravivore.Gameplay.Encounters
         public event Action<BossAttackResolvedEvent> AttackResolved;
         public event Action<BossPhaseChangedEvent> PhaseChanged;
         public event Action<BossEncounterResetEvent> EncounterReset;
+        public event Action<BossEncounterStartedEvent> EncounterStarted;
+        public event Action<DamageResult> Damaged;
 
         public Transform TargetPoint => _targetPoint;
         public Transform DisplacementRoot => transform;
@@ -92,6 +94,7 @@ namespace Gravivore.Gameplay.Encounters
         {
             if (!CanBeTargeted) return new DamageResult(0f, false);
             var result = _health.ApplyDamage(request, _configuration.Armor);
+            EncounterEventDispatch.Publish(Damaged, result);
             if (!result.WasLethal) return result;
             _stateMachine.MarkDead();
             try
@@ -128,6 +131,9 @@ namespace Gravivore.Gameplay.Encounters
             {
                 if (!playerInsideArena || !_playerHealth.IsAlive) return;
                 _stateMachine.Engage();
+                EncounterEventDispatch.Publish(
+                    EncounterStarted,
+                    new BossEncounterStartedEvent(_configuration.Id));
             }
             else if (!playerInsideArena || !_playerHealth.IsAlive)
             {

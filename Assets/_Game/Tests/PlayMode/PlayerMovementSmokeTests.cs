@@ -56,6 +56,16 @@ namespace Gravivore.Tests.PlayMode
             }
 
             Assert.IsNotNull(compositionRoot.GetComponent<UiTouchExclusion>());
+            Assert.IsNotNull(compositionRoot.PlayerHealthHud);
+            Assert.IsNotNull(compositionRoot.PlayerStatsHud);
+            Assert.IsNotNull(compositionRoot.BossHealthHud);
+            Assert.IsNotNull(compositionRoot.PauseMenu);
+            Assert.IsNotNull(compositionRoot.OfflineRewardPanel);
+            Assert.IsNotNull(compositionRoot.ChapterCompletion);
+            Assert.IsNotNull(compositionRoot.QuestTracker);
+            StringAssert.Contains("HP", compositionRoot.PlayerHealthHud.DisplayText);
+            StringAssert.Contains("Power", compositionRoot.PlayerStatsHud.DisplayText);
+            Assert.IsFalse(compositionRoot.BossHealthHud.IsVisible);
 
             compositionRoot.PlayerStats.SetLevel(PlayerStatType.Hull, 2);
             compositionRoot.PlayerStats.SetLevel(PlayerStatType.Armor, 2);

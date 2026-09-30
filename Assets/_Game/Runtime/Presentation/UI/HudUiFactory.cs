@@ -1,0 +1,113 @@
+using System;
+using UnityEngine;
+using UnityEngine.UI;
+
+namespace Gravivore.Presentation.UI
+{
+    internal static class HudUiFactory
+    {
+        private static Font _font;
+
+        public static readonly Color PanelColor = new Color(0.025f, 0.045f, 0.055f, 0.88f);
+        public static readonly Color ModalBackdropColor = new Color(0.01f, 0.018f, 0.025f, 0.82f);
+        public static readonly Color AccentColor = new Color(0.12f, 0.82f, 0.68f, 1f);
+        public static readonly Color WarningColor = new Color(0.95f, 0.32f, 0.28f, 1f);
+
+        public static RectTransform CreatePanel(
+            Transform parent,
+            string name,
+            Vector2 anchorMin,
+            Vector2 anchorMax,
+            Color color,
+            bool raycastTarget = false)
+        {
+            var gameObject = new GameObject(name, typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
+            var rect = gameObject.GetComponent<RectTransform>();
+            rect.SetParent(parent, false);
+            SetRect(rect, anchorMin, anchorMax);
+            var image = gameObject.GetComponent<Image>();
+            image.color = color;
+            image.raycastTarget = raycastTarget;
+            return rect;
+        }
+
+        public static Text CreateText(
+            Transform parent,
+            string name,
+            Vector2 anchorMin,
+            Vector2 anchorMax,
+            string value,
+            int fontSize,
+            TextAnchor alignment,
+            Color color)
+        {
+            var gameObject = new GameObject(name, typeof(RectTransform), typeof(CanvasRenderer), typeof(Text));
+            var rect = gameObject.GetComponent<RectTransform>();
+            rect.SetParent(parent, false);
+            SetRect(rect, anchorMin, anchorMax);
+            var text = gameObject.GetComponent<Text>();
+            text.font = GetLegacyRuntimeFont();
+            text.fontSize = fontSize;
+            text.alignment = alignment;
+            text.color = color;
+            text.text = value;
+            text.raycastTarget = false;
+            text.horizontalOverflow = HorizontalWrapMode.Wrap;
+            text.verticalOverflow = VerticalWrapMode.Truncate;
+            return text;
+        }
+
+        public static Button CreateButton(
+            Transform parent,
+            string name,
+            Vector2 anchorMin,
+            Vector2 anchorMax,
+            string label,
+            Action onClick)
+        {
+            var rect = CreatePanel(
+                parent,
+                name,
+                anchorMin,
+                anchorMax,
+                new Color(0.08f, 0.22f, 0.24f, 0.96f),
+                true);
+            var button = rect.gameObject.AddComponent<Button>();
+            var colors = button.colors;
+            colors.highlightedColor = new Color(0.16f, 0.48f, 0.46f, 1f);
+            colors.pressedColor = new Color(0.08f, 0.62f, 0.54f, 1f);
+            button.colors = colors;
+            var text = CreateText(
+                rect,
+                "Label",
+                new Vector2(0.05f, 0.05f),
+                new Vector2(0.95f, 0.95f),
+                label,
+                30,
+                TextAnchor.MiddleCenter,
+                Color.white);
+            text.resizeTextForBestFit = true;
+            text.resizeTextMinSize = 22;
+            text.resizeTextMaxSize = 30;
+            if (onClick != null) button.onClick.AddListener(() => onClick());
+            return button;
+        }
+
+        public static void SetRect(RectTransform rect, Vector2 anchorMin, Vector2 anchorMax)
+        {
+            rect.anchorMin = anchorMin;
+            rect.anchorMax = anchorMax;
+            rect.offsetMin = Vector2.zero;
+            rect.offsetMax = Vector2.zero;
+        }
+
+        private static Font GetLegacyRuntimeFont()
+        {
+            if (_font != null) return _font;
+            _font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            return _font != null
+                ? _font
+                : throw new InvalidOperationException("Unity built-in font LegacyRuntime.ttf is unavailable.");
+        }
+    }
+}

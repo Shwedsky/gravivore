@@ -3,6 +3,23 @@ using UnityEngine;
 
 namespace Gravivore.Gameplay.Encounters
 {
+    public interface IBossHealthSource
+    {
+        event Action<BossEncounterStartedEvent> EncounterStarted;
+        event Action<Gravivore.Gameplay.Combat.DamageResult> Damaged;
+        event Action<BossEncounterResetEvent> EncounterReset;
+
+        float CurrentHitPoints { get; }
+        float MaximumHitPoints { get; }
+    }
+
+    public readonly struct BossEncounterStartedEvent
+    {
+        public BossEncounterStartedEvent(string bossId) => BossId = bossId;
+
+        public string BossId { get; }
+    }
+
     public interface IMagnetarGuardDefeatSource
     {
         event Action<MagnetarGuardDefeatedEvent> Defeated;
