@@ -12,6 +12,7 @@ using Gravivore.Gameplay.Quests;
 using Gravivore.Gameplay.World;
 using Gravivore.Persistence.Profile;
 using Gravivore.Presentation.Evolution;
+using Gravivore.Presentation.Composition;
 using Gravivore.Presentation.Quests;
 using Gravivore.Presentation.World;
 using UnityEditor;
@@ -73,6 +74,9 @@ namespace Gravivore.Editor
             "Assets/_Game/Content/Definitions/S11_Chapter01OnboardingQuest.asset",
             "Assets/_Game/Content/Definitions/S11_OnboardingPresentation.asset",
             "Assets/_Game/Content/Definitions/S12_SaveOffline.asset",
+            PresentationMaterialAssetConfigurator.LitMaterialPath,
+            PresentationMaterialAssetConfigurator.UnlitMaterialPath,
+            PresentationMaterialAssetConfigurator.PalettePath,
             UrpConfigurator.UrpAssetPath,
             UrpConfigurator.RendererDataPath,
             "build-android.ps1"
@@ -97,6 +101,7 @@ namespace Gravivore.Editor
 
             ValidateEditorBuildSettings();
             ValidateUrpConfiguration();
+            ValidatePresentationMaterials();
             ValidateAndroidPlayerSettings();
             ValidateVersion();
             ValidatePlayerStats();
@@ -109,6 +114,41 @@ namespace Gravivore.Editor
             ValidateEquipment();
             ValidateQuests();
             ValidateSaveOffline();
+        }
+
+        private static void ValidatePresentationMaterials()
+        {
+            var palette = AssetDatabase.LoadAssetAtPath<PresentationMaterialPalette>(
+                PresentationMaterialAssetConfigurator.PalettePath);
+            if (palette == null)
+            {
+                throw new InvalidOperationException("The canonical presentation material palette is required.");
+            }
+
+            palette.ValidateOrThrow();
+            if (!string.Equals(palette.LitMaterial.shader.name, "Universal Render Pipeline/Lit", StringComparison.Ordinal) ||
+                !string.Equals(palette.UnlitMaterial.shader.name, "Universal Render Pipeline/Unlit", StringComparison.Ordinal))
+            {
+                throw new InvalidOperationException("The presentation palette must use the canonical URP Lit and Unlit shaders.");
+            }
+
+            var dependencies = AssetDatabase.GetDependencies(PresentationMaterialAssetConfigurator.ChapterScenePath, true);
+            if (Array.IndexOf(dependencies, PresentationMaterialAssetConfigurator.PalettePath) < 0 ||
+                Array.IndexOf(dependencies, PresentationMaterialAssetConfigurator.LitMaterialPath) < 0 ||
+                Array.IndexOf(dependencies, PresentationMaterialAssetConfigurator.UnlitMaterialPath) < 0)
+            {
+                throw new InvalidOperationException(
+                    "The canonical chapter scene must reference the presentation palette and both material assets.");
+            }
+
+            var runtimeScripts = Directory.GetFiles("Assets/_Game/Runtime", "*.cs", SearchOption.AllDirectories);
+            foreach (var script in runtimeScripts)
+            {
+                if (File.ReadAllText(script).Contains("Shader.Find("))
+                {
+                    throw new InvalidOperationException($"Production runtime code must not use Shader.Find: {script}.");
+                }
+            }
         }
 
         private static void ValidateSaveOffline()

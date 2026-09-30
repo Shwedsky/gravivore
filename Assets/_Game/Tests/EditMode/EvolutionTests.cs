@@ -1,4 +1,5 @@
 using System;
+using System.Text.RegularExpressions;
 using Gravivore.Core.Stats;
 using Gravivore.Gameplay.Enemies;
 using Gravivore.Gameplay.Player;
@@ -6,6 +7,7 @@ using Gravivore.Gameplay.Progression;
 using Gravivore.Presentation.Evolution;
 using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.TestTools;
 
 namespace Gravivore.Tests.EditMode
 {
@@ -129,7 +131,7 @@ namespace Gravivore.Tests.EditMode
             Assert.That(presenter.CurrentDominantStat, Is.EqualTo(PlayerStatType.Mobility));
             Assert.That(view.LastState.Tier, Is.EqualTo(EvolutionTier.Tier0));
             Assert.That(tierEvents, Is.Zero);
-            Object.DestroyImmediate(presenterObject);
+            UnityEngine.Object.DestroyImmediate(presenterObject);
             progression.Dispose();
         }
 
@@ -154,7 +156,7 @@ namespace Gravivore.Tests.EditMode
             Assert.That(view.ApplyCount, Is.EqualTo(2));
             Assert.That(tierEvents, Is.EqualTo(1));
             Assert.That(vfx.PlayCount, Is.EqualTo(1));
-            Object.DestroyImmediate(presenterObject);
+            UnityEngine.Object.DestroyImmediate(presenterObject);
             progression.Dispose();
         }
 
@@ -180,7 +182,7 @@ namespace Gravivore.Tests.EditMode
             Assert.That(view.ApplyCount, Is.EqualTo(1));
             Assert.That(tierEvents, Is.Zero);
             Assert.That(vfx.PlayCount, Is.Zero);
-            Object.DestroyImmediate(presenterObject);
+            UnityEngine.Object.DestroyImmediate(presenterObject);
             progression.Dispose();
         }
 
@@ -199,12 +201,15 @@ namespace Gravivore.Tests.EditMode
                 view,
                 new ThrowingVfx());
 
+            LogAssert.Expect(
+                LogType.Exception,
+                new Regex("InvalidOperationException: VFX failed"));
             Assert.Throws<AggregateException>(() => progression.TryGrant(Death(1)));
 
             Assert.That(progression.State.TotalAssimilationScore, Is.EqualTo(10));
             Assert.That(presenter.CurrentTier, Is.EqualTo(EvolutionTier.Tier1));
             Assert.That(view.LastState.Tier, Is.EqualTo(EvolutionTier.Tier1));
-            Object.DestroyImmediate(presenterObject);
+            UnityEngine.Object.DestroyImmediate(presenterObject);
             progression.Dispose();
         }
 

@@ -50,7 +50,7 @@ namespace Gravivore.Presentation.Evolution
 
         public int SocketCount => _sockets != null ? _sockets.Length : 0;
 
-        public void Initialize(Transform visualRoot, EvolutionVisualCatalog catalog)
+        public void Initialize(Transform visualRoot, EvolutionVisualCatalog catalog, Material litMaterial)
         {
             if (_isInitialized)
             {
@@ -67,15 +67,16 @@ namespace Gravivore.Presentation.Evolution
                 throw new ArgumentNullException(nameof(catalog));
             }
 
-            _sockets = CreateSockets(visualRoot);
-            var shader = Shader.Find("Universal Render Pipeline/Lit");
-            if (shader != null)
+            if (litMaterial == null)
             {
-                _moduleMaterial = new Material(shader)
-                {
-                    hideFlags = HideFlags.HideAndDontSave
-                };
+                throw new ArgumentNullException(nameof(litMaterial));
             }
+
+            _sockets = CreateSockets(visualRoot);
+            _moduleMaterial = new Material(litMaterial)
+            {
+                hideFlags = HideFlags.HideAndDontSave
+            };
 
             var tierModules = new List<TierModuleInstance>();
             for (var setIndex = 0; setIndex < catalog.TierModuleSets.Length; setIndex++)
@@ -182,10 +183,7 @@ namespace Gravivore.Presentation.Evolution
             var renderer = module.GetComponent<Renderer>();
             if (renderer != null)
             {
-                if (_moduleMaterial != null)
-                {
-                    renderer.sharedMaterial = _moduleMaterial;
-                }
+                renderer.sharedMaterial = _moduleMaterial;
 
                 var properties = new MaterialPropertyBlock();
                 properties.SetColor("_BaseColor", configuration.Color);

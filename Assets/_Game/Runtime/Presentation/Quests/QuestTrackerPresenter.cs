@@ -288,7 +288,12 @@ namespace Gravivore.Presentation.Quests
             var collider = markerObject.GetComponent<Collider>();
             if (collider != null) collider.enabled = false;
             _markerMaterial = materialFactory(new Color(0.3f, 0.95f, 1f, 1f));
-            if (_markerMaterial != null) markerObject.GetComponent<Renderer>().sharedMaterial = _markerMaterial;
+            if (_markerMaterial == null)
+            {
+                throw new InvalidOperationException("Quest world marker requires a valid material.");
+            }
+
+            markerObject.GetComponent<Renderer>().sharedMaterial = _markerMaterial;
             _marker = markerObject.transform;
             _marker.gameObject.SetActive(false);
         }

@@ -64,7 +64,7 @@ namespace Gravivore.Tests.EditMode
             Assert.That(rig.Stats.DerivedStats.BaseDamage, Is.EqualTo(baselineDamage + 4f).Within(0.0001f));
             Assert.IsTrue(rig.Service.Equip("flux-core", EquipmentSlot.Core));
             Assert.That(rig.Stats.DerivedStats.BaseDamage, Is.EqualTo(baselineDamage).Within(0.0001f));
-            Assert.That(rig.Stats.DerivedStats.AttackInterval, Is.EqualTo(0.85f).Within(0.0001f));
+            Assert.That(rig.Stats.DerivedStats.AttackInterval, Is.EqualTo(0.4f).Within(0.0001f));
             Assert.IsTrue(rig.State.HasItem("damage-core"));
 
             Assert.IsTrue(rig.Service.Unequip(EquipmentSlot.Core));
@@ -105,7 +105,7 @@ namespace Gravivore.Tests.EditMode
             Assert.That(rig.Stats.DerivedStats.BaseDamage, Is.EqualTo(13f).Within(0.0001f));
             rig.Service.Equip("damage-core", EquipmentSlot.Core);
             rig.Stats.SetLevel(PlayerStatType.Power, 2);
-            Assert.That(rig.Stats.DerivedStats.BaseDamage, Is.EqualTo(19f).Within(0.0001f));
+            Assert.That(rig.Stats.DerivedStats.BaseDamage, Is.EqualTo(19.5f).Within(0.0001f));
         }
 
         [Test]

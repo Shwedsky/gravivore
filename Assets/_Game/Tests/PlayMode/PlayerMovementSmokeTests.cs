@@ -1,6 +1,7 @@
 using System.Collections;
 using Gravivore.Gameplay.Combat;
 using Gravivore.Gameplay.Player;
+using Gravivore.Gameplay.Progression;
 using Gravivore.Presentation.Input;
 using Gravivore.Presentation.Evolution;
 using Gravivore.Presentation.UI;
@@ -174,21 +175,23 @@ namespace Gravivore.Tests.PlayMode
         {
             var player = new GameObject("Movement Smoke Player", typeof(CharacterController), typeof(PlayerLocomotion));
             var cameraBasis = new GameObject("Movement Smoke Camera Basis");
-            player.transform.position = new Vector3(10f, 0f, 10f);
+            var spawnPosition = new Vector3(10f, 0f, 10f);
+            player.transform.position = spawnPosition;
             var input = new StubMovementInput();
             var locomotion = player.GetComponent<PlayerLocomotion>();
             locomotion.Initialize(input, cameraBasis.transform, new PlayerMovementParameters(4f, 720f));
-            var initialPosition = player.transform.position;
+
+            Assert.That(Vector3.Distance(player.transform.position, spawnPosition), Is.LessThan(0.001f));
 
             yield return null;
 
-            Assert.That(Vector3.Distance(player.transform.position, initialPosition), Is.LessThan(0.001f));
+            Assert.That(Vector3.Distance(player.transform.position, spawnPosition), Is.LessThan(0.001f));
 
             input.Movement = Vector2.up;
             yield return null;
 
-            Assert.That(player.transform.position.z, Is.GreaterThan(initialPosition.z));
-            Assert.That(player.transform.position.x, Is.EqualTo(initialPosition.x).Within(0.001f));
+            Assert.That(player.transform.position.z, Is.GreaterThan(spawnPosition.z));
+            Assert.That(player.transform.position.x, Is.EqualTo(spawnPosition.x).Within(0.001f));
 
             Object.Destroy(player);
             Object.Destroy(cameraBasis);

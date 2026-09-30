@@ -18,7 +18,7 @@ namespace Gravivore.Tests.PlayMode
             var root = new GameObject("World Test Root");
             var presenter = root.AddComponent<Chapter01WorldPresenter>();
             var state = new WorldUnlockState("elite-gate", "boss-gate", "magnetar-guard");
-            presenter.Initialize(CreateConfiguration(), state);
+            presenter.Initialize(CreateConfiguration(), state, TestMaterialFactory.Lit);
 
             Physics.SyncTransforms();
             var hardBlockers = LayerMask.GetMask("HardBlocker");
@@ -72,7 +72,8 @@ namespace Gravivore.Tests.PlayMode
             var presenter = root.AddComponent<Chapter01WorldPresenter>();
             presenter.Initialize(
                 CreateConfiguration(),
-                new WorldUnlockState("elite-gate", "boss-gate", "magnetar-guard"));
+                new WorldUnlockState("elite-gate", "boss-gate", "magnetar-guard"),
+                TestMaterialFactory.Lit);
             Physics.SyncTransforms();
 
             Assert.That(presenter.PerimeterColliderCount, Is.EqualTo(4));
@@ -117,7 +118,7 @@ namespace Gravivore.Tests.PlayMode
             state.GateUnlocked += _ => eventCount++;
             var root = new GameObject("Restored World Test Root");
             var presenter = root.AddComponent<Chapter01WorldPresenter>();
-            presenter.Initialize(CreateConfiguration(), state);
+            presenter.Initialize(CreateConfiguration(), state, TestMaterialFactory.Lit);
 
             Assert.IsFalse(presenter.EliteGate.IsLocked);
             Assert.IsFalse(presenter.BossGate.IsLocked);

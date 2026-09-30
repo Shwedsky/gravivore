@@ -11,8 +11,9 @@ namespace Gravivore.Gameplay.Enemies
         private readonly HashSet<OrdinaryEnemyController> _leased;
         private readonly Transform _poolRoot;
         private readonly int _targetLayer;
+        private readonly Material _visualMaterial;
 
-        public OrdinaryEnemyPool(Transform poolRoot, int capacity, int targetLayer)
+        public OrdinaryEnemyPool(Transform poolRoot, int capacity, int targetLayer, Material visualMaterial)
         {
             _poolRoot = poolRoot != null ? poolRoot : throw new ArgumentNullException(nameof(poolRoot));
             if (capacity < 1)
@@ -26,6 +27,9 @@ namespace Gravivore.Gameplay.Enemies
             }
 
             _targetLayer = targetLayer;
+            _visualMaterial = visualMaterial != null
+                ? visualMaterial
+                : throw new ArgumentNullException(nameof(visualMaterial));
             _available = new Stack<OrdinaryEnemyController>(capacity);
             _leased = new HashSet<OrdinaryEnemyController>();
             for (var i = 0; i < capacity; i++)
@@ -108,6 +112,7 @@ namespace Gravivore.Gameplay.Enemies
             var visualCollider = visual.GetComponent<Collider>();
             visualCollider.enabled = false;
             UnityEngine.Object.Destroy(visualCollider);
+            visual.GetComponent<Renderer>().sharedMaterial = _visualMaterial;
 
             var sensorObject = new GameObject("Combat Target Sensor", typeof(SphereCollider));
             sensorObject.layer = _targetLayer;

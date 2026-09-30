@@ -19,7 +19,7 @@ namespace Gravivore.Tests.PlayMode
             var stats = CreatePlayerStats();
             var playerHealth = player.GetComponent<PlayerHealthController>();
             playerHealth.Initialize(player.GetComponent<CharacterController>(), stats, Vector3.zero, 1f);
-            var pool = new OrdinaryEnemyPool(root.transform, 1, 9);
+            var pool = new OrdinaryEnemyPool(root.transform, 1, 9, TestMaterialFactory.Lit);
             var enemy = pool.Acquire(
                 CreateEnemyConfiguration(),
                 player.transform,
@@ -76,7 +76,7 @@ namespace Gravivore.Tests.PlayMode
         {
             var root = new GameObject("Enemy Death Smoke Root");
             var player = new GameObject("Enemy Death Smoke Player");
-            var pool = new OrdinaryEnemyPool(root.transform, 1, 9);
+            var pool = new OrdinaryEnemyPool(root.transform, 1, 9, TestMaterialFactory.Lit);
             var target = new RecordingDamageable();
             var configuration = CreateEnemyConfiguration();
             var deathCount = 0;
@@ -109,7 +109,7 @@ namespace Gravivore.Tests.PlayMode
             var root = new GameObject("Pool Smoke Root");
             var player = new GameObject("Pool Smoke Player");
             player.transform.position = Vector3.zero;
-            var pool = new OrdinaryEnemyPool(root.transform, 1, 9);
+            var pool = new OrdinaryEnemyPool(root.transform, 1, 9, TestMaterialFactory.Lit);
             var configuration = CreateEnemyConfiguration();
             var damageTarget = new RecordingDamageable();
             var first = pool.Acquire(
@@ -173,7 +173,7 @@ namespace Gravivore.Tests.PlayMode
             var player = new GameObject("Population Recovery Player");
             player.transform.position = new Vector3(30f, 0f, 30f);
             var cap = new LiveEnemyCapCoordinator(3);
-            var pool = new OrdinaryEnemyPool(root.transform, 3, 9);
+            var pool = new OrdinaryEnemyPool(root.transform, 3, 9, TestMaterialFactory.Lit);
             var spot = new SpawnSpotRuntime(
                 CreateSpotConfiguration("recovery", Vector3.zero, 3, 0f, 0f),
                 pool,
@@ -224,7 +224,13 @@ namespace Gravivore.Tests.PlayMode
             }
 
             var population = root.GetComponent<EnemyPopulationController>();
-            population.Initialize(configurations, player.transform, new RecordingDamageable(), 17, 9);
+            population.Initialize(
+                configurations,
+                player.transform,
+                new RecordingDamageable(),
+                17,
+                9,
+                TestMaterialFactory.Lit);
             population.Tick(0f);
 
             Assert.That(population.SpotCount, Is.EqualTo(5));

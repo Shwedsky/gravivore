@@ -11,6 +11,7 @@ namespace Gravivore.Presentation.World
         private readonly List<Material> _materials = new List<Material>();
         private Chapter01WorldConfiguration _configuration;
         private WorldUnlockState _state;
+        private Material _litMaterial;
         private Collider[] _perimeterColliders;
         private bool _initialized;
 
@@ -18,11 +19,15 @@ namespace Gravivore.Presentation.World
         public WorldGateView BossGate { get; private set; }
         public int ZoneCount => _configuration?.ZoneCount ?? 0;
 
-        public void Initialize(Chapter01WorldConfiguration configuration, WorldUnlockState state)
+        public void Initialize(
+            Chapter01WorldConfiguration configuration,
+            WorldUnlockState state,
+            Material litMaterial)
         {
             if (_initialized) throw new InvalidOperationException("World presenter is already initialized.");
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _state = state ?? throw new ArgumentNullException(nameof(state));
+            _litMaterial = litMaterial != null ? litMaterial : throw new ArgumentNullException(nameof(litMaterial));
 
             BuildGround();
             BuildPerimeterBoundaries();
@@ -175,7 +180,7 @@ namespace Gravivore.Presentation.World
             blocker.transform.SetParent(transform, false);
             blocker.transform.position = position;
             blocker.transform.localScale = size;
-            if (material != null) blocker.GetComponent<Renderer>().sharedMaterial = material;
+            blocker.GetComponent<Renderer>().sharedMaterial = material;
             return blocker.GetComponent<Collider>();
         }
 
@@ -202,14 +207,12 @@ namespace Gravivore.Presentation.World
         private void SetMaterial(GameObject target, Color color)
         {
             var material = CreateMaterial(color);
-            if (material != null) target.GetComponent<Renderer>().sharedMaterial = material;
+            target.GetComponent<Renderer>().sharedMaterial = material;
         }
 
         private Material CreateMaterial(Color color)
         {
-            var shader = Shader.Find("Universal Render Pipeline/Lit");
-            if (shader == null) return null;
-            var material = new Material(shader) { color = color, hideFlags = HideFlags.HideAndDontSave };
+            var material = new Material(_litMaterial) { color = color, hideFlags = HideFlags.HideAndDontSave };
             _materials.Add(material);
             return material;
         }
@@ -234,6 +237,7 @@ namespace Gravivore.Presentation.World
         {
             var hardBlockerLayer = LayerMask.NameToLayer("HardBlocker");
             if (hardBlockerLayer < 0) throw new InvalidOperationException("HardBlocker layer is required for world gates.");
+            if (materialFactory == null) throw new ArgumentNullException(nameof(materialFactory));
 
             _barrier = GameObject.CreatePrimitive(PrimitiveType.Cube);
             _barrier.name = "Physical Gate Barrier";
@@ -242,8 +246,9 @@ namespace Gravivore.Presentation.World
             _barrier.transform.localPosition = Vector3.up * (size.y * 0.5f);
             _barrier.transform.localScale = size;
             BlockingCollider = _barrier.GetComponent<Collider>();
-            var material = materialFactory(color);
-            if (material != null) _barrier.GetComponent<Renderer>().sharedMaterial = material;
+            var material = materialFactory(color) ??
+                throw new InvalidOperationException("World gates require a valid material.");
+            _barrier.GetComponent<Renderer>().sharedMaterial = material;
 
             var openingMinX = transform.position.x - size.x * 0.5f;
             var openingMaxX = transform.position.x + size.x * 0.5f;
@@ -283,7 +288,7 @@ namespace Gravivore.Presentation.World
             flank.transform.SetParent(transform, false);
             flank.transform.localPosition = new Vector3(centerX, gateSize.y * 0.5f, 0f);
             flank.transform.localScale = new Vector3(width, gateSize.y, gateSize.z);
-            if (material != null) flank.GetComponent<Renderer>().sharedMaterial = material;
+            flank.GetComponent<Renderer>().sharedMaterial = material;
         }
     }
 }

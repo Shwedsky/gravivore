@@ -67,7 +67,7 @@ namespace Gravivore.Tests.PlayMode
             var presentation = new GameObject("Encounter Telegraphs", typeof(EncounterTelegraphPresenter))
                 .GetComponent<EncounterTelegraphPresenter>();
             presentation.transform.SetParent(root.transform, false);
-            presentation.Initialize(elite, boss, completion);
+            presentation.Initialize(elite, boss, completion, TestMaterialFactory.Lit);
             var initialHp = player.CurrentHitPoints;
 
             boss.Tick(0f);
@@ -168,6 +168,8 @@ namespace Gravivore.Tests.PlayMode
             var completion = BossCompletionState.Restore(
                 "custodian-m0",
                 new BossCompletionSnapshot(true));
+            var completionReplayCount = 0;
+            completion.Defeated += _ => completionReplayCount++;
             var boss = CreateBoss(root.transform, player, completion);
 
             Assert.IsTrue(completion.IsDefeated);
@@ -176,6 +178,7 @@ namespace Gravivore.Tests.PlayMode
             boss.Tick(100f);
             Assert.That(boss.State, Is.EqualTo(CustodianBossState.Dead));
             Assert.That(boss.ApplyDamage(new DamageRequest(10000f, DamageType.Gravity)).AppliedDamage, Is.Zero);
+            Assert.That(completionReplayCount, Is.Zero);
 
             UnityEngine.Object.Destroy(root);
             yield return null;
@@ -191,7 +194,7 @@ namespace Gravivore.Tests.PlayMode
             var presentation = new GameObject("Encounter Telegraphs", typeof(EncounterTelegraphPresenter))
                 .GetComponent<EncounterTelegraphPresenter>();
             presentation.transform.SetParent(root.transform, false);
-            presentation.Initialize(elite, boss, completion);
+            presentation.Initialize(elite, boss, completion, TestMaterialFactory.Lit);
             var initialHealth = player.CurrentHitPoints;
             var cancellationCount = 0;
             var resolveCount = 0;
