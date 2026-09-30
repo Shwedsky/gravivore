@@ -13,6 +13,7 @@ using Gravivore.Persistence.Profile;
 using Gravivore.Presentation.Camera;
 using Gravivore.Presentation.Combat;
 using Gravivore.Presentation.Evolution;
+using Gravivore.Presentation.Feedback;
 using Gravivore.Presentation.Input;
 using Gravivore.Presentation.Quests;
 using Gravivore.Presentation.UI;
@@ -45,6 +46,7 @@ namespace Gravivore.Presentation.Composition
         [SerializeField] private FloatingJoystickSettings _joystickSettings;
         [SerializeField] private CameraFollowSettings _cameraSettings;
         [SerializeField] private PresentationMaterialPalette _materialPalette;
+        [SerializeField] private S14PresentationDefinition _s14PresentationDefinition;
         [SerializeField] private Vector3 _playerSpawn = Vector3.zero;
         [SerializeField, Min(0f)] private float _postRespawnInvulnerabilitySeconds = 1.5f;
 
@@ -61,6 +63,7 @@ namespace Gravivore.Presentation.Composition
         private string _profileDirectoryOverride;
         private ITimeProvider _timeProviderOverride;
         private ProfileSession _profileSession;
+        private GravityLashVfxPool _gravityLashVfx;
 
         public GameObject PlayerObject { get; private set; }
 
@@ -108,6 +111,8 @@ namespace Gravivore.Presentation.Composition
         public OfflineRewardPanelPresenter OfflineRewardPanel { get; private set; }
         public ChapterCompletionPresenter ChapterCompletion { get; private set; }
         public PauseMenuPresenter PauseMenu { get; private set; }
+        public S14AudioPresenter AudioPresenter { get; private set; }
+        public S14CombatFeedbackPresenter CombatFeedback { get; private set; }
 
         private HudModalController _hudModal;
 
@@ -131,6 +136,7 @@ namespace Gravivore.Presentation.Composition
                 _evolutionDefinition == null || _worldDefinition == null ||
                 _magnetarGuardDefinition == null || _custodianBossDefinition == null ||
                 _joystickSettings == null || _cameraSettings == null || _materialPalette == null ||
+                _s14PresentationDefinition == null ||
                 float.IsNaN(_postRespawnInvulnerabilitySeconds) ||
                 float.IsInfinity(_postRespawnInvulnerabilitySeconds) ||
                 _postRespawnInvulnerabilitySeconds < 0f)
@@ -140,6 +146,7 @@ namespace Gravivore.Presentation.Composition
             }
 
             _materialPalette.ValidateOrThrow();
+            _s14PresentationDefinition.ValidateOrThrow();
 
             var statsConfiguration = _playerStatsDefinition.Configuration;
             var progressionConfiguration = _progressionDefinition.Configuration;
@@ -180,6 +187,7 @@ namespace Gravivore.Presentation.Composition
             InitializeWorld(worldConfiguration);
             WireEncounterWorldBridges();
             InitializeEvolution();
+            InitializeS14Presentation();
             SaveCoordinator = new SaveCoordinator(
                 _profileSession,
                 PlayerStats,
@@ -329,7 +337,7 @@ namespace Gravivore.Presentation.Composition
             var pauseObject = new GameObject("Pause Menu", typeof(PauseMenuPresenter));
             pauseObject.transform.SetParent(transform, false);
             PauseMenu = pauseObject.GetComponent<PauseMenuPresenter>();
-            PauseMenu.Initialize(_hudRoot, _hudModal, PlayerStatsHud);
+            PauseMenu.Initialize(_hudRoot, _hudModal, PlayerStatsHud, AudioPresenter);
 
             var offlineObject = new GameObject("Offline Reward Panel", typeof(OfflineRewardPanelPresenter));
             offlineObject.transform.SetParent(transform, false);
@@ -557,8 +565,8 @@ namespace Gravivore.Presentation.Composition
         {
             var vfxObject = new GameObject("Gravity Lash VFX Pool", typeof(GravityLashVfxPool));
             vfxObject.transform.SetParent(transform, false);
-            var vfxPool = vfxObject.GetComponent<GravityLashVfxPool>();
-            vfxPool.Initialize(_gravityAttackSettings, _materialPalette.UnlitMaterial);
+            _gravityLashVfx = vfxObject.GetComponent<GravityLashVfxPool>();
+            _gravityLashVfx.Initialize(_gravityAttackSettings, _materialPalette.UnlitMaterial, _s14PresentationDefinition);
 
             var targetSensor = new PhysicsTargetSensor(
                 _gravityAttackSettings.TargetColliderCapacity,
@@ -573,7 +581,32 @@ namespace Gravivore.Presentation.Composition
                 _gravityAttackSettings,
                 targetSensor,
                 pullResolver,
-                vfxPool);
+                _gravityLashVfx);
+        }
+
+        private void InitializeS14Presentation()
+        {
+            var audioObject = new GameObject("S14 Audio Presenter", typeof(S14AudioPresenter));
+            audioObject.transform.SetParent(transform, false);
+            AudioPresenter = audioObject.GetComponent<S14AudioPresenter>();
+            AudioPresenter.Initialize(_s14PresentationDefinition);
+
+            var feedbackObject = new GameObject("S14 Combat Feedback", typeof(S14CombatFeedbackPresenter));
+            feedbackObject.transform.SetParent(transform, false);
+            CombatFeedback = feedbackObject.GetComponent<S14CombatFeedbackPresenter>();
+            CombatFeedback.Initialize(
+                EnemyPopulation,
+                Progression,
+                PlayerHealth,
+                PlayerObject.transform,
+                PlayerObject.GetComponent<EvolutionVfxRelay>(),
+                _gravityLashVfx,
+                MagnetarGuard,
+                CustodianBoss,
+                _s14PresentationDefinition,
+                _materialPalette.UnlitMaterial,
+                AudioPresenter,
+                new PlatformHapticFeedback());
         }
 
         private void InitializePlayerHealth()
@@ -667,6 +700,7 @@ namespace Gravivore.Presentation.Composition
             PlayerHealthHud?.Shutdown();
             _hudModal?.Dispose();
             EvolutionPresenter?.Shutdown();
+            CombatFeedback?.Shutdown();
             EncounterTelegraphs?.Shutdown();
             QuestTracker?.Shutdown();
             CustodianBoss?.Shutdown();

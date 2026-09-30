@@ -14,6 +14,7 @@ using Gravivore.Persistence.Profile;
 using Gravivore.Presentation.Evolution;
 using Gravivore.Presentation.Composition;
 using Gravivore.Presentation.Quests;
+using Gravivore.Presentation.Feedback;
 using Gravivore.Presentation.World;
 using UnityEditor;
 using UnityEngine;
@@ -74,6 +75,15 @@ namespace Gravivore.Editor
             "Assets/_Game/Content/Definitions/S11_Chapter01OnboardingQuest.asset",
             "Assets/_Game/Content/Definitions/S11_OnboardingPresentation.asset",
             "Assets/_Game/Content/Definitions/S12_SaveOffline.asset",
+            S14PresentationAssetConfigurator.DefinitionPath,
+            "Assets/_Game/Content/Audio/S14_LashWindup.wav",
+            "Assets/_Game/Content/Audio/S14_LashImpact.wav",
+            "Assets/_Game/Content/Audio/S14_Hit.wav",
+            "Assets/_Game/Content/Audio/S14_Death.wav",
+            "Assets/_Game/Content/Audio/S14_Assimilation.wav",
+            "Assets/_Game/Content/Audio/S14_Evolution.wav",
+            "Assets/_Game/Content/Audio/S14_Telegraph.wav",
+            "Assets/_Game/Content/Audio/S14_BossImpact.wav",
             "Assets/_Game/Runtime/Presentation/UI/PlayerHealthHudPresenter.cs",
             "Assets/_Game/Runtime/Presentation/UI/PlayerStatsHudPresenter.cs",
             "Assets/_Game/Runtime/Presentation/UI/BossHealthHudPresenter.cs",
@@ -81,6 +91,7 @@ namespace Gravivore.Editor
             "Assets/_Game/Runtime/Presentation/UI/OfflineRewardPanelPresenter.cs",
             "Assets/_Game/Runtime/Presentation/UI/ChapterCompletionPresenter.cs",
             "docs/S13_MANUAL_UI_CHECKLIST.md",
+            "docs/S14_MANUAL_PRESENTATION_CHECKLIST.md",
             PresentationMaterialAssetConfigurator.LitMaterialPath,
             PresentationMaterialAssetConfigurator.UnlitMaterialPath,
             PresentationMaterialAssetConfigurator.PalettePath,
@@ -121,6 +132,18 @@ namespace Gravivore.Editor
             ValidateEquipment();
             ValidateQuests();
             ValidateSaveOffline();
+            ValidateS14Presentation();
+        }
+
+        private static void ValidateS14Presentation()
+        {
+            var definition = AssetDatabase.LoadAssetAtPath<S14PresentationDefinition>(
+                S14PresentationAssetConfigurator.DefinitionPath);
+            if (definition == null) throw new InvalidOperationException("Canonical S14 presentation definition is required.");
+            definition.ValidateOrThrow();
+            var dependencies = AssetDatabase.GetDependencies(S14PresentationAssetConfigurator.ChapterScenePath, true);
+            if (Array.IndexOf(dependencies, S14PresentationAssetConfigurator.DefinitionPath) < 0)
+                throw new InvalidOperationException("The canonical chapter scene must reference the S14 presentation definition.");
         }
 
         private static void ValidatePresentationMaterials()

@@ -20,6 +20,8 @@ namespace Gravivore.Gameplay.Enemies
 
         public event Action<EnemyDeathEvent> EnemyDied;
 
+        public event Action<EnemyDamageEvent> EnemyDamaged;
+
         public void Initialize(
             IReadOnlyList<SpawnSpotRuntimeConfiguration> spotConfigurations,
             Transform player,
@@ -68,6 +70,7 @@ namespace Gravivore.Gameplay.Enemies
                     playerDamageable,
                     new SystemRandomSource(1709 + (i * 7919)));
                 _spots[i].EnemyDied += HandleEnemyDied;
+                _spots[i].EnemyDamaged += HandleEnemyDamaged;
             }
 
             _isInitialized = true;
@@ -114,6 +117,7 @@ namespace Gravivore.Gameplay.Enemies
             for (var i = 0; i < _spots.Length; i++)
             {
                 _spots[i].EnemyDied -= HandleEnemyDied;
+                _spots[i].EnemyDamaged -= HandleEnemyDamaged;
                 _spots[i].Dispose();
             }
         }
@@ -121,6 +125,11 @@ namespace Gravivore.Gameplay.Enemies
         private void HandleEnemyDied(EnemyDeathEvent death)
         {
             EnemyDied?.Invoke(death);
+        }
+
+        private void HandleEnemyDamaged(EnemyDamageEvent damage)
+        {
+            EnemyDamaged?.Invoke(damage);
         }
     }
 }

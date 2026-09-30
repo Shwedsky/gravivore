@@ -129,7 +129,14 @@ namespace Gravivore.Gameplay.Combat
 
             var origin = _attackOrigin.position;
             var targetPoint = _currentTarget.Targetable.TargetPoint.position;
-            _lashVfx.Play(origin, targetPoint);
+            try
+            {
+                _lashVfx.Play(origin, targetPoint);
+            }
+            catch (Exception exception)
+            {
+                Debug.LogException(exception);
+            }
             var damageResult = _currentTarget.Damageable.ApplyDamage(new DamageRequest(
                 _playerStats.DerivedStats.BaseDamage,
                 DamageType.Gravity));

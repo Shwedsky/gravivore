@@ -2,6 +2,13 @@
 
 Initial asset spend: **0**.
 
+## Project-owned generated audio
+
+The S14 placeholder combat cues under `Assets/_Game/Content/Audio/S14_*.wav` are original,
+deterministically generated mono tones created by `S14PresentationAssetConfigurator`.
+They contain no third-party samples, require no attribution, and may be replaced later through
+the serialized `S14PresentationDefinition` references.
+
 ## Style target
 
 Stylized low-poly 3D:
