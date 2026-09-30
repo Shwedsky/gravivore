@@ -28,7 +28,8 @@ namespace Gravivore.Gameplay.Enemies
             IDamageable playerDamageable,
             int globalLiveEnemyCap,
             int targetLayer,
-            Material visualMaterial)
+            Material visualMaterial,
+            IEnemyVisualFactory visualFactory = null)
         {
             if (_isInitialized)
             {
@@ -58,7 +59,12 @@ namespace Gravivore.Gameplay.Enemies
             _globalCapacity = new LiveEnemyCapCoordinator(globalLiveEnemyCap);
             var poolObject = new GameObject("Ordinary Enemy Pool");
             poolObject.transform.SetParent(transform, false);
-            var pool = new OrdinaryEnemyPool(poolObject.transform, globalLiveEnemyCap, targetLayer, visualMaterial);
+            var pool = new OrdinaryEnemyPool(
+                poolObject.transform,
+                globalLiveEnemyCap,
+                targetLayer,
+                visualMaterial,
+                visualFactory);
             _spots = new SpawnSpotRuntime[spotConfigurations.Count];
             for (var i = 0; i < _spots.Length; i++)
             {

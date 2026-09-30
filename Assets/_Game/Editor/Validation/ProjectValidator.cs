@@ -12,6 +12,7 @@ using Gravivore.Gameplay.Quests;
 using Gravivore.Gameplay.World;
 using Gravivore.Persistence.Profile;
 using Gravivore.Presentation.Evolution;
+using Gravivore.Presentation.Assets;
 using Gravivore.Presentation.Composition;
 using Gravivore.Presentation.Quests;
 using Gravivore.Presentation.Feedback;
@@ -76,6 +77,12 @@ namespace Gravivore.Editor
             "Assets/_Game/Content/Definitions/S11_OnboardingPresentation.asset",
             "Assets/_Game/Content/Definitions/S12_SaveOffline.asset",
             S14PresentationAssetConfigurator.DefinitionPath,
+            S15AssetConfigurator.CatalogPath,
+            S15AssetConfigurator.BodyMaterialPath,
+            S15AssetConfigurator.AccentMaterialPath,
+            S15AssetConfigurator.DarkMaterialPath,
+            "Assets/ThirdParty/KenneyFactoryKit/License.txt",
+            "docs/S15_ASSET_AUDIT.md",
             "Assets/_Game/Content/Audio/S14_LashWindup.wav",
             "Assets/_Game/Content/Audio/S14_LashImpact.wav",
             "Assets/_Game/Content/Audio/S14_Hit.wav",
@@ -133,6 +140,30 @@ namespace Gravivore.Editor
             ValidateQuests();
             ValidateSaveOffline();
             ValidateS14Presentation();
+            ValidateS15Assets();
+        }
+
+        private static void ValidateS15Assets()
+        {
+            var catalog = AssetDatabase.LoadAssetAtPath<S15VisualCatalog>(S15AssetConfigurator.CatalogPath);
+            if (catalog == null) throw new InvalidOperationException("Canonical S15 visual catalog is required.");
+            catalog.ValidateOrThrow();
+            var dependencies = AssetDatabase.GetDependencies(S15AssetConfigurator.ChapterScenePath, true);
+            if (Array.IndexOf(dependencies, S15AssetConfigurator.CatalogPath) < 0)
+                throw new InvalidOperationException("The canonical chapter scene must reference the S15 visual catalog.");
+
+            var modelGuids = AssetDatabase.FindAssets("t:Model", new[] { S15AssetConfigurator.ModelRoot.TrimEnd('/') });
+            if (modelGuids.Length != 14)
+                throw new InvalidOperationException("S15 must contain exactly the 14 audited Kenney model files.");
+            for (var i = 0; i < modelGuids.Length; i++)
+            {
+                var path = AssetDatabase.GUIDToAssetPath(modelGuids[i]);
+                var importer = AssetImporter.GetAtPath(path) as ModelImporter;
+                if (importer == null || importer.importAnimation || importer.isReadable ||
+                    importer.materialImportMode != ModelImporterMaterialImportMode.None ||
+                    importer.meshCompression != ModelImporterMeshCompression.Medium)
+                    throw new InvalidOperationException($"S15 mobile model import settings are invalid: {path}");
+            }
         }
 
         private static void ValidateS14Presentation()

@@ -58,6 +58,7 @@ namespace Gravivore.Gameplay.Enemies
         private EnemyRuntimeConfiguration _configuration;
         private EnemyLifeId _lifeId;
         private Action<OrdinaryEnemyController> _recycleRequested;
+        private IEnemyVisualState _visualState;
         private bool _isActive;
         private bool _isInitialized;
 
@@ -93,7 +94,8 @@ namespace Gravivore.Gameplay.Enemies
             CharacterController body,
             Transform targetPoint,
             Collider sensingCollider,
-            int targetLayer)
+            int targetLayer,
+            IEnemyVisualState visualState = null)
         {
             _body = body != null ? body : throw new ArgumentNullException(nameof(body));
             _targetPoint = targetPoint != null ? targetPoint : throw new ArgumentNullException(nameof(targetPoint));
@@ -101,6 +103,7 @@ namespace Gravivore.Gameplay.Enemies
                 ? sensingCollider
                 : throw new ArgumentNullException(nameof(sensingCollider));
             ValidateSensingColliderContract(targetLayer);
+            _visualState = visualState;
             _isInitialized = true;
         }
 
@@ -143,6 +146,7 @@ namespace Gravivore.Gameplay.Enemies
             transform.position = position;
             transform.rotation = Quaternion.identity;
             _body.enabled = true;
+            _visualState?.Apply(configuration.Id);
             _isActive = true;
             gameObject.name = $"Enemy [{configuration.Id}]";
             gameObject.SetActive(true);
@@ -160,6 +164,7 @@ namespace Gravivore.Gameplay.Enemies
             AttackRequested = null;
             Damaged = null;
             Died = null;
+            _visualState?.Reset();
             _body.enabled = false;
             transform.position = poolPosition;
             transform.rotation = Quaternion.identity;

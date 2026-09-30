@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Gravivore.Gameplay.World;
+using Gravivore.Presentation.Assets;
 using UnityEngine;
 
 namespace Gravivore.Presentation.World
@@ -12,6 +13,7 @@ namespace Gravivore.Presentation.World
         private Chapter01WorldConfiguration _configuration;
         private WorldUnlockState _state;
         private Material _litMaterial;
+        private S15VisualCatalog _s15VisualCatalog;
         private Collider[] _perimeterColliders;
         private bool _initialized;
 
@@ -22,12 +24,14 @@ namespace Gravivore.Presentation.World
         public void Initialize(
             Chapter01WorldConfiguration configuration,
             WorldUnlockState state,
-            Material litMaterial)
+            Material litMaterial,
+            S15VisualCatalog s15VisualCatalog = null)
         {
             if (_initialized) throw new InvalidOperationException("World presenter is already initialized.");
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _state = state ?? throw new ArgumentNullException(nameof(state));
             _litMaterial = litMaterial != null ? litMaterial : throw new ArgumentNullException(nameof(litMaterial));
+            _s15VisualCatalog = s15VisualCatalog;
 
             BuildGround();
             BuildPerimeterBoundaries();
@@ -135,11 +139,22 @@ namespace Gravivore.Presentation.World
                 pad.transform.localScale = new Vector3(3.25f, 0.04f, 3.25f);
                 SetMaterial(pad, zone.Color);
 
-                var landmark = CreateVisualPrimitive($"Landmark {zone.Id}", PrimitiveType.Cube, zone.LandmarkPosition);
-                landmark.transform.localScale = new Vector3(0.8f, 2.8f + i * 0.25f, 0.8f);
-                landmark.transform.position += Vector3.up * (landmark.transform.localScale.y * 0.5f);
-                landmark.transform.rotation = Quaternion.Euler(0f, i * 28f, 0f);
-                SetMaterial(landmark, zone.Color * 1.25f);
+                if (_s15VisualCatalog != null)
+                {
+                    var landmarkRoot = new GameObject($"Landmark {zone.Id}");
+                    landmarkRoot.transform.SetParent(transform, false);
+                    landmarkRoot.transform.position = zone.LandmarkPosition;
+                    landmarkRoot.transform.rotation = Quaternion.Euler(0f, i * 28f, 0f);
+                    S15VisualFactory.Build(landmarkRoot.transform, _s15VisualCatalog.GetLandmark(i), _s15VisualCatalog);
+                }
+                else
+                {
+                    var landmark = CreateVisualPrimitive($"Landmark {zone.Id}", PrimitiveType.Cube, zone.LandmarkPosition);
+                    landmark.transform.localScale = new Vector3(0.8f, 2.8f + i * 0.25f, 0.8f);
+                    landmark.transform.position += Vector3.up * (landmark.transform.localScale.y * 0.5f);
+                    landmark.transform.rotation = Quaternion.Euler(0f, i * 28f, 0f);
+                    SetMaterial(landmark, zone.Color * 1.25f);
+                }
 
                 var next = _configuration.GetZone((i + 1) % _configuration.ZoneCount);
                 CreatePath($"Outer Loop {i + 1}", zone.Center, next.Center);
