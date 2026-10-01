@@ -46,7 +46,7 @@ namespace Gravivore.Presentation.UI
             rect.SetParent(parent, false);
             SetRect(rect, anchorMin, anchorMax);
             var text = gameObject.GetComponent<Text>();
-            text.font = GetLegacyRuntimeFont();
+            text.font = GetRuntimeFont();
             text.fontSize = fontSize;
             text.alignment = alignment;
             text.color = color;
@@ -101,13 +101,21 @@ namespace Gravivore.Presentation.UI
             rect.offsetMax = Vector2.zero;
         }
 
-        private static Font GetLegacyRuntimeFont()
+        internal static Font GetRuntimeFont()
         {
             if (_font != null) return _font;
             _font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-            return _font != null
-                ? _font
-                : throw new InvalidOperationException("Unity built-in font LegacyRuntime.ttf is unavailable.");
+            if (_font == null)
+            {
+                throw new InvalidOperationException("Unity built-in font LegacyRuntime.ttf is unavailable.");
+            }
+
+            if (!RussianUiText.FontSupportsCyrillic(_font))
+            {
+                throw new InvalidOperationException("Unity built-in font LegacyRuntime.ttf does not support required Cyrillic glyphs.");
+            }
+
+            return _font;
         }
     }
 }

@@ -87,7 +87,7 @@ namespace Gravivore.Presentation.UI
         {
             ApplyState();
             if (change.CurrentLevel <= change.PreviousLevel) return;
-            _feedbackText.text = $"{change.Stat} increased to L{change.CurrentLevel}";
+            _feedbackText.text = RussianUiText.StatIncreased(change.Stat, change.CurrentLevel);
             _feedbackText.gameObject.SetActive(true);
             _feedbackRemaining = FeedbackDuration;
         }

@@ -102,7 +102,7 @@ namespace Gravivore.Tests.PlayMode
         }
 
         [UnityTest]
-        public IEnumerator PlayerDeathAndArenaExit_ResetBossHealthPositionAndTransientState()
+        public IEnumerator PlayerDeathAndProlongedArenaExit_ResetBossHealthPositionAndTransientState()
         {
             var root = new GameObject("S09 Reset Smoke Root");
             var player = CreatePlayer(root.transform, new Vector3(0f, 0f, 27f), Vector3.zero);
@@ -120,7 +120,7 @@ namespace Gravivore.Tests.PlayMode
             boss.Tick(0f);
             boss.ApplyDamage(new DamageRequest(100f, DamageType.Gravity));
             player.transform.position = new Vector3(10f, 0f, 27f);
-            boss.Tick(0f);
+            boss.Tick(3.01f);
             Assert.That(boss.State, Is.EqualTo(CustodianBossState.Dormant));
             Assert.That(boss.CurrentHitPoints, Is.EqualTo(boss.MaximumHitPoints));
             Assert.IsFalse(boss.ResetEncounter(), "Repeated reset must be idempotent while dormant.");

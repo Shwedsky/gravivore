@@ -69,7 +69,7 @@ namespace Gravivore.Presentation.UI
                 "Title",
                 new Vector2(0.1f, 0.72f),
                 new Vector2(0.9f, 0.94f),
-                "PAUSED",
+                RussianUiText.Paused,
                 40,
                 TextAnchor.MiddleCenter,
                 Color.white);
@@ -113,7 +113,7 @@ namespace Gravivore.Presentation.UI
                 "Resume Button",
                 new Vector2(0.12f, 0.07f),
                 new Vector2(0.88f, 0.19f),
-                "RESUME",
+                RussianUiText.Resume,
                 Resume);
             _root.gameObject.SetActive(false);
 
@@ -177,20 +177,20 @@ namespace Gravivore.Presentation.UI
             var label = _detailsButton != null ? _detailsButton.GetComponentInChildren<Text>() : null;
             if (label != null)
             {
-                label.text = $"STAT DETAILS: {(StatsDetailsExpanded ? "EXPANDED" : "COMPACT")}";
+                label.text = RussianUiText.StatsDetails(StatsDetailsExpanded);
             }
         }
 
         private void ApplyAudioLabel()
         {
             var label = _audioButton != null ? _audioButton.GetComponentInChildren<Text>() : null;
-            if (label != null) label.text = AudioMuted ? "AUDIO: OFF" : $"AUDIO: {Mathf.RoundToInt(AudioVolume * 100f)}%";
+            if (label != null) label.text = RussianUiText.Audio(AudioMuted, Mathf.RoundToInt(AudioVolume * 100f));
         }
 
         private void ApplyHapticsLabel()
         {
             var label = _hapticsButton != null ? _hapticsButton.GetComponentInChildren<Text>() : null;
-            if (label != null) label.text = HapticsEnabled ? "HAPTICS: ON" : "HAPTICS: OFF";
+            if (label != null) label.text = RussianUiText.Haptics(HapticsEnabled);
         }
 
         private void OnDestroy() => Resume();

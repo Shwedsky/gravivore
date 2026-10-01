@@ -65,8 +65,9 @@ namespace Gravivore.Tests.PlayMode
             Assert.IsNotNull(compositionRoot.OfflineRewardPanel);
             Assert.IsNotNull(compositionRoot.ChapterCompletion);
             Assert.IsNotNull(compositionRoot.QuestTracker);
-            StringAssert.Contains("HP", compositionRoot.PlayerHealthHud.DisplayText);
-            StringAssert.Contains("Power", compositionRoot.PlayerStatsHud.DisplayText);
+            StringAssert.Contains(RussianUiText.Durability, compositionRoot.PlayerHealthHud.DisplayText);
+            StringAssert.Contains("Мощность", compositionRoot.PlayerStatsHud.DisplayText);
+            Assert.That(compositionRoot.QuestTracker.CurrentTrackerText, Is.EqualTo("Двигайтесь"));
             Assert.IsFalse(compositionRoot.BossHealthHud.IsVisible);
 
             compositionRoot.PlayerStats.SetLevel(PlayerStatType.Hull, 2);
@@ -110,6 +111,7 @@ namespace Gravivore.Tests.PlayMode
 
             Assert.That(target.DamageCount, Is.GreaterThan(0));
             Assert.That(target.LastDamage.RawDamage, Is.EqualTo(compositionRoot.PlayerStats.DerivedStats.BaseDamage));
+            Assert.That(compositionRoot.PlayerHealth.CombatSecondsRemaining, Is.GreaterThan(0f));
             Assert.That(targetObject.transform.position.z, Is.EqualTo(1.2f).Within(0.0001f));
             Assert.That(targetObject.transform.position.y, Is.EqualTo(0f).Within(0.0001f));
             Assert.That(target.TargetPoint.position.y, Is.EqualTo(1.25f).Within(0.0001f));

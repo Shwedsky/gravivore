@@ -49,7 +49,7 @@ namespace Gravivore.Presentation.UI
                 "Title",
                 new Vector2(0.08f, 0.72f),
                 new Vector2(0.92f, 0.94f),
-                "WELCOME BACK",
+                RussianUiText.WelcomeBack,
                 38,
                 TextAnchor.MiddleCenter,
                 Color.white);
@@ -76,7 +76,7 @@ namespace Gravivore.Presentation.UI
                 "Claim Button",
                 new Vector2(0.2f, 0.07f),
                 new Vector2(0.8f, 0.25f),
-                "CLAIM",
+                RussianUiText.Claim,
                 Claim);
             _root.gameObject.SetActive(false);
 
@@ -121,9 +121,9 @@ namespace Gravivore.Presentation.UI
         private void ApplyState()
         {
             _summaryText.text =
-                $"Away {HudTextFormatter.OfflineDuration(_summary.EligibleDuration)}\n" +
-                $"Recovered {_service.State.PendingReward} material";
-            _balanceText.text = $"Stored material: {_service.State.MaterialBalance}";
+                RussianUiText.Away(HudTextFormatter.OfflineDuration(_summary.EligibleDuration)) + "\n" +
+                RussianUiText.Recovered(_service.State.PendingReward);
+            _balanceText.text = RussianUiText.StoredMaterial(_service.State.MaterialBalance);
         }
 
         private void Close()

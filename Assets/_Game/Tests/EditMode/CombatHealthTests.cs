@@ -169,6 +169,79 @@ namespace Gravivore.Tests.EditMode
             Assert.That(health.CurrentHitPoints, Is.LessThan(health.MaximumHitPoints));
         }
 
+        [Test]
+        public void PlayerRecovery_RegeneratesOutsideCombatAfterDelayAndClampsAtMaximum()
+        {
+            var health = CreateRecoveringHealth();
+            health.ApplyDamage(new DamageRequest(50f, DamageType.Physical));
+            var damaged = health.CurrentHitPoints;
+
+            Assert.That(health.Tick(2.9f, Vector3.right * 10f, Vector3.zero), Is.Zero);
+            Assert.That(health.CurrentHitPoints, Is.EqualTo(damaged));
+            Assert.That(health.Tick(0.1f, Vector3.right * 10f, Vector3.zero), Is.Zero.Within(0.001f));
+            Assert.That(health.Tick(1f, Vector3.right * 10f, Vector3.zero), Is.EqualTo(2f).Within(0.001f));
+
+            health.Tick(100f, Vector3.right * 10f, Vector3.zero);
+            Assert.That(health.CurrentHitPoints, Is.EqualTo(health.MaximumHitPoints));
+        }
+
+        [Test]
+        public void PlayerRecovery_RespawnZoneUsesTenTimesNormalRate()
+        {
+            var normal = CreateRecoveringHealth();
+            var zone = CreateRecoveringHealth();
+            normal.ApplyDamage(new DamageRequest(50f, DamageType.Physical));
+            zone.ApplyDamage(new DamageRequest(50f, DamageType.Physical));
+            normal.Tick(3f, Vector3.right * 10f, Vector3.zero);
+            zone.Tick(3f, Vector3.zero, Vector3.zero);
+
+            var normalHealing = normal.Tick(1f, Vector3.right * 10f, Vector3.zero);
+            var zoneHealing = zone.Tick(1f, Vector3.right * 2.75f, Vector3.zero);
+
+            Assert.That(normalHealing, Is.EqualTo(2f).Within(0.001f));
+            Assert.That(zoneHealing, Is.EqualTo(normalHealing * 10f).Within(0.001f));
+        }
+
+        [Test]
+        public void PlayerRecovery_TakingDamageRestartsCombatDelay()
+        {
+            var health = CreateRecoveringHealth();
+            health.ApplyDamage(new DamageRequest(20f, DamageType.Physical));
+            health.Tick(2.5f, Vector3.right * 10f, Vector3.zero);
+            health.ApplyDamage(new DamageRequest(1f, DamageType.Physical));
+            var afterSecondHit = health.CurrentHitPoints;
+
+            health.Tick(2.9f, Vector3.right * 10f, Vector3.zero);
+
+            Assert.That(health.CurrentHitPoints, Is.EqualTo(afterSecondHit));
+        }
+
+        [Test]
+        public void PlayerRecovery_DealingDamageRestartsCombatDelay()
+        {
+            var health = CreateRecoveringHealth();
+            health.ApplyDamage(new DamageRequest(20f, DamageType.Physical));
+            health.Tick(3f, Vector3.right * 10f, Vector3.zero);
+            health.RecordDamageDealt(5f);
+            var beforeDelay = health.CurrentHitPoints;
+
+            health.Tick(2.9f, Vector3.right * 10f, Vector3.zero);
+            Assert.That(health.CurrentHitPoints, Is.EqualTo(beforeDelay));
+            health.Tick(0.2f, Vector3.right * 10f, Vector3.zero);
+            Assert.That(health.CurrentHitPoints, Is.GreaterThan(beforeDelay));
+        }
+
+        private static PlayerHealthRuntime CreateRecoveringHealth()
+        {
+            var stats = new PlayerStatsState(
+                CreateStatsConfiguration(),
+                new PlayerStatLevels(1, 1, 1, 1, 1));
+            return new PlayerHealthRuntime(
+                stats,
+                0f,
+                new PlayerRecoveryConfiguration(0.02f, 10f, 2.75f, 3f));
+        }
+
         private static PlayerStatsConfiguration CreateStatsConfiguration()
         {
             return new PlayerStatsConfiguration(

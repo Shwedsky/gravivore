@@ -115,7 +115,7 @@ namespace Gravivore.Tests.PlayMode
             progression.TryGrant(Death(5, "carrier"));
             Assert.That(progression.State.TotalAssimilationScore, Is.EqualTo(5));
             Assert.IsFalse(worldState.EliteGateUnlocked);
-            Assert.That(tracker.CurrentTrackerText, Is.EqualTo("Assimilation 5/25"));
+            Assert.That(tracker.CurrentTrackerText, Is.EqualTo("АССИМИЛЯЦИЯ 5/25"));
             Assert.IsFalse(tracker.CurrentTrackerText.Contains("Magnetar Guard"));
             Assert.IsFalse(tracker.MarkerActive);
 
@@ -132,7 +132,7 @@ namespace Gravivore.Tests.PlayMode
                 new Vector3(0f, 0f, 18f),
                 hud,
                 _ => TestMaterialFactory.CreateLitInstance());
-            Assert.That(restoredBeforeEliteTracker.CurrentTrackerText, Is.EqualTo("Assimilation 5/25"));
+            Assert.That(restoredBeforeEliteTracker.CurrentTrackerText, Is.EqualTo("АССИМИЛЯЦИЯ 5/25"));
             Assert.IsFalse(restoredBeforeEliteTracker.MarkerActive);
 
             for (var score = 6; score <= 24; score++)
@@ -142,7 +142,7 @@ namespace Gravivore.Tests.PlayMode
 
             Assert.That(progression.State.TotalAssimilationScore, Is.EqualTo(24));
             Assert.IsFalse(worldState.EliteGateUnlocked);
-            Assert.That(tracker.CurrentTrackerText, Is.EqualTo("Assimilation 24/25"));
+            Assert.That(tracker.CurrentTrackerText, Is.EqualTo("АССИМИЛЯЦИЯ 24/25"));
             Assert.IsFalse(tracker.MarkerActive);
 
             progression.TryGrant(Death(125, "scout-drone"));
