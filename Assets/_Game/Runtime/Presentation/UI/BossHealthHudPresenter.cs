@@ -14,12 +14,13 @@ namespace Gravivore.Presentation.UI
         private BossCompletionState _completion;
         private PlayerHealthController _playerHealth;
         private RectTransform _panel;
-        private Image _fill;
+        private HealthBarView _healthBar;
         private Text _label;
 
         public bool IsVisible => _panel != null && _panel.gameObject.activeSelf;
         public string DisplayText => _label != null ? _label.text : string.Empty;
-        public float FillAmount => _fill != null ? _fill.fillAmount : 0f;
+        public float FillAmount => _healthBar != null ? _healthBar.NormalizedValue : 0f;
+        public RectTransform FillRect => _healthBar?.FillRect;
 
         public void Initialize(
             IBossHealthSource boss,
@@ -38,16 +39,14 @@ namespace Gravivore.Presentation.UI
                 new Vector2(0.18f, 0.79f),
                 new Vector2(0.82f, 0.85f),
                 HudUiFactory.PanelColor);
-            var track = HudUiFactory.CreatePanel(
+            _healthBar = HealthBarView.Create(
                 _panel,
                 "Boss Health Track",
+                "Boss Health Fill",
                 new Vector2(0.03f, 0.15f),
                 new Vector2(0.97f, 0.62f),
-                new Color(0.12f, 0.14f, 0.15f, 1f));
-            var fillRect = HudUiFactory.CreatePanel(track, "Boss Health Fill", Vector2.zero, Vector2.one, HudUiFactory.WarningColor);
-            _fill = fillRect.GetComponent<Image>();
-            _fill.type = Image.Type.Filled;
-            _fill.fillMethod = Image.FillMethod.Horizontal;
+                new Color(0.12f, 0.14f, 0.15f, 1f),
+                HudUiFactory.WarningColor);
             _label = HudUiFactory.CreateText(
                 _panel,
                 "Boss Health Label",
@@ -71,7 +70,8 @@ namespace Gravivore.Presentation.UI
             if (_boss == null) return;
             var maximum = _boss.MaximumHitPoints;
             _label.text = $"{RussianUiText.BossName}  {Mathf.Max(0f, _boss.CurrentHitPoints):0} / {Mathf.Max(0f, maximum):0}";
-            _fill.fillAmount = maximum > 0f ? Mathf.Clamp01(_boss.CurrentHitPoints / maximum) : 0f;
+            _healthBar.SetNormalizedValue(
+                maximum > 0f ? _boss.CurrentHitPoints / maximum : 0f);
         }
 
         public void Shutdown()

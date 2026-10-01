@@ -11,11 +11,12 @@ namespace Gravivore.Presentation.UI
     {
         private PlayerHealthController _health;
         private PlayerStatsState _stats;
-        private Image _fill;
+        private HealthBarView _healthBar;
         private Text _label;
 
         public string DisplayText => _label != null ? _label.text : string.Empty;
-        public float FillAmount => _fill != null ? _fill.fillAmount : 0f;
+        public float FillAmount => _healthBar != null ? _healthBar.NormalizedValue : 0f;
+        public RectTransform FillRect => _healthBar?.FillRect;
 
         public void Initialize(PlayerHealthController health, PlayerStatsState stats, RectTransform hudRoot)
         {
@@ -29,21 +30,14 @@ namespace Gravivore.Presentation.UI
                 new Vector2(0.03f, 0.925f),
                 new Vector2(0.43f, 0.975f),
                 HudUiFactory.PanelColor);
-            var track = HudUiFactory.CreatePanel(
+            _healthBar = HealthBarView.Create(
                 panel,
                 "Health Track",
+                "Health Fill",
                 new Vector2(0.04f, 0.2f),
                 new Vector2(0.96f, 0.8f),
-                new Color(0.12f, 0.14f, 0.15f, 1f));
-            var fillRect = HudUiFactory.CreatePanel(
-                track,
-                "Health Fill",
-                Vector2.zero,
-                Vector2.one,
+                new Color(0.12f, 0.14f, 0.15f, 1f),
                 HudUiFactory.WarningColor);
-            _fill = fillRect.GetComponent<Image>();
-            _fill.type = Image.Type.Filled;
-            _fill.fillMethod = Image.FillMethod.Horizontal;
             _label = HudUiFactory.CreateText(
                 panel,
                 "Health Label",
@@ -67,7 +61,8 @@ namespace Gravivore.Presentation.UI
             if (_health == null) return;
             var maximum = _health.MaximumHitPoints;
             _label.text = HudTextFormatter.Health(_health.CurrentHitPoints, maximum);
-            _fill.fillAmount = maximum > 0f ? Mathf.Clamp01(_health.CurrentHitPoints / maximum) : 0f;
+            _healthBar.SetNormalizedValue(
+                maximum > 0f ? _health.CurrentHitPoints / maximum : 0f);
         }
 
         public void Shutdown()
