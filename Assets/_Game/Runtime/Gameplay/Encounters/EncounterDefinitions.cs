@@ -190,7 +190,8 @@ namespace Gravivore.Gameplay.Encounters
             float lowHealthThreshold,
             float lowHealthCadenceMultiplier,
             IReadOnlyList<BossAttackConfiguration> attacks,
-            IReadOnlyList<BossAttackType> attackSequence)
+            IReadOnlyList<BossAttackType> attackSequence,
+            float arenaExitResetGraceSeconds = 3f)
         {
             if (string.IsNullOrWhiteSpace(id)) throw new ArgumentException("Stable boss id is required.", nameof(id));
             ValidateFinite(startPosition, nameof(startPosition));
@@ -201,6 +202,7 @@ namespace Gravivore.Gameplay.Encounters
             ValidatePositive(collisionRadius, nameof(collisionRadius));
             ValidatePositive(targetPointHeight, nameof(targetPointHeight));
             ValidatePositive(recoveryDuration, nameof(recoveryDuration));
+            ValidateNonNegative(arenaExitResetGraceSeconds, nameof(arenaExitResetGraceSeconds));
             if (lowHealthThreshold <= 0f || lowHealthThreshold >= 1f || float.IsNaN(lowHealthThreshold))
             {
                 throw new ArgumentOutOfRangeException(nameof(lowHealthThreshold));
@@ -257,6 +259,7 @@ namespace Gravivore.Gameplay.Encounters
             RecoveryDuration = recoveryDuration;
             LowHealthThreshold = lowHealthThreshold;
             LowHealthCadenceMultiplier = lowHealthCadenceMultiplier;
+            ArenaExitResetGraceSeconds = arenaExitResetGraceSeconds;
         }
 
         public string Id { get; }
@@ -271,6 +274,7 @@ namespace Gravivore.Gameplay.Encounters
         public float RecoveryDuration { get; }
         public float LowHealthThreshold { get; }
         public float LowHealthCadenceMultiplier { get; }
+        public float ArenaExitResetGraceSeconds { get; }
         public DisplacementClass DisplacementClass => DisplacementClass.Boss;
         public int AttackSequenceCount => _attackSequence.Length;
 

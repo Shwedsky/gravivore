@@ -29,6 +29,7 @@ namespace Gravivore.Gameplay.Encounters
         private Vector3 _telegraphOrigin;
         private Vector3 _telegraphDirection;
         private bool _initialized;
+        private float _outsideArenaSeconds;
 
         public event Action<BossTelegraphEvent> TelegraphStarted;
         public event Action<BossAttackResolvedEvent> AttackResolved;
@@ -136,10 +137,24 @@ namespace Gravivore.Gameplay.Encounters
                     EncounterStarted,
                     new BossEncounterStartedEvent(_configuration.Id));
             }
-            else if (!playerInsideArena || !_playerHealth.IsAlive)
+            else if (!_playerHealth.IsAlive)
             {
                 ResetEncounter();
                 return;
+            }
+
+            if (!playerInsideArena)
+            {
+                _outsideArenaSeconds += deltaTime;
+                if (_outsideArenaSeconds >= _configuration.ArenaExitResetGraceSeconds)
+                {
+                    ResetEncounter();
+                    return;
+                }
+            }
+            else
+            {
+                _outsideArenaSeconds = 0f;
             }
 
             var healthFraction = _health.CurrentHitPoints / _health.MaximumHitPoints;
@@ -162,6 +177,7 @@ namespace Gravivore.Gameplay.Encounters
             SetPosition(_configuration.StartPosition);
             _telegraphOrigin = default;
             _telegraphDirection = default;
+            _outsideArenaSeconds = 0f;
             _stateMachine.CompleteReset();
             SafeEventDispatch.Publish(
                 EncounterReset,

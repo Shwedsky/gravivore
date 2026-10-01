@@ -15,6 +15,7 @@ namespace Gravivore.Gameplay.Combat
         private ITargetSensor _targetSensor;
         private IPullDestinationResolver _pullDestinationResolver;
         private IGravityLashVfx _lashVfx;
+        private IPlayerCombatActivity _combatActivity;
         private CombatTarget _currentTarget;
         private float _scanRemaining;
         private bool _hasCurrentTarget;
@@ -35,7 +36,8 @@ namespace Gravivore.Gameplay.Combat
             GravityAttackSettings settings,
             ITargetSensor targetSensor,
             IPullDestinationResolver pullDestinationResolver,
-            IGravityLashVfx lashVfx)
+            IGravityLashVfx lashVfx,
+            IPlayerCombatActivity combatActivity = null)
         {
             _attackOrigin = attackOrigin != null
                 ? attackOrigin
@@ -46,6 +48,7 @@ namespace Gravivore.Gameplay.Combat
             _pullDestinationResolver = pullDestinationResolver ??
                                        throw new ArgumentNullException(nameof(pullDestinationResolver));
             _lashVfx = lashVfx ?? throw new ArgumentNullException(nameof(lashVfx));
+            _combatActivity = combatActivity;
             _settings.ValidateOrThrow();
             _scanRemaining = 0f;
             _isInitialized = true;
@@ -140,6 +143,10 @@ namespace Gravivore.Gameplay.Combat
             var damageResult = _currentTarget.Damageable.ApplyDamage(new DamageRequest(
                 _playerStats.DerivedStats.BaseDamage,
                 DamageType.Gravity));
+            if (damageResult.AppliedDamage > 0f)
+            {
+                _combatActivity?.RecordDamageDealt(damageResult.AppliedDamage);
+            }
 
             if (damageResult.WasLethal || !_currentTarget.Damageable.IsAlive)
             {

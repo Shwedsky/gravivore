@@ -15,12 +15,12 @@ namespace Gravivore.Tests.EditMode
                 new PlayerDerivedStats(12f, 130f, 4f, 0.8f, 5f),
                 false);
 
-            StringAssert.Contains("Power  L2", text);
-            StringAssert.Contains("Hull  L3", text);
-            StringAssert.Contains("Armor  L4", text);
-            StringAssert.Contains("Flux  L5", text);
-            StringAssert.Contains("Mobility  L6", text);
-            StringAssert.DoesNotContain("Damage", text);
+            StringAssert.Contains("Мощность  ур. 2", text);
+            StringAssert.Contains("Корпус  ур. 3", text);
+            StringAssert.Contains("Броня  ур. 4", text);
+            StringAssert.Contains("Поток  ур. 5", text);
+            StringAssert.Contains("Манёвренность  ур. 6", text);
+            StringAssert.DoesNotContain("Урон", text);
         }
 
         [Test]
@@ -31,15 +31,15 @@ namespace Gravivore.Tests.EditMode
                 new PlayerDerivedStats(12f, 130f, 4f, 0.8f, 5f),
                 true);
 
-            StringAssert.Contains("Damage  12", text);
-            StringAssert.Contains("Max HP  130", text);
-            StringAssert.Contains("Attack  0.8s", text);
+            StringAssert.Contains("Урон  12", text);
+            StringAssert.Contains("Макс. прочность  130", text);
+            StringAssert.Contains("Атака  0.8 с", text);
             StringAssert.DoesNotContain("=", text);
         }
 
-        [TestCase(30, "0m")]
-        [TestCase(600, "10m")]
-        [TestCase(7500, "2h 5m")]
+        [TestCase(30, "0 мин")]
+        [TestCase(600, "10 мин")]
+        [TestCase(7500, "2 ч 5 мин")]
         public void OfflineDuration_UsesCompactPhoneFriendlyText(int seconds, string expected)
         {
             Assert.That(HudTextFormatter.OfflineDuration(TimeSpan.FromSeconds(seconds)), Is.EqualTo(expected));

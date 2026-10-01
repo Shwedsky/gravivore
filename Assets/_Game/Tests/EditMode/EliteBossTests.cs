@@ -266,20 +266,76 @@ namespace Gravivore.Tests.EditMode
         }
 
         [Test]
-        public void BossController_ArenaExitAndPlayerDeathRestoreFullStartState()
+        public void BossController_BriefArenaExitKeepsActiveStateHealthAndPosition()
+        {
+            using var rig = new BossControllerRig(new Vector3(0f, 0f, 27f));
+            rig.Boss.Tick(0f);
+            rig.Boss.ApplyDamage(new DamageRequest(100f, DamageType.Gravity));
+            var health = rig.Boss.CurrentHitPoints;
+            var position = rig.Boss.transform.position;
+            rig.Player.transform.position = new Vector3(10f, 0f, 27f);
+            rig.Boss.Tick(2.9f);
+
+            Assert.That(rig.Boss.State, Is.Not.EqualTo(CustodianBossState.Dormant));
+            Assert.That(rig.Boss.CurrentHitPoints, Is.EqualTo(health));
+            Assert.That(rig.Boss.transform.position, Is.EqualTo(position));
+        }
+
+        [Test]
+        public void BossController_ReentryCancelsPendingArenaReset()
+        {
+            using var rig = new BossControllerRig(new Vector3(0f, 0f, 27f));
+            rig.Boss.Tick(0f);
+            rig.Boss.ApplyDamage(new DamageRequest(100f, DamageType.Gravity));
+            var health = rig.Boss.CurrentHitPoints;
+            rig.Player.transform.position = new Vector3(10f, 0f, 27f);
+            rig.Boss.Tick(2f);
+            rig.Player.transform.position = new Vector3(0f, 0f, 27f);
+            rig.Boss.Tick(0f);
+            rig.Player.transform.position = new Vector3(10f, 0f, 27f);
+            rig.Boss.Tick(2f);
+
+            Assert.That(rig.Boss.State, Is.Not.EqualTo(CustodianBossState.Dormant));
+            Assert.That(rig.Boss.CurrentHitPoints, Is.EqualTo(health));
+        }
+
+        [Test]
+        public void BossController_ProlongedArenaExitRestoresFullStartState()
         {
             using var rig = new BossControllerRig(new Vector3(0f, 0f, 27f));
             rig.Boss.Tick(0f);
             rig.Boss.ApplyDamage(new DamageRequest(100f, DamageType.Gravity));
             rig.Player.transform.position = new Vector3(10f, 0f, 27f);
-            rig.Boss.Tick(0f);
-            AssertReset(rig.Boss);
+            rig.Boss.Tick(3.01f);
 
-            rig.Player.transform.position = new Vector3(0f, 0f, 27f);
+            AssertReset(rig.Boss);
+        }
+
+        [Test]
+        public void BossController_PlayerDeathStillResetsImmediately()
+        {
+            using var rig = new BossControllerRig(new Vector3(0f, 0f, 27f));
             rig.Boss.Tick(0f);
             rig.Boss.ApplyDamage(new DamageRequest(100f, DamageType.Gravity));
+
             rig.Player.ApplyDamage(new DamageRequest(10000f, DamageType.Physical));
             AssertReset(rig.Boss);
+        }
+
+        [Test]
+        public void BossController_GravityDamageDecreasesHealthMonotonicallyWhileActive()
+        {
+            using var rig = new BossControllerRig(new Vector3(0f, 0f, 27f));
+            rig.Boss.Tick(0f);
+            var initial = rig.Boss.CurrentHitPoints;
+            var first = rig.Boss.ApplyDamage(new DamageRequest(10f, DamageType.Gravity));
+            var afterFirst = rig.Boss.CurrentHitPoints;
+            var second = rig.Boss.ApplyDamage(new DamageRequest(10f, DamageType.Gravity));
+
+            Assert.That(first.AppliedDamage, Is.GreaterThan(0f));
+            Assert.That(second.AppliedDamage, Is.GreaterThan(0f));
+            Assert.That(afterFirst, Is.LessThan(initial));
+            Assert.That(rig.Boss.CurrentHitPoints, Is.LessThan(afterFirst));
         }
 
         [Test]

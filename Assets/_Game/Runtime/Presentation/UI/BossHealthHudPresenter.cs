@@ -53,7 +53,7 @@ namespace Gravivore.Presentation.UI
                 "Boss Health Label",
                 new Vector2(0f, 0.55f),
                 Vector2.one,
-                "CUSTODIAN M-0",
+                RussianUiText.BossName,
                 24,
                 TextAnchor.MiddleCenter,
                 Color.white);
@@ -70,7 +70,7 @@ namespace Gravivore.Presentation.UI
         {
             if (_boss == null) return;
             var maximum = _boss.MaximumHitPoints;
-            _label.text = $"CUSTODIAN M-0  {Mathf.Max(0f, _boss.CurrentHitPoints):0} / {Mathf.Max(0f, maximum):0}";
+            _label.text = $"{RussianUiText.BossName}  {Mathf.Max(0f, _boss.CurrentHitPoints):0} / {Mathf.Max(0f, maximum):0}";
             _fill.fillAmount = maximum > 0f ? Mathf.Clamp01(_boss.CurrentHitPoints / maximum) : 0f;
         }
 

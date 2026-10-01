@@ -113,7 +113,7 @@ namespace Gravivore.Tests.EditMode
             Assert.That(rig.Progression.State.TotalAssimilationScore, Is.EqualTo(5));
             Assert.IsFalse(worldState.EliteGateUnlocked);
             Assert.That(guidance.Mode, Is.EqualTo(QuestTrackerGuidanceMode.Assimilation));
-            Assert.That(guidance.Text, Is.EqualTo("Assimilation 5/25"));
+            Assert.That(guidance.Text, Is.EqualTo("АССИМИЛЯЦИЯ 5/25"));
             Assert.IsFalse(guidance.MarkerObjective.HasValue);
 
             var dto = QuestSaveMapper.ToDto(rig.Quests.State, rig.Catalog);
@@ -124,7 +124,7 @@ namespace Gravivore.Tests.EditMode
                 rig.Progression.State,
                 requirement);
             Assert.That(restoredGuidance.Mode, Is.EqualTo(QuestTrackerGuidanceMode.Assimilation));
-            Assert.That(restoredGuidance.Text, Is.EqualTo("Assimilation 5/25"));
+            Assert.That(restoredGuidance.Text, Is.EqualTo("АССИМИЛЯЦИЯ 5/25"));
 
             for (var score = 6; score <= 24; score++)
             {
@@ -135,7 +135,7 @@ namespace Gravivore.Tests.EditMode
             Assert.That(rig.Progression.State.TotalAssimilationScore, Is.EqualTo(24));
             Assert.IsFalse(worldState.EliteGateUnlocked);
             Assert.That(guidance.Mode, Is.EqualTo(QuestTrackerGuidanceMode.Assimilation));
-            Assert.That(guidance.Text, Is.EqualTo("Assimilation 24/25"));
+            Assert.That(guidance.Text, Is.EqualTo("АССИМИЛЯЦИЯ 24/25"));
 
             rig.Progression.TryGrant(Death(125, "scout-drone"));
 
@@ -162,7 +162,7 @@ namespace Gravivore.Tests.EditMode
                 new EliteGateRequirement(SpotObjectiveIds, 25));
 
             Assert.IsTrue(rig.Quests.State.ExpandedObjectivesUnlocked);
-            Assert.That(guidance.Text, Is.EqualTo("Shield Dump | Intro 2/5"));
+            Assert.That(guidance.Text, Is.EqualTo("Shield Dump | Вводные цели 2/5"));
         }
 
         [Test]

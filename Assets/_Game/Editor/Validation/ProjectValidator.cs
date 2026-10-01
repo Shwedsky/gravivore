@@ -44,6 +44,7 @@ namespace Gravivore.Editor
             "Assets/_Game/Content/Definitions/S02_FluxCurve.asset",
             "Assets/_Game/Content/Definitions/S02_MobilityCurve.asset",
             "Assets/_Game/Content/Definitions/S02_PlayerStats.asset",
+            "Assets/_Game/Content/Definitions/S13_PlayerRecovery.asset",
             "Assets/_Game/Content/Definitions/S03_GravityAttackSettings.asset",
             "Assets/_Game/Content/Definitions/S04_Enemy_ScoutDrone.asset",
             "Assets/_Game/Content/Definitions/S04_Enemy_CutterUnit.asset",
@@ -97,6 +98,7 @@ namespace Gravivore.Editor
             "Assets/_Game/Runtime/Presentation/UI/PauseMenuPresenter.cs",
             "Assets/_Game/Runtime/Presentation/UI/OfflineRewardPanelPresenter.cs",
             "Assets/_Game/Runtime/Presentation/UI/ChapterCompletionPresenter.cs",
+            "Assets/_Game/Runtime/Presentation/UI/RussianUiText.cs",
             "docs/S13_MANUAL_UI_CHECKLIST.md",
             "docs/S14_MANUAL_PRESENTATION_CHECKLIST.md",
             PresentationMaterialAssetConfigurator.LitMaterialPath,
@@ -130,6 +132,8 @@ namespace Gravivore.Editor
             ValidateAndroidPlayerSettings();
             ValidateVersion();
             ValidatePlayerStats();
+            ValidatePlayerRecovery();
+            ValidateRussianUi();
             ValidateGravityAttack();
             ValidateEnemySpawnSpots();
             ValidateProgression();
@@ -141,6 +145,37 @@ namespace Gravivore.Editor
             ValidateSaveOffline();
             ValidateS14Presentation();
             ValidateS15Assets();
+        }
+
+        private static void ValidatePlayerRecovery()
+        {
+            const string path = "Assets/_Game/Content/Definitions/S13_PlayerRecovery.asset";
+            const string scenePath = "Assets/_Game/Content/Scenes/Chapter01_ScrapExclusion.unity";
+            var settings = AssetDatabase.LoadAssetAtPath<PlayerRecoverySettings>(path);
+            if (settings == null) throw new InvalidOperationException("Canonical player recovery settings are required.");
+            settings.ValidateOrThrow();
+            var recovery = settings.Configuration;
+            if (!Mathf.Approximately(recovery.NormalRegenFractionPerSecond, 0.02f) ||
+                !Mathf.Approximately(recovery.RespawnZoneMultiplier, 10f) ||
+                !Mathf.Approximately(recovery.RespawnZoneRadius, 2.75f) ||
+                !Mathf.Approximately(recovery.CombatExitDelaySeconds, 3f))
+            {
+                throw new InvalidOperationException("Canonical player recovery values do not match the v0.1 contract.");
+            }
+
+            if (Array.IndexOf(AssetDatabase.GetDependencies(scenePath, true), path) < 0)
+            {
+                throw new InvalidOperationException("The canonical chapter scene must reference player recovery settings.");
+            }
+        }
+
+        private static void ValidateRussianUi()
+        {
+            var font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            if (!Gravivore.Presentation.UI.RussianUiText.FontSupportsCyrillic(font))
+            {
+                throw new InvalidOperationException("LegacyRuntime.ttf must support the canonical Russian UI glyphs.");
+            }
         }
 
         private static void ValidateS15Assets()
@@ -441,9 +476,10 @@ namespace Gravivore.Editor
                 boss.DisplacementClass != DisplacementClass.Boss ||
                 !world.Bounds.Contains(boss.StartPosition, boss.CollisionRadius) ||
                 Vector3.Distance(boss.StartPosition, world.BossArenaCenter) > world.BossArenaRadius - boss.CollisionRadius ||
-                boss.AttackSequenceCount != 3)
+                boss.AttackSequenceCount != 3 ||
+                !Mathf.Approximately(boss.ArenaExitResetGraceSeconds, 3f))
             {
-                throw new InvalidOperationException("Custodian M-0 id, immunity, sequence, start position, or arena placement is invalid.");
+                throw new InvalidOperationException("Custodian M-0 id, immunity, sequence, reset grace, start position, or arena placement is invalid.");
             }
 
             var attacks = new[] { BossAttackType.CirclePulse, BossAttackType.ConeSweep, BossAttackType.LineCharge };

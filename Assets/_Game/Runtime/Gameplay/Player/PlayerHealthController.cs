@@ -27,8 +27,13 @@ namespace Gravivore.Gameplay.Player
         public float RestoredHitPoints { get; }
     }
 
+    public interface IPlayerCombatActivity
+    {
+        void RecordDamageDealt(float appliedDamage);
+    }
+
     [DisallowMultipleComponent]
-    public sealed class PlayerHealthController : MonoBehaviour, IDamageable
+    public sealed class PlayerHealthController : MonoBehaviour, IDamageable, IPlayerCombatActivity
     {
         private CharacterController _body;
         private PlayerStatsState _stats;
@@ -43,6 +48,8 @@ namespace Gravivore.Gameplay.Player
 
         public event Action<PlayerRespawnEvent> Respawned;
 
+        public event Action<float> Healed;
+
         public float CurrentHitPoints => _runtime != null ? _runtime.CurrentHitPoints : 0f;
 
         public float MaximumHitPoints => _runtime != null ? _runtime.MaximumHitPoints : 0f;
@@ -53,11 +60,23 @@ namespace Gravivore.Gameplay.Player
 
         public bool IsInvulnerable => _isInitialized && _runtime.IsInvulnerable;
 
+        public float CombatSecondsRemaining => _runtime != null ? _runtime.CombatSecondsRemaining : 0f;
+
         public void Initialize(
             CharacterController body,
             PlayerStatsState stats,
             Vector3 respawnPosition,
             float postRespawnInvulnerabilitySeconds)
+        {
+            Initialize(body, stats, respawnPosition, postRespawnInvulnerabilitySeconds, PlayerRecoveryConfiguration.Disabled);
+        }
+
+        public void Initialize(
+            CharacterController body,
+            PlayerStatsState stats,
+            Vector3 respawnPosition,
+            float postRespawnInvulnerabilitySeconds,
+            PlayerRecoveryConfiguration recovery)
         {
             if (_isInitialized)
             {
@@ -67,7 +86,7 @@ namespace Gravivore.Gameplay.Player
             _body = body != null ? body : throw new ArgumentNullException(nameof(body));
             _stats = stats ?? throw new ArgumentNullException(nameof(stats));
             _respawnPosition = respawnPosition;
-            _runtime = new PlayerHealthRuntime(stats, postRespawnInvulnerabilitySeconds);
+            _runtime = new PlayerHealthRuntime(stats, postRespawnInvulnerabilitySeconds, recovery);
             _stats.DerivedStatsChanged += HandleDerivedStatsChanged;
             _isInitialized = true;
         }
@@ -92,14 +111,21 @@ namespace Gravivore.Gameplay.Player
         public void Tick(float deltaTime)
         {
             EnsureInitialized();
-            _runtime.Tick(deltaTime);
+            var healed = _runtime.Tick(deltaTime, transform.position, _respawnPosition);
+            if (healed > 0f) Publish(Healed, healed);
+        }
+
+        public void RecordDamageDealt(float appliedDamage)
+        {
+            EnsureInitialized();
+            _runtime.RecordDamageDealt(appliedDamage);
         }
 
         private void Update()
         {
             if (_isInitialized)
             {
-                _runtime.Tick(Time.deltaTime);
+                Tick(Time.deltaTime);
             }
         }
 

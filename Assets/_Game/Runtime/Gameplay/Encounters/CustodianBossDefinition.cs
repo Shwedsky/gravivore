@@ -15,6 +15,7 @@ namespace Gravivore.Gameplay.Encounters
         [SerializeField, Min(0.1f)] private float _recoveryDuration = 1.5f;
         [SerializeField, Range(0.01f, 0.99f)] private float _lowHealthThreshold = 0.35f;
         [SerializeField, Range(0.01f, 0.99f)] private float _lowHealthCadenceMultiplier = 0.65f;
+        [SerializeField, Min(0f)] private float _arenaExitResetGraceSeconds = 3f;
         [Header("Circle Pulse")]
         [SerializeField, Range(0.8f, 1.2f)] private float _circleTelegraphDuration = 1f;
         [SerializeField, Min(0.1f)] private float _circleDamage = 22f;
@@ -56,7 +57,8 @@ namespace Gravivore.Gameplay.Encounters
                 _lowHealthThreshold,
                 _lowHealthCadenceMultiplier,
                 attacks,
-                new[] { BossAttackType.CirclePulse, BossAttackType.ConeSweep, BossAttackType.LineCharge });
+                new[] { BossAttackType.CirclePulse, BossAttackType.ConeSweep, BossAttackType.LineCharge },
+                _arenaExitResetGraceSeconds);
         }
 
         public void ValidateOrThrow(Chapter01WorldConfiguration world) => _ = CreateConfiguration(world);

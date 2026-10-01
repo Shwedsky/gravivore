@@ -50,7 +50,7 @@ namespace Gravivore.Presentation.UI
                 "Title",
                 new Vector2(0.06f, 0.76f),
                 new Vector2(0.94f, 0.94f),
-                "VERTICAL SLICE COMPLETE",
+                RussianUiText.ChapterComplete,
                 38,
                 TextAnchor.MiddleCenter,
                 HudUiFactory.AccentColor);
@@ -59,7 +59,7 @@ namespace Gravivore.Presentation.UI
                 "Message",
                 new Vector2(0.08f, 0.62f),
                 new Vector2(0.92f, 0.76f),
-                "Custodian M-0 defeated",
+                RussianUiText.BossDefeated,
                 29,
                 TextAnchor.MiddleCenter,
                 Color.white);
@@ -77,7 +77,7 @@ namespace Gravivore.Presentation.UI
                 "Continue Button",
                 new Vector2(0.15f, 0.07f),
                 new Vector2(0.85f, 0.2f),
-                "CONTINUE EXPLORING",
+                RussianUiText.ContinueExploring,
                 ContinueExploring);
             _root.gameObject.SetActive(false);
 

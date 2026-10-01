@@ -32,6 +32,7 @@ namespace Gravivore.Presentation.Composition
 
         [SerializeField] private PlayerMovementSettings _movementSettings;
         [SerializeField] private PlayerStatsDefinition _playerStatsDefinition;
+        [SerializeField] private PlayerRecoverySettings _playerRecoverySettings;
         [SerializeField] private EquipmentCatalogDefinition _equipmentCatalogDefinition;
         [SerializeField] private GravityAttackSettings _gravityAttackSettings;
         [SerializeField] private SpawnSpotDefinition[] _spawnSpotDefinitions;
@@ -130,7 +131,8 @@ namespace Gravivore.Presentation.Composition
                 return;
             }
 
-            if (_movementSettings == null || _playerStatsDefinition == null || _equipmentCatalogDefinition == null ||
+            if (_movementSettings == null || _playerStatsDefinition == null || _playerRecoverySettings == null ||
+                _equipmentCatalogDefinition == null ||
                 _gravityAttackSettings == null ||
                 _spawnSpotDefinitions == null || _spawnSpotDefinitions.Length != 5 || _globalLiveEnemyCap < 1 ||
                 _progressionDefinition == null || _questDefinition == null || _questOnboardingDefinition == null ||
@@ -148,6 +150,7 @@ namespace Gravivore.Presentation.Composition
             }
 
             _materialPalette.ValidateOrThrow();
+            _playerRecoverySettings.ValidateOrThrow();
             _s14PresentationDefinition.ValidateOrThrow();
             _s15VisualCatalog.ValidateOrThrow();
 
@@ -590,7 +593,8 @@ namespace Gravivore.Presentation.Composition
                 _gravityAttackSettings,
                 targetSensor,
                 pullResolver,
-                _gravityLashVfx);
+                _gravityLashVfx,
+                PlayerHealth);
         }
 
         private void InitializeS14Presentation()
@@ -629,7 +633,8 @@ namespace Gravivore.Presentation.Composition
                 PlayerObject.GetComponent<CharacterController>(),
                 PlayerStats,
                 _playerSpawn,
-                _postRespawnInvulnerabilitySeconds);
+                _postRespawnInvulnerabilitySeconds,
+                _playerRecoverySettings.Configuration);
             PlayerHealth.Respawned += HandlePlayerRespawned;
         }
 

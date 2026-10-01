@@ -96,6 +96,24 @@ namespace Gravivore.Gameplay.Combat
             }
         }
 
+        public float Heal(float amount)
+        {
+            if (float.IsNaN(amount) || float.IsInfinity(amount) || amount < 0f)
+            {
+                throw new ArgumentOutOfRangeException(nameof(amount));
+            }
+
+            if (!IsAlive || amount <= 0f || CurrentHitPoints >= MaximumHitPoints)
+            {
+                return 0f;
+            }
+
+            var previousHitPoints = CurrentHitPoints;
+            CurrentHitPoints = Math.Min(MaximumHitPoints, CurrentHitPoints + amount);
+            Publish(Changed, new HealthChangedEvent(previousHitPoints, CurrentHitPoints, MaximumHitPoints));
+            return CurrentHitPoints - previousHitPoints;
+        }
+
         public void MarkInactive()
         {
             CurrentHitPoints = 0f;

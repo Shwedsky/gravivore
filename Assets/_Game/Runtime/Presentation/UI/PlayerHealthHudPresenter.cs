@@ -57,6 +57,7 @@ namespace Gravivore.Presentation.UI
             _health.Damaged += HandleDamaged;
             _health.Died += HandleDied;
             _health.Respawned += HandleRespawned;
+            _health.Healed += HandleHealed;
             _stats.DerivedStatsChanged += HandleDerivedStatsChanged;
             ApplyState();
         }
@@ -75,6 +76,7 @@ namespace Gravivore.Presentation.UI
             _health.Damaged -= HandleDamaged;
             _health.Died -= HandleDied;
             _health.Respawned -= HandleRespawned;
+            _health.Healed -= HandleHealed;
             _stats.DerivedStatsChanged -= HandleDerivedStatsChanged;
             _health = null;
             _stats = null;
@@ -83,6 +85,7 @@ namespace Gravivore.Presentation.UI
         private void HandleDamaged(DamageResult _) => ApplyState();
         private void HandleDied(PlayerDeathEvent _) => ApplyState();
         private void HandleRespawned(PlayerRespawnEvent _) => ApplyState();
+        private void HandleHealed(float _) => ApplyState();
         private void HandleDerivedStatsChanged(PlayerDerivedStatsChange _) => ApplyState();
         private void OnDestroy() => Shutdown();
     }

@@ -40,12 +40,12 @@ namespace Gravivore.Tests.PlayMode
             var initialMaximum = health.MaximumHitPoints;
             health.ApplyDamage(new DamageRequest(25f, DamageType.Physical));
             Assert.That(healthHud.FillAmount, Is.LessThan(1f));
-            StringAssert.Contains("HP", healthHud.DisplayText);
+            StringAssert.Contains(RussianUiText.Durability, healthHud.DisplayText);
 
             stats.SetLevel(PlayerStatType.Hull, 2);
             Assert.That(health.MaximumHitPoints, Is.GreaterThan(initialMaximum));
-            StringAssert.Contains("Hull  L2", statsHud.DisplayText);
-            Assert.That(statsHud.RecentChangeText, Is.EqualTo("Hull increased to L2"));
+            StringAssert.Contains("Корпус  ур. 2", statsHud.DisplayText);
+            Assert.That(statsHud.RecentChangeText, Is.EqualTo("Корпус: уровень 2"));
 
             health.ApplyDamage(new DamageRequest(10000f, DamageType.Physical));
             Assert.That(healthHud.FillAmount, Is.EqualTo(1f).Within(0.001f));
@@ -74,6 +74,7 @@ namespace Gravivore.Tests.PlayMode
             boss.Damage(125f);
             Assert.That(presenter.FillAmount, Is.EqualTo(0.75f).Within(0.001f));
             StringAssert.Contains("375 / 500", presenter.DisplayText);
+            StringAssert.Contains(RussianUiText.BossName, presenter.DisplayText);
             boss.Reset();
             Assert.IsFalse(presenter.IsVisible);
             boss.Start();
@@ -106,7 +107,7 @@ namespace Gravivore.Tests.PlayMode
 
             Assert.IsTrue(panel.IsVisible);
             Assert.IsFalse(input.enabled);
-            StringAssert.Contains("25 material", panel.SummaryText);
+            StringAssert.Contains("25 материала", panel.SummaryText);
             panel.ShowReturnSummary(new OfflineReturnSummary(
                 TimeSpan.Zero,
                 TimeSpan.Zero,
@@ -116,7 +117,7 @@ namespace Gravivore.Tests.PlayMode
                 OfflineClockAnomaly.NonPositiveElapsed));
             var now = new DateTime(2026, 1, 1, 12, 0, 0, DateTimeKind.Utc);
             service.Accrue(now.AddMinutes(-10), now);
-            StringAssert.Contains("Away 10m", panel.SummaryText);
+            StringAssert.Contains("ВНЕ ИГРЫ 10 мин", panel.SummaryText);
             var expectedBalance = state.MaterialBalance + state.PendingReward;
             panel.Claim();
             Assert.That(state.PendingReward, Is.Zero);
@@ -233,7 +234,7 @@ namespace Gravivore.Tests.PlayMode
             pause.Resume();
             Assert.IsTrue(completion.IsVisible);
             Assert.IsFalse(input.enabled);
-            StringAssert.Contains("Power  L1", completion.StatsText);
+            StringAssert.Contains("Мощность  ур. 1", completion.StatsText);
             completion.ContinueExploring();
             Assert.IsTrue(input.enabled);
             Assert.That(Time.timeScale, Is.EqualTo(1f));
