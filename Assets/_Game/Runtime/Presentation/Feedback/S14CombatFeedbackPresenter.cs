@@ -73,8 +73,10 @@ namespace Gravivore.Presentation.Feedback
             _lash.CuePlayed += HandleLashCue;
             _elite.TelegraphStarted += HandleEliteTelegraph;
             _elite.ShockwaveResolved += HandleEliteImpact;
+            _elite.Damaged += HandleEliteDamaged;
             _boss.TelegraphStarted += HandleBossTelegraph;
             _boss.AttackResolved += HandleBossImpact;
+            _boss.Damaged += HandleBossDamaged;
         }
 
         public void Shutdown()
@@ -92,11 +94,13 @@ namespace Gravivore.Presentation.Feedback
             {
                 _elite.TelegraphStarted -= HandleEliteTelegraph;
                 _elite.ShockwaveResolved -= HandleEliteImpact;
+                _elite.Damaged -= HandleEliteDamaged;
             }
             if (_boss != null)
             {
                 _boss.TelegraphStarted -= HandleBossTelegraph;
                 _boss.AttackResolved -= HandleBossImpact;
+                _boss.Damaged -= HandleBossDamaged;
             }
             _enemies = null;
         }
@@ -115,65 +119,92 @@ namespace Gravivore.Presentation.Feedback
         private void HandleEnemyDamaged(EnemyDamageEvent damage)
         {
             if (damage.Result.WasLethal) return;
-            Present(() => EnemyHitPool.Play(damage.Position + Vector3.up, _definition.HitDuration, 0.12f, 0.55f));
-            Present(() => _audio.Play(S14AudioCue.Hit));
+            TryPlayPool(EnemyHitPool, damage.Position + Vector3.up, _definition.HitDuration, 0.12f, 0.55f);
+            TryPlayAudio(S14AudioCue.Hit);
         }
 
         private void HandleEnemyDied(EnemyDeathEvent death)
         {
-            Present(() => EnemyDeathPool.Play(death.Position + Vector3.up, _definition.DeathDuration, 0.35f, 1.5f));
-            Present(() => _audio.Play(S14AudioCue.Death));
+            TryPlayPool(EnemyDeathPool, death.Position + Vector3.up, _definition.DeathDuration, 0.35f, 1.5f);
+            TryPlayAudio(S14AudioCue.Death);
         }
 
         private void HandleRewardGranted(CoreRewardGrantedEvent reward)
         {
-            Present(() => AssimilationPool.Play(
+            TryPlayPool(
+                AssimilationPool,
                 reward.WorldPosition + Vector3.up,
                 _definition.AssimilationDuration,
                 0.25f,
                 0.08f,
-                _player));
-            Present(() => _audio.Play(S14AudioCue.Assimilation));
+                _player);
+            TryPlayAudio(S14AudioCue.Assimilation);
         }
 
         private void HandlePlayerDamaged(Gravivore.Gameplay.Combat.DamageResult damage)
         {
-            Present(() => PlayerHitPool.Play(_player.position + Vector3.up, _definition.HitDuration, 0.25f, 1.1f));
-            Present(() => _audio.Play(S14AudioCue.Hit));
-            Present(() => _haptics.Play(damage.WasLethal ? HapticCue.HeavyImpact : HapticCue.LightImpact));
+            TryPlayPool(PlayerHitPool, _player.position + Vector3.up, _definition.HitDuration, 0.25f, 1.1f);
+            TryPlayAudio(S14AudioCue.Hit);
+            TryPlayHaptic(damage.WasLethal ? HapticCue.HeavyImpact : HapticCue.LightImpact);
         }
 
         private void HandleEvolution(EvolutionTierChangedEvent change)
         {
-            Present(() => EvolutionPool.Play(_player.position + Vector3.up, _definition.EvolutionDuration, 0.4f, 2.2f));
-            Present(() => _audio.Play(S14AudioCue.Evolution));
-            Present(() => _haptics.Play(HapticCue.Evolution));
+            TryPlayPool(EvolutionPool, _player.position + Vector3.up, _definition.EvolutionDuration, 0.4f, 2.2f);
+            TryPlayAudio(S14AudioCue.Evolution);
+            TryPlayHaptic(HapticCue.Evolution);
         }
 
         private void HandleLashCue(GravityLashCue cue, Vector3 position)
         {
-            if (cue == GravityLashCue.Windup) Present(() => _audio.Play(S14AudioCue.LashWindup));
-            if (cue == GravityLashCue.Impact) Present(() => _audio.Play(S14AudioCue.LashImpact));
+            if (cue == GravityLashCue.Beam) TryPlayAudio(S14AudioCue.LashWindup);
+            if (cue == GravityLashCue.Impact) TryPlayAudio(S14AudioCue.LashImpact);
         }
 
-        private void HandleEliteTelegraph(EliteShockwaveTelegraphEvent value) => Present(() => _audio.Play(S14AudioCue.Telegraph));
-        private void HandleBossTelegraph(BossTelegraphEvent value) => Present(() => _audio.Play(S14AudioCue.Telegraph));
+        private void HandleEliteTelegraph(EliteShockwaveTelegraphEvent value) => TryPlayAudio(S14AudioCue.Telegraph);
+        private void HandleBossTelegraph(BossTelegraphEvent value) => TryPlayAudio(S14AudioCue.Telegraph);
 
         private void HandleEliteImpact(EliteShockwaveResolvedEvent value)
         {
-            Present(() => _audio.Play(S14AudioCue.BossImpact));
-            if (value.PlayerWasHit) Present(() => _haptics.Play(HapticCue.HeavyImpact));
+            TryPlayAudio(S14AudioCue.BossImpact);
         }
 
         private void HandleBossImpact(BossAttackResolvedEvent value)
         {
-            Present(() => _audio.Play(S14AudioCue.BossImpact));
-            if (value.PlayerWasHit) Present(() => _haptics.Play(HapticCue.HeavyImpact));
+            TryPlayAudio(S14AudioCue.BossImpact);
         }
 
-        private static void Present(Action action)
+        private void HandleEliteDamaged(Gravivore.Gameplay.Combat.DamageResult damage)
         {
-            try { action(); }
+            TryPlayPool(EnemyHitPool, _elite.transform.position + Vector3.up, _definition.HitDuration, 0.18f, 0.75f);
+        }
+
+        private void HandleBossDamaged(Gravivore.Gameplay.Combat.DamageResult damage)
+        {
+            TryPlayPool(EnemyHitPool, _boss.transform.position + Vector3.up, _definition.HitDuration, 0.22f, 0.9f);
+        }
+
+        private void TryPlayAudio(S14AudioCue cue)
+        {
+            try { _audio.Play(cue); }
+            catch (Exception exception) { Debug.LogException(exception); }
+        }
+
+        private void TryPlayHaptic(HapticCue cue)
+        {
+            try { _haptics.Play(cue); }
+            catch (Exception exception) { Debug.LogException(exception); }
+        }
+
+        private static void TryPlayPool(
+            PooledPulseVfx pool,
+            Vector3 position,
+            float duration,
+            float startScale,
+            float endScale,
+            Transform destination = null)
+        {
+            try { pool.Play(position, duration, startScale, endScale, destination); }
             catch (Exception exception) { Debug.LogException(exception); }
         }
 

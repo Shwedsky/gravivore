@@ -1,4 +1,5 @@
 using System;
+using Gravivore.Core.Events;
 using UnityEngine;
 
 namespace Gravivore.Gameplay.Encounters
@@ -188,7 +189,7 @@ namespace Gravivore.Gameplay.Encounters
         {
             if (IsDefeated || !string.Equals(_bossId, bossId, StringComparison.Ordinal)) return false;
             IsDefeated = true;
-            EncounterEventDispatch.Publish(Defeated, new BossDefeatedEvent(_bossId, position));
+            SafeEventDispatch.Publish(Defeated, new BossDefeatedEvent(_bossId, position));
             return true;
         }
 

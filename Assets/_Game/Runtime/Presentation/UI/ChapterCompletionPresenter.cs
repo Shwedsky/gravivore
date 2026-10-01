@@ -84,7 +84,6 @@ namespace Gravivore.Presentation.UI
             _completion.Defeated += HandleDefeated;
             _stats.StatChanged += HandleStatChanged;
             _modal.Available += HandleModalAvailable;
-            if (_completion.IsDefeated) RequestShow();
         }
 
         public void ContinueExploring()

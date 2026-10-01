@@ -35,7 +35,9 @@ namespace Gravivore.Tests.PlayMode
                 new EnemyLifeId(Guid.NewGuid()), "scout-drone", Vector3.zero));
             using var bridge = new EliteWorldUnlockBridge(elite, world);
             var defeatCount = 0;
+            var damageCount = 0;
             elite.Defeated += _ => defeatCount++;
+            elite.Damaged += _ => damageCount++;
 
             Assert.IsTrue(elite.CanBeTargeted);
             Assert.That(elite.DisplacementClass, Is.EqualTo(DisplacementClass.Elite));
@@ -51,6 +53,7 @@ namespace Gravivore.Tests.PlayMode
             Assert.IsTrue(lethal.WasLethal);
             Assert.IsFalse(repeated.WasLethal);
             Assert.That(defeatCount, Is.EqualTo(1));
+            Assert.That(damageCount, Is.EqualTo(1));
             Assert.IsTrue(worldState.BossGateUnlocked);
 
             UnityEngine.Object.Destroy(root);
@@ -135,6 +138,8 @@ namespace Gravivore.Tests.PlayMode
             boss.Tick(0f);
             var start = boss.transform.position;
             var completionCount = 0;
+            var damageCount = 0;
+            boss.Damaged += _ => damageCount++;
             completion.Defeated += defeated =>
             {
                 Assert.That(defeated.BossId, Is.EqualTo("custodian-m0"));
@@ -152,6 +157,7 @@ namespace Gravivore.Tests.PlayMode
             Assert.IsTrue(lethal.WasLethal);
             Assert.That(repeated.AppliedDamage, Is.Zero);
             Assert.That(completionCount, Is.EqualTo(1));
+            Assert.That(damageCount, Is.EqualTo(2));
             Assert.IsTrue(completion.IsDefeated);
             Assert.That(boss.State, Is.EqualTo(CustodianBossState.Dead));
             Assert.IsFalse(boss.CanBeTargeted);

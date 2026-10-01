@@ -107,18 +107,105 @@ namespace Gravivore.Tests.PlayMode
             Assert.IsTrue(panel.IsVisible);
             Assert.IsFalse(input.enabled);
             StringAssert.Contains("25 material", panel.SummaryText);
+            panel.ShowReturnSummary(new OfflineReturnSummary(
+                TimeSpan.Zero,
+                TimeSpan.Zero,
+                0,
+                25,
+                false,
+                OfflineClockAnomaly.NonPositiveElapsed));
+            var now = new DateTime(2026, 1, 1, 12, 0, 0, DateTimeKind.Utc);
+            service.Accrue(now.AddMinutes(-10), now);
+            StringAssert.Contains("Away 10m", panel.SummaryText);
+            var expectedBalance = state.MaterialBalance + state.PendingReward;
             panel.Claim();
             Assert.That(state.PendingReward, Is.Zero);
-            Assert.That(state.MaterialBalance, Is.EqualTo(35));
+            Assert.That(state.MaterialBalance, Is.EqualTo(expectedBalance));
             Assert.IsFalse(panel.IsVisible);
             Assert.IsTrue(input.enabled);
             panel.Claim();
-            Assert.That(state.MaterialBalance, Is.EqualTo(35));
+            Assert.That(state.MaterialBalance, Is.EqualTo(expectedBalance));
 
             panel.Shutdown();
             modal.Dispose();
             UnityEngine.Object.Destroy(root);
             UnityEngine.Object.Destroy(panel.gameObject);
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator RestoredCompletionStaysHiddenWhileLiveDefeatOpens()
+        {
+            var root = CreateModalRoot(out _, out var modal);
+            var stats = CreateStats();
+            var restoredState = BossCompletionState.Restore(
+                "custodian-m0",
+                new BossCompletionSnapshot(true));
+            var restored = new GameObject("Restored Completion", typeof(ChapterCompletionPresenter))
+                .GetComponent<ChapterCompletionPresenter>();
+            restored.Initialize(restoredState, stats, root.GetComponent<RectTransform>(), modal);
+            Assert.IsFalse(restored.IsVisible);
+
+            var liveState = new BossCompletionState("custodian-m0");
+            var live = new GameObject("Live Completion", typeof(ChapterCompletionPresenter))
+                .GetComponent<ChapterCompletionPresenter>();
+            live.Initialize(liveState, stats, root.GetComponent<RectTransform>(), modal);
+            liveState.TryRecordDefeat("custodian-m0", Vector3.zero);
+            Assert.IsTrue(live.IsVisible);
+
+            restored.Shutdown();
+            live.Shutdown();
+            modal.Dispose();
+            UnityEngine.Object.Destroy(root);
+            UnityEngine.Object.Destroy(restored.gameObject);
+            UnityEngine.Object.Destroy(live.gameObject);
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator ModalFreezesScaledGameplayAndSafelyResumesAllListeners()
+        {
+            var root = CreateModalRoot(out _, out var modal);
+            var player = new GameObject("Paused Player Probe", typeof(ScaledGameplayProbe));
+            var enemy = new GameObject("Paused Enemy Probe", typeof(ScaledGameplayProbe));
+            var playerProbe = player.GetComponent<ScaledGameplayProbe>();
+            var enemyProbe = enemy.GetComponent<ScaledGameplayProbe>();
+            yield return null;
+            var playerPosition = player.transform.position;
+            var enemyPosition = enemy.transform.position;
+            var playerState = playerProbe.ScaledState;
+            var enemyState = enemyProbe.ScaledState;
+            var attackCadence = enemyProbe.AttackCadence;
+            var owner = new object();
+            Time.timeScale = 0.5f;
+            Assert.IsTrue(modal.TryOpen(owner));
+
+            yield return null;
+            yield return null;
+            yield return null;
+
+            Assert.That(player.transform.position, Is.EqualTo(playerPosition));
+            Assert.That(enemy.transform.position, Is.EqualTo(enemyPosition));
+            Assert.That(playerProbe.ScaledState, Is.EqualTo(playerState));
+            Assert.That(enemyProbe.ScaledState, Is.EqualTo(enemyState));
+            Assert.That(enemyProbe.AttackCadence, Is.EqualTo(attackCadence));
+
+            var laterListenerCalled = false;
+            modal.Available += () => throw new InvalidOperationException("modal listener failed");
+            modal.Available += () => laterListenerCalled = true;
+            LogAssert.Expect(LogType.Exception, "InvalidOperationException: modal listener failed");
+            modal.Close(owner);
+            Assert.That(Time.timeScale, Is.EqualTo(0.5f));
+            Assert.IsTrue(laterListenerCalled);
+            yield return null;
+            yield return null;
+            Assert.That(playerProbe.ScaledState, Is.GreaterThan(playerState));
+            Assert.That(enemyProbe.AttackCadence, Is.GreaterThan(attackCadence));
+
+            modal.Dispose();
+            UnityEngine.Object.Destroy(root);
+            UnityEngine.Object.Destroy(player);
+            UnityEngine.Object.Destroy(enemy);
             yield return null;
         }
 
@@ -222,6 +309,19 @@ namespace Gravivore.Tests.PlayMode
                 CurrentHitPoints = MaximumHitPoints;
                 EncounterReset?.Invoke(new BossEncounterResetEvent("custodian-m0", Vector3.zero));
             }
+        }
+    }
+
+    public sealed class ScaledGameplayProbe : MonoBehaviour
+    {
+        public float ScaledState { get; private set; }
+        public float AttackCadence { get; private set; }
+
+        private void Update()
+        {
+            ScaledState += Time.deltaTime;
+            AttackCadence += Time.deltaTime;
+            transform.position += Vector3.forward * Time.deltaTime;
         }
     }
 }

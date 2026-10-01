@@ -65,6 +65,7 @@ namespace Gravivore.Presentation.Composition
         private ITimeProvider _timeProviderOverride;
         private ProfileSession _profileSession;
         private GravityLashVfxPool _gravityLashVfx;
+        private PresentationHapticSettings _hapticSettings;
 
         public GameObject PlayerObject { get; private set; }
 
@@ -153,6 +154,7 @@ namespace Gravivore.Presentation.Composition
             var statsConfiguration = _playerStatsDefinition.Configuration;
             var progressionConfiguration = _progressionDefinition.Configuration;
             var worldConfiguration = _worldDefinition.Configuration;
+            ValidateS15Coverage(worldConfiguration);
             var questCatalog = _questDefinition.Catalog;
             EquipmentCatalog = _equipmentCatalogDefinition.Catalog;
             var bossConfiguration = _custodianBossDefinition.CreateConfiguration(worldConfiguration);
@@ -249,6 +251,21 @@ namespace Gravivore.Presentation.Composition
             _profileSession = ProfileSession.Start(repository, context, configuration, time, diagnostics);
         }
 
+        private void ValidateS15Coverage(Chapter01WorldConfiguration world)
+        {
+            var enemyIds = new string[_spawnSpotDefinitions.Length];
+            for (var i = 0; i < _spawnSpotDefinitions.Length; i++)
+            {
+                if (_spawnSpotDefinitions[i] == null)
+                    throw new InvalidOperationException($"Spawn spot definition {i} is not assigned.");
+                enemyIds[i] = _spawnSpotDefinitions[i].CreateRuntimeConfiguration().Enemy.Id;
+            }
+
+            var landmarkIds = new string[world.ZoneCount];
+            for (var i = 0; i < world.ZoneCount; i++) landmarkIds[i] = world.GetZone(i).Id;
+            _s15VisualCatalog.ValidateCoverageOrThrow(enemyIds, landmarkIds);
+        }
+
         private void CreateHud(
             out UiTouchExclusion uiTouchExclusion,
             out RectTransform topTouchExclusion,
@@ -339,7 +356,7 @@ namespace Gravivore.Presentation.Composition
             var pauseObject = new GameObject("Pause Menu", typeof(PauseMenuPresenter));
             pauseObject.transform.SetParent(transform, false);
             PauseMenu = pauseObject.GetComponent<PauseMenuPresenter>();
-            PauseMenu.Initialize(_hudRoot, _hudModal, PlayerStatsHud, AudioPresenter);
+            PauseMenu.Initialize(_hudRoot, _hudModal, PlayerStatsHud, AudioPresenter, _hapticSettings);
 
             var offlineObject = new GameObject("Offline Reward Panel", typeof(OfflineRewardPanelPresenter));
             offlineObject.transform.SetParent(transform, false);
@@ -582,6 +599,7 @@ namespace Gravivore.Presentation.Composition
             audioObject.transform.SetParent(transform, false);
             AudioPresenter = audioObject.GetComponent<S14AudioPresenter>();
             AudioPresenter.Initialize(_s14PresentationDefinition);
+            _hapticSettings = new PresentationHapticSettings();
 
             var feedbackObject = new GameObject("S14 Combat Feedback", typeof(S14CombatFeedbackPresenter));
             feedbackObject.transform.SetParent(transform, false);
@@ -598,7 +616,10 @@ namespace Gravivore.Presentation.Composition
                 _s14PresentationDefinition,
                 _materialPalette.UnlitMaterial,
                 AudioPresenter,
-                new PlatformHapticFeedback());
+                new ThrottledHapticFeedback(
+                    new PlatformHapticFeedback(),
+                    _hapticSettings,
+                    new UnityUnscaledTimeSource()));
         }
 
         private void InitializePlayerHealth()

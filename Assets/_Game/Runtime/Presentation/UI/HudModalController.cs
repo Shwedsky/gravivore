@@ -1,4 +1,5 @@
 using System;
+using Gravivore.Core.Events;
 using Gravivore.Presentation.Input;
 using UnityEngine;
 
@@ -26,7 +27,7 @@ namespace Gravivore.Presentation.UI
             if (owner == null) throw new ArgumentNullException(nameof(owner));
             if (_owner != null) return ReferenceEquals(_owner, owner);
             _owner = owner;
-            _previousTimeScale = Time.timeScale;
+            _previousTimeScale = IsValidTimeScale(Time.timeScale) ? Time.timeScale : 1f;
             Time.timeScale = 0f;
             _movementInput.enabled = false;
             return true;
@@ -37,8 +38,8 @@ namespace Gravivore.Presentation.UI
             if (!ReferenceEquals(_owner, owner)) return;
             _owner = null;
             _movementInput.enabled = true;
-            Time.timeScale = _previousTimeScale;
-            Available?.Invoke();
+            Time.timeScale = RestoreTimeScale;
+            SafeEventDispatch.Publish(Available);
         }
 
         public void Dispose()
@@ -46,7 +47,12 @@ namespace Gravivore.Presentation.UI
             if (_owner == null) return;
             _owner = null;
             _movementInput.enabled = true;
-            Time.timeScale = _previousTimeScale;
+            Time.timeScale = RestoreTimeScale;
         }
+
+        private float RestoreTimeScale => IsValidTimeScale(_previousTimeScale) ? _previousTimeScale : 1f;
+
+        private static bool IsValidTimeScale(float value) =>
+            !float.IsNaN(value) && !float.IsInfinity(value) && value >= 0f;
     }
 }

@@ -87,6 +87,7 @@ namespace Gravivore.Presentation.UI
 
         public void ShowReturnSummary(OfflineReturnSummary summary)
         {
+            if (summary.EligibleDuration <= TimeSpan.Zero && summary.EarnedAmount <= 0) return;
             _summary = summary;
             if (summary.TotalPendingAmount <= 0 || _service.State.PendingReward <= 0) return;
             _wantsVisible = true;

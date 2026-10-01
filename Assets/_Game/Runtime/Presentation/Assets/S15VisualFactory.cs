@@ -76,16 +76,57 @@ namespace Gravivore.Presentation.Assets
             return root;
         }
 
-        private static void BuildPart(Transform parent, S15VisualPart part, S15VisualCatalog catalog, int index)
+        public static GameObject BuildPart(Transform parent, S15VisualPart part, S15VisualCatalog catalog, int index)
         {
-            var source = part.SourceModel.GetComponentInChildren<MeshFilter>(true);
-            var partObject = new GameObject($"Part {index + 1} {part.SourceModel.name}", typeof(MeshFilter), typeof(MeshRenderer));
+            if (parent == null) throw new ArgumentNullException(nameof(parent));
+            if (part == null || part.SourceModel == null) throw new ArgumentNullException(nameof(part));
+            if (catalog == null) throw new ArgumentNullException(nameof(catalog));
+            var partObject = new GameObject($"Part {index + 1} {part.SourceModel.name}");
             partObject.transform.SetParent(parent, false);
             partObject.transform.localPosition = part.LocalPosition;
             partObject.transform.localRotation = part.LocalRotation;
             partObject.transform.localScale = part.LocalScale;
-            partObject.GetComponent<MeshFilter>().sharedMesh = source.sharedMesh;
-            partObject.GetComponent<MeshRenderer>().sharedMaterial = catalog.GetMaterial(part.MaterialRole);
+            var model = UnityEngine.Object.Instantiate(part.SourceModel, partObject.transform, false);
+            model.name = part.SourceModel.name;
+            model.transform.localPosition = Vector3.zero;
+            model.transform.localRotation = Quaternion.identity;
+            model.transform.localScale = Vector3.one;
+
+            var colliders = model.GetComponentsInChildren<Collider>(true);
+            for (var i = 0; i < colliders.Length; i++)
+            {
+                colliders[i].enabled = false;
+                Remove(colliders[i]);
+            }
+            DisableAndRemove<Light>(model);
+            DisableAndRemove<UnityEngine.Camera>(model);
+            var renderers = model.GetComponentsInChildren<MeshRenderer>(true);
+            var material = catalog.GetMaterial(part.MaterialRole);
+            for (var i = 0; i < renderers.Length; i++)
+            {
+                var slots = Mathf.Max(1, renderers[i].sharedMaterials.Length);
+                var materials = new Material[slots];
+                for (var j = 0; j < materials.Length; j++) materials[j] = material;
+                renderers[i].sharedMaterials = materials;
+            }
+
+            return partObject;
+        }
+
+        private static void DisableAndRemove<T>(GameObject root) where T : Behaviour
+        {
+            var components = root.GetComponentsInChildren<T>(true);
+            for (var i = 0; i < components.Length; i++)
+            {
+                components[i].enabled = false;
+                Remove(components[i]);
+            }
+        }
+
+        private static void Remove(UnityEngine.Object component)
+        {
+            if (Application.isPlaying) UnityEngine.Object.Destroy(component);
+            else UnityEngine.Object.DestroyImmediate(component);
         }
     }
 }

@@ -1,8 +1,10 @@
 using System.Collections;
 using Gravivore.Gameplay.Combat;
+using Gravivore.Gameplay.Enemies;
 using Gravivore.Gameplay.Player;
 using Gravivore.Gameplay.Progression;
 using Gravivore.Presentation.Input;
+using Gravivore.Presentation.Combat;
 using Gravivore.Presentation.Evolution;
 using Gravivore.Presentation.UI;
 using NUnit.Framework;
@@ -158,6 +160,66 @@ namespace Gravivore.Tests.PlayMode
         }
 
         [UnityTest]
+        public IEnumerator GravityAttack_ThrowingDamageObserverDoesNotCancelDisplacement()
+        {
+            var scene = new CanonicalSceneTestScope();
+            yield return scene.Load();
+            var poolRoot = new GameObject("Observer Failure Pool");
+            var pool = new OrdinaryEnemyPool(poolRoot.transform, 1, 9, TestMaterialFactory.Lit);
+            var enemy = pool.Acquire(
+                EnemyConfiguration("observer-target", 1000f),
+                scene.Root.PlayerObject.transform,
+                scene.Root.PlayerHealth,
+                new Vector3(0f, 0f, 3f),
+                pool.Return);
+            var damageObserved = 0;
+            enemy.Damaged += _ => throw new System.InvalidOperationException("damage observer failed");
+            enemy.Damaged += _ => damageObserved++;
+            LogAssert.Expect(LogType.Exception, "InvalidOperationException: damage observer failed");
+
+            var timeout = Time.realtimeSinceStartup + 2f;
+            while (damageObserved == 0 && Time.realtimeSinceStartup < timeout) yield return null;
+
+            Assert.That(damageObserved, Is.EqualTo(1));
+            Assert.That(enemy.CurrentHitPoints, Is.LessThan(1000f));
+            Assert.That(enemy.transform.position.z, Is.LessThan(2f), "Gravity displacement must still execute.");
+
+            pool.Return(enemy);
+            Object.Destroy(poolRoot);
+            yield return scene.Cleanup();
+        }
+
+        [UnityTest]
+        public IEnumerator GravityAttack_LethalPresentationOrdersBeamBeforeDeath()
+        {
+            var scene = new CanonicalSceneTestScope();
+            yield return scene.Load();
+            var poolRoot = new GameObject("Lash Ordering Pool");
+            var pool = new OrdinaryEnemyPool(poolRoot.transform, 1, 9, TestMaterialFactory.Lit);
+            var enemy = pool.Acquire(
+                EnemyConfiguration("ordering-target", 1f),
+                scene.Root.PlayerObject.transform,
+                scene.Root.PlayerHealth,
+                new Vector3(0f, 0f, 3f),
+                pool.Return);
+            var order = new System.Collections.Generic.List<string>();
+            var lash = Object.FindFirstObjectByType<GravityLashVfxPool>();
+            lash.CuePlayed += (cue, _) =>
+            {
+                if (cue == GravityLashCue.Beam) order.Add("beam");
+            };
+            enemy.Died += _ => order.Add("death");
+
+            var timeout = Time.realtimeSinceStartup + 2f;
+            while (order.Count < 2 && Time.realtimeSinceStartup < timeout) yield return null;
+
+            Assert.That(order, Is.EqualTo(new[] { "beam", "death" }));
+            Assert.That(pool.AvailableCount, Is.EqualTo(1));
+            Object.Destroy(poolRoot);
+            yield return scene.Cleanup();
+        }
+
+        [UnityTest]
         public IEnumerator PullDestinationResolver_StopsTargetBeforeHardBlocker()
         {
             var blocker = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -210,6 +272,18 @@ namespace Gravivore.Tests.PlayMode
         private sealed class StubMovementInput : IMovementInput
         {
             public Vector2 Movement { get; set; }
+        }
+
+        private static EnemyRuntimeConfiguration EnemyConfiguration(string id, float hitPoints)
+        {
+            return new EnemyRuntimeConfiguration(
+                id,
+                hitPoints,
+                0.0001f,
+                0f,
+                0.4f,
+                0.9f,
+                new EnemyBehaviorParameters(5f, 7f, 0.1f, 10f));
         }
 
         private sealed class FakeCombatTarget : MonoBehaviour, ITargetable, IDamageable, IDisplaceable

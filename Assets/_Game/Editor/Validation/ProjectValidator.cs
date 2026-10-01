@@ -147,7 +147,29 @@ namespace Gravivore.Editor
         {
             var catalog = AssetDatabase.LoadAssetAtPath<S15VisualCatalog>(S15AssetConfigurator.CatalogPath);
             if (catalog == null) throw new InvalidOperationException("Canonical S15 visual catalog is required.");
-            catalog.ValidateOrThrow();
+            var spawnPaths = new[]
+            {
+                "Assets/_Game/Content/Definitions/S04_SpawnSpot_RelayYard.asset",
+                "Assets/_Game/Content/Definitions/S04_SpawnSpot_CuttingFloor.asset",
+                "Assets/_Game/Content/Definitions/S04_SpawnSpot_ShieldDump.asset",
+                "Assets/_Game/Content/Definitions/S04_SpawnSpot_CapacitorField.asset",
+                "Assets/_Game/Content/Definitions/S04_SpawnSpot_HaulerGraveyard.asset"
+            };
+            var enemyIds = new string[spawnPaths.Length];
+            for (var i = 0; i < spawnPaths.Length; i++)
+            {
+                var spawn = AssetDatabase.LoadAssetAtPath<SpawnSpotDefinition>(spawnPaths[i]);
+                if (spawn == null) throw new InvalidOperationException($"Canonical spawn spot is missing: {spawnPaths[i]}");
+                enemyIds[i] = spawn.CreateRuntimeConfiguration().Enemy.Id;
+            }
+
+            var worldDefinition = AssetDatabase.LoadAssetAtPath<Chapter01WorldDefinition>(
+                "Assets/_Game/Content/Definitions/S08_Chapter01World.asset");
+            if (worldDefinition == null) throw new InvalidOperationException("Canonical Chapter 01 world is required.");
+            var world = worldDefinition.Configuration;
+            var landmarkIds = new string[world.ZoneCount];
+            for (var i = 0; i < world.ZoneCount; i++) landmarkIds[i] = world.GetZone(i).Id;
+            catalog.ValidateCoverageOrThrow(enemyIds, landmarkIds);
             var dependencies = AssetDatabase.GetDependencies(S15AssetConfigurator.ChapterScenePath, true);
             if (Array.IndexOf(dependencies, S15AssetConfigurator.CatalogPath) < 0)
                 throw new InvalidOperationException("The canonical chapter scene must reference the S15 visual catalog.");

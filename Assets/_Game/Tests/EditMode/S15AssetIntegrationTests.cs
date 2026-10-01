@@ -80,5 +80,70 @@ namespace Gravivore.Tests.EditMode
                 Assert.That(importer.meshCompression, Is.EqualTo(ModelImporterMeshCompression.Medium), path);
             }
         }
+
+        [TestCase("piston-round.fbx")]
+        [TestCase("robot-arm-a.fbx")]
+        public void VisualFactory_PreservesEveryRenderableMesh(string modelName)
+        {
+            var catalog = AssetDatabase.LoadAssetAtPath<S15VisualCatalog>(
+                Gravivore.Editor.S15AssetConfigurator.CatalogPath);
+            var part = FindPart(catalog, modelName);
+            var sourceMeshCount = part.SourceModel.GetComponentsInChildren<MeshFilter>(true).Length;
+            var root = new GameObject($"S15 {modelName} Hierarchy Test");
+            try
+            {
+                var built = S15VisualFactory.BuildPart(root.transform, part, catalog, 0);
+                Assert.That(
+                    built.GetComponentsInChildren<MeshFilter>(true),
+                    Has.Length.EqualTo(sourceMeshCount));
+                Assert.That(built.GetComponentsInChildren<Collider>(true), Is.Empty);
+                foreach (var renderer in built.GetComponentsInChildren<MeshRenderer>(true))
+                {
+                    Assert.That(renderer.sharedMaterials, Is.Not.Empty);
+                    Assert.That(renderer.sharedMaterials, Has.None.Null);
+                }
+            }
+            finally
+            {
+                UnityEngine.Object.DestroyImmediate(root);
+            }
+        }
+
+        [Test]
+        public void CatalogCoverage_RejectsMissingEnemyAndLandmarkIds()
+        {
+            var catalog = AssetDatabase.LoadAssetAtPath<S15VisualCatalog>(
+                Gravivore.Editor.S15AssetConfigurator.CatalogPath);
+            var enemies = new[] { "scout-drone", "cutter-unit", "warden", "arc-drone", "missing-enemy" };
+            var landmarks = new[] { "relay-yard", "cutting-floor", "shield-dump", "capacitor-field", "hauler-graveyard" };
+            Assert.Throws<InvalidOperationException>(() => catalog.ValidateCoverageOrThrow(enemies, landmarks));
+
+            enemies[4] = "carrier";
+            landmarks[4] = "missing-landmark";
+            Assert.Throws<InvalidOperationException>(() => catalog.ValidateCoverageOrThrow(enemies, landmarks));
+        }
+
+        private static S15VisualPart FindPart(S15VisualCatalog catalog, string modelName)
+        {
+            var assetName = System.IO.Path.GetFileNameWithoutExtension(modelName);
+            for (var i = 0; i < catalog.Player.PartCount; i++)
+            {
+                var part = catalog.Player.GetPart(i);
+                if (string.Equals(part.SourceModel.name, assetName, StringComparison.OrdinalIgnoreCase)) return part;
+            }
+
+            var enemyIds = new[] { "scout-drone", "cutter-unit", "warden", "arc-drone", "carrier" };
+            for (var i = 0; i < enemyIds.Length; i++)
+            {
+                catalog.TryGetEnemy(enemyIds[i], out var recipe);
+                for (var j = 0; j < recipe.PartCount; j++)
+                {
+                    var part = recipe.GetPart(j);
+                    if (string.Equals(part.SourceModel.name, assetName, StringComparison.OrdinalIgnoreCase)) return part;
+                }
+            }
+
+            throw new InvalidOperationException($"Canonical S15 part not found: {modelName}");
+        }
     }
 }

@@ -14,7 +14,9 @@ namespace Gravivore.Presentation.UI
         private RectTransform _root;
         private Button _detailsButton;
         private Button _audioButton;
+        private Button _hapticsButton;
         private S14AudioPresenter _audio;
+        private PresentationHapticSettings _hapticSettings;
 
         public bool IsPaused => _root != null && _root.gameObject.activeSelf;
         public bool StatsDetailsExpanded { get; private set; }
@@ -22,12 +24,14 @@ namespace Gravivore.Presentation.UI
         public RectTransform ModalRect => _root;
         public bool AudioMuted => _audio != null ? _audio.IsMuted : PresentationAudioSettings.IsMuted;
         public float AudioVolume => _audio != null ? _audio.Volume : PresentationAudioSettings.Volume;
+        public bool HapticsEnabled => _hapticSettings == null || _hapticSettings.Enabled;
 
         public void Initialize(
             RectTransform hudRoot,
             HudModalController modal,
             PlayerStatsHudPresenter statsPresenter,
-            S14AudioPresenter audio = null)
+            S14AudioPresenter audio = null,
+            PresentationHapticSettings hapticSettings = null)
         {
             if (hudRoot == null) throw new ArgumentNullException(nameof(hudRoot));
             _modal = modal ?? throw new ArgumentNullException(nameof(modal));
@@ -35,6 +39,7 @@ namespace Gravivore.Presentation.UI
                 ? statsPresenter
                 : throw new ArgumentNullException(nameof(statsPresenter));
             _audio = audio;
+            _hapticSettings = hapticSettings ?? new PresentationHapticSettings();
 
             var pauseButton = HudUiFactory.CreateButton(
                 hudRoot,
@@ -71,36 +76,43 @@ namespace Gravivore.Presentation.UI
             _detailsButton = HudUiFactory.CreateButton(
                 panel,
                 "Stats Details Button",
-                new Vector2(0.12f, 0.48f),
-                new Vector2(0.88f, 0.63f),
+                new Vector2(0.12f, 0.56f),
+                new Vector2(0.88f, 0.68f),
                 string.Empty,
                 ToggleStatsDetails);
             _audioButton = HudUiFactory.CreateButton(
                 panel,
                 "Audio Toggle",
-                new Vector2(0.12f, 0.3f),
-                new Vector2(0.58f, 0.44f),
+                new Vector2(0.12f, 0.4f),
+                new Vector2(0.58f, 0.52f),
                 string.Empty,
                 ToggleAudio);
             HudUiFactory.CreateButton(
                 panel,
                 "Volume Down",
-                new Vector2(0.62f, 0.3f),
-                new Vector2(0.74f, 0.44f),
+                new Vector2(0.62f, 0.4f),
+                new Vector2(0.74f, 0.52f),
                 "-",
                 DecreaseVolume);
             HudUiFactory.CreateButton(
                 panel,
                 "Volume Up",
-                new Vector2(0.76f, 0.3f),
-                new Vector2(0.88f, 0.44f),
+                new Vector2(0.76f, 0.4f),
+                new Vector2(0.88f, 0.52f),
                 "+",
                 IncreaseVolume);
+            _hapticsButton = HudUiFactory.CreateButton(
+                panel,
+                "Haptics Toggle",
+                new Vector2(0.12f, 0.24f),
+                new Vector2(0.88f, 0.36f),
+                string.Empty,
+                ToggleHaptics);
             HudUiFactory.CreateButton(
                 panel,
                 "Resume Button",
-                new Vector2(0.12f, 0.1f),
-                new Vector2(0.88f, 0.25f),
+                new Vector2(0.12f, 0.07f),
+                new Vector2(0.88f, 0.19f),
                 "RESUME",
                 Resume);
             _root.gameObject.SetActive(false);
@@ -109,6 +121,7 @@ namespace Gravivore.Presentation.UI
             _statsPresenter.SetExpanded(StatsDetailsExpanded);
             ApplyDetailsLabel();
             ApplyAudioLabel();
+            ApplyHapticsLabel();
         }
 
         public void Open()
@@ -145,6 +158,12 @@ namespace Gravivore.Presentation.UI
 
         public void DecreaseVolume() => ChangeVolume(-0.1f);
 
+        public void ToggleHaptics()
+        {
+            _hapticSettings?.SetEnabled(!HapticsEnabled);
+            ApplyHapticsLabel();
+        }
+
         private void ChangeVolume(float delta)
         {
             var volume = Mathf.Clamp01(AudioVolume + delta);
@@ -166,6 +185,12 @@ namespace Gravivore.Presentation.UI
         {
             var label = _audioButton != null ? _audioButton.GetComponentInChildren<Text>() : null;
             if (label != null) label.text = AudioMuted ? "AUDIO: OFF" : $"AUDIO: {Mathf.RoundToInt(AudioVolume * 100f)}%";
+        }
+
+        private void ApplyHapticsLabel()
+        {
+            var label = _hapticsButton != null ? _hapticsButton.GetComponentInChildren<Text>() : null;
+            if (label != null) label.text = HapticsEnabled ? "HAPTICS: ON" : "HAPTICS: OFF";
         }
 
         private void OnDestroy() => Resume();
