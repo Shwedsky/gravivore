@@ -7,6 +7,7 @@ using Gravivore.Core.Time;
 using Gravivore.Gameplay.Combat;
 using Gravivore.Gameplay.Encounters;
 using Gravivore.Gameplay.Player;
+using Gravivore.Gameplay.Progression;
 using Gravivore.Gameplay.Quests;
 using Gravivore.Gameplay.World;
 using Gravivore.Persistence.Profile;
@@ -106,6 +107,12 @@ namespace Gravivore.Tests.EditMode
             Assert.IsTrue(fixture.Commands.UnlockElite());
             Assert.IsTrue(fixture.World.EliteGateUnlocked);
             Assert.IsFalse(fixture.World.BossGateUnlocked);
+            Assert.IsTrue(fixture.EliteRequirement.IsSatisfied(fixture.Progression.State, fixture.Quests.State));
+            Assert.That(
+                fixture.Progression.State.TotalAssimilationScore,
+                Is.EqualTo(fixture.EliteRequirement.MinimumAssimilationScore));
+            Assert.IsTrue(fixture.Quests.State.IsObjectiveCompleted("elite-prerequisite"));
+            Assert.That(fixture.DirtyCalls, Is.EqualTo(1));
 
             Assert.IsTrue(fixture.Commands.UnlockBoss());
             Assert.IsTrue(fixture.World.EliteDefeated);
@@ -215,23 +222,35 @@ namespace Gravivore.Tests.EditMode
                 Stats = CreateStats();
                 var catalog = new QuestCatalog("chapter01", new[]
                 {
+                    new QuestObjective("elite-prerequisite", "Prerequisite", QuestObjectiveType.MovementPerformed, 2, string.Empty, string.Empty, string.Empty, QuestTargetType.None, string.Empty, false),
                     new QuestObjective("elite-objective", "Elite", QuestObjectiveType.EliteDefeated, 1, string.Empty, string.Empty, "magnetar-guard", QuestTargetType.Elite, "magnetar-guard", false),
                     new QuestObjective("boss-objective", "Boss", QuestObjectiveType.BossDefeated, 1, string.Empty, string.Empty, "custodian-m0", QuestTargetType.BossArena, "custodian-m0", false)
                 });
-                Quests = new QuestService(catalog, new QuestState(catalog));
+                Progression = new AssimilationProgressionService(
+                    Stats,
+                    new ProgressionState(),
+                    new ProgressionConfiguration(
+                        new ProgressionThresholdCurve(10f, 0f, 0f, 10f),
+                        new[] { new CoreReward("fixture-enemy", PlayerStatType.Power, 1f, 1) }));
+                Quests = new QuestService(catalog, new QuestState(catalog), Progression);
                 World = new WorldUnlockState("elite-gate", "boss-gate", "magnetar-guard");
+                EliteRequirement = new EliteGateRequirement(new[] { "elite-prerequisite" }, 7);
+                WorldService = new WorldUnlockService(Progression, Quests, EliteRequirement, World);
                 Completion = new BossCompletionState("custodian-m0");
                 _playerObject = new GameObject("S16 Test Player", typeof(CharacterController), typeof(PlayerHealthController));
                 Health = _playerObject.GetComponent<PlayerHealthController>();
                 Health.Initialize(_playerObject.GetComponent<CharacterController>(), Stats, Vector3.zero, 0f);
                 Commands = new DevelopmentCommandService(
-                    Stats, Quests, World, null, Completion, null, Health,
+                    Stats, Quests, WorldService, null, Completion, null, Health,
                     "magnetar-guard", "custodian-m0", () => DirtyCalls++, () => true, () => RestartCalls++);
             }
 
             public PlayerStatsState Stats { get; }
             public QuestService Quests { get; }
+            public AssimilationProgressionService Progression { get; }
             public WorldUnlockState World { get; }
+            public WorldUnlockService WorldService { get; }
+            public EliteGateRequirement EliteRequirement { get; }
             public BossCompletionState Completion { get; }
             public PlayerHealthController Health { get; }
             public DevelopmentCommandService Commands { get; }
@@ -240,7 +259,9 @@ namespace Gravivore.Tests.EditMode
 
             public void Dispose()
             {
+                WorldService.Dispose();
                 Quests.Dispose();
+                Progression.Dispose();
                 UnityEngine.Object.DestroyImmediate(_playerObject);
             }
         }

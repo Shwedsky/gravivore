@@ -12,7 +12,7 @@ namespace Gravivore.Presentation.Development
     {
         private readonly PlayerStatsState _stats;
         private readonly QuestService _quests;
-        private readonly WorldUnlockState _world;
+        private readonly WorldUnlockService _world;
         private readonly MagnetarGuardController _elite;
         private readonly BossCompletionState _completion;
         private readonly CustodianBossController _boss;
@@ -26,7 +26,7 @@ namespace Gravivore.Presentation.Development
         public DevelopmentCommandService(
             PlayerStatsState stats,
             QuestService quests,
-            WorldUnlockState world,
+            WorldUnlockService world,
             MagnetarGuardController elite,
             BossCompletionState completion,
             CustodianBossController boss,
@@ -72,7 +72,7 @@ namespace Gravivore.Presentation.Development
 
         public bool UnlockElite()
         {
-            var changed = _world.TryUnlockEliteGate();
+            var changed = _world.PrepareEliteEncounterForDevelopment();
             if (changed) _markDirty();
             return changed;
         }
@@ -80,7 +80,7 @@ namespace Gravivore.Presentation.Development
         public bool UnlockBoss()
         {
             var changed = UnlockElite();
-            if (!_world.EliteDefeated && _elite != null)
+            if (!_world.State.EliteDefeated && _elite != null)
             {
                 _elite.ActivateEncounter();
                 var result = _elite.ApplyDamage(new DamageRequest(_elite.MaximumHitPoints + 100000f, DamageType.Gravity));

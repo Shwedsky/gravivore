@@ -134,6 +134,24 @@ namespace Gravivore.Gameplay.Progression
             }
         }
 
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        internal bool EnsureMinimumAssimilationScoreForDevelopment(long minimumScore)
+        {
+            if (minimumScore < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(minimumScore));
+            }
+
+            if (TotalAssimilationScore >= minimumScore)
+            {
+                return false;
+            }
+
+            TotalAssimilationScore = minimumScore;
+            return true;
+        }
+#endif
+
         public ProgressionSnapshot ExportSnapshot()
         {
             var firstKills = new List<string>(_firstKills);

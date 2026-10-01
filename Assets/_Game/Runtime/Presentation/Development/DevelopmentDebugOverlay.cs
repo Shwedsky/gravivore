@@ -62,7 +62,7 @@ namespace Gravivore.Presentation.Development
             _boss = boss ?? throw new ArgumentNullException(nameof(boss));
             _completion = completion ?? throw new ArgumentNullException(nameof(completion));
 
-            var toggle = HudUiFactory.CreateButton(hudRoot, "DEV Toggle", new Vector2(0.82f, 0.92f), new Vector2(0.98f, 0.985f), "DEV", Toggle);
+            var toggle = HudUiFactory.CreateButton(hudRoot, "DEV Toggle", new Vector2(0.70f, 0.925f), new Vector2(0.82f, 0.985f), "DEV", Toggle);
             ToggleRect = toggle.GetComponent<RectTransform>();
             _panel = HudUiFactory.CreatePanel(hudRoot, "Development Tools", new Vector2(0.04f, 0.08f), new Vector2(0.96f, 0.91f), HudUiFactory.ModalBackdropColor, true);
             _metrics = HudUiFactory.CreateText(_panel, "Metrics", new Vector2(0.04f, 0.61f), new Vector2(0.96f, 0.97f), string.Empty, 25, TextAnchor.UpperLeft, Color.white);

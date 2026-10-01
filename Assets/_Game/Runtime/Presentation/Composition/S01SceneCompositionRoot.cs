@@ -429,7 +429,7 @@ namespace Gravivore.Presentation.Composition
             var commands = new DevelopmentCommandService(
                 PlayerStats,
                 Quests,
-                WorldUnlocks.State,
+                WorldUnlocks,
                 MagnetarGuard,
                 BossCompletion,
                 CustodianBoss,

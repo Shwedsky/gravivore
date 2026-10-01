@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Gravivore.Gameplay.Encounters;
 using Gravivore.Gameplay.Progression;
+using Gravivore.Gameplay.World;
 using UnityEngine;
 
 namespace Gravivore.Gameplay.Quests
@@ -76,6 +77,26 @@ namespace Gravivore.Gameplay.Quests
         }
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
+        public bool CompleteRequiredObjectivesForDevelopment(EliteGateRequirement requirement)
+        {
+            if (requirement == null) throw new ArgumentNullException(nameof(requirement));
+
+            var changed = false;
+            for (var i = 0; i < requirement.RequiredObjectiveCount; i++)
+            {
+                var objectiveId = requirement.GetRequiredObjectiveId(i);
+                if (!_catalog.TryGetObjective(objectiveId, out var objective))
+                {
+                    throw new InvalidOperationException($"Elite requirement references unknown objective '{objectiveId}'.");
+                }
+
+                if (State.IsObjectiveCompleted(objectiveId)) continue;
+                changed |= AdvanceAndPublish(candidate => candidate.Id == objectiveId, objective.RequiredCount, null);
+            }
+
+            return changed;
+        }
+
         public bool CompleteEncounterObjectiveForDevelopment(QuestObjectiveType type, string encounterId)
         {
             if (type != QuestObjectiveType.EliteDefeated && type != QuestObjectiveType.BossDefeated)
