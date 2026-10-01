@@ -2,14 +2,27 @@
 param(
     [string]$UnityPath,
     [switch]$Clean,
-    [string]$Version
+    [ValidateSet("Dev", "Candidate")]
+    [string]$Flavor = "Dev",
+    [string]$Version,
+    [int]$VersionCode
 )
 
 $ErrorActionPreference = "Stop"
 
 $projectRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $logDir = Join-Path $projectRoot "Builds\Logs"
-$logPath = Join-Path $logDir "android-build.log"
+$timestamp = [DateTime]::UtcNow.ToString("yyyyMMdd-HHmmss")
+$flavorLabel = $Flavor.ToLowerInvariant()
+$logPath = Join-Path $logDir "android-$flavorLabel-$timestamp.log"
+
+if ($Version -and $Version -notmatch '^\d+\.\d+\.\d+(?:\.\d+)?$') {
+    throw "Version must contain three or four numeric components, for example 0.1.0."
+}
+
+if ($PSBoundParameters.ContainsKey("VersionCode") -and $VersionCode -le 0) {
+    throw "VersionCode must be a positive integer."
+}
 
 function Find-Unity {
     param([string]$ConfiguredPath)
@@ -66,13 +79,19 @@ function ConvertTo-ProcessArgument {
 
 New-Item -ItemType Directory -Force -Path $logDir | Out-Null
 $unity = Find-Unity -ConfiguredPath $UnityPath
+$executeMethod = if ($Flavor -eq "Candidate") {
+    "Gravivore.Editor.Build.AndroidBuild.BuildCandidate"
+}
+else {
+    "Gravivore.Editor.Build.AndroidBuild.BuildDev"
+}
 
 $unityArgs = @(
     "-batchmode",
     "-quit",
     "-projectPath", $projectRoot,
     "-buildTarget", "Android",
-    "-executeMethod", "Gravivore.Editor.Build.AndroidBuild.BuildDev",
+    "-executeMethod", $executeMethod,
     "-logFile", $logPath
 )
 
@@ -84,8 +103,13 @@ if ($Version) {
     $unityArgs += @("-Version", $Version)
 }
 
+if ($PSBoundParameters.ContainsKey("VersionCode")) {
+    $unityArgs += @("-VersionCode", $VersionCode.ToString([Globalization.CultureInfo]::InvariantCulture))
+}
+
 Write-Host "Using Unity: $unity"
 Write-Host "Project root: $projectRoot"
+Write-Host "Build flavor: $Flavor"
 Write-Host "Writing build log: $logPath"
 
 $processArguments = @($unityArgs | ForEach-Object { ConvertTo-ProcessArgument $_ })
@@ -105,6 +129,12 @@ catch {
 $unityExitCode = $unityProcess.ExitCode
 Write-Host "Unity process exit code: $unityExitCode"
 if ($unityExitCode -ne 0) {
+    if (Test-Path -LiteralPath $logPath -PathType Leaf) {
+        Write-Host "Relevant build log tail:"
+        Select-String -LiteralPath $logPath -Pattern 'error|exception|failed' -CaseSensitive:$false |
+            Select-Object -Last 20 |
+            ForEach-Object { Write-Host $_.Line }
+    }
     throw "Android build failed with exit code $unityExitCode. See $logPath"
 }
 
@@ -114,10 +144,10 @@ if (-not (Test-Path -LiteralPath $logPath -PathType Leaf)) {
 
 $artifactLogEntry = Select-String `
     -LiteralPath $logPath `
-    -Pattern 'Android development build written to (?<path>.+\.apk)\s*$' |
+    -Pattern 'Android (?:Dev|Candidate) build written to (?<path>.+\.apk)\s*$' |
     Select-Object -Last 1
 if ($null -eq $artifactLogEntry) {
-    throw "Unity exited with code 0, but BuildDev did not report an APK path in $logPath."
+    throw "Unity exited with code 0, but $executeMethod did not report an APK path in $logPath."
 }
 
 $reportedApkPath = $artifactLogEntry.Matches[0].Groups['path'].Value.Trim()
@@ -133,5 +163,12 @@ if (-not (Test-Path -LiteralPath $apkPath -PathType Leaf)) {
 }
 
 $apkPath = (Resolve-Path -LiteralPath $apkPath).Path
+$metadataPath = [IO.Path]::ChangeExtension($apkPath, ".build.json")
+if (-not (Test-Path -LiteralPath $metadataPath -PathType Leaf)) {
+    throw "Unity exited with code 0 and produced an APK, but build metadata is missing: $metadataPath"
+}
+
 Write-Host "APK path: $apkPath"
+Write-Host "Metadata path: $metadataPath"
+Write-Host "Build log: $logPath"
 Write-Host "Android build completed successfully."
