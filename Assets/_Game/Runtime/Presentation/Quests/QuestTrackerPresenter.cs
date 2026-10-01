@@ -2,6 +2,7 @@ using System;
 using Gravivore.Gameplay.Progression;
 using Gravivore.Gameplay.Quests;
 using Gravivore.Gameplay.World;
+using Gravivore.Presentation.UI;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -186,7 +187,7 @@ namespace Gravivore.Presentation.Quests
         private void Update()
         {
             if (_feedbackText == null || _feedbackSecondsRemaining <= 0f) return;
-            _feedbackSecondsRemaining -= Time.deltaTime;
+            _feedbackSecondsRemaining -= Time.unscaledDeltaTime;
             if (_feedbackSecondsRemaining <= 0f) _feedbackText.gameObject.SetActive(false);
             if (_marker != null && _marker.gameObject.activeSelf)
             {
@@ -251,18 +252,24 @@ namespace Gravivore.Presentation.Quests
 
         private void CreateUi(RectTransform hudRoot)
         {
-            var trackerObject = new GameObject("Quest Tracker", typeof(RectTransform), typeof(Text));
-            var trackerTransform = trackerObject.GetComponent<RectTransform>();
-            trackerTransform.SetParent(hudRoot, false);
-            trackerTransform.anchorMin = new Vector2(0.06f, 0.9f);
-            trackerTransform.anchorMax = new Vector2(0.94f, 0.98f);
-            trackerTransform.offsetMin = Vector2.zero;
-            trackerTransform.offsetMax = Vector2.zero;
-            _trackerText = trackerObject.GetComponent<Text>();
-            _trackerText.font = GetLegacyRuntimeFont();
-            _trackerText.fontSize = 34;
-            _trackerText.alignment = TextAnchor.MiddleCenter;
-            _trackerText.color = Color.white;
+            var trackerPanel = HudUiFactory.CreatePanel(
+                hudRoot,
+                "Quest Tracker",
+                new Vector2(0.32f, 0.855f),
+                new Vector2(0.83f, 0.915f),
+                HudUiFactory.PanelColor);
+            _trackerText = HudUiFactory.CreateText(
+                trackerPanel,
+                "Objective",
+                new Vector2(0.04f, 0.05f),
+                new Vector2(0.96f, 0.95f),
+                string.Empty,
+                29,
+                TextAnchor.MiddleCenter,
+                Color.white);
+            _trackerText.resizeTextForBestFit = true;
+            _trackerText.resizeTextMinSize = 22;
+            _trackerText.resizeTextMaxSize = 29;
 
             var feedbackObject = new GameObject("Quest Assimilation Feedback", typeof(RectTransform), typeof(Text));
             var feedbackTransform = feedbackObject.GetComponent<RectTransform>();

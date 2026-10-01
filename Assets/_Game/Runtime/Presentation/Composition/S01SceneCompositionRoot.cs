@@ -18,6 +18,7 @@ using Gravivore.Presentation.Quests;
 using Gravivore.Presentation.UI;
 using Gravivore.Presentation.World;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Gravivore.Presentation.Composition
@@ -101,6 +102,14 @@ namespace Gravivore.Presentation.Composition
         public Guid ProfileId => _profileSession != null ? _profileSession.State.ProfileId : Guid.Empty;
 
         public EncounterTelegraphPresenter EncounterTelegraphs { get; private set; }
+        public PlayerHealthHudPresenter PlayerHealthHud { get; private set; }
+        public PlayerStatsHudPresenter PlayerStatsHud { get; private set; }
+        public BossHealthHudPresenter BossHealthHud { get; private set; }
+        public OfflineRewardPanelPresenter OfflineRewardPanel { get; private set; }
+        public ChapterCompletionPresenter ChapterCompletion { get; private set; }
+        public PauseMenuPresenter PauseMenu { get; private set; }
+
+        private HudModalController _hudModal;
 
         private void Start()
         {
@@ -147,7 +156,7 @@ namespace Gravivore.Presentation.Composition
             PlayerStats = _profileSession.State.PlayerStats;
             Inventory = _profileSession.State.Inventory;
             Equipment = new EquipmentService(PlayerStats, EquipmentCatalog, Inventory);
-            CreateHud(out var uiTouchExclusion, out var joystickView);
+            CreateHud(out var uiTouchExclusion, out var topTouchExclusion, out var joystickView);
             _movementInput = CreateMovementInput(uiTouchExclusion, joystickView);
             var locomotion = CreatePlayer();
             var cameraTransform = CreateCamera(PlayerObject.transform);
@@ -181,6 +190,7 @@ namespace Gravivore.Presentation.Composition
                 BossCompletion,
                 _profileSession.State.Offline,
                 _saveOfflineDefinition.Configuration.AutosaveDelaySeconds);
+            InitializeS13Hud(uiTouchExclusion, topTouchExclusion);
             _isComposed = true;
         }
 
@@ -231,6 +241,7 @@ namespace Gravivore.Presentation.Composition
 
         private void CreateHud(
             out UiTouchExclusion uiTouchExclusion,
+            out RectTransform topTouchExclusion,
             out FloatingJoystickView joystickView)
         {
             var canvasObject = new GameObject(
@@ -268,6 +279,16 @@ namespace Gravivore.Presentation.Composition
             exclusionTransform.anchorMax = Vector2.one;
             exclusionTransform.offsetMin = Vector2.zero;
             exclusionTransform.offsetMax = Vector2.zero;
+            topTouchExclusion = exclusionTransform;
+
+            if (EventSystem.current == null)
+            {
+                var eventSystemObject = new GameObject(
+                    "HUD Event System",
+                    typeof(EventSystem),
+                    typeof(StandaloneInputModule));
+                eventSystemObject.transform.SetParent(transform, false);
+            }
 
             var joystickViewObject = new GameObject(
                 "Floating Joystick View",
@@ -284,6 +305,50 @@ namespace Gravivore.Presentation.Composition
 
             uiTouchExclusion = gameObject.AddComponent<UiTouchExclusion>();
             uiTouchExclusion.Initialize(new[] { exclusionTransform });
+        }
+
+        private void InitializeS13Hud(UiTouchExclusion uiTouchExclusion, RectTransform topTouchExclusion)
+        {
+            var healthObject = new GameObject("Player Health HUD", typeof(PlayerHealthHudPresenter));
+            healthObject.transform.SetParent(transform, false);
+            PlayerHealthHud = healthObject.GetComponent<PlayerHealthHudPresenter>();
+            PlayerHealthHud.Initialize(PlayerHealth, PlayerStats, _hudRoot);
+
+            var statsObject = new GameObject("Player Stats HUD", typeof(PlayerStatsHudPresenter));
+            statsObject.transform.SetParent(transform, false);
+            PlayerStatsHud = statsObject.GetComponent<PlayerStatsHudPresenter>();
+            PlayerStatsHud.Initialize(PlayerStats, _hudRoot, false);
+
+            var bossHealthObject = new GameObject("Boss Health HUD", typeof(BossHealthHudPresenter));
+            bossHealthObject.transform.SetParent(transform, false);
+            BossHealthHud = bossHealthObject.GetComponent<BossHealthHudPresenter>();
+            BossHealthHud.Initialize(CustodianBoss, BossCompletion, PlayerHealth, _hudRoot);
+
+            _hudModal = new HudModalController(_movementInput);
+
+            var pauseObject = new GameObject("Pause Menu", typeof(PauseMenuPresenter));
+            pauseObject.transform.SetParent(transform, false);
+            PauseMenu = pauseObject.GetComponent<PauseMenuPresenter>();
+            PauseMenu.Initialize(_hudRoot, _hudModal, PlayerStatsHud);
+
+            var offlineObject = new GameObject("Offline Reward Panel", typeof(OfflineRewardPanelPresenter));
+            offlineObject.transform.SetParent(transform, false);
+            OfflineRewardPanel = offlineObject.GetComponent<OfflineRewardPanelPresenter>();
+            OfflineRewardPanel.Initialize(OfflineRewards, OfflineReturnSummary, _hudRoot, _hudModal);
+
+            var completionObject = new GameObject("Chapter Completion", typeof(ChapterCompletionPresenter));
+            completionObject.transform.SetParent(transform, false);
+            ChapterCompletion = completionObject.GetComponent<ChapterCompletionPresenter>();
+            ChapterCompletion.Initialize(BossCompletion, PlayerStats, _hudRoot, _hudModal);
+
+            uiTouchExclusion.Initialize(new[]
+            {
+                topTouchExclusion,
+                PauseMenu.PauseButtonRect,
+                PauseMenu.ModalRect,
+                OfflineRewardPanel.ModalRect,
+                ChapterCompletion.ModalRect
+            });
         }
 
         private FloatingJoystickInput CreateMovementInput(
@@ -594,6 +659,13 @@ namespace Gravivore.Presentation.Composition
         {
             SaveCoordinator?.FlushNow();
             SaveCoordinator?.Dispose();
+            ChapterCompletion?.Shutdown();
+            OfflineRewardPanel?.Shutdown();
+            PauseMenu?.Resume();
+            BossHealthHud?.Shutdown();
+            PlayerStatsHud?.Shutdown();
+            PlayerHealthHud?.Shutdown();
+            _hudModal?.Dispose();
             EvolutionPresenter?.Shutdown();
             EncounterTelegraphs?.Shutdown();
             QuestTracker?.Shutdown();
@@ -633,7 +705,11 @@ namespace Gravivore.Presentation.Composition
             }
             else
             {
-                SaveCoordinator?.ProcessResume();
+                if (SaveCoordinator != null)
+                {
+                    var summary = SaveCoordinator.ProcessResume();
+                    OfflineRewardPanel?.ShowReturnSummary(summary);
+                }
             }
         }
 
