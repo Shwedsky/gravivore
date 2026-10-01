@@ -180,11 +180,12 @@ namespace Gravivore.Tests.PlayMode
             var enemy = pool.Acquire(CreateEnemyConfiguration(), player.transform, new RecordingDamageable(), Vector3.zero, pool.Return);
             var deathObserved = 0;
             enemy.Damaged += _ => throw new System.InvalidOperationException("presentation failed");
+            enemy.Died += _ => throw new System.InvalidOperationException("death presentation failed");
             enemy.Died += _ => deathObserved++;
             LogAssert.Expect(LogType.Exception, "InvalidOperationException: presentation failed");
+            LogAssert.Expect(LogType.Exception, "InvalidOperationException: death presentation failed");
 
-            Assert.Throws<System.AggregateException>(() =>
-                enemy.ApplyDamage(new DamageRequest(1000f, DamageType.Gravity)));
+            Assert.DoesNotThrow(() => enemy.ApplyDamage(new DamageRequest(1000f, DamageType.Gravity)));
             Assert.That(deathObserved, Is.EqualTo(1));
             Assert.That(pool.AvailableCount, Is.EqualTo(1));
             Assert.IsFalse(enemy.IsAlive);
@@ -192,6 +193,25 @@ namespace Gravivore.Tests.PlayMode
             Object.Destroy(root);
             Object.Destroy(player);
             yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator EnemyPopulation_RelayContinuesAfterThrowingSubscriber()
+        {
+            var scene = new CanonicalSceneTestScope();
+            yield return scene.Load();
+            scene.Root.EnemyPopulation.Tick(0f);
+            var observed = 0;
+            scene.Root.EnemyPopulation.EnemyDamaged += _ =>
+                throw new System.InvalidOperationException("population observer failed");
+            scene.Root.EnemyPopulation.EnemyDamaged += _ => observed++;
+            LogAssert.Expect(LogType.Exception, "InvalidOperationException: population observer failed");
+
+            scene.Root.EnemyPopulation.GetSpot(0).GetLiveEnemy(0).ApplyDamage(
+                new DamageRequest(1f, DamageType.Gravity));
+
+            Assert.That(observed, Is.EqualTo(1));
+            yield return scene.Cleanup();
         }
 
         [UnityTest]

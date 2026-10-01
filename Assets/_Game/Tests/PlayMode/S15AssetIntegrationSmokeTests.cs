@@ -49,6 +49,32 @@ namespace Gravivore.Tests.PlayMode
             yield return null;
         }
 
+        [UnityTest]
+        public IEnumerator EnemyPool_ActivationFailureRestoresAccounting()
+        {
+            var root = new GameObject("S15 Pool Failure Test");
+            var targetObject = new GameObject("S15 Pool Failure Target");
+            var pool = new OrdinaryEnemyPool(
+                root.transform,
+                1,
+                9,
+                TestMaterialFactory.Lit,
+                new ThrowingVisualFactory());
+
+            Assert.Throws<System.InvalidOperationException>(() => pool.Acquire(
+                Configuration("missing-visual"),
+                targetObject.transform,
+                new RecordingDamageable(),
+                Vector3.zero,
+                pool.Return));
+            Assert.That(pool.AvailableCount, Is.EqualTo(1));
+            Assert.That(pool.LeasedCount, Is.Zero);
+
+            Object.Destroy(root);
+            Object.Destroy(targetObject);
+            yield return null;
+        }
+
         private static EnemyRuntimeConfiguration Configuration(string id)
         {
             return new EnemyRuntimeConfiguration(id, 10f, 1f, 1f, 0.4f, 0.8f,
@@ -73,6 +99,17 @@ namespace Gravivore.Tests.PlayMode
         {
             public bool IsAlive => true;
             public DamageResult ApplyDamage(in DamageRequest request) => new DamageResult(request.RawDamage, false);
+        }
+
+        private sealed class ThrowingVisualFactory : IEnemyVisualFactory
+        {
+            public IEnemyVisualState Create(Transform parent) => new ThrowingVisualState();
+        }
+
+        private sealed class ThrowingVisualState : IEnemyVisualState
+        {
+            public void Apply(string enemyId) => throw new System.InvalidOperationException("visual failed");
+            public void Reset() { }
         }
     }
 }
