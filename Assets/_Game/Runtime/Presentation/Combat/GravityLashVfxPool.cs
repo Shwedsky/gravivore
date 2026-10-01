@@ -19,7 +19,6 @@ namespace Gravivore.Presentation.Combat
         {
             public GameObject BeamObject;
             public LineRenderer Beam;
-            public GameObject Windup;
             public GameObject Impact;
             public Vector3 Origin;
             public Vector3 Destination;
@@ -29,7 +28,6 @@ namespace Gravivore.Presentation.Combat
 
         private Sequence[] _sequences;
         private Material[] _materials;
-        private float _windupDuration;
         private float _beamDuration;
         private float _impactDuration;
         private int _reuseCursor;
@@ -55,12 +53,10 @@ namespace Gravivore.Presentation.Combat
             if (settings == null) throw new ArgumentNullException(nameof(settings));
             if (unlitMaterial == null) throw new ArgumentNullException(nameof(unlitMaterial));
             settings.ValidateOrThrow();
-            _windupDuration = presentation != null ? presentation.LashWindupDuration : settings.VfxDuration * 0.35f;
             _beamDuration = presentation != null ? presentation.LashBeamDuration : settings.VfxDuration * 0.45f;
             _impactDuration = presentation != null ? presentation.LashImpactDuration : settings.VfxDuration;
             _materials = new[]
             {
-                CreateMaterial(unlitMaterial, new Color(0.35f, 0.75f, 1f, 0.9f), "Windup"),
                 CreateMaterial(unlitMaterial, settings.VfxColor, "Beam"),
                 CreateMaterial(unlitMaterial, new Color(1f, 0.85f, 0.3f, 1f), "Impact")
             };
@@ -77,13 +73,13 @@ namespace Gravivore.Presentation.Combat
             ResetVisuals(sequence);
             sequence.Origin = origin;
             sequence.Destination = destination;
-            sequence.Phase = GravityLashCue.Windup;
-            sequence.Remaining = _windupDuration;
-            sequence.Windup.transform.position = origin;
-            sequence.Windup.transform.localScale = Vector3.one * 0.28f;
-            sequence.Windup.SetActive(true);
+            sequence.Phase = GravityLashCue.Beam;
+            sequence.Remaining = _beamDuration;
+            sequence.Beam.SetPosition(0, origin);
+            sequence.Beam.SetPosition(1, destination);
+            sequence.BeamObject.SetActive(true);
             LastPlayedObject = sequence.BeamObject;
-            PublishCue(GravityLashCue.Windup, origin);
+            PublishCue(GravityLashCue.Beam, destination);
         }
 
         public void Tick(float deltaTime)
@@ -103,18 +99,6 @@ namespace Gravivore.Presentation.Combat
 
         private void Advance(Sequence sequence)
         {
-            if (sequence.Phase == GravityLashCue.Windup)
-            {
-                sequence.Windup.SetActive(false);
-                sequence.Phase = GravityLashCue.Beam;
-                sequence.Remaining = _beamDuration;
-                sequence.Beam.SetPosition(0, sequence.Origin);
-                sequence.Beam.SetPosition(1, sequence.Destination);
-                sequence.BeamObject.SetActive(true);
-                PublishCue(GravityLashCue.Beam, sequence.Destination);
-                return;
-            }
-
             if (sequence.Phase == GravityLashCue.Beam)
             {
                 sequence.BeamObject.SetActive(false);
@@ -159,13 +143,12 @@ namespace Gravivore.Presentation.Combat
             line.numCapVertices = 2;
             line.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
             line.receiveShadows = false;
-            line.sharedMaterial = _materials[1];
+            line.sharedMaterial = _materials[0];
             line.startColor = settings.VfxColor;
             line.endColor = new Color(settings.VfxColor.r, settings.VfxColor.g, settings.VfxColor.b, 0f);
-            var windup = CreatePulse($"Gravity Lash Windup {index}", _materials[0]);
-            var impact = CreatePulse($"Gravity Lash Impact {index}", _materials[2]);
+            var impact = CreatePulse($"Gravity Lash Impact {index}", _materials[1]);
             beamObject.SetActive(false);
-            return new Sequence { BeamObject = beamObject, Beam = line, Windup = windup, Impact = impact };
+            return new Sequence { BeamObject = beamObject, Beam = line, Impact = impact };
         }
 
         private GameObject CreatePulse(string name, Material material)
@@ -182,12 +165,11 @@ namespace Gravivore.Presentation.Combat
         }
 
         private static bool IsActive(Sequence sequence) =>
-            sequence.BeamObject.activeSelf || sequence.Windup.activeSelf || sequence.Impact.activeSelf;
+            sequence.BeamObject.activeSelf || sequence.Impact.activeSelf;
 
         private static void ResetVisuals(Sequence sequence)
         {
             sequence.BeamObject.SetActive(false);
-            sequence.Windup.SetActive(false);
             sequence.Impact.SetActive(false);
             sequence.Remaining = 0f;
         }

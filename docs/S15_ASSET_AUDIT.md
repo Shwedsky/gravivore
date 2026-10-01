@@ -44,7 +44,7 @@ Imported visuals are presentation only. Existing CharacterController, sensing co
 
 ## Animation audit
 
-The selected Factory Kit subset is static and contains no character rigs or clips. No Mecanim controller, humanoid retargeting, root motion, or animation-event dependency is introduced. Movement and combat remain driven by existing gameplay transforms and S14 feedback. More elaborate animation is intentionally deferred rather than introducing a new animation architecture in S15.
+The selected Kenney Factory Kit subset is static and contains no character rigs or clips, so skeletal animation and retargeting are not applicable to this asset family. `importAnimation=false` and `animationType=None` are intentional mobile import settings. No humanoid asset is introduced solely to satisfy an animation checklist item. Movement and combat remain driven by existing gameplay transforms and S14 feedback; the static presentation is accepted for v0.1.
 
 ## Review notes
 

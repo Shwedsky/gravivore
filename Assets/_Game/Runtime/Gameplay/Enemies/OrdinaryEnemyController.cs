@@ -1,4 +1,5 @@
 using System;
+using Gravivore.Core.Events;
 using Gravivore.Gameplay.Combat;
 using UnityEngine;
 
@@ -184,8 +185,7 @@ namespace Gravivore.Gameplay.Enemies
             }
 
             var result = _health.ApplyDamage(request, 0f);
-            Exception observerError = null;
-            PublishEach(ref observerError, Damaged, new EnemyDamageEvent(_lifeId, transform.position, result));
+            SafeEventDispatch.Publish(Damaged, new EnemyDamageEvent(_lifeId, transform.position, result));
             if (result.WasLethal)
             {
                 _isActive = false;
@@ -193,8 +193,7 @@ namespace Gravivore.Gameplay.Enemies
                 var recycleRequested = _recycleRequested;
                 try
                 {
-                    PublishEach(
-                        ref observerError,
+                    SafeEventDispatch.Publish(
                         Died,
                         new EnemyDeathEvent(_lifeId, _configuration.Id, transform.position));
                 }
@@ -204,32 +203,7 @@ namespace Gravivore.Gameplay.Enemies
                 }
             }
 
-            if (observerError != null)
-            {
-                throw new AggregateException(
-                    "One or more enemy presentation observers failed after damage was committed.",
-                    observerError);
-            }
-
             return result;
-        }
-
-        private static void PublishEach<T>(ref Exception firstError, Action<T> handlers, T value)
-        {
-            if (handlers == null) return;
-            var invocationList = handlers.GetInvocationList();
-            for (var i = 0; i < invocationList.Length; i++)
-            {
-                try
-                {
-                    ((Action<T>)invocationList[i])(value);
-                }
-                catch (Exception exception)
-                {
-                    if (firstError == null) firstError = exception;
-                    Debug.LogException(exception);
-                }
-            }
         }
 
         public bool TryDisplace(Vector3 destination, in DisplacementContext context)

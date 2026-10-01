@@ -1,4 +1,5 @@
 using System;
+using Gravivore.Core.Events;
 using Gravivore.Gameplay.Combat;
 using Gravivore.Gameplay.Enemies;
 using Gravivore.Gameplay.Player;
@@ -94,7 +95,7 @@ namespace Gravivore.Gameplay.Encounters
         {
             if (!CanBeTargeted) return new DamageResult(0f, false);
             var result = _health.ApplyDamage(request, _configuration.Armor);
-            EncounterEventDispatch.Publish(Damaged, result);
+            SafeEventDispatch.Publish(Damaged, result);
             if (!result.WasLethal) return result;
             _stateMachine.MarkDead();
             try
@@ -131,7 +132,7 @@ namespace Gravivore.Gameplay.Encounters
             {
                 if (!playerInsideArena || !_playerHealth.IsAlive) return;
                 _stateMachine.Engage();
-                EncounterEventDispatch.Publish(
+                SafeEventDispatch.Publish(
                     EncounterStarted,
                     new BossEncounterStartedEvent(_configuration.Id));
             }
@@ -145,7 +146,7 @@ namespace Gravivore.Gameplay.Encounters
             var decision = _stateMachine.Tick(deltaTime, healthFraction);
             if (decision.PhaseChanged)
             {
-                EncounterEventDispatch.Publish(
+                SafeEventDispatch.Publish(
                     PhaseChanged,
                     new BossPhaseChangedEvent(_configuration.Id, true));
             }
@@ -162,7 +163,7 @@ namespace Gravivore.Gameplay.Encounters
             _telegraphOrigin = default;
             _telegraphDirection = default;
             _stateMachine.CompleteReset();
-            EncounterEventDispatch.Publish(
+            SafeEventDispatch.Publish(
                 EncounterReset,
                 new BossEncounterResetEvent(_configuration.Id, _configuration.StartPosition));
             return true;
@@ -188,7 +189,7 @@ namespace Gravivore.Gameplay.Encounters
             if (_telegraphDirection.sqrMagnitude <= Mathf.Epsilon) _telegraphDirection = transform.forward;
             _telegraphDirection.Normalize();
             transform.rotation = Quaternion.LookRotation(_telegraphDirection, Vector3.up);
-            EncounterEventDispatch.Publish(
+            SafeEventDispatch.Publish(
                 TelegraphStarted,
                 new BossTelegraphEvent(
                     attack.Type,
@@ -259,7 +260,7 @@ namespace Gravivore.Gameplay.Encounters
                 }
             }
 
-            EncounterEventDispatch.Publish(AttackResolved, new BossAttackResolvedEvent(attackType, hit));
+            SafeEventDispatch.Publish(AttackResolved, new BossAttackResolvedEvent(attackType, hit));
         }
 
         private void HandlePlayerDied(PlayerDeathEvent death)

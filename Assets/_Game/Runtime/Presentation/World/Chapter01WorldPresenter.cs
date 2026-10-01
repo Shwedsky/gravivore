@@ -145,7 +145,10 @@ namespace Gravivore.Presentation.World
                     landmarkRoot.transform.SetParent(transform, false);
                     landmarkRoot.transform.position = zone.LandmarkPosition;
                     landmarkRoot.transform.rotation = Quaternion.Euler(0f, i * 28f, 0f);
-                    S15VisualFactory.Build(landmarkRoot.transform, _s15VisualCatalog.GetLandmark(i), _s15VisualCatalog);
+                    S15VisualFactory.Build(
+                        landmarkRoot.transform,
+                        _s15VisualCatalog.GetLandmark(zone.Id),
+                        _s15VisualCatalog);
                 }
                 else
                 {

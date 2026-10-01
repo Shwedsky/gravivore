@@ -1,4 +1,5 @@
 using System;
+using Gravivore.Core.Events;
 using Gravivore.Gameplay.Combat;
 using Gravivore.Gameplay.Enemies;
 using UnityEngine;
@@ -23,6 +24,7 @@ namespace Gravivore.Gameplay.Encounters
         private bool _initialized;
 
         public event Action<MagnetarGuardActivatedEvent> Activated;
+        public event Action<DamageResult> Damaged;
         public event Action<EliteShockwaveTelegraphEvent> TelegraphStarted;
         public event Action<EliteShockwaveResolvedEvent> ShockwaveResolved;
         public event Action<EliteShockwaveCancelledEvent> ShockwaveCancelled;
@@ -74,7 +76,7 @@ namespace Gravivore.Gameplay.Encounters
             _brain.Reset();
             _body.enabled = true;
             _sensingCollider.enabled = true;
-            EncounterEventDispatch.Publish(Activated, new MagnetarGuardActivatedEvent(_configuration.Id));
+            SafeEventDispatch.Publish(Activated, new MagnetarGuardActivatedEvent(_configuration.Id));
             return true;
         }
 
@@ -84,12 +86,13 @@ namespace Gravivore.Gameplay.Encounters
         {
             if (!IsAlive) return new DamageResult(0f, false);
             var result = _health.ApplyDamage(request, _configuration.Armor);
+            SafeEventDispatch.Publish(Damaged, result);
             if (!result.WasLethal) return result;
             _brain.MarkDead();
             CancelActiveShockwave();
             _sensingCollider.enabled = false;
             _body.enabled = false;
-            EncounterEventDispatch.Publish(
+            SafeEventDispatch.Publish(
                 Defeated,
                 new MagnetarGuardDefeatedEvent(_configuration.Id, transform.position));
             return result;
@@ -123,7 +126,7 @@ namespace Gravivore.Gameplay.Encounters
                     _configuration.ShockwaveRadius,
                     _configuration.AttackDamage);
                 _hasActiveShockwave = true;
-                EncounterEventDispatch.Publish(
+                SafeEventDispatch.Publish(
                     TelegraphStarted,
                     new EliteShockwaveTelegraphEvent(
                         _activeShockwave.Origin,
@@ -145,7 +148,7 @@ namespace Gravivore.Gameplay.Encounters
                     _playerDamageable.ApplyDamage(new DamageRequest(shockwave.Damage, DamageType.Physical));
                 }
 
-                EncounterEventDispatch.Publish(ShockwaveResolved, new EliteShockwaveResolvedEvent(hit));
+                SafeEventDispatch.Publish(ShockwaveResolved, new EliteShockwaveResolvedEvent(hit));
             }
         }
 
@@ -183,7 +186,7 @@ namespace Gravivore.Gameplay.Encounters
             if (!_hasActiveShockwave) return;
             var shockwave = _activeShockwave;
             _hasActiveShockwave = false;
-            EncounterEventDispatch.Publish(
+            SafeEventDispatch.Publish(
                 ShockwaveCancelled,
                 new EliteShockwaveCancelledEvent(shockwave.Origin, shockwave.Radius));
         }
@@ -203,23 +206,4 @@ namespace Gravivore.Gameplay.Encounters
         }
     }
 
-    internal static class EncounterEventDispatch
-    {
-        public static void Publish<T>(Action<T> handlers, T value)
-        {
-            if (handlers == null) return;
-            var invocationList = handlers.GetInvocationList();
-            for (var i = 0; i < invocationList.Length; i++)
-            {
-                try
-                {
-                    ((Action<T>)invocationList[i])(value);
-                }
-                catch (Exception exception)
-                {
-                    Debug.LogException(exception);
-                }
-            }
-        }
-    }
 }

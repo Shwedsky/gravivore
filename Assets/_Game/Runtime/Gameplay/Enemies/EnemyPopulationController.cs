@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Gravivore.Core.Events;
 using Gravivore.Gameplay.Combat;
 using UnityEngine;
 
@@ -130,12 +131,12 @@ namespace Gravivore.Gameplay.Enemies
 
         private void HandleEnemyDied(EnemyDeathEvent death)
         {
-            EnemyDied?.Invoke(death);
+            SafeEventDispatch.Publish(EnemyDied, death);
         }
 
         private void HandleEnemyDamaged(EnemyDamageEvent damage)
         {
-            EnemyDamaged?.Invoke(damage);
+            SafeEventDispatch.Publish(EnemyDamaged, damage);
         }
     }
 }

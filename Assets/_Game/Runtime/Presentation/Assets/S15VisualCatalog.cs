@@ -67,11 +67,16 @@ namespace Gravivore.Presentation.Assets
             return TryGet(_enemies, id, out recipe);
         }
 
-        public S15VisualRecipe GetLandmark(int index)
+        public bool TryGetLandmark(string id, out S15VisualRecipe recipe)
         {
-            if (_landmarks == null || index < 0 || index >= _landmarks.Length)
-                throw new ArgumentOutOfRangeException(nameof(index));
-            return _landmarks[index];
+            return TryGet(_landmarks, id, out recipe);
+        }
+
+        public S15VisualRecipe GetLandmark(string id)
+        {
+            if (!TryGetLandmark(id, out var recipe))
+                throw new InvalidOperationException($"No S15 landmark visual recipe is configured for zone {id}.");
+            return recipe;
         }
 
         public void ValidateOrThrow()
@@ -81,6 +86,15 @@ namespace Gravivore.Presentation.Assets
             ValidateRecipe(_player, "player");
             ValidateUniqueRecipes(_enemies, "enemy", 5);
             ValidateUniqueRecipes(_landmarks, "landmark", 5);
+        }
+
+        public void ValidateCoverageOrThrow(
+            IReadOnlyList<string> enemyIds,
+            IReadOnlyList<string> landmarkIds)
+        {
+            ValidateOrThrow();
+            ValidateCoverage(_enemies, enemyIds, "enemy");
+            ValidateCoverage(_landmarks, landmarkIds, "landmark");
         }
 
         private static bool TryGet(S15VisualRecipe[] recipes, string id, out S15VisualRecipe recipe)
@@ -109,6 +123,24 @@ namespace Gravivore.Presentation.Assets
             {
                 ValidateRecipe(recipes[i], $"{label} {i}");
                 if (!ids.Add(recipes[i].Id)) throw new InvalidOperationException($"Duplicate S15 {label} id: {recipes[i].Id}.");
+            }
+        }
+
+        private static void ValidateCoverage(
+            S15VisualRecipe[] recipes,
+            IReadOnlyList<string> requiredIds,
+            string label)
+        {
+            if (requiredIds == null || requiredIds.Count == 0)
+                throw new ArgumentException($"At least one canonical S15 {label} id is required.", nameof(requiredIds));
+            var required = new HashSet<string>(StringComparer.Ordinal);
+            for (var i = 0; i < requiredIds.Count; i++)
+            {
+                var id = requiredIds[i];
+                if (string.IsNullOrWhiteSpace(id) || !required.Add(id))
+                    throw new InvalidOperationException($"Canonical S15 {label} ids must be non-empty and unique.");
+                if (!TryGet(recipes, id, out _))
+                    throw new InvalidOperationException($"Missing S15 {label} visual recipe for canonical id {id}.");
             }
         }
 

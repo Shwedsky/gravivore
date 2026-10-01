@@ -42,16 +42,20 @@ namespace Gravivore.Presentation.Feedback
         private AudioSource[] _sources;
         private S14PresentationDefinition _definition;
         private int _cursor;
+        private bool _isMuted;
+        private float _volume;
 
         public S14AudioCue? LastCue { get; private set; }
-        public bool IsMuted => PresentationAudioSettings.IsMuted;
-        public float Volume => PresentationAudioSettings.Volume;
+        public bool IsMuted => _isMuted;
+        public float Volume => _volume;
 
         public void Initialize(S14PresentationDefinition definition, int sourceCount = 3)
         {
             _definition = definition != null ? definition : throw new ArgumentNullException(nameof(definition));
             _definition.ValidateOrThrow();
             if (sourceCount < 1) throw new ArgumentOutOfRangeException(nameof(sourceCount));
+            _isMuted = PresentationAudioSettings.IsMuted;
+            _volume = PresentationAudioSettings.Volume;
             _sources = new AudioSource[sourceCount];
             for (var i = 0; i < sourceCount; i++)
             {
@@ -78,14 +82,16 @@ namespace Gravivore.Presentation.Feedback
 
         public void SetMuted(bool muted)
         {
+            _isMuted = muted;
             PresentationAudioSettings.SetMuted(muted);
             if (muted) StopAll();
         }
 
         public void SetVolume(float volume)
         {
-            PresentationAudioSettings.SetVolume(volume);
-            for (var i = 0; i < _sources.Length; i++) _sources[i].volume = Volume;
+            _volume = Mathf.Clamp01(volume);
+            PresentationAudioSettings.SetVolume(_volume);
+            for (var i = 0; i < _sources.Length; i++) _sources[i].volume = _volume;
         }
 
         private void StopAll()
