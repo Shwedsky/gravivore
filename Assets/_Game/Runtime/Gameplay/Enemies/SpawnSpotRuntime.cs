@@ -71,6 +71,8 @@ namespace Gravivore.Gameplay.Enemies
 
         public event Action<EnemyDeathEvent> EnemyDied;
 
+        public event Action<EnemyDamageEvent> EnemyDamaged;
+
         public void Tick(float deltaTime)
         {
             if (_isDisposed)
@@ -160,6 +162,7 @@ namespace Gravivore.Gameplay.Enemies
             }
 
             _population.RegisterSpawn();
+            enemy.Damaged += HandleEnemyDamaged;
             enemy.Died += HandleEnemyDied;
             _occupiedAnchors[anchorIndex] = true;
             _liveEnemies.Add(new LiveEntry(enemy, anchorIndex));
@@ -197,6 +200,11 @@ namespace Gravivore.Gameplay.Enemies
         private void HandleEnemyDied(EnemyDeathEvent death)
         {
             EnemyDied?.Invoke(death);
+        }
+
+        private void HandleEnemyDamaged(EnemyDamageEvent damage)
+        {
+            EnemyDamaged?.Invoke(damage);
         }
     }
 }

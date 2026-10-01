@@ -1,148 +1,225 @@
 using System;
 using Gravivore.Gameplay.Combat;
+using Gravivore.Presentation.Feedback;
 using UnityEngine;
 
 namespace Gravivore.Presentation.Combat
 {
+    public enum GravityLashCue
+    {
+        Windup,
+        Beam,
+        Impact
+    }
+
     [DisallowMultipleComponent]
     public sealed class GravityLashVfxPool : MonoBehaviour, IGravityLashVfx
     {
-        private sealed class Beam
+        private sealed class Sequence
         {
-            public GameObject GameObject;
-            public LineRenderer Renderer;
-            public float RemainingLifetime;
+            public GameObject BeamObject;
+            public LineRenderer Beam;
+            public GameObject Windup;
+            public GameObject Impact;
+            public Vector3 Origin;
+            public Vector3 Destination;
+            public GravityLashCue Phase;
+            public float Remaining;
         }
 
-        private Beam[] _beams;
-        private Material _material;
-        private float _duration;
+        private Sequence[] _sequences;
+        private Material[] _materials;
+        private float _windupDuration;
+        private float _beamDuration;
+        private float _impactDuration;
         private int _reuseCursor;
         private bool _isInitialized;
 
+        public event Action<GravityLashCue, Vector3> CuePlayed;
+
+        public int Capacity => _sequences != null ? _sequences.Length : 0;
+        public int ActiveCount { get; private set; }
+        public GameObject LastPlayedObject { get; private set; }
+
         public void Initialize(GravityAttackSettings settings, Material unlitMaterial)
         {
-            if (settings == null)
-            {
-                throw new ArgumentNullException(nameof(settings));
-            }
+            Initialize(settings, unlitMaterial, null);
+        }
 
-            if (unlitMaterial == null)
-            {
-                throw new ArgumentNullException(nameof(unlitMaterial));
-            }
-
+        public void Initialize(
+            GravityAttackSettings settings,
+            Material unlitMaterial,
+            S14PresentationDefinition presentation)
+        {
+            if (_isInitialized) throw new InvalidOperationException("Gravity lash VFX pool is already initialized.");
+            if (settings == null) throw new ArgumentNullException(nameof(settings));
+            if (unlitMaterial == null) throw new ArgumentNullException(nameof(unlitMaterial));
             settings.ValidateOrThrow();
-            _duration = settings.VfxDuration;
-            _material = CreateMaterial(unlitMaterial, settings.VfxColor);
-            _beams = new Beam[settings.VfxPoolSize];
-
-            for (var i = 0; i < _beams.Length; i++)
+            _windupDuration = presentation != null ? presentation.LashWindupDuration : settings.VfxDuration * 0.35f;
+            _beamDuration = presentation != null ? presentation.LashBeamDuration : settings.VfxDuration * 0.45f;
+            _impactDuration = presentation != null ? presentation.LashImpactDuration : settings.VfxDuration;
+            _materials = new[]
             {
-                _beams[i] = CreateBeam(i, settings);
-            }
-
+                CreateMaterial(unlitMaterial, new Color(0.35f, 0.75f, 1f, 0.9f), "Windup"),
+                CreateMaterial(unlitMaterial, settings.VfxColor, "Beam"),
+                CreateMaterial(unlitMaterial, new Color(1f, 0.85f, 0.3f, 1f), "Impact")
+            };
+            _sequences = new Sequence[settings.VfxPoolSize];
+            for (var i = 0; i < _sequences.Length; i++) _sequences[i] = CreateSequence(i, settings);
             _isInitialized = true;
         }
 
         public void Play(Vector3 origin, Vector3 destination)
         {
-            if (!_isInitialized)
-            {
-                throw new InvalidOperationException("GravityLashVfxPool must be initialized before use.");
-            }
-
-            var beam = FindAvailableBeam();
-            beam.Renderer.SetPosition(0, origin);
-            beam.Renderer.SetPosition(1, destination);
-            beam.RemainingLifetime = _duration;
-            beam.GameObject.SetActive(true);
+            if (!_isInitialized) throw new InvalidOperationException("GravityLashVfxPool must be initialized before use.");
+            var sequence = FindAvailable();
+            if (!IsActive(sequence)) ActiveCount++;
+            ResetVisuals(sequence);
+            sequence.Origin = origin;
+            sequence.Destination = destination;
+            sequence.Phase = GravityLashCue.Windup;
+            sequence.Remaining = _windupDuration;
+            sequence.Windup.transform.position = origin;
+            sequence.Windup.transform.localScale = Vector3.one * 0.28f;
+            sequence.Windup.SetActive(true);
+            LastPlayedObject = sequence.BeamObject;
+            PublishCue(GravityLashCue.Windup, origin);
         }
 
-        private void Update()
+        public void Tick(float deltaTime)
         {
-            if (!_isInitialized)
+            if (!_isInitialized) return;
+            for (var i = 0; i < _sequences.Length; i++)
             {
+                var sequence = _sequences[i];
+                if (!IsActive(sequence)) continue;
+                sequence.Remaining -= deltaTime;
+                if (sequence.Remaining > 0f) continue;
+                Advance(sequence);
+            }
+        }
+
+        private void Update() => Tick(Time.deltaTime);
+
+        private void Advance(Sequence sequence)
+        {
+            if (sequence.Phase == GravityLashCue.Windup)
+            {
+                sequence.Windup.SetActive(false);
+                sequence.Phase = GravityLashCue.Beam;
+                sequence.Remaining = _beamDuration;
+                sequence.Beam.SetPosition(0, sequence.Origin);
+                sequence.Beam.SetPosition(1, sequence.Destination);
+                sequence.BeamObject.SetActive(true);
+                PublishCue(GravityLashCue.Beam, sequence.Destination);
                 return;
             }
 
-            for (var i = 0; i < _beams.Length; i++)
+            if (sequence.Phase == GravityLashCue.Beam)
             {
-                var beam = _beams[i];
-                if (!beam.GameObject.activeSelf)
-                {
-                    continue;
-                }
-
-                beam.RemainingLifetime -= Time.deltaTime;
-                if (beam.RemainingLifetime <= 0f)
-                {
-                    beam.RemainingLifetime = 0f;
-                    beam.GameObject.SetActive(false);
-                }
+                sequence.BeamObject.SetActive(false);
+                sequence.Phase = GravityLashCue.Impact;
+                sequence.Remaining = _impactDuration;
+                sequence.Impact.transform.position = sequence.Destination;
+                sequence.Impact.transform.localScale = Vector3.one * 0.45f;
+                sequence.Impact.SetActive(true);
+                PublishCue(GravityLashCue.Impact, sequence.Destination);
+                return;
             }
+
+            ResetVisuals(sequence);
+            ActiveCount--;
         }
 
-        private Beam FindAvailableBeam()
+        private Sequence FindAvailable()
         {
-            for (var i = 0; i < _beams.Length; i++)
+            for (var i = 0; i < _sequences.Length; i++)
             {
-                var index = (_reuseCursor + i) % _beams.Length;
-                if (_beams[index].GameObject.activeSelf)
-                {
-                    continue;
-                }
-
-                _reuseCursor = (index + 1) % _beams.Length;
-                return _beams[index];
+                var index = (_reuseCursor + i) % _sequences.Length;
+                if (IsActive(_sequences[index])) continue;
+                _reuseCursor = (index + 1) % _sequences.Length;
+                return _sequences[index];
             }
 
-            var reused = _beams[_reuseCursor];
-            _reuseCursor = (_reuseCursor + 1) % _beams.Length;
+            var reused = _sequences[_reuseCursor];
+            _reuseCursor = (_reuseCursor + 1) % _sequences.Length;
+            ResetVisuals(reused);
+            ActiveCount--;
             return reused;
         }
 
-        private Beam CreateBeam(int index, GravityAttackSettings settings)
+        private Sequence CreateSequence(int index, GravityAttackSettings settings)
         {
-            var beamObject = new GameObject($"Gravity Lash {index}", typeof(LineRenderer));
+            var beamObject = new GameObject($"Gravity Lash Beam {index}", typeof(LineRenderer));
             beamObject.transform.SetParent(transform, false);
-            var lineRenderer = beamObject.GetComponent<LineRenderer>();
-            lineRenderer.positionCount = 2;
-            lineRenderer.useWorldSpace = true;
-            lineRenderer.widthMultiplier = settings.VfxWidth;
-            lineRenderer.numCapVertices = 2;
-            lineRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-            lineRenderer.receiveShadows = false;
-            lineRenderer.sharedMaterial = _material;
-            lineRenderer.startColor = settings.VfxColor;
-            lineRenderer.endColor = new Color(
-                settings.VfxColor.r,
-                settings.VfxColor.g,
-                settings.VfxColor.b,
-                0f);
+            var line = beamObject.GetComponent<LineRenderer>();
+            line.positionCount = 2;
+            line.useWorldSpace = true;
+            line.widthMultiplier = settings.VfxWidth;
+            line.numCapVertices = 2;
+            line.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            line.receiveShadows = false;
+            line.sharedMaterial = _materials[1];
+            line.startColor = settings.VfxColor;
+            line.endColor = new Color(settings.VfxColor.r, settings.VfxColor.g, settings.VfxColor.b, 0f);
+            var windup = CreatePulse($"Gravity Lash Windup {index}", _materials[0]);
+            var impact = CreatePulse($"Gravity Lash Impact {index}", _materials[2]);
             beamObject.SetActive(false);
+            return new Sequence { BeamObject = beamObject, Beam = line, Windup = windup, Impact = impact };
+        }
 
-            return new Beam
+        private GameObject CreatePulse(string name, Material material)
+        {
+            var pulse = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            pulse.name = name;
+            pulse.transform.SetParent(transform, false);
+            var collider = pulse.GetComponent<Collider>();
+            collider.enabled = false;
+            Destroy(collider);
+            pulse.GetComponent<Renderer>().sharedMaterial = material;
+            pulse.SetActive(false);
+            return pulse;
+        }
+
+        private static bool IsActive(Sequence sequence) =>
+            sequence.BeamObject.activeSelf || sequence.Windup.activeSelf || sequence.Impact.activeSelf;
+
+        private static void ResetVisuals(Sequence sequence)
+        {
+            sequence.BeamObject.SetActive(false);
+            sequence.Windup.SetActive(false);
+            sequence.Impact.SetActive(false);
+            sequence.Remaining = 0f;
+        }
+
+        private void PublishCue(GravityLashCue cue, Vector3 position)
+        {
+            if (CuePlayed == null) return;
+            var handlers = CuePlayed.GetInvocationList();
+            for (var i = 0; i < handlers.Length; i++)
             {
-                GameObject = beamObject,
-                Renderer = lineRenderer,
-                RemainingLifetime = 0f
-            };
+                try
+                {
+                    ((Action<GravityLashCue, Vector3>)handlers[i])(cue, position);
+                }
+                catch (Exception exception)
+                {
+                    Debug.LogException(exception);
+                }
+            }
         }
 
         private void OnDestroy()
         {
-            if (_material != null)
-            {
-                Destroy(_material);
-            }
+            if (_materials == null) return;
+            for (var i = 0; i < _materials.Length; i++) if (_materials[i] != null) Destroy(_materials[i]);
         }
 
-        private static Material CreateMaterial(Material source, Color color)
+        private static Material CreateMaterial(Material source, Color color, string role)
         {
             return new Material(source)
             {
-                name = "Gravity Lash Placeholder Material",
+                name = $"Gravity Lash {role} Material",
                 color = color,
                 hideFlags = HideFlags.HideAndDontSave
             };

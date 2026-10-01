@@ -30,6 +30,20 @@ namespace Gravivore.Gameplay.Enemies
         public Vector3 Position { get; }
     }
 
+    public readonly struct EnemyDamageEvent
+    {
+        public EnemyDamageEvent(EnemyLifeId lifeId, Vector3 position, DamageResult result)
+        {
+            LifeId = lifeId;
+            Position = position;
+            Result = result;
+        }
+
+        public EnemyLifeId LifeId { get; }
+        public Vector3 Position { get; }
+        public DamageResult Result { get; }
+    }
+
     [DisallowMultipleComponent]
     public sealed class OrdinaryEnemyController : MonoBehaviour, ITargetable, IDamageable, IDisplaceable
     {
@@ -48,6 +62,8 @@ namespace Gravivore.Gameplay.Enemies
         private bool _isInitialized;
 
         public event Action<DamageRequest> AttackRequested;
+
+        public event Action<EnemyDamageEvent> Damaged;
 
         public event Action<EnemyDeathEvent> Died;
 
@@ -142,6 +158,7 @@ namespace Gravivore.Gameplay.Enemies
             _recycleRequested = null;
             _lifeId = default;
             AttackRequested = null;
+            Damaged = null;
             Died = null;
             _body.enabled = false;
             transform.position = poolPosition;
@@ -162,6 +179,8 @@ namespace Gravivore.Gameplay.Enemies
             }
 
             var result = _health.ApplyDamage(request, 0f);
+            Exception observerError = null;
+            PublishEach(ref observerError, Damaged, new EnemyDamageEvent(_lifeId, transform.position, result));
             if (result.WasLethal)
             {
                 _isActive = false;
@@ -169,7 +188,10 @@ namespace Gravivore.Gameplay.Enemies
                 var recycleRequested = _recycleRequested;
                 try
                 {
-                    Died?.Invoke(new EnemyDeathEvent(_lifeId, _configuration.Id, transform.position));
+                    PublishEach(
+                        ref observerError,
+                        Died,
+                        new EnemyDeathEvent(_lifeId, _configuration.Id, transform.position));
                 }
                 finally
                 {
@@ -177,7 +199,32 @@ namespace Gravivore.Gameplay.Enemies
                 }
             }
 
+            if (observerError != null)
+            {
+                throw new AggregateException(
+                    "One or more enemy presentation observers failed after damage was committed.",
+                    observerError);
+            }
+
             return result;
+        }
+
+        private static void PublishEach<T>(ref Exception firstError, Action<T> handlers, T value)
+        {
+            if (handlers == null) return;
+            var invocationList = handlers.GetInvocationList();
+            for (var i = 0; i < invocationList.Length; i++)
+            {
+                try
+                {
+                    ((Action<T>)invocationList[i])(value);
+                }
+                catch (Exception exception)
+                {
+                    if (firstError == null) firstError = exception;
+                    Debug.LogException(exception);
+                }
+            }
         }
 
         public bool TryDisplace(Vector3 destination, in DisplacementContext context)

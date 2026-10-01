@@ -147,6 +147,11 @@ namespace Gravivore.Tests.PlayMode
             Assert.AreSame(player.transform, second.AggroTarget);
             Assert.That(second.transform.position, Is.EqualTo(new Vector3(7f, 0f, 8f)));
             Assert.AreNotSame(second.TargetPoint, second.DisplacementRoot);
+            var visual = second.transform.Find("Enemy Visual");
+            Assert.IsNotNull(visual);
+            Assert.That(visual.localPosition, Is.EqualTo(new Vector3(0f, 0.75f, 0f)));
+            Assert.That(visual.localScale, Is.EqualTo(new Vector3(0.7f, 0.75f, 0.7f)));
+            Assert.IsTrue(visual.GetComponent<Renderer>().enabled);
             var targetLayerColliderCount = 0;
             var colliders = second.GetComponentsInChildren<Collider>(true);
             for (var i = 0; i < colliders.Length; i++)
@@ -161,6 +166,29 @@ namespace Gravivore.Tests.PlayMode
             Assert.AreSame(second.TargetPoint.GetComponent<Collider>(), second.GetComponentInChildren<SphereCollider>());
 
             pool.Return(second);
+            Object.Destroy(root);
+            Object.Destroy(player);
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator ThrowingDamagePresentation_DoesNotRollbackLethalStateOrBlockDeathObservers()
+        {
+            var root = new GameObject("Enemy Presentation Failure Root");
+            var player = new GameObject("Enemy Presentation Failure Player");
+            var pool = new OrdinaryEnemyPool(root.transform, 1, 9, TestMaterialFactory.Lit);
+            var enemy = pool.Acquire(CreateEnemyConfiguration(), player.transform, new RecordingDamageable(), Vector3.zero, pool.Return);
+            var deathObserved = 0;
+            enemy.Damaged += _ => throw new System.InvalidOperationException("presentation failed");
+            enemy.Died += _ => deathObserved++;
+            LogAssert.Expect(LogType.Exception, "InvalidOperationException: presentation failed");
+
+            Assert.Throws<System.AggregateException>(() =>
+                enemy.ApplyDamage(new DamageRequest(1000f, DamageType.Gravity)));
+            Assert.That(deathObserved, Is.EqualTo(1));
+            Assert.That(pool.AvailableCount, Is.EqualTo(1));
+            Assert.IsFalse(enemy.IsAlive);
+
             Object.Destroy(root);
             Object.Destroy(player);
             yield return null;
