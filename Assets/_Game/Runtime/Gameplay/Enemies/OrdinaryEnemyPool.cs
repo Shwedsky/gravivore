@@ -12,8 +12,19 @@ namespace Gravivore.Gameplay.Enemies
         private readonly Transform _poolRoot;
         private readonly int _targetLayer;
         private readonly Material _visualMaterial;
+        private readonly IEnemyVisualFactory _visualFactory;
 
         public OrdinaryEnemyPool(Transform poolRoot, int capacity, int targetLayer, Material visualMaterial)
+            : this(poolRoot, capacity, targetLayer, visualMaterial, null)
+        {
+        }
+
+        public OrdinaryEnemyPool(
+            Transform poolRoot,
+            int capacity,
+            int targetLayer,
+            Material visualMaterial,
+            IEnemyVisualFactory visualFactory)
         {
             _poolRoot = poolRoot != null ? poolRoot : throw new ArgumentNullException(nameof(poolRoot));
             if (capacity < 1)
@@ -30,6 +41,7 @@ namespace Gravivore.Gameplay.Enemies
             _visualMaterial = visualMaterial != null
                 ? visualMaterial
                 : throw new ArgumentNullException(nameof(visualMaterial));
+            _visualFactory = visualFactory;
             _available = new Stack<OrdinaryEnemyController>(capacity);
             _leased = new HashSet<OrdinaryEnemyController>();
             for (var i = 0; i < capacity; i++)
@@ -103,16 +115,20 @@ namespace Gravivore.Gameplay.Enemies
             body.stepOffset = 0.2f;
             body.slopeLimit = 45f;
 
-            var visual = GameObject.CreatePrimitive(PrimitiveType.Capsule);
-            visual.name = "Enemy Visual";
-            visual.layer = 0;
-            visual.transform.SetParent(enemyObject.transform, false);
-            visual.transform.localPosition = new Vector3(0f, 0.75f, 0f);
-            visual.transform.localScale = new Vector3(0.7f, 0.75f, 0.7f);
-            var visualCollider = visual.GetComponent<Collider>();
-            visualCollider.enabled = false;
-            UnityEngine.Object.Destroy(visualCollider);
-            visual.GetComponent<Renderer>().sharedMaterial = _visualMaterial;
+            var visualState = _visualFactory?.Create(enemyObject.transform);
+            if (visualState == null)
+            {
+                var visual = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+                visual.name = "Enemy Visual";
+                visual.layer = 0;
+                visual.transform.SetParent(enemyObject.transform, false);
+                visual.transform.localPosition = new Vector3(0f, 0.75f, 0f);
+                visual.transform.localScale = new Vector3(0.7f, 0.75f, 0.7f);
+                var visualCollider = visual.GetComponent<Collider>();
+                visualCollider.enabled = false;
+                UnityEngine.Object.Destroy(visualCollider);
+                visual.GetComponent<Renderer>().sharedMaterial = _visualMaterial;
+            }
 
             var sensorObject = new GameObject("Combat Target Sensor", typeof(SphereCollider));
             sensorObject.layer = _targetLayer;
@@ -121,7 +137,7 @@ namespace Gravivore.Gameplay.Enemies
             sensingCollider.isTrigger = true;
 
             var controller = enemyObject.GetComponent<OrdinaryEnemyController>();
-            controller.InitializeInfrastructure(body, sensorObject.transform, sensingCollider, _targetLayer);
+            controller.InitializeInfrastructure(body, sensorObject.transform, sensingCollider, _targetLayer, visualState);
             return controller;
         }
     }

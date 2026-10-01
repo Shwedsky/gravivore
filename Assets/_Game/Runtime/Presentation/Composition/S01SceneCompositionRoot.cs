@@ -11,6 +11,7 @@ using Gravivore.Gameplay.Quests;
 using Gravivore.Gameplay.World;
 using Gravivore.Persistence.Profile;
 using Gravivore.Presentation.Camera;
+using Gravivore.Presentation.Assets;
 using Gravivore.Presentation.Combat;
 using Gravivore.Presentation.Evolution;
 using Gravivore.Presentation.Feedback;
@@ -47,10 +48,10 @@ namespace Gravivore.Presentation.Composition
         [SerializeField] private CameraFollowSettings _cameraSettings;
         [SerializeField] private PresentationMaterialPalette _materialPalette;
         [SerializeField] private S14PresentationDefinition _s14PresentationDefinition;
+        [SerializeField] private S15VisualCatalog _s15VisualCatalog;
         [SerializeField] private Vector3 _playerSpawn = Vector3.zero;
         [SerializeField, Min(0f)] private float _postRespawnInvulnerabilitySeconds = 1.5f;
 
-        private Material _playerMaterial;
         private Material _eliteMaterial;
         private Material _bossMaterial;
         private Transform _playerVisualRoot;
@@ -136,7 +137,7 @@ namespace Gravivore.Presentation.Composition
                 _evolutionDefinition == null || _worldDefinition == null ||
                 _magnetarGuardDefinition == null || _custodianBossDefinition == null ||
                 _joystickSettings == null || _cameraSettings == null || _materialPalette == null ||
-                _s14PresentationDefinition == null ||
+                _s14PresentationDefinition == null || _s15VisualCatalog == null ||
                 float.IsNaN(_postRespawnInvulnerabilitySeconds) ||
                 float.IsInfinity(_postRespawnInvulnerabilitySeconds) ||
                 _postRespawnInvulnerabilitySeconds < 0f)
@@ -147,6 +148,7 @@ namespace Gravivore.Presentation.Composition
 
             _materialPalette.ValidateOrThrow();
             _s14PresentationDefinition.ValidateOrThrow();
+            _s15VisualCatalog.ValidateOrThrow();
 
             var statsConfiguration = _playerStatsDefinition.Configuration;
             var progressionConfiguration = _progressionDefinition.Configuration;
@@ -394,17 +396,7 @@ namespace Gravivore.Presentation.Composition
             visualRoot.transform.SetParent(PlayerObject.transform, false);
             _playerVisualRoot = visualRoot.transform;
 
-            var visual = GameObject.CreatePrimitive(PrimitiveType.Capsule);
-            visual.name = "Player Visual";
-            visual.transform.SetParent(_playerVisualRoot, false);
-            visual.transform.localPosition = new Vector3(0f, 0.7f, 0f);
-            visual.transform.localScale = new Vector3(0.65f, 0.7f, 0.65f);
-            var visualCollider = visual.GetComponent<Collider>();
-            visualCollider.enabled = false;
-            Destroy(visualCollider);
-
-            _playerMaterial = CreateMaterial(new Color(0.12f, 0.82f, 0.68f, 1f));
-            visual.GetComponent<Renderer>().sharedMaterial = _playerMaterial;
+            S15VisualFactory.Build(_playerVisualRoot, _s15VisualCatalog.Player, _s15VisualCatalog);
 
             return PlayerObject.GetComponent<PlayerLocomotion>();
         }
@@ -431,7 +423,7 @@ namespace Gravivore.Presentation.Composition
             var worldObject = new GameObject("Chapter 01 World", typeof(Chapter01WorldPresenter));
             worldObject.transform.SetParent(transform, false);
             WorldPresenter = worldObject.GetComponent<Chapter01WorldPresenter>();
-            WorldPresenter.Initialize(configuration, state, _materialPalette.LitMaterial);
+            WorldPresenter.Initialize(configuration, state, _materialPalette.LitMaterial, _s15VisualCatalog);
         }
 
         private void InitializeQuests(QuestCatalog catalog, Chapter01WorldConfiguration world)
@@ -653,7 +645,8 @@ namespace Gravivore.Presentation.Composition
                 PlayerHealth,
                 _globalLiveEnemyCap,
                 targetLayer,
-                _materialPalette.LitMaterial);
+                _materialPalette.LitMaterial,
+                new S15EnemyVisualFactory(_s15VisualCatalog));
         }
 
         private Transform CreateCamera(Transform target)
@@ -714,11 +707,6 @@ namespace Gravivore.Presentation.Composition
             if (PlayerHealth != null)
             {
                 PlayerHealth.Respawned -= HandlePlayerRespawned;
-            }
-
-            if (_playerMaterial != null)
-            {
-                Destroy(_playerMaterial);
             }
 
             if (_eliteMaterial != null) Destroy(_eliteMaterial);
