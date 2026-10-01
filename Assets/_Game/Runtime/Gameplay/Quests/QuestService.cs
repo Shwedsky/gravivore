@@ -75,6 +75,44 @@ namespace Gravivore.Gameplay.Quests
             return AdvanceAndPublish(objective => objective.Type == QuestObjectiveType.MovementPerformed, 1, null);
         }
 
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        public bool CompleteEncounterObjectiveForDevelopment(QuestObjectiveType type, string encounterId)
+        {
+            if (type != QuestObjectiveType.EliteDefeated && type != QuestObjectiveType.BossDefeated)
+                throw new ArgumentOutOfRangeException(nameof(type));
+            if (string.IsNullOrWhiteSpace(encounterId))
+                throw new ArgumentException("Encounter id is required.", nameof(encounterId));
+
+            for (var i = 0; i < _catalog.ObjectiveCount; i++)
+            {
+                var objective = _catalog.GetObjective(i);
+                if (objective.Type != type ||
+                    !string.Equals(objective.EncounterId, encounterId, StringComparison.Ordinal) ||
+                    State.IsObjectiveCompleted(objective.Id)) continue;
+                return AdvanceAndPublish(candidate => candidate.Id == objective.Id, objective.RequiredCount, null);
+            }
+
+            return false;
+        }
+
+        public bool ResetEncounterObjectiveForDevelopment(QuestObjectiveType type, string encounterId)
+        {
+            if (string.IsNullOrWhiteSpace(encounterId))
+                throw new ArgumentException("Encounter id is required.", nameof(encounterId));
+            for (var i = 0; i < _catalog.ObjectiveCount; i++)
+            {
+                var objective = _catalog.GetObjective(i);
+                if (objective.Type == type &&
+                    string.Equals(objective.EncounterId, encounterId, StringComparison.Ordinal))
+                {
+                    return State.ResetObjectiveForDevelopment(objective);
+                }
+            }
+
+            return false;
+        }
+#endif
+
         public void Dispose()
         {
             if (_disposed) return;

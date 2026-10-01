@@ -104,6 +104,15 @@ namespace Gravivore.Persistence.Profile
         public string BackupPath => Path.Combine(_directory, BackupFileName);
         public string TempPath => Path.Combine(_directory, TempFileName);
 
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        public void ResetProfileFilesForDevelopment()
+        {
+            if (_fileSystem.FileExists(TempPath)) _fileSystem.DeleteFile(TempPath);
+            if (_fileSystem.FileExists(MainPath)) _fileSystem.DeleteFile(MainPath);
+            if (_fileSystem.FileExists(BackupPath)) _fileSystem.DeleteFile(BackupPath);
+        }
+#endif
+
         public ProfileLoadResult LoadOrCreate(Func<SaveRootDto> freshFactory, Action<SaveRootDto> validate)
         {
             if (freshFactory == null) throw new ArgumentNullException(nameof(freshFactory));

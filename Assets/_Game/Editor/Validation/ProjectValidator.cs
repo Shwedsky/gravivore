@@ -84,6 +84,7 @@ namespace Gravivore.Editor
             S15AssetConfigurator.DarkMaterialPath,
             "Assets/ThirdParty/KenneyFactoryKit/License.txt",
             "docs/S15_ASSET_AUDIT.md",
+            "docs/S16_DEVTOOLS.md",
             "Assets/_Game/Content/Audio/S14_LashWindup.wav",
             "Assets/_Game/Content/Audio/S14_LashImpact.wav",
             "Assets/_Game/Content/Audio/S14_Hit.wav",

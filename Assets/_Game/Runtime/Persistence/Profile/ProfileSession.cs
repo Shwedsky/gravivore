@@ -11,6 +11,9 @@ namespace Gravivore.Persistence.Profile
         private readonly ITimeProvider _time;
         private readonly ISaveDiagnostics _diagnostics;
         private readonly TimeSpan _minimumResumeAbsence;
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        private bool _profileReset;
+#endif
 
         private ProfileSession(
             IProfileRepository repository,
@@ -148,6 +151,9 @@ namespace Gravivore.Persistence.Profile
 
         public bool FlushNow()
         {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            if (_profileReset) return false;
+#endif
             if (PersistenceSuspended) return false;
             State.SetLastSeenUtc(_time.UtcNow);
             Func<SaveRootDto> freshFactory = () =>
@@ -169,6 +175,16 @@ namespace Gravivore.Persistence.Profile
                 return false;
             }
         }
+
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        public bool ResetProfileForDevelopment()
+        {
+            if (!(_repository is JsonProfileRepository repository)) return false;
+            repository.ResetProfileFilesForDevelopment();
+            _profileReset = true;
+            return true;
+        }
+#endif
 
         private static bool IsStorageFailure(Exception exception)
         {

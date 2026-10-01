@@ -19,6 +19,10 @@ using Gravivore.Presentation.Input;
 using Gravivore.Presentation.Quests;
 using Gravivore.Presentation.UI;
 using Gravivore.Presentation.World;
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+using Gravivore.Presentation.Development;
+using UnityEngine.SceneManagement;
+#endif
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -67,6 +71,9 @@ namespace Gravivore.Presentation.Composition
         private ProfileSession _profileSession;
         private GravityLashVfxPool _gravityLashVfx;
         private PresentationHapticSettings _hapticSettings;
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        private DevelopmentTelemetryObserver _developmentTelemetry;
+#endif
 
         public GameObject PlayerObject { get; private set; }
 
@@ -116,6 +123,9 @@ namespace Gravivore.Presentation.Composition
         public PauseMenuPresenter PauseMenu { get; private set; }
         public S14AudioPresenter AudioPresenter { get; private set; }
         public S14CombatFeedbackPresenter CombatFeedback { get; private set; }
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        public DevelopmentDebugOverlay DevelopmentOverlay { get; private set; }
+#endif
 
         private HudModalController _hudModal;
 
@@ -206,6 +216,9 @@ namespace Gravivore.Presentation.Composition
                 _profileSession.State.Offline,
                 _saveOfflineDefinition.Configuration.AutosaveDelaySeconds);
             InitializeS13Hud(uiTouchExclusion, topTouchExclusion);
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            InitializeDevelopmentTools(uiTouchExclusion, topTouchExclusion, worldConfiguration, bossConfiguration);
+#endif
             _isComposed = true;
         }
 
@@ -380,6 +393,87 @@ namespace Gravivore.Presentation.Composition
                 ChapterCompletion.ModalRect
             });
         }
+
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        private void InitializeDevelopmentTools(
+            UiTouchExclusion uiTouchExclusion,
+            RectTransform topTouchExclusion,
+            Chapter01WorldConfiguration worldConfiguration,
+            CustodianBossConfiguration bossConfiguration)
+        {
+            var sessionId = Guid.NewGuid();
+            var startedUtc = DateTime.UtcNow;
+            var telemetryPath = DevelopmentTelemetryRecorder.CreateSessionPath(
+                _profileDirectoryOverride ?? Application.persistentDataPath,
+                startedUtc,
+                sessionId);
+            var recorder = new DevelopmentTelemetryRecorder(
+                sessionId,
+                ProfileId,
+                new DevelopmentJsonLinesSink(telemetryPath));
+            var summary = new DevelopmentSessionSummary(() => Time.realtimeSinceStartupAsDouble);
+            _developmentTelemetry = new DevelopmentTelemetryObserver(
+                recorder,
+                summary,
+                PlayerStats,
+                Progression,
+                Quests,
+                EnemyPopulation,
+                MagnetarGuard,
+                CustodianBoss,
+                BossCompletion,
+                PlayerHealth,
+                _profileSession.State.Offline);
+            _developmentTelemetry.RecordStartupOfflineReward(OfflineReturnSummary);
+
+            var commands = new DevelopmentCommandService(
+                PlayerStats,
+                Quests,
+                WorldUnlocks.State,
+                MagnetarGuard,
+                BossCompletion,
+                CustodianBoss,
+                PlayerHealth,
+                worldConfiguration.EliteEnemyId,
+                bossConfiguration.Id,
+                SaveCoordinator.MarkDirty,
+                _profileSession.ResetProfileForDevelopment,
+                ReloadCurrentSceneForDevelopment);
+            var overlayObject = new GameObject("S16 Development Overlay", typeof(DevelopmentDebugOverlay));
+            overlayObject.transform.SetParent(transform, false);
+            DevelopmentOverlay = overlayObject.GetComponent<DevelopmentDebugOverlay>();
+            DevelopmentOverlay.Initialize(
+                _hudRoot,
+                commands,
+                summary,
+                EnemyPopulation,
+                PlayerObject.transform,
+                PlayerHealth,
+                PlayerStats,
+                Progression,
+                WorldUnlocks.State,
+                CustodianBoss,
+                BossCompletion);
+
+            uiTouchExclusion.Initialize(new[]
+            {
+                topTouchExclusion,
+                PauseMenu.PauseButtonRect,
+                PauseMenu.ModalRect,
+                OfflineRewardPanel.ModalRect,
+                ChapterCompletion.ModalRect,
+                DevelopmentOverlay.ToggleRect,
+                DevelopmentOverlay.PanelRect
+            });
+        }
+
+        private static void ReloadCurrentSceneForDevelopment()
+        {
+            var scene = SceneManager.GetActiveScene();
+            if (scene.buildIndex >= 0) SceneManager.LoadScene(scene.buildIndex);
+            else SceneManager.LoadScene(scene.name);
+        }
+#endif
 
         private FloatingJoystickInput CreateMovementInput(
             IUiTouchExclusion uiTouchExclusion,
@@ -709,6 +803,9 @@ namespace Gravivore.Presentation.Composition
 
         private void OnDestroy()
         {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            _developmentTelemetry?.Dispose();
+#endif
             SaveCoordinator?.FlushNow();
             SaveCoordinator?.Dispose();
             ChapterCompletion?.Shutdown();
@@ -747,6 +844,9 @@ namespace Gravivore.Presentation.Composition
 
         private void OnApplicationPause(bool paused)
         {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            _developmentTelemetry?.RecordPause(paused);
+#endif
             if (paused)
             {
                 SaveCoordinator?.FlushNow();
@@ -763,6 +863,9 @@ namespace Gravivore.Presentation.Composition
 
         private void OnApplicationQuit()
         {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            _developmentTelemetry?.EndSession();
+#endif
             SaveCoordinator?.FlushNow();
         }
 

@@ -82,6 +82,9 @@ namespace Gravivore.Presentation.UI
             _root.gameObject.SetActive(false);
 
             _completion.Defeated += HandleDefeated;
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            _completion.DevelopmentReset += HandleDevelopmentReset;
+#endif
             _stats.StatChanged += HandleStatChanged;
             _modal.Available += HandleModalAvailable;
         }
@@ -97,6 +100,9 @@ namespace Gravivore.Presentation.UI
         {
             if (_completion == null) return;
             _completion.Defeated -= HandleDefeated;
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            _completion.DevelopmentReset -= HandleDevelopmentReset;
+#endif
             _stats.StatChanged -= HandleStatChanged;
             _modal.Available -= HandleModalAvailable;
             ContinueExploring();
@@ -125,6 +131,9 @@ namespace Gravivore.Presentation.UI
         }
 
         private void HandleDefeated(BossDefeatedEvent _) => RequestShow();
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        private void HandleDevelopmentReset() => ContinueExploring();
+#endif
         private void HandleStatChanged(PlayerStatChange _)
         {
             if (IsVisible) ApplyState();
