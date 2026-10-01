@@ -29,7 +29,12 @@ namespace Gravivore.Tests.PlayMode
             var playerObject = new GameObject("Player", typeof(CharacterController), typeof(PlayerHealthController));
             playerObject.transform.SetParent(root.transform, false);
             var health = playerObject.GetComponent<PlayerHealthController>();
-            health.Initialize(playerObject.GetComponent<CharacterController>(), stats, Vector3.zero, 0f);
+            health.Initialize(
+                playerObject.GetComponent<CharacterController>(),
+                stats,
+                Vector3.zero,
+                0f,
+                new PlayerRecoveryConfiguration(1f, 1f, 0f, 0f));
             var healthHud = new GameObject("Health HUD", typeof(PlayerHealthHudPresenter))
                 .GetComponent<PlayerHealthHudPresenter>();
             healthHud.Initialize(health, stats, root.GetComponent<RectTransform>());
@@ -38,9 +43,17 @@ namespace Gravivore.Tests.PlayMode
             statsHud.Initialize(stats, root.GetComponent<RectTransform>(), false);
 
             var initialMaximum = health.MaximumHitPoints;
+            Assert.That(healthHud.FillRect.anchorMin.x, Is.Zero.Within(0.001f));
+            Assert.That(healthHud.FillRect.anchorMax.x, Is.EqualTo(1f).Within(0.001f));
             health.ApplyDamage(new DamageRequest(25f, DamageType.Physical));
-            Assert.That(healthHud.FillAmount, Is.LessThan(1f));
+            var damagedFraction = health.CurrentHitPoints / health.MaximumHitPoints;
+            Assert.That(healthHud.FillRect.anchorMax.x, Is.EqualTo(damagedFraction).Within(0.001f));
+            Assert.That(healthHud.FillRect.anchorMax.x, Is.InRange(0f, 1f));
             StringAssert.Contains(RussianUiText.Durability, healthHud.DisplayText);
+
+            health.Tick(1f);
+            Assert.That(health.CurrentHitPoints, Is.EqualTo(health.MaximumHitPoints));
+            Assert.That(healthHud.FillRect.anchorMax.x, Is.EqualTo(1f).Within(0.001f));
 
             stats.SetLevel(PlayerStatType.Hull, 2);
             Assert.That(health.MaximumHitPoints, Is.GreaterThan(initialMaximum));
@@ -62,7 +75,7 @@ namespace Gravivore.Tests.PlayMode
         {
             var root = new GameObject("S13 Boss HUD Root", typeof(RectTransform));
             var player = CreateHealth(root.transform, CreateStats());
-            var boss = new FakeBossHealthSource(500f);
+            var boss = new FakeBossHealthSource(1000f);
             var completion = new BossCompletionState("custodian-m0");
             var presenter = new GameObject("Boss HUD", typeof(BossHealthHudPresenter))
                 .GetComponent<BossHealthHudPresenter>();
@@ -71,10 +84,18 @@ namespace Gravivore.Tests.PlayMode
             Assert.IsFalse(presenter.IsVisible);
             boss.Start();
             Assert.IsTrue(presenter.IsVisible);
-            boss.Damage(125f);
-            Assert.That(presenter.FillAmount, Is.EqualTo(0.75f).Within(0.001f));
-            StringAssert.Contains("375 / 500", presenter.DisplayText);
+            Assert.That(presenter.FillRect.anchorMin.x, Is.Zero.Within(0.001f));
+            Assert.That(presenter.FillRect.anchorMax.x, Is.EqualTo(1f).Within(0.001f));
+            boss.Damage(250f);
+            Assert.That(presenter.FillRect.anchorMax.x, Is.EqualTo(0.75f).Within(0.001f));
+            StringAssert.Contains("750 / 1000", presenter.DisplayText);
+            boss.Damage(250f);
+            Assert.That(presenter.FillRect.anchorMax.x, Is.EqualTo(0.5f).Within(0.001f));
             StringAssert.Contains(RussianUiText.BossName, presenter.DisplayText);
+            boss.SetCurrent(1200f);
+            Assert.That(presenter.FillRect.anchorMax.x, Is.EqualTo(1f).Within(0.001f));
+            boss.SetCurrent(-100f);
+            Assert.That(presenter.FillRect.anchorMax.x, Is.Zero.Within(0.001f));
             boss.Reset();
             Assert.IsFalse(presenter.IsVisible);
             boss.Start();
@@ -309,6 +330,12 @@ namespace Gravivore.Tests.PlayMode
             {
                 CurrentHitPoints = MaximumHitPoints;
                 EncounterReset?.Invoke(new BossEncounterResetEvent("custodian-m0", Vector3.zero));
+            }
+
+            public void SetCurrent(float current)
+            {
+                CurrentHitPoints = current;
+                Damaged?.Invoke(new DamageResult(0f, current <= 0f));
             }
         }
     }
