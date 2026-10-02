@@ -1,105 +1,79 @@
-# GRAVIVORE ART SPIKE report
+# GRAVIVORE ART SPIKE V2 report
 
-**ART SPIKE VISUAL REVIEW: PENDING**
+**ART SPIKE V2 VISUAL REVIEW: PENDING**
 
-This is a stacked, visual-only proof. The reviewer decides whether these actual Unity compositions satisfy the intended style. No claim of commercial quality or completed human approval is made.
+V1 passed the technical gate but human review rejected its Kenney-only factory-prop appearance. This revision keeps the isolated authoring, material, comparison, capture and audit pipeline; replaces character donors with intact armored mech parts; and provides actual Unity images for another human review. No visual approval or Android performance claim is made.
 
-## Baseline and scope
+## Same stack and scope
 
-- Repository: `Shwedsky/gravivore`.
-- Base: `codex/s20-balance-vertical-slice`.
-- Verified remote base SHA: `4394448a7f3950cb62df701e8969137ae4b4a01c`.
-- Branch: `codex/art-spike-kitbash`.
-- New isolated worktree: `C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\art-spike-kitbash`.
-- Root checkout and all existing worktrees were left untouched. The S20 worktree was not reused.
-- Production runtime/content impact: **NONE**. No camera balance, stats, thresholds, aggro, respawn, offline reward, menus, production catalog, evolution definition, elite/boss art, or canonical scene changes are part of this spike.
+- Repository: Shwedsky/gravivore; same draft [PR #30](https://github.com/Shwedsky/gravivore/pull/30).
+- Same branch: `codex/art-spike-kitbash`; revision starts at `42dfbe83d1a28127cc1bf1eb192dca2092dfe0c3`.
+- Same base: `codex/s20-balance-vertical-slice`, pinned SHA `4394448a7f3950cb62df701e8969137ae4b4a01c`.
+- Same isolated worktree: `C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\art-spike-kitbash`.
+- Production runtime/content impact: **NONE**. S20 balance, Chapter 01 scene/catalog/evolution bindings, gameplay, other enemy archetypes, elites and bosses are unchanged. Root checkout and other worktrees were not modified.
+- No merge, new PR, main retargeting or full Chapter art replacement.
 
-## Source selection and retained content
+## Donors and permissions
 
-All five requested sources were investigated first. Quaternius's current site-wide QAL conflicts with the CC0 labels on the three requested pack pages, so those assets were excluded rather than assuming public raw-asset redistribution is permitted. Molten Maps publishes CC0 but uses an interactive itch.io free-download step; its exact manual archive/destination are in `ART_ASSET_SHORTLIST.md`.
+Character parts come from **Unfinished mech sketch by Julius**: [original author upload](https://opengameart.org/content/unfinished-mech-sketch), [author](https://opengameart.org/users/julius). The original OBJ, MTL and bundled license are retained. The archive offers GPLv2+ or CC BY-SA 3.0+; this spike selects **CC BY-SA 3.0 Unported**, permitting commercial use, modification and source redistribution with attribution, modification notice and share-alike. Adapted character visuals, scene visual content and review PNGs carry that license; independent project code and CC0 source assets retain their own terms. Exact scope and credits: [ART_LICENSE.md](art-spike/ART_LICENSE.md), [ThirdPartyNotices.md](../ThirdPartyNotices.md).
 
-Actual donors: 14 freshly acquired Kenney Factory Kit 3.0 FBX files and four Kenney Modular Space Kit 1.0 FBX files. Both official pages and both bundled licenses explicitly identify CC0. No paid content, unofficial mirrors, vendor code, or textures were imported. Exact files, archive URLs, dates, permissions, and attribution requirements are recorded in `ThirdPartyNotices.md`; every retained FBX hash is in `art-spike/ASSET_MANIFEST.json` and matches its official archive.
+The source contains nine existing mesh objects, 3,944 total triangles, no textures or rig. Existing torso, legs, arms, shoulders and pelvis objects are selected independently. The head and complete humanoid are not instantiated. Source bytes/topology are unchanged; Unity normal import uses 15° smoothing. Composition uses transforms, shared materials and small project-owned primitives/rings. No mesh splitting, source geometry edit, destructive Blender work or blind mesh combine.
 
-## G-0 compositions
+Kenney is now supporting scenery only: four Factory Kit FBX and five Modular Space Kit FBX, both CC0. Ten obsolete Factory/cog character donors were removed. No G-0 or Cutter contains Kenney geometry. Archive/file hashes and unchanged bundled licenses: [ASSET_MANIFEST.json](art-spike/ASSET_MANIFEST.json). Expanded original-source research, exact licenses, rejected expensive/unclear candidates and optional manual downloads: [ART_ASSET_SHORTLIST.md](ART_ASSET_SHORTLIST.md).
 
-All three roots have scale `(1,1,1)` and attack direction `+Z`. Each is a **true modular kitbash of industrial donor pieces plus project-owned primitive augmentation**, not a stack of complete robots. Vendor mesh geometry is unchanged. Transform normalization and intentionally nonuniform scaling occur under project-owned wrappers.
+## Character compositions
 
-### G0_Tier0_ArtSpike
+**Tier 0:** horizontal torso armor chassis, unchanged cyan gravity core, a small containment ring, four intact armored leg/support assemblies with hip sockets, two forward mech weapon arms. Root scale is one; +Z is forward.
 
-Hierarchy:
+**Tier 1:** retains Tier 0 and adds shoulder-derived side armor, narrow cyan stabilizers and an outer containment ring. Width increases from 1.27 to 1.56 metres; the core stays identical.
 
-- `01_CoreChassis_CommonIdentity`: `machine-connection-hole` rotated into a low central casing; `cog-d` lower ring; a project-owned cyan spherical gravity core, dark cylindrical lens, and small energy lens; `screen-panel-flat` rear spine.
-- `02_FourMechanicalSupports_Common`: LeftFront, LeftRear, RightFront, RightRear. Each contains a `piston-thin-square` support, a `box-long` contact skid, and a small cyan joint insert. The piston donor contains three mesh children.
-- `03_ForwardGravityMandibles_Common`: two forward-facing `cone` donor prongs with small cyan emitter slits.
+**Tier 2:** retains the common structure and adds outer armor wings, larger forward weapon arms, upper containment ring and anchors. Width is 2.00 metres, depth 2.07 metres. Evolution adds geometry and silhouette; it does not enlarge the core or root.
 
-Materials: `Gravivore_DarkMetal`, `Gravivore_Armor`, `Gravivore_SecondaryMetal`, and `Gravivore_PlayerCore`. The core is an energy component inside a mechanical chassis, not the entire body.
+**Cutter:** one ordinary archetype, with armored torso, two supports, unequal articulated weapon arms, shoulder shield, thin pelvis-derived cutting blades and a red dorsal energy spine. There are no cog weapons. It shares the restrained metal palette while differing in core shape, support count and asymmetric arm reach.
 
-### G0_Tier1_ArtSpike
+All four prefabs are decorative/static with no gameplay component, colliders, animation or rig.
 
-Retains all Tier 0 structures and adds `04_Tier1_ArmorAndStabilizers`: two `screen-panel-flat` side plates, two elongated forward `cone` blades, two energy stabilizer strips, and a `cog-a` outer housing ring. The added side planes and forward modules expand the measured width from 1.43 to 1.76 metres. Core size, color, and prefab root scale are unchanged.
+## Environment and presentation
 
-### G0_Tier2_ArtSpike
+A quiet 5×5 deck now includes nine low-contrast panel insets. Low bulkheads, conduits and small service props remain peripheral. The reactor was reduced and its gear rings replaced with small project-owned containment rings. No decorative foreground wall blocks the central combat space.
 
-Retains Tier 0/1 and adds `05_Tier2_EmitterForksAndContainment`: two outer armor wings, two forward `piston-square` emitter housings with cyan cylinder muzzles, two extended donor blades, paired rear power struts/ports, a second `cog-b` containment ring, and small core anchors. The upper ring was positioned below the visible core crown so the common core stays exposed. Measured width is 2.38 metres; depth grows from Tier 0's 1.735 to 2.42 metres. Extra energy surfaces use the same shared core material; the evolution is also geometric.
+Opaque URP materials provide dark metal, lighter armor and restrained cyan/red/amber accents. A shared 32×32-per-face mipmapped RGBAHalf studio reflection cubemap helps reveal armor planes; it adds no realtime light. The scene keeps one directional light and modest bloom.
 
-## Ordinary enemy — exactly one archetype
+## Eight actual Unity review images
 
-`Cutter_ArtSpike.prefab`: a `hopper-square` body, `screen-panel-flat` dorsal shield, two `box-long` runners, two `piston-square` saw actuators, and unequal forward `cog-e` saw discs. Project-owned small primitives provide a rectangular dorsal red energy block and two red hubs. Shared dark/armor/secondary metals and `Gravivore_HostileCore` unify it with G-0 while its runners, rectangular center, and offset circular weapons differ from the four-support player. No Scout, elite, or boss prototype was added.
+The comparison scene preserves Areas A–D. The added close camera shows Tier 2 from three quarters, hiding the neighboring Cutter/reference during that capture only. S20-scale views use the actual settled camera offset, FOV and look-at height. Rendering executed in Unity URP on Direct3D11 / AMD Radeon(TM) Graphics. No generated concept image or composited fake geometry is used.
 
-## Environment
+- [01_G0_Evolution.png](art-spike/images/01_G0_Evolution.png), 1920×1080: Tier 0/1/2 left to right, same scale.
+- [02_G0_GameplayScale.png](art-spike/images/02_G0_GameplayScale.png), 1080×1920: Tier 1, S20 camera.
+- [03_Enemy_GameplayScale.png](art-spike/images/03_Enemy_GameplayScale.png), 1080×1920: Tier 1 and Cutter, S20 camera.
+- [04_Environment_Overview.png](art-spike/images/04_Environment_Overview.png), 1920×1080: bay overview.
+- [05_Gameplay_Mock.png](art-spike/images/05_Gameplay_Mock.png), 1080×1920: Tier 2, Cutter and bay, S20 camera.
+- [06_ScaleReference.png](art-spike/images/06_ScaleReference.png), 1920×1080: Tier 2 and Cutter, same scale.
+- [07_Evolution_S20Scale.png](art-spike/images/07_Evolution_S20Scale.png), 3240×1920: three actual portrait renders, Tier 0/1/2.
+- [08_G0_CloseHero.png](art-spike/images/08_G0_CloseHero.png), 1920×1080: clean three-quarter Tier 2 surface review.
 
-`IndustrialBay_ArtSpike.prefab`: a 5×5 deck using `template-floor`; five low rear `template-wall-half` bulkheads; two `template-wall-detail-a` side frames; Factory Kit perimeter pipes and status accents; reactor plinth (`machine-fortified`) with donor containment rings and an amber primitive energy column; an auxiliary generator, sealed container, bent feed pipe, and `cables` bundle.
+Review guide: [ART_SPIKE_REVIEW.md](ART_SPIKE_REVIEW.md). Close-camera surface quality must be judged separately from actual gameplay-scale readability; the mock has no HUD or combat animation.
 
-The central floor is clear. All scenery is decorative, with zero colliders. No high front wall hides the player. The floor uses shared `Gravivore_Floor`; surrounding machinery uses the restrained metal palette with small `Gravivore_IndustrialEnergy` accents.
+## Measured structural snapshot
 
-## Comparison scene and renders
+- Tier 0: **13 renderers**, 6,252 triangles, four shared materials, 13 slots.
+- Tier 1: **18 renderers**, 6,900 triangles, four shared materials, 18 slots.
+- Tier 2: **25 renderers**, 8,292 triangles, four shared materials, 25 slots.
+- Cutter: **9 renderers**, 4,104 triangles, four shared materials, nine slots.
+- All: MeshRenderers only; zero SkinnedMeshRenderer, Animator, Animation, collider or character texture maps. The shared scene reflection cubemap is separate.
 
-Scene: `Assets/_Game/ArtSpike/Scenes/ArtSpike_Comparison.unity`.
+Tier 2 renderer count falls **58.3% from V1's 60**; triangles rise from 5,116 to 8,292 because the selected mech parts include actual armor/joint geometry. No combining was used. Submission counts are before batching, not a measured draw-call or FPS result. Full bounds, mesh/slot counts and method: [PERFORMANCE.md](art-spike/PERFORMANCE.md) and adjacent per-prefab JSON.
 
-- Area A: all three tiers side by side, same ground and a one-metre reference bar (20 cm tick spacing).
-- Area B: Tier 1 and Cutter at the actual settled S20 camera pose/FOV in portrait.
-- Area C: industrial bay with Tier 2 and Cutter, an overview camera and an actual S20 portrait camera.
-- Area D: Tier 2 and Cutter side by side at intended scale.
+## Verification
 
-Every PNG is an actual Unity URP render on Direct3D11, AMD Radeon(TM) Graphics. Close review uses a shorter camera offset with the same approximate pitch; it is not used as proof of gameplay-scale readability. Images 02/03/05 and each panel of 07 use the S20 offset/FOV/look-at height directly. No gameplay HUD is rendered; the mock is a static art composition.
+Unity **6000.3.0f1** compile/import and final eight-image capture completed with return code 0. Full EditMode: **254/254 passed**, zero failed/skipped. Full PlayMode: **56/56 passed**, zero failed/skipped. Standalone ProjectValidator: explicit pass and process return code 0. The source hash audit, staged production isolation audit and raw XML are linked in [VERIFICATION.md](art-spike/VERIFICATION.md).
 
-Required outputs:
+Android build was **not run**, as requested. No APK produced.
 
-- `docs/art-spike/images/01_G0_Evolution.png` — 1920×1080, Tier 0/1/2 left to right.
-- `docs/art-spike/images/02_G0_GameplayScale.png` — 1080×1920, Tier 1 alone.
-- `docs/art-spike/images/03_Enemy_GameplayScale.png` — 1080×1920, Tier 1 and Cutter.
-- `docs/art-spike/images/04_Environment_Overview.png` — 1920×1080, isolated bay overview.
-- `docs/art-spike/images/05_Gameplay_Mock.png` — 1080×1920, Tier 2/Cutter/environment at S20 camera.
-- Supplementary `06_ScaleReference.png` — 1920×1080, same-scale player/enemy close review.
-- Supplementary `07_Evolution_S20Scale.png` — 3240×1920, three actual S20 portrait-camera panels, Tier 0/1/2 left to right.
+## Limits, assumptions and next gate
 
-## Measured performance snapshot
+This donor is an unfinished untextured mesh. Armor has no PBR surface maps; compression/nonuniform transforms affect proportions; joins and overlaps remain visible in close review; some inner mechanics lie in shadow. Limbs are static and provide no engineered gait or combat articulation. Fewer renderers do not prove mobile performance; repeated units, shadows, batching and future animation still need device profiling.
 
-Detailed machine-readable per-prefab JSON and measurement method: `art-spike/PERFORMANCE.md` and the four adjacent JSON files.
+Assumptions: the explicitly allowed other free commercial licenses include CC BY-SA with its documented share-alike obligations; intact mechanical parts from a humanoid donor are acceptable; one Unity unit is one metre; static posing and settled S20 camera are sufficient for this visual spike. No user Blender work is required.
 
-- Tier 0: 30 child renderers, all MeshRenderer; 0 SkinnedMeshRenderer; 4 shared materials, 30 slots; 11 unique meshes, 30 mesh instances; 2,724 triangles.
-- Tier 1: 37 child renderers, all MeshRenderer; 0 SkinnedMeshRenderer; 4 shared materials, 37 slots; 12 unique meshes, 37 instances; 3,316 triangles.
-- Tier 2: 60 child renderers, all MeshRenderer; 0 SkinnedMeshRenderer; 4 shared materials, 60 slots; 16 unique meshes, 60 instances; 5,116 triangles.
-- Cutter: 15 child renderers, all MeshRenderer; 0 SkinnedMeshRenderer; 4 shared materials, 15 slots; 9 unique meshes, 15 instances; 1,362 triangles.
-
-All four: maximum texture size 0 (no textures), no Animator/Animation, no colliders, no lights. The scene has one directional light and a modest bloom pass. Triangle sums count geometry instances using mesh index counts, including primitives. The audit's projected bounding boxes are conservative bounds rather than silhouette pixel counts.
-
-**Obvious risk:** 60 renderers on Tier 2 and three meshes per piston are many submissions despite modest triangle/material counts. This static proof makes no Android FPS claim. No optimization was performed solely to hit an arbitrary number. Animation and batching need separate measured work before adoption.
-
-## Observable goals and limitations
-
-Implemented: shared core/housing/support identity across all tiers; added geometric armor/weapon modules; different player/enemy locomotion and center shapes; unified opaque URP palette; low industrial framing; verified CC0 imports; reviewable Unity screenshots; isolated production content.
-
-Human review still decides evolution visibility, shape readability, direction match, aesthetic improvement over S15, and acceptability of the scale. Increasing geometric bounds is not a substitute for that judgment.
-
-Known weaknesses: familiar cog/industrial-prop forms remain visible; some nonuniform scaling stretches bevel proportions; supports are static rather than an engineered animated gait; joints are assembled and may appear discontinuous from certain angles; the floor is deliberately simple; broad shadows hide some inner mechanics. There is no complete donor character mesh and no stacked-robot composition.
-
-Transform-only composition with this donor set cannot provide seamless bespoke armor surfaces, a newly retopologized character body, new UVs, or a custom skeletal rig/gait. Those would require additional licensed modular/rigged donors or custom asset work in a later task. No user Blender work is required for this proof. Quaternius acquisitions and the optional Molten archive remain unresolved as recorded in the shortlist.
-
-## Verification and next gate
-
-Unity compile/capture executed successfully. Full EditMode, full PlayMode, standalone ProjectValidator, and the final production-diff audit are recorded in `art-spike/VERIFICATION.md` after execution. Android build is intentionally omitted per this task's explicit instruction; no APK was produced.
-
-Assumptions: Factory Kit is an acceptable fallback mechanical donor while preferred Quaternius licensing is unresolved; one Unity unit is one metre; +Z is forward; static posing is sufficient for this visual proof; portrait captures use a settled camera rather than simulating follow damping. No production authority or balance changed.
-
-Next spec ID: none defined after S20 in the current spec index. Next gate is human ART SPIKE visual review, alongside the separate pending S20 fresh-profile review. Full Chapter 01 art replacement is not started. PR remains stacked against S20 and must not be merged or retargeted to main before the authorized review/merge sequence.
+Next spec ID: **none defined after S20**. Next gate: human ART SPIKE V2 visual review. No production adoption or Chapter replacement starts from technical pass alone.

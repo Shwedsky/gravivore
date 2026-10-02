@@ -73,10 +73,22 @@ namespace Gravivore.ArtSpike.Tests
             Assert.That(enemies.Length, Is.EqualTo(1));
             var enemy = AssetDatabase.LoadAssetAtPath<GameObject>(ArtSpikeBuilder.CharacterPaths[3]);
             Assert.That(enemy.transform.Find("02_FourMechanicalSupports_Common"), Is.Null);
-            Assert.That(enemy.transform.Find("02_OffsetRotaryCutters"), Is.Not.Null);
+            Assert.That(enemy.transform.Find("02_ArticulatedCuttingArms"), Is.Not.Null);
             var snapshot = ArtSpikeAudit.Inspect(ArtSpikeBuilder.CharacterPaths[3]);
             Assert.That(snapshot.materialNames, Does.Contain("Gravivore_HostileCore"));
             Assert.That(snapshot.materialNames, Does.Not.Contain("Gravivore_PlayerCore"));
+        }
+
+        [Test]
+        public void V2CharactersUseMechDonorsAndHaveNoFactoryOrGearMeshes()
+        {
+            foreach (var path in ArtSpikeBuilder.CharacterPaths)
+            {
+                var snapshot = ArtSpikeAudit.Inspect(path);
+                Assert.That(snapshot.donorFiles, Has.Some.Contains("/Julius/MechSketch/"));
+                Assert.That(snapshot.donorFiles.Any(p => p.Contains("/Kenney/")), Is.False, path);
+                Assert.That(snapshot.childRenderers, Is.LessThan(40), path);
+            }
         }
 
         [Test]

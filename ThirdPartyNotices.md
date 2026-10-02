@@ -12,37 +12,50 @@
 - Attribution required: no
 - Notes: 14 low-poly models are redistributed as an audited subset for player, enemy, and Chapter 01 environment presentation. No textures, source project, sample scenes, or unused package content are included.
 
-## Art Spike — Kenney Factory Kit 3.0 (isolated subset)
+## Art Spike V2 — Unfinished mech sketch
+
+- Title/author: Unfinished mech sketch — Julius.
+- Original source: https://opengameart.org/content/unfinished-mech-sketch
+- Author credit link: https://opengameart.org/users/julius
+- Original archive: https://opengameart.org/sites/default/files/mechscetch_unfinished.zip
+- Selected license: **Creative Commons Attribution-ShareAlike 3.0 Unported** (archive also offers GPLv2+; CC BY-SA 3.0 is the selected alternative).
+- License: https://creativecommons.org/licenses/by-sa/3.0/legalcode
+- Original bundled notice: `Assets/_Game/ArtSpike/Imported/Julius/MechSketch/license.txt`.
+- Verified: 2026-10-02, original page and downloaded bundled license.
+- Permissions: free commercial use, game use, modification and source repository redistribution. Required: Julius attribution with original source, license link, modification notice and share-alike for adaptations; no endorsement implied.
+- Retained source: `Assets/_Game/ArtSpike/Imported/Julius/MechSketch/Models/mechscetch_unfinished.obj` and `mechscetch_unfinished.mtl`, plus original license and Unity metadata. No preview, source project, texture maps, vendor code or rig is imported.
+- Modification notice: original source files unchanged. Existing torso/limb/shoulder/pelvis objects selected, repositioned, rotated and scaled into new G-0/Cutter visual compositions; Unity calculates normals with 15° smoothing; new shared materials, small primitives and containment rings added. Original head and complete humanoid not used.
+- Adaptation scope: G-0/Cutter adapted visual content, comparison scene visual content and all eight V2 review PNGs under CC BY-SA 3.0; independent source code/repository and CC0 Kenney originals are not relicensed. Full attribution/terms: `docs/art-spike/ART_LICENSE.md`.
+- Exact hashes, archive SHA-256 and unchanged-source verification: `docs/art-spike/ASSET_MANIFEST.json`.
+
+## Art Spike — Kenney Factory Kit 3.0 (isolated supporting subset)
 
 - Author: Kenney.
 - Official source: https://kenney.nl/assets/factory-kit
 - Official archive: https://kenney.nl/media/pages/assets/factory-kit/edaac9d4f6-1777639602/kenney_factory-kit_3.0.zip
-- License: Creative Commons CC0 1.0 Universal, verified on the official page and in the freshly downloaded bundled license.
-- License file: `Assets/_Game/ArtSpike/Imported/Kenney/FactoryKit/License.txt`.
-- Accessed/verified: 2026-10-02.
-- Commercial use: permitted. Modification: permitted. Redistribution: permitted under CC0, including retained source assets. Attribution: not required. No copyright redistribution restriction under CC0; trademark/patent/other rights are not granted by CC0.
+- License: Creative Commons CC0 1.0 Universal; official page and bundled `Assets/_Game/ArtSpike/Imported/Kenney/FactoryKit/License.txt`.
+- Verified: 2026-10-02.
+- Commercial use, modification and raw repository redistribution: permitted. Attribution: not required. CC0 does not grant trademark/patent rights.
 - Retained directory: `Assets/_Game/ArtSpike/Imported/Kenney/FactoryKit/Models/`.
-- Exact retained FBX files: `box-long`, `cog-a`, `cog-b`, `cog-d`, `cog-e`, `cone`, `hopper-square`, `machine-connection-hole`, `machine-fortified`, `pipe-large-bend`, `pipe-large-long`, `piston-square`, `piston-thin-square`, `screen-panel-flat` (each with `.fbx` extension).
-- Also retained: bundled `License.txt` and Unity-generated file/folder metadata. No textures, vendor scripts, sample scenes, complete character models, or source project.
-- All FBX bytes match the official archive; SHA-256 manifest: `docs/art-spike/ASSET_MANIFEST.json`. Independent ArtSpike import; existing S15 source files are untouched.
+- Exact retained FBX: `box-long.fbx`, `machine-fortified.fbx`, `pipe-large-bend.fbx`, `pipe-large-long.fbx`.
+- Roles: peripheral containers, generator and conduits only; no character geometry. Ten obsolete V1 character/gear donors removed.
+- Original license and Unity metadata retained; no textures/vendor code/sample scenes. Source files match official archive; manifest above. Existing production S15 source assets unchanged.
 
-## Art Spike — Kenney Modular Space Kit 1.0 (isolated subset)
+## Art Spike — Kenney Modular Space Kit 1.0 (isolated supporting subset)
 
 - Author: Kenney.
 - Official source: https://kenney.nl/assets/modular-space-kit
 - Official archive: https://kenney.nl/media/pages/assets/modular-space-kit/8261428a47-1771146076/kenney_modular-space-kit_1.0.zip
-- License: Creative Commons CC0 1.0 Universal, verified on the official page and in the downloaded bundled license.
-- License file: `Assets/_Game/ArtSpike/Imported/Kenney/ModularSpaceKit/License.txt`.
-- Accessed/verified: 2026-10-02.
-- Commercial use, modification, and redistribution: permitted under CC0. Attribution: not required. No copyright redistribution restriction under CC0; trademark/patent/other rights are not granted by CC0.
+- License: Creative Commons CC0 1.0 Universal; official page and bundled `Assets/_Game/ArtSpike/Imported/Kenney/ModularSpaceKit/License.txt`.
+- Verified: 2026-10-02.
+- Commercial use, modification and raw repository redistribution: permitted. Attribution: not required. CC0 does not grant trademark/patent rights.
 - Retained directory: `Assets/_Game/ArtSpike/Imported/Kenney/ModularSpaceKit/Models/`.
-- Exact retained FBX files: `cables.fbx`, `template-floor.fbx`, `template-wall-detail-a.fbx`, `template-wall-half.fbx`.
-- Also retained: bundled `License.txt` and Unity-generated file/folder metadata. Palette textures, complete rooms, gates, sample files, and unused models omitted.
-- All FBX bytes match the official archive; SHA-256 manifest: `docs/art-spike/ASSET_MANIFEST.json`.
+- Exact retained FBX: `cables.fbx`, `template-floor.fbx`, `template-floor-detail-a.fbx`, `template-wall-detail-a.fbx`, `template-wall-half.fbx`.
+- Roles: deck, quiet insets and low background framing only. Original license and Unity metadata retained; no textures, complete rooms or sample files. Source files match official archive; manifest above.
 
 ## Art Spike sources not imported
 
-Quaternius Sci-Fi Essentials Kit, Animated Mech Pack, and Modular Sci-Fi MegaKit were reviewed but not imported because their pack-level CC0 labels conflict with the author's current site-wide QAL redistribution terms. Molten Maps SciFi Assets Pack was reviewed as a CC0 backup but requires an interactive download. No files from these four packs are retained. See `docs/ART_ASSET_SHORTLIST.md` for exact official sources, license evidence, and acquisition limitations.
+Expanded original-source research, licenses and rejection/acquisition reasons are recorded in `docs/ART_ASSET_SHORTLIST.md`. Colorado Stark and Robot Enemy Pack archives were inspected in ignored research storage only. Quaternius, Molten Maps, Ryan/rcorre, Mech Drone, Masterxeon, Markom3D and all other reviewed candidates have no imported files in this spike. Unresolved licensing or download availability is not treated as permission to redistribute.
 
 ## Import template (future additions)
 

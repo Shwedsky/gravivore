@@ -1,35 +1,28 @@
-# Art pipeline — isolated proof and future integration boundary
+# Art pipeline — V2 isolated proof
 
-## Current reproducible workflow
+## Reproduce the proof
 
-1. Fetch a free archive from the author's official source. Check its page and bundled license before import; record provenance and retained file hashes.
-2. Retain only useful unmodified FBX files beneath `Assets/_Game/ArtSpike/Imported/<Vendor>/<Pack>/`. Never overwrite the existing S15 donors. Omit vendor scripts, sample scenes, texture palettes, unused models, and paid assets.
-3. `ArtSpikeModelImporter` disables animation, blend shapes, cameras, lights, visibility tracks, embedded materials, and read/write. Geometry compression is off to preserve source geometry for this proof; optimization changes import layout only. The vendor FBX bytes are unchanged.
-4. `ArtSpikeBuilder` creates project-owned URP materials and prefab hierarchies outside the vendor folders. It instantiates donor children, applies rotations, recenters their bounds, and scales the wrapper to the authored dimensions in Unity metres. No vertices, topology, UVs, or rigs are edited. Planar donor floors retain their zero thickness.
-5. `ArtSpikeScene` places four review areas and copies the settled S20 camera pose/FOV from `S01_CameraFollowSettings.asset`. Review-only layers 24–27 isolate the cameras without changing production `TagManager`. One directional light and an isolated volume profile provide the preview lighting.
-6. `ArtSpikeCapture` renders the actual comparison scene through URP into RenderTextures. It warms the renderer before reading pixels and writes PNGs under `docs/art-spike/images/`. The supplementary triptych joins three actual 1080×1920 S20-camera renders. No generated concept images or painted substitutes are used.
-7. `ArtSpikeAudit` reports renderer/material/mesh/triangle/texture/animation/collider counts and projected bounds. The isolated EditMode assembly checks presentation-only character contents, geometry evolution, enemy differentiation, camera consistency, and production dependency isolation.
+1. Acquire original-author archives only. Verify commercial use, modification, repository redistribution and attribution on the page and bundled notice; record hashes. CC0, CC-BY and other explicit free commercial licenses are eligible. Exclude NC, unclear and paid-only assets.
+2. Retain unchanged sources under Assets/_Game/ArtSpike/Imported. V2 keeps Julius's OBJ/MTL/license and a small Kenney scenery subset. The scoped .gitattributes prevents source line-ending normalization; verify committed blobs against original archive bytes. No vendor scripts or engine packages are imported.
+3. ArtSpikeModelImporter acts only on this folder. Animation, blend shapes, cameras, lights, embedded materials and read/write are disabled. Compression is off. Julius normals are calculated with a 15° smoothing angle to separate existing armor planes. Source vertices/topology/UVs/bytes remain unchanged. Rebuild reapplies the import settings before mesh selection.
+4. ArtSpikeMechComposition selects one existing OBJ child by source name. There is no splitting, combining or vendor mesh copying. Wrappers rotate, recenter and scale chosen parts. Intact limbs include their existing joint/armor geometry. Head and complete humanoid geometry are not instantiated. Small Unity primitives form the core, hips and containment posts; a shared small ring mesh supplies the allowed ring augmentation.
+5. Shared project-owned URP materials replace donor materials. No character textures are needed. The scene uses one directional light, restrained bloom and a shared 32×32-per-face static reflection cubemap to reveal metal planes.
+6. ArtSpikeScene retains four review areas and numeric layers 24–27 without modifying TagManager. S20 camera settings are read unchanged. A supplementary close three-quarter camera supplies image 08.
+7. ArtSpikeCapture writes eight actual URP renders under docs/art-spike/images. Image 07 joins three actual full portrait renders. No generated/painted substitutes are used. Capture-only visibility changes are restored by reopening the saved scene.
+8. ArtSpikeAudit measures renderers, meshes, triangle indices, materials/slots, textures and animation/collider state. Full tests and ProjectValidator verify baseline flows and isolation.
 
-Menu commands: **Gravivore → Art Spike → Rebuild Comparison Assets**, **Render Review Images**, and **Write Performance Snapshot**. Rebuild overwrites the authored spike assets; render opens the saved review scene. Save any unrelated open scene work before using these authoring commands.
+Menu: **Gravivore → Art Spike → Rebuild Comparison Assets**, **Render Review Images**, **Write Performance Snapshot**. Save unrelated open scene work first; these authoring commands overwrite isolated spike assets.
 
-For command-line reproduction, run Unity 6000.3.0f1 with `-batchmode -quit -projectPath <isolated-worktree> -executeMethod Gravivore.ArtSpike.Editor.ArtSpikeCapture.BuildAndCapture -logFile <log>`. Omit `-nographics` for PNG rendering. Import/probe and tests can run separately. Existing bootstrap tooling creates local URP/player settings in a fresh checkout; those generated production settings are not part of this PR.
+Command line: Unity 6000.3.0f1 with -batchmode -quit -projectPath <worktree> -executeMethod Gravivore.ArtSpike.Editor.ArtSpikeCapture.BuildAndCapture -logFile <log>. Omit -nographics for capture. Do not run simultaneous Unity processes on one worktree. Fresh bootstrap generates local URP/player settings; unrelated serialization is excluded from the PR.
 
-## Scale and orientation
+## Source updates and future binding
 
-One Unity unit means one metre. Prefab roots remain scale `(1,1,1)`, ground-centered, with attack direction `+Z` and `+Y` up. Wrapper transforms normalize a donor after its rotation; intentional nonuniform scale is documented by the prefab. No negative scale or destructive mirror operation is used. Core dimensions and the common support hierarchy persist across tiers.
+One unit is one metre, +Y is up, +Z is forward; roots remain (1,1,1). Normalize bounds after rotation under identity ancestors. Intentional nonuniform transforms are visible in wrappers; no source topology or rig is edited.
 
-Materials are shared project-owned asset references. Every donor slot is replaced with a palette material. No vendor texture or shader is required. Piston child meshes remain independently selectable; this preserves a path for later articulation but introduces no animation in this spike.
+Vendor source → project-owned composition/materials → approved visual recipe/catalog → runtime presentation. S15's catalog and evolution observer remain unbound. Future integration requires explicit art approval and preserves gameplay authority, pooling and lifecycle. Art prefabs own no health, damage, progression, movement, rewards, saves, purchases or menus.
 
-## Future flow, after explicit art approval
+For updates, recheck licenses, hashes, units, normals, pivots, names and submeshes. Preserve GUIDs only for the same intended asset; regenerate screenshots and isolation checks. V2 reduces submissions through intact child selection, without blindly combining geometry.
 
-Vendor source → project-owned prefab → project-owned materials → visual recipe/catalog → runtime presentation.
+Julius-derived adaptations carry CC BY-SA 3.0 with credits and modification notices; see ThirdPartyNotices.md and [license scope](art-spike/ART_LICENSE.md). This covers the adapted visual work, not independent gameplay code or the whole repository. Future game distributions must carry applicable credits/license information and honor these asset terms.
 
-The current S15 catalog is a set of serialized source-model parts and transforms, and the current evolution view activates tier socket modules. Neither references this spike. Future integration must intentionally bind approved prefabs or their constituent modules into a catalog/view, preserving progression thresholds and gameplay authority. Do not bypass the existing runtime architecture with path loading or a second progression system.
-
-An art prefab has no health, damage, progression, sensing, movement, rewards, save state, purchases, or menu authority. Gameplay colliders stay on the established gameplay root. Any later animation/presentation observer must handle pooling reset and lifecycle without modifying domain state.
-
-## Safe vendor updates
-
-Keep the original archive outside `Assets` in the ignored local acquisition folder. Verify a new release's license again; preserve existing GUIDs only for the same intended retained asset. Check hashes, dimensions, orientation, pivots, submesh layout, and child names. Review regenerated screenshots and rerun isolation tests before accepting changes. Do not overwrite source files to make a composition fit; change project-owned transforms or choose another donor.
-
-Renderer consolidation and animation are future measured work. This proof deliberately preserves donor children and original meshes; it does not promise a final mobile-ready character rig or seamless custom armor mesh.
+No user Blender work is required. Portable official Blender 4.5.0 was used only to inspect other candidate blend files in the ignored acquisition folder. The selected OBJ imports directly in Unity. No Blender dependency, executable, converter or rejected candidate blend file enters the PR.

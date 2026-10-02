@@ -20,7 +20,7 @@ namespace Gravivore.ArtSpike.Editor
                 foreach (var renderer in renderers) bounds.Encapsulate(renderer.bounds);
                 output.AppendLine($"{path}: size {bounds.size}, center {bounds.center}");
                 foreach (var filter in root.GetComponentsInChildren<MeshFilter>(true))
-                    output.AppendLine($"  {filter.name}: {filter.sharedMesh.vertexCount} vertices; {filter.sharedMesh.subMeshCount} submeshes");
+                    output.AppendLine($"  {filter.name}: {filter.sharedMesh.vertexCount} vertices; {filter.sharedMesh.subMeshCount} submeshes; bounds {filter.GetComponent<Renderer>().bounds}; local rotation {filter.transform.localEulerAngles}; scale {filter.transform.lossyScale}");
                 Object.DestroyImmediate(root);
             }
             Directory.CreateDirectory("Builds/ArtSpike");

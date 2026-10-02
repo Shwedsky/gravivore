@@ -1,35 +1,29 @@
 # GRAVIVORE art direction — robotic industrial sci-fi
 
-Approved direction for this isolated spike: **robotic industrial sci-fi**. This freezes a review target, not approval of the rendered result or permission to replace Chapter 01 art.
+The approved target is a **mech-forward autonomous combat organism**. V1's Kenney-only industrial prototype was not approved in human visual review. V2 is another review candidate, not approval or permission to replace Chapter 01.
 
-## G-0 shape language
+## G-0
 
-G-0 is an autonomous machine-organism assembled around a gravity core. Use a low, compact central chassis, four mechanical supports, an open core cage, and forward-biased emitters or mandibles. Avoid a human torso, two-arm/two-leg hero proportions, a complete stock mech with a new color, an insect body, or an orb that acts as the whole body. The orb may represent the internal energy core.
+Use a compact, low chassis with deliberate hard armor planes, mechanical joints, four supports and front-biased weapon assemblies. The central cyan gravity core stays identical across tiers. It is an internal component in a machine. Avoid humanoid proportions, recognizable warehouse containers, factory machines, oversized gears, disconnected decoration, cute robots and toy palettes.
 
-The core is the recurring identity. Keep its position and diameter recognizable in every tier. Expose it above the frame. Surround it with hard-surface rings and connected stabilizers. Energy accents explain joints and attack modules; they do not cover every surface.
-
-## Materials and armor
-
-Use graphite and gunmetal bodies, cooler slightly lighter armor, and darker secondary mechanics. Separate broad armor planes from inner structure. Prefer large readable modules over many small details. Opaque URP materials, shared references, moderate smoothness, and no texture dependence are the spike baseline. Cyan denotes the player; restrained red denotes ordinary hostiles; amber marks industrial power.
+Retain graphite structure, cooler lighter armor and restrained cyan power details. Intact mech limbs should carry their existing joint and armor design together. Small project-owned rings, cores and connectors may bridge assemblies. Shared opaque URP materials and simple static lighting keep the review reproducible.
 
 ## Evolution
 
-- Tier 0: light frame, exposed core, four small supports, two narrow forward prongs.
-- Tier 1: side armor, additional forward blades, and an outer core ring. Widen the footprint through new geometry.
-- Tier 2: outer armor wings, extended attack blades, two forward emitter housings, rear power struts, and additional containment geometry.
+- Tier 0: compact chassis, four articulated support meshes, exposed core and two forward mandibles.
+- Tier 1: flank armor, narrow power strips and a wider containment ring.
+- Tier 2: outer armor, larger forward weapon assemblies and supported upper containment geometry.
 
-All tiers retain the same central core, housing, four supports, and basic orientation. Root scale and core color are unchanged. Color, emission, or uniform scaling alone never count as evolution. Review both the close comparison and the full portrait S20 camera captures.
+Each tier retains core position/diameter, chassis, support sockets and root scale. Added geometry must change the silhouette at the actual S20 camera. Greater emission or uniform scaling cannot establish evolution.
 
-## Enemy differentiation
+## Cutter and environment
 
-Exactly one ordinary prototype: Cutter. Its twin runners, rectangular dorsal energy block, and unequal forward rotary saws distinguish it from the player's four supports and circular core. Shared metals place it in the same mechanical ecosystem. Shape must remain distinguishable if energy colors are ignored.
+Cutter has two reverse-joint runners, a low armored center and unequal cutting assemblies. Its long blades and asymmetric arm shield must distinguish it from G-0 with energy colors ignored. Red denotes the hostile, cyan the player, and small amber accents industrial power.
 
-## Environment hierarchy
+Keep scenery subordinate: broad floor panels, low bulkheads, perimeter conduits and a compact reactor frame an open combat space. Kenney is supporting scenery only. Giant cogs or decor must not dominate characters.
 
-Keep the central gameplay space open. Frame it with low bulkheads and perimeter conduits. Place the reactor and generator at the rear; keep industrial emissions smaller and dimmer than character emissions. Floor tiles should be broad and quiet. Do not put high walls in front of the player, decorative colliders in the arena, or tiny props across movement space.
+## Review and mobile constraints
 
-## Portrait readability and mobile constraints
+Gameplay images use the settled S20 camera asset unchanged: offset (0,13.5,-10), look-at height 0.9, vertical FOV 46, portrait 9:16. Inspect surfaces in the supplementary close hero view and readability in the full portrait panels.
 
-Readability is reviewed at S20's actual settled camera: offset `(0, 13.5, -10)`, look-at height `0.9`, vertical FOV `46`, portrait `9:16`. Read these settings from the existing asset rather than changing it. Close views are supplementary and explicitly labeled as such in the review document.
-
-Use one directional light, opaque materials, no character lights, no skinned meshes in this static proof, and controlled bloom. Renderer submissions, animation, batching, and Android frame time require evaluation before production integration. A structural budget does not establish 60 FPS.
+Prefer separable game-ready meshes, modest triangle counts, shared materials, few submissions and reasonable textures. V2 uses static unrigged parts; it cannot demonstrate a gait, combat animation, seamless bespoke armor or Android frame time. Human review decides whether this rendered candidate meets the target.

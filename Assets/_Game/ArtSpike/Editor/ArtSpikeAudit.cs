@@ -120,7 +120,7 @@ namespace Gravivore.ArtSpike.Editor
                 report.AppendLine($"- Animation: {snapshot.animators} Animator, {snapshot.animations} legacy Animation; colliders: {snapshot.colliders}.");
                 report.AppendLine($"- Bounds (metres): {snapshot.boundsMetres:F3}; S20 projected bounding box: {snapshot.projectedPixelsAt1080x1920:F1} pixels.\n");
             }
-            report.AppendLine("## Performance limits\n\nThis is a structural snapshot, not Android frame-time evidence. Piston donors expose three separate renderers each; Tier 2 retains many renderer submissions. Consolidation/batching and animation must be measured before production adoption. No dynamic lights, colliders, or gameplay scripts live in character prefabs. The comparison scene has one directional light and a small bloom pass.\n");
+            report.AppendLine("## Performance limits\n\nV2 selects existing single-renderer mech child meshes without combining them. V1 Tier 2 had 60 renderers; compare the measured V2 count above. Character materials have no textures; the scene additionally uses one shared 32×32-per-face static reflection cubemap (mipmapped RGBAHalf), one directional light, and a small bloom pass. No dynamic lights, colliders, rig, animation, or gameplay scripts live in character prefabs. This is a structural snapshot, not Android frame-time evidence. Repeated enemies, shadows, batching, and future animation still require device profiling before production adoption.\n");
             File.WriteAllText("docs/art-spike/PERFORMANCE.md", report.ToString());
         }
     }

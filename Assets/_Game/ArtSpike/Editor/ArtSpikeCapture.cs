@@ -28,6 +28,16 @@ namespace Gravivore.ArtSpike.Editor
             Render(Camera("Camera_C_EnvironmentOverview"), "04_Environment_Overview.png", 1920, 1080);
             Render(Camera("Camera_C_S20"), "05_Gameplay_Mock.png", 1080, 1920);
             Render(Camera("Camera_D_ScaleReference"), "06_ScaleReference.png", 1920, 1080);
+            var scaleEnemy = roots.Single(r => r.name == "D_Cutter");
+            var scaleStage = roots.Single(r => r.name == "AREA D - Intended Scale Reference");
+            scaleEnemy.SetActive(false);
+            scaleStage.transform.Find("OneMetreReference").gameObject.SetActive(false);
+            try { Render(Camera("Camera_D_CloseHero"), "08_G0_CloseHero.png", 1920, 1080); }
+            finally
+            {
+                scaleEnemy.SetActive(true);
+                scaleStage.transform.Find("OneMetreReference").gameObject.SetActive(true);
+            }
             // A supplementary settled-camera comparison of every tier; each panel is an actual camera render.
             var triptych = new Texture2D(3240, 1920, TextureFormat.RGB24, false);
             var instances = roots.Where(r => r.name.StartsWith("A_G0_", StringComparison.Ordinal)).ToArray();

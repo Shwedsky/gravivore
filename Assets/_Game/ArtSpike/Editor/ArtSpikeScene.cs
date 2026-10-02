@@ -21,6 +21,7 @@ namespace Gravivore.ArtSpike.Editor
             RenderSettings.ambientMode = AmbientMode.Flat;
             RenderSettings.ambientLight = new Color(.42f, .47f, .52f);
             RenderSettings.fog = false;
+            ArtSpikeStudioReflection.Apply();
             var light = new GameObject("ArtReview_KeyLight_Only").AddComponent<Light>();
             light.type = LightType.Directional;
             light.intensity = 2.2f;
@@ -76,6 +77,8 @@ namespace Gravivore.ArtSpike.Editor
             Place(ArtSpikeBuilder.CharacterPaths[2], AreaD + new Vector3(-1.5f, 0, 0), "D_G0_Tier2", 27);
             Place(ArtSpikeBuilder.CharacterPaths[3], AreaD + new Vector3(1.5f, 0, 0), "D_Cutter", 27);
             ReviewCamera("Camera_D_ScaleReference", AreaD, new Vector3(0, 7.4f, -5.48f), 16f / 9f).cullingMask = 1 << 27;
+            ReviewCamera("Camera_D_CloseHero", AreaD + new Vector3(-1.5f, 0, 0),
+                new Vector3(2.3f, 2.15f, 2.85f), 16f / 9f).cullingMask = 1 << 27;
 
             AssetDatabase.SaveAssets();
             if (!EditorSceneManager.SaveScene(scene, ArtSpikeBuilder.ScenePath))

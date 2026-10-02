@@ -1,85 +1,73 @@
-# Art spike asset shortlist
+# Art Spike V2 asset shortlist
 
-Official sources checked on **2026-10-02**. No unofficial mirrors, paid tiers, or engine packages were used. Every pack below was evaluated before donor selection.
+Original author sources checked on **2026-10-02**. V1's Kenney-only character result was not approved. Research expanded beyond CC0; attribution and explicit free commercial redistribution are acceptable. No paid files, unofficial mirrors, ripped/game-extracted assets or authentication bypasses were used.
 
-## Quaternius Sci-Fi Essentials Kit — rejected for this import
+## Selected: Unfinished mech sketch — Julius
 
-- Author: Quaternius.
-- Official pages: <https://quaternius.com/packs/scifiessentialskit.html> and <https://quaternius.itch.io/sci-fi-essentials-kit>.
-- License evidence: both pack pages advertise CC0; the author's current [QAL v1.0](https://quaternius.com/license.html), dated 2026-08-28, covers assets from any distribution platform and restricts redistribution of assets as assets. Commercial products, modification, and contractor use are permitted without attribution under QAL. CC0 permits commercial use, modification, and redistribution without attribution. These conflicting official representations do not establish clear permission to retain raw assets in this public source repository.
-- Formats: FBX, OBJ, glTF; Blend/engine projects in the paid Source tier.
-- Contents: 60+ models in the full offering; the free Standard description identifies 37 models, including animated robot enemies, weapons, and props.
-- Useful roles: character bases and detachable weapon/prop donors.
-- Limitations: modular separability of individual robots was not inspected because no model was imported. Free and paid contents differ.
-- Acquisition: official download and purchase pages reached. Free archive is `Sci-Fi Essentials Kit[Standard].zip` (159 MB), accessed through an interactive itch.io download step. No archive acquired or imported; license conflict takes precedence.
-- Decision: rejected for this spike pending clarification of the applicable license. Do not substitute a mirror or buy Pro/Source.
+[Original author upload](https://opengameart.org/content/unfinished-mech-sketch), [author](https://opengameart.org/users/julius). Published page and archive license offer **CC BY-SA 3.0 (or later)** alternatively to GPLv2+. CC BY-SA 3.0 is selected: commercial use, modification and source repository redistribution allowed; attribution, modification notice and share-alike apply. [Full license](https://creativecommons.org/licenses/by-sa/3.0/legalcode).
 
-## Quaternius Animated Mech Pack — rejected for this import
+Direct archive: [mechscetch_unfinished.zip](https://opengameart.org/sites/default/files/mechscetch_unfinished.zip), 119 KB advertised. Acquired. Contains OBJ, MTL, preview and license. Nine existing objects: two legs, two weapon arms, two shoulders, torso, pelvis and head. Original face triangulation totals **3,944 triangles**; individual leg 868, arm 304, shoulder 120, torso 700, pelvis 464, head 196. No textures, rig or animation.
 
-- Author: Quaternius.
-- Official page: <https://quaternius.com/packs/animatedmech.html>.
-- License evidence: pack page labels CC0 and commercial use; the current site-wide QAL conflicts with raw-asset redistribution as described above. Modification and commercial product use are allowed by both representations; redistribution permission remains unresolved. No attribution required by either.
-- Formats listed: FBX, OBJ, Blend; the format badge also lists glTF.
-- Contents: four mechs, each with an animation set.
-- Useful roles: non-human locomotion reference and possible mechanical child donors.
-- Limitations: four complete character models are not proven modular. No rig/child mesh inspection was performed.
-- Acquisition: official page's download button points to the author's [Google Drive folder](https://drive.google.com/drive/folders/1sueV_4CGMpZC8y30mWfgKK9UaT3mkHBX?usp=sharing). The folder listing was not accessible to the read-only web tool; no direct archive filename was exposed by the official page. No import.
-- Decision: rejected pending license resolution; animated donor candidate for a later authorized task.
+Selected for intact armored support/joint meshes, weapon assemblies and broad shells. Only existing child selection and Unity transforms/materials are used; the head and complete humanoid are not instantiated. Original OBJ/MTL/license retained; source geometry unchanged. Normal import uses 15° smoothing. This is an unfinished mesh with no PBR surface maps; compressed proportions and module joins remain visual limitations. [Adaptation license scope](art-spike/ART_LICENSE.md).
 
-## Quaternius Modular Sci-Fi MegaKit — rejected for this import
+## Supporting scenery: Kenney
 
-- Author: Quaternius.
-- Official pages: <https://quaternius.com/packs/modularscifimegakit.html> and <https://quaternius.itch.io/modular-sci-fi-megakit>.
-- License evidence: CC0 on both pack pages versus current site-wide QAL restrictions. Commercial use/modification/no attribution are explicit, but raw-asset redistribution is ambiguous. Not imported.
-- Formats: FBX, OBJ, glTF; Blend and engine integration in paid Source.
-- Contents: 270+ environment pieces in the full pack; the free Standard tier supplies a subset. Floors, walls, doors, columns, props, and other categories.
-- Useful roles: modular industrial environment and machinery framing.
-- Limitations: source-engine projects/custom shaders and extra content are paid; no free model hierarchy was inspected.
-- Acquisition: official free purchase page reached; `Modular SciFi MegaKit[Standard].zip` (46 MB) requires the interactive free-download step. No archive acquired.
-- Decision: rejected for this spike pending license clarification.
+**Factory Kit 3.0** — [official](https://kenney.nl/assets/factory-kit). Page and bundled License.txt: **CC0 1.0**; commercial use, modification and raw redistribution allowed, no attribution required. 140 industrial models; FBX/OBJ/GLB. Official direct ZIP acquired. V2 retains only box-long, machine-fortified, pipe-large-bend and pipe-large-long FBX plus license/metadata. Used as scenery containers, generators and conduits. All ten obsolete character/gear donors were removed from this spike. No character contains Kenney geometry.
 
-## Molten Maps – SciFi Assets Pack — backup, manual asset required
+**Modular Space Kit 1.0** — [official](https://kenney.nl/assets/modular-space-kit). Page and bundle: **CC0 1.0**, same permissions. Forty FBX/OBJ/GLB modular station pieces. Official direct ZIP acquired. Retained cables, template-floor, template-floor-detail-a, template-wall-detail-a and template-wall-half FBX plus license/metadata. Quiet deck/panel insets and low framing only; complete rooms would obstruct gameplay. Both archive/file hashes are recorded in the manifest.
 
-- Author: Moltenbolt.
-- Official page: <https://moltenmaps.itch.io/molten-maps-scifi-pack>.
-- Verified published license: CC0. Commercial use, modification, and redistribution are permitted by [CC0](https://creativecommons.org/publicdomain/zero/1.0/); no attribution required. No downloaded bundled license was available to inspect, so import would require checking that archive as well.
-- Formats advertised: FBX, OBJ, and glTF (the page spells it GLFT).
-- Contents: 130+ modular walls/floors/ramps, monitors, generators, cryo installations, and industrial props. The page describes a shared atlas and three material roles.
-- Useful roles: reactor, generator, and environment machinery donors.
-- Limitations: stylized props need palette replacement; the advertised atlas size is 1048×1048 and remains unverified from files.
-- Acquisition: official asset and purchase pages reached. The free download is a browser/session interaction; no direct archive link was exposed. No authentication or captcha bypass was attempted. No files imported.
-- Decision: backup; the available Kenney donors were sufficient to continue.
+## Eligible backup: Modular Mech — Ryan / rcorre
 
-**MANUAL ASSET REQUIRED:** download `Molten Maps SciFi Asset Pack.zip` (102 MB) from the official page using the free-download option. Place it at:
+[Original page](https://rcorre.itch.io/modular-mech). **CC BY 4.0 International** explicitly listed for assets; MIT for example code. Commercial use, modification, raw redistribution allowed with attribution/modification notice. Rigged directional walking mech, separate head and interchangeable weapon attachments. FBX/Blend/Godot archives. Low-poly untextured planes; source renderer/triangle structure unmeasured because not acquired. Official page/purchase page reached; requires the interactive free-download step. Not imported, not assumed sufficient visual fidelity.
 
-`C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\art-spike-kitbash\Builds\ArtSpike\ManualAssets\Molten Maps SciFi Asset Pack.zip`
+**MANUAL ASSET REQUIRED (optional backup):** choose the free download of **modular_mech_fbx.zip**, place at:
+C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\art-spike-kitbash\Builds\ArtSpike\ManualAssets\modular_mech_fbx.zip
 
-This is optional for the current review package; do not import it automatically into production.
+## Eligible backup: Mech Drone — Willy Decarpentrie
 
-## Kenney Modular Space Kit 1.0 — selected
+[Original author model](https://sketchfab.com/3d-models/mech-drone-8d06874aac5246c59edb4adbe3606e0e). Sketchfab public original-model metadata confirms **CC BY 4.0**, **9,131 triangles**, one animation and downloadable status. Commercial modification/redistribution allowed with credit and change notice. Potential articulated walker/armor donor; exact mesh separability, textures and download formats not inspected. Official download requires browser/sign-in flow; no source archive acquired. No third-party demo or mirrored copy substituted.
 
-- Author: Kenney.
-- Official page: <https://kenney.nl/assets/modular-space-kit>.
-- License: CC0 on the official page and in the downloaded `License.txt`. Commercial use/modification/redistribution allowed; no attribution required.
-- Formats in archive: FBX, OBJ, GLB, with palette textures and alternate color maps.
-- Contents: 40 modular pieces, including floor and wall templates, rooms, corridors, gates, and cables.
-- Useful roles: quiet floors, low bulkheads, perimeter framing, and a cable bundle.
-- Limitations: complete rooms would obstruct top-down gameplay; only templates/low framing retained. Vendor palette and texture variants were omitted.
-- Acquisition: official direct ZIP downloaded successfully: `kenney_modular-space-kit_1.0.zip`.
-- Retained subset: `template-floor.fbx`, `template-wall-half.fbx`, `template-wall-detail-a.fbx`, `cables.fbx`, bundled license, and generated Unity metadata.
-- Decision: selected for supplemental environment structure.
+**MANUAL ASSET REQUIRED (optional backup):** download the original model from that page (or its official glTF download if no FBX is offered), retain the complete source archive, and place it at:
+C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\art-spike-kitbash\Builds\ArtSpike\ManualAssets\MechDrone.zip
+The download archive's vendor filename is not exposed by the unauthenticated metadata; the destination above is a project-local name. Format conversion/hierarchy audit must precede import.
 
-## Kenney Factory Kit 3.0 — selected additional mechanical donor
+## Eligible backups with acquisition limits
 
-- Author: Kenney.
-- Official page: <https://kenney.nl/assets/factory-kit>.
-- License: CC0 on the official page and in the freshly downloaded `License.txt`. Commercial use/modification/redistribution allowed; no attribution required.
-- Formats in archive: FBX, OBJ, GLB, with palette textures.
-- Contents: 140 industrial models, including machines, articulated pistons, robot arms, cogs, pipes, containers, conveyors, and screens.
-- Useful roles: gravity housing, core rings, four mechanical supports, armor panels, cutter saws, reactor plinth, generator, containers, and pipes.
-- Limitations: static industrial parts rather than a character rig; nonuniform scaling can expose familiar prop shapes. Piston FBX files each expose three child meshes, increasing submissions.
-- Acquisition: official direct ZIP downloaded successfully: `kenney_factory-kit_3.0.zip`. Source bytes in the spike were verified against this archive, independently of S15's historical import.
-- Retained subset: 14 FBX files listed in `ThirdPartyNotices.md` and `art-spike/ASSET_MANIFEST.json`; license and generated metadata. No textures or complete robots retained.
-- Decision: selected for transform-only modular kitbashing. No S15 assets or production recipes were edited.
+**Free 3D Kitbash Set — Markom3D**: [original Gumroad](https://markom3d.gumroad.com/l/Free3DKitbash). Explicit **CC0**; commercial modification/raw redistribution permitted without credit. Free Version has Blend/FBX hard-surface parts; full 150-piece tier is paid and excluded. Mesh counts/separability unmeasured. Interactive checkout/download, no archive acquired. Backup for armor/connectors; no paid tier or mirror.
 
-The Quaternius license conflict is recorded as a source-selection limitation, not resolved through assumptions or past conversation summaries.
+**Mech Kitbash — masterxeon1001**: [original BlendSwap](https://blendswap.com/blend/9655). **CC0** shown. 3.17 MB Blender 2.6x/Cycles file, basic rig without IK, kitbashed mech. Commercial modification/raw redistribution allowed, no credit required. No direct archive acquired; download interaction/account may be needed. Mobile topology/parts unmeasured, so backup rather than verified game-ready selection.
+
+**Molten Maps SciFi Assets Pack — Moltenbolt**: [original](https://moltenmaps.itch.io/molten-maps-scifi-pack). Published **CC0**; commercial modification/raw redistribution allowed. FBX/OBJ/glTF, 130+ modular environments/props; advertised atlas and three material roles unverified. Interactive free download prevents direct acquisition. Supporting environment backup, no character donor.
+**MANUAL ASSET REQUIRED (optional):** Molten Maps SciFi Asset Pack.zip (102 MB advertised), placed at:
+C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\art-spike-kitbash\Builds\ArtSpike\ManualAssets\Molten Maps SciFi Asset Pack.zip
+
+## Acquired but rejected
+
+**Mech Character Model — Colorado Stark**: [original](https://opengameart.org/content/mech-character-model). **CC0**, public-domain notice; commercial modification/raw redistribution allowed without attribution. Acquired original Mech.zip (59.3 MB advertised): FBX and 2K diffuse/normal/specular maps; page reports 15,434 triangles and 42 bones. Preview is a conventional humanoid with organic-looking worn surfaces. Not suitable as a complete G-0/Cutter; no separately reusable armor proven. Kept only in ignored research downloads, nothing imported.
+
+**Robot Enemy Pack — Teh_Bucket, TrickyTriangles, toiletsnakes**: [original](https://opengameart.org/content/robot-enemy-pack). **CC0**, credits retained in research; commercial modification/raw redistribution allowed without required attribution. Acquired buddyarena blend.zip, six blend files (five robots plus rocket), texture sources/maps. Original page estimates ~10k tris per robot. Automated Blender inspection found one body mesh per robot: blaster 6,770, crawler 2,968, drone 1,202, lobber 7,162; roller base 891 before mirror modifier. Armature/action sets present, three material roles. The bodies are not separate kitbash limbs/shells; splitting would exceed this task's operations. Rejected as primary donors; no archive/models/maps/converter imported.
+
+## Rejected for cost, provenance or license ambiguity
+
+**Stalenhag Environment Project: Spider Mech — Enrico Labarile**: [original](https://sketchfab.com/3d-models/stalenhag-environment-project-spider-mech-ec5914b53b6a4cde8de4820050bc46c5). Public metadata confirms **CC BY 4.0**, **103,396 triangles**, no animation. Stronger detailed environment hero, but over the preferred mobile donor budget with no inspected low-poly variant. Description bases it on another artist's work; rights/provenance not resolved for adoption. Not acquired/imported; formats/textures/separability uninspected.
+
+**Humanoid Robot Pack — Sotudios**: [original](https://sotudios.com/Assets/Humanoid-RobotPack/). **CC BY 4.0**, explicit commercial permission, license included in advertised ZIP. Eight unrigged FBX/OBJ humanoids with four 2K PBR maps each; 55,897–72,224 tris each, 529,832 total, 180 MiB. Visually detailed candidate category but high for repeated mobile units, no inspected low-poly alternative, no proven separable armor. Direct official link found; rejected before download/import.
+
+**45 Sci-Fi & Robot Kitbash**: [original marketplace](https://www.artstation.com/marketplace/p/oVnbO/45-sci-fi-robot-kitbash). Free **ArtStation Standard License** imposes commercial project/sales limits; extended license costs money. FBX/OBJ mechanical parts, but public raw redistribution not established. Rejected, not acquired/imported.
+
+**Quaternius Sci-Fi Essentials, Animated Mech, Modular Sci-Fi MegaKit**: original [Essentials](https://quaternius.com/packs/scifiessentialskit.html), [Mech](https://quaternius.com/packs/animatedmech.html), [MegaKit](https://quaternius.com/packs/modularscifimegakit.html). FBX/OBJ/Blend/glTF listings; robot/weapons, four animated mechs, modular environment respectively. Pack pages still advertise CC0. Current [QAL v1.0](https://quaternius.com/license.html), dated 2026-08-28, permits commercial products/modification but restricts asset redistribution. Contradictory source statements leave raw public-repository permission unclear. Rejected, no files acquired/imported, no paid tiers substituted.
+
+**SENTRY-2, SAP-1, BA-2 — Quandtum**: original [SENTRY](https://opengameart.org/content/sentry-2-sentry-bot-mark-2), [SAP](https://opengameart.org/content/sap-1-sapper-bot-mark-1), [BA](https://opengameart.org/content/ba-2-blast-all-bot-mark-2). Published **CC0**, blend/rigged meshes and texture maps, potential walkers. SENTRY reports 2,196 tris and 2K maps; BA 6,696 and 2K maps. Authors list sampled external texture sources; comments dispute compatible relicensing. Also single combined body meshes. Licensing ambiguity in bundled texture provenance takes precedence: not acquired/imported.
+
+## Other original uploads screened, not selected
+
+- [Spiderbot 1.0](https://opengameart.org/content/spiderbot-10), killyoverdrive: **CC BY-SA 3.0**, animated blend (616 KB); simple complete spider body, no verified modular parts. Not acquired; licensing permits commercial redistribution with share-alike/credit.
+- [Low Poly Bug Robot](https://opengameart.org/content/low-poly-bug-robot) and [Low poly robot](https://opengameart.org/content/low-poly-robot), VSG: **CC0**, blend, 970/1,082 tris, vertex colors and simple animations. Too simple for this fidelity correction; modular structure uninspected. Not acquired.
+- [Kraken Mech](https://opengameart.org/content/kraken-mech-justin-nichols-concept), Scribe / Daniel Stephens, concept Justin Nichol: **CC BY-SA 3.0** offered alongside GPL; blend, 3,560 tris, unrigged, basic texture. Original requires concept credit as well. Basic surface/unfinished UVs, no proven modules; not acquired.
+- [Mech](https://opengameart.org/content/mech), Skorpio: **CC BY-SA 3.0** or GPL3, blend ZIP, 1,733 polygons advertised, camo maps/basic animations. Low detail, complete humanoid mech rather than proven separate shells; not acquired.
+- [Cyborg Wheeler](https://opengameart.org/content/cyborg-wheeler), piacenti: **CC BY 3.0**, blend/packed textures in final.zip. Nonhuman locomotion potential, exact geometry/maps/parts unmeasured; not acquired.
+- [Giant Robot](https://opengameart.org/content/giant-robot), amaralzin9309: **CC BY 4.0**, RoboGigante.blend (651 KB), university-game robot; detail/rig/parts unverified. Not acquired.
+- [Mobile Turret](https://opengameart.org/content/mobile-turret), Atmostatic: **CC BY 3.0** offered alongside CC BY-SA/GPL; mobile_turret1.blend (3.2 MB). Old walking turret, no verified game-ready modular structure. Not acquired.
+- [Slasher](https://opengameart.org/content/slasher), br-n518: **CC0**, blend and rendered sprite archives; organic horned monster with blade claws. Wrong robotic shape language; not acquired.
+
+These nonselected CC-BY/CC-BY-SA candidates permit commercial modification/raw redistribution with their attribution/change/share-alike conditions, but that does not establish visual suitability. Uninspected formats, textures, costs and parts remain explicitly unverified. No candidate is marked selected merely because an archive is local.
