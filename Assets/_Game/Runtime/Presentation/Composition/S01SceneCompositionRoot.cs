@@ -10,6 +10,7 @@ using Gravivore.Gameplay.Progression;
 using Gravivore.Gameplay.Quests;
 using Gravivore.Gameplay.World;
 using Gravivore.Persistence.Profile;
+using Gravivore.Platform.Monetization;
 using Gravivore.Presentation.Camera;
 using Gravivore.Presentation.Assets;
 using Gravivore.Presentation.Combat;
@@ -109,6 +110,10 @@ namespace Gravivore.Presentation.Composition
 
         public OfflineRewardService OfflineRewards => _profileSession?.OfflineRewards;
 
+        public MonetizationFeatureConfiguration MonetizationFeatures { get; private set; }
+        public IPurchaseService PurchaseService { get; private set; }
+        public IRewardedAdService RewardedAdService { get; private set; }
+
         public OfflineReturnSummary OfflineReturnSummary =>
             _profileSession != null ? _profileSession.ReturnSummary : default;
 
@@ -163,6 +168,7 @@ namespace Gravivore.Presentation.Composition
             _playerRecoverySettings.ValidateOrThrow();
             _s14PresentationDefinition.ValidateOrThrow();
             _s15VisualCatalog.ValidateOrThrow();
+            InitializeMonetization();
 
             var statsConfiguration = _playerStatsDefinition.Configuration;
             var progressionConfiguration = _progressionDefinition.Configuration;
@@ -220,6 +226,13 @@ namespace Gravivore.Presentation.Composition
             InitializeDevelopmentTools(uiTouchExclusion, topTouchExclusion, worldConfiguration, bossConfiguration);
 #endif
             _isComposed = true;
+        }
+
+        private void InitializeMonetization()
+        {
+            MonetizationFeatures = MonetizationFeatureConfiguration.Disabled();
+            PurchaseService = new DisabledPurchaseService();
+            RewardedAdService = new DisabledRewardedAdService();
         }
 
         public void ConfigurePersistence(string directory, ITimeProvider timeProvider)
