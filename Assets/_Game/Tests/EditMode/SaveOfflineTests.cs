@@ -250,6 +250,56 @@ namespace Gravivore.Tests.EditMode
         }
 
         [Test]
+        public void Repository_SuccessfulSavePromotesPreviousMainAndIgnoresStaleTemp()
+        {
+            var directory = CreateTemporaryDirectory();
+            var context = CreateContext();
+            var time = new ManualTimeProvider(Utc(2026, 9, 29, 12));
+            var repository = CreateRepository(directory, time);
+            var serializer = new UnityJsonSaveSerializer();
+            Func<SaveRootDto> fresh = () => FreshDto(context, time.UtcNow);
+            Action<SaveRootDto> validate = dto => { _ = ProfileSaveMapper.Restore(dto, context); };
+            var first = repository.LoadOrCreate(fresh, validate).Save;
+            var firstMain = File.ReadAllText(repository.MainPath);
+            var second = serializer.Deserialize<SaveRootDto>(serializer.Serialize(first));
+            second.player.powerLevel = 2;
+
+            repository.Save(second, fresh, validate);
+            File.WriteAllText(repository.TempPath, serializer.Serialize(first));
+            var loaded = repository.LoadOrCreate(fresh, validate);
+
+            Assert.That(loaded.Save.player.powerLevel, Is.EqualTo(2));
+            Assert.That(File.ReadAllText(repository.BackupPath), Is.EqualTo(firstMain));
+            Assert.That(serializer.Deserialize<SaveRootDto>(File.ReadAllText(repository.BackupPath)).player.powerLevel,
+                Is.EqualTo(1));
+        }
+
+        [Test]
+        public void Repository_FailedTempWriteLeavesValidatedMainAndBackupUntouched()
+        {
+            var directory = CreateTemporaryDirectory();
+            var context = CreateContext();
+            var time = new ManualTimeProvider(Utc(2026, 9, 29, 12));
+            var repository = CreateRepository(directory, time);
+            var serializer = new UnityJsonSaveSerializer();
+            Func<SaveRootDto> fresh = () => FreshDto(context, time.UtcNow);
+            Action<SaveRootDto> validate = dto => { _ = ProfileSaveMapper.Restore(dto, context); };
+            var save = repository.LoadOrCreate(fresh, validate).Save;
+            repository.Save(save, fresh, validate);
+            var mainBefore = File.ReadAllText(repository.MainPath);
+            var backupBefore = File.ReadAllText(repository.BackupPath);
+            var changed = serializer.Deserialize<SaveRootDto>(serializer.Serialize(save));
+            changed.player.powerLevel = 2;
+            var fileSystem = new FaultingProfileFileSystem { WriteFailurePath = repository.TempPath };
+            var faultingRepository = CreateRepository(directory, time, null, fileSystem);
+
+            Assert.Throws<IOException>(() => faultingRepository.Save(changed, fresh, validate));
+
+            Assert.That(File.ReadAllText(repository.MainPath), Is.EqualTo(mainBefore));
+            Assert.That(File.ReadAllText(repository.BackupPath), Is.EqualTo(backupBefore));
+        }
+
+        [Test]
         public void ProfileRestore_RejectsEncounterQuestContradictionsAndAcceptsCompletedGraph()
         {
             var context = CreateContext();
@@ -715,6 +765,30 @@ namespace Gravivore.Tests.EditMode
 
             var reloaded = ProfileSession.Start(repository, context, configuration, time, diagnostics);
             Assert.That(reloaded.State.Offline.PendingReward, Is.EqualTo(5));
+        }
+
+        [Test]
+        public void DevelopmentProfileResetPreventsRepeatedLifecycleFlushFromRecreatingSave()
+        {
+            var directory = CreateTemporaryDirectory();
+            var context = CreateContext();
+            var time = new ManualTimeProvider(Utc(2026, 9, 29, 12));
+            var repository = CreateRepository(directory, time);
+            var session = ProfileSession.Start(
+                repository,
+                context,
+                new SaveOfflineConfiguration(1, 2f, OfflineConfiguration()),
+                time,
+                new RecordingDiagnostics());
+            Assert.IsTrue(File.Exists(repository.MainPath));
+
+            Assert.IsTrue(session.ResetProfileForDevelopment());
+            Assert.IsFalse(session.FlushNow());
+            Assert.IsFalse(session.FlushNow());
+
+            Assert.IsFalse(File.Exists(repository.MainPath));
+            Assert.IsFalse(File.Exists(repository.BackupPath));
+            Assert.IsFalse(File.Exists(repository.TempPath));
         }
 
         private string CreateTemporaryDirectory()

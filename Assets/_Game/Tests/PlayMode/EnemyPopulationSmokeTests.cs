@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using Gravivore.Core.Stats;
 using Gravivore.Gameplay.Combat;
 using Gravivore.Gameplay.Enemies;
@@ -166,6 +167,47 @@ namespace Gravivore.Tests.PlayMode
             Assert.AreSame(second.TargetPoint.GetComponent<Collider>(), second.GetComponentInChildren<SphereCollider>());
 
             pool.Return(second);
+            Object.Destroy(root);
+            Object.Destroy(player);
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator OrdinaryEnemyPool_RepeatedLethalCyclesKeepFixedHierarchyAndSingleLifeEvents()
+        {
+            const int cycles = 64;
+            var root = new GameObject("Pool Stress Root");
+            var player = new GameObject("Pool Stress Player");
+            var pool = new OrdinaryEnemyPool(root.transform, 1, 9, TestMaterialFactory.Lit);
+            var configuration = CreateEnemyConfiguration();
+            var target = new RecordingDamageable();
+            var initialHierarchyCount = root.GetComponentsInChildren<Transform>(true).Length;
+            var observedLives = new HashSet<EnemyLifeId>();
+            var deathEvents = 0;
+
+            for (var i = 0; i < cycles; i++)
+            {
+                var enemy = pool.Acquire(configuration, player.transform, target, Vector3.one * i, pool.Return);
+                var eventsThisLife = 0;
+                enemy.Died += death =>
+                {
+                    eventsThisLife++;
+                    deathEvents++;
+                    Assert.IsTrue(observedLives.Add(death.LifeId));
+                };
+
+                var result = enemy.ApplyDamage(new DamageRequest(1000f, DamageType.Gravity));
+
+                Assert.IsTrue(result.WasLethal);
+                Assert.That(eventsThisLife, Is.EqualTo(1));
+                Assert.IsFalse(enemy.CanBeTargeted);
+                Assert.That(pool.AvailableCount, Is.EqualTo(1));
+                Assert.That(pool.LeasedCount, Is.Zero);
+                Assert.That(root.GetComponentsInChildren<Transform>(true).Length, Is.EqualTo(initialHierarchyCount));
+            }
+
+            Assert.That(deathEvents, Is.EqualTo(cycles));
+            Assert.That(observedLives.Count, Is.EqualTo(cycles));
             Object.Destroy(root);
             Object.Destroy(player);
             yield return null;

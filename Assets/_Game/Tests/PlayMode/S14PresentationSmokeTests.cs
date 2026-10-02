@@ -54,6 +54,46 @@ namespace Gravivore.Tests.PlayMode
             yield return VerifyPulseReuse("Assimilation", 0.2f, 0.2f, 0.05f, true);
         }
 
+        [UnityTest]
+        public IEnumerator VfxPoolSaturation_ReusesFixedHierarchyAndReturnsToZeroActiveItems()
+        {
+            var pulseRoot = new GameObject("Pulse Saturation", typeof(PooledPulseVfx));
+            var pulse = pulseRoot.GetComponent<PooledPulseVfx>();
+            pulse.Initialize(2, TestMaterialFactory.Lit);
+            var pulseHierarchyCount = pulseRoot.GetComponentsInChildren<Transform>(true).Length;
+            for (var i = 0; i < 64; i++)
+            {
+                pulse.Play(Vector3.one * i, 0.1f, 0.2f, 0.5f);
+                Assert.That(pulse.ActiveCount, Is.LessThanOrEqualTo(pulse.Capacity));
+            }
+            pulse.Tick(1f);
+            Assert.That(pulse.ActiveCount, Is.Zero);
+            Assert.That(pulseRoot.GetComponentsInChildren<Transform>(true).Length, Is.EqualTo(pulseHierarchyCount));
+
+            var lashRoot = new GameObject("Lash Saturation", typeof(GravityLashVfxPool));
+            var settings = ScriptableObject.CreateInstance<GravityAttackSettings>();
+            SetField(settings, "_targetLayers", (LayerMask)(1 << 9));
+            SetField(settings, "_hardBlockerLayers", (LayerMask)(1 << 8));
+            SetField(settings, "_vfxPoolSize", 2);
+            var lash = lashRoot.GetComponent<GravityLashVfxPool>();
+            lash.Initialize(settings, TestMaterialFactory.Lit);
+            var lashHierarchyCount = lashRoot.GetComponentsInChildren<Transform>(true).Length;
+            for (var i = 0; i < 64; i++)
+            {
+                lash.Play(Vector3.zero, Vector3.forward * i);
+                Assert.That(lash.ActiveCount, Is.LessThanOrEqualTo(lash.Capacity));
+            }
+            lash.Tick(10f);
+            lash.Tick(10f);
+            Assert.That(lash.ActiveCount, Is.Zero);
+            Assert.That(lashRoot.GetComponentsInChildren<Transform>(true).Length, Is.EqualTo(lashHierarchyCount));
+
+            Object.Destroy(pulseRoot);
+            Object.Destroy(lashRoot);
+            Object.Destroy(settings);
+            yield return null;
+        }
+
         [Test]
         public void AudioSettings_ClampVolumeAndPersistMute()
         {

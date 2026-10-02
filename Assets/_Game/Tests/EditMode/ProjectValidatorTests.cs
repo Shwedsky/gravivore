@@ -70,5 +70,14 @@ namespace Gravivore.Tests.EditMode
                 StringAssert.DoesNotContain("Shader.Find(", File.ReadAllText(path), path);
             }
         }
+
+        [Test]
+        public void ProductionRuntime_DoesNotUseResourcesLoad()
+        {
+            foreach (var path in Directory.GetFiles("Assets/_Game/Runtime", "*.cs", SearchOption.AllDirectories))
+            {
+                StringAssert.DoesNotContain("Resources.Load", File.ReadAllText(path), path);
+            }
+        }
     }
 }

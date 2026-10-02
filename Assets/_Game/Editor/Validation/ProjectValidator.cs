@@ -18,9 +18,11 @@ using Gravivore.Presentation.Quests;
 using Gravivore.Presentation.Feedback;
 using Gravivore.Presentation.World;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.SceneManagement;
 
 namespace Gravivore.Editor
 {
@@ -146,6 +148,7 @@ namespace Gravivore.Editor
             ValidateSaveOffline();
             ValidateS14Presentation();
             ValidateS15Assets();
+            ValidateCanonicalScenes();
         }
 
         private static void ValidatePlayerRecovery()
@@ -266,6 +269,52 @@ namespace Gravivore.Editor
                 if (File.ReadAllText(script).Contains("Shader.Find("))
                 {
                     throw new InvalidOperationException($"Production runtime code must not use Shader.Find: {script}.");
+                }
+
+                if (File.ReadAllText(script).Contains("Resources.Load"))
+                {
+                    throw new InvalidOperationException($"Production runtime code must not use Resources.Load: {script}.");
+                }
+            }
+        }
+
+        private static void ValidateCanonicalScenes()
+        {
+            var scenePaths = new[]
+            {
+                "Assets/_Game/Content/Scenes/Bootstrap.unity",
+                "Assets/_Game/Content/Scenes/Chapter01_ScrapExclusion.unity"
+            };
+
+            for (var i = 0; i < scenePaths.Length; i++)
+            {
+                var path = scenePaths[i];
+                var scene = SceneManager.GetSceneByPath(path);
+                var openedForValidation = !scene.IsValid() || !scene.isLoaded;
+                if (openedForValidation)
+                {
+                    scene = EditorSceneManager.OpenScene(path, OpenSceneMode.Additive);
+                }
+
+                try
+                {
+                    var roots = scene.GetRootGameObjects();
+                    for (var rootIndex = 0; rootIndex < roots.Length; rootIndex++)
+                    {
+                        var missingCount = GameObjectUtility.GetMonoBehavioursWithMissingScriptCount(roots[rootIndex]);
+                        if (missingCount > 0)
+                        {
+                            throw new InvalidOperationException(
+                                $"Canonical scene contains {missingCount} missing MonoBehaviour script(s): {path} ({roots[rootIndex].name}).");
+                        }
+                    }
+                }
+                finally
+                {
+                    if (openedForValidation && scene.IsValid() && scene.isLoaded)
+                    {
+                        EditorSceneManager.CloseScene(scene, true);
+                    }
                 }
             }
         }
