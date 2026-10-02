@@ -162,9 +162,9 @@ namespace Gravivore.Editor
         {
             var camera = AssetDatabase.LoadAssetAtPath<CameraFollowSettings>(
                 "Assets/_Game/Content/Definitions/S01_CameraFollowSettings.asset");
-            if (camera == null || camera.Offset.y < 10f || camera.Offset.y > 18f ||
-                camera.Offset.z < -14f || camera.Offset.z > -7f ||
-                camera.FieldOfView < 40f || camera.FieldOfView > 55f ||
+            if (camera == null || camera.Offset.y < 14f || camera.Offset.y > 16f ||
+                camera.Offset.z < -13f || camera.Offset.z > -10f ||
+                camera.FieldOfView < 44f || camera.FieldOfView > 50f ||
                 camera.PositionDamping < 0f || camera.PositionDamping > 0.5f)
             {
                 throw new InvalidOperationException("S20 portrait camera configuration is outside the validated readability range.");
@@ -665,11 +665,11 @@ namespace Gravivore.Editor
             var configuration = definition.Configuration;
             var expected = new Dictionary<string, Vector3>(StringComparer.Ordinal)
             {
-                { "relay-yard", new Vector3(-8f, 0f, 6f) },
-                { "cutting-floor", new Vector3(0f, 0f, 10f) },
-                { "shield-dump", new Vector3(8f, 0f, 6f) },
-                { "capacitor-field", new Vector3(-7f, 0f, -7f) },
-                { "hauler-graveyard", new Vector3(7f, 0f, -7f) }
+                { "relay-yard", new Vector3(-26f, 0f, 20f) },
+                { "cutting-floor", new Vector3(0f, 0f, 40f) },
+                { "shield-dump", new Vector3(26f, 0f, 20f) },
+                { "capacitor-field", new Vector3(-20f, 0f, -12f) },
+                { "hauler-graveyard", new Vector3(20f, 0f, -12f) }
             };
             var spawnConfigurations = new Dictionary<string, SpawnSpotRuntimeConfiguration>(StringComparer.Ordinal);
             var spawnPaths = new[]
@@ -726,6 +726,15 @@ namespace Gravivore.Editor
                 {
                     throw new InvalidOperationException("Each canonical zone requires a distinct visual landmark color.");
                 }
+
+                for (var otherIndex = i + 1; otherIndex < configuration.ZoneCount; otherIndex++)
+                {
+                    if (Vector3.Distance(zone.Center, configuration.GetZone(otherIndex).Center) < 28f)
+                    {
+                        throw new InvalidOperationException(
+                            $"Ordinary zones {zone.Id} and {configuration.GetZone(otherIndex).Id} are too close for S20 spatial readability.");
+                    }
+                }
             }
 
             var expectedObjectiveIds = new HashSet<string>(StringComparer.Ordinal)
@@ -744,9 +753,18 @@ namespace Gravivore.Editor
                 }
             }
 
+            var northernmostOrdinaryZ = float.MinValue;
+            for (var i = 0; i < configuration.ZoneCount; i++)
+            {
+                northernmostOrdinaryZ = Mathf.Max(northernmostOrdinaryZ, configuration.GetZone(i).Center.z);
+            }
+
             if (configuration.EliteRequirement.MinimumAssimilationScore < 1 ||
+                configuration.GroundSize.x < 65f || configuration.GroundSize.y < 120f ||
                 string.Equals(configuration.EliteGate.Id, configuration.BossGate.Id, StringComparison.Ordinal) ||
+                configuration.EliteGate.Position.z - northernmostOrdinaryZ < 18f ||
                 configuration.EliteGate.Position.z >= configuration.BossGate.Position.z ||
+                configuration.BossGate.Position.z - configuration.EliteGate.Position.z < 18f ||
                 configuration.BossGate.Position.z >= configuration.BossArenaCenter.z ||
                 !configuration.Bounds.ContainsRectangle(
                     configuration.EliteGate.Position,

@@ -42,7 +42,7 @@ namespace Gravivore.Editor.Balance
             EvolutionConfiguration evolution,
             EliteGateRequirement elite,
             double ordinaryKillCycleSeconds = 24d,
-            double encounterAndTravelMinutes = 10d)
+            double encounterAndTravelMinutes = 11.5d)
         {
             if (progression == null) throw new ArgumentNullException(nameof(progression));
             if (evolution == null) throw new ArgumentNullException(nameof(evolution));

@@ -96,7 +96,8 @@ namespace Gravivore.Tests.PlayMode
                 typeof(SphereCollider),
                 typeof(FakeCombatTarget));
             targetObject.layer = 9;
-            targetObject.transform.position = new Vector3(0f, 0f, 3f);
+            var playerPosition = compositionRoot.PlayerObject.transform.position;
+            targetObject.transform.position = playerPosition + Vector3.forward * 3f;
             var target = targetObject.GetComponent<FakeCombatTarget>();
             var aimPoint = new GameObject("Offset Aim Point").transform;
             aimPoint.SetParent(targetObject.transform, false);
@@ -113,7 +114,7 @@ namespace Gravivore.Tests.PlayMode
             Assert.That(target.DamageCount, Is.GreaterThan(0));
             Assert.That(target.LastDamage.RawDamage, Is.EqualTo(compositionRoot.PlayerStats.DerivedStats.BaseDamage));
             Assert.That(compositionRoot.PlayerHealth.CombatSecondsRemaining, Is.GreaterThan(0f));
-            Assert.That(targetObject.transform.position.z, Is.EqualTo(1.2f).Within(0.0001f));
+            Assert.That(targetObject.transform.position.z, Is.EqualTo(playerPosition.z + 1.2f).Within(0.0001f));
             Assert.That(targetObject.transform.position.y, Is.EqualTo(0f).Within(0.0001f));
             Assert.That(target.TargetPoint.position.y, Is.EqualTo(1.25f).Within(0.0001f));
             Assert.IsTrue(attackController.HasCurrentTarget);
@@ -143,7 +144,7 @@ namespace Gravivore.Tests.PlayMode
                 typeof(SphereCollider),
                 typeof(FakeCombatTarget));
             targetObject.layer = 9;
-            targetObject.transform.position = new Vector3(0f, 0f, 3f);
+            targetObject.transform.position = compositionRoot.PlayerObject.transform.position + Vector3.forward * 3f;
             var target = targetObject.GetComponent<FakeCombatTarget>();
             target.ReturnLethalWhileRemainingAlive = true;
             Physics.SyncTransforms();
@@ -173,7 +174,7 @@ namespace Gravivore.Tests.PlayMode
                 EnemyConfiguration("observer-target", 1000f),
                 scene.Root.PlayerObject.transform,
                 scene.Root.PlayerHealth,
-                new Vector3(0f, 0f, 3f),
+                scene.Root.PlayerObject.transform.position + Vector3.forward * 3f,
                 pool.Return);
             var damageObserved = 0;
             enemy.Damaged += _ => throw new System.InvalidOperationException("damage observer failed");
@@ -185,7 +186,10 @@ namespace Gravivore.Tests.PlayMode
 
             Assert.That(damageObserved, Is.EqualTo(1));
             Assert.That(enemy.CurrentHitPoints, Is.LessThan(1000f));
-            Assert.That(enemy.transform.position.z, Is.LessThan(2f), "Gravity displacement must still execute.");
+            Assert.That(
+                enemy.transform.position.z,
+                Is.LessThan(scene.Root.PlayerObject.transform.position.z + 2f),
+                "Gravity displacement must still execute.");
 
             pool.Return(enemy);
             Object.Destroy(poolRoot);
@@ -203,7 +207,7 @@ namespace Gravivore.Tests.PlayMode
                 EnemyConfiguration("ordering-target", 1f),
                 scene.Root.PlayerObject.transform,
                 scene.Root.PlayerHealth,
-                new Vector3(0f, 0f, 3f),
+                scene.Root.PlayerObject.transform.position + Vector3.forward * 3f,
                 pool.Return);
             var order = new System.Collections.Generic.List<string>();
             var lash = Object.FindFirstObjectByType<GravityLashVfxPool>();
@@ -250,7 +254,7 @@ namespace Gravivore.Tests.PlayMode
         {
             var player = new GameObject("Movement Smoke Player", typeof(CharacterController), typeof(PlayerLocomotion));
             var cameraBasis = new GameObject("Movement Smoke Camera Basis");
-            var spawnPosition = new Vector3(10f, 0f, 10f);
+            var spawnPosition = new Vector3(1000f, 0f, 1000f);
             player.transform.position = spawnPosition;
             var input = new StubMovementInput();
             var locomotion = player.GetComponent<PlayerLocomotion>();

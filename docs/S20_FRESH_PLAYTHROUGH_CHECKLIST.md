@@ -29,6 +29,10 @@ Record elapsed time for every item. Use `not reached` rather than estimating a m
 ## Qualitative checks
 
 - Camera shows meaningfully more world than the pre-S20 build while the player and five enemy roles remain readable.
+- Second-pass camera shows additional surrounding ground without fisheye distortion or making G-0 unreadable.
+- Neighboring farming regions feel separated by noticeable traversal without long empty walks.
+- A player fighting inside one ordinary region does not unintentionally engage enemies from another region.
+- The start, ordinary-region fan, elite approach, and boss approach read as progressively distinct spaces.
 - Boss arena, boss body, and major telegraphs fit comfortably enough for portrait decisions.
 - Comparable ordinary enemies proactively engage at a reasonable local distance.
 - Moderately outscaled ordinary enemies use a visibly shorter acquisition distance.
