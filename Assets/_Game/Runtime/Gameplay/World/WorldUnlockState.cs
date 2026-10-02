@@ -248,6 +248,17 @@ namespace Gravivore.Gameplay.World
             return _requirement.IsSatisfied(_progression.State, _quests.State) && State.TryUnlockEliteGate();
         }
 
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        public bool PrepareEliteEncounterForDevelopment()
+        {
+            var changed = _progression.State.EnsureMinimumAssimilationScoreForDevelopment(
+                _requirement.MinimumAssimilationScore);
+            changed |= _quests.CompleteRequiredObjectivesForDevelopment(_requirement);
+            changed |= EvaluateEliteGate();
+            return changed;
+        }
+#endif
+
         public bool RecordEliteDefeated(string eliteEnemyId) => State.RecordEliteDefeated(eliteEnemyId);
 
         public void Dispose()

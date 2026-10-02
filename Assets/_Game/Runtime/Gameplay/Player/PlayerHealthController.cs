@@ -41,6 +41,9 @@ namespace Gravivore.Gameplay.Player
         private Vector3 _respawnPosition;
         private bool _respawnInProgress;
         private bool _isInitialized;
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        private bool _developmentGodMode;
+#endif
 
         public event Action<DamageResult> Damaged;
 
@@ -94,6 +97,9 @@ namespace Gravivore.Gameplay.Player
         public DamageResult ApplyDamage(in DamageRequest request)
         {
             EnsureInitialized();
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            if (_developmentGodMode) return new DamageResult(0f, false);
+#endif
             var result = _runtime.ApplyDamage(request);
             if (result.AppliedDamage > 0f)
             {
@@ -107,6 +113,16 @@ namespace Gravivore.Gameplay.Player
 
             return result;
         }
+
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        public bool DevelopmentGodMode => _developmentGodMode;
+
+        public void SetDevelopmentGodMode(bool enabled)
+        {
+            EnsureInitialized();
+            _developmentGodMode = enabled;
+        }
+#endif
 
         public void Tick(float deltaTime)
         {

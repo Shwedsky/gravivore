@@ -185,6 +185,24 @@ namespace Gravivore.Gameplay.Encounters
             return true;
         }
 
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        public bool ResetForDevelopment()
+        {
+            if (!_initialized) return false;
+            _health.Reset(_configuration.MaximumHitPoints);
+            _stateMachine = new CustodianBossStateMachine(_configuration);
+            _telegraphOrigin = default;
+            _telegraphDirection = default;
+            _outsideArenaSeconds = 0f;
+            SetPosition(_configuration.StartPosition);
+            _sensingCollider.enabled = true;
+            SafeEventDispatch.Publish(
+                EncounterReset,
+                new BossEncounterResetEvent(_configuration.Id, _configuration.StartPosition));
+            return true;
+        }
+#endif
+
         public void Shutdown()
         {
             if (_playerHealth != null) _playerHealth.Died -= HandlePlayerDied;

@@ -179,6 +179,21 @@ namespace Gravivore.Gameplay.Quests
             return true;
         }
 
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        internal bool ResetObjectiveForDevelopment(QuestObjective objective)
+        {
+            var changed = _completed.Remove(objective.Id);
+            changed |= _progress.Remove(objective.Id);
+            if (objective.Type == QuestObjectiveType.BossDefeated && Completed)
+            {
+                Completed = false;
+                changed = true;
+            }
+
+            return changed;
+        }
+#endif
+
         public QuestSnapshot ExportSnapshot()
         {
             return new QuestSnapshot(

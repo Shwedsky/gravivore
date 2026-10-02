@@ -182,6 +182,9 @@ namespace Gravivore.Gameplay.Encounters
         }
 
         public event Action<BossDefeatedEvent> Defeated;
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        public event Action DevelopmentReset;
+#endif
 
         public bool IsDefeated { get; private set; }
 
@@ -194,6 +197,16 @@ namespace Gravivore.Gameplay.Encounters
         }
 
         public BossCompletionSnapshot ExportSnapshot() => new BossCompletionSnapshot(IsDefeated);
+
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        public bool ResetForDevelopment()
+        {
+            if (!IsDefeated) return false;
+            IsDefeated = false;
+            SafeEventDispatch.Publish(DevelopmentReset);
+            return true;
+        }
+#endif
 
         public static BossCompletionState Restore(string bossId, in BossCompletionSnapshot snapshot)
         {
