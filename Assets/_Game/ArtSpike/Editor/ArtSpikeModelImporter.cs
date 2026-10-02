@@ -23,12 +23,6 @@ namespace Gravivore.ArtSpike.Editor
             importer.optimizeMeshPolygons = true;
             importer.optimizeMeshVertices = true;
             importer.importTangents = ModelImporterTangents.None;
-            if (assetPath.Contains("/Julius/MechSketch/"))
-            {
-                // Use a narrow smoothing angle to keep the existing armor bevels sharply separated.
-                importer.importNormals = ModelImporterNormals.Calculate;
-                importer.normalSmoothingAngle = 15f;
-            }
             importer.materialImportMode = ModelImporterMaterialImportMode.None;
         }
     }

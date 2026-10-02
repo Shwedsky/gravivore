@@ -2,6 +2,18 @@
 
 Initial asset spend: **0**.
 
+## Current ART SPIKE V3 gate
+
+The selected G-0/Cutter pipeline must have no ShareAlike, NC, unclear-license,
+paid or recognizable franchise assets. Skip acquisition requiring authentication
+or manual user interaction. The current explicit instruction permits original
+temporary modular proxy geometry when no suitable autonomous donor is available;
+preserve the approved V2 silhouette direction and document its eventual replacement.
+V3 uses original proxy modules with CC0 Poly Haven PBR maps; Kenney remains scenery.
+No production Chapter integration follows without human visual approval and a
+subsequently authorized specification. See ART_ASSET_SHORTLIST.md for verified
+candidate terms and ART_SPIKE_REVIEW.md for the pending review.
+
 ## Project-owned generated audio
 
 The S14 placeholder combat cues under `Assets/_Game/Content/Audio/S14_*.wav` are original,

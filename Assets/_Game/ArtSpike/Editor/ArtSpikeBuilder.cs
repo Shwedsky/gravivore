@@ -7,7 +7,7 @@ using Object = UnityEngine.Object;
 
 namespace Gravivore.ArtSpike.Editor
 {
-    /// <summary>Reproducible Unity transform-only authoring. No production catalog binding.</summary>
+    /// <summary>Reproducible isolated proxy authoring. No production catalog binding.</summary>
     public static class ArtSpikeBuilder
     {
         public const string Root = "Assets/_Game/ArtSpike";
@@ -23,13 +23,14 @@ namespace Gravivore.ArtSpike.Editor
         [MenuItem("Gravivore/Art Spike/Rebuild Comparison Assets")]
         public static void Build()
         {
-            // Reapply isolated source import settings before selecting child meshes.
-            AssetDatabase.ImportAsset(ArtSpikeComposition.MechSource, ImportAssetOptions.ForceUpdate);
+            ArtSpikeProxyMeshes.Build();
+            ArtSpikePbr.Build();
             var composition = new ArtSpikeComposition();
             composition.CreateMaterials();
             for (var tier = 0; tier < 3; tier++)
                 Save(composition.Player(tier), CharacterPaths[tier]);
             Save(composition.Cutter(), CharacterPaths[3]);
+            ArtSpikeArticulation.BuildAndProve();
             Save(composition.Environment(), Root + "/Prefabs/Environment/IndustrialBay_ArtSpike.prefab");
             AssetDatabase.SaveAssets();
             ArtSpikeScene.Create();
@@ -50,7 +51,7 @@ namespace Gravivore.ArtSpike.Editor
 
     internal sealed partial class ArtSpikeComposition
     {
-        private Material _metal, _armor, _secondary, _player, _hostile, _industrial, _floor;
+        private Material _metal, _armor, _secondary, _player, _hostile, _industrial, _floor, _proxyArmor, _proxyMetal;
 
         public void CreateMaterials()
         {
@@ -64,6 +65,11 @@ namespace Gravivore.ArtSpike.Editor
             _industrial = Material("Gravivore_IndustrialEnergy", new Color(.54f, .22f, .035f), .4f, .5f,
                 new Color(1f, .35f, .035f) * 1.5f);
             _floor = Material("Gravivore_Floor", new Color(.065f, .085f, .105f), .4f, .22f);
+            // Counter the blue painted source in linear light, retaining its wear and roughness variation.
+            _proxyArmor = Material("Gravivore_ProxyArmor_PBR", new Color(1f, .79f, .68f), .5f, .85f);
+            _proxyMetal = Material("Gravivore_ProxyMetal_PBR", new Color(.44f, .30f, .29f), .7f, .85f);
+            ArtSpikePbr.Apply(_proxyArmor);
+            ArtSpikePbr.Apply(_proxyMetal);
         }
 
         private static Material Material(string name, Color color, float metallic, float smoothness,

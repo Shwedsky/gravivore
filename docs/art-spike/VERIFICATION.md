@@ -1,36 +1,64 @@
-# Art Spike V2 verification — 2026-10-02
+# ART SPIKE V3 — executed verification
 
-Unity **6000.3.0f1**. Same branch `codex/art-spike-kitbash`, starting V1 HEAD `42dfbe83d1a28127cc1bf1eb192dca2092dfe0c3`. Stacked base `codex/s20-balance-vertical-slice` at `4394448a7f3950cb62df701e8969137ae4b4a01c`.
+Date: 2026-10-02. Worktree: .codex-worktrees/art-spike-kitbash. Branch: codex/art-spike-kitbash, stacked on codex/s20-balance-vertical-slice (4394448a7f3950cb62df701e8969137ae4b4a01c). Same draft PR #30.
 
-## Executed checks
+## Unity compilation and graphics capture
 
-- Compile/import and final authoring/capture: **passed**, Unity process return code 0. No art-code compilation errors.
-- Capture: **eight actual Unity URP PNGs**, Direct3D11 / AMD Radeon(TM) Graphics. All were visually inspected after final material/reflection/normal and composition refinements. 01/04/06/08 are 1920×1080; 02/03/05 are 1080×1920; 07 is 3240×1920.
-- Full EditMode: **254 total, 254 passed, 0 failed, 0 skipped**. Existing assembly 244; isolated art-spike assembly 10. NUnit duration **3.4907456 seconds**. Raw result: [EditMode.xml](verification/EditMode.xml). The additional V2 test verifies Julius character donors, no Kenney character geometry and renderer count under 40.
-- Full PlayMode: **56 total, 56 passed, 0 failed, 0 skipped**. NUnit duration **5.7800653 seconds**. Raw result: [PlayMode.xml](verification/PlayMode.xml).
-- Standalone ProjectValidator: **passed**, after both suites. Log states `GRAVIVORE project validation passed.` and process return code 0. Sanitized evidence: [ProjectValidator.txt](verification/ProjectValidator.txt).
-- Performance snapshot: regenerated with final prefabs; Tier 0/1/2 renderers **13/18/25**, Cutter **9**. Detailed counts and method: [PERFORMANCE.md](PERFORMANCE.md), adjacent JSON.
-- Retained-source integrity: **14/14 source files** (nine FBX, OBJ, MTL and three licenses) match the downloaded original archives byte for byte in both the working tree and staged Git blobs. Archive SHA-256 and per-file hashes: [ASSET_MANIFEST.json](ASSET_MANIFEST.json). The isolated import's .gitattributes preserves vendor source line endings; project code/metadata use normal repository text handling.
-- Production isolation: Unity-generated serialization was restored only in this art worktree. The staged/base audit allows ArtSpike assets and folder metadata, ThirdPartyNotices, five ART docs and docs/art-spike. Canonical runtime/content, production vendor assets, packages and ProjectSettings have no PR diff. Root checkout and other worktrees untouched.
-- Android build: **not run**, explicitly unnecessary for this task. No APK.
+Unity 6000.3.0f1 compiled the changed ArtSpike editor and test assemblies successfully, with zero C# compile errors. ArtSpikeCapture.BuildAndCapture completed and returned code 0. Local final log: Builds/ArtSpike/v3-capture.log.
 
-## Warnings and evidence limits
+Actual graphics device: Direct3D11 / AMD Radeon(TM) Graphics. All ten requested PNGs were regenerated from the isolated scene; image 07 joins actual portrait panels and image 10 is a temporary exploded view. Capture-only visibility/transforms are restored. Final palette/foot placement were inspected in the actual outputs.
 
-Existing Unity bootstrap/BuildTargetGroup deprecation warnings and license/TLS service messages are not art failures. PlayMode logs contain intentional exception-path tests; actual NUnit XML has zero failures. Validator success and exit code are explicit. V1's initial test cleanup issue was corrected before its final pass; V2's complete suites passed with the final compositions.
+Unity CLI capture command:
+Unity.exe -batchmode -quit -projectPath <art-worktree> -executeMethod Gravivore.ArtSpike.Editor.ArtSpikeCapture.BuildAndCapture -logFile <local-log>
+No -nographics on this run.
 
-Generated Unity YAML empty-field whitespace and original vendor notice whitespace are retained. No source geometry was changed to satisfy whitespace checks. PNGs are static art review images; neither the renderer snapshot nor desktop captures demonstrate Android FPS or human visual approval.
+## Full EditMode
 
-Full local logs are ignored under `Builds/ArtSpike/`: `v2-final-render.log`, `v2-editmode.log`, `v2-playmode.log`, `v2-validator.log`. Committed XML/excerpt omit local service/token logs.
+**257 total, 257 passed, 0 failed, 0 skipped.**
+[Raw XML](verification/EditMode.xml). Local log: Builds/ArtSpike/v3-editmode.log.
 
-## Reproduction
+Includes 13 ArtSpike test cases checking character-only geometry, owned materials, unchanged common core/four supports, geometric tier evolution, distinct sole Cutter, renderer/triangle budgets, no share-alike/scenery mesh dependencies, PBR import settings, ARM packing, independent idle pivots, production catalog/scene isolation and exact S20 comparison camera.
 
-Use Unity 6000.3.0f1 with this worktree as `-projectPath`; do not run simultaneous Unity instances against it.
+Unity.exe -batchmode -nographics -projectPath <art-worktree> -runTests -testPlatform EditMode -testResults <local-xml> -logFile <local-log>
+The test runner controls exit; no -quit.
 
-1. Author/render: `-batchmode -quit -executeMethod Gravivore.ArtSpike.Editor.ArtSpikeCapture.BuildAndCapture -logFile <capture-log>`; graphics device required, omit `-nographics`.
-2. EditMode: `-batchmode -nographics -runTests -testPlatform EditMode -testResults <EditMode.xml> -logFile <edit-log>`.
-3. PlayMode: `-batchmode -nographics -runTests -testPlatform PlayMode -testResults <PlayMode.xml> -logFile <play-log>`.
-4. Validator: `-batchmode -nographics -quit -executeMethod Gravivore.Editor.ProjectValidator.ValidateProjectMenu -logFile <validation-log>`.
+## Full PlayMode
 
-Fresh checkout bootstrap can generate local settings; keep those unrelated serialization changes outside an art-only commit. Use portrait Game view for interactive gameplay-scale review.
+**56 total, 56 passed, 0 failed, 0 skipped.**
+[Raw XML](verification/PlayMode.xml). Local log: Builds/ArtSpike/v3-playmode.log.
 
-**ART SPIKE V2 VISUAL REVIEW: PENDING**
+All existing canonical gameplay smoke tests were run. Intentional failure-path tests log their expected injected exceptions (including failed presentation/pool activation); XML outcomes are passed. They are not hidden or interpreted as unexpected test failures.
+
+Same command as EditMode with -testPlatform PlayMode.
+
+## Standalone ProjectValidator
+
+Explicit **GRAVIVORE project validation passed.**, followed by application return code 0.
+[Saved outcome](verification/ProjectValidator.txt).
+Local log: Builds/ArtSpike/v3-validator.log.
+
+Unity.exe -batchmode -nographics -quit -projectPath <art-worktree> -executeMethod Gravivore.Editor.ProjectValidator.ValidateProjectMenu -logFile <local-log>
+
+Some runs log Unity service TLS certificate errors; the license connection, asset import, executed checks and exit outcomes completed successfully. No claim of error-free service logs is made.
+
+## Art-only checks
+
+- ArtSpikeAudit.WriteSnapshot executed during the final BuildAndCapture. Four JSON reports and PERFORMANCE.md are generated from the saved prefabs, not estimated from donor page counts.
+- T0/T1/T2/Cutter renderers: 19/24/33/13, all within 30/35/40/25.
+- Triangles: 5,928/6,936/9,216/3,352, all below 50,000.
+- Four actually referenced 1K PBR maps shared across characters, project materials, mipmaps, linear mask/normal/AO imports and Android ASTC 6x6.
+- Mechanical idle build/sample proof succeeded; ARTICULATION.json records four independent hips sampled at 0.75 seconds. Main prefabs remain free of Animator/Animation/colliders/lights/gameplay scripts.
+- Julius raw files and metadata removed after the replacement prefabs/scene/images were successfully generated. Tests verify no current character dependency on Julius or Kenney scenery meshes.
+- Imported original source SHA-256/MD5 checks and derived map/image checks are recorded in SOURCE_AND_IMAGE_CHECKS.json. No rejected archives or editor executables enter the commit.
+- Production Assets/_Game/Content, Assets/ThirdParty and ProjectSettings tracked serialization produced by Unity bootstrap was restored within this art worktree after checks; production diff against the S20 base is zero. Untracked generated local settings are preserved and excluded. No root checkout/other worktree edits.
+- Git scope limited to Assets/_Game/ArtSpike, art documentation/review evidence and ThirdPartyNotices.md.
+
+## Build and scope limits
+
+Android build deliberately **not run**, as specified for V3; no APK was produced. Structural counts and ASTC import settings do not establish Android FPS, texture residency or measured runtime draw calls.
+
+Final geometry/UVs, gait/IK and production binding remain outside this temporary proxy proof. Human visual approval is still required.
+
+**SHARE-ALIKE CHARACTER DEPENDENCY: NO**
+
+**ART SPIKE V3 VISUAL REVIEW: PENDING**

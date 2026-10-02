@@ -1,29 +1,27 @@
 # GRAVIVORE art direction — robotic industrial sci-fi
 
-The approved target is a **mech-forward autonomous combat organism**. V1's Kenney-only industrial prototype was not approved in human visual review. V2 is another review candidate, not approval or permission to replace Chapter 01.
+V2 established the approved **silhouette direction**: a low autonomous combat machine, central cyan gravity core, four mechanical supports and front-biased weapons. V3 preserves that direction using an explicitly authorized temporary modular proxy and CC0 PBR surfaces. The V3 implementation still requires human visual review.
 
-## G-0
+## G-0 identity and evolution
 
-Use a compact, low chassis with deliberate hard armor planes, mechanical joints, four supports and front-biased weapon assemblies. The central cyan gravity core stays identical across tiers. It is an internal component in a machine. Avoid humanoid proportions, recognizable warehouse containers, factory machines, oversized gears, disconnected decoration, cute robots and toy palettes.
+Use a compact low chassis, coherent armor planes, mechanically connected joints and four supports. Keep the same core position/diameter, support socket positions and unit root scale across all tiers. Avoid humanoid proportions, stock commercial characters, recognizable factory containers, oversized gears and cute/toy palettes.
 
-Retain graphite structure, cooler lighter armor and restrained cyan power details. Intact mech limbs should carry their existing joint and armor design together. Small project-owned rings, cores and connectors may bridge assemblies. Shared opaque URP materials and simple static lighting keep the review reproducible.
+- Tier 0: low chamfered chassis, four independent hip/knee/foot assemblies, common core and paired forward mandibles/fork emitters.
+- Tier 1: wider flank plates, narrow cyan power strips and an outer containment ring.
+- Tier 2: outer armor, larger paired weapon/fork assemblies and supported upper containment geometry.
 
-## Evolution
+Evolution must change the silhouette at the actual S20 camera, through added geometry rather than uniform root scale or brighter emission. Use dark graphite structure, cool gray armor and restrained cyan energy. Preserve useful surface normals, roughness, metal and AO.
 
-- Tier 0: compact chassis, four articulated support meshes, exposed core and two forward mandibles.
-- Tier 1: flank armor, narrow power strips and a wider containment ring.
-- Tier 2: outer armor, larger forward weapon assemblies and supported upper containment geometry.
+## Cutter and scenery
 
-Each tier retains core position/diameter, chassis, support sockets and root scale. Added geometry must change the silhouette at the actual S20 camera. Greater emission or uniform scaling cannot establish evolution.
+Cutter is lower/smaller than G-0 Tier 2, with two runners, a flat central chassis, unequal low cutting arms, long/short tapered blades and an offset shield. Red energy and asymmetry identify the hostile; no humanoid head or torso pose. Evaluate distinction with energy color ignored.
 
-## Cutter and environment
+Keep the existing industrial bay subordinate: quiet floor panels, low framing, peripheral conduits, compact reactor and open combat space. Kenney remains supporting scenery only.
 
-Cutter has two reverse-joint runners, a low armored center and unequal cutting assemblies. Its long blades and asymmetric arm shield must distinguish it from G-0 with energy colors ignored. Red denotes the hostile, cyan the player, and small amber accents industrial power.
+## Review and final-art requirements
 
-Keep scenery subordinate: broad floor panels, low bulkheads, perimeter conduits and a compact reactor frame an open combat space. Kenney is supporting scenery only. Giant cogs or decor must not dominate characters.
+S20 settled camera: offset (0,13.5,-10), look-at height 0.9, vertical FOV 46, portrait 9:16. Judge silhouettes in full portrait renders; inspect surfaces in images 08/09 and module structure in image 10.
 
-## Review and mobile constraints
+The proxy proves composition, permissive surface integration and independent pivots. Its repeated plates, planar texture density and simplified joints are temporary. Final original/refined modules must preserve the approved design language, with authored UVs and an appropriate locomotion rig. The isolated idle proof does not establish walking, combat animation or Android frame time.
 
-Gameplay images use the settled S20 camera asset unchanged: offset (0,13.5,-10), look-at height 0.9, vertical FOV 46, portrait 9:16. Inspect surfaces in the supplementary close hero view and readability in the full portrait panels.
-
-Prefer separable game-ready meshes, modest triangle counts, shared materials, few submissions and reasonable textures. V2 uses static unrigged parts; it cannot demonstrate a gait, combat animation, seamless bespoke armor or Android frame time. Human review decides whether this rendered candidate meets the target.
+**ART SPIKE V3 VISUAL REVIEW: PENDING**

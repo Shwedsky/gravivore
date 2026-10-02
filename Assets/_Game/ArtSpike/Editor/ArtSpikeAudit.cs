@@ -14,11 +14,11 @@ namespace Gravivore.ArtSpike.Editor
     {
         public string prefab;
         public int childRenderers, skinnedMeshRenderers, meshRenderers, uniqueMaterials, materialSlots;
-        public int uniqueMeshes, meshInstances, maximumTextureSize, animators, animations, colliders;
+        public int uniqueMeshes, meshInstances, maximumTextureSize, uniqueTextures, animators, animations, colliders;
         public long triangles;
         public Vector3 boundsMetres;
         public Vector2 projectedPixelsAt1080x1920;
-        public string[] materialNames, donorFiles;
+        public string[] materialNames, donorFiles, ownedMeshFiles, textureFiles;
     }
 
     public static class ArtSpikeAudit
@@ -34,6 +34,8 @@ namespace Gravivore.ArtSpike.Editor
                 var materials = new HashSet<Material>();
                 var meshes = new HashSet<Mesh>();
                 var donors = new HashSet<string>();
+                var owned = new HashSet<string>();
+                var textures = new HashSet<string>();
                 var renderers = root.GetComponentsInChildren<Renderer>(true);
                 var bounds = renderers[0].bounds;
                 var snapshot = new ArtSpikeCharacterSnapshot
@@ -58,7 +60,10 @@ namespace Gravivore.ArtSpike.Editor
                         {
                             var texture = material.GetTexture(property);
                             if (texture != null)
+                            {
                                 snapshot.maximumTextureSize = Math.Max(snapshot.maximumTextureSize, Math.Max(texture.width, texture.height));
+                                textures.Add(AssetDatabase.GetAssetPath(texture));
+                            }
                         }
                     }
                 }
@@ -70,6 +75,7 @@ namespace Gravivore.ArtSpike.Editor
                     meshes.Add(mesh);
                     var donorPath = AssetDatabase.GetAssetPath(mesh);
                     if (donorPath.StartsWith(ArtSpikeBuilder.Root + "/Imported/", StringComparison.Ordinal)) donors.Add(donorPath);
+                    else if (donorPath.StartsWith(ArtSpikeBuilder.Root + "/", StringComparison.Ordinal)) owned.Add(donorPath);
                     for (var sub = 0; sub < mesh.subMeshCount; sub++)
                     {
                         if (mesh.GetTopology(sub) != MeshTopology.Triangles)
@@ -81,6 +87,9 @@ namespace Gravivore.ArtSpike.Editor
                 snapshot.uniqueMeshes = meshes.Count;
                 snapshot.materialNames = materials.Select(m => m.name).OrderBy(n => n).ToArray();
                 snapshot.donorFiles = donors.OrderBy(n => n).ToArray();
+                snapshot.ownedMeshFiles = owned.OrderBy(n => n).ToArray();
+                snapshot.textureFiles = textures.OrderBy(n => n).ToArray();
+                snapshot.uniqueTextures = textures.Count;
                 snapshot.boundsMetres = bounds.size;
                 var minimum = new Vector2(float.MaxValue, float.MaxValue);
                 var maximum = new Vector2(float.MinValue, float.MinValue);
@@ -116,11 +125,11 @@ namespace Gravivore.ArtSpike.Editor
                 report.AppendLine("## " + Path.GetFileNameWithoutExtension(path) + "\n");
                 report.AppendLine($"- Child renderers: {snapshot.childRenderers}; SkinnedMeshRenderer: {snapshot.skinnedMeshRenderers}; MeshRenderer: {snapshot.meshRenderers}.");
                 report.AppendLine($"- Materials: {snapshot.uniqueMaterials} unique; {snapshot.materialSlots} slots. Meshes: {snapshot.uniqueMeshes} unique; {snapshot.meshInstances} instances.");
-                report.AppendLine($"- Triangles: {snapshot.triangles:N0}; maximum texture size: {snapshot.maximumTextureSize} (0 means no textures).");
+                report.AppendLine($"- Triangles: {snapshot.triangles:N0}; textures: {snapshot.uniqueTextures} shared maps, maximum size {snapshot.maximumTextureSize}.");
                 report.AppendLine($"- Animation: {snapshot.animators} Animator, {snapshot.animations} legacy Animation; colliders: {snapshot.colliders}.");
                 report.AppendLine($"- Bounds (metres): {snapshot.boundsMetres:F3}; S20 projected bounding box: {snapshot.projectedPixelsAt1080x1920:F1} pixels.\n");
             }
-            report.AppendLine("## Performance limits\n\nV2 selects existing single-renderer mech child meshes without combining them. V1 Tier 2 had 60 renderers; compare the measured V2 count above. Character materials have no textures; the scene additionally uses one shared 32×32-per-face static reflection cubemap (mipmapped RGBAHalf), one directional light, and a small bloom pass. No dynamic lights, colliders, rig, animation, or gameplay scripts live in character prefabs. This is a structural snapshot, not Android frame-time evidence. Repeated enemies, shadows, batching, and future animation still require device profiling before production adoption.\n");
+            report.AppendLine("## Performance limits\n\nV3 uses original articulated proxy modules with two PBR submeshes per mechanical module, not a blanket combine of donor characters. Renderer caps: Tier 0 <=30, Tier 1 <=35, Tier 2 <=40, Cutter <=25; target <=50,000 triangles each. Slots above expose the unbatched draw cost, including shadow submissions separately at runtime. Four shared 1024-pixel PBR maps use mipmaps and an Android ASTC 6x6 override. The unchanged source ARM file is retained for provenance but not referenced by renderers. The scene also uses one shared 32×32-per-face static reflection cubemap, one directional light and modest bloom. Static character prefabs have no Animator, Animation, colliders, lights or gameplay scripts. Pivot articulation is an editor-only preview. This structural snapshot does not establish Android frame time or 60 FPS; batching, shadows, repeated enemies and a future gait require device profiling before production adoption.\n");
             File.WriteAllText("docs/art-spike/PERFORMANCE.md", report.ToString());
         }
     }

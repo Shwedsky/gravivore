@@ -1,33 +1,48 @@
 {
     "prefab": "Assets/_Game/ArtSpike/Prefabs/Player/G0_Tier2_ArtSpike.prefab",
-    "childRenderers": 25,
+    "childRenderers": 33,
     "skinnedMeshRenderers": 0,
-    "meshRenderers": 25,
+    "meshRenderers": 33,
     "uniqueMaterials": 4,
-    "materialSlots": 25,
+    "materialSlots": 58,
     "uniqueMeshes": 11,
-    "meshInstances": 25,
-    "maximumTextureSize": 0,
+    "meshInstances": 33,
+    "maximumTextureSize": 1024,
+    "uniqueTextures": 4,
     "animators": 0,
     "animations": 0,
     "colliders": 0,
-    "triangles": 8292,
+    "triangles": 9216,
     "boundsMetres": {
-        "x": 2.0,
-        "y": 0.8651736974716187,
-        "z": 2.069999933242798
+        "x": 2.497673273086548,
+        "y": 0.8615736961364746,
+        "z": 2.0725691318511965
     },
     "projectedPixelsAt1080x1920": {
-        "x": 289.65435791015627,
-        "y": 294.8438720703125
+        "x": 361.0268249511719,
+        "y": 294.08453369140627
     },
     "materialNames": [
-        "Gravivore_Armor",
-        "Gravivore_DarkMetal",
         "Gravivore_PlayerCore",
+        "Gravivore_ProxyArmor_PBR",
+        "Gravivore_ProxyMetal_PBR",
         "Gravivore_SecondaryMetal"
     ],
-    "donorFiles": [
-        "Assets/_Game/ArtSpike/Imported/Julius/MechSketch/Models/mechscetch_unfinished.obj"
+    "donorFiles": [],
+    "ownedMeshFiles": [
+        "Assets/_Game/ArtSpike/Materials/CoreRing.asset",
+        "Assets/_Game/ArtSpike/Proxy/Models/Chassis.asset",
+        "Assets/_Game/ArtSpike/Proxy/Models/EmitterFork.asset",
+        "Assets/_Game/ArtSpike/Proxy/Models/FlankPlate.asset",
+        "Assets/_Game/ArtSpike/Proxy/Models/Foot.asset",
+        "Assets/_Game/ArtSpike/Proxy/Models/LowerSupport.asset",
+        "Assets/_Game/ArtSpike/Proxy/Models/UpperSupport.asset",
+        "Assets/_Game/ArtSpike/Proxy/Models/WeaponHousing.asset"
+    ],
+    "textureFiles": [
+        "Assets/_Game/ArtSpike/Imported/PolyHaven/BlueMetalPlate/blue_metal_plate_diff_1k.jpg",
+        "Assets/_Game/ArtSpike/Imported/PolyHaven/BlueMetalPlate/blue_metal_plate_nor_gl_1k.png",
+        "Assets/_Game/ArtSpike/Proxy/Textures/BlueMetal_MetalSmoothness.png",
+        "Assets/_Game/ArtSpike/Proxy/Textures/BlueMetal_Occlusion.png"
     ]
 }

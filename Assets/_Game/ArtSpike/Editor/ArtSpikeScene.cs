@@ -79,6 +79,10 @@ namespace Gravivore.ArtSpike.Editor
             ReviewCamera("Camera_D_ScaleReference", AreaD, new Vector3(0, 7.4f, -5.48f), 16f / 9f).cullingMask = 1 << 27;
             ReviewCamera("Camera_D_CloseHero", AreaD + new Vector3(-1.5f, 0, 0),
                 new Vector3(2.3f, 2.15f, 2.85f), 16f / 9f).cullingMask = 1 << 27;
+            ReviewCamera("Camera_D_SurfaceDetail", AreaD + new Vector3(-1.5f, -.10f, .12f),
+                new Vector3(.83f, 1.02f, 1.22f), 16f / 9f).cullingMask = 1 << 27;
+            ReviewCamera("Camera_D_DonorBreakdown", AreaD + new Vector3(-1.5f, .1f, .15f),
+                new Vector3(3.5f, 4.2f, 4.5f), 16f / 9f).cullingMask = 1 << 27;
 
             AssetDatabase.SaveAssets();
             if (!EditorSceneManager.SaveScene(scene, ArtSpikeBuilder.ScenePath))

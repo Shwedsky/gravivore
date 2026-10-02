@@ -12,21 +12,20 @@
 - Attribution required: no
 - Notes: 14 low-poly models are redistributed as an audited subset for player, enemy, and Chapter 01 environment presentation. No textures, source project, sample scenes, or unused package content are included.
 
-## Art Spike V2 — Unfinished mech sketch
+## Art Spike V3 — Blue Metal Plate
 
-- Title/author: Unfinished mech sketch — Julius.
-- Original source: https://opengameart.org/content/unfinished-mech-sketch
-- Author credit link: https://opengameart.org/users/julius
-- Original archive: https://opengameart.org/sites/default/files/mechscetch_unfinished.zip
-- Selected license: **Creative Commons Attribution-ShareAlike 3.0 Unported** (archive also offers GPLv2+; CC BY-SA 3.0 is the selected alternative).
-- License: https://creativecommons.org/licenses/by-sa/3.0/legalcode
-- Original bundled notice: `Assets/_Game/ArtSpike/Imported/Julius/MechSketch/license.txt`.
-- Verified: 2026-10-02, original page and downloaded bundled license.
-- Permissions: free commercial use, game use, modification and source repository redistribution. Required: Julius attribution with original source, license link, modification notice and share-alike for adaptations; no endorsement implied.
-- Retained source: `Assets/_Game/ArtSpike/Imported/Julius/MechSketch/Models/mechscetch_unfinished.obj` and `mechscetch_unfinished.mtl`, plus original license and Unity metadata. No preview, source project, texture maps, vendor code or rig is imported.
-- Modification notice: original source files unchanged. Existing torso/limb/shoulder/pelvis objects selected, repositioned, rotated and scaled into new G-0/Cutter visual compositions; Unity calculates normals with 15° smoothing; new shared materials, small primitives and containment rings added. Original head and complete humanoid not used.
-- Adaptation scope: G-0/Cutter adapted visual content, comparison scene visual content and all eight V2 review PNGs under CC BY-SA 3.0; independent source code/repository and CC0 Kenney originals are not relicensed. Full attribution/terms: `docs/art-spike/ART_LICENSE.md`.
-- Exact hashes, archive SHA-256 and unchanged-source verification: `docs/art-spike/ASSET_MANIFEST.json`.
+- Asset/author: Blue Metal Plate — Rob Tuytel / Poly Haven.
+- Original source: https://polyhaven.com/a/blue_metal_plate
+- Asset license: https://polyhaven.com/license
+- Exact selected license: **CC0 1.0 Universal**, https://creativecommons.org/publicdomain/zero/1.0/legalcode.en
+- Verified: 2026-10-02 from the original asset page, license page and official public download metadata.
+- Commercial use, modification, raw/modified public repository redistribution: permitted; attribution optional. Credit is retained voluntarily.
+- Original metadata: https://api.polyhaven.com/files/blue_metal_plate
+- Retained path: Assets/_Game/ArtSpike/Imported/PolyHaven/BlueMetalPlate/.
+- Retained originals: blue_metal_plate_diff_1k.jpg, blue_metal_plate_nor_gl_1k.png, blue_metal_plate_arm_1k.png. All 1024×1024; original CDN bytes unchanged and MD5 verified.
+- Local License.txt is a project-authored source/license record, not a claimed bundled notice. SHA-256, MD5 and per-file original URLs: docs/art-spike/ASSET_MANIFEST.json.
+- Changes: project-owned URP tint/material instances; derived linear AO map and metallic/smoothness map (R=source ARM.B, A=1-ARM.G) under Assets/_Game/ArtSpike/Proxy/Textures. No donor character geometry, rig, animation, site preview renders, website text or vendor code imported.
+- V3 G-0/Cutter geometry is original temporary project proxy geometry. The current selected pipeline and ten regenerated PNGs contain no Julius meshes. Earlier V2 files and their CC BY-SA obligations remain naturally in Git history at 783876869e5506304c4521a9ea9b89d6e37e40ef; they are not relicensed. Current scope: docs/art-spike/ART_LICENSE.md.
 
 ## Art Spike — Kenney Factory Kit 3.0 (isolated supporting subset)
 

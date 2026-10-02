@@ -80,15 +80,69 @@ namespace Gravivore.ArtSpike.Tests
         }
 
         [Test]
-        public void V2CharactersUseMechDonorsAndHaveNoFactoryOrGearMeshes()
+        public void V3CharactersRespectBudgetsAndHaveNoShareAlikeOrSceneryMeshDependency()
         {
-            foreach (var path in ArtSpikeBuilder.CharacterPaths)
+            var caps = new[] { 30, 35, 40, 25 };
+            for (var index = 0; index < ArtSpikeBuilder.CharacterPaths.Length; index++)
             {
+                var path = ArtSpikeBuilder.CharacterPaths[index];
                 var snapshot = ArtSpikeAudit.Inspect(path);
-                Assert.That(snapshot.donorFiles, Has.Some.Contains("/Julius/MechSketch/"));
-                Assert.That(snapshot.donorFiles.Any(p => p.Contains("/Kenney/")), Is.False, path);
-                Assert.That(snapshot.childRenderers, Is.LessThan(40), path);
+                Assert.That(snapshot.donorFiles, Is.Empty, path);
+                Assert.That(snapshot.ownedMeshFiles, Is.Not.Empty);
+                Assert.That(AssetDatabase.GetDependencies(path, true).Any(p => p.Contains("/Julius/") || p.Contains("/Kenney/")), Is.False, path);
+                Assert.That(snapshot.childRenderers, Is.LessThanOrEqualTo(caps[index]), path);
+                Assert.That(snapshot.triangles, Is.LessThanOrEqualTo(50000), path);
+                Assert.That(snapshot.uniqueTextures, Is.EqualTo(4), path);
             }
+        }
+
+        [Test]
+        public void MechanicalArmorUsesPbrMapsWithCorrectLinearAndNormalImport()
+        {
+            var material = AssetDatabase.LoadAssetAtPath<Material>(ArtSpikeBuilder.Root + "/Materials/Gravivore_ProxyArmor_PBR.mat");
+            foreach (var property in new[] { "_BaseMap", "_BumpMap", "_MetallicGlossMap", "_OcclusionMap" })
+            {
+                var texture = material.GetTexture(property);
+                Assert.That(texture, Is.Not.Null, property);
+                var importer = (TextureImporter)AssetImporter.GetAtPath(AssetDatabase.GetAssetPath(texture));
+                Assert.That(importer.maxTextureSize, Is.LessThanOrEqualTo(2048));
+                Assert.That(importer.sRGBTexture, Is.EqualTo(property == "_BaseMap"));
+                Assert.That(importer.GetPlatformTextureSettings("Android").format, Is.EqualTo(TextureImporterFormat.ASTC_6x6));
+                if (property == "_BumpMap") Assert.That(importer.textureType, Is.EqualTo(TextureImporterType.NormalMap));
+            }
+            Assert.That(material.IsKeywordEnabled("_NORMALMAP"), Is.True);
+            Assert.That(material.IsKeywordEnabled("_METALLICSPECGLOSSMAP"), Is.True);
+        }
+
+        [Test]
+        public void ArmConversionPreservesMetallicAndInvertsRoughnessIntoAlpha()
+        {
+            var packed = ArtSpikePbr.PackMetalSmoothness(new Color32(200, 50, 120, 255));
+            Assert.That(packed.r, Is.EqualTo(120));
+            Assert.That(packed.a, Is.EqualTo(205));
+            Assert.That(ArtSpikePbr.PackMetalSmoothness(new Color32(0, 255, 255, 255)).a, Is.Zero);
+            Assert.That(ArtSpikePbr.PackMetalSmoothness(new Color32(255, 0, 0, 255)).a, Is.EqualTo(255));
+        }
+
+        [Test]
+        public void IdleProofMovesIndependentPivotsWithoutAddingAnimationToCharacterPrefabs()
+        {
+            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(ArtSpikeBuilder.CharacterPaths[2]);
+            Assert.That(prefab.GetComponentsInChildren<Animation>(true), Is.Empty);
+            Assert.That(prefab.GetComponentsInChildren<Animator>(true), Is.Empty);
+            var clip = AssetDatabase.LoadAssetAtPath<AnimationClip>(ArtSpikeArticulation.ClipPath);
+            Assert.That(clip.length, Is.EqualTo(3));
+            Assert.That(AnimationUtility.GetCurveBindings(clip).All(b => b.type == typeof(Transform)), Is.True);
+            var instance = Object.Instantiate(prefab);
+            try
+            {
+                var hips = instance.GetComponentsInChildren<Transform>(true).Where(t => t.name == "HipPivot").ToArray();
+                var initial = hips.Select(t => t.localRotation).ToArray();
+                clip.SampleAnimation(instance, .75f);
+                Assert.That(hips.Length, Is.EqualTo(4));
+                for (var i = 0; i < hips.Length; i++) Assert.That(Quaternion.Angle(initial[i], hips[i].localRotation), Is.GreaterThan(2));
+            }
+            finally { Object.DestroyImmediate(instance); }
         }
 
         [Test]

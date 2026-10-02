@@ -1,73 +1,84 @@
-# Art Spike V2 asset shortlist
+# ART SPIKE V3 — candidate evaluation
 
-Original author sources checked on **2026-10-02**. V1's Kenney-only character result was not approved. Research expanded beyond CC0; attribution and explicit free commercial redistribution are acceptable. No paid files, unofficial mirrors, ripped/game-extracted assets or authentication bypasses were used.
+Verified 2026-10-02 from original pages, public API metadata and official downloads. No mirror, login bypass or user account is needed for the selected V3 pipeline. Candidates requiring authentication are skipped under the current instruction. Original research archives stay in ignored Builds/ArtSpike, outside Assets and the public commit.
 
-## Selected: Unfinished mech sketch — Julius
+## 1. Vanguard-Class Mech Titan (Game Ready) — highest priority
 
-[Original author upload](https://opengameart.org/content/unfinished-mech-sketch), [author](https://opengameart.org/users/julius). Published page and archive license offer **CC BY-SA 3.0 (or later)** alternatively to GPLv2+. CC BY-SA 3.0 is selected: commercial use, modification and source repository redistribution allowed; attribution, modification notice and share-alike apply. [Full license](https://creativecommons.org/licenses/by-sa/3.0/legalcode).
+- Original: https://sketchfab.com/3d-models/vanguard-class-mech-titan-game-ready-84f5e9a69d734bbd97b10634e379b235
+- Author: ThankSang0301, https://sketchfab.com/ThanhSang0301
+- Official metadata: https://api.sketchfab.com/v3/models/84f5e9a69d734bbd97b10634e379b235
+- Exact selected public license: CC BY 4.0, https://creativecommons.org/licenses/by/4.0/legalcode.en
+- Commercial use, modification, raw and modified public-repository redistribution are permitted with attribution, license link and a change notice. Required credit if eventually selected: “Vanguard-Class Mech Titan (Game Ready) by ThankSang0301”, original URL, CC BY 4.0 link, actual modifications; no endorsement.
+- Acquisition: official Download opens Sketchfab authentication. Skipped; source file and bundled metadata were not acquired.
+- Public geometry: 42,295 triangles, 23,262 vertices. Renderer/material counts, child objects, separability, skin/bone hierarchy, texture resolution and file quality are **unmeasured**.
+- Page describes a Maya/Substance PBR workflow and BaseColor/Metallic/Roughness/Normal/AO/Emissive maps. These maps were not inspected. API animationCount is 0; this does not prove absence of a rig.
+- Decision: unavailable for autonomous acquisition; no files imported. Suitability for topology-preserving module reuse is unknown.
 
-Direct archive: [mechscetch_unfinished.zip](https://opengameart.org/sites/default/files/mechscetch_unfinished.zip), 119 KB advertised. Acquired. Contains OBJ, MTL, preview and license. Nine existing objects: two legs, two weapon arms, two shoulders, torso, pelvis and head. Original face triangulation totals **3,944 triangles**; individual leg 868, arm 304, shoulder 120, torso 700, pelvis 464, head 196. No textures, rig or animation.
+## 2. Robot Warrior — high priority
 
-Selected for intact armored support/joint meshes, weapon assemblies and broad shells. Only existing child selection and Unity transforms/materials are used; the head and complete humanoid are not instantiated. Original OBJ/MTL/license retained; source geometry unchanged. Normal import uses 15° smoothing. This is an unfinished mesh with no PBR surface maps; compressed proportions and module joins remain visual limitations. [Adaptation license scope](art-spike/ART_LICENSE.md).
+- Original: https://sketchfab.com/3d-models/robot-warrior-dae0366489e54d10b15c1315407cac33
+- Author: Andrei Milin, https://sketchfab.com/milinam2002
+- Official metadata: https://api.sketchfab.com/v3/models/dae0366489e54d10b15c1315407cac33
+- Public license: CC BY 4.0, same commercial/modification/source redistribution permissions and attribution obligations as above. Required eventual credit: “Robot Warrior by Andrei Milin”, original URL, CC BY 4.0 link and change notice.
+- Acquisition: official download requires authentication; skipped.
+- Public geometry: 35,798 triangles, 18,861 vertices, animationCount 0. Page describes a rigged game-ready asset using Blender/RizomUV/Marmoset/Substance Painter.
+- Renderer/material counts, map set/resolution, skeleton, clips, armor/limb child separation and suitability without topology editing remain unmeasured. “Rigged” is a page claim, not an inspected skeleton.
+- Decision: no import. Linked concept/reference artists also need provenance review if this asset becomes obtainable later; references alone are not evidence of copying.
 
-## Supporting scenery: Kenney
+## 3. K3NY Robot — medium priority
 
-**Factory Kit 3.0** — [official](https://kenney.nl/assets/factory-kit). Page and bundled License.txt: **CC0 1.0**; commercial use, modification and raw redistribution allowed, no attribution required. 140 industrial models; FBX/OBJ/GLB. Official direct ZIP acquired. V2 retains only box-long, machine-fortified, pipe-large-bend and pipe-large-long FBX plus license/metadata. Used as scenery containers, generators and conduits. All ten obsolete character/gear donors were removed from this spike. No character contains Kenney geometry.
+- Original: https://sketchfab.com/3d-models/k3ny-robot-33f72710718b4459ae9a2c407bb06f8d
+- Author: Hbomb2014, https://sketchfab.com/Hbomb2014
+- Official metadata: https://api.sketchfab.com/v3/models/33f72710718b4459ae9a2c407bb06f8d
+- Public license: CC BY 4.0. Required eventual credit: “K3NY Robot by Hbomb2014”, original URL, CC BY 4.0 link and change notice. Commercial use, modification and raw/modified repository distribution are allowed on those terms.
+- Acquisition: official download requires authentication; skipped.
+- Public geometry: 39,072 triangles, 19,448 vertices, animationCount 1. Page describes textured and fully rigged geometry.
+- Renderer/material counts, map types/resolutions, bone count, clip content and mesh separability are unmeasured.
+- Decision: no import; anatomy cannot be evaluated from counts or previews alone.
 
-**Modular Space Kit 1.0** — [official](https://kenney.nl/assets/modular-space-kit). Page and bundle: **CC0 1.0**, same permissions. Forty FBX/OBJ/GLB modular station pieces. Official direct ZIP acquired. Retained cables, template-floor, template-floor-detail-a, template-wall-detail-a and template-wall-half FBX plus license/metadata. Quiet deck/panel insets and low framing only; complete rooms would obstruct gameplay. Both archive/file hashes are recorded in the manifest.
+## 4. Corebreaker Robot Model — safe licensing fallback
 
-## Eligible backup: Modular Mech — Ryan / rcorre
+- Original/author: https://donitz.itch.io/corebreaker-robot-model — Donitz.
+- Explicit license on the original page: CC0 1.0. Commercial use, modification and original/modified repository distribution allowed; attribution optional. https://creativecommons.org/publicdomain/zero/1.0/legalcode.en
+- Acquisition: official corebreaker.zip downloaded without login. Archive contains corebreaker.blend and textures/lens_blue.png, no bundled license text; page license was checked.
+- Inspected with official portable Blender 4.5.0, factory settings, auto-execution disabled. Source was read, not saved. Blender warns the file uses newer-version data, so this inventory is not a guarantee of full rig fidelity.
+- Full pack: 20 mesh objects, including ship and first-person/tool extras. Selected robot subset: PlayerBody 3,644 triangles; PlayerHead 702; PlayerScreen 26; PlayerIndicator 4 = **4,376 triangles in four mesh objects**. Unity renderer count is unmeasured because this rejected asset was not imported; four mesh objects are the source rendering-unit equivalent.
+- Robot subset: six unique material roles (Yellow, Gunmetal, Black, Screen, LensBlue, Red), 11 assigned slots. The one present lens image is 256×256; screen_test.png is referenced but absent. Main armor is constant shader color, not a PBR surface map set.
+- Skeleton: Player has 57 bones; FirstPersonPlayer 32. Three source actions: FirstPersonPlayerReset (0–10), FirstPersonPlayerTest (0–133), PlayerReset (0–10). No walk clip identified. The page claims realistic joint limits; the read-only inventory does not establish constraint fidelity.
+- Separation: body, head, screen and indicator are separate, but PlayerBody joins torso, arms and legs. FirstPersonPlayerBody joins both arms. Tool pieces are separate; they cannot supply the primary four-support chassis.
+- Decision: rejected as primary donor. Reusing individual limbs would require topology/skin editing, and it does not improve V2 armor surface quality.
 
-[Original page](https://rcorre.itch.io/modular-mech). **CC BY 4.0 International** explicitly listed for assets; MIT for example code. Commercial use, modification, raw redistribution allowed with attribution/modification notice. Rigged directional walking mech, separate head and interchangeable weapon attachments. FBX/Blend/Godot archives. Low-poly untextured planes; source renderer/triangle structure unmeasured because not acquired. Official page/purchase page reached; requires the interactive free-download step. Not imported, not assumed sufficient visual fidelity.
+## 5. Stylized Sci-Fi Mech Robot Asset — technically useful, license unresolved
 
-**MANUAL ASSET REQUIRED (optional backup):** choose the free download of **modular_mech_fbx.zip**, place at:
-C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\art-spike-kitbash\Builds\ArtSpike\ManualAssets\modular_mech_fbx.zip
+- Original/author: https://retrostylegames.itch.io/stylized-sci-fi-mech-robot-asset — RetroStyle Games.
+- Acquisition: official free FBX archive downloaded without login. No license, README or redistribution terms found in that archive.
+- Original page offers free/royalty-free game/prototyping use, but does not establish an explicit license for modification and redistribution of raw/modified source in this public repository. Attribution and those source permissions remain **unverified**. No assumption from “free” or “royalty-free” is used.
+- Blender-inspected LOD0: Bottom 12,676 + gunsBottom 4,140 + gunsTop 4,140 + Top 5,040 = **25,996 triangles** in four skinned mesh objects. LOD1: 18,606 triangles in four objects. Unity renderers are unmeasured; eight source mesh objects across both LODs, four per active LOD.
+- One material reference per LOD, two references across the source file. Actual archive contains **five 2048×2048 PNGs**: basecolor, emissive, metallic, normal, roughness, rather than the page's four-texture summary. No AO file.
+- DeformationSystem has 43 bones. Seven separate animation FBXs: death (61 frames), idle (50), landing (76), four walk directions (31 each). These are inspected source animation ranges, not retargeted Unity clips.
+- Separation: upper body and paired gun groups separate; all six lower legs share the Bottom mesh. Individual four-support reuse cannot preserve topology.
+- Decision: rejected; public-source redistribution permission is unresolved. The official page also identifies it as Ocean Keeper's protagonist, an additional mismatch with the brief's recognizable commercial-character restriction. None of its files or preview images are imported.
 
-## Eligible backup: Mech Drone — Willy Decarpentrie
+## Additional autonomous search: Robot — piacenti
 
-[Original author model](https://sketchfab.com/3d-models/mech-drone-8d06874aac5246c59edb4adbe3606e0e). Sketchfab public original-model metadata confirms **CC BY 4.0**, **9,131 triangles**, one animation and downloadable status. Commercial modification/redistribution allowed with credit and change notice. Potential articulated walker/armor donor; exact mesh separability, textures and download formats not inspected. Official download requires browser/sign-in flow; no source archive acquired. No third-party demo or mirrored copy substituted.
+- Original: https://opengameart.org/content/robot-5, author https://opengameart.org/users/piacenti.
+- Official archive: https://opengameart.org/sites/default/files/robot%20game.zip
+- License: CC BY 3.0, https://creativecommons.org/licenses/by/3.0/legalcode. Commercial use, modification and repository redistribution permitted with title/author/source/license credit and change notice. Required if selected: “Robot by piacenti”, both original links, CC BY 3.0 and actual modifications.
+- Official archive acquired without login. Three complete alternate body meshes, **23,857 triangles each**, one material per variant. No armature or clips. Color maps are 2K for the first two variants, 4K for the ancient variant; normal/gloss maps are 2K. Legacy Blender file has stale external paths; PNGs are present in the archive.
+- All limbs/body are joined in each complete variant. Unity renderer count unmeasured (three whole-body source mesh objects). Rejected: topology editing would be required; using its complete humanoid would compromise the agreed direction.
 
-**MANUAL ASSET REQUIRED (optional backup):** download the original model from that page (or its official glTF download if no FBX is offered), retain the complete source archive, and place it at:
-C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\art-spike-kitbash\Builds\ArtSpike\ManualAssets\MechDrone.zip
-The download archive's vendor filename is not exposed by the unauthenticated metadata; the destination above is a project-local name. Format conversion/hierarchy audit must precede import.
+## Selected V3 source strategy
 
-## Eligible backups with acquisition limits
+The current instruction explicitly authorizes a temporary mock/proxy when suitable donors cannot be obtained autonomously. V3 therefore uses **original project-authored modular hard-surface proxy geometry** with the V2 design language as a silhouette reference, and a real independently licensed PBR texture donor:
 
-**Free 3D Kitbash Set — Markom3D**: [original Gumroad](https://markom3d.gumroad.com/l/Free3DKitbash). Explicit **CC0**; commercial modification/raw redistribution permitted without credit. Free Version has Blend/FBX hard-surface parts; full 150-piece tier is paid and excluded. Mesh counts/separability unmeasured. Interactive checkout/download, no archive acquired. Backup for armor/connectors; no paid tier or mirror.
+- Blue Metal Plate by Rob Tuytel / Poly Haven: https://polyhaven.com/a/blue_metal_plate
+- CC0 asset terms: https://polyhaven.com/license; https://creativecommons.org/publicdomain/zero/1.0/legalcode.en
+- Commercial use, alteration and raw/modified public source redistribution allowed; attribution optional, provenance retained.
+- Official public download metadata: https://api.polyhaven.com/files/blue_metal_plate. Downloaded 1K diffuse JPG, GL normal PNG and ARM PNG. CDN MD5 values match; SHA-256 is in the manifest.
+- ARM channels: R=AO, G=roughness, B=metallic. Project-owned URP adaptations extract AO and pack metallic into R with inverted roughness in A. Original three source files remain byte-identical.
+- No third-party character geometry, skeleton or animation is used. Kenney's existing CC0 subset remains supporting scenery only.
+- Temporary geometry must eventually be replaced/refined with original final armor modules or an obtainable permissive donor with genuinely separate limbs, UVs and an appropriate rig. Preserve the common chassis/core identity and four hip/knee/foot socket paths. A full stock humanoid, six-legged stock character or worse silhouette is not a suitable replacement.
 
-**Mech Kitbash — masterxeon1001**: [original BlendSwap](https://blendswap.com/blend/9655). **CC0** shown. 3.17 MB Blender 2.6x/Cycles file, basic rig without IK, kitbashed mech. Commercial modification/raw redistribution allowed, no credit required. No direct archive acquired; download interaction/account may be needed. Mobile topology/parts unmeasured, so backup rather than verified game-ready selection.
+**SHARE-ALIKE CHARACTER DEPENDENCY: NO**
 
-**Molten Maps SciFi Assets Pack — Moltenbolt**: [original](https://moltenmaps.itch.io/molten-maps-scifi-pack). Published **CC0**; commercial modification/raw redistribution allowed. FBX/OBJ/glTF, 130+ modular environments/props; advertised atlas and three material roles unverified. Interactive free download prevents direct acquisition. Supporting environment backup, no character donor.
-**MANUAL ASSET REQUIRED (optional):** Molten Maps SciFi Asset Pack.zip (102 MB advertised), placed at:
-C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\art-spike-kitbash\Builds\ArtSpike\ManualAssets\Molten Maps SciFi Asset Pack.zip
-
-## Acquired but rejected
-
-**Mech Character Model — Colorado Stark**: [original](https://opengameart.org/content/mech-character-model). **CC0**, public-domain notice; commercial modification/raw redistribution allowed without attribution. Acquired original Mech.zip (59.3 MB advertised): FBX and 2K diffuse/normal/specular maps; page reports 15,434 triangles and 42 bones. Preview is a conventional humanoid with organic-looking worn surfaces. Not suitable as a complete G-0/Cutter; no separately reusable armor proven. Kept only in ignored research downloads, nothing imported.
-
-**Robot Enemy Pack — Teh_Bucket, TrickyTriangles, toiletsnakes**: [original](https://opengameart.org/content/robot-enemy-pack). **CC0**, credits retained in research; commercial modification/raw redistribution allowed without required attribution. Acquired buddyarena blend.zip, six blend files (five robots plus rocket), texture sources/maps. Original page estimates ~10k tris per robot. Automated Blender inspection found one body mesh per robot: blaster 6,770, crawler 2,968, drone 1,202, lobber 7,162; roller base 891 before mirror modifier. Armature/action sets present, three material roles. The bodies are not separate kitbash limbs/shells; splitting would exceed this task's operations. Rejected as primary donors; no archive/models/maps/converter imported.
-
-## Rejected for cost, provenance or license ambiguity
-
-**Stalenhag Environment Project: Spider Mech — Enrico Labarile**: [original](https://sketchfab.com/3d-models/stalenhag-environment-project-spider-mech-ec5914b53b6a4cde8de4820050bc46c5). Public metadata confirms **CC BY 4.0**, **103,396 triangles**, no animation. Stronger detailed environment hero, but over the preferred mobile donor budget with no inspected low-poly variant. Description bases it on another artist's work; rights/provenance not resolved for adoption. Not acquired/imported; formats/textures/separability uninspected.
-
-**Humanoid Robot Pack — Sotudios**: [original](https://sotudios.com/Assets/Humanoid-RobotPack/). **CC BY 4.0**, explicit commercial permission, license included in advertised ZIP. Eight unrigged FBX/OBJ humanoids with four 2K PBR maps each; 55,897–72,224 tris each, 529,832 total, 180 MiB. Visually detailed candidate category but high for repeated mobile units, no inspected low-poly alternative, no proven separable armor. Direct official link found; rejected before download/import.
-
-**45 Sci-Fi & Robot Kitbash**: [original marketplace](https://www.artstation.com/marketplace/p/oVnbO/45-sci-fi-robot-kitbash). Free **ArtStation Standard License** imposes commercial project/sales limits; extended license costs money. FBX/OBJ mechanical parts, but public raw redistribution not established. Rejected, not acquired/imported.
-
-**Quaternius Sci-Fi Essentials, Animated Mech, Modular Sci-Fi MegaKit**: original [Essentials](https://quaternius.com/packs/scifiessentialskit.html), [Mech](https://quaternius.com/packs/animatedmech.html), [MegaKit](https://quaternius.com/packs/modularscifimegakit.html). FBX/OBJ/Blend/glTF listings; robot/weapons, four animated mechs, modular environment respectively. Pack pages still advertise CC0. Current [QAL v1.0](https://quaternius.com/license.html), dated 2026-08-28, permits commercial products/modification but restricts asset redistribution. Contradictory source statements leave raw public-repository permission unclear. Rejected, no files acquired/imported, no paid tiers substituted.
-
-**SENTRY-2, SAP-1, BA-2 — Quandtum**: original [SENTRY](https://opengameart.org/content/sentry-2-sentry-bot-mark-2), [SAP](https://opengameart.org/content/sap-1-sapper-bot-mark-1), [BA](https://opengameart.org/content/ba-2-blast-all-bot-mark-2). Published **CC0**, blend/rigged meshes and texture maps, potential walkers. SENTRY reports 2,196 tris and 2K maps; BA 6,696 and 2K maps. Authors list sampled external texture sources; comments dispute compatible relicensing. Also single combined body meshes. Licensing ambiguity in bundled texture provenance takes precedence: not acquired/imported.
-
-## Other original uploads screened, not selected
-
-- [Spiderbot 1.0](https://opengameart.org/content/spiderbot-10), killyoverdrive: **CC BY-SA 3.0**, animated blend (616 KB); simple complete spider body, no verified modular parts. Not acquired; licensing permits commercial redistribution with share-alike/credit.
-- [Low Poly Bug Robot](https://opengameart.org/content/low-poly-bug-robot) and [Low poly robot](https://opengameart.org/content/low-poly-robot), VSG: **CC0**, blend, 970/1,082 tris, vertex colors and simple animations. Too simple for this fidelity correction; modular structure uninspected. Not acquired.
-- [Kraken Mech](https://opengameart.org/content/kraken-mech-justin-nichols-concept), Scribe / Daniel Stephens, concept Justin Nichol: **CC BY-SA 3.0** offered alongside GPL; blend, 3,560 tris, unrigged, basic texture. Original requires concept credit as well. Basic surface/unfinished UVs, no proven modules; not acquired.
-- [Mech](https://opengameart.org/content/mech), Skorpio: **CC BY-SA 3.0** or GPL3, blend ZIP, 1,733 polygons advertised, camo maps/basic animations. Low detail, complete humanoid mech rather than proven separate shells; not acquired.
-- [Cyborg Wheeler](https://opengameart.org/content/cyborg-wheeler), piacenti: **CC BY 3.0**, blend/packed textures in final.zip. Nonhuman locomotion potential, exact geometry/maps/parts unmeasured; not acquired.
-- [Giant Robot](https://opengameart.org/content/giant-robot), amaralzin9309: **CC BY 4.0**, RoboGigante.blend (651 KB), university-game robot; detail/rig/parts unverified. Not acquired.
-- [Mobile Turret](https://opengameart.org/content/mobile-turret), Atmostatic: **CC BY 3.0** offered alongside CC BY-SA/GPL; mobile_turret1.blend (3.2 MB). Old walking turret, no verified game-ready modular structure. Not acquired.
-- [Slasher](https://opengameart.org/content/slasher), br-n518: **CC0**, blend and rendered sprite archives; organic horned monster with blade claws. Wrong robotic shape language; not acquired.
-
-These nonselected CC-BY/CC-BY-SA candidates permit commercial modification/raw redistribution with their attribution/change/share-alike conditions, but that does not establish visual suitability. Uninspected formats, textures, costs and parts remain explicitly unverified. No candidate is marked selected merely because an archive is local.
+V1/V2 candidate history and Julius attribution remain naturally in Git at V2 commit 783876869e5506304c4521a9ea9b89d6e37e40ef. That history is not relicensed. V3 selected Assets and all ten current review PNGs are newly generated without Julius geometry.

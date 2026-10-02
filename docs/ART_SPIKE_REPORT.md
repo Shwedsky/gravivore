@@ -1,79 +1,105 @@
-# GRAVIVORE ART SPIKE V2 report
+# GRAVIVORE ART SPIKE V3 — completion report
 
-**ART SPIKE V2 VISUAL REVIEW: PENDING**
+**ART SPIKE V3 VISUAL REVIEW: PENDING**
 
-V1 passed the technical gate but human review rejected its Kenney-only factory-prop appearance. This revision keeps the isolated authoring, material, comparison, capture and audit pipeline; replaces character donors with intact armored mech parts; and provides actual Unity images for another human review. No visual approval or Android performance claim is made.
+Visual-only update on codex/art-spike-kitbash and the same draft PR #30:
+https://github.com/Shwedsky/gravivore/pull/30
+Base remains codex/s20-balance-vertical-slice, 4394448a7f3950cb62df701e8969137ae4b4a01c. Prior V2 HEAD: 783876869e5506304c4521a9ea9b89d6e37e40ef. No merge, new PR, retarget, S20 gameplay/balance change or production Chapter binding.
 
-## Same stack and scope
+## Candidate evaluation
 
-- Repository: Shwedsky/gravivore; same draft [PR #30](https://github.com/Shwedsky/gravivore/pull/30).
-- Same branch: `codex/art-spike-kitbash`; revision starts at `42dfbe83d1a28127cc1bf1eb192dca2092dfe0c3`.
-- Same base: `codex/s20-balance-vertical-slice`, pinned SHA `4394448a7f3950cb62df701e8969137ae4b4a01c`.
-- Same isolated worktree: `C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\art-spike-kitbash`.
-- Production runtime/content impact: **NONE**. S20 balance, Chapter 01 scene/catalog/evolution bindings, gameplay, other enemy archetypes, elites and bosses are unchanged. Root checkout and other worktrees were not modified.
-- No merge, new PR, main retargeting or full Chapter art replacement.
+All five exact candidates were inspected first; detailed licensing/acquisition/source measurements and unknowns are recorded in [ART_ASSET_SHORTLIST.md](ART_ASSET_SHORTLIST.md).
 
-## Donors and permissions
+- **Vanguard-Class Mech Titan:** official page/API CC BY 4.0, 42,295 triangles, animationCount 0. PBR map set described by author, but file/hierarchy/material/renderer/texture-resolution/rig data unmeasured because official download requires authentication. Skipped under the autonomous acquisition instruction.
+- **Robot Warrior:** official CC BY 4.0, 35,798 triangles, animationCount 0, author describes rigged. Official download requires authentication; child/renderer/material/map/rig inspection unavailable. Skipped.
+- **K3NY:** official CC BY 4.0, 39,072 triangles, animationCount 1, described textured/fully rigged. Official download requires authentication; file/hierarchy/renderer/material/rig detail unavailable. Skipped.
+- **Corebreaker:** official CC0 ZIP acquired without login. Four robot mesh objects / 4,376 triangles, six material roles / 11 slots; 256×256 lens image and missing screen reference, no armor PBR set. Player skeleton 57 bones; three reset/test actions across player and first-person rigs. Body joins arms/legs/torso, unsuitable for separate four-support reuse without topology/skin editing. Rejected.
+- **RetroStyle mech:** official FBX archive acquired. Active LOD0: four skinned mesh objects / 25,996 triangles / one material; LOD1 18,606. Actual five 2K PBR PNGs, 43 bones and seven animation FBXs. Six legs joined in one lower mesh. Free/royalty-free page does not establish public raw-source modification/redistribution terms; archive has no license. Also an identified Ocean Keeper protagonist. Rejected, no import.
+- **Additional piacenti Robot:** official CC BY 3.0 ZIP acquired. Three complete alternate meshes, 23,857 triangles and one material each, 2K/4K color plus 2K normal/gloss; no armature/clips. Inseparable humanoid bodies rejected.
 
-Character parts come from **Unfinished mech sketch by Julius**: [original author upload](https://opengameart.org/content/unfinished-mech-sketch), [author](https://opengameart.org/users/julius). The original OBJ, MTL and bundled license are retained. The archive offers GPLv2+ or CC BY-SA 3.0+; this spike selects **CC BY-SA 3.0 Unported**, permitting commercial use, modification and source redistribution with attribution, modification notice and share-alike. Adapted character visuals, scene visual content and review PNGs carry that license; independent project code and CC0 source assets retain their own terms. Exact scope and credits: [ART_LICENSE.md](art-spike/ART_LICENSE.md), [ThirdPartyNotices.md](../ThirdPartyNotices.md).
+Rejected .blend/.fbx metrics are Blender source mesh-object counts, not asserted Unity renderer measurements. No archive with unresolved terms is committed.
 
-The source contains nine existing mesh objects, 3,944 total triangles, no textures or rig. Existing torso, legs, arms, shoulders and pelvis objects are selected independently. The head and complete humanoid are not instantiated. Source bytes/topology are unchanged; Unity normal import uses 15° smoothing. Composition uses transforms, shared materials and small project-owned primitives/rings. No mesh splitting, source geometry edit, destructive Blender work or blind mesh combine.
+## Selected donor strategy
 
-Kenney is now supporting scenery only: four Factory Kit FBX and five Modular Space Kit FBX, both CC0. Ten obsolete Factory/cog character donors were removed. No G-0 or Cutter contains Kenney geometry. Archive/file hashes and unchanged bundled licenses: [ASSET_MANIFEST.json](art-spike/ASSET_MANIFEST.json). Expanded original-source research, exact licenses, rejected expensive/unclear candidates and optional manual downloads: [ART_ASSET_SHORTLIST.md](ART_ASSET_SHORTLIST.md).
+The current instruction expressly permits a temporary mock/proxy rather than requiring user authentication or compromising the direction. Selected: original project-authored hard-surface proxy modules plus **Blue Metal Plate by Rob Tuytel / Poly Haven (CC0)**, downloaded from the official CDN without login. Kenney's existing CC0 subset remains scenery.
 
-## Character compositions
+Eight original shared modules: Chassis, UpperSupport, LowerSupport, Foot, FlankPlate, WeaponHousing, EmitterFork, ShearBlade. No external character mesh or skin is loaded. Final replacement/refinement must preserve core position, four hip/knee/foot socket paths, units, root scale and tier silhouette. The proxy is not misrepresented as the unavailable Vanguard donor.
 
-**Tier 0:** horizontal torso armor chassis, unchanged cyan gravity core, a small containment ring, four intact armored leg/support assemblies with hip sockets, two forward mech weapon arms. Root scale is one; +Z is forward.
+## G-0 V3
 
-**Tier 1:** retains Tier 0 and adds shoulder-derived side armor, narrow cyan stabilizers and an outer containment ring. Width increases from 1.27 to 1.56 metres; the core stays identical.
+### Tier 0
 
-**Tier 2:** retains the common structure and adds outer armor wings, larger forward weapon arms, upper containment ring and anchors. Width is 2.00 metres, depth 2.07 metres. Evolution adds geometry and silhouette; it does not enlarge the core or root.
+Low chassis, central cyan core at (0,0.68,0) / diameter 0.30, four three-part mechanical supports, paired forward mandibles and fork tips. 19 renderers, 5,928 triangles. Original chamfered armor geometry, independent pivots and real surface maps replace unfinished donor planes.
 
-**Cutter:** one ordinary archetype, with armored torso, two supports, unequal articulated weapon arms, shoulder shield, thin pelvis-derived cutting blades and a red dorsal energy spine. There are no cog weapons. It shares the restrained metal palette while differing in core shape, support count and asymmetric arm reach.
+### Tier 1
 
-All four prefabs are decorative/static with no gameplay component, colliders, animation or rig.
+Adds flank plates, narrow cyan strips and outer containment ring. Common identity/locomotion/core preserved. 24 renderers, 6,936 triangles; width 1.961 m versus T0 1.500 m.
 
-## Environment and presentation
+### Tier 2
 
-A quiet 5×5 deck now includes nine low-contrast panel insets. Low bulkheads, conduits and small service props remain peripheral. The reactor was reduced and its gear rings replaced with small project-owned containment rings. No decorative foreground wall blocks the central combat space.
+Adds outer plates, heavier paired housing/fork weapons, supported upper ring/posts. 33 renderers, 9,216 triangles; width 2.498 m, height 0.862 m. Extra geometry establishes evolution without root scaling.
 
-Opaque URP materials provide dark metal, lighter armor and restrained cyan/red/amber accents. A shared 32×32-per-face mipmapped RGBAHalf studio reflection cubemap helps reveal armor planes; it adds no realtime light. The scene keeps one directional light and modest bloom.
+## Cutter V3
 
-## Eight actual Unity review images
+Low two-runner chassis, long/short asymmetric shear arms and tapered blades, offset shield and red spine. Same original proxy/PBR ecosystem; no humanoid head or cyan core. 13 renderers, 3,352 triangles, about 1.535 m wide / 0.614 m high, smaller/lower than T2. Static feet touch the review floor; no gait contact claim.
 
-The comparison scene preserves Areas A–D. The added close camera shows Tier 2 from three quarters, hiding the neighboring Cutter/reference during that capture only. S20-scale views use the actual settled camera offset, FOV and look-at height. Rendering executed in Unity URP on Direct3D11 / AMD Radeon(TM) Graphics. No generated concept image or composited fake geometry is used.
+## Materials / PBR
 
-- [01_G0_Evolution.png](art-spike/images/01_G0_Evolution.png), 1920×1080: Tier 0/1/2 left to right, same scale.
-- [02_G0_GameplayScale.png](art-spike/images/02_G0_GameplayScale.png), 1080×1920: Tier 1, S20 camera.
-- [03_Enemy_GameplayScale.png](art-spike/images/03_Enemy_GameplayScale.png), 1080×1920: Tier 1 and Cutter, S20 camera.
-- [04_Environment_Overview.png](art-spike/images/04_Environment_Overview.png), 1920×1080: bay overview.
-- [05_Gameplay_Mock.png](art-spike/images/05_Gameplay_Mock.png), 1080×1920: Tier 2, Cutter and bay, S20 camera.
-- [06_ScaleReference.png](art-spike/images/06_ScaleReference.png), 1920×1080: Tier 2 and Cutter, same scale.
-- [07_Evolution_S20Scale.png](art-spike/images/07_Evolution_S20Scale.png), 3240×1920: three actual portrait renders, Tier 0/1/2.
-- [08_G0_CloseHero.png](art-spike/images/08_G0_CloseHero.png), 1920×1080: clean three-quarter Tier 2 surface review.
+Three unchanged CC0 source files at 1024×1024: diffuse JPG, GL normal PNG, ARM PNG. MD5 matches official API; original URLs/SHA-256/byte sizes in [manifest](art-spike/ASSET_MANIFEST.json).
 
-Review guide: [ART_SPIKE_REVIEW.md](ART_SPIKE_REVIEW.md). Close-camera surface quality must be judged separately from actual gameplay-scale readability; the mock has no HUD or combat animation.
+Four maps are actually referenced by mechanical materials: diffuse, normal, derived metallic/smoothness and AO. Linear ARM.B goes to metallic R; 1-ARM.G goes to smoothness A; ARM.R goes to AO RGB. Original source is retained; output masks are 8-bit. Normal/masks linear, diffuse sRGB, mipmapped, 1K max size, Android ASTC 6x6 override. Project-owned cooler armor and darker structure tints retain the authored surface maps; cyan/red are independent energy materials.
 
-## Measured structural snapshot
+This is a generic real surface donor, not baked final character texturing. Planar UVs and nonuniform module scaling need final refinement.
 
-- Tier 0: **13 renderers**, 6,252 triangles, four shared materials, 13 slots.
-- Tier 1: **18 renderers**, 6,900 triangles, four shared materials, 18 slots.
-- Tier 2: **25 renderers**, 8,292 triangles, four shared materials, 25 slots.
-- Cutter: **9 renderers**, 4,104 triangles, four shared materials, nine slots.
-- All: MeshRenderers only; zero SkinnedMeshRenderer, Animator, Animation, collider or character texture maps. The shared scene reflection cubemap is separate.
+## Animation viability
 
-Tier 2 renderer count falls **58.3% from V1's 60**; triangles rise from 5,116 to 8,292 because the selected mech parts include actual armor/joint geometry. No combining was used. Submission counts are before batching, not a measured draw-call or FPS result. Full bounds, mesh/slot counts and method: [PERFORMANCE.md](art-spike/PERFORMANCE.md) and adjacent per-prefab JSON.
+No acquired rig is selected. A project-authored three-second transform-only idle clip independently moves four hip pivots and two common weapon pivots. Build-time sample at 0.75 seconds confirms all hips move; automated test verifies no Animator/Animation is added to the main character prefabs. Optional menu preview is a temporary DontSave clone in the isolated scene.
+
+This proves articulation only, not a locomotion rig, skinning, IK, gait, floor contact under animation or gameplay binding. No animation integration blocks this visual review.
+
+## Performance
+
+Measured inactive-inclusive prefab counts:
+
+- T0: 19 renderers, 36 material slots, 5,928 triangles, four unique materials.
+- T1: 24 renderers, 43 slots, 6,936 triangles, four materials.
+- T2: 33 renderers, 58 slots, 9,216 triangles, four materials.
+- Cutter: 13 renderers, 25 slots, 3,352 triangles, three materials.
+
+All character budgets pass. Four 1K texture maps are shared across the characters; no SkinnedMeshRenderer/Animator/Animation/collider/light/camera/gameplay script in character prefabs. Two deliberate material submeshes per mechanical module mean renderer counts alone understate draw cost. One review directional light, a static small cubemap and modest bloom; device profiling still required. No Android FPS/frame-time result is claimed.
+
+V2 versus V3 counts, bounds and visual tradeoffs: [review](ART_SPIKE_REVIEW.md), exact [snapshots](art-spike/PERFORMANCE.md).
+
+## Licensing / cleanup
+
+**SHARE-ALIKE CHARACTER DEPENDENCY: NO**
+
+Julius raw OBJ/MTL/license directory and metadata removed. Character prefabs/comparison scene and ten screenshots regenerated from independent geometry, without donor vertices. Old Julius-specific importer behavior removed. Notices/license scope/manifests updated; historical V2 remains under its original terms in ordinary Git history.
+
+Current external visual assets are CC0. No paid/NC/SA/unclear/franchise asset, donor script or engine package imported. Attribution remains voluntarily documented for CC0.
+
+## Visual outputs
+
+All ten requested actual Unity outputs are listed and linked in [ART_SPIKE_REVIEW.md](ART_SPIKE_REVIEW.md), including surface closeup and documented exploded composition. Capture uses Unity 6000.3.0f1 / URP 17.3 on Direct3D11, AMD Radeon(TM) Graphics. Image 07 joins three actual full portrait panels; no synthetic render substitutes.
 
 ## Verification
 
-Unity **6000.3.0f1** compile/import and final eight-image capture completed with return code 0. Full EditMode: **254/254 passed**, zero failed/skipped. Full PlayMode: **56/56 passed**, zero failed/skipped. Standalone ProjectValidator: explicit pass and process return code 0. The source hash audit, staged production isolation audit and raw XML are linked in [VERIFICATION.md](art-spike/VERIFICATION.md).
+- Unity compile: succeeded; changed editor/test assemblies built without C# errors.
+- Full EditMode: **257/257 passed**, zero failed/skipped; 13 ArtSpike isolation/PBR/pivot cases included.
+- Full PlayMode: **56/56 passed**, zero failed/skipped.
+- Standalone ProjectValidator: outcome recorded in [verification](art-spike/VERIFICATION.md).
+- Performance snapshots and ten-image capture: executed.
+- Android/APK: deliberately not built, as specified for V3.
+- Production content/settings diff: checked against the S20 base; unrelated Unity-generated serialization is excluded from the commit.
 
-Android build was **not run**, as requested. No APK produced.
+Test XML/validator evidence: [verification artifacts](art-spike/verification/). Exact scope: [FILES_CHANGED.txt](art-spike/FILES_CHANGED.txt).
 
-## Limits, assumptions and next gate
+## Files / assumptions / limitations / next spec
 
-This donor is an unfinished untextured mesh. Armor has no PBR surface maps; compression/nonuniform transforms affect proportions; joins and overlaps remain visible in close review; some inner mechanics lie in shadow. Limbs are static and provide no engineered gait or combat articulation. Fewer renderers do not prove mobile performance; repeated units, shadows, batching and future animation still need device profiling.
+Changes are confined to Assets/_Game/ArtSpike, the art documents/review evidence and ThirdPartyNotices.md. Rejected archives/tools are ignored, not committed. Root checkout and other worktrees are preserved.
 
-Assumptions: the explicitly allowed other free commercial licenses include CC BY-SA with its documented share-alike obligations; intact mechanical parts from a humanoid donor are acceptable; one Unity unit is one metre; static posing and settled S20 camera are sufficient for this visual spike. No user Blender work is required.
+Assumption: the explicit autonomous proxy fallback permits original temporary mesh authoring while preserving the V2 design language. It does not imply final visual approval or production readiness. Artist-quality geometry/UVs, a proper locomotion solution and device performance remain limitations.
 
-Next spec ID: **none defined after S20**. Next gate: human ART SPIKE V2 visual review. No production adoption or Chapter replacement starts from technical pass alone.
+No next production spec is started. The next stage is **human ART SPIKE V3 visual review**; Chapter integration needs subsequent explicit authorization.
+
+**ART SPIKE V3 VISUAL REVIEW: PENDING**

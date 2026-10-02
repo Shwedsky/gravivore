@@ -32,7 +32,12 @@ namespace Gravivore.ArtSpike.Editor
             var scaleStage = roots.Single(r => r.name == "AREA D - Intended Scale Reference");
             scaleEnemy.SetActive(false);
             scaleStage.transform.Find("OneMetreReference").gameObject.SetActive(false);
-            try { Render(Camera("Camera_D_CloseHero"), "08_G0_CloseHero.png", 1920, 1080); }
+            try
+            {
+                Render(Camera("Camera_D_CloseHero"), "08_G0_CloseHero.png", 1920, 1080);
+                Render(Camera("Camera_D_SurfaceDetail"), "09_G0_SurfaceDetail.png", 1920, 1080);
+                Breakdown(roots.Single(r => r.name == "D_G0_Tier2"), Camera("Camera_D_DonorBreakdown"));
+            }
             finally
             {
                 scaleEnemy.SetActive(true);
@@ -74,6 +79,31 @@ namespace Gravivore.ArtSpike.Editor
         {
             ArtSpikeBuilder.Build();
             Capture();
+        }
+
+        private static void Breakdown(GameObject player, Camera camera)
+        {
+            var parts = player.GetComponentsInChildren<Transform>(true);
+            var positions = parts.Select(p => p.localPosition).ToArray();
+            try
+            {
+                var core = player.transform.Find("01_CoreChassis_CommonIdentity");
+                core.Find("GravityCore_Common").localPosition += Vector3.up * .65f;
+                core.Find("CoreSeat").localPosition += Vector3.up * .32f;
+                foreach (Transform support in player.transform.Find("02_FourMechanicalSupports_Common"))
+                    support.localPosition += new Vector3(support.name.StartsWith("Left") ? -.45f : .45f, 0,
+                        support.name.EndsWith("Front") ? .15f : -.15f);
+                player.transform.Find("03_ForwardGravityMandibles_Common").localPosition += Vector3.forward * .7f;
+                var armor = player.transform.Find("04_Tier1_ArmorAndStabilizers");
+                foreach (Transform piece in armor)
+                    piece.localPosition += new Vector3(Mathf.Sign(piece.localPosition.x) * .30f, .30f, 0);
+                var heavy = player.transform.Find("05_Tier2_EmitterForksAndContainment");
+                foreach (Transform piece in heavy)
+                    piece.localPosition += piece.name.Contains("Containment") ? Vector3.up * .55f :
+                        new Vector3(Mathf.Sign(piece.localPosition.x) * .70f, .05f, piece.name.Contains("Weapon") ? .70f : -.25f);
+                Render(camera, "10_G0_DonorBreakdown.png", 1920, 1080);
+            }
+            finally { for (var i = 0; i < parts.Length; i++) parts[i].localPosition = positions[i]; }
         }
 
         private static void Render(Camera camera, string fileName, int width, int height)

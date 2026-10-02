@@ -1,6 +1,6 @@
 {
   "verifiedDate": "2026-10-02",
-  "version": 2,
+  "version": 3,
   "archives": [
     {
       "pack": "FactoryKit",
@@ -17,14 +17,6 @@
       "sourceUrl": "https://kenney.nl/assets/modular-space-kit",
       "archiveUrl": "https://kenney.nl/media/pages/assets/modular-space-kit/8261428a47-1771146076/kenney_modular-space-kit_1.0.zip",
       "sha256": "F394F7FD9EAF29C9DE7E090E55B69926F699841AF33B0B116F5CC0088DE8A4DC"
-    },
-    {
-      "pack": "MechSketch",
-      "author": "Julius",
-      "selectedLicense": "CC-BY-SA-3.0",
-      "sourceUrl": "https://opengameart.org/content/unfinished-mech-sketch",
-      "archiveUrl": "https://opengameart.org/sites/default/files/mechscetch_unfinished.zip",
-      "sha256": "06A7BB2005CF79C6E6B724D299B8D7E2FA0076A9356A406396628E65EF246444"
     }
   ],
   "files": [
@@ -117,28 +109,70 @@
       "unchangedFromOfficialArchive": true
     },
     {
-      "path": "Assets/_Game/ArtSpike/Imported/Julius/MechSketch/license.txt",
-      "pack": "MechSketch",
-      "archiveEntry": "license.txt",
-      "sha256": "8A32129FDCE9727FB04CBEFF7AC521B6250762D5219980074B9CC45CDFC9FD23",
-      "bytes": 273,
-      "unchangedFromOfficialArchive": true
+      "bytes": 395923,
+      "selectedLicense": "CC0-1.0",
+      "author": "Rob Tuytel / Poly Haven",
+      "sha256": "A0162BFFCE47D4A35613A12AF22571B28C18412DC5805CBB69EAC343554EF750",
+      "sourceUrl": "https://polyhaven.com/a/blue_metal_plate",
+      "pack": "BlueMetalPlate",
+      "unchangedFromOfficialDownload": true,
+      "md5": "a906d0e554596fb76c6969f2f644c5e6",
+      "downloadUrl": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/blue_metal_plate/blue_metal_plate_diff_1k.jpg",
+      "path": "Assets/_Game/ArtSpike/Imported/PolyHaven/BlueMetalPlate/blue_metal_plate_diff_1k.jpg"
     },
     {
-      "path": "Assets/_Game/ArtSpike/Imported/Julius/MechSketch/Models/mechscetch_unfinished.mtl",
-      "pack": "MechSketch",
-      "archiveEntry": "mechscetch_unfinished.mtl",
-      "sha256": "4557B2AB1D00A9ADB09DCEBC2634920D71E38EB9BF8DF70971981E213CA7309B",
-      "bytes": 231,
-      "unchangedFromOfficialArchive": true
+      "bytes": 4125323,
+      "selectedLicense": "CC0-1.0",
+      "author": "Rob Tuytel / Poly Haven",
+      "sha256": "9F03852E15EADEF3B0E6610ED6F040F2E8F0FD818CA31B76C94711E43B4C4E7A",
+      "sourceUrl": "https://polyhaven.com/a/blue_metal_plate",
+      "pack": "BlueMetalPlate",
+      "unchangedFromOfficialDownload": true,
+      "md5": "6fcde97d9970fbccfa443c3efe9e53ae",
+      "downloadUrl": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/blue_metal_plate/blue_metal_plate_nor_gl_1k.png",
+      "path": "Assets/_Game/ArtSpike/Imported/PolyHaven/BlueMetalPlate/blue_metal_plate_nor_gl_1k.png"
     },
     {
-      "path": "Assets/_Game/ArtSpike/Imported/Julius/MechSketch/Models/mechscetch_unfinished.obj",
-      "pack": "MechSketch",
-      "archiveEntry": "mechscetch_unfinished.obj",
-      "sha256": "584CCDF81162B4AA5435A16B93E93E21D762ED0624CB9A5D4DE91E64916CB95F",
-      "bytes": 238195,
-      "unchangedFromOfficialArchive": true
+      "bytes": 2294022,
+      "selectedLicense": "CC0-1.0",
+      "author": "Rob Tuytel / Poly Haven",
+      "sha256": "9D049E208E52F6BD702A80CFA804786B5EA3FA7F0C70C668636F9F0E7EEAFA62",
+      "sourceUrl": "https://polyhaven.com/a/blue_metal_plate",
+      "pack": "BlueMetalPlate",
+      "unchangedFromOfficialDownload": true,
+      "md5": "ac570436def65ab0937e444c9d80729f",
+      "downloadUrl": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/blue_metal_plate/blue_metal_plate_arm_1k.png",
+      "path": "Assets/_Game/ArtSpike/Imported/PolyHaven/BlueMetalPlate/blue_metal_plate_arm_1k.png"
     }
-  ]
+  ],
+  "licenseNotices": [
+    {
+      "origin": "project-authored record of verified original-page CC0 license",
+      "legalCode": "https://creativecommons.org/publicdomain/zero/1.0/legalcode.en",
+      "originalLicensePage": "https://polyhaven.com/license",
+      "path": "Assets/_Game/ArtSpike/Imported/PolyHaven/BlueMetalPlate/License.txt"
+    }
+  ],
+  "generated": [
+    {
+      "sha256": "945DB80E0C353C3BCAE194A7994979B1CCA0783731AE22BBF387BCD38BB75319",
+      "source": "Assets/_Game/ArtSpike/Imported/PolyHaven/BlueMetalPlate/blue_metal_plate_arm_1k.png",
+      "sourceLicense": "CC0-1.0",
+      "path": "Assets/_Game/ArtSpike/Proxy/Textures/BlueMetal_MetalSmoothness.png",
+      "adaptation": "linear 8-bit AO extraction or metallic R / inverse roughness A; reproduced by ArtSpikePbr.Build"
+    },
+    {
+      "sha256": "51ACA2B475AC705CF9BECC898CBD282DCC56AC9541B3BB00D9C9EF7F319A4AAB",
+      "source": "Assets/_Game/ArtSpike/Imported/PolyHaven/BlueMetalPlate/blue_metal_plate_arm_1k.png",
+      "sourceLicense": "CC0-1.0",
+      "path": "Assets/_Game/ArtSpike/Proxy/Textures/BlueMetal_Occlusion.png",
+      "adaptation": "linear 8-bit AO extraction or metallic R / inverse roughness A; reproduced by ArtSpikePbr.Build"
+    }
+  ],
+  "originalGeometry": {
+    "authoring": "ArtSpikeProxyMeshes.cs; original temporary modules",
+    "importedSkeleton": false,
+    "path": "Assets/_Game/ArtSpike/Proxy/Models/",
+    "externalCharacterGeometry": false
+  }
 }
