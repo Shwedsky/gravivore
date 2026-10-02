@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.IO;
 using Gravivore.Presentation.Composition;
 using NUnit.Framework;
@@ -77,6 +79,41 @@ namespace Gravivore.Tests.EditMode
             foreach (var path in Directory.GetFiles("Assets/_Game/Runtime", "*.cs", SearchOption.AllDirectories))
             {
                 StringAssert.DoesNotContain("Resources.Load", File.ReadAllText(path), path);
+            }
+        }
+
+        [Test]
+        public void MissingScriptValidation_TraversesInactiveNestedChildrenAndReportsFullPath()
+        {
+            var root = new GameObject("Fixture Root");
+            var inactiveParent = new GameObject("Inactive Parent");
+            var nestedChild = new GameObject("Nested Missing Script");
+            inactiveParent.transform.SetParent(root.transform, false);
+            nestedChild.transform.SetParent(inactiveParent.transform, false);
+            inactiveParent.SetActive(false);
+            var visited = new List<GameObject>();
+            const string scenePath = "Assets/Tests/NestedMissingScriptFixture.unity";
+
+            try
+            {
+                var exception = Assert.Throws<InvalidOperationException>(() =>
+                    Gravivore.Editor.ProjectValidator.ValidateGameObjectHierarchyForMissingScripts(
+                        root,
+                        scenePath,
+                        gameObject =>
+                        {
+                            visited.Add(gameObject);
+                            return gameObject == nestedChild ? 2 : 0;
+                        }));
+
+                CollectionAssert.Contains(visited, nestedChild);
+                StringAssert.Contains(scenePath, exception.Message);
+                StringAssert.Contains("Fixture Root/Inactive Parent/Nested Missing Script", exception.Message);
+                StringAssert.Contains("2 missing MonoBehaviour script(s)", exception.Message);
+            }
+            finally
+            {
+                UnityEngine.Object.DestroyImmediate(root);
             }
         }
     }

@@ -69,7 +69,8 @@ cleanup.
 ### Scene, asset, and build isolation review
 
 ProjectValidator now opens both canonical scenes additively and rejects missing
-MonoBehaviour scripts without validating transient runtime-generated objects.
+MonoBehaviour scripts on every active or inactive GameObject in their complete
+hierarchies without validating transient runtime-generated objects.
 Required ScriptableObjects, S14 references, S15 catalog/models/materials, build
 scene paths, URP assets, audio definitions, and Android settings remain covered
 by existing checks.
@@ -98,7 +99,7 @@ deferred as non-blocking debt to the physical max-population profile.
 After adding S19 coverage:
 
 - Unity compile: PASS.
-- EditMode: 237/237 PASS.
+- EditMode: 238/238 PASS.
 - PlayMode: 56/56 PASS.
 - ProjectValidator: PASS.
 - Dev Android IL2CPP: PASS, 56,284,458 bytes,

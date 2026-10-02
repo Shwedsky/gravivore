@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.CompilerServices;
 using Gravivore.Core;
 using Gravivore.Gameplay.Combat;
 using Gravivore.Gameplay.Enemies;
@@ -23,6 +24,8 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
+
+[assembly: InternalsVisibleTo("Gravivore.EditModeTests")]
 
 namespace Gravivore.Editor
 {
@@ -301,12 +304,10 @@ namespace Gravivore.Editor
                     var roots = scene.GetRootGameObjects();
                     for (var rootIndex = 0; rootIndex < roots.Length; rootIndex++)
                     {
-                        var missingCount = GameObjectUtility.GetMonoBehavioursWithMissingScriptCount(roots[rootIndex]);
-                        if (missingCount > 0)
-                        {
-                            throw new InvalidOperationException(
-                                $"Canonical scene contains {missingCount} missing MonoBehaviour script(s): {path} ({roots[rootIndex].name}).");
-                        }
+                        ValidateGameObjectHierarchyForMissingScripts(
+                            roots[rootIndex],
+                            path,
+                            GameObjectUtility.GetMonoBehavioursWithMissingScriptCount);
                     }
                 }
                 finally
@@ -317,6 +318,39 @@ namespace Gravivore.Editor
                     }
                 }
             }
+        }
+
+        internal static void ValidateGameObjectHierarchyForMissingScripts(
+            GameObject root,
+            string scenePath,
+            Func<GameObject, int> missingScriptCounter)
+        {
+            if (root == null) throw new ArgumentNullException(nameof(root));
+            if (string.IsNullOrWhiteSpace(scenePath)) throw new ArgumentException("Scene path is required.", nameof(scenePath));
+            if (missingScriptCounter == null) throw new ArgumentNullException(nameof(missingScriptCounter));
+
+            var hierarchy = root.GetComponentsInChildren<Transform>(true);
+            for (var i = 0; i < hierarchy.Length; i++)
+            {
+                var gameObject = hierarchy[i].gameObject;
+                var missingCount = missingScriptCounter(gameObject);
+                if (missingCount <= 0) continue;
+                throw new InvalidOperationException(
+                    $"Canonical scene contains {missingCount} missing MonoBehaviour script(s): " +
+                    $"{scenePath} ({GetHierarchyPath(hierarchy[i])}).");
+            }
+        }
+
+        private static string GetHierarchyPath(Transform transform)
+        {
+            var path = transform.name;
+            while (transform.parent != null)
+            {
+                transform = transform.parent;
+                path = $"{transform.name}/{path}";
+            }
+
+            return path;
         }
 
         private static void ValidateSaveOffline()
