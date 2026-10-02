@@ -13,12 +13,16 @@ MonoBehaviour:
   m_Name: S04_Enemy_ScoutDrone
   m_EditorClassIdentifier:
   _id: scout-drone
-  _maximumHitPoints: 28
+  _maximumHitPoints: 26
   _moveSpeed: 3.2
   _attackDamage: 3
   _collisionRadius: 0.35
   _targetPointHeight: 0.8
-  _aggroRadius: 5.5
+  _aggroRadius: 4
   _aggroReleaseRadius: 7
   _attackRange: 1
   _attackInterval: 1
+  _moderatePlayerStrengthRatio: 15
+  _massivePlayerStrengthRatio: 30
+  _moderateAggroMultiplier: 0.55
+  _massiveAggroMultiplier: 0.2

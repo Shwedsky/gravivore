@@ -1,4 +1,6 @@
 using System;
+using Gravivore.Gameplay.Equipment;
+using Gravivore.Gameplay.Player;
 using Gravivore.Presentation.Feedback;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,20 +10,25 @@ namespace Gravivore.Presentation.UI
     [DisallowMultipleComponent]
     public sealed class PauseMenuPresenter : MonoBehaviour
     {
-        private const string StatsDetailsKey = "gravivore.ui.statsExpanded";
         private HudModalController _modal;
-        private PlayerStatsHudPresenter _statsPresenter;
+        private PlayerStatsState _stats;
+        private InventoryState _inventory;
+        private EquipmentCatalog _equipmentCatalog;
         private RectTransform _root;
-        private Button _detailsButton;
+        private Text _statsText;
+        private Text _equipmentText;
         private Button _audioButton;
         private Button _hapticsButton;
         private S14AudioPresenter _audio;
         private PresentationHapticSettings _hapticSettings;
 
         public bool IsPaused => _root != null && _root.gameObject.activeSelf;
-        public bool StatsDetailsExpanded { get; private set; }
         public RectTransform PauseButtonRect { get; private set; }
+        public RectTransform PauseButtonVisualRect { get; private set; }
         public RectTransform ModalRect => _root;
+        public string StatsText => _statsText != null ? _statsText.text : string.Empty;
+        public string EquipmentText => _equipmentText != null ? _equipmentText.text : string.Empty;
+        public bool HasSettingsControls => _audioButton != null && _hapticsButton != null;
         public bool AudioMuted => _audio != null ? _audio.IsMuted : PresentationAudioSettings.IsMuted;
         public float AudioVolume => _audio != null ? _audio.Volume : PresentationAudioSettings.Volume;
         public bool HapticsEnabled => _hapticSettings == null || _hapticSettings.Enabled;
@@ -29,104 +36,47 @@ namespace Gravivore.Presentation.UI
         public void Initialize(
             RectTransform hudRoot,
             HudModalController modal,
-            PlayerStatsHudPresenter statsPresenter,
+            PlayerStatsState stats,
+            InventoryState inventory,
+            EquipmentCatalog equipmentCatalog,
             S14AudioPresenter audio = null,
             PresentationHapticSettings hapticSettings = null)
         {
             if (hudRoot == null) throw new ArgumentNullException(nameof(hudRoot));
             _modal = modal ?? throw new ArgumentNullException(nameof(modal));
-            _statsPresenter = statsPresenter != null
-                ? statsPresenter
-                : throw new ArgumentNullException(nameof(statsPresenter));
+            _stats = stats ?? throw new ArgumentNullException(nameof(stats));
+            _inventory = inventory ?? throw new ArgumentNullException(nameof(inventory));
+            _equipmentCatalog = equipmentCatalog ?? throw new ArgumentNullException(nameof(equipmentCatalog));
             _audio = audio;
             _hapticSettings = hapticSettings ?? new PresentationHapticSettings();
 
-            var pauseButton = HudUiFactory.CreateButton(
-                hudRoot,
-                "Pause Button",
-                new Vector2(0.84f, 0.925f),
-                new Vector2(0.97f, 0.985f),
-                "II",
-                Open);
+            var pauseButton = HudUiFactory.CreateCompactButton(
+                hudRoot, "Menu Button", new Vector2(0.84f, 0.925f), new Vector2(0.97f, 0.985f),
+                "II", Open, out var pauseVisual);
             PauseButtonRect = pauseButton.GetComponent<RectTransform>();
+            PauseButtonVisualRect = pauseVisual;
 
-            _root = HudUiFactory.CreatePanel(
-                hudRoot,
-                "Pause Modal",
-                Vector2.zero,
-                Vector2.one,
-                HudUiFactory.ModalBackdropColor,
-                true);
-            var panel = HudUiFactory.CreatePanel(
-                _root,
-                "Pause Panel",
-                new Vector2(0.12f, 0.27f),
-                new Vector2(0.88f, 0.73f),
-                HudUiFactory.PanelColor,
-                true);
-            HudUiFactory.CreateText(
-                panel,
-                "Title",
-                new Vector2(0.1f, 0.72f),
-                new Vector2(0.9f, 0.94f),
-                RussianUiText.Paused,
-                40,
-                TextAnchor.MiddleCenter,
-                Color.white);
-            _detailsButton = HudUiFactory.CreateButton(
-                panel,
-                "Stats Details Button",
-                new Vector2(0.12f, 0.56f),
-                new Vector2(0.88f, 0.68f),
-                string.Empty,
-                ToggleStatsDetails);
-            _audioButton = HudUiFactory.CreateButton(
-                panel,
-                "Audio Toggle",
-                new Vector2(0.12f, 0.4f),
-                new Vector2(0.58f, 0.52f),
-                string.Empty,
-                ToggleAudio);
-            HudUiFactory.CreateButton(
-                panel,
-                "Volume Down",
-                new Vector2(0.62f, 0.4f),
-                new Vector2(0.74f, 0.52f),
-                "-",
-                DecreaseVolume);
-            HudUiFactory.CreateButton(
-                panel,
-                "Volume Up",
-                new Vector2(0.76f, 0.4f),
-                new Vector2(0.88f, 0.52f),
-                "+",
-                IncreaseVolume);
-            _hapticsButton = HudUiFactory.CreateButton(
-                panel,
-                "Haptics Toggle",
-                new Vector2(0.12f, 0.24f),
-                new Vector2(0.88f, 0.36f),
-                string.Empty,
-                ToggleHaptics);
-            HudUiFactory.CreateButton(
-                panel,
-                "Resume Button",
-                new Vector2(0.12f, 0.07f),
-                new Vector2(0.88f, 0.19f),
-                RussianUiText.Resume,
-                Resume);
+            _root = HudUiFactory.CreatePanel(hudRoot, "Game Menu Modal", Vector2.zero, Vector2.one, HudUiFactory.ModalBackdropColor, true);
+            var panel = HudUiFactory.CreatePanel(_root, "Game Menu", new Vector2(0.07f, 0.08f), new Vector2(0.93f, 0.92f), HudUiFactory.PanelColor, true);
+            HudUiFactory.CreateText(panel, "Title", new Vector2(0.08f, 0.9f), new Vector2(0.92f, 0.98f), RussianUiText.GameMenu, 36, TextAnchor.MiddleCenter, Color.white);
+            HudUiFactory.CreateText(panel, "Characteristics Title", new Vector2(0.08f, 0.82f), new Vector2(0.92f, 0.89f), RussianUiText.Characteristics, 25, TextAnchor.MiddleLeft, HudUiFactory.AccentColor);
+            _statsText = HudUiFactory.CreateText(panel, "Characteristics", new Vector2(0.08f, 0.5f), new Vector2(0.92f, 0.82f), string.Empty, 23, TextAnchor.UpperLeft, Color.white);
+            HudUiFactory.CreateText(panel, "Equipment Title", new Vector2(0.08f, 0.42f), new Vector2(0.92f, 0.49f), RussianUiText.Equipment, 25, TextAnchor.MiddleLeft, HudUiFactory.AccentColor);
+            _equipmentText = HudUiFactory.CreateText(panel, "Equipment", new Vector2(0.08f, 0.26f), new Vector2(0.92f, 0.42f), string.Empty, 23, TextAnchor.UpperLeft, Color.white);
+            HudUiFactory.CreateText(panel, "Settings Title", new Vector2(0.08f, 0.19f), new Vector2(0.92f, 0.26f), RussianUiText.Settings, 25, TextAnchor.MiddleLeft, HudUiFactory.AccentColor);
+            _audioButton = HudUiFactory.CreateButton(panel, "Audio Toggle", new Vector2(0.08f, 0.11f), new Vector2(0.47f, 0.19f), string.Empty, ToggleAudio);
+            HudUiFactory.CreateButton(panel, "Volume Down", new Vector2(0.49f, 0.11f), new Vector2(0.61f, 0.19f), "-", DecreaseVolume);
+            HudUiFactory.CreateButton(panel, "Volume Up", new Vector2(0.63f, 0.11f), new Vector2(0.75f, 0.19f), "+", IncreaseVolume);
+            _hapticsButton = HudUiFactory.CreateButton(panel, "Haptics Toggle", new Vector2(0.08f, 0.02f), new Vector2(0.55f, 0.1f), string.Empty, ToggleHaptics);
+            HudUiFactory.CreateButton(panel, "Resume Button", new Vector2(0.58f, 0.02f), new Vector2(0.92f, 0.1f), RussianUiText.Resume, Resume);
             _root.gameObject.SetActive(false);
-
-            StatsDetailsExpanded = PlayerPrefs.GetInt(StatsDetailsKey, 0) != 0;
-            _statsPresenter.SetExpanded(StatsDetailsExpanded);
-            ApplyDetailsLabel();
-            ApplyAudioLabel();
-            ApplyHapticsLabel();
+            RefreshContent();
         }
 
         public void Open()
         {
             if (!_modal.TryOpen(this)) return;
+            RefreshContent();
             _root.SetAsLastSibling();
             _root.gameObject.SetActive(true);
         }
@@ -137,60 +87,42 @@ namespace Gravivore.Presentation.UI
             _modal?.Close(this);
         }
 
-        public void ToggleStatsDetails()
-        {
-            StatsDetailsExpanded = !StatsDetailsExpanded;
-            PlayerPrefs.SetInt(StatsDetailsKey, StatsDetailsExpanded ? 1 : 0);
-            PlayerPrefs.Save();
-            _statsPresenter.SetExpanded(StatsDetailsExpanded);
-            ApplyDetailsLabel();
-        }
-
         public void ToggleAudio()
         {
             var muted = !AudioMuted;
-            if (_audio != null) _audio.SetMuted(muted);
-            else PresentationAudioSettings.SetMuted(muted);
-            ApplyAudioLabel();
+            if (_audio != null) _audio.SetMuted(muted); else PresentationAudioSettings.SetMuted(muted);
+            ApplySettingsLabels();
         }
 
         public void IncreaseVolume() => ChangeVolume(0.1f);
-
         public void DecreaseVolume() => ChangeVolume(-0.1f);
 
         public void ToggleHaptics()
         {
             _hapticSettings?.SetEnabled(!HapticsEnabled);
-            ApplyHapticsLabel();
+            ApplySettingsLabels();
         }
 
         private void ChangeVolume(float delta)
         {
             var volume = Mathf.Clamp01(AudioVolume + delta);
-            if (_audio != null) _audio.SetVolume(volume);
-            else PresentationAudioSettings.SetVolume(volume);
-            ApplyAudioLabel();
+            if (_audio != null) _audio.SetVolume(volume); else PresentationAudioSettings.SetVolume(volume);
+            ApplySettingsLabels();
         }
 
-        private void ApplyDetailsLabel()
+        private void RefreshContent()
         {
-            var label = _detailsButton != null ? _detailsButton.GetComponentInChildren<Text>() : null;
-            if (label != null)
-            {
-                label.text = RussianUiText.StatsDetails(StatsDetailsExpanded);
-            }
+            _statsText.text = HudTextFormatter.Stats(_stats.BaseLevels, _stats.DerivedStats, true);
+            _equipmentText.text = HudTextFormatter.Equipment(_inventory, _equipmentCatalog);
+            ApplySettingsLabels();
         }
 
-        private void ApplyAudioLabel()
+        private void ApplySettingsLabels()
         {
-            var label = _audioButton != null ? _audioButton.GetComponentInChildren<Text>() : null;
-            if (label != null) label.text = RussianUiText.Audio(AudioMuted, Mathf.RoundToInt(AudioVolume * 100f));
-        }
-
-        private void ApplyHapticsLabel()
-        {
-            var label = _hapticsButton != null ? _hapticsButton.GetComponentInChildren<Text>() : null;
-            if (label != null) label.text = RussianUiText.Haptics(HapticsEnabled);
+            var audioLabel = _audioButton != null ? _audioButton.GetComponentInChildren<Text>() : null;
+            if (audioLabel != null) audioLabel.text = RussianUiText.Audio(AudioMuted, Mathf.RoundToInt(AudioVolume * 100f));
+            var hapticsLabel = _hapticsButton != null ? _hapticsButton.GetComponentInChildren<Text>() : null;
+            if (hapticsLabel != null) hapticsLabel.text = RussianUiText.Haptics(HapticsEnabled);
         }
 
         private void OnDestroy() => Resume();

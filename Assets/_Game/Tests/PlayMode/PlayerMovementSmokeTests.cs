@@ -66,7 +66,8 @@ namespace Gravivore.Tests.PlayMode
             Assert.IsNotNull(compositionRoot.ChapterCompletion);
             Assert.IsNotNull(compositionRoot.QuestTracker);
             StringAssert.Contains(RussianUiText.Durability, compositionRoot.PlayerHealthHud.DisplayText);
-            StringAssert.Contains("Мощность", compositionRoot.PlayerStatsHud.DisplayText);
+            Assert.IsFalse(compositionRoot.PlayerStatsHud.HasPersistentStatsPanel);
+            Assert.That(compositionRoot.PlayerStatsHud.DisplayText, Is.Empty);
             Assert.That(compositionRoot.QuestTracker.CurrentTrackerText, Is.EqualTo("Двигайтесь"));
             Assert.IsFalse(compositionRoot.BossHealthHud.IsVisible);
 

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Gravivore.Core.Events;
 using Gravivore.Gameplay.Combat;
+using Gravivore.Gameplay.Player;
 using UnityEngine;
 
 namespace Gravivore.Gameplay.Enemies
@@ -30,7 +31,8 @@ namespace Gravivore.Gameplay.Enemies
             int globalLiveEnemyCap,
             int targetLayer,
             Material visualMaterial,
-            IEnemyVisualFactory visualFactory = null)
+            IEnemyVisualFactory visualFactory = null,
+            PlayerStatsState playerStats = null)
         {
             if (_isInitialized)
             {
@@ -65,7 +67,8 @@ namespace Gravivore.Gameplay.Enemies
                 globalLiveEnemyCap,
                 targetLayer,
                 visualMaterial,
-                visualFactory);
+                visualFactory,
+                playerStats);
             _spots = new SpawnSpotRuntime[spotConfigurations.Count];
             for (var i = 0; i < _spots.Length; i++)
             {

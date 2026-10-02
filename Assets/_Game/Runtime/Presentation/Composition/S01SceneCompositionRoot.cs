@@ -385,7 +385,14 @@ namespace Gravivore.Presentation.Composition
             var pauseObject = new GameObject("Pause Menu", typeof(PauseMenuPresenter));
             pauseObject.transform.SetParent(transform, false);
             PauseMenu = pauseObject.GetComponent<PauseMenuPresenter>();
-            PauseMenu.Initialize(_hudRoot, _hudModal, PlayerStatsHud, AudioPresenter, _hapticSettings);
+            PauseMenu.Initialize(
+                _hudRoot,
+                _hudModal,
+                PlayerStats,
+                Inventory,
+                EquipmentCatalog,
+                AudioPresenter,
+                _hapticSettings);
 
             var offlineObject = new GameObject("Offline Reward Panel", typeof(OfflineRewardPanelPresenter));
             offlineObject.transform.SetParent(transform, false);
@@ -779,7 +786,8 @@ namespace Gravivore.Presentation.Composition
                 _globalLiveEnemyCap,
                 targetLayer,
                 _materialPalette.LitMaterial,
-                new S15EnemyVisualFactory(_s15VisualCatalog));
+                new S15EnemyVisualFactory(_s15VisualCatalog),
+                PlayerStats);
         }
 
         private Transform CreateCamera(Transform target)

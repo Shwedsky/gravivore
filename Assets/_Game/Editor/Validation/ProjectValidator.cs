@@ -18,6 +18,7 @@ using Gravivore.Presentation.Composition;
 using Gravivore.Presentation.Quests;
 using Gravivore.Presentation.Feedback;
 using Gravivore.Presentation.World;
+using CameraFollowSettings = Gravivore.Presentation.Camera.CameraFollowSettings;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -90,6 +91,8 @@ namespace Gravivore.Editor
             "Assets/ThirdParty/KenneyFactoryKit/License.txt",
             "docs/S15_ASSET_AUDIT.md",
             "docs/S16_DEVTOOLS.md",
+            "docs/S20_BALANCE_REPORT.md",
+            "docs/S20_FRESH_PLAYTHROUGH_CHECKLIST.md",
             "Assets/_Game/Content/Audio/S14_LashWindup.wav",
             "Assets/_Game/Content/Audio/S14_LashImpact.wav",
             "Assets/_Game/Content/Audio/S14_Hit.wav",
@@ -151,7 +154,66 @@ namespace Gravivore.Editor
             ValidateSaveOffline();
             ValidateS14Presentation();
             ValidateS15Assets();
+            ValidateS20Balance();
             ValidateCanonicalScenes();
+        }
+
+        private static void ValidateS20Balance()
+        {
+            var camera = AssetDatabase.LoadAssetAtPath<CameraFollowSettings>(
+                "Assets/_Game/Content/Definitions/S01_CameraFollowSettings.asset");
+            if (camera == null || camera.Offset.y < 10f || camera.Offset.y > 18f ||
+                camera.Offset.z < -14f || camera.Offset.z > -7f ||
+                camera.FieldOfView < 40f || camera.FieldOfView > 55f ||
+                camera.PositionDamping < 0f || camera.PositionDamping > 0.5f)
+            {
+                throw new InvalidOperationException("S20 portrait camera configuration is outside the validated readability range.");
+            }
+
+            var enemyPaths = new[]
+            {
+                "Assets/_Game/Content/Definitions/S04_Enemy_ScoutDrone.asset",
+                "Assets/_Game/Content/Definitions/S04_Enemy_CutterUnit.asset",
+                "Assets/_Game/Content/Definitions/S04_Enemy_Warden.asset",
+                "Assets/_Game/Content/Definitions/S04_Enemy_ArcDrone.asset",
+                "Assets/_Game/Content/Definitions/S04_Enemy_Carrier.asset"
+            };
+            for (var i = 0; i < enemyPaths.Length; i++)
+            {
+                var definition = AssetDatabase.LoadAssetAtPath<EnemyDefinition>(enemyPaths[i]);
+                var behavior = definition != null
+                    ? definition.CreateRuntimeConfiguration().Behavior
+                    : throw new InvalidOperationException($"Missing S20 ordinary enemy definition: {enemyPaths[i]}.");
+                if (behavior.AggroRadius > 4f || behavior.Aggression.ModeratePlayerStrengthRatio <= 1f ||
+                    behavior.Aggression.MassivePlayerStrengthRatio <= behavior.Aggression.ModeratePlayerStrengthRatio)
+                {
+                    throw new InvalidOperationException($"Invalid S20 aggression configuration: {enemyPaths[i]}.");
+                }
+            }
+
+            var progression = AssetDatabase.LoadAssetAtPath<PlayerProgressionDefinition>(
+                "Assets/_Game/Content/Definitions/S06_PlayerProgression.asset").Configuration;
+            var evolution = AssetDatabase.LoadAssetAtPath<EvolutionDefinition>(
+                "Assets/_Game/Content/Definitions/S07_Evolution.asset").Catalog.Selection;
+            var world = AssetDatabase.LoadAssetAtPath<Chapter01WorldDefinition>(
+                "Assets/_Game/Content/Definitions/S08_Chapter01World.asset").Configuration;
+            var estimate = Balance.S20BalanceModel.Evaluate(progression, evolution, world.EliteRequirement);
+            var tier1Ratio = estimate.Tier1Assimilation / (double)world.EliteRequirement.MinimumAssimilationScore;
+            var tier2Ratio = estimate.Tier2Assimilation / (double)world.EliteRequirement.MinimumAssimilationScore;
+            if (estimate.KillsToFirstStatLevel > 4 || world.EliteRequirement.RequiredObjectiveCount != 5 ||
+                tier1Ratio < 0.25d || tier1Ratio > 0.35d || tier2Ratio < 0.65d || tier2Ratio > 0.75d ||
+                estimate.EstimatedBossReadyMinutes < 30d || estimate.EstimatedUpperBossReadyMinutes > 45d)
+            {
+                throw new InvalidOperationException("S20 progression/evolution pacing is outside its validated model bands.");
+            }
+
+            var offline = AssetDatabase.LoadAssetAtPath<SaveOfflineDefinition>(
+                "Assets/_Game/Content/Definitions/S12_SaveOffline.asset").Configuration.OfflineReward;
+            if (offline.Efficiency < 0.2d || offline.Efficiency > 0.3d ||
+                offline.MaximumEligibleDuration != TimeSpan.FromHours(2))
+            {
+                throw new InvalidOperationException("S20 offline reward must remain at 20-30% with a two-hour cap.");
+            }
         }
 
         private static void ValidatePlayerRecovery()

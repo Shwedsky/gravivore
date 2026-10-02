@@ -13,12 +13,16 @@ MonoBehaviour:
   m_Name: S04_Enemy_Carrier
   m_EditorClassIdentifier:
   _id: carrier
-  _maximumHitPoints: 85
+  _maximumHitPoints: 72
   _moveSpeed: 1.6
-  _attackDamage: 8
+  _attackDamage: 7
   _collisionRadius: 0.52
   _targetPointHeight: 1.1
-  _aggroRadius: 4.5
+  _aggroRadius: 3.5
   _aggroReleaseRadius: 6.5
   _attackRange: 1.25
   _attackInterval: 1.8
+  _moderatePlayerStrengthRatio: 15
+  _massivePlayerStrengthRatio: 30
+  _moderateAggroMultiplier: 0.55
+  _massiveAggroMultiplier: 0.2

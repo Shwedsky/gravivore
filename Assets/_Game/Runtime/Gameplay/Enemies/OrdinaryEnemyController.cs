@@ -1,6 +1,7 @@
 using System;
 using Gravivore.Core.Events;
 using Gravivore.Gameplay.Combat;
+using Gravivore.Gameplay.Player;
 using UnityEngine;
 
 namespace Gravivore.Gameplay.Enemies
@@ -60,6 +61,7 @@ namespace Gravivore.Gameplay.Enemies
         private EnemyLifeId _lifeId;
         private Action<OrdinaryEnemyController> _recycleRequested;
         private IEnemyVisualState _visualState;
+        private PlayerStatsState _playerStats;
         private bool _isActive;
         private bool _isInitialized;
 
@@ -114,7 +116,8 @@ namespace Gravivore.Gameplay.Enemies
             Transform aggroTarget,
             IDamageable attackTarget,
             Vector3 position,
-            Action<OrdinaryEnemyController> recycleRequested)
+            Action<OrdinaryEnemyController> recycleRequested,
+            PlayerStatsState playerStats = null)
         {
             if (!_isInitialized)
             {
@@ -131,6 +134,7 @@ namespace Gravivore.Gameplay.Enemies
             _attackTarget = attackTarget ?? throw new ArgumentNullException(nameof(attackTarget));
             _recycleRequested = recycleRequested ?? throw new ArgumentNullException(nameof(recycleRequested));
             _configuration = configuration;
+            _playerStats = playerStats;
             _health.Reset(configuration.MaximumHitPoints);
             _brain.Configure(configuration.Behavior);
             _targetPoint.localPosition = new Vector3(0f, configuration.TargetPointHeight, 0f);
@@ -160,6 +164,7 @@ namespace Gravivore.Gameplay.Enemies
             _health.MarkInactive();
             _aggroTarget = null;
             _attackTarget = null;
+            _playerStats = null;
             _recycleRequested = null;
             _lifeId = default;
             AttackRequested = null;
@@ -184,6 +189,7 @@ namespace Gravivore.Gameplay.Enemies
                 return new DamageResult(0f, false);
             }
 
+            _brain.Engage();
             var result = _health.ApplyDamage(request, 0f);
             SafeEventDispatch.Publish(Damaged, new EnemyDamageEvent(_lifeId, transform.position, result));
             if (result.WasLethal)
@@ -226,7 +232,12 @@ namespace Gravivore.Gameplay.Enemies
 
             var offset = _aggroTarget.position - transform.position;
             offset.y = 0f;
-            var decision = _brain.Tick(Time.deltaTime, true, offset.magnitude);
+            var proactiveAggroRadius = _playerStats != null
+                ? OrdinaryEnemyAggressionPolicy.ResolveProactiveAggroRadius(
+                    _playerStats.DerivedStats,
+                    _configuration)
+                : _configuration.Behavior.AggroRadius;
+            var decision = _brain.Tick(Time.deltaTime, true, offset.magnitude, proactiveAggroRadius);
             if (decision.ShouldApproach && offset.sqrMagnitude > Mathf.Epsilon)
             {
                 var direction = offset.normalized;

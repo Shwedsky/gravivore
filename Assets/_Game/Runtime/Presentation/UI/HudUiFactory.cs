@@ -93,6 +93,40 @@ namespace Gravivore.Presentation.UI
             return button;
         }
 
+        public static Button CreateCompactButton(
+            Transform parent,
+            string name,
+            Vector2 anchorMin,
+            Vector2 anchorMax,
+            string label,
+            Action onClick,
+            out RectTransform visualRect)
+        {
+            var hitRect = CreatePanel(parent, name, anchorMin, anchorMax, Color.clear, true);
+            var button = hitRect.gameObject.AddComponent<Button>();
+            button.transition = Selectable.Transition.None;
+            visualRect = CreatePanel(
+                hitRect,
+                "Visual",
+                new Vector2(0.18f, 0.18f),
+                new Vector2(0.82f, 0.82f),
+                new Color(0.08f, 0.22f, 0.24f, 0.96f));
+            var text = CreateText(
+                visualRect,
+                "Label",
+                new Vector2(0.05f, 0.05f),
+                new Vector2(0.95f, 0.95f),
+                label,
+                26,
+                TextAnchor.MiddleCenter,
+                Color.white);
+            text.resizeTextForBestFit = true;
+            text.resizeTextMinSize = 18;
+            text.resizeTextMaxSize = 26;
+            if (onClick != null) button.onClick.AddListener(() => onClick());
+            return button;
+        }
+
         public static void SetRect(RectTransform rect, Vector2 anchorMin, Vector2 anchorMax)
         {
             rect.anchorMin = anchorMin;

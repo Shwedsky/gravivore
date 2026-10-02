@@ -44,7 +44,7 @@ namespace Gravivore.Tests.PlayMode
                 Assert.IsTrue(first.Progression.TryGrant(Death(seed++, enemyIds[i])));
             }
 
-            while (first.Progression.State.TotalAssimilationScore < 25)
+            while (first.Progression.State.TotalAssimilationScore < 60)
             {
                 Assert.IsTrue(first.Progression.TryGrant(Death(seed++, "scout-drone")));
             }

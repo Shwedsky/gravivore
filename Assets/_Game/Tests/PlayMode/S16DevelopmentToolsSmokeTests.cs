@@ -39,6 +39,8 @@ namespace Gravivore.Tests.PlayMode
             Assert.IsNotNull(pauseButton);
             Assert.AreSame(developmentToggle.parent, pauseButton.parent);
             Assert.IsFalse(RectTransformsOverlap(developmentToggle, pauseButton));
+            Assert.That(scene.Root.DevelopmentOverlay.ToggleVisualRect.rect.width, Is.LessThan(developmentToggle.rect.width * 0.7f));
+            Assert.That(scene.Root.PauseMenu.PauseButtonVisualRect.rect.width, Is.LessThan(pauseButton.rect.width * 0.7f));
 
             yield return scene.Cleanup();
         }
