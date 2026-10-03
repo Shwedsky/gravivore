@@ -73,6 +73,23 @@ namespace Gravivore.Presentation.Evolution
             }
 
             _sockets = CreateSockets(visualRoot);
+            if (catalog.HasTierPrefabs)
+            {
+                _tierModules = new TierModuleInstance[catalog.TierPrefabs.Length];
+                for (var i = 0; i < _tierModules.Length; i++)
+                {
+                    var form = Instantiate(catalog.TierPrefabs[i], visualRoot, false);
+                    form.name = catalog.TierPrefabs[i].name;
+                    form.transform.localPosition = Vector3.zero;
+                    form.transform.localRotation = Quaternion.identity;
+                    form.transform.localScale = Vector3.one;
+                    form.SetActive(false);
+                    _tierModules[i] = new TierModuleInstance((EvolutionTier)i, form);
+                }
+                _accentModules = Array.Empty<AccentModuleInstance>();
+                _isInitialized = true;
+                return;
+            }
             _moduleMaterial = new Material(litMaterial)
             {
                 hideFlags = HideFlags.HideAndDontSave

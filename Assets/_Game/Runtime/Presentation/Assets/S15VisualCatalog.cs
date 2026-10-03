@@ -32,9 +32,11 @@ namespace Gravivore.Presentation.Assets
     {
         [SerializeField] private string _id;
         [SerializeField] private S15VisualPart[] _parts = Array.Empty<S15VisualPart>();
+        [SerializeField] private GameObject _presentationPrefab;
 
         public string Id => _id;
         public int PartCount => _parts?.Length ?? 0;
+        public GameObject PresentationPrefab => _presentationPrefab;
         public S15VisualPart GetPart(int index) => _parts[index];
     }
 
@@ -148,6 +150,8 @@ namespace Gravivore.Presentation.Assets
         {
             if (recipe == null || string.IsNullOrWhiteSpace(recipe.Id) || recipe.PartCount == 0)
                 throw new InvalidOperationException($"S15 {label} recipe is incomplete.");
+            if (recipe.PresentationPrefab != null)
+                PresentationPrefabValidation.ValidateOrThrow(recipe.PresentationPrefab);
             for (var i = 0; i < recipe.PartCount; i++)
             {
                 var part = recipe.GetPart(i);
@@ -156,6 +160,21 @@ namespace Gravivore.Presentation.Assets
                 if (part.SourceModel.GetComponentInChildren<MeshFilter>(true) == null)
                     throw new InvalidOperationException($"S15 {label} part {i} has no mesh.");
             }
+        }
+    }
+
+    internal static class PresentationPrefabValidation
+    {
+        public static void ValidateOrThrow(GameObject prefab)
+        {
+            if (prefab == null || prefab.GetComponentInChildren<MeshFilter>(true) == null)
+                throw new InvalidOperationException("Presentation prefab requires mesh geometry.");
+            if (prefab.GetComponentsInChildren<MonoBehaviour>(true).Length != 0 ||
+                prefab.GetComponentsInChildren<Collider>(true).Length != 0 ||
+                prefab.GetComponentsInChildren<Rigidbody>(true).Length != 0 ||
+                prefab.GetComponentsInChildren<Light>(true).Length != 0 ||
+                prefab.GetComponentsInChildren<UnityEngine.Camera>(true).Length != 0)
+                throw new InvalidOperationException("Presentation prefab must contain no gameplay scripts, physics, lights or cameras.");
         }
     }
 }

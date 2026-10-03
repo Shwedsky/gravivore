@@ -27,6 +27,7 @@ namespace Gravivore.Presentation.Combat
         }
 
         private Sequence[] _sequences;
+        private Transform _presentationOrigin;
         private Material[] _materials;
         private float _beamDuration;
         private float _impactDuration;
@@ -47,12 +48,14 @@ namespace Gravivore.Presentation.Combat
         public void Initialize(
             GravityAttackSettings settings,
             Material unlitMaterial,
-            S14PresentationDefinition presentation)
+            S14PresentationDefinition presentation,
+            Transform presentationOrigin = null)
         {
             if (_isInitialized) throw new InvalidOperationException("Gravity lash VFX pool is already initialized.");
             if (settings == null) throw new ArgumentNullException(nameof(settings));
             if (unlitMaterial == null) throw new ArgumentNullException(nameof(unlitMaterial));
             settings.ValidateOrThrow();
+            _presentationOrigin = presentationOrigin;
             _beamDuration = presentation != null ? presentation.LashBeamDuration : settings.VfxDuration * 0.45f;
             _impactDuration = presentation != null ? presentation.LashImpactDuration : settings.VfxDuration;
             _materials = new[]
@@ -68,6 +71,7 @@ namespace Gravivore.Presentation.Combat
         public void Play(Vector3 origin, Vector3 destination)
         {
             if (!_isInitialized) throw new InvalidOperationException("GravityLashVfxPool must be initialized before use.");
+            if (_presentationOrigin != null) origin = _presentationOrigin.position;
             var sequence = FindAvailable();
             if (!IsActive(sequence)) ActiveCount++;
             ResetVisuals(sequence);
