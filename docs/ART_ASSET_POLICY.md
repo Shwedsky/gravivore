@@ -10,7 +10,9 @@ or manual user interaction. The current explicit instruction permits original
 temporary modular proxy geometry when no suitable autonomous donor is available;
 preserve the approved V2 silhouette direction and document its eventual replacement.
 V3 uses original proxy modules with CC0 Poly Haven PBR maps; Kenney remains scenery.
-No production Chapter integration follows without human visual approval and a
+The current explicit runtime-preview request authorizes temporary G-0 Tier0/1/2
+and Cutter binding in the real S20 Chapter on the ART branch and PR #30.
+Full art replacement remains pending human device review and a
 subsequently authorized specification. See ART_ASSET_SHORTLIST.md for verified
 candidate terms and ART_SPIKE_REVIEW.md for the pending review.
 

@@ -1,10 +1,35 @@
-# GRAVIVORE ART SPIKE V3 — completion report
+# GRAVIVORE ART SPIKE V3 — runtime preview report
 
-**ART SPIKE V3 VISUAL REVIEW: PENDING**
+**ART V3 RUNTIME DEVICE REVIEW: PENDING**
 
-Visual-only update on codex/art-spike-kitbash and the same draft PR #30:
+## RUNTIME APK PREVIEW
+
+**ART V3 RUNTIME DEVICE REVIEW: PENDING**
+
+- Required S20 **9f744b1fc08d9ed25d5a8f818513922a9d9c3ea4** integrated by normal merge **af442756cf5c2003fdba5289039ab9498d225026**, from previous S20 base **4394448a7f3950cb62df701e8969137ae4b4a01c**. Starting ART HEAD: **575d1905177613dc744050ccb23d3d74b25c1219**.
+- Camera: offset **(0,14.8,-11.2)**, vertical FOV **46**, look-at height **0.9**, damping **0.18**, portrait **9:16**. Actual Chapter ground is **72 × 140**, center (0,0,30); latest ordinary spots, elite/boss positions and gate configuration retained. All ten comparison PNGs regenerated on this camera before runtime binding.
+- Player: `S07_Evolution._tierPrefabs[0/1/2]` points to **G0_Tier0_ArtSpike / G0_Tier1_ArtSpike / G0_Tier2_ArtSpike**. Existing assimilation/presenter select whole forms at **20 / 42**. Exactly one form is active; old S15 body and primitive tier/accent additions are suppressed while whole-form overrides exist. Dominant stat is still tracked; proxy has no separate dominant-stat accent geometry.
+- Cutter: only `S15_VisualCatalog` recipe **cutter-unit** receives `_presentationPrefab = Cutter_ArtSpike`. Existing ordinary pool and lifecycle build/cache/reset it; all four Cutting Floor instances use the new presentation. Original PBR material slots remain intact. Existing legacy parts are retained as the reversible fallback.
+- Gameplay authority: player CharacterController **radius 0.42 / height 1.4 / center (0,0.7,0)** unchanged; Cutter collision radius **0.4**, HP **42** unchanged. No combat/stat/progression/save/movement/AI/spawn configuration is changed. Art prefab roots and visual instances use scale **(1,1,1)** and contain no scripts or physics.
+- Gravity Lash: only VFX start is redirected to the presentation child socket **(0,0.68,1.15)** in front of the weapon. Combat selection, visibility tests, pull, ranges and damage still use the original gameplay root/target point. Existing VFX/audio/hit/death systems remain active.
+- Old art retained: **Scout, Warden, Arc Drone, Carrier, Magnetar Guard, Custodian M-0 and full Chapter environment**. The review bay remains comparison-only and is absent from Android build scenes/packed assets.
+- Animation: runtime forms remain **static**. No gait/IK/retargeting/controller or new cheat. Existing DEV god mode/stat grants speed normal farming; a fresh/reset profile shows Tier0, **20** ordinary kills show Tier1, **42** show Tier2. Stat grants alone do not increase assimilation. Existing “Open elite” raises score to 60 and should be avoided before Tier1 review.
+- **Dev APK built successfully**, Unity exit **0**, ARM64 **IL2CPP**, portrait, Development + debugging, package **com.gravivore.mobile**, min SDK **26**, target **36**. Existing build script/flavor only; no Candidate APK.
+- Filename: **gravivore-dev-0.1.0+1.apk**; size **57,966,186 bytes (55.28 MiB)**.
+- Exact local APK: `C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\art-spike-kitbash\Builds\Android\gravivore-dev-0.1.0+1.apk`.
+- Build log: `C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\art-spike-kitbash\Builds\Logs\android-dev-20261003-105531.log`.
+- Build metadata: same APK basename with `.build.json`; code commit **232eed29bd33b157235501494a2b7bf44b0306eb**, UTC **2026-10-03T11:06:32.0080411Z**. Final report commit only changes documentation/evidence.
+- APK SHA-256: **3B1754787C37D8DBED5F14FE8C884EE4C9E4F6B2D4260B94A73C899A711C393E**. ZIP integrity passes, `lib/arm64-v8a/libil2cpp.so` present, all four form names found in packed Unity assets; comparison scene name absent. [Build evidence](art-spike/verification/RuntimeAndroidBuild.json).
+- Verification: compile passed, **265/265 EditMode**, **59/59 PlayMode**, standalone ProjectValidator passed, Dev Android build passed. Raw XML, logs and scope/source checks: [verification](art-spike/VERIFICATION.md).
+- Runtime structural audit, actual visible **Tier2 + four Cutters**: **85 renderers, 158 material slots, 22,624 triangles, five shared materials, four 1K shared maps**. Android ASTC 6×6 including all mips estimates **2,505,152 bytes (2.39 MiB)**. Scene: **one realtime directional light, shadows disabled**; all 85 selected renderers are configured as potential shadow casters but no realtime shadow light renders them. Excludes environment/HUD/VFX/other enemies/inactive cached forms; slots are potential submissions before batching, not measured draw calls. [Runtime snapshot](art-spike/RUNTIME_PERFORMANCE.json).
+- Manual checks: **launch, farther camera, expanded map, Tier0, movement, aligned attack VFX, Tier1, Tier2, V3 Cutter, Cutter movement/attack/death, gameplay readability, magenta materials, missing parts and several-minute FPS degradation**. Exact human instructions: [device checklist](ART_RUNTIME_DEVICE_CHECKLIST.md).
+- Limits: original temporary proxy geometry/UVs/surfaces; no final-art approval; static supports may slide, wide side plates may intersect obstacles while the collider stays narrow; directional socket alignment needs side/back attack review. **Device launch, FPS, thermals and final touch-play appearance have not been measured.**
+- Commits: S20 merge **af44275**, regenerated review **5bfde43**, clearly reversible runtime binding **232eed2**. Remove the four prefab references (or revert binding commit) to restore legacy presentation; the S20 merge remains separate. Same draft [PR #30](https://github.com/Shwedsky/gravivore/pull/30), base unchanged, unmerged. No full art replacement or next production spec started.
+
+
+Temporary playable art preview on codex/art-spike-kitbash and the same draft PR #30:
 https://github.com/Shwedsky/gravivore/pull/30
-Base remains codex/s20-balance-vertical-slice, 4394448a7f3950cb62df701e8969137ae4b4a01c. Prior V2 HEAD: 783876869e5506304c4521a9ea9b89d6e37e40ef. No merge, new PR, retarget, S20 gameplay/balance change or production Chapter binding.
+Base remains codex/s20-balance-vertical-slice. Previous base: 4394448a7f3950cb62df701e8969137ae4b4a01c; required S20 SHA 9f744b1fc08d9ed25d5a8f818513922a9d9c3ea4 was fetched, verified and integrated by normal merge af442756cf5c2003fdba5289039ab9498d225026. Starting ART HEAD: 575d1905177613dc744050ccb23d3d74b25c1219. Neither PR is merged or retargeted. The current human request authorizes the four temporary runtime visual bindings described below.
 
 ## Candidate evaluation
 
@@ -84,22 +109,22 @@ All ten requested actual Unity outputs are listed and linked in [ART_SPIKE_REVIE
 
 ## Verification
 
-- Unity compile: succeeded; changed editor/test assemblies built without C# errors.
-- Full EditMode: **257/257 passed**, zero failed/skipped; 13 ArtSpike isolation/PBR/pivot cases included.
-- Full PlayMode: **56/56 passed**, zero failed/skipped.
+- Unity compile: succeeded; runtime/editor/test assemblies built without C# errors.
+- Full EditMode: **265/265 passed**, zero failed/skipped.
+- Full PlayMode: **59/59 passed**, zero failed/skipped, including three canonical runtime preview tests.
 - Standalone ProjectValidator: outcome recorded in [verification](art-spike/VERIFICATION.md).
 - Performance snapshots and ten-image capture: executed.
-- Android/APK: deliberately not built, as specified for V3.
-- Production content/settings diff: checked against the S20 base; unrelated Unity-generated serialization is excluded from the commit.
+- Android/APK: current Dev IL2CPP build and metadata are recorded in the RUNTIME APK PREVIEW section.
+- Content diff against latest S20: only S07 presentation prefab references/offset and S15 Cutter presentation override. Camera, map, spawn spots, enemy/boss definitions and gameplay code are byte-identical to required S20; incidental Unity serialization is excluded.
 
 Test XML/validator evidence: [verification artifacts](art-spike/verification/). Exact scope: [FILES_CHANGED.txt](art-spike/FILES_CHANGED.txt).
 
 ## Files / assumptions / limitations / next spec
 
-Changes are confined to Assets/_Game/ArtSpike, the art documents/review evidence and ThirdPartyNotices.md. Rejected archives/tools are ignored, not committed. Root checkout and other worktrees are preserved.
+Runtime changes: S07/S15 authored definitions; Presentation evolution/catalog/factory/composition/VFX; opt-in ArtRuntimePreview editor binder; binding and canonical smoke tests. Rebuilt comparison assets/images and art reports accompany them. build-android.ps1 now launches its batch Unity process with WindowStyle Hidden; its existing Dev flavor is used. Exact inventory: [FILES_CHANGED.txt](art-spike/FILES_CHANGED.txt). Rejected archives/tools and APK/build intermediates remain ignored. Root checkout and other worktrees are preserved.
 
 Assumption: the explicit autonomous proxy fallback permits original temporary mesh authoring while preserving the V2 design language. It does not imply final visual approval or production readiness. Artist-quality geometry/UVs, a proper locomotion solution and device performance remain limitations.
 
-No next production spec is started. The next stage is **human ART SPIKE V3 visual review**; Chapter integration needs subsequent explicit authorization.
+No next production spec or full art replacement is started. The next stage is human review of this Dev APK using [ART_RUNTIME_DEVICE_CHECKLIST.md](ART_RUNTIME_DEVICE_CHECKLIST.md).
 
-**ART SPIKE V3 VISUAL REVIEW: PENDING**
+**ART V3 RUNTIME DEVICE REVIEW: PENDING**

@@ -20,7 +20,7 @@ Keep the existing industrial bay subordinate: quiet floor panels, low framing, p
 
 ## Review and final-art requirements
 
-S20 settled camera: offset (0,13.5,-10), look-at height 0.9, vertical FOV 46, portrait 9:16. Judge silhouettes in full portrait renders; inspect surfaces in images 08/09 and module structure in image 10.
+Current S20 settled camera: offset (0,14.8,-11.2), look-at height 0.9, vertical FOV 46, damping 0.18, portrait 9:16, from S20 SHA 9f744b1fc08d9ed25d5a8f818513922a9d9c3ea4. All ten comparison images were regenerated before temporary runtime binding. Judge silhouettes in full portrait renders; inspect surfaces in images 08/09 and module structure in image 10.
 
 The proxy proves composition, permissive surface integration and independent pivots. Its repeated plates, planar texture density and simplified joints are temporary. Final original/refined modules must preserve the approved design language, with authored UVs and an appropriate locomotion rig. The isolated idle proof does not establish walking, combat animation or Android frame time.
 
