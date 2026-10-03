@@ -118,6 +118,7 @@ try {
         -FilePath $unity `
         -ArgumentList $processArguments `
         -WorkingDirectory $projectRoot `
+        -WindowStyle Hidden `
         -Wait `
         -PassThru `
         -ErrorAction Stop

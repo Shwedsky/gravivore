@@ -530,7 +530,8 @@ namespace Gravivore.Presentation.Composition
             visualRoot.transform.SetParent(PlayerObject.transform, false);
             _playerVisualRoot = visualRoot.transform;
 
-            S15VisualFactory.Build(_playerVisualRoot, _s15VisualCatalog.Player, _s15VisualCatalog);
+            if (!_evolutionDefinition.HasTierPrefabs)
+                S15VisualFactory.Build(_playerVisualRoot, _s15VisualCatalog.Player, _s15VisualCatalog);
 
             return PlayerObject.GetComponent<PlayerLocomotion>();
         }
@@ -692,7 +693,14 @@ namespace Gravivore.Presentation.Composition
             var vfxObject = new GameObject("Gravity Lash VFX Pool", typeof(GravityLashVfxPool));
             vfxObject.transform.SetParent(transform, false);
             _gravityLashVfx = vfxObject.GetComponent<GravityLashVfxPool>();
-            _gravityLashVfx.Initialize(_gravityAttackSettings, _materialPalette.UnlitMaterial, _s14PresentationDefinition);
+            Transform presentationOrigin = null;
+            if (_evolutionDefinition.HasTierPrefabs)
+            {
+                presentationOrigin = new GameObject("Gravity Lash Presentation Origin").transform;
+                presentationOrigin.SetParent(_playerVisualRoot, false);
+                presentationOrigin.localPosition = _evolutionDefinition.AttackPresentationOffset;
+            }
+            _gravityLashVfx.Initialize(_gravityAttackSettings, _materialPalette.UnlitMaterial, _s14PresentationDefinition, presentationOrigin);
 
             var targetSensor = new PhysicsTargetSensor(
                 _gravityAttackSettings.TargetColliderCapacity,

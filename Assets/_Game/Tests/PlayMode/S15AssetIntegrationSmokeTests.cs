@@ -16,6 +16,8 @@ namespace Gravivore.Tests.PlayMode
             yield return scene.Load();
 
             var playerVisual = scene.Root.PlayerObject.transform.Find("Player Visual Root/S15 Visual [player-techno-organism]");
+            if (playerVisual == null)
+                playerVisual = scene.Root.PlayerObject.transform.Find("Player Visual Root/G0_Tier0_ArtSpike");
             Assert.IsNotNull(playerVisual);
             Assert.That(playerVisual.GetComponentsInChildren<MeshRenderer>(true), Has.Length.GreaterThanOrEqualTo(3));
             Assert.IsNotNull(GameObject.Find("Landmark relay-yard/S15 Visual [relay-yard]"));

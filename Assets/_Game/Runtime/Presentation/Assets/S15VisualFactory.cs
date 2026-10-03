@@ -72,6 +72,16 @@ namespace Gravivore.Presentation.Assets
             if (catalog == null) throw new ArgumentNullException(nameof(catalog));
             var root = new GameObject($"S15 Visual [{recipe.Id}]");
             root.transform.SetParent(parent, false);
+            if (recipe.PresentationPrefab != null)
+            {
+                PresentationPrefabValidation.ValidateOrThrow(recipe.PresentationPrefab);
+                var form = UnityEngine.Object.Instantiate(recipe.PresentationPrefab, root.transform, false);
+                form.name = recipe.PresentationPrefab.name;
+                form.transform.localPosition = Vector3.zero;
+                form.transform.localRotation = Quaternion.identity;
+                form.transform.localScale = Vector3.one;
+                return root;
+            }
             for (var i = 0; i < recipe.PartCount; i++) BuildPart(root.transform, recipe.GetPart(i), catalog, i);
             return root;
         }

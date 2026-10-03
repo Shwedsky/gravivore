@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Gravivore.Gameplay.Player;
 using Gravivore.Gameplay.Progression;
+using Gravivore.Presentation.Assets;
 using UnityEngine;
 
 namespace Gravivore.Presentation.Evolution
@@ -11,17 +12,21 @@ namespace Gravivore.Presentation.Evolution
         public EvolutionVisualCatalog(
             EvolutionConfiguration selection,
             EvolutionTierModuleSet[] tierModuleSets,
-            EvolutionAccentModule[] accentModules)
+            EvolutionAccentModule[] accentModules,
+            GameObject[] tierPrefabs = null)
         {
             Selection = selection ?? throw new ArgumentNullException(nameof(selection));
             TierModuleSets = tierModuleSets ?? throw new ArgumentNullException(nameof(tierModuleSets));
             AccentModules = accentModules ?? throw new ArgumentNullException(nameof(accentModules));
+            TierPrefabs = tierPrefabs ?? Array.Empty<GameObject>();
             EvolutionDefinition.ValidateCatalog(this);
         }
 
         public EvolutionConfiguration Selection { get; }
         public EvolutionTierModuleSet[] TierModuleSets { get; }
         public EvolutionAccentModule[] AccentModules { get; }
+        public GameObject[] TierPrefabs { get; }
+        public bool HasTierPrefabs => TierPrefabs.Length != 0;
     }
 
     [CreateAssetMenu(fileName = "EvolutionDefinition", menuName = "Gravivore/Progression/Evolution")]
@@ -39,11 +44,17 @@ namespace Gravivore.Presentation.Evolution
         };
         [SerializeField] private EvolutionTierModuleSet[] _tierModuleSets = Array.Empty<EvolutionTierModuleSet>();
         [SerializeField] private EvolutionAccentModule[] _accentModules = Array.Empty<EvolutionAccentModule>();
+        [SerializeField] private GameObject[] _tierPrefabs = Array.Empty<GameObject>();
+        [SerializeField] private Vector3 _attackPresentationOffset;
+
+        public bool HasTierPrefabs => _tierPrefabs != null && _tierPrefabs.Length != 0;
+        public Vector3 AttackPresentationOffset => _attackPresentationOffset;
 
         public EvolutionVisualCatalog Catalog => new EvolutionVisualCatalog(
             new EvolutionConfiguration(_tier1Threshold, _tier2Threshold, _dominancePriority),
             _tierModuleSets,
-            _accentModules);
+            _accentModules,
+            _tierPrefabs);
 
         public void ValidateOrThrow()
         {
@@ -54,6 +65,18 @@ namespace Gravivore.Presentation.Evolution
         {
             const int tierCount = 3;
             const int statCount = 5;
+            if (catalog.HasTierPrefabs)
+            {
+                if (catalog.TierPrefabs.Length != tierCount)
+                    throw new InvalidOperationException("Whole-form evolution requires exactly Tier0, Tier1 and Tier2 prefabs.");
+                var prefabs = new HashSet<GameObject>();
+                foreach (var prefab in catalog.TierPrefabs)
+                {
+                    PresentationPrefabValidation.ValidateOrThrow(prefab);
+                    if (!prefabs.Add(prefab))
+                        throw new InvalidOperationException("Whole-form evolution requires distinct tier prefabs.");
+                }
+            }
             var seenTiers = new bool[tierCount];
             var seenStats = new bool[statCount];
             var seenSockets = new bool[4];
