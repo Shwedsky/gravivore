@@ -15,6 +15,24 @@ S20 targets a fresh, competent 30-45 minute Chapter 01 completion. The determini
 
 The camera preserves the existing follow implementation and portrait perspective while showing substantially more arena space. No gameplay value depends on the camera.
 
+## Spatial scale second pass
+
+Physical-device review found the first S20 camera and world layout functionally sound but still too compressed. The second pass keeps FOV at `46` and moves the camera from `(0, 13.5, -10)` to `(0, 14.8, -11.2)`. The roughly 10% increase in camera height yields approximately 20% more visible ground area without introducing wide-angle distortion. Look-at height `0.9` and damping `0.18` are unchanged.
+
+The playable ground changes from `40 x 48`, centered at `(0, 0, 8)`, to `72 x 140`, centered at `(0, 0, 30)`. The starting basin and respawn move from `(0, 0, 0)` to `(0, 0, -30)`. The five ordinary region centers change as follows:
+
+| Region | Before | Spatial second pass |
+| --- | ---: | ---: |
+| Relay Yard | `(-8, 0, 6)` | `(-26, 0, 20)` |
+| Cutting Floor | `(0, 0, 10)` | `(0, 0, 40)` |
+| Shield Dump | `(8, 0, 6)` | `(26, 0, 20)` |
+| Capacitor Field | `(-7, 0, -7)` | `(-20, 0, -12)` |
+| Hauler Graveyard | `(7, 0, -7)` | `(20, 0, -12)` |
+
+The elite gate / Magnetar Guard / boss gate / Custodian arena move from `z=15 / 18 / 21 / 27` to `z=60 / 69 / 80 / 94`. This creates a fan-shaped ordinary route around the starting region followed by a separate final approach. Spawn populations, anchor offsets, collision authority, gates, quest ids, and encounter lifecycle are unchanged.
+
+At the fresh-profile movement speed of `4.5` units/second, direct uninterrupted estimates are approximately `7-9` seconds between useful neighboring farming regions, `15.6` seconds from start to the farthest ordinary region, `6.4` seconds from the closest ordinary center to the elite spawn, and `5.6` seconds from the elite spawn to the boss center. Actual traversal will be longer when routing around combat and landmarks.
+
 ## Ordinary aggression
 
 Base acquisition radii were reduced from `4.5-5.5` to `3.5-4.0`. Ordinary enemies compare existing player output/durability against their configured output/HP. At a player-to-enemy strength ratio of `15`, proactive acquisition becomes 55% of base; at `30`, it becomes 20% of base, never below attack range. The thresholds account for ordinary enemies fighting in local groups, so a fresh player still receives normal early pressure. Close contact remains interactive. Any damage explicitly engages the attacked ordinary enemy until normal release distance. Elite and boss controllers do not use this policy.
@@ -57,14 +75,14 @@ The configured active baseline remains 120 units/hour, offline efficiency remain
 
 ## Deterministic pacing model
 
-The Editor model reads the real progression rewards, threshold curve, evolution thresholds, and elite requirement. Assumptions are 24 seconds per ordinary kill averaged across combat/rotation and 10 aggregate minutes for navigation, elite, and boss encounters.
+The Editor model reads the real progression rewards, threshold curve, evolution thresholds, and elite requirement. The ordinary-kill assumption remains 24 seconds averaged across combat/rotation. The aggregate navigation, elite, and boss allowance increases from 10 to 11.5 minutes for the expanded route; this is a geometry-informed guardrail, not a substitute for the pending fresh-profile run.
 
 - First focused stat increase: 3 kills, approximately 1-2 minutes.
 - Tier 1: 20 assimilation, approximately 8 minutes of ordinary activity.
 - Tier 2: 42 assimilation, approximately 17 minutes of ordinary activity.
 - Elite eligibility: minimum 60 kills plus all five objectives.
-- Estimated initial boss-ready completion path: approximately 34 minutes.
-- Broad upper readiness estimate with 20 additional ordinary kills: approximately 42 minutes.
+- Estimated initial boss-ready completion path: approximately 35.5 minutes.
+- Broad upper readiness estimate with 20 additional ordinary kills: approximately 43.5 minutes.
 
 These estimates are guardrails. Player routing, deaths, stat distribution, equipment, and movement execution can shift real timing.
 

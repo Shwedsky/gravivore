@@ -54,7 +54,7 @@ namespace Gravivore.Tests.PlayMode
             Assert.IsTrue(first.MagnetarGuard.ApplyDamage(
                 new DamageRequest(10000f, DamageType.Gravity)).WasLethal);
             Assert.IsTrue(first.WorldUnlocks.State.EliteDefeated);
-            first.PlayerObject.transform.position = new Vector3(0f, 0f, 27f);
+            first.PlayerObject.transform.position = first.CustodianBoss.transform.position;
             first.CustodianBoss.Tick(0f);
             Assert.IsTrue(first.CustodianBoss.CanBeTargeted);
             Assert.IsTrue(first.CustodianBoss.ApplyDamage(
