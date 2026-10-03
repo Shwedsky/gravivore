@@ -91,7 +91,7 @@ namespace Gravivore.Presentation.Player
         {
             _aim = destination;
             _attackPhase = cue;
-            _attackRemaining = cue == GravityLashCue.Windup ? _settings.LashWindupDuration :
+            _attackRemaining = cue == GravityLashCue.Cancelled ? 0f : cue == GravityLashCue.Windup ? _settings.LashWindupDuration :
                 cue == GravityLashCue.Beam ? _settings.LashBeamDuration : _settings.LashImpactDuration;
             ApplyPose();
         }

@@ -99,11 +99,13 @@ namespace Gravivore.Tests.PlayMode
                 {
                     var destination = player.position + direction * 3 + Vector3.up * .7f;
                     var authority = player.position;
-                    cues.Clear(); lash.Play(authority, destination);
+                    cues.Clear(); lash.BeginCharge(authority, destination, null, .15f);
                     Assert.That(cues, Is.EqualTo(new[] { GravityLashCue.Windup }));
                     var beam = lash.LastPlayedObject.GetComponent<LineRenderer>();
                     Assert.IsFalse(beam.gameObject.activeSelf);
                     lash.Tick(.15f);
+                    Assert.IsFalse(beam.gameObject.activeSelf, "Charge expiry cannot release an attack.");
+                    lash.Play(authority, destination);
                     Assert.IsTrue(beam.gameObject.activeSelf);
                     Assert.That(Vector3.Distance(beam.GetPosition(0), motion.PresentationSocket.position), Is.LessThan(.001f));
                     var core = view.GetTierForm(tier).Find("01_RobotBody_CommonIdentity/GravityCore_Common");
@@ -119,7 +121,7 @@ namespace Gravivore.Tests.PlayMode
         }
 
         [UnityTest]
-        public IEnumerator ThrowingChargeObserverCannotCancelImmediateDamageOrPull()
+        public IEnumerator ThrowingReleaseObserverCannotCancelImmediateDamageHitFeedbackOrPull()
         {
             yield return LoadControlled();
             var root = _scene.Root;
@@ -130,15 +132,124 @@ namespace Gravivore.Tests.PlayMode
             var hp = enemy.CurrentHitPoints;
             var distance = Vector3.Distance(enemy.transform.position, root.PlayerObject.transform.position);
             var lash = root.GetComponentInChildren<GravityLashVfxPool>();
-            lash.CuePlayed += (cue, _) => { if (cue == GravityLashCue.Windup) throw new InvalidOperationException("charge observer failed"); };
-            LogAssert.Expect(LogType.Exception, "InvalidOperationException: charge observer failed");
+            lash.CuePlayed += (cue, _) => { if (cue == GravityLashCue.Beam) throw new InvalidOperationException("release observer failed"); };
+            LogAssert.Expect(LogType.Exception, "InvalidOperationException: release observer failed");
             var attack = root.PlayerObject.GetComponent<GravityAttackController>();
             attack.ResetTransientState(); attack.Tick(0);
             Assert.That(enemy.CurrentHitPoints, Is.LessThan(hp));
             if (enemy.IsAlive) Assert.That(Vector3.Distance(enemy.transform.position, root.PlayerObject.transform.position), Is.LessThan(distance));
-            Assert.That(root.CombatFeedback.EnemyHitPool.ActiveCount, Is.Zero);
-            root.CombatFeedback.TickFeedback(.23f);
+            Assert.IsTrue(lash.LastPlayedObject.activeSelf, "Beam must exist in the same call as HP/feedback.");
             Assert.That(root.CombatFeedback.EnemyHitPool.ActiveCount + root.CombatFeedback.EnemyDeathPool.ActiveCount, Is.GreaterThan(0));
+        }
+
+        [UnityTest]
+        public IEnumerator DisablingGameplayCancelsItsPendingChargeImmediately()
+        {
+            yield return LoadControlled();
+            var root = _scene.Root;
+            var enemy = root.EnemyPopulation.GetSpot(0).GetLiveEnemy(0);
+            enemy.enabled = true;
+            enemy.transform.position = root.PlayerObject.transform.position + Vector3.forward * 2.5f;
+            Physics.SyncTransforms();
+            var attack = root.PlayerObject.GetComponent<GravityAttackController>();
+            var lash = root.GetComponentInChildren<GravityLashVfxPool>();
+            attack.ResetTransientState(); attack.Tick(0);
+            lash.Tick(.08f); lash.Tick(.12f);
+            attack.Tick(root.PlayerStats.DerivedStats.AttackInterval - .14f);
+            Assert.That(lash.ActiveCount, Is.EqualTo(1));
+            var hp = enemy.CurrentHitPoints;
+            attack.enabled = true; attack.enabled = false;
+            Assert.That(lash.ActiveCount, Is.Zero);
+            Assert.That(enemy.CurrentHitPoints, Is.EqualTo(hp));
+        }
+
+        [UnityTest]
+        public IEnumerator ChargeExpiryCannotCommitDamageAndTargetLossClearsVisualPose()
+        {
+            yield return LoadControlled();
+            var root = _scene.Root;
+            var enemy = root.EnemyPopulation.GetSpot(0).GetLiveEnemy(0);
+            enemy.enabled = true;
+            var lash = root.GetComponentInChildren<GravityLashVfxPool>();
+            var view = root.PlayerObject.GetComponent<PlayerEvolutionView>();
+            var core = view.GetTierForm(view.CurrentTier).Find("01_RobotBody_CommonIdentity/GravityCore_Common");
+            var scale = core.localScale;
+            var hp = enemy.CurrentHitPoints;
+            var cues = new List<GravityLashCue>(); lash.CuePlayed += (cue, _) => cues.Add(cue);
+            lash.BeginCharge(root.PlayerObject.transform.position, enemy.TargetPoint.position, enemy, .15f);
+            lash.Tick(1f);
+            Assert.That(cues, Is.EqualTo(new[] { GravityLashCue.Windup }));
+            Assert.IsFalse(lash.LastPlayedObject.activeSelf);
+            Assert.That(enemy.CurrentHitPoints, Is.EqualTo(hp));
+            enemy.enabled = false;
+            lash.Tick(0);
+            lash.Tick(1f);
+            Assert.That(cues, Is.EqualTo(new[] { GravityLashCue.Windup, GravityLashCue.Cancelled }));
+            Assert.That(lash.ActiveCount, Is.Zero);
+            Assert.That(core.localScale, Is.EqualTo(scale));
+            Assert.That(enemy.CurrentHitPoints, Is.EqualTo(hp));
+        }
+
+        [UnityTest]
+        public IEnumerator ThrowingPrechargeObserverCannotBlockNextGameplayCommitOrLaterObservers()
+        {
+            yield return LoadControlled();
+            var root = _scene.Root;
+            var enemy = root.EnemyPopulation.GetSpot(0).GetLiveEnemy(0);
+            enemy.enabled = true;
+            enemy.transform.position = root.PlayerObject.transform.position + Vector3.forward * 2.5f;
+            Physics.SyncTransforms();
+            var attack = root.PlayerObject.GetComponent<GravityAttackController>();
+            var lash = root.GetComponentInChildren<GravityLashVfxPool>();
+            attack.ResetTransientState(); attack.Tick(0);
+            var hp = enemy.CurrentHitPoints;
+            var laterObserver = 0;
+            lash.CuePlayed += (cue, _) => { if (cue == GravityLashCue.Windup) throw new InvalidOperationException("precharge observer failed"); };
+            lash.CuePlayed += (cue, _) => { if (cue == GravityLashCue.Windup) laterObserver++; };
+            LogAssert.Expect(LogType.Exception, "InvalidOperationException: precharge observer failed");
+            attack.Tick(root.PlayerStats.DerivedStats.AttackInterval - .14f);
+            Assert.That(laterObserver, Is.EqualTo(1));
+            Assert.That(enemy.CurrentHitPoints, Is.EqualTo(hp));
+            attack.Tick(.141f);
+            Assert.That(enemy.CurrentHitPoints, Is.LessThan(hp));
+            Assert.IsTrue(lash.LastPlayedObject.activeSelf);
+        }
+
+        [UnityTest]
+        public IEnumerator RecycledEnemyLifeCancelsOldChargeAndReleasedImpactKeepsOldSnapshot()
+        {
+            yield return LoadControlled();
+            var root = _scene.Root;
+            var poolRoot = new GameObject("Timing Life Reuse Pool");
+            poolRoot.transform.SetParent(root.transform);
+            var pool = new OrdinaryEnemyPool(poolRoot.transform, 1, 9, TestMaterialFactory.Lit);
+            var configuration = new EnemyRuntimeConfiguration("timing-reuse", 1000f, .0001f, 0f, .4f, .9f,
+                new EnemyBehaviorParameters(5f, 7f, .1f, 10f));
+            var player = root.PlayerObject.transform;
+            var enemy = pool.Acquire(configuration, player, root.PlayerHealth, player.position + Vector3.forward * 3, pool.Return);
+            var lash = root.GetComponentInChildren<GravityLashVfxPool>();
+            var cues = new List<GravityLashCue>();
+            var impact = Vector3.zero;
+            lash.CuePlayed += (cue, point) => { cues.Add(cue); if (cue == GravityLashCue.Impact) impact = point; };
+            var oldLife = enemy.LifeId;
+            lash.BeginCharge(player.position, enemy.TargetPoint.position, enemy, .15f);
+            pool.Return(enemy);
+            var reused = pool.Acquire(configuration, player, root.PlayerHealth, player.position + Vector3.right * 3, pool.Return);
+            Assert.AreSame(enemy, reused);
+            Assert.That(reused.LifeId, Is.Not.EqualTo(oldLife));
+            lash.Tick(1f);
+            Assert.That(cues, Is.EqualTo(new[] { GravityLashCue.Windup, GravityLashCue.Cancelled }));
+            Assert.That(lash.ActiveCount, Is.Zero);
+            Assert.That(reused.CurrentHitPoints, Is.EqualTo(1000f));
+            var snapshot = reused.TargetPoint.position;
+            lash.Play(player.position, snapshot, reused);
+            pool.Return(reused);
+            var next = pool.Acquire(configuration, player, root.PlayerHealth, player.position + Vector3.right * 30, pool.Return);
+            lash.Tick(.08f);
+            Assert.That(impact, Is.EqualTo(snapshot));
+            Assert.That(next.CurrentHitPoints, Is.EqualTo(1000f));
+            lash.Tick(.12f);
+            Assert.That(lash.ActiveCount, Is.Zero);
         }
 
         [UnityTest]
@@ -180,7 +291,6 @@ namespace Gravivore.Tests.PlayMode
             var capacity = root.CombatFeedback.EnemyDeathPool.Capacity;
             enemy.ApplyDamage(new DamageRequest(100000, DamageType.Gravity));
             Assert.IsFalse(enemy.IsAlive);
-            root.CombatFeedback.TickFeedback(.23f);
             Assert.That(root.CombatFeedback.EnemyDeathPool.ActiveCount, Is.EqualTo(1));
             Assert.That(root.CombatFeedback.EnemyHitPool.ActiveCount, Is.Zero);
             Assert.That(root.CombatFeedback.EnemyDeathPool.Capacity, Is.EqualTo(capacity));
@@ -224,11 +334,24 @@ namespace Gravivore.Tests.PlayMode
                 e.transform.Find("Enemy Art Root/S15 Visual [cutter-unit]") != null);
             cutter.transform.position = player.position + new Vector3(-1.1f,0,2.1f);
             var lash = root.GetComponentInChildren<GravityLashVfxPool>();
-            lash.Play(player.position, cutter.TargetPoint.position); Capture("07_Attack_Charge", false);
-            lash.Tick(.15f); Capture("08_Attack_Release", false);
+            cutter.enabled = true;
+            Physics.SyncTransforms();
+            var attack = player.GetComponent<GravityAttackController>();
+            attack.ResetTransientState(); attack.Tick(0); // First acquisition releases directly.
+            lash.Tick(.08f); lash.Tick(.12f);
+            foreach (var pool in root.GetComponentsInChildren<PooledPulseVfx>()) pool.Tick(2f);
+            var interval = root.PlayerStats.DerivedStats.AttackInterval;
+            var hpBeforeCharge = cutter.CurrentHitPoints;
+            attack.Tick(interval - .14f); motion.Tick(.016f);
+            Assert.That(cutter.CurrentHitPoints, Is.EqualTo(hpBeforeCharge));
+            Assert.IsFalse(lash.LastPlayedObject.activeSelf);
+            Capture("07_Attack_Charge", false);
+            attack.Tick(.141f);
+            Assert.That(cutter.CurrentHitPoints, Is.LessThan(hpBeforeCharge));
+            Assert.IsTrue(lash.LastPlayedObject.activeSelf);
+            Capture("08_Attack_Release", false);
             lash.Tick(.08f); Capture("09_Attack_Impact", false);
-            cutter.ApplyDamage(new DamageRequest(5, DamageType.Gravity));
-            root.CombatFeedback.TickFeedback(.23f); Capture("10_PlayerVsCutter_Combat", false);
+            Capture("10_PlayerVsCutter_Combat", false);
             var snapshot = new Metrics
             {
                 tiers = tiers.ToArray(), audioSources = root.AudioPresenter.SourceCount,

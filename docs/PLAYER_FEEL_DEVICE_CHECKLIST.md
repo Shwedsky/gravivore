@@ -9,10 +9,10 @@ Install the Phase 2 DEV APK using the same package/profile. Use DEV progression 
 3. [ ] Forward, backward, side and diagonal gait feels mechanical and restrained.
 4. [ ] No detached shoulders, exploding legs, foot penetration or visible pivot snapping.
 5. [ ] Idle has small actuator/core activity without human breathing or noisy gestures.
-6. [ ] The 150 ms cyan charge and firing pose are readable.
-7. [ ] Recoil and narrow cyan release are visible at normal zoom.
+6. [ ] Repeated attacks pre-charge during the final 150 ms of the existing cadence; first acquisition releases directly without a new pause.
+7. [ ] Recoil/beam and HP loss/hit/death feedback align at normal zoom; HP does not visibly drop before the attack.
 8. [ ] Forward, side, rear and angled attacks originate at the exposed active core face.
-9. [ ] Impact stays connected after a target is pulled; lethal hits leave a coherent shutdown cue.
+9. [ ] Impact stays connected after a target is pulled; lethal hits leave an immediate shutdown cue. Losing a target during charge cancels without a stale beam/impact on its next pooled life.
 10. [ ] Small hit/tilt and larger orange death burst are distinguishable.
 11. [ ] Charge, release, impact and hit/death sound mechanical rather than UI beeps; toggle mute/volume.
 12. [ ] Quiet, throttled metal steps are tolerable during a long run; haptics remain independent of mute.

@@ -25,18 +25,20 @@ Settings are authored in `S14_Presentation.asset`: 1.15 m cycle distance, 27 deg
 
 ## Attack sequence and authority
 
-`ITrackedGravityLashVfx` is an optional extension to the existing presentation contract. GravityAttackController supplies the selected target reference inside its existing guarded presentation call; its cadence, range, damage request, combat activity and pull calculations are unchanged.
+`ITrackedGravityLashVfx` and its optional `IPrechargedGravityLashVfx` capability extend the existing presentation contract. GravityAttackController reads its existing remaining cooldown to start cosmetic preparation; cadence, range, target selection, damage request, combat activity and pull calculations are unchanged. Presentation has no damage API or animation-event authority.
 
-1. Cosmetic charge: 150 ms cyan energy gathering, core intensity and firing-pose adjustment.
-2. Release: 80 ms narrow beam plus mechanical recoil, sampled from the active core-face socket.
-3. Impact: 120 ms compact ring/slivers at the live target point, with distinct release/impact audio.
-4. Nonlethal hits add a small visual-root tilt; lethal hits use a larger orange shutdown burst.
+1. Cosmetic pre-charge starts when the existing cooldown enters its final 150 ms. Frame sampling can shorten it; it never lengthens the gameplay interval.
+2. At the existing authoritative attack tick, the controller invokes release. Recoil and the narrow beam are activated synchronously, sampled from the active core-face socket, before the existing damage request executes. HP, rewards and pull remain on that same tick.
+3. Authoritative nonlethal hit/death events immediately produce their distinct tilt/burst and audio. The old 230 ms cosmetic hit/death queue is removed.
+4. The beam lasts 80 ms; its decorative 120 ms ring/sliver tail follows at the impact snapshot/live point. This tail does not gate damage or hit/death feedback.
 
-**Timing assumption:** gameplay still applies damage/pull immediately on the authoritative attack tick. The charge/release sequence is an observer sequence that trails that committed tick; it does not delay HP loss, rewards or recycle. This deliberately preserves the manually validated balance. HP bars can therefore update before the beam arrives. No animation-driven damage or invented attack cooldown was introduced.
+**First attack:** acquisition keeps the original immediate attack and uses direct release, with no pre-charge or additional gameplay delay. Reacquisition after an empty-target interval has the same behavior. A newly selected target during an existing cooldown receives only the remaining cosmetic charge time; a large frame that crosses the entire window also releases directly. Attack interval, damage and DPS configuration are unchanged.
 
-The whole active form aims visually toward the selected target without rotating/moving the gameplay root. The socket follows the exposed core face after body motion. Live-target effects follow pull displacement; ordinary target life ids prevent following a later pooled life. Lethal hits keep an immutable position snapshot and do not retain the dead enemy object. Enemy hit/death cues use a bounded 16-entry cosmetic snapshot queue delayed to the visible impact.
+**Cancellation:** loss of range, line of sight, target validity, target switch, transient reset or controller disable cancels the pending charge and resets the firing pose. Charge expiry can only hold the cosmetic charge: it cannot autonomously release a beam, impact or damage. The release always comes from the gameplay controller. A replaced ordinary `EnemyLifeId` cancels the old charge; released effects stop tracking that object and keep their prior position snapshot, never following its next pooled life.
 
-Cue observers use a cached array rebuilt during subscription changes. An observer exception is logged and later observers still run. The existing gameplay exception isolation remains.
+The whole active form aims visually toward the selected target without rotating/moving the gameplay root. The socket follows the exposed core face after body motion. Live-target effects follow pull displacement. Lethal feedback uses the synchronous death-position snapshot; hit-tilt decay also checks life identity before touching a reused visual root.
+
+Cue observers use a cached array rebuilt during subscription changes. An observer exception is logged and later observers still run. Gameplay guards begin-charge, cancel and release calls independently. A failed/missing presentation cannot prevent damage or require VFX completion. No locomotion, model, audio, pooling architecture or camera/map redesign is part of this timing correction.
 
 ## VFX
 
@@ -85,16 +87,16 @@ Captured in the canonical PlayMode scene; see [PERFORMANCE.json](player-feel/ima
 - Recurring VFX: four lash sequence slots with three objects each, plus 29 pulse objects = **41 prewarmed visual objects**. At most one phase object is active per lash slot.
 - Snapshot has one active pulse object during the controlled Cutter impact.
 - Audio sources: four fixed voices.
-- Presentation ticking: one mech LateUpdate, one feedback Update (bounded hit queue and cached enemy visual roots), one lash Update, six pulse-pool Updates. No Update on individual limbs/fragments/audio sources.
+- Presentation ticking: one mech LateUpdate, one feedback Update (cached enemy visual roots), one lash Update, six pulse-pool Updates. No Update on individual limbs/fragments/audio sources.
 - New steady-state presentation loops use cached arrays/transforms/property blocks and simple value math. No recurring Instantiate/Destroy path is added. This is code/structure verification, not an allocation profiler or device FPS measurement.
 
 ## Verification and evidence
 
-Unity compile succeeded; full EditMode **281/281** and full PlayMode **67/67** passed, with zero skipped tests. The added deterministic gait tests check alternating lift/plant and cycle repetition. PlayMode checks all tiers/directions, idle transition, authority separation, sockets and stage order, bounded pools, observer failure with immediate damage/pull, delayed hit/death cues, audio settings, independent damage/haptic observers and player death/respawn. Existing save/progression/adaptive respawn/world/elite/boss regressions remain included.
+Unity 6000.3.0f1 compile succeeded. Full EditMode **296/296** and full PlayMode **71/71** passed with zero skipped tests; ProjectValidator passed. The timing correction adds 15 deterministic controller cases for pre-charge before commit, unchanged commit frames/damage through stat changes and cosmetic durations, first/reacquired attacks, large frames, observer failures, target loss/switch and reset. Four added PlayMode tests check charge expiry without gameplay, disable/target-loss cancellation, pose reset, observer isolation and ordinary pooled-life reuse. Updated existing tests assert immediate beam/hit/death and regenerate attack captures through the real controller. Existing gait, save/progression/adaptive respawn/world/elite/boss regressions remain included.
 
-ProjectValidator passed. Logs/results are under `Builds/Logs/feel-*.log/xml`; APK identity and build outcome are recorded in the PR/completion report. The DEV build uses the existing Android pipeline, ARM64 IL2CPP and debug signing. Real Android install, movement/audio acceptance, frame timing and lifecycle recheck remain pending.
+Timing-correction logs/results are under `Builds/Logs/timing-*.log/xml`; APK identity and build outcome are recorded in the PR/completion report. The DEV build uses the existing Android pipeline, ARM64 IL2CPP and debug signing. Real Android install, movement/audio acceptance, frame timing and lifecycle recheck remain pending.
 
-[Ten review captures](player-feel/images) use the settled S20 9:16 gameplay camera (offset 0,14.8,-11.2; FOV 46; look height 0.9), except the explicitly separate Tier 2 close view. They are actual Unity renders from controlled scene states, without HUD overlay, not concept art. Camera/map settings were not changed. WalkPose A/B are evidence of two poses, not proof that animation feels good over time.
+[Ten review captures](player-feel/images) use the settled S20 9:16 gameplay camera (offset 0,14.8,-11.2; FOV 46; look height 0.9), except the explicitly separate Tier 2 close view. Attack captures are regenerated through the authoritative controller: unchanged HP during pre-charge, then active beam and damage on the same tick, followed by the impact tail. They are actual Unity renders from controlled scene states, without HUD overlay, not concept art. Camera/map settings were not changed. WalkPose A/B are evidence of two poses, not proof that animation feels good over time.
 
 Manual review: [PLAYER_FEEL_DEVICE_CHECKLIST.md](PLAYER_FEEL_DEVICE_CHECKLIST.md).
 

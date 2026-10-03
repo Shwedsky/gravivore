@@ -10,11 +10,12 @@ namespace Gravivore.Presentation.Combat
     {
         Windup,
         Beam,
-        Impact
+        Impact,
+        Cancelled
     }
 
     [DisallowMultipleComponent]
-    public sealed class GravityLashVfxPool : MonoBehaviour, ITrackedGravityLashVfx
+    public sealed class GravityLashVfxPool : MonoBehaviour, IPrechargedGravityLashVfx
     {
         private sealed class Sequence
         {
@@ -26,11 +27,13 @@ namespace Gravivore.Presentation.Combat
             public Vector3 Destination;
             public GravityLashCue Phase;
             public float Remaining;
+            public float ChargeDuration;
             public ITargetable Target;
             public EnemyLifeId Life;
         }
 
         private Sequence[] _sequences;
+        private Sequence _charging;
         private Transform _presentationOrigin;
         private Material[] _materials;
         private float _beamDuration;
@@ -51,6 +54,38 @@ namespace Gravivore.Presentation.Combat
         public int Capacity => _sequences != null ? _sequences.Length : 0;
         public int ActiveCount { get; private set; }
         public GameObject LastPlayedObject { get; private set; }
+        public float ChargeDuration => _windupDuration;
+
+        public void BeginCharge(Vector3 origin, Vector3 destination, ITargetable target, float remainingUntilCommit)
+        {
+            if (!_isInitialized) throw new InvalidOperationException("GravityLashVfxPool must be initialized before use.");
+            if (remainingUntilCommit <= 0f || float.IsNaN(remainingUntilCommit) || float.IsInfinity(remainingUntilCommit))
+                throw new ArgumentOutOfRangeException(nameof(remainingUntilCommit));
+            CancelCharge();
+            var sequence = FindAvailable();
+            ActiveCount++;
+            _charging = sequence;
+            SetTarget(sequence, origin, destination, target);
+            sequence.Phase = GravityLashCue.Windup;
+            sequence.ChargeDuration = remainingUntilCommit;
+            sequence.Remaining = remainingUntilCommit;
+            sequence.Charge.transform.localScale = Vector3.one * .45f;
+            sequence.Charge.SetActive(true);
+            LastPlayedObject = sequence.BeamObject;
+            PublishCue(GravityLashCue.Windup, destination);
+            sequence.Origin = _presentationOrigin != null ? _presentationOrigin.position : origin;
+            sequence.Charge.transform.position = sequence.Origin;
+        }
+
+        public void CancelCharge()
+        {
+            if (_charging == null) return;
+            var destination = _charging.Destination;
+            ResetVisuals(_charging);
+            _charging = null;
+            ActiveCount--;
+            PublishCue(GravityLashCue.Cancelled, destination);
+        }
 
         public void Initialize(GravityAttackSettings settings, Material unlitMaterial)
         {
@@ -90,27 +125,41 @@ namespace Gravivore.Presentation.Combat
         public void Play(Vector3 origin, Vector3 destination, ITargetable presentationTarget)
         {
             if (!_isInitialized) throw new InvalidOperationException("GravityLashVfxPool must be initialized before use.");
-            if (_presentationOrigin != null) origin = _presentationOrigin.position;
-            var sequence = FindAvailable();
-            if (!IsActive(sequence)) ActiveCount++;
+            // Only the gameplay Play call releases. A charge timer can never produce a beam/impact.
+            if (_charging != null && (!ReferenceEquals(_charging.Target, presentationTarget) ||
+                _charging.Target != null && !IsTargetLive(_charging)))
+                CancelCharge();
+            var sequence = _charging ?? FindAvailable();
+            if (_charging == null) ActiveCount++;
+            _charging = null;
             ResetVisuals(sequence);
-            sequence.Origin = origin;
-            sequence.Destination = destination;
-            sequence.Target = presentationTarget;
-            if (presentationTarget is OrdinaryEnemyController enemy) sequence.Life = enemy.LifeId;
-            sequence.Phase = _windupDuration > 0 ? GravityLashCue.Windup : GravityLashCue.Beam;
-            sequence.Remaining = _windupDuration > 0 ? _windupDuration : _beamDuration;
-            sequence.Beam.SetPosition(0, origin);
-            sequence.Beam.SetPosition(1, destination);
-            sequence.BeamObject.SetActive(_windupDuration <= 0);
-            sequence.Charge.transform.position = origin;
-            sequence.Charge.transform.localScale = Vector3.one * .45f;
-            sequence.Charge.SetActive(_windupDuration > 0);
+            SetTarget(sequence, origin, destination, presentationTarget);
+            sequence.Phase = GravityLashCue.Beam;
+            sequence.Remaining = _beamDuration;
             LastPlayedObject = sequence.BeamObject;
-            PublishCue(sequence.Phase, destination);
+            PublishCue(GravityLashCue.Beam, destination);
             // Observers aim the active form before sampling its live socket.
             if (_presentationOrigin != null) sequence.Origin = _presentationOrigin.position;
-            sequence.Charge.transform.position = sequence.Origin;
+            sequence.Beam.SetPosition(0, sequence.Origin);
+            sequence.Beam.SetPosition(1, destination);
+            sequence.BeamObject.SetActive(true);
+        }
+
+        private void SetTarget(Sequence sequence, Vector3 origin, Vector3 destination, ITargetable target)
+        {
+            sequence.Origin = _presentationOrigin != null ? _presentationOrigin.position : origin;
+            sequence.Destination = destination;
+            sequence.Target = target;
+            sequence.Life = target is OrdinaryEnemyController enemy ? enemy.LifeId : default;
+        }
+
+        private static bool IsTargetLive(Sequence sequence)
+        {
+            var target = sequence.Target;
+            return target != null && (!(target is MonoBehaviour owner) || owner != null && owner.isActiveAndEnabled) &&
+                target.TargetPoint != null && target.CanBeTargeted &&
+                (!(target is IDamageable damageable) || damageable.IsAlive) &&
+                (!(target is OrdinaryEnemyController enemy) || enemy.LifeId.Equals(sequence.Life));
         }
 
         public void Tick(float deltaTime)
@@ -120,16 +169,21 @@ namespace Gravivore.Presentation.Combat
             {
                 var sequence = _sequences[i];
                 if (!IsActive(sequence)) continue;
-                sequence.Remaining -= deltaTime;
-                if (sequence.Target != null && sequence.Target.CanBeTargeted && sequence.Target.TargetPoint != null &&
-                    (!(sequence.Target is OrdinaryEnemyController trackedEnemy) || trackedEnemy.LifeId.Equals(sequence.Life)))
+                sequence.Remaining = Mathf.Max(0f, sequence.Remaining - deltaTime);
+                if (IsTargetLive(sequence))
                     sequence.Destination = sequence.Target.TargetPoint.position;
+                else if (sequence.Phase == GravityLashCue.Windup && sequence.Target != null)
+                {
+                    CancelCharge();
+                    continue;
+                }
                 else sequence.Target = null;
                 if (sequence.Phase == GravityLashCue.Windup)
                 {
                     if (_presentationOrigin != null) sequence.Origin = _presentationOrigin.position;
                     sequence.Charge.transform.position = sequence.Origin;
-                    sequence.Charge.transform.localScale = Vector3.one * Mathf.Lerp(.45f, .8f, 1 - sequence.Remaining / _windupDuration);
+                    sequence.Charge.transform.localScale = Vector3.one * Mathf.Lerp(.45f, .8f, 1 - sequence.Remaining / sequence.ChargeDuration);
+                    continue; // Hold a completed cosmetic charge until gameplay releases or cancels it.
                 }
                 if (sequence.Phase == GravityLashCue.Beam && _presentationOrigin != null)
                     sequence.Beam.SetPosition(0, _presentationOrigin.position);
@@ -140,21 +194,10 @@ namespace Gravivore.Presentation.Combat
         }
 
         private void Update() => Tick(Time.deltaTime);
+        private void OnDisable() => CancelCharge();
 
         private void Advance(Sequence sequence)
         {
-            if (sequence.Phase == GravityLashCue.Windup)
-            {
-                sequence.Charge.SetActive(false);
-                sequence.Phase = GravityLashCue.Beam;
-                sequence.Remaining = _beamDuration;
-                PublishCue(GravityLashCue.Beam, sequence.Destination);
-                sequence.Origin = _presentationOrigin != null ? _presentationOrigin.position : sequence.Origin;
-                sequence.Beam.SetPosition(0, sequence.Origin);
-                sequence.Beam.SetPosition(1, sequence.Destination);
-                sequence.BeamObject.SetActive(true);
-                return;
-            }
             if (sequence.Phase == GravityLashCue.Beam)
             {
                 sequence.BeamObject.SetActive(false);
@@ -183,8 +226,8 @@ namespace Gravivore.Presentation.Combat
 
             var reused = _sequences[_reuseCursor];
             _reuseCursor = (_reuseCursor + 1) % _sequences.Length;
-            ResetVisuals(reused);
-            ActiveCount--;
+            if (ReferenceEquals(reused, _charging)) CancelCharge();
+            else { ResetVisuals(reused); ActiveCount--; }
             return reused;
         }
 

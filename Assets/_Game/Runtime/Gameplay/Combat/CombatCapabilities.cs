@@ -41,10 +41,20 @@ namespace Gravivore.Gameplay.Combat
         void Play(Vector3 origin, Vector3 destination);
     }
 
-    // Optional presentation capability. The target still receives authoritative damage immediately.
+    // Optional presentation capability. Play releases immediately at the gameplay commit.
     public interface ITrackedGravityLashVfx : IGravityLashVfx
     {
         void Play(Vector3 origin, Vector3 destination, ITargetable presentationTarget);
+    }
+
+    // Cosmetic preparation only. Neither expiry nor completion may commit an attack.
+    public interface IPrechargedGravityLashVfx : ITrackedGravityLashVfx
+    {
+        float ChargeDuration { get; }
+
+        void BeginCharge(Vector3 origin, Vector3 destination, ITargetable target, float remainingUntilCommit);
+
+        void CancelCharge();
     }
 
     public interface IPullDestinationResolver

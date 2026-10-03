@@ -59,7 +59,6 @@ namespace Gravivore.Tests.PlayMode
             var vfx = root.GetComponentInChildren<GravityLashVfxPool>();
             var destination = player.transform.position + Vector3.forward * 3f;
             vfx.Play(player.transform.position, destination);
-            vfx.Tick(.15f);
             var beam = vfx.GetComponentInChildren<LineRenderer>();
             Assert.IsNotNull(beam);
             Assert.That(beam.GetPosition(0), Is.EqualTo(visual.Find("Gravity Lash Presentation Origin").position));

@@ -28,9 +28,7 @@ namespace Gravivore.Presentation.Feedback
         private Transform[] _reactionVisuals;
         private float[] _reactionRemaining;
         private Quaternion[] _reactionRest;
-        private struct PendingHit { public bool Active, Lethal; public Vector3 Position; public float Remaining; public EnemyLifeId Life; }
-        private readonly PendingHit[] _pendingHits = new PendingHit[16];
-        private int _pendingCursor;
+        private EnemyLifeId[] _reactionLives;
 
         public PooledPulseVfx EnemyHitPool { get; private set; }
         public PooledPulseVfx EnemyDeathPool { get; private set; }
@@ -77,6 +75,7 @@ namespace Gravivore.Presentation.Feedback
             _reactionVisuals = new Transform[_reactionEnemies.Length];
             _reactionRemaining = new float[_reactionEnemies.Length];
             _reactionRest = new Quaternion[_reactionEnemies.Length];
+            _reactionLives = new EnemyLifeId[_reactionEnemies.Length];
             for (var i = 0; i < _reactionEnemies.Length; i++)
             {
                 _reactionVisuals[i] = _reactionEnemies[i].transform.Find("Enemy Art Root");
@@ -140,13 +139,19 @@ namespace Gravivore.Presentation.Feedback
         {
             if (damage.Result.WasLethal) return;
             for (var i = 0; i < _reactionEnemies.Length; i++)
-                if (_reactionEnemies[i].LifeId.Equals(damage.LifeId)) _reactionRemaining[i] = _definition.HitDuration;
-            QueueHit(damage.Position, false, damage.LifeId);
+                if (_reactionEnemies[i].LifeId.Equals(damage.LifeId))
+                {
+                    _reactionLives[i] = damage.LifeId;
+                    _reactionRemaining[i] = _definition.HitDuration;
+                    if (_reactionVisuals[i] != null)
+                        _reactionVisuals[i].localRotation = _reactionRest[i] * Quaternion.Euler(0, 0, 5f);
+                }
+            PlayHit(damage.Position, false);
         }
 
         private void HandleEnemyDied(EnemyDeathEvent death)
         {
-            QueueHit(death.Position, true, death.LifeId);
+            PlayHit(death.Position, true);
         }
 
         private void HandleRewardGranted(CoreRewardGrantedEvent reward)
@@ -195,37 +200,24 @@ namespace Gravivore.Presentation.Feedback
 
         public void TickFeedback(float deltaTime)
         {
-            for (var i = 0; i < _pendingHits.Length; i++)
-            {
-                if (!_pendingHits[i].Active) continue;
-                _pendingHits[i].Remaining -= deltaTime;
-                if (_pendingHits[i].Remaining > 0) continue;
-                var hit = _pendingHits[i]; _pendingHits[i].Active = false;
-                if (!hit.Lethal)
-                    for (var e = 0; e < _reactionEnemies.Length; e++)
-                        if (_reactionEnemies[e].IsAlive && _reactionEnemies[e].LifeId.Equals(hit.Life))
-                            hit.Position = _reactionEnemies[e].transform.position;
-                TryPlayPool(hit.Lethal ? EnemyDeathPool : EnemyHitPool, hit.Position + Vector3.up * .7f,
-                    hit.Lethal ? _definition.DeathDuration : _definition.HitDuration,
-                    hit.Lethal ? .4f : .25f, hit.Lethal ? 1.5f : .8f);
-                TryPlayAudio(hit.Lethal ? S14AudioCue.Death : S14AudioCue.Hit);
-            }
             if (_reactionEnemies == null) return;
             for (var i = 0; i < _reactionEnemies.Length; i++)
             {
                 if (_reactionRemaining[i] <= 0 || _reactionVisuals[i] == null) continue;
-                _reactionRemaining[i] = _reactionEnemies[i].IsAlive ? Mathf.Max(0, _reactionRemaining[i] - deltaTime) : 0;
+                _reactionRemaining[i] = _reactionEnemies[i].IsAlive && _reactionEnemies[i].LifeId.Equals(_reactionLives[i])
+                    ? Mathf.Max(0, _reactionRemaining[i] - deltaTime) : 0;
                 var strength = _reactionRemaining[i] / _definition.HitDuration;
                 _reactionVisuals[i].localRotation = _reactionRest[i] * Quaternion.Euler(0, 0, 5f * strength);
             }
         }
 
-        private void QueueHit(Vector3 position, bool lethal, EnemyLifeId life)
+        private void PlayHit(Vector3 position, bool lethal)
         {
-            // Snapshot survives immediate authoritative recycle. Cosmetic delay never retains a pooled enemy.
-            _pendingHits[_pendingCursor] = new PendingHit { Active = true, Lethal = lethal, Position = position, Life = life,
-                Remaining = _definition.LashWindupDuration + _definition.LashBeamDuration };
-            _pendingCursor = (_pendingCursor + 1) % _pendingHits.Length;
+            // Synchronous authoritative event snapshot; no delayed callback retains a pooled life.
+            TryPlayPool(lethal ? EnemyDeathPool : EnemyHitPool, position + Vector3.up * .7f,
+                lethal ? _definition.DeathDuration : _definition.HitDuration,
+                lethal ? .4f : .25f, lethal ? 1.5f : .8f);
+            TryPlayAudio(lethal ? S14AudioCue.Death : S14AudioCue.Hit);
         }
 
         private void HandleEliteTelegraph(EliteShockwaveTelegraphEvent value) => TryPlayAudio(S14AudioCue.Telegraph);
