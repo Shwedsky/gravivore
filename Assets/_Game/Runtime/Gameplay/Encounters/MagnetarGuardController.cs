@@ -31,6 +31,7 @@ namespace Gravivore.Gameplay.Encounters
         public event Action<MagnetarGuardDefeatedEvent> Defeated;
 
         public Transform TargetPoint => _targetPoint;
+        public string Id => _configuration.Id;
         public Transform DisplacementRoot => transform;
         public bool CanBeTargeted => IsAlive;
         public bool IsAlive => _initialized && _encounterActive && _health.IsAlive;

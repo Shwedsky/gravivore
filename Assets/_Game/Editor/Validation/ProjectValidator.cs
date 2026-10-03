@@ -878,6 +878,8 @@ namespace Gravivore.Editor
                 }
 
                 var configuration = definition.CreateRuntimeConfiguration();
+                if (!configuration.AdaptiveRespawn.IsEnabled)
+                    throw new InvalidOperationException($"Canonical spawn spot {definition.Id} requires adaptive respawn tuning.");
                 if (!ids.Add(definition.Id))
                 {
                     throw new InvalidOperationException($"Duplicate spawn spot id: {definition.Id}.");

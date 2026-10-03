@@ -41,11 +41,11 @@ namespace Gravivore.ArtSpike.Editor
             {
                 clip.SampleAnimation(instance, .75f);
                 var moved = instance.GetComponentsInChildren<Transform>(true).Count(t => t.name == "HipPivot" &&
-                    Quaternion.Angle(t.localRotation, Quaternion.Euler(0, t.parent.name.StartsWith("Left") ? 180 : 0, 0)) > 2);
-                if (moved != 4) throw new InvalidOperationException("Proxy articulation proof did not move four independent hip pivots.");
+                    Quaternion.Angle(t.localRotation, Quaternion.identity) > 2);
+                if (moved != 2) throw new InvalidOperationException("Mecha articulation proof did not move two independent hip pivots.");
                 File.WriteAllText("docs/art-spike/ARTICULATION.json",
                     "{\n  \"kind\": \"project-authored pivot idle; not an imported skeleton or gait\",\n  \"clip\": \"" + ClipPath +
-                    "\",\n  \"durationSeconds\": 3,\n  \"sampleSeconds\": 0.75,\n  \"independentHipsMoved\": 4,\n  \"weaponPivots\": 2,\n  \"gameplayBinding\": false\n}\n");
+                    "\",\n  \"durationSeconds\": 3,\n  \"sampleSeconds\": 0.75,\n  \"independentHipsMoved\": 2,\n  \"weaponPivots\": 2,\n  \"gameplayBinding\": false\n}\n");
             }
             finally { Object.DestroyImmediate(instance); }
         }

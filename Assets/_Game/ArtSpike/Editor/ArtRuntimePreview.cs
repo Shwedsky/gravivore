@@ -16,7 +16,7 @@ namespace Gravivore.ArtSpike.Editor
             var serialized = new SerializedObject(definition);
             var forms = serialized.FindProperty("_tierPrefabs");
             forms.arraySize = 3;
-            serialized.FindProperty("_attackPresentationOffset").vector3Value = new Vector3(0f, .68f, 1.15f);
+            serialized.FindProperty("_attackPresentationOffset").vector3Value = new Vector3(0f, 1.10f, .35f);
             for (var i = 0; i < 3; i++)
                 forms.GetArrayElementAtIndex(i).objectReferenceValue = Load(ArtSpikeBuilder.CharacterPaths[i]);
             serialized.ApplyModifiedPropertiesWithoutUndo();

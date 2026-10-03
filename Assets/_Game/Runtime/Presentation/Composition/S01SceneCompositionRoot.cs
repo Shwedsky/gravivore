@@ -120,6 +120,7 @@ namespace Gravivore.Presentation.Composition
         public Guid ProfileId => _profileSession != null ? _profileSession.State.ProfileId : Guid.Empty;
 
         public EncounterTelegraphPresenter EncounterTelegraphs { get; private set; }
+        public IWorldMarkerSource WorldMarkers { get; private set; }
         public PlayerHealthHudPresenter PlayerHealthHud { get; private set; }
         public PlayerStatsHudPresenter PlayerStatsHud { get; private set; }
         public BossHealthHudPresenter BossHealthHud { get; private set; }
@@ -209,6 +210,8 @@ namespace Gravivore.Presentation.Composition
             InitializeQuests(questCatalog, worldConfiguration);
             InitializeWorld(worldConfiguration);
             WireEncounterWorldBridges();
+            WorldMarkers = new WorldMarkerReadModel(PlayerObject.transform, EnemyPopulation,
+                MagnetarGuard, CustodianBoss, WorldUnlocks.State);
             InitializeEvolution();
             InitializeS14Presentation();
             SaveCoordinator = new SaveCoordinator(

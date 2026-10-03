@@ -38,6 +38,19 @@ namespace Gravivore.ArtSpike.Editor
             Debug.Log("ART SPIKE prefab authoring and comparison scene completed.");
         }
 
+        [MenuItem("Gravivore/Art Spike/Rebuild Player Mecha Only")]
+        public static void RebuildPlayerMecha()
+        {
+            var composition = new ArtSpikeComposition();
+            composition.UseExistingPlayerMaterials();
+            for (var tier = 0; tier < 3; tier++)
+                Save(composition.Player(tier), CharacterPaths[tier]);
+            ArtSpikeArticulation.BuildAndProve();
+            ArtRuntimePreview.Bind();
+            AssetDatabase.SaveAssets();
+            Debug.Log("G-0 biped mecha rebuilt; current whole-form runtime bindings retained.");
+        }
+
         private static void Save(GameObject root, string path)
         {
             try
@@ -52,6 +65,21 @@ namespace Gravivore.ArtSpike.Editor
     internal sealed partial class ArtSpikeComposition
     {
         private Material _metal, _armor, _secondary, _player, _hostile, _industrial, _floor, _proxyArmor, _proxyMetal;
+
+        public void UseExistingPlayerMaterials()
+        {
+            _secondary = ExistingMaterial("Gravivore_SecondaryMetal");
+            _player = ExistingMaterial("Gravivore_PlayerCore");
+            _proxyArmor = ExistingMaterial("Gravivore_ProxyArmor_PBR");
+            _proxyMetal = ExistingMaterial("Gravivore_ProxyMetal_PBR");
+        }
+
+        private static Material ExistingMaterial(string name)
+        {
+            var path = ArtSpikeBuilder.Root + "/Materials/" + name + ".mat";
+            return AssetDatabase.LoadAssetAtPath<Material>(path) ??
+                throw new FileNotFoundException("Existing player material is required.", path);
+        }
 
         public void CreateMaterials()
         {

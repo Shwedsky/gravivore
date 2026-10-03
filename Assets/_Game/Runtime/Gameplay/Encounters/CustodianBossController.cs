@@ -39,6 +39,7 @@ namespace Gravivore.Gameplay.Encounters
         public event Action<DamageResult> Damaged;
 
         public Transform TargetPoint => _targetPoint;
+        public string Id => _configuration.Id;
         public Transform DisplacementRoot => transform;
         public bool CanBeTargeted => _encounterAccess != null && _encounterAccess.CanEngage &&
                                      IsAlive && State != CustodianBossState.Dormant &&

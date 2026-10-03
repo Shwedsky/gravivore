@@ -100,7 +100,7 @@ namespace Gravivore.Tests.PlayMode
                     form.name + " must be visible in the settled portrait camera audit.");
             var vfx = scene.Root.GetComponentInChildren<GravityLashVfxPool>();
             var socket = player.transform.Find("Player Visual Root/Gravity Lash Presentation Origin");
-            Assert.That(socket.localPosition, Is.EqualTo(new Vector3(0, .68f, 1.15f)));
+            Assert.That(socket.localPosition, Is.EqualTo(new Vector3(0, 1.10f, .35f)));
             vfx.Play(player.transform.position, cutters[0].TargetPoint.position);
             var beam = vfx.LastPlayedObject.GetComponent<LineRenderer>();
             Assert.That(beam.GetPosition(0), Is.EqualTo(socket.position));
@@ -173,9 +173,10 @@ namespace Gravivore.Tests.PlayMode
                 snapshot.realtimeLights++;
                 if (light.shadows != LightShadows.None) snapshot.shadowLights++;
             }
-            Assert.That(snapshot.renderers, Is.EqualTo(85));
-            Assert.That(snapshot.materialSlots, Is.EqualTo(158));
-            Assert.That(snapshot.triangles, Is.EqualTo(22624));
+            // Whole-form art may change within the established mobile budgets.
+            Assert.That(snapshot.renderers, Is.LessThanOrEqualTo(92)); // <=40 player + four 13-renderer Cutters.
+            Assert.That(snapshot.materialSlots, Is.LessThanOrEqualTo(180));
+            Assert.That(snapshot.triangles, Is.InRange(1L, 50000L));
             Directory.CreateDirectory("docs/art-spike");
             File.WriteAllText("docs/art-spike/RUNTIME_PERFORMANCE.json", JsonUtility.ToJson(snapshot, true) + "\n");
         }

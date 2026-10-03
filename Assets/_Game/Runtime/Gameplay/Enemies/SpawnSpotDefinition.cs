@@ -13,7 +13,8 @@ namespace Gravivore.Gameplay.Enemies
             int desiredPopulation,
             float minimumPlayerDistance,
             float minimumRespawnDelay,
-            float maximumRespawnDelay)
+            float maximumRespawnDelay,
+            AdaptiveRespawnPolicy adaptiveRespawn = default)
         {
             if (string.IsNullOrWhiteSpace(id))
             {
@@ -44,6 +45,9 @@ namespace Gravivore.Gameplay.Enemies
             Population = population;
             MinimumPlayerDistance = minimumPlayerDistance;
             RespawnDelay = new RespawnDelayPolicy(minimumRespawnDelay, maximumRespawnDelay);
+            if ((double)maximumRespawnDelay + adaptiveRespawn.MaximumSteps * (double)adaptiveRespawn.DelayPerStep > float.MaxValue)
+                throw new ArgumentOutOfRangeException(nameof(adaptiveRespawn));
+            AdaptiveRespawn = adaptiveRespawn;
         }
 
         public string Id { get; }
@@ -59,6 +63,7 @@ namespace Gravivore.Gameplay.Enemies
         public float MinimumPlayerDistance { get; }
 
         public RespawnDelayPolicy RespawnDelay { get; }
+        public AdaptiveRespawnPolicy AdaptiveRespawn { get; }
 
         public Vector3 GetAnchorWorldPosition(int index)
         {
@@ -84,6 +89,11 @@ namespace Gravivore.Gameplay.Enemies
         [SerializeField, Min(0f)] private float _minimumPlayerDistance = 3f;
         [SerializeField, Min(0f)] private float _minimumRespawnDelay = 8f;
         [SerializeField, Min(0f)] private float _maximumRespawnDelay = 14f;
+        [SerializeField, Min(1)] private int _killsPerPenaltyStep = 4;
+        [SerializeField, Min(0f)] private float _respawnDelayPerPenaltyStep = 8f;
+        [SerializeField, Min(0)] private int _maximumRespawnPenaltySteps = 4;
+        [SerializeField, Min(0f)] private float _respawnPenaltyIdleGrace = 60f;
+        [SerializeField, Min(0.01f)] private float _respawnPenaltyRecoveryInterval = 30f;
 
         public string Id => _id;
 
@@ -102,7 +112,9 @@ namespace Gravivore.Gameplay.Enemies
                 _desiredPopulation,
                 _minimumPlayerDistance,
                 _minimumRespawnDelay,
-                _maximumRespawnDelay);
+                _maximumRespawnDelay,
+                new AdaptiveRespawnPolicy(_killsPerPenaltyStep, _respawnDelayPerPenaltyStep,
+                    _maximumRespawnPenaltySteps, _respawnPenaltyIdleGrace, _respawnPenaltyRecoveryInterval));
         }
 
         public void ValidateOrThrow()

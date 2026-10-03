@@ -11,65 +11,84 @@ namespace Gravivore.ArtSpike.Editor
         public GameObject Player(int tier)
         {
             var root = new GameObject("G0_Tier" + tier + "_ArtSpike");
-            var chassis = Group(root.transform, "01_CoreChassis_CommonIdentity");
-            Module(chassis, "Chassis", "ArmoredCoreChassis", new Vector3(0, .40f, -.08f),
-                new Vector3(.96f, .30f, 1.03f), Vector3.zero);
-            Ring(chassis, "CoreSeat", new Vector3(0, .62f, 0), .28f, .045f, Vector3.zero, _secondary);
-            Primitive(chassis, PrimitiveType.Sphere, "GravityCore_Common", new Vector3(0, .68f, 0),
-                new Vector3(.30f, .30f, .30f), Vector3.zero, _player);
+            var body = Group(root.transform, "01_RobotBody_CommonIdentity");
+            Module(body, "Chassis", "Torso", new Vector3(0, 1.10f, 0),
+                new Vector3(.68f, .43f, .40f), new Vector3(-6, 0, 0));
+            Module(body, "UpperSupport", "Abdomen", new Vector3(0, .82f, 0),
+                new Vector3(.26f, .14f, .25f), Vector3.zero);
+            Module(body, "Chassis", "Pelvis", new Vector3(0, .70f, 0),
+                new Vector3(.43f, .17f, .31f), Vector3.zero);
+            Primitive(body, PrimitiveType.Cylinder, "NeckJoint", new Vector3(0, 1.38f, 0),
+                new Vector3(.14f, .06f, .14f), Vector3.zero, _secondary);
+            Module(body, "WeaponHousing", "SensorHead", new Vector3(0, 1.54f, .02f),
+                new Vector3(.34f, .23f, .28f), Vector3.zero);
+            Primitive(body, PrimitiveType.Cube, "CyanSensorVisor", new Vector3(0, 1.56f, .168f),
+                new Vector3(.26f, .055f, .018f), Vector3.zero, _player);
+            Primitive(body, PrimitiveType.Sphere, "GravityCore_Common", new Vector3(0, 1.10f, .25f),
+                new Vector3(.28f, .28f, .15f), Vector3.zero, _player);
+            Ring(body, "ChestCoreSeat", new Vector3(0, 1.10f, .245f), .17f, .025f,
+                new Vector3(90, 0, 0), _secondary);
+            Module(body, "WeaponHousing", "RearReactor", new Vector3(0, 1.09f, -.27f),
+                new Vector3(.32f, .30f, .17f), Vector3.zero);
 
-            var locomotion = Group(root.transform, "02_FourMechanicalSupports_Common");
-            for (var side = -1; side <= 1; side += 2)
-                for (var end = -1; end <= 1; end += 2)
-                {
-                    var support = Group(locomotion, (side < 0 ? "Left" : "Right") + (end > 0 ? "Front" : "Rear"));
-                    Support(support, side, end, 1f);
-                }
-
-            var attack = Group(root.transform, "03_ForwardGravityMandibles_Common");
+            var legs = Group(root.transform, "02_TwoMechanicalLegs_Common");
+            var arms = Group(root.transform, "03_ArticulatedGravityArms_Common");
             for (var side = -1; side <= 1; side += 2)
             {
-                var pivot = Group(attack, side < 0 ? "LeftWeaponPivot" : "RightWeaponPivot");
-                pivot.localPosition = new Vector3(side * .32f, .36f, .52f);
-                pivot.localRotation = Quaternion.Euler(0, side * -7, 0);
-                Module(pivot, "WeaponHousing", "GravityMandible", new Vector3(0, 0, .10f),
-                    new Vector3(.23f, .22f, .60f), Vector3.zero);
-                Module(pivot, "EmitterFork", "ForwardEmitter", new Vector3(0, 0, .48f),
-                    new Vector3(.20f, .19f, .36f), Vector3.zero);
+                var leg = Group(legs, side < 0 ? "LeftLeg" : "RightLeg");
+                var hip = Group(leg, "HipPivot");
+                hip.localPosition = new Vector3(side * .18f, .65f, 0);
+                Module(hip, "UpperSupport", "ThighLink", new Vector3(side * .01f, -.12f, 0),
+                    new Vector3(.20f, .26f, .23f), new Vector3(0, 0, side * -5));
+                var knee = Group(hip, "KneePivot");
+                knee.localPosition = new Vector3(side * .035f, -.29f, .015f);
+                Primitive(knee, PrimitiveType.Cylinder, "KneeJoint", Vector3.zero,
+                    new Vector3(.15f, .08f, .15f), new Vector3(0, 0, 90), _secondary);
+                Module(knee, "LowerSupport", "PistonShin", new Vector3(0, -.12f, 0),
+                    new Vector3(.21f, .25f, .23f), Vector3.zero);
+                var foot = Group(knee, "FootPivot");
+                foot.localPosition = new Vector3(0, -.28f, .055f);
+                Module(foot, "Foot", "ArmoredFoot", Vector3.zero,
+                    new Vector3(.30f, .13f, .43f), Vector3.zero);
+
+                var arm = Group(arms, side < 0 ? "LeftWeaponPivot" : "RightWeaponPivot");
+                arm.localPosition = new Vector3(side * .46f, 1.23f, 0);
+                arm.localRotation = Quaternion.Euler(0, side * -7, 0);
+                Primitive(arm, PrimitiveType.Cylinder, "ShoulderJoint", Vector3.zero,
+                    new Vector3(.21f, .09f, .21f), new Vector3(0, 0, 90), _secondary);
+                Module(arm, "UpperSupport", "UpperArmLink", new Vector3(side * .035f, -.16f, 0),
+                    new Vector3(.19f, .28f, .22f), new Vector3(0, 0, side * 10));
+                var elbow = Group(arm, "ElbowPivot");
+                elbow.localPosition = new Vector3(side * .06f, -.34f, .025f);
+                Primitive(elbow, PrimitiveType.Cylinder, "ElbowJoint", Vector3.zero,
+                    new Vector3(.15f, .07f, .15f), new Vector3(0, 0, 90), _secondary);
+                Module(elbow, "WeaponHousing", "GravityForearm", new Vector3(0, -.16f, .055f),
+                    new Vector3(.23f, .28f, .30f), Vector3.zero);
+                Module(elbow, "EmitterFork", "PalmEmitter", new Vector3(0, -.17f, .26f),
+                    new Vector3(.18f, .17f, .20f), Vector3.zero);
             }
 
             if (tier >= 1)
             {
-                var upgrade = Group(root.transform, "04_Tier1_ArmorAndStabilizers");
+                var upgrade = Group(root.transform, "04_Tier1_ShoulderArmor");
                 for (var side = -1; side <= 1; side += 2)
-                {
-                    Module(upgrade, "FlankPlate", "FlankArmor", new Vector3(side * .72f, .48f, -.12f),
-                        new Vector3(.34f, .22f, .95f), new Vector3(0, side * -10, side * 6));
-                    Primitive(upgrade, PrimitiveType.Cube, "FlankPowerStrip", new Vector3(side * .71f, .609f, -.12f),
-                        new Vector3(.045f, .012f, .33f), new Vector3(0, side * -10, 0), _player);
-                }
-                Ring(upgrade, "OuterCoreContainment", new Vector3(0, .60f, 0), .39f, .032f, Vector3.zero, _proxyMetal);
+                    Module(upgrade, "FlankPlate", "ShoulderPauldron", new Vector3(side * .63f, 1.27f, 0),
+                        new Vector3(.30f, .19f, .36f), new Vector3(0, 0, side * -12));
+                Ring(upgrade, "OuterCoreContainment", new Vector3(0, 1.10f, .265f), .21f, .018f,
+                    new Vector3(90, 0, 0), _proxyMetal);
             }
             if (tier >= 2)
             {
-                var upgrade = Group(root.transform, "05_Tier2_EmitterForksAndContainment");
+                var upgrade = Group(root.transform, "05_Tier2_CombatFrame");
                 for (var side = -1; side <= 1; side += 2)
                 {
-                    Module(upgrade, "FlankPlate", "HeavyOuterArmor", new Vector3(side * .96f, .41f, -.28f),
-                        new Vector3(.32f, .24f, .88f), new Vector3(0, side * 16, side * -8));
-                    var pivot = Group(upgrade, side < 0 ? "LeftHeavyWeaponPivot" : "RightHeavyWeaponPivot");
-                    pivot.localPosition = new Vector3(side * .70f, .40f, .45f);
-                    pivot.localRotation = Quaternion.Euler(0, side * -10, 0);
-                    Module(pivot, "WeaponHousing", "ForwardWeaponAssembly", new Vector3(0, 0, .18f),
-                        new Vector3(.30f, .29f, .78f), Vector3.zero);
-                    Module(pivot, "EmitterFork", "HeavyForwardEmitter", new Vector3(0, 0, .67f),
-                        new Vector3(.26f, .25f, .42f), Vector3.zero);
+                    Module(upgrade, "FlankPlate", "HeavyShoulderArmor", new Vector3(side * .86f, 1.24f, -.04f),
+                        new Vector3(.30f, .23f, .37f), new Vector3(0, 0, side * -16));
+                    Module(upgrade, "UpperSupport", "RearVectorFin", new Vector3(side * .24f, 1.28f, -.34f),
+                        new Vector3(.10f, .43f, .19f), new Vector3(-12, 0, side * -14));
                 }
-                Ring(upgrade, "UpperCoreContainment", new Vector3(0, .76f, 0), .27f, .028f,
-                    new Vector3(0, 0, 16), _proxyArmor);
-                for (var side = -1; side <= 1; side += 2)
-                    Primitive(upgrade, PrimitiveType.Cylinder, "ContainmentPost", new Vector3(side * .255f, .665f, 0),
-                        new Vector3(.07f, .08f, .07f), Vector3.zero, _secondary);
+                Ring(upgrade, "UpperCoreContainment", new Vector3(0, 1.10f, .285f), .18f, .018f,
+                    new Vector3(90, 0, 18), _proxyArmor);
             }
             return root;
         }
