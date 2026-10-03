@@ -72,6 +72,7 @@ namespace Gravivore.Gameplay.Enemies
         public event Action<EnemyDeathEvent> Died;
 
         public Transform TargetPoint => _targetPoint;
+        public EnemyLifeId LifeId => _lifeId;
 
         public Transform DisplacementRoot => transform;
 

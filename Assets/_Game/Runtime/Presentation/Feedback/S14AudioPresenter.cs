@@ -12,7 +12,11 @@ namespace Gravivore.Presentation.Feedback
         Assimilation,
         Evolution,
         Telegraph,
-        BossImpact
+        BossImpact,
+        Step,
+        Release,
+        PlayerHit,
+        PlayerDeath
     }
 
     public static class PresentationAudioSettings
@@ -48,8 +52,10 @@ namespace Gravivore.Presentation.Feedback
         public S14AudioCue? LastCue { get; private set; }
         public bool IsMuted => _isMuted;
         public float Volume => _volume;
+        public int SourceCount => _sources != null ? _sources.Length : 0;
+        public int PlayedCount { get; private set; }
 
-        public void Initialize(S14PresentationDefinition definition, int sourceCount = 3)
+        public void Initialize(S14PresentationDefinition definition, int sourceCount = 4)
         {
             _definition = definition != null ? definition : throw new ArgumentNullException(nameof(definition));
             _definition.ValidateOrThrow();
@@ -74,10 +80,15 @@ namespace Gravivore.Presentation.Feedback
             LastCue = cue;
             if (IsMuted || Volume <= 0f) return;
             var clip = Resolve(cue);
-            var source = _sources[_cursor];
-            _cursor = (_cursor + 1) % _sources.Length;
+            var voiceCount = Mathf.Max(1, _sources.Length - 1);
+            var source = cue == S14AudioCue.Step ? _sources[_sources.Length - 1] : _sources[_cursor];
+            if (cue != S14AudioCue.Step) _cursor = (_cursor + 1) % voiceCount;
             source.volume = Volume;
-            source.PlayOneShot(clip);
+            // One bounded voice per source. Footsteps never overlap a combat voice.
+            source.clip = clip;
+            source.volume = Volume * (cue == S14AudioCue.Step ? 0.22f : 0.65f);
+            source.Play();
+            PlayedCount++;
         }
 
         public void SetMuted(bool muted)
@@ -111,6 +122,10 @@ namespace Gravivore.Presentation.Feedback
                 case S14AudioCue.Evolution: return _definition.EvolutionClip;
                 case S14AudioCue.Telegraph: return _definition.TelegraphClip;
                 case S14AudioCue.BossImpact: return _definition.BossImpactClip;
+                case S14AudioCue.Step: return _definition.StepClip;
+                case S14AudioCue.Release: return _definition.ReleaseClip;
+                case S14AudioCue.PlayerHit: return _definition.PlayerHitClip;
+                case S14AudioCue.PlayerDeath: return _definition.PlayerDeathClip;
                 default: throw new ArgumentOutOfRangeException(nameof(cue), cue, null);
             }
         }

@@ -20,7 +20,7 @@ MonoBehaviour:
   _deathDuration: 0.3
   _assimilationDuration: 0.45
   _evolutionDuration: 0.55
-  _lashWindupDuration: 0.05
+  _lashWindupDuration: 0.15
   _lashBeamDuration: 0.08
   _lashImpactDuration: 0.12
   _hitColor: {r: 1, g: 0.85, b: 0.35, a: 1}
@@ -28,11 +28,20 @@ MonoBehaviour:
   _assimilationColor: {r: 0.2, g: 0.95, b: 0.85, a: 1}
   _evolutionColor: {r: 0.55, g: 0.9, b: 1, a: 1}
   _playerHitColor: {r: 1, g: 0.35, b: 0.25, a: 1}
-  _lashWindupClip: {fileID: 8300000, guid: bcf16c43e6718e1428f3167863319dd2, type: 3}
-  _lashImpactClip: {fileID: 8300000, guid: 96c5756755a81344fa91ae5fa01fd420, type: 3}
-  _hitClip: {fileID: 8300000, guid: 2d013cc7fcf2695429c195b5f7356119, type: 3}
-  _deathClip: {fileID: 8300000, guid: f1cd8942efbc7374fa3145bc65bf1358, type: 3}
+  _lashWindupClip: {fileID: 8300000, guid: 930eb7e8541abbb4ab83596a25eaf9d9, type: 3}
+  _lashImpactClip: {fileID: 8300000, guid: efd2e65c59a79664dba156d9c4b78cfb, type: 3}
+  _hitClip: {fileID: 8300000, guid: a5ec07637ae761a46adf8bb5d8cc9c8a, type: 3}
+  _deathClip: {fileID: 8300000, guid: 1a52c8c455a64b54cba46b154fb7d990, type: 3}
   _assimilationClip: {fileID: 8300000, guid: 6b527d870bb5e0e468f12f9161d91739, type: 3}
   _evolutionClip: {fileID: 8300000, guid: 8e297e36cbcd57c45b959daab4359c8a, type: 3}
   _telegraphClip: {fileID: 8300000, guid: 594c9176f67032b4e99f664e21b53c9d, type: 3}
   _bossImpactClip: {fileID: 8300000, guid: 5dff237d6793ec54da7f1b5b5ca80c3c, type: 3}
+  _mechStride: 1.15
+  _mechHipDegrees: 27
+  _mechKneeDegrees: 42
+  _mechFootLift: 0.09
+  _mechIdleDegrees: 0.6
+  _stepClip: {fileID: 8300000, guid: 109ec05327f921c41835d7aa6a4eed40, type: 3}
+  _releaseClip: {fileID: 8300000, guid: 4496cffd9fb2bf043bf8634176f00547, type: 3}
+  _playerHitClip: {fileID: 8300000, guid: 50c6e32071681ba4394d5e2279506865, type: 3}
+  _playerDeathClip: {fileID: 8300000, guid: 63eb606e515b0d34fa1ced3ab1949e7d, type: 3}

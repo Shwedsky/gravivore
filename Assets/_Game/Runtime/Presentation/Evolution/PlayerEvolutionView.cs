@@ -44,6 +44,13 @@ namespace Gravivore.Presentation.Evolution
         private Material _moduleMaterial;
         private bool _isInitialized;
 
+        public Transform GetTierForm(EvolutionTier tier)
+        {
+            for (var i = 0; i < _tierModules.Length; i++)
+                if (_tierModules[i].Tier == tier) return _tierModules[i].GameObject.transform;
+            return null;
+        }
+
         public EvolutionTier CurrentTier { get; private set; }
 
         public PlayerStatType CurrentDominantStat { get; private set; }

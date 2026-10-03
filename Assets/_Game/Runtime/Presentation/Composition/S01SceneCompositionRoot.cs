@@ -214,6 +214,13 @@ namespace Gravivore.Presentation.Composition
                 MagnetarGuard, CustodianBoss, WorldUnlocks.State);
             InitializeEvolution();
             InitializeS14Presentation();
+            if (_evolutionDefinition.HasTierPrefabs)
+            {
+                var motion = PlayerObject.AddComponent<Gravivore.Presentation.Player.MechMotionPresenter>();
+                motion.Initialize(PlayerObject.transform, PlayerObject.GetComponent<PlayerEvolutionView>(),
+                    _playerVisualRoot.Find("Gravity Lash Presentation Origin"), _s14PresentationDefinition,
+                    _gravityLashVfx, AudioPresenter);
+            }
             SaveCoordinator = new SaveCoordinator(
                 _profileSession,
                 PlayerStats,

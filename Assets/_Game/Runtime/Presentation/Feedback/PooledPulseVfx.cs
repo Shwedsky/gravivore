@@ -21,25 +21,28 @@ namespace Gravivore.Presentation.Feedback
         private Item[] _items;
         private int _cursor;
         private bool _initialized;
+        private Mesh _industrialMesh;
 
         public int Capacity => _items != null ? _items.Length : 0;
         public int ActiveCount { get; private set; }
         public GameObject LastPlayedObject { get; private set; }
 
-        public void Initialize(int capacity, Material material)
+        public void Initialize(int capacity, Material material, bool industrial = false)
         {
             if (_initialized) throw new InvalidOperationException("Pulse VFX pool is already initialized.");
             if (capacity < 1) throw new ArgumentOutOfRangeException(nameof(capacity));
             if (material == null) throw new ArgumentNullException(nameof(material));
             _items = new Item[capacity];
+            if (industrial) _industrialMesh = IndustrialPulseMesh.Create();
             for (var i = 0; i < capacity; i++)
             {
-                var effect = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                var effect = industrial ? new GameObject("Industrial Pulse", typeof(MeshFilter), typeof(MeshRenderer)) :
+                    GameObject.CreatePrimitive(PrimitiveType.Sphere);
                 effect.name = $"Pooled Pulse {i}";
                 effect.transform.SetParent(transform, false);
                 var collider = effect.GetComponent<Collider>();
-                collider.enabled = false;
-                Destroy(collider);
+                if (collider != null) { collider.enabled = false; Destroy(collider); }
+                if (industrial) effect.GetComponent<MeshFilter>().sharedMesh = _industrialMesh;
                 effect.GetComponent<Renderer>().sharedMaterial = material;
                 effect.SetActive(false);
                 _items[i] = new Item { Object = effect, Transform = effect.transform };
@@ -85,6 +88,8 @@ namespace Gravivore.Presentation.Feedback
         }
 
         private void Update() => Tick(Time.deltaTime);
+
+        private void OnDestroy() { if (_industrialMesh != null) Destroy(_industrialMesh); }
 
         private Item FindAvailable()
         {
