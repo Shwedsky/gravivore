@@ -134,7 +134,9 @@ namespace Gravivore.Gameplay.Combat
             var targetPoint = _currentTarget.Targetable.TargetPoint.position;
             try
             {
-                _lashVfx.Play(origin, targetPoint);
+                if (_lashVfx is ITrackedGravityLashVfx tracked)
+                    tracked.Play(origin, targetPoint, _currentTarget.Targetable);
+                else _lashVfx.Play(origin, targetPoint);
             }
             catch (Exception exception)
             {

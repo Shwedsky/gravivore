@@ -24,6 +24,7 @@ namespace Gravivore.ArtSpike.Editor
         public static void Build()
         {
             ArtSpikeProxyMeshes.Build();
+            ArtSpikeProxyMeshes.BuildPlayerRefinement();
             ArtSpikePbr.Build();
             var composition = new ArtSpikeComposition();
             composition.CreateMaterials();
@@ -41,6 +42,7 @@ namespace Gravivore.ArtSpike.Editor
         [MenuItem("Gravivore/Art Spike/Rebuild Player Mecha Only")]
         public static void RebuildPlayerMecha()
         {
+            ArtSpikeProxyMeshes.BuildPlayerRefinement();
             var composition = new ArtSpikeComposition();
             composition.UseExistingPlayerMaterials();
             for (var tier = 0; tier < 3; tier++)

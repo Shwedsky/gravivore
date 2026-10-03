@@ -41,6 +41,12 @@ namespace Gravivore.Gameplay.Combat
         void Play(Vector3 origin, Vector3 destination);
     }
 
+    // Optional presentation capability. The target still receives authoritative damage immediately.
+    public interface ITrackedGravityLashVfx : IGravityLashVfx
+    {
+        void Play(Vector3 origin, Vector3 destination, ITargetable presentationTarget);
+    }
+
     public interface IPullDestinationResolver
     {
         Vector3 Resolve(Vector3 origin, Vector3 requestedDestination, float collisionRadius);

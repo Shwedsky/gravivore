@@ -12,18 +12,18 @@ namespace Gravivore.ArtSpike.Editor
         {
             var root = new GameObject("G0_Tier" + tier + "_ArtSpike");
             var body = Group(root.transform, "01_RobotBody_CommonIdentity");
-            Module(body, "Chassis", "Torso", new Vector3(0, 1.10f, 0),
-                new Vector3(.68f, .43f, .40f), new Vector3(-6, 0, 0));
+            Module(body, "MechCarapace", "Torso", new Vector3(0, 1.10f, 0),
+                new Vector3(.78f, .50f, .45f), new Vector3(-8, 0, 0));
             Module(body, "UpperSupport", "Abdomen", new Vector3(0, .82f, 0),
                 new Vector3(.26f, .14f, .25f), Vector3.zero);
-            Module(body, "Chassis", "Pelvis", new Vector3(0, .70f, 0),
+            Module(body, "MechPelvis", "Pelvis", new Vector3(0, .70f, 0),
                 new Vector3(.43f, .17f, .31f), Vector3.zero);
-            Primitive(body, PrimitiveType.Cylinder, "NeckJoint", new Vector3(0, 1.38f, 0),
-                new Vector3(.14f, .06f, .14f), Vector3.zero, _secondary);
-            Module(body, "WeaponHousing", "SensorHead", new Vector3(0, 1.54f, .02f),
-                new Vector3(.34f, .23f, .28f), Vector3.zero);
-            Primitive(body, PrimitiveType.Cube, "CyanSensorVisor", new Vector3(0, 1.56f, .168f),
-                new Vector3(.26f, .055f, .018f), Vector3.zero, _player);
+            Primitive(body, PrimitiveType.Cylinder, "NeckJoint", new Vector3(0, 1.34f, -.04f),
+                new Vector3(.14f, .035f, .14f), Vector3.zero, _secondary);
+            Module(body, "MechForearm", "SensorHead", new Vector3(0, 1.42f, -.03f),
+                new Vector3(.28f, .17f, .25f), new Vector3(-8,0,0));
+            Primitive(body, PrimitiveType.Cube, "CyanSensorVisor", new Vector3(0, 1.435f, .112f),
+                new Vector3(.22f, .035f, .018f), Vector3.zero, _player);
             Primitive(body, PrimitiveType.Sphere, "GravityCore_Common", new Vector3(0, 1.10f, .25f),
                 new Vector3(.28f, .28f, .15f), Vector3.zero, _player);
             Ring(body, "ChestCoreSeat", new Vector3(0, 1.10f, .245f), .17f, .025f,
@@ -62,28 +62,28 @@ namespace Gravivore.ArtSpike.Editor
                 elbow.localPosition = new Vector3(side * .06f, -.34f, .025f);
                 Primitive(elbow, PrimitiveType.Cylinder, "ElbowJoint", Vector3.zero,
                     new Vector3(.15f, .07f, .15f), new Vector3(0, 0, 90), _secondary);
-                Module(elbow, "WeaponHousing", "GravityForearm", new Vector3(0, -.16f, .055f),
-                    new Vector3(.23f, .28f, .30f), Vector3.zero);
+                Module(elbow, "MechForearm", "GravityForearm", new Vector3(0, -.13f, .065f),
+                    new Vector3(.28f, .25f, .38f), new Vector3(-12,0,0));
                 Module(elbow, "EmitterFork", "PalmEmitter", new Vector3(0, -.17f, .26f),
                     new Vector3(.18f, .17f, .20f), Vector3.zero);
             }
 
             if (tier >= 1)
             {
-                var upgrade = Group(root.transform, "04_Tier1_ShoulderArmor");
+                var upgrade = Group(body, "04_Tier1_ShoulderArmor");
                 for (var side = -1; side <= 1; side += 2)
-                    Module(upgrade, "FlankPlate", "ShoulderPauldron", new Vector3(side * .63f, 1.27f, 0),
-                        new Vector3(.30f, .19f, .36f), new Vector3(0, 0, side * -12));
+                    Module(arms.Find(side < 0 ? "LeftWeaponPivot" : "RightWeaponPivot"), "FlankPlate", "ShoulderPauldron", new Vector3(side * .14f, .04f, -.035f),
+                        new Vector3(.30f, .19f, .36f), new Vector3(0, 0, side * -22));
                 Ring(upgrade, "OuterCoreContainment", new Vector3(0, 1.10f, .265f), .21f, .018f,
                     new Vector3(90, 0, 0), _proxyMetal);
             }
             if (tier >= 2)
             {
-                var upgrade = Group(root.transform, "05_Tier2_CombatFrame");
+                var upgrade = Group(body, "05_Tier2_CombatFrame");
                 for (var side = -1; side <= 1; side += 2)
                 {
-                    Module(upgrade, "FlankPlate", "HeavyShoulderArmor", new Vector3(side * .86f, 1.24f, -.04f),
-                        new Vector3(.30f, .23f, .37f), new Vector3(0, 0, side * -16));
+                    Module(arms.Find(side < 0 ? "LeftWeaponPivot" : "RightWeaponPivot"), "FlankPlate", "HeavyShoulderArmor", new Vector3(side * .32f, .025f, -.06f),
+                        new Vector3(.28f, .23f, .37f), new Vector3(0, 0, side * -30));
                     Module(upgrade, "UpperSupport", "RearVectorFin", new Vector3(side * .24f, 1.28f, -.34f),
                         new Vector3(.10f, .43f, .19f), new Vector3(-12, 0, side * -14));
                 }

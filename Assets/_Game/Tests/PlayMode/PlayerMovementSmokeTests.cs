@@ -197,7 +197,7 @@ namespace Gravivore.Tests.PlayMode
         }
 
         [UnityTest]
-        public IEnumerator GravityAttack_LethalPresentationOrdersBeamBeforeDeath()
+        public IEnumerator GravityAttack_ChargeStartsBeforeImmediateDeathAndBeamRemainsCosmetic()
         {
             var scene = new CanonicalSceneTestScope();
             yield return scene.Load();
@@ -213,14 +213,15 @@ namespace Gravivore.Tests.PlayMode
             var lash = Object.FindFirstObjectByType<GravityLashVfxPool>();
             lash.CuePlayed += (cue, _) =>
             {
+                if (cue == GravityLashCue.Windup) order.Add("charge");
                 if (cue == GravityLashCue.Beam) order.Add("beam");
             };
             enemy.Died += _ => order.Add("death");
 
             var timeout = Time.realtimeSinceStartup + 2f;
-            while (order.Count < 2 && Time.realtimeSinceStartup < timeout) yield return null;
+            while (order.Count < 3 && Time.realtimeSinceStartup < timeout) yield return null;
 
-            Assert.That(order, Is.EqualTo(new[] { "beam", "death" }));
+            Assert.That(order, Is.EqualTo(new[] { "charge", "death", "beam" }));
             Assert.That(pool.AvailableCount, Is.EqualTo(1));
             Object.Destroy(poolRoot);
             yield return scene.Cleanup();

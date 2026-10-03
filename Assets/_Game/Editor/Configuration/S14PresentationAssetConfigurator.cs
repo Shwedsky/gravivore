@@ -58,6 +58,7 @@ namespace Gravivore.Editor
             for (var i = 0; i < properties.Length; i++) serialized.FindProperty(properties[i]).objectReferenceValue = clips[i];
             serialized.ApplyModifiedPropertiesWithoutUndo();
             EditorUtility.SetDirty(definition);
+            PlayerFeelAssetConfigurator.BindSoundPalette(definition);
 
             var scene = EditorSceneManager.OpenScene(ChapterScenePath, OpenSceneMode.Single);
             S01SceneCompositionRoot root = null;
