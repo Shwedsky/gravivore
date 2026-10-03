@@ -29,6 +29,7 @@ namespace Gravivore.Gameplay.Enemies
         private readonly IRandomSource _random;
         private readonly SpawnPopulationState _population;
         private readonly RespawnSchedule _respawnSchedule;
+        private readonly AdaptiveRespawnState _adaptiveRespawn;
         private readonly List<LiveEntry> _liveEnemies;
         private readonly bool[] _occupiedAnchors;
         private readonly float[] _anchorDistances;
@@ -52,6 +53,7 @@ namespace Gravivore.Gameplay.Enemies
             _random = random ?? throw new ArgumentNullException(nameof(random));
             _population = new SpawnPopulationState(configuration.Population);
             _respawnSchedule = new RespawnSchedule(configuration.Population.DesiredPopulation);
+            _adaptiveRespawn = new AdaptiveRespawnState(configuration.AdaptiveRespawn);
             _liveEnemies = new List<LiveEntry>(configuration.Population.DesiredPopulation);
             _occupiedAnchors = new bool[configuration.AnchorOffsets.Length];
             _anchorDistances = new float[configuration.AnchorOffsets.Length];
@@ -69,6 +71,12 @@ namespace Gravivore.Gameplay.Enemies
         public int DesiredPopulation => _population.DesiredPopulation;
 
         public int PendingRespawns => _population.PendingRespawns;
+        public Vector3 Position => _configuration.WorldOrigin;
+        public int RespawnPenaltySteps => _adaptiveRespawn.PenaltySteps;
+        public float AdditionalRespawnDelay => _adaptiveRespawn.AdditionalDelay;
+        // A ready timer may still be blocked by player distance or the global cap.
+        public float SecondsUntilNextRespawn => _respawnSchedule.Count > 0
+            ? Mathf.Max(0f, _respawnSchedule.EarliestReadyTime - _elapsedTime) : 0f;
 
         public event Action<EnemyDeathEvent> EnemyDied;
 
@@ -87,6 +95,7 @@ namespace Gravivore.Gameplay.Enemies
             }
 
             _elapsedTime += deltaTime;
+            _adaptiveRespawn.AdvanceTo(_elapsedTime);
             while (_population.NeedsSpawn && _respawnSchedule.HasReady(_elapsedTime))
             {
                 if (!TrySpawnOne())
@@ -194,12 +203,13 @@ namespace Gravivore.Gameplay.Enemies
             _population.RegisterRecycle();
             _globalCapacity.Release();
             _pool.Return(enemy);
-            var delay = _configuration.RespawnDelay.Sample(_random.NextUnit());
+            var delay = _configuration.RespawnDelay.Sample(_random.NextUnit()) + _adaptiveRespawn.AdditionalDelay;
             _respawnSchedule.Schedule(_elapsedTime + delay);
         }
 
         private void HandleEnemyDied(EnemyDeathEvent death)
         {
+            _adaptiveRespawn.RegisterKill(_elapsedTime);
             SafeEventDispatch.Publish(EnemyDied, death);
         }
 

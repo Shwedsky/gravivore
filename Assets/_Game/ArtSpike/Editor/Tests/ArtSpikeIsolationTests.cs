@@ -34,17 +34,18 @@ namespace Gravivore.ArtSpike.Tests
         }
 
         [Test]
-        public void EveryTierRetainsTheSameCoreAndFourSupportSockets()
+        public void EveryTierRetainsTheSameCoreAndTwoLegAndArmSockets()
         {
             Vector3? position = null;
             Vector3? scale = null;
             for (var tier = 0; tier < 3; tier++)
             {
                 var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(ArtSpikeBuilder.CharacterPaths[tier]);
-                var core = prefab.transform.Find("01_CoreChassis_CommonIdentity/GravityCore_Common");
-                var supports = prefab.transform.Find("02_FourMechanicalSupports_Common");
+                var core = prefab.transform.Find("01_RobotBody_CommonIdentity/GravityCore_Common");
+                var supports = prefab.transform.Find("02_TwoMechanicalLegs_Common");
                 Assert.That(core, Is.Not.Null);
-                Assert.That(supports.childCount, Is.EqualTo(4));
+                Assert.That(supports.childCount, Is.EqualTo(2));
+                Assert.That(prefab.transform.Find("03_ArticulatedGravityArms_Common").childCount, Is.EqualTo(2));
                 if (position.HasValue)
                 {
                     Assert.That(core.localPosition, Is.EqualTo(position.Value));
@@ -139,7 +140,7 @@ namespace Gravivore.ArtSpike.Tests
                 var hips = instance.GetComponentsInChildren<Transform>(true).Where(t => t.name == "HipPivot").ToArray();
                 var initial = hips.Select(t => t.localRotation).ToArray();
                 clip.SampleAnimation(instance, .75f);
-                Assert.That(hips.Length, Is.EqualTo(4));
+                Assert.That(hips.Length, Is.EqualTo(2));
                 for (var i = 0; i < hips.Length; i++) Assert.That(Quaternion.Angle(initial[i], hips[i].localRotation), Is.GreaterThan(2));
             }
             finally { Object.DestroyImmediate(instance); }

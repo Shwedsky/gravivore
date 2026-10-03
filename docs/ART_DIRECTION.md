@@ -1,5 +1,9 @@
 # GRAVIVORE art direction — robotic industrial sci-fi
 
+## Current player correction
+
+The post-V3 human review rejected the tank-like player silhouette. Current G-0 is a biped combat mech with a separate torso, head/visor, arms, legs and mechanical joints. Reuse the original beveled mechanical modules and restrained CC0 PBR surfaces. Tier1/2 extend shoulders and containment without scaling the gameplay root. Keep the current S20 camera and world layout. See [MECHA_RESPAWN_CHECKPOINT.md](MECHA_RESPAWN_CHECKPOINT.md) for current bindings, validation and deferred animation. The V3 direction below is historical context and is superseded for the player.
+
 V2 established the approved **silhouette direction**: a low autonomous combat machine, central cyan gravity core, four mechanical supports and front-biased weapons. V3 preserves that direction using an explicitly authorized temporary modular proxy and CC0 PBR surfaces. The V3 implementation still requires human visual review.
 
 ## G-0 identity and evolution
