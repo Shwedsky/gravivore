@@ -13,12 +13,16 @@ MonoBehaviour:
   m_Name: S04_Enemy_ArcDrone
   m_EditorClassIdentifier:
   _id: arc-drone
-  _maximumHitPoints: 30
+  _maximumHitPoints: 28
   _moveSpeed: 2.4
-  _attackDamage: 5
+  _attackDamage: 4.5
   _collisionRadius: 0.36
   _targetPointHeight: 0.85
-  _aggroRadius: 5.5
+  _aggroRadius: 4
   _aggroReleaseRadius: 7.5
   _attackRange: 1.2
   _attackInterval: 1.1
+  _moderatePlayerStrengthRatio: 15
+  _massivePlayerStrengthRatio: 30
+  _moderateAggroMultiplier: 0.55
+  _massiveAggroMultiplier: 0.2

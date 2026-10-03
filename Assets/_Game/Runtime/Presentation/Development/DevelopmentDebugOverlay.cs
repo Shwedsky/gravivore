@@ -34,6 +34,7 @@ namespace Gravivore.Presentation.Development
         private float _smoothedFrameSeconds = 1f / 60f;
 
         public RectTransform ToggleRect { get; private set; }
+        public RectTransform ToggleVisualRect { get; private set; }
         public RectTransform PanelRect => _panel;
         public bool IsVisible => _panel != null && _panel.gameObject.activeSelf;
 
@@ -62,8 +63,11 @@ namespace Gravivore.Presentation.Development
             _boss = boss ?? throw new ArgumentNullException(nameof(boss));
             _completion = completion ?? throw new ArgumentNullException(nameof(completion));
 
-            var toggle = HudUiFactory.CreateButton(hudRoot, "DEV Toggle", new Vector2(0.70f, 0.925f), new Vector2(0.82f, 0.985f), "DEV", Toggle);
+            var toggle = HudUiFactory.CreateCompactButton(
+                hudRoot, "DEV Toggle", new Vector2(0.70f, 0.925f), new Vector2(0.82f, 0.985f),
+                "DEV", Toggle, out var toggleVisual);
             ToggleRect = toggle.GetComponent<RectTransform>();
+            ToggleVisualRect = toggleVisual;
             _panel = HudUiFactory.CreatePanel(hudRoot, "Development Tools", new Vector2(0.04f, 0.08f), new Vector2(0.96f, 0.91f), HudUiFactory.ModalBackdropColor, true);
             _metrics = HudUiFactory.CreateText(_panel, "Metrics", new Vector2(0.04f, 0.61f), new Vector2(0.96f, 0.97f), string.Empty, 25, TextAnchor.UpperLeft, Color.white);
 

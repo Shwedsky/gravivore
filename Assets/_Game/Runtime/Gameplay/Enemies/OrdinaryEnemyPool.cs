@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Gravivore.Gameplay.Combat;
+using Gravivore.Gameplay.Player;
 using UnityEngine;
 
 namespace Gravivore.Gameplay.Enemies
@@ -13,6 +14,7 @@ namespace Gravivore.Gameplay.Enemies
         private readonly int _targetLayer;
         private readonly Material _visualMaterial;
         private readonly IEnemyVisualFactory _visualFactory;
+        private readonly PlayerStatsState _playerStats;
 
         public OrdinaryEnemyPool(Transform poolRoot, int capacity, int targetLayer, Material visualMaterial)
             : this(poolRoot, capacity, targetLayer, visualMaterial, null)
@@ -24,7 +26,8 @@ namespace Gravivore.Gameplay.Enemies
             int capacity,
             int targetLayer,
             Material visualMaterial,
-            IEnemyVisualFactory visualFactory)
+            IEnemyVisualFactory visualFactory,
+            PlayerStatsState playerStats = null)
         {
             _poolRoot = poolRoot != null ? poolRoot : throw new ArgumentNullException(nameof(poolRoot));
             if (capacity < 1)
@@ -42,6 +45,7 @@ namespace Gravivore.Gameplay.Enemies
                 ? visualMaterial
                 : throw new ArgumentNullException(nameof(visualMaterial));
             _visualFactory = visualFactory;
+            _playerStats = playerStats;
             _available = new Stack<OrdinaryEnemyController>(capacity);
             _leased = new HashSet<OrdinaryEnemyController>();
             for (var i = 0; i < capacity; i++)
@@ -84,7 +88,8 @@ namespace Gravivore.Gameplay.Enemies
                     aggroTarget,
                     attackTarget,
                     position,
-                    recycleRequested);
+                    recycleRequested,
+                    _playerStats);
                 return enemy;
             }
             catch

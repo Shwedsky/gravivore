@@ -79,6 +79,10 @@ namespace Gravivore.Gameplay.Enemies
         [SerializeField, Min(0.1f)] private float _aggroReleaseRadius = 7f;
         [SerializeField, Min(0.1f)] private float _attackRange = 1.1f;
         [SerializeField, Min(0.05f)] private float _attackInterval = 1.2f;
+        [SerializeField, Min(1.01f)] private float _moderatePlayerStrengthRatio = 15f;
+        [SerializeField, Min(1.02f)] private float _massivePlayerStrengthRatio = 30f;
+        [SerializeField, Range(0.05f, 0.95f)] private float _moderateAggroMultiplier = 0.55f;
+        [SerializeField, Range(0.01f, 0.9f)] private float _massiveAggroMultiplier = 0.2f;
 
         public string Id => _id;
 
@@ -95,7 +99,12 @@ namespace Gravivore.Gameplay.Enemies
                     _aggroRadius,
                     _aggroReleaseRadius,
                     _attackRange,
-                    _attackInterval));
+                    _attackInterval,
+                    new OrdinaryEnemyAggressionParameters(
+                        _moderatePlayerStrengthRatio,
+                        _massivePlayerStrengthRatio,
+                        _moderateAggroMultiplier,
+                        _massiveAggroMultiplier)));
         }
 
         public void ValidateOrThrow()

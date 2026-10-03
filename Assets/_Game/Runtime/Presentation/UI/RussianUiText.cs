@@ -9,6 +9,11 @@ namespace Gravivore.Presentation.UI
         public const string Durability = "ПРОЧНОСТЬ";
         public const string BossName = "ХРАНИТЕЛЬ M-0";
         public const string Paused = "ПАУЗА";
+        public const string GameMenu = "МЕНЮ";
+        public const string Characteristics = "ХАРАКТЕРИСТИКИ";
+        public const string Equipment = "ЭКИПИРОВКА";
+        public const string Settings = "НАСТРОЙКИ";
+        public const string EmptyEquipment = "не установлено";
         public const string Resume = "ПРОДОЛЖИТЬ";
         public const string WelcomeBack = "С ВОЗВРАЩЕНИЕМ";
         public const string Claim = "ЗАБРАТЬ";
@@ -40,6 +45,16 @@ namespace Gravivore.Presentation.UI
             muted ? "ЗВУК: ВЫКЛ" : $"ЗВУК: {volumePercent}%";
 
         public static string Haptics(bool enabled) => enabled ? "ВИБРАЦИЯ: ВКЛ" : "ВИБРАЦИЯ: ВЫКЛ";
+        public static string EquipmentSlotName(Gravivore.Gameplay.Equipment.EquipmentSlot slot)
+        {
+            switch (slot)
+            {
+                case Gravivore.Gameplay.Equipment.EquipmentSlot.Core: return "Ядро";
+                case Gravivore.Gameplay.Equipment.EquipmentSlot.Chassis: return "Корпус";
+                case Gravivore.Gameplay.Equipment.EquipmentSlot.Module: return "Модуль";
+                default: return slot.ToString();
+            }
+        }
         public static string Away(string duration) => $"ВНЕ ИГРЫ {duration}";
         public static string Recovered(long amount) => $"ПОЛУЧЕНО: {amount} материала";
         public static string StoredMaterial(long amount) => $"ЗАПАС МАТЕРИАЛА: {amount}";

@@ -3,6 +3,7 @@ using System.Collections;
 using Gravivore.Core.Stats;
 using Gravivore.Gameplay.Combat;
 using Gravivore.Gameplay.Encounters;
+using Gravivore.Gameplay.Equipment;
 using Gravivore.Gameplay.Offline;
 using Gravivore.Gameplay.Player;
 using Gravivore.Presentation.Input;
@@ -57,7 +58,8 @@ namespace Gravivore.Tests.PlayMode
 
             stats.SetLevel(PlayerStatType.Hull, 2);
             Assert.That(health.MaximumHitPoints, Is.GreaterThan(initialMaximum));
-            StringAssert.Contains("Корпус  ур. 2", statsHud.DisplayText);
+            Assert.IsFalse(statsHud.HasPersistentStatsPanel);
+            Assert.That(statsHud.DisplayText, Is.Empty);
             Assert.That(statsHud.RecentChangeText, Is.EqualTo("Корпус: уровень 2"));
 
             health.ApplyDamage(new DamageRequest(10000f, DamageType.Physical));
@@ -240,7 +242,12 @@ namespace Gravivore.Tests.PlayMode
                 .GetComponent<PlayerStatsHudPresenter>();
             statsHud.Initialize(stats, root.GetComponent<RectTransform>(), false);
             var pause = new GameObject("Pause", typeof(PauseMenuPresenter)).GetComponent<PauseMenuPresenter>();
-            pause.Initialize(root.GetComponent<RectTransform>(), modal, statsHud);
+            pause.Initialize(
+                root.GetComponent<RectTransform>(),
+                modal,
+                stats,
+                new InventoryState(),
+                CreateEquipmentCatalog());
             var completionState = new BossCompletionState("custodian-m0");
             var completion = new GameObject("Completion", typeof(ChapterCompletionPresenter))
                 .GetComponent<ChapterCompletionPresenter>();
@@ -250,6 +257,9 @@ namespace Gravivore.Tests.PlayMode
             Assert.IsTrue(pause.IsPaused);
             Assert.IsFalse(input.enabled);
             Assert.That(Time.timeScale, Is.Zero);
+            StringAssert.Contains("Мощность  ур. 1", pause.StatsText);
+            StringAssert.Contains("Ядро", pause.EquipmentText);
+            Assert.IsTrue(pause.HasSettingsControls);
             completionState.TryRecordDefeat("custodian-m0", Vector3.zero);
             Assert.IsFalse(completion.IsVisible, "Completion must wait for the active modal.");
             pause.Resume();
@@ -301,6 +311,16 @@ namespace Gravivore.Tests.PlayMode
                 20f,
                 new PlayerStatLevels(1, 1, 1, 1, 1));
             return new PlayerStatsState(configuration, configuration.StartingLevels);
+        }
+
+        private static EquipmentCatalog CreateEquipmentCatalog()
+        {
+            return new EquipmentCatalog(new[]
+            {
+                new EquipmentItem("test-core", "Тестовое ядро", EquipmentSlot.Core, new EquipmentFlatModifier()),
+                new EquipmentItem("test-chassis", "Тестовый корпус", EquipmentSlot.Chassis, new EquipmentFlatModifier()),
+                new EquipmentItem("test-module", "Тестовый модуль", EquipmentSlot.Module, new EquipmentFlatModifier())
+            });
         }
 
         private sealed class FakeBossHealthSource : IBossHealthSource

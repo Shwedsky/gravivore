@@ -13,12 +13,16 @@ MonoBehaviour:
   m_Name: S04_Enemy_CutterUnit
   m_EditorClassIdentifier:
   _id: cutter-unit
-  _maximumHitPoints: 45
+  _maximumHitPoints: 42
   _moveSpeed: 2.6
-  _attackDamage: 6
+  _attackDamage: 5.5
   _collisionRadius: 0.4
   _targetPointHeight: 0.9
-  _aggroRadius: 5
+  _aggroRadius: 3.8
   _aggroReleaseRadius: 7
   _attackRange: 1.1
   _attackInterval: 1.25
+  _moderatePlayerStrengthRatio: 15
+  _massivePlayerStrengthRatio: 30
+  _moderateAggroMultiplier: 0.55
+  _massiveAggroMultiplier: 0.2

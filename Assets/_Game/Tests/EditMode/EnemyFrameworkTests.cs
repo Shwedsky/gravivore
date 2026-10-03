@@ -1,6 +1,7 @@
 using System;
 using Gravivore.Gameplay.Combat;
 using Gravivore.Gameplay.Enemies;
+using Gravivore.Gameplay.Player;
 using NUnit.Framework;
 
 namespace Gravivore.Tests.EditMode
@@ -30,6 +31,40 @@ namespace Gravivore.Tests.EditMode
             Assert.That(brain.Tick(0f, true, 4.5f).State, Is.EqualTo(OrdinaryEnemyBrainState.Approach));
             Assert.That(brain.Tick(0f, true, 6f).State, Is.EqualTo(OrdinaryEnemyBrainState.Approach));
             Assert.That(brain.Tick(0f, true, 7.1f).State, Is.EqualTo(OrdinaryEnemyBrainState.Idle));
+        }
+
+        [Test]
+        public void OrdinaryAggressionPolicy_ScalesAcquisitionByRelativeCombatStrength()
+        {
+            var enemy = CreateEnemyConfiguration();
+            var comparable = new PlayerDerivedStats(10f, 20f, 0f, 1f, 4f);
+            var moderate = new PlayerDerivedStats(50f, 60f, 0f, 1f, 4f);
+            var massive = new PlayerDerivedStats(100f, 70f, 0f, 1f, 4f);
+
+            Assert.That(OrdinaryEnemyAggressionPolicy.ResolveProactiveAggroRadius(comparable, enemy), Is.EqualTo(5f));
+            Assert.That(OrdinaryEnemyAggressionPolicy.ResolveProactiveAggroRadius(moderate, enemy), Is.EqualTo(2.75f));
+            Assert.That(OrdinaryEnemyAggressionPolicy.ResolveProactiveAggroRadius(massive, enemy), Is.EqualTo(1.2f));
+        }
+
+        [Test]
+        public void MassivelyOutscaledOrdinaryEnemy_DoesNotProactivelyChaseButEngagesWhenAttacked()
+        {
+            var brain = CreateBrain();
+            Assert.That(brain.Tick(0f, true, 4f, 1.2f).State, Is.EqualTo(OrdinaryEnemyBrainState.Idle));
+
+            brain.Engage();
+            var defensive = brain.Tick(0f, true, 4f, 1.2f);
+            Assert.That(defensive.State, Is.EqualTo(OrdinaryEnemyBrainState.Approach));
+            Assert.IsTrue(defensive.ShouldApproach);
+        }
+
+        [Test]
+        public void OrdinaryAggressionScaling_DoesNotAlterEliteOrBossConfigurationContracts()
+        {
+            Assert.That(typeof(Gravivore.Gameplay.Encounters.MagnetarGuardConfiguration)
+                .GetProperties(), Has.None.Property("PropertyType").EqualTo(typeof(OrdinaryEnemyAggressionParameters)));
+            Assert.That(typeof(Gravivore.Gameplay.Encounters.CustodianBossConfiguration)
+                .GetProperties(), Has.None.Property("PropertyType").EqualTo(typeof(OrdinaryEnemyAggressionParameters)));
         }
 
         [Test]
@@ -176,6 +211,13 @@ namespace Gravivore.Tests.EditMode
             var brain = new OrdinaryEnemyStateMachine();
             brain.Configure(new EnemyBehaviorParameters(5f, 7f, 1.2f, 1f));
             return brain;
+        }
+
+        private static EnemyRuntimeConfiguration CreateEnemyConfiguration()
+        {
+            return new EnemyRuntimeConfiguration(
+                "test-enemy", 40f, 2f, 5f, 0.4f, 0.8f,
+                new EnemyBehaviorParameters(5f, 7f, 1.2f, 1f));
         }
     }
 }
