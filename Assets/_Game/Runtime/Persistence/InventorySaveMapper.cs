@@ -86,6 +86,11 @@ namespace Gravivore.Persistence
                     throw new ArgumentException($"Multiple items are equipped in slot {slot}.", nameof(dto));
                 }
 
+                if (!rawOwned.Contains(entry.ItemId))
+                {
+                    throw new ArgumentException($"Equipped item is not owned: {entry.ItemId}.", nameof(dto));
+                }
+
                 if (!catalog.TryGet(entry.ItemId, out var item))
                 {
                     optionalContentWarning?.Invoke(
@@ -96,11 +101,6 @@ namespace Gravivore.Persistence
                 if (item.Slot != slot)
                 {
                     throw new ArgumentException($"Equipment {item.Id} is stored in the wrong slot.", nameof(dto));
-                }
-
-                if (!rawOwned.Contains(item.Id))
-                {
-                    throw new ArgumentException($"Equipped item is not owned: {item.Id}.", nameof(dto));
                 }
 
                 equipped.Add(new EquippedItemSnapshot(slot, item.Id));
