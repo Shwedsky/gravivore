@@ -147,14 +147,16 @@ namespace Gravivore.ArtSpike.Tests
         }
 
         [Test]
-        public void RuntimePreviewDependsOnlyOnCharacterArtAndNeverBuildsTheComparisonBay()
+        public void IntegratedRuntimeRetainsCharacterArtAndNeverBuildsTheComparisonBay()
         {
             foreach (var path in new[] { "Assets/_Game/Content/Scenes/Chapter01_ScrapExclusion.unity",
                 "Assets/_Game/Content/Definitions/S15_VisualCatalog.asset", "Assets/_Game/Content/Definitions/S07_Evolution.asset" })
             {
                 var dependencies = AssetDatabase.GetDependencies(path, true);
                 Assert.That(dependencies.Any(p => p.StartsWith(ArtSpikeBuilder.Root + "/")), Is.True, path);
-                Assert.That(dependencies.Any(p => p.Contains("/Prefabs/Environment/") || p == ArtSpikeBuilder.ScenePath ||
+                // Phase3B environment is legitimate runtime content. The isolated comparison-bay
+                // scenery and lighting must still never become a Chapter01 dependency.
+                Assert.That(dependencies.Any(p => p.StartsWith(ArtSpikeBuilder.Root + "/Prefabs/Environment/") || p == ArtSpikeBuilder.ScenePath ||
                     p.EndsWith("ArtSpike_StudioReflection.cubemap")), Is.False, path);
             }
             Assert.That(EditorBuildSettings.scenes.Any(s => s.path == ArtSpikeBuilder.ScenePath), Is.False);

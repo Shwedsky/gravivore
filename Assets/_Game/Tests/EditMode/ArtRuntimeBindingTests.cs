@@ -33,7 +33,7 @@ namespace Gravivore.Tests.EditMode
         }
 
         [Test]
-        public void OnlyCutterRecipeOverridesTheExistingS15PartsAndLandmarks()
+        public void IntegratedFamiliesRetainAcceptedCutterS15FallbackPartsAndArtFreeGameplayDefinitions()
         {
             var catalog = AssetDatabase.LoadAssetAtPath<S15VisualCatalog>(Gravivore.Editor.S15AssetConfigurator.CatalogPath);
             foreach (var id in new[] { "scout-drone", "cutter-unit", "warden", "arc-drone", "carrier" })
@@ -42,7 +42,10 @@ namespace Gravivore.Tests.EditMode
                 if (id == "cutter-unit")
                     Assert.That(AssetDatabase.GetAssetPath(recipe.PresentationPrefab), Is.EqualTo(Art + "Enemies/Cutter_ArtSpike.prefab"));
                 else
-                    Assert.That(recipe.PresentationPrefab, Is.Null, id);
+                {
+                    Assert.That(AssetDatabase.GetAssetPath(recipe.PresentationPrefab), Does.StartWith("Assets/_Game/Phase3B/Prefabs/Enemies/"),id);
+                    Assert.DoesNotThrow(() => PresentationPrefabValidation.ValidateOrThrow(recipe.PresentationPrefab));
+                }
                 for (var i = 0; i < recipe.PartCount; i++)
                     Assert.That(AssetDatabase.GetAssetPath(recipe.GetPart(i).SourceModel),
                         Does.StartWith(Gravivore.Editor.S15AssetConfigurator.ModelRoot));

@@ -34,8 +34,10 @@ namespace Gravivore.Tests.EditMode
             Assert.That(evolution.TierOverrides,Has.Length.EqualTo(3));
             foreach (var slot in evolution.TierOverrides) Assert.IsFalse(slot.HasPrefab);
             foreach (var prefab in evolution.TierPrefabs) Assert.DoesNotThrow(() => PresentationPrefabValidation.ValidateOrThrow(prefab));
-            var encounters = AssetDatabase.LoadAssetAtPath<ChapterVisualIntegrationDefinition>(VisualIntegrationFoundationBuilder.DefinitionPath);
+            // Empty optional slots are a contract of a new definition, not of integrated Chapter01.
+            var encounters = ScriptableObject.CreateInstance<ChapterVisualIntegrationDefinition>(); _owned.Add(encounters);
             Assert.IsFalse(encounters.Elite.HasPrefab); Assert.IsFalse(encounters.Boss.HasPrefab); Assert.IsFalse(encounters.RepairHub.HasPrefab);
+            Assert.DoesNotThrow(encounters.ValidateOrThrow);
         }
 
         [TestCase("collider")] [TestCase("rigidbody")] [TestCase("script")]

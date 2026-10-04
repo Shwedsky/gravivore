@@ -1,0 +1,148 @@
+{
+    "snapshots": [
+        {
+            "view": "ordinary-combat (relay-yard; all spot populations live)",
+            "renderers": 69,
+            "materialSlots": 90,
+            "uniqueMaterials": 9,
+            "activeAudioSources": 4,
+            "playingAudioSources": 0,
+            "activeParticleSystems": 0,
+            "triangles": 17158
+        },
+        {
+            "view": "boss-encounter (real authored position)",
+            "renderers": 63,
+            "materialSlots": 81,
+            "uniqueMaterials": 10,
+            "activeAudioSources": 4,
+            "playingAudioSources": 0,
+            "activeParticleSystems": 0,
+            "triangles": 13814
+        },
+        {
+            "view": "ordinary-mixed-family comparison (five temporarily staged live actors)",
+            "renderers": 127,
+            "materialSlots": 163,
+            "uniqueMaterials": 12,
+            "activeAudioSources": 4,
+            "playingAudioSources": 2,
+            "activeParticleSystems": 0,
+            "triangles": 30610
+        }
+    ],
+    "sockets": [
+        {
+            "actor": "ScoutDrone_Phase3B",
+            "authored": [
+                "Core",
+                "Sensor",
+                "AttackOrigin",
+                "HitCenter",
+                "GroundContact",
+                "VfxTop"
+            ],
+            "fallback": [
+                "VfxRear",
+                "TelegraphOrigin"
+            ]
+        },
+        {
+            "actor": "Cutter_ArtSpike",
+            "authored": [],
+            "fallback": [
+                "Core",
+                "Sensor",
+                "AttackOrigin",
+                "HitCenter",
+                "GroundContact",
+                "VfxTop",
+                "VfxRear",
+                "TelegraphOrigin"
+            ]
+        },
+        {
+            "actor": "Warden_Phase3B",
+            "authored": [
+                "Core",
+                "AttackOrigin",
+                "HitCenter",
+                "GroundContact",
+                "VfxTop"
+            ],
+            "fallback": [
+                "Sensor",
+                "VfxRear",
+                "TelegraphOrigin"
+            ]
+        },
+        {
+            "actor": "ArcDrone_Phase3B",
+            "authored": [
+                "Core",
+                "AttackOrigin",
+                "HitCenter",
+                "GroundContact",
+                "VfxTop"
+            ],
+            "fallback": [
+                "Sensor",
+                "VfxRear",
+                "TelegraphOrigin"
+            ]
+        },
+        {
+            "actor": "Carrier_Phase3B",
+            "authored": [
+                "Core",
+                "AttackOrigin",
+                "HitCenter",
+                "GroundContact",
+                "VfxTop"
+            ],
+            "fallback": [
+                "Sensor",
+                "VfxRear",
+                "TelegraphOrigin"
+            ]
+        },
+        {
+            "actor": "MagnetarGuard_Phase3B",
+            "authored": [
+                "Core",
+                "AttackOrigin",
+                "HitCenter",
+                "GroundContact",
+                "VfxTop",
+                "VfxRear",
+                "TelegraphOrigin"
+            ],
+            "fallback": [
+                "Sensor"
+            ]
+        },
+        {
+            "actor": "CustodianM0_Phase3B",
+            "authored": [
+                "Core",
+                "AttackOrigin",
+                "HitCenter",
+                "GroundContact",
+                "VfxTop",
+                "VfxRear",
+                "TelegraphOrigin"
+            ],
+            "fallback": [
+                "Sensor"
+            ]
+        }
+    ],
+    "environmentRenderers": 150,
+    "ordinaryPopulation": 20,
+    "cameraOffset": {
+        "x": 0.0,
+        "y": 14.800000190734864,
+        "z": -11.199999809265137
+    },
+    "cameraFov": 46.0
+}

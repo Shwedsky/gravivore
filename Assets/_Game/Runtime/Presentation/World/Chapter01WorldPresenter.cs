@@ -191,7 +191,9 @@ namespace Gravivore.Presentation.World
             gateObject.transform.SetParent(GameplayRoot, false);
             gateObject.transform.position = configuration.Position;
             var view = gateObject.GetComponent<WorldGateView>();
-            view.Build(configuration.Size, _configuration.Bounds, color, CreateMaterial, VisualRoot);
+            // Gates stay readable when the covered prototype floor/dressing is hidden.
+            view.Build(configuration.Size, _configuration.Bounds, color, CreateMaterial,
+                _environment != null ? _environment.Structures : VisualRoot);
             return view;
         }
 
@@ -209,7 +211,7 @@ namespace Gravivore.Presentation.World
             blocker.transform.position = position;
             blocker.transform.localScale = size;
             blocker.GetComponent<Renderer>().sharedMaterial = material;
-            SeparateBoxVisual(blocker, material, VisualRoot);
+            SeparateBoxVisual(blocker, material, _environment != null ? _environment.Structures : VisualRoot);
             return blocker.GetComponent<Collider>();
         }
 

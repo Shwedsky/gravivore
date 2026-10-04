@@ -298,7 +298,7 @@ When the full audit is available:
 
 Phase 2 has passed the human prototype check for mechanics/synchronization and is merged as a **prototype checkpoint**, not as final presentation quality.
 
-Start **Phase 3 — Visual world baseline**.
+Phase 3 status: **Phase3A foundation merged; Phase3B pack integrated on the Phase3C branch; Phase3C device review pending.**
 
 Priority order:
 1. give the entire Chapter 1 map a coherent modern industrial sci-fi visual language;
