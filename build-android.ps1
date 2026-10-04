@@ -149,9 +149,10 @@ try {
         -ArgumentList $processArguments `
         -WorkingDirectory $projectRoot `
         -WindowStyle Hidden `
-        -Wait `
         -PassThru `
         -ErrorAction Stop
+    # Wait for the editor itself; Android's ADB daemon may outlive it.
+    $unityProcess.WaitForExit()
 }
 catch {
     throw "Unable to start Unity process '$unity': $($_.Exception.Message)"
