@@ -41,9 +41,13 @@ namespace Gravivore.Tests.PlayMode
 
                 Assert.That(presenter.CachedMarkerCount, Is.EqualTo(5));
                 Assert.That(presenter.GetMarkerVisualState("ordinary", false).Glyph, Is.EqualTo(MapMarkerGlyph.Node));
-                Assert.That(presenter.GetMarkerVisualState("elite", false).CooldownRing, Is.True);
-                Assert.That(presenter.GetMarkerVisualState("boss", false).LockOverlay, Is.True);
-                Assert.That(presenter.GetMarkerVisualState("boss", false).InactiveSlash, Is.False);
+                Assert.That(presenter.GetMarkerVisualState("elite", true).CooldownRing, Is.True);
+                Assert.That(presenter.GetMarkerVisualState("boss", true).LockOverlay, Is.True);
+                Assert.That(presenter.GetMarkerVisualState("boss", true).InactiveSlash, Is.False);
+                Assert.IsFalse(presenter.CompactSurface.Find("Marker_elite").gameObject.activeSelf,
+                    "Elite lies outside the compact local crop.");
+                Assert.IsFalse(presenter.CompactSurface.Find("Marker_boss").gameObject.activeSelf,
+                    "Boss lies outside the compact local crop.");
                 Assert.That(presenter.GetMarkerVisualState("repair", false).Glyph, Is.EqualTo(MapMarkerGlyph.RepairCross));
 
                 var playerExpandedBefore = presenter.GetMarkerAnchor("player", true);
