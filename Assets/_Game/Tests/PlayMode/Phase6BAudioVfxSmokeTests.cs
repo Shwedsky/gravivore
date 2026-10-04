@@ -17,6 +17,66 @@ namespace Gravivore.Tests.PlayMode
         private const string Root = "Assets/_Game/Content/Presentation/Phase6B";
 
         [UnityTest]
+        public IEnumerator RuntimeRendering_PreservesPlayerHostileAndRepairCueTints()
+        {
+            var cameraObject = new GameObject("Isolated Cue Tint Camera", typeof(UnityEngine.Camera));
+            var camera = cameraObject.GetComponent<UnityEngine.Camera>();
+            camera.enabled = false;
+            camera.orthographic = true;
+            camera.orthographicSize = 1.5f;
+            camera.clearFlags = CameraClearFlags.SolidColor;
+            camera.backgroundColor = Color.black;
+            camera.cullingMask = 1 << 31;
+            var origin = new Vector3(1000f, 0f, 0f);
+            var destination = origin + Vector3.forward * 2f;
+            camera.transform.position = origin + new Vector3(0f, 4f, 1f);
+            camera.transform.LookAt(origin + Vector3.forward);
+            var target = new RenderTexture(128, 128, 24);
+            var pixels = new Texture2D(128, 128, TextureFormat.RGB24, false);
+            var priorTarget = RenderTexture.active;
+            Phase6BVfxInstance instance = null;
+            try
+            {
+                target.Create();
+                camera.targetTexture = target;
+                var files = new[] { "PFX_GravityLashTravel", "PFX_BossLineTelegraph", "PFX_RepairBeam" };
+                for (var cue = 0; cue < files.Length; cue++)
+                {
+                    var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(Root + "/VFX/Prefabs/" + files[cue] + ".prefab");
+                    instance = Object.Instantiate(prefab).GetComponent<Phase6BVfxInstance>();
+                    instance.enabled = false; // Advance presentation time explicitly, independent of editor frame rate.
+                    instance.Play(origin, destination);
+                    instance.Tick(0.06f);
+                    foreach (var child in instance.GetComponentsInChildren<Transform>(true)) child.gameObject.layer = 31;
+                    yield return null;
+                    camera.Render();
+                    RenderTexture.active = target;
+                    pixels.ReadPixels(new Rect(0f, 0f, 128f, 128f), 0, 0);
+                    pixels.Apply(false);
+                    var captured = pixels.GetPixels();
+                    // Player and repair energy are authored cyan; hostile telegraphs are red.
+                    var hasCueTint = cue == 1
+                        ? captured.Any(c => c.r > c.g + 0.1f && c.r > c.b + 0.1f)
+                        : captured.Any(c => c.g > c.r + 0.1f && c.b > c.r + 0.1f);
+                    Assert.IsTrue(hasCueTint, files[cue] + " must render its cue tint, rather than white.");
+                    Object.Destroy(instance.gameObject);
+                    instance = null;
+                    yield return null;
+                }
+            }
+            finally
+            {
+                RenderTexture.active = priorTarget;
+                camera.targetTexture = null;
+                if (instance != null) Object.Destroy(instance.gameObject);
+                Object.Destroy(cameraObject);
+                target.Release();
+                Object.Destroy(target);
+                Object.Destroy(pixels);
+            }
+        }
+
+        [UnityTest]
         public IEnumerator RuntimePools_PlayEveryCueRemainBoundedAndStop()
         {
             var host = new GameObject("Phase 6B Runtime Pool Test");

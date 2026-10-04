@@ -185,7 +185,7 @@ Only content with confirmed commercial-use rights may enter this pack. CC0 is pr
 - `Phase6B_Noise.tga` — deterministic seeded noise alpha; 64x64 RGBA; **B**; restrained breakup.
 
 ## Materials and prefabs
-All `M_Phase6B_*` materials and `PFX_*` prefabs are first-party authored project assets using the repository's existing URP Unlit shader. No third-party shader framework, prefab, texture or sample is embedded.
+All `M_Phase6B_*` materials and `PFX_*` prefabs are first-party authored project assets using the repository's existing URP Particles Unlit shader. No third-party shader framework, prefab, texture or sample is embedded.
 
 ## Verified external CC0 fallback sources from Phase 6A — NOT IMPORTED
 - OpenGameArt — Mechanical Sounds — BMacZero / Brian MacIntosh — https://opengameart.org/content/mechanical-sounds — CC0 — **NOT IMPORTED**.

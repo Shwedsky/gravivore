@@ -9,7 +9,7 @@ Upstream design: PR #42 — Phase 6A Audio / VFX Production Direction and Asset 
 ## Scope
 This branch provides an isolated production candidate pack and does **not** wire it into Chapter01. It does not edit gameplay authority, attack/damage timing, persistence, progression, elite/boss controllers, repeatable-loop logic, Phase3B/Phase3C prefabs, `S01SceneCompositionRoot`, `Chapter01WorldPresenter`, or `Phase3CIntegrationBuilder`.
 
-Delivered: 21 first-party 48 kHz mono PCM WAV candidates; 16 audio cue families; 13 reusable VFX prefabs; 7 shared URP Unlit transparent materials; 4 original 64x64 RGBA TGA masks; bounded audio/VFX pools; isolated review-scene builder; EditMode validation.
+Delivered: 21 first-party 48 kHz mono PCM WAV candidates; 16 audio cue families; 13 reusable VFX prefabs; 7 shared URP Particles Unlit transparent materials; 4 original 64x64 RGBA TGA masks; bounded audio/VFX pools; isolated review-scene builder; EditMode validation. The particle shader preserves the vertex tints authored by the particle and line renderers.
 
 ## Audio production
 All Phase 6B audio is first-party procedural content from deterministic oscillators and seeded noise. No third-party waveform, recording, sample library, franchise audio, unofficial mirror, login-only asset, or learned-media source is embedded. Processing is direct 48 kHz mono synthesis with no padded silence, conservative cue-specific peak normalization, and 16-bit PCM WAV export. No limiter/maximizer is used.
