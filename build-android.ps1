@@ -233,20 +233,22 @@ if ($null -ne $aapt) {
     }
 
     $packageLine = $badging | Where-Object { $_ -match "^package:" } | Select-Object -First 1
-    if ($packageLine -notmatch "name='(?<id>[^']+)'") {
+    $applicationIdMatch = [regex]::Match([string]$packageLine, "name='(?<id>[^']+)'")
+    if (-not $applicationIdMatch.Success) {
         throw "aapt did not report an applicationId."
     }
-    if ($Matches['id'] -ne $expectedApplicationId) {
-        throw "APK applicationId mismatch. Expected $expectedApplicationId, got $($Matches['id'])."
+    $actualApplicationId = $applicationIdMatch.Groups['id'].Value
+    if ($actualApplicationId -ne $expectedApplicationId) {
+        throw "APK applicationId mismatch. Expected $expectedApplicationId, got $actualApplicationId."
     }
 
-    if ($packageLine -match "versionCode='(?<code>\d+)'") {
-        if ([int]$Matches['code'] -ne [int]$metadata.versionCode) {
-            throw "APK versionCode does not match build metadata."
-        }
-    }
-    else {
+    $versionCodeMatch = [regex]::Match([string]$packageLine, "versionCode='(?<code>\d+)'")
+    if (-not $versionCodeMatch.Success) {
         throw "aapt did not report APK versionCode."
+    }
+    $actualVersionCode = [int]$versionCodeMatch.Groups['code'].Value
+    if ($actualVersionCode -ne [int]$metadata.versionCode) {
+        throw "APK versionCode does not match build metadata."
     }
 
     $nativeCodeLine = $badging | Where-Object { $_ -match "^native-code:" } | Select-Object -First 1
