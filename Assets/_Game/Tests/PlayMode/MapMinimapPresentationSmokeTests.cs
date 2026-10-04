@@ -100,6 +100,13 @@ namespace Gravivore.Tests.PlayMode
                 Assert.IsFalse(presenter.ExpandedRoot.gameObject.activeSelf);
                 Assert.IsFalse(presenter.SelectMarker("elite"), "Collapsed map must not allow POI selection.");
 
+                source.Markers[1] = new MapMarkerSnapshot(
+                    "ordinary", MapMarkerKind.Ordinary, new Vector3(34f, 0f, 15f),
+                    MapAvailabilityState.Available, "Правый узел");
+                presenter.RefreshNow();
+                presenter.OpenExpanded();
+                Assert.IsTrue(presenter.SelectMarker("elite"));
+                AssertPortraitLayout(host, presenter, new Vector2(540f, 960f));
                 AssertPortraitLayout(host, presenter, new Vector2(720f, 1280f));
                 AssertPortraitLayout(host, presenter, new Vector2(720f, 1600f));
                 AssertPortraitLayout(host, presenter, new Vector2(1080f, 2400f));
@@ -134,6 +141,18 @@ namespace Gravivore.Tests.PlayMode
             Assert.NotNull(fitter);
             Assert.That(fitter.aspectMode, Is.EqualTo(AspectRatioFitter.AspectMode.FitInParent));
             Assert.That(fitter.aspectRatio, Is.EqualTo(72f / 140f).Within(0.0001f));
+
+            var mapCorners = new Vector3[4];
+            var labelCorners = new Vector3[4];
+            presenter.ExpandedSurface.GetWorldCorners(mapCorners);
+            var label = presenter.ExpandedSurface.Find("Marker_ordinary/Label").GetComponent<Text>();
+            label.rectTransform.GetWorldCorners(labelCorners);
+            Assert.That(labelCorners[0].x, Is.GreaterThanOrEqualTo(mapCorners[0].x - 0.01f),
+                "Right-edge POI label must stay inside the map.");
+            Assert.That(labelCorners[2].x, Is.LessThanOrEqualTo(mapCorners[2].x + 0.01f));
+            var details = presenter.ExpandedRoot.Find("PoiDetails/DetailsText").GetComponent<Text>();
+            Assert.That(details.preferredHeight, Is.LessThanOrEqualTo(details.rectTransform.rect.height + 0.01f),
+                "Selected timer/reward details must fit the small portrait panel.");
         }
 
         private sealed class MutableMapSource : IMapMarkerSource

@@ -149,9 +149,20 @@ namespace Gravivore.Presentation.Map
 
             if (_expanded)
             {
+                PositionOverviewText(_label, normalizedPosition.x > 0.5f, 0.62f);
+                PositionOverviewText(_timer, normalizedPosition.x > 0.5f, 0.20f);
                 _label.text = snapshot.DisplayName;
                 UpdateRoundedTimer(snapshot);
             }
+        }
+
+        private static void PositionOverviewText(Text text, bool alignRight, float anchorY)
+        {
+            var rect = text.rectTransform;
+            rect.anchorMin = rect.anchorMax = new Vector2(alignRight ? 0f : 1f, anchorY);
+            rect.pivot = new Vector2(alignRight ? 1f : 0f, 0.5f);
+            rect.anchoredPosition = new Vector2(alignRight ? -4f : 4f, 0f);
+            text.alignment = alignRight ? TextAnchor.MiddleRight : TextAnchor.MiddleLeft;
         }
 
         public void SetSelection(bool selected)

@@ -285,6 +285,8 @@ namespace Gravivore.Presentation.Map
             _detailsText.resizeTextForBestFit = true;
             _detailsText.resizeTextMinSize = 13;
             _detailsText.resizeTextMaxSize = 18;
+            _detailsText.horizontalOverflow = HorizontalWrapMode.Wrap;
+            _detailsText.verticalOverflow = VerticalWrapMode.Truncate;
             _detailsPanel.gameObject.SetActive(false);
             _expandedRoot.gameObject.SetActive(false);
         }
