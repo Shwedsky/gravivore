@@ -19,6 +19,7 @@ namespace Gravivore.Presentation.World
 
         public WorldGateView EliteGate { get; private set; }
         public WorldGateView BossGate { get; private set; }
+        public VisualWorldBaselineReport VisualBaseline { get; private set; }
         public int ZoneCount => _configuration?.ZoneCount ?? 0;
 
         public void Initialize(
@@ -38,6 +39,7 @@ namespace Gravivore.Presentation.World
             BuildBasin();
             BuildZonesAndPaths();
             BuildBossArena();
+            VisualBaseline = Chapter01VisualWorldBaseline.Build(transform, _configuration, _litMaterial);
             EliteGate = BuildGate(_configuration.EliteGate, new Color(0.9f, 0.55f, 0.12f, 1f));
             BossGate = BuildGate(_configuration.BossGate, new Color(0.84f, 0.18f, 0.22f, 1f));
             _state.GateUnlocked += HandleGateUnlocked;
@@ -139,25 +141,13 @@ namespace Gravivore.Presentation.World
                 pad.transform.localScale = new Vector3(3.25f, 0.04f, 3.25f);
                 SetMaterial(pad, zone.Color);
 
-                if (_s15VisualCatalog != null)
-                {
-                    var landmarkRoot = new GameObject($"Landmark {zone.Id}");
-                    landmarkRoot.transform.SetParent(transform, false);
-                    landmarkRoot.transform.position = zone.LandmarkPosition;
-                    landmarkRoot.transform.rotation = Quaternion.Euler(0f, i * 28f, 0f);
-                    S15VisualFactory.Build(
-                        landmarkRoot.transform,
-                        _s15VisualCatalog.GetLandmark(zone.Id),
-                        _s15VisualCatalog);
-                }
-                else
-                {
-                    var landmark = CreateVisualPrimitive($"Landmark {zone.Id}", PrimitiveType.Cube, zone.LandmarkPosition);
-                    landmark.transform.localScale = new Vector3(0.8f, 2.8f + i * 0.25f, 0.8f);
-                    landmark.transform.position += Vector3.up * (landmark.transform.localScale.y * 0.5f);
-                    landmark.transform.rotation = Quaternion.Euler(0f, i * 28f, 0f);
-                    SetMaterial(landmark, zone.Color * 1.25f);
-                }
+                var anchor = CreateVisualPrimitive(
+                    $"Zone Anchor {zone.Id}",
+                    PrimitiveType.Cube,
+                    zone.LandmarkPosition + Vector3.up * 0.06f);
+                anchor.transform.localScale = new Vector3(1.35f, 0.08f, 1.35f);
+                anchor.transform.rotation = Quaternion.Euler(0f, i * 28f, 0f);
+                SetMaterial(anchor, Color.Lerp(zone.Color, new Color(0.18f, 0.20f, 0.21f, 1f), 0.55f));
 
                 var next = _configuration.GetZone((i + 1) % _configuration.ZoneCount);
                 CreatePath($"Outer Loop {i + 1}", zone.Center, next.Center);
