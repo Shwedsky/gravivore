@@ -87,9 +87,9 @@ namespace Gravivore.Presentation.Assets
         {
             if (string.IsNullOrWhiteSpace(_enemyId))
                 throw new InvalidOperationException("Phase 3 enemy visual recipe requires an enemy id.");
-            if (_useLegacyPresentationPrefab) return;
             if (_parts == null || _parts.Length == 0)
-                throw new InvalidOperationException($"Phase 3 enemy visual recipe {_enemyId} requires parts.");
+                throw new InvalidOperationException(
+                    $"Phase 3 enemy visual recipe {_enemyId} requires fallback parts even when a legacy presentation is preferred.");
             for (var i = 0; i < _parts.Length; i++)
             {
                 if (_parts[i] == null)
