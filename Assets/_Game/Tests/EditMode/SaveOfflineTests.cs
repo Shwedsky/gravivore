@@ -915,6 +915,24 @@ namespace Gravivore.Tests.EditMode
         }
 
         [Test]
+        public void ProfileRestore_UnknownEquippedItemStillRequiresOwnership()
+        {
+            var context = CreateContext();
+            var dto = FreshDto(context, Utc(2026, 10, 4, 12));
+            dto.inventory.OwnedItemIds = Array.Empty<string>();
+            dto.inventory.EquippedItems = new[]
+            {
+                new Gravivore.Persistence.EquippedItemSaveDto
+                {
+                    Slot = (int)EquipmentSlot.Module,
+                    ItemId = "removed-module"
+                }
+            };
+
+            Assert.Throws<ArgumentException>(() => ProfileSaveMapper.Restore(dto, context));
+        }
+
+        [Test]
         public void ProfileRestore_UnknownCriticalIdentityStillRejectsSave()
         {
             var context = CreateContext();
