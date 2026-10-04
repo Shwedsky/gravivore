@@ -52,6 +52,41 @@ namespace Gravivore.Tests.PlayMode
         }
 
         [UnityTest]
+        public IEnumerator CanonicalChapterLoadsPhase3WorldAndDistinctOrdinaryFamilies()
+        {
+            var scene = new CanonicalSceneTestScope();
+            yield return scene.Load();
+
+            var baseline = scene.Root.WorldPresenter.VisualBaseline;
+            Assert.That(baseline.Root, Is.Not.Null);
+            Assert.That(baseline.ZoneLandmarkCount, Is.EqualTo(5));
+            Assert.That(baseline.RendererCount, Is.InRange(120, 180));
+            Assert.That(baseline.EnabledColliderCount, Is.Zero);
+            Assert.That(baseline.Root.transform.Find("Repair Hub"), Is.Not.Null);
+            Assert.That(baseline.Root.transform.Find("Elite Approach"), Is.Not.Null);
+            Assert.That(baseline.Root.transform.Find("Boss Destination"), Is.Not.Null);
+
+            var transforms = scene.Root.GetComponentsInChildren<Transform>(true);
+            foreach (var id in new[] { "scout-drone", "arc-drone", "warden", "carrier" })
+            {
+                Assert.That(
+                    transforms.Any(t => t.name == $"Phase3 Enemy [{id}]"),
+                    Is.True,
+                    $"Expected active or pooled Phase 3 presentation for {id}.");
+            }
+
+            Assert.That(
+                transforms.Any(t => t.name == "Phase3 Enemy [cutter-unit / accepted legacy presentation]"),
+                Is.True,
+                "Cutter must retain the accepted ART V3 presentation inside the Phase 3 factory.");
+
+            Assert.That(scene.Root.MagnetarGuard.transform.Find("Phase3 Magnetar Guard Visual"), Is.Not.Null);
+            Assert.That(scene.Root.CustodianBoss.transform.Find("Phase3 Custodian M-0 Visual"), Is.Not.Null);
+
+            yield return scene.Cleanup();
+        }
+
+        [UnityTest]
         public IEnumerator ActualCutterPopulationPreservesRootPhysicsPbrAndDeathRecycle()
         {
             var scene = new CanonicalSceneTestScope();
@@ -114,7 +149,7 @@ namespace Gravivore.Tests.PlayMode
             Assert.IsTrue(scene.Root.Progression.TryGrant(new EnemyDeathEvent(
                 new EnemyLifeId(Guid.NewGuid()), "scout-drone", Vector3.zero)));
         private static Transform CutterForm(OrdinaryEnemyController enemy) =>
-            enemy.transform.Find("Enemy Art Root/S15 Visual [cutter-unit]/Cutter_ArtSpike");
+            enemy.transform.Find("Phase 3 Enemy Art Root/S15 Visual [cutter-unit]/Cutter_ArtSpike");
         private static OrdinaryEnemyController[] Cutters(CanonicalSceneTestScope scene) =>
             scene.Root.GetComponentsInChildren<OrdinaryEnemyController>()
                 .Where(e => e.IsAlive && CutterForm(e) != null && CutterForm(e).gameObject.activeInHierarchy).ToArray();
