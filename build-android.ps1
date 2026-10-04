@@ -127,7 +127,8 @@ if ($Clean) {
 }
 
 if ($Version) {
-    $unityArgs += @("-Version", $Version)
+    # Unity reserves -version and exits before executing the build method.
+    $unityArgs += @("-GravivoreVersion", $Version)
 }
 
 if ($PSBoundParameters.ContainsKey("VersionCode")) {

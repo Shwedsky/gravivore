@@ -44,7 +44,7 @@ namespace Gravivore.Editor.Build
     public static class AndroidBuild
     {
         private const string OutputDirectory = "Builds/Android";
-        private const string VersionArg = "-Version";
+        private const string VersionArg = "-GravivoreVersion";
         private const string VersionCodeArg = "-VersionCode";
         private const string CleanArg = "-Clean";
 
