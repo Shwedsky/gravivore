@@ -110,6 +110,7 @@ namespace Gravivore.Editor.Build
             finally
             {
                 RestoreScopedPlayerSettings(originalSettings);
+                AssetDatabase.SaveAssets();
             }
         }
 
