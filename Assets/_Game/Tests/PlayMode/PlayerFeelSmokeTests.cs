@@ -331,7 +331,7 @@ namespace Gravivore.Tests.PlayMode
             locomotion.Step(.16f); motion.Tick(.16f); Capture("06_WalkPose_B", false);
             input.Movement = Vector2.zero; motion.Tick(.016f);
             var cutter = root.GetComponentsInChildren<OrdinaryEnemyController>().First(e =>
-                e.transform.Find("Enemy Art Root/S15 Visual [cutter-unit]") != null);
+                e.transform.Find("Phase 3 Enemy Art Root/Phase3 Enemy [cutter-unit / accepted legacy presentation]/Cutter_ArtSpike") != null);
             cutter.transform.position = player.position + new Vector3(-1.1f,0,2.1f);
             var lash = root.GetComponentInChildren<GravityLashVfxPool>();
             cutter.enabled = true;
