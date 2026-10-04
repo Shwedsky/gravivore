@@ -55,6 +55,7 @@ namespace Gravivore.Presentation.Composition
         [SerializeField] private PresentationMaterialPalette _materialPalette;
         [SerializeField] private S14PresentationDefinition _s14PresentationDefinition;
         [SerializeField] private S15VisualCatalog _s15VisualCatalog;
+        [SerializeField] private Phase3EnemyVisualCatalog _phase3EnemyVisualCatalog;
         [SerializeField] private Vector3 _playerSpawn = Vector3.zero;
         [SerializeField, Min(0f)] private float _postRespawnInvulnerabilitySeconds = 1.5f;
 
@@ -156,7 +157,7 @@ namespace Gravivore.Presentation.Composition
                 _evolutionDefinition == null || _worldDefinition == null ||
                 _magnetarGuardDefinition == null || _custodianBossDefinition == null ||
                 _joystickSettings == null || _cameraSettings == null || _materialPalette == null ||
-                _s14PresentationDefinition == null || _s15VisualCatalog == null ||
+                _s14PresentationDefinition == null || _s15VisualCatalog == null || _phase3EnemyVisualCatalog == null ||
                 float.IsNaN(_postRespawnInvulnerabilitySeconds) ||
                 float.IsInfinity(_postRespawnInvulnerabilitySeconds) ||
                 _postRespawnInvulnerabilitySeconds < 0f)
@@ -169,6 +170,7 @@ namespace Gravivore.Presentation.Composition
             _playerRecoverySettings.ValidateOrThrow();
             _s14PresentationDefinition.ValidateOrThrow();
             _s15VisualCatalog.ValidateOrThrow();
+            _phase3EnemyVisualCatalog.ValidateOrThrow();
             InitializeMonetization();
 
             var statsConfiguration = _playerStatsDefinition.Configuration;
@@ -804,7 +806,7 @@ namespace Gravivore.Presentation.Composition
                 _globalLiveEnemyCap,
                 targetLayer,
                 _materialPalette.LitMaterial,
-                new Phase3EnemyVisualFactory(_s15VisualCatalog, _materialPalette.LitMaterial),
+                new Phase3EnemyVisualFactory(_s15VisualCatalog, _phase3EnemyVisualCatalog, _materialPalette.LitMaterial),
                 PlayerStats);
         }
 
