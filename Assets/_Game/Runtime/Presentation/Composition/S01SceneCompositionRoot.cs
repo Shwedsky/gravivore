@@ -610,7 +610,6 @@ namespace Gravivore.Presentation.Composition
                 typeof(MagnetarGuardController),
                 targetLayer,
                 new Color(0.95f, 0.55f, 0.12f, 1f),
-                new Vector3(1.05f, 1f, 1.05f),
                 out var eliteBody,
                 out var eliteTargetPoint,
                 out var eliteSensor,
@@ -629,7 +628,6 @@ namespace Gravivore.Presentation.Composition
                 typeof(CustodianBossController),
                 targetLayer,
                 new Color(0.72f, 0.16f, 0.2f, 1f),
-                new Vector3(1.6f, 1.2f, 1.6f),
                 out var bossBody,
                 out var bossTargetPoint,
                 out var bossSensor,
@@ -666,8 +664,7 @@ namespace Gravivore.Presentation.Composition
             string name,
             Type controllerType,
             int targetLayer,
-            Color color,
-            Vector3 visualScale,
+            Color accentColor,
             out CharacterController body,
             out Transform targetPoint,
             out Collider sensingCollider,
@@ -678,16 +675,19 @@ namespace Gravivore.Presentation.Composition
             body = encounterObject.GetComponent<CharacterController>();
             body.stepOffset = 0.2f;
 
-            var visual = GameObject.CreatePrimitive(PrimitiveType.Capsule);
-            visual.name = $"{name} Visual";
-            visual.transform.SetParent(encounterObject.transform, false);
-            visual.transform.localPosition = new Vector3(0f, 1f, 0f);
-            visual.transform.localScale = visualScale;
-            var visualCollider = visual.GetComponent<Collider>();
-            visualCollider.enabled = false;
-            Destroy(visualCollider);
-            material = CreateMaterial(color);
-            visual.GetComponent<Renderer>().sharedMaterial = material;
+            material = CreateMaterial(accentColor);
+            if (controllerType == typeof(MagnetarGuardController))
+            {
+                Phase3EncounterVisualFactory.BuildMagnetarGuard(encounterObject.transform, material);
+            }
+            else if (controllerType == typeof(CustodianBossController))
+            {
+                Phase3EncounterVisualFactory.BuildCustodianM0(encounterObject.transform, material);
+            }
+            else
+            {
+                throw new InvalidOperationException($"No Phase 3 encounter visual is configured for {controllerType.Name}.");
+            }
 
             var targetObject = new GameObject("Combat Target Sensor", typeof(SphereCollider));
             targetObject.layer = targetLayer;
@@ -804,7 +804,7 @@ namespace Gravivore.Presentation.Composition
                 _globalLiveEnemyCap,
                 targetLayer,
                 _materialPalette.LitMaterial,
-                new S15EnemyVisualFactory(_s15VisualCatalog),
+                new Phase3EnemyVisualFactory(_s15VisualCatalog, _materialPalette.LitMaterial),
                 PlayerStats);
         }
 
