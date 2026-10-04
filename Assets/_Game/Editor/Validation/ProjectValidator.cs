@@ -85,6 +85,7 @@ namespace Gravivore.Editor
             "Assets/_Game/Content/Definitions/S12_SaveOffline.asset",
             S14PresentationAssetConfigurator.DefinitionPath,
             S15AssetConfigurator.CatalogPath,
+            "Assets/_Game/Content/Definitions/Phase3_EnemyVisualCatalog.asset",
             S15AssetConfigurator.BodyMaterialPath,
             S15AssetConfigurator.AccentMaterialPath,
             S15AssetConfigurator.DarkMaterialPath,
@@ -154,6 +155,7 @@ namespace Gravivore.Editor
             ValidateSaveOffline();
             ValidateS14Presentation();
             ValidateS15Assets();
+            ValidatePhase3VisualBaseline();
             ValidateS20Balance();
             ValidateCanonicalScenes();
         }
@@ -290,6 +292,31 @@ namespace Gravivore.Editor
                     importer.meshCompression != ModelImporterMeshCompression.Medium)
                     throw new InvalidOperationException($"S15 mobile model import settings are invalid: {path}");
             }
+        }
+
+        private static void ValidatePhase3VisualBaseline()
+        {
+            const string catalogPath = "Assets/_Game/Content/Definitions/Phase3_EnemyVisualCatalog.asset";
+            const string scenePath = "Assets/_Game/Content/Scenes/Chapter01_ScrapExclusion.unity";
+            var catalog = AssetDatabase.LoadAssetAtPath<Phase3EnemyVisualCatalog>(catalogPath);
+            if (catalog == null) throw new InvalidOperationException("Phase 3 enemy visual catalog is required.");
+            catalog.ValidateOrThrow();
+
+            var expected = new HashSet<string>(StringComparer.Ordinal)
+            {
+                "scout-drone", "cutter-unit", "warden", "arc-drone", "carrier"
+            };
+            if (catalog.Count != expected.Count)
+                throw new InvalidOperationException("Phase 3 must define exactly the five ordinary enemy visual families.");
+            foreach (var enemyId in expected)
+            {
+                if (!catalog.TryGet(enemyId, out var recipe) || recipe.PartCount < 7)
+                    throw new InvalidOperationException($"Phase 3 enemy visual recipe is incomplete: {enemyId}.");
+            }
+
+            var dependencies = AssetDatabase.GetDependencies(scenePath, true);
+            if (Array.IndexOf(dependencies, catalogPath) < 0)
+                throw new InvalidOperationException("The canonical Chapter 1 scene must reference the Phase 3 enemy visual catalog.");
         }
 
         private static void ValidateS14Presentation()
