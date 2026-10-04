@@ -175,12 +175,14 @@ Legacy tests were adapted only where they asserted an empty foundation or the pr
 **Passed:** existing `build-android.ps1 -Flavor Dev` pipeline, Unity exit 0 / successful build report. DEV + debugging enabled, ARM64 only, IL2CPP. APK ZIP inspection confirms `lib/arm64-v8a/libil2cpp.so` and no other ABI directory.
 
 - APK: `C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\phase3c-visual-world-integration\Builds\Android\gravivore-dev-0.1.0+1.apk`.
-- Size: **58,325,398 bytes** (55.62 MiB).
-- SHA256: `2d6763a52652ad0d2f70fea3536f2d12beb7d8ad303170b46f32658ba81897ad` (computed with `Get-FileHash`; the existing pipeline supplies metadata, not a checksum).
-- Build metadata source HEAD: `0856928ae4ea9ed2f4c3ce72815f7710c35ba822`.
-- Metadata: `Builds/Android/gravivore-dev-0.1.0+1.build.json`; log: `Builds/Logs/android-dev-20261004-142438.log`.
+- Size: **58,325,390 bytes** (55.62 MiB).
+- SHA256: `0565232bc56754fc0bb82883240bc7db8e3bccc0bc90f7863f7b29b6165ae3a0` (computed with `Get-FileHash`; the existing pipeline supplies metadata, not a checksum).
+- Build metadata source HEAD: `28a5622ef8e0c9e48a2578a30b5778500f9470fd`.
+- Metadata: `Builds/Android/gravivore-dev-0.1.0+1.build.json`; log: `Builds/Logs/android-dev-20261004-150328.log`.
 
 The subsequent report commit changes documentation only; runtime/source assets are identical to the APK source HEAD. Portable artifact evidence is in [ANDROID_BUILD.json](phase3c/ANDROID_BUILD.json). The APK remains a local build artifact and is not committed.
+
+The first incremental package after rebase retained about 35.8 MB of stale ZIP overhead. Its APK and generated Gradle launcher output were archived under `Builds/Logs/phase3c-android-packaging-review`, and the same existing pipeline regenerated a fresh package. The final APK has 82,972 bytes of ZIP/signing overhead; no source or build-pipeline settings changed for this packaging correction.
 
 Human review still needs traversal/input, attack → beam → HP causality, readable telegraphs around new scenery, visual/capsule mismatch, repair-bay exit, camera overlap near tall props, cold start/save/offline return, and sustained mid-range-device performance/thermal behavior. Screenshots and Editor tests cannot substitute for those checks. On a profile that already defeated the elite/boss, use a separate review profile or the existing DEV review workflow to inspect encounters; no repeatability/reset behavior was added.
 
