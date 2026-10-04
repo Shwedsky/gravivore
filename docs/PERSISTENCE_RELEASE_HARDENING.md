@@ -30,7 +30,7 @@ Structural/critical state remains strict and rejects the save when invalid:
 - world/boss authoritative consistency;
 - malformed quest life GUIDs, duplicate objectives, invalid progress for objectives that still exist;
 - malformed inventory arrays, duplicate ownership, duplicate slots, invalid slots, wrong-slot known equipment,
-  or known equipped equipment that is not owned.
+  or any equipped equipment reference that is not present in the saved ownership set.
 
 Optional content references are tolerant:
 
