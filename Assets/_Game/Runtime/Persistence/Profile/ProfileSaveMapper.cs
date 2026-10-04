@@ -1,5 +1,6 @@
 using System;
 using System.Globalization;
+using System.Collections.Generic;
 using Gravivore.Gameplay.Encounters;
 using Gravivore.Gameplay.Equipment;
 using Gravivore.Gameplay.Offline;
@@ -153,7 +154,10 @@ namespace Gravivore.Persistence.Profile
                 new OfflineRewardState());
         }
 
-        public static ProfileRuntimeState Restore(SaveRootDto dto, ProfileRestoreContext context)
+        public static ProfileRuntimeState Restore(
+            SaveRootDto dto,
+            ProfileRestoreContext context,
+            Action<string> optionalContentWarning = null)
         {
             if (dto == null) throw new ArgumentNullException(nameof(dto));
             if (context == null) throw new ArgumentNullException(nameof(context));
@@ -169,13 +173,15 @@ namespace Gravivore.Persistence.Profile
 
             var createdUtc = ParseUtc(dto.createdUtc, nameof(dto.createdUtc));
             var lastSeenUtc = ParseUtc(dto.lastSeenUtc, nameof(dto.lastSeenUtc));
-            var player = RestorePlayer(dto.player, context, out var progression);
+            var player = RestorePlayer(dto.player, context, optionalContentWarning, out var progression);
             var inventory = InventorySaveMapper.Restore(
                 dto.inventory ?? throw new ArgumentException("Inventory section is required.", nameof(dto)),
-                context.Equipment);
+                context.Equipment,
+                optionalContentWarning);
             var quests = QuestSaveMapper.Restore(
                 context.Quests,
-                dto.quest ?? throw new ArgumentException("Quest section is required.", nameof(dto)));
+                dto.quest ?? throw new ArgumentException("Quest section is required.", nameof(dto)),
+                optionalContentWarning);
             var worldDto = dto.world ?? throw new ArgumentException("World section is required.", nameof(dto));
             var world = WorldUnlockState.Restore(
                 context.EliteGateId,
@@ -266,6 +272,7 @@ namespace Gravivore.Persistence.Profile
         private static PlayerStatsState RestorePlayer(
             PlayerProgressionSaveDto dto,
             ProfileRestoreContext context,
+            Action<string> optionalContentWarning,
             out ProgressionState progression)
         {
             if (dto == null) throw new ArgumentException("Player section is required.", nameof(dto));
@@ -275,46 +282,114 @@ namespace Gravivore.Persistence.Profile
                 dto.armorLevel,
                 dto.fluxLevel,
                 dto.mobilityLevel);
-            context.PlayerStats.ValidateLevels(levels);
-            var firstKills = dto.firstKillEnemyIds ?? throw new ArgumentException("First-kill ids are required.", nameof(dto));
+
+            var firstKills = dto.firstKillEnemyIds ??
+                             throw new ArgumentException("First-kill ids are required.", nameof(dto));
+            var knownFirstKills = new List<string>(firstKills.Length);
+            var uniqueFirstKills = new HashSet<string>(StringComparer.Ordinal);
             for (var i = 0; i < firstKills.Length; i++)
             {
-                if (!context.Progression.TryGetReward(firstKills[i], out _))
+                var enemyId = firstKills[i];
+                if (string.IsNullOrWhiteSpace(enemyId) || !uniqueFirstKills.Add(enemyId))
                 {
-                    throw new ArgumentException($"Unknown first-kill enemy id: {firstKills[i]}.", nameof(dto));
+                    throw new ArgumentException("First-kill ids must be non-empty and unique.", nameof(dto));
+                }
+
+                if (context.Progression.TryGetReward(enemyId, out _))
+                {
+                    knownFirstKills.Add(enemyId);
+                }
+                else
+                {
+                    optionalContentWarning?.Invoke(
+                        $"Dropped removed first-kill progression reference '{enemyId}'.");
                 }
             }
 
+            var powerExperience = NormalizeExperience(
+                ref levels, PlayerStatType.Power, dto.powerExperience, context, optionalContentWarning);
+            var hullExperience = NormalizeExperience(
+                ref levels, PlayerStatType.Hull, dto.hullExperience, context, optionalContentWarning);
+            var armorExperience = NormalizeExperience(
+                ref levels, PlayerStatType.Armor, dto.armorExperience, context, optionalContentWarning);
+            var fluxExperience = NormalizeExperience(
+                ref levels, PlayerStatType.Flux, dto.fluxExperience, context, optionalContentWarning);
+            var mobilityExperience = NormalizeExperience(
+                ref levels, PlayerStatType.Mobility, dto.mobilityExperience, context, optionalContentWarning);
+
+            context.PlayerStats.ValidateLevels(levels);
             var snapshot = new ProgressionSnapshot(
-                dto.powerExperience,
-                dto.hullExperience,
-                dto.armorExperience,
-                dto.fluxExperience,
-                dto.mobilityExperience,
+                powerExperience,
+                hullExperience,
+                armorExperience,
+                fluxExperience,
+                mobilityExperience,
                 dto.totalAssimilationScore,
-                firstKills);
+                knownFirstKills);
             progression = ProgressionState.Restore(snapshot);
-            ValidateExperience(levels, progression, context);
             return new PlayerStatsState(context.PlayerStats, levels);
         }
 
-        private static void ValidateExperience(
-            PlayerStatLevels levels,
-            ProgressionState progression,
-            ProfileRestoreContext context)
+        private static float NormalizeExperience(
+            ref PlayerStatLevels levels,
+            PlayerStatType stat,
+            float savedExperience,
+            ProfileRestoreContext context,
+            Action<string> optionalContentWarning)
         {
-            for (var i = 0; i < 5; i++)
+            if (float.IsNaN(savedExperience) || float.IsInfinity(savedExperience) || savedExperience < 0f)
             {
-                var stat = (PlayerStatType)i;
-                var level = levels.GetLevel(stat);
-                var experience = progression.GetStatExperience(stat);
-                var maximum = context.PlayerStats.GetCurve(stat).MaximumLevel;
-                if ((level == maximum && experience != 0f) ||
-                    (level < maximum && experience >= context.Progression.ThresholdCurve.Evaluate(level)))
-                {
-                    throw new ArgumentException($"Saved experience is inconsistent for {stat}.");
-                }
+                throw new ArgumentOutOfRangeException(nameof(savedExperience), $"Invalid experience for {stat}.");
             }
+
+            var savedLevel = levels.GetLevel(stat);
+            var maximumLevel = context.PlayerStats.GetCurve(stat).MaximumLevel;
+            var normalizedLevel = Math.Min(savedLevel, maximumLevel);
+            var normalizedExperience = savedExperience;
+
+            if (normalizedLevel != savedLevel)
+            {
+                optionalContentWarning?.Invoke(
+                    $"Clamped {stat} level from {savedLevel} to current maximum {maximumLevel}.");
+            }
+
+            if (normalizedLevel >= maximumLevel)
+            {
+                if (normalizedExperience > 0f)
+                {
+                    optionalContentWarning?.Invoke(
+                        $"Cleared residual {stat} experience at current maximum level {maximumLevel}.");
+                }
+
+                levels = levels.WithLevel(stat, maximumLevel);
+                return 0f;
+            }
+
+            while (normalizedLevel < maximumLevel)
+            {
+                var required = context.Progression.ThresholdCurve.Evaluate(normalizedLevel);
+                if (normalizedExperience < required)
+                {
+                    break;
+                }
+
+                normalizedExperience -= required;
+                normalizedLevel++;
+            }
+
+            if (normalizedLevel >= maximumLevel)
+            {
+                normalizedExperience = 0f;
+            }
+
+            if (normalizedLevel != savedLevel)
+            {
+                optionalContentWarning?.Invoke(
+                    $"Normalized {stat} progression from level {savedLevel} to level {normalizedLevel} using current thresholds.");
+            }
+
+            levels = levels.WithLevel(stat, normalizedLevel);
+            return normalizedExperience;
         }
 
         private static void ValidateEncounterQuestConsistency(
