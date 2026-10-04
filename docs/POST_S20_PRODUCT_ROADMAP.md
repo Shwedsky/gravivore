@@ -24,9 +24,12 @@ Merged and verified prototype baseline on `main`:
 - world-marker read-model foundation for future map/minimap.
 
 Current ART status:
+- Phase 2 mechanics/synchronization are accepted on device: walking, charge → beam → hit timing, HP synchronization, hit/death readability and performance are all acceptable for the prototype;
 - the current biped model is better than the previous tank-like proxy, but is **still not the target final character**;
-- target player direction is a more deliberate **mecha robot / combat robot / techno-mechanical organism**;
-- current models remain replaceable presentation prototypes.
+- current character animation, combat VFX and combat SFX still read as too toy-like / dated / "2000s prototype" for external presentation;
+- the current map remains visually empty, which amplifies the prototype feel;
+- target player direction remains a deliberate **modern mecha robot / combat robot / techno-mechanical organism**;
+- current models, gait, combat VFX and SFX remain replaceable presentation prototypes, not showcase-quality assets.
 
 ## Locked product decisions
 
@@ -214,14 +217,18 @@ Player:
 - readable silhouette from current mobile camera;
 - current biped proxy is a checkpoint, not the final target.
 
-Content art sequence:
-1. player;
+Content art sequence is now prioritized around **seeing the whole game world together**, not perfecting G-0 in isolation:
+
+1. coherent Chapter 1 environment / terrain / industrial dressing;
 2. ordinary enemy families;
 3. elite;
 4. boss;
 5. repair hub;
-6. spot-specific landmarks;
-7. Chapter environment dressing.
+6. spot-specific landmarks / stronger-zone identity;
+7. G-0 refinement against the finished world context;
+8. final locomotion/combat VFX/SFX polish.
+
+Reason: isolated proxy iteration is no longer giving reliable quality judgments while the world is empty.
 
 The boss should preserve the previously approved large industrial-mech visual direction.
 
@@ -232,10 +239,10 @@ The boss should preserve the previously approved large industrial-mech visual di
 | 0. Prototype checkpoint | S20 + ART V3 + mecha + adaptive respawn merged | Stable baseline now exists | Completed | main green and reproducible |
 | 1. External design review | Independent main audit and product/system review | Second opinion before economy/retention decisions | Claude | Findings triaged; advisory, not blocking safe presentation work |
 | 2. Player feel & combat presentation | Better mecha silhouette; visible walking/idle; attack motion; attack/impact VFX; initial real combat SFX | Player is on screen continuously; current sliding/placeholder combat presentation limits perceived quality | Codex + asset research | Implemented; device review PENDING — [delivery notes](PLAYER_FEEL_COMBAT_PRESENTATION.md), [checklist](PLAYER_FEEL_DEVICE_CHECKLIST.md) |
-| 3. Chapter 1 content loop | Repair hub; repeatable elite; repeatable boss; stronger spots near elite/boss; reward contracts; timer/cap state | Turns technical slice into repeatable game loop | Codex | Android loop works without progression/save regressions |
-| 4. Map/minimap MVP | Player + POIs + elite/boss/repair hub + respawn availability/timers | Useful after POI layout and timers exist | Codex | Mobile readability/device review |
-| 5. Audio/music pass | Complete SFX families, mix categories, repair/elite/boss cues, audition music loops | Major perceived-quality gain after combat presentation hooks exist | Asset research + Codex | Device audio review |
-| 6. Full visual content pass | Remaining mobs, elite, boss, spawn landmarks, Chapter environment | Art direction and core loop are stable | Asset research + Codex | Human visual/device approval |
+| 3. Visual world baseline | Populate Chapter 1 with coherent modern sci-fi environment dressing; replace ordinary mobs, elite and boss with credible prototype-quality models; add repair hub shell and spot landmarks | Current mechanics are good, but the empty/childlike presentation is now the biggest motivation and quality blocker | ChatGPT art/research lane + Codex integration lane | Android build feels like one coherent game world, even if assets are still prototype |
+| 4. Chapter 1 content loop | Repeatable elite; repeatable boss; stronger spots near elite/boss; reward contracts; timer/cap state; complete repair-hub behavior | Build repeatable gameplay on top of a world worth traversing | Codex | Android loop works without progression/save regressions |
+| 5. Map/minimap MVP | Player + POIs + elite/boss/repair hub + respawn availability/timers | Useful after POI layout and timers exist | Codex | Mobile readability/device review |
+| 6. Audio/music + final feel pass | Replace toy-like prototype combat sounds; improve gait smoothness; modernize charge/beam/impact/death VFX; add repair/elite/boss cues; audition music loops | Polish only after all actors/environment are visible together | ChatGPT asset direction + Codex integration | Device audio/visual review |
 | 7. Balance / fresh-profile run | 30–45 min clean profile timing, route quality, reward pacing, elite/boss recurrence | Validate actual player experience | Human playtest + tuning | Measured run accepted |
 | 8. Closed external test | Small group gets APK with minimal instruction | Validate comprehension/fun outside project context | Human testers | Feedback triaged |
 | 9. Next-content decision | Chapter 2 vs deeper meta-loop based on test results | Avoid speculative expansion | Product decision | Explicit go/no-go |
@@ -289,13 +296,41 @@ When the full audit is available:
 
 ## Current next action
 
-Review the **Phase 2 — Player feel & combat presentation** DEV delivery. Implementation notes: [PLAYER_FEEL_COMBAT_PRESENTATION.md](PLAYER_FEEL_COMBAT_PRESENTATION.md). Device acceptance remains **PENDING**: [PLAYER_FEEL_DEVICE_CHECKLIST.md](PLAYER_FEEL_DEVICE_CHECKLIST.md). Phase 3 has not started.
+Phase 2 has passed the human prototype check for mechanics/synchronization and is merged as a **prototype checkpoint**, not as final presentation quality.
 
-Primary focus:
-1. continue improving G-0 away from temporary proxy quality toward the agreed mecha-robot direction;
-2. add visible walking/stepping instead of sliding;
-3. add attack anticipation/release and impact VFX;
-4. replace core combat beep placeholders with initial coherent sci-fi mechanical/energy SFX;
-5. produce a DEV Android APK for human review.
+Start **Phase 3 — Visual world baseline**.
 
-Claude audit can arrive in parallel and be applied before Phase 3 if it contains material findings.
+Priority order:
+1. give the entire Chapter 1 map a coherent modern industrial sci-fi visual language;
+2. replace/upgrade the ordinary mob families;
+3. produce recognizable elite and boss prototype models in the same art language;
+4. establish repair hub and spot landmarks so spaces have meaning;
+5. then re-evaluate G-0 proportions/silhouette in context;
+6. only after that spend another dedicated pass on gait smoothness, modern combat VFX and final-quality SFX.
+
+Quality note:
+- the current gait, combat timing and gameplay synchronization are accepted;
+- the current visual/audio treatment is explicitly **internal prototype quality only** and should not be treated as external-showcase ready.
+
+### Parallel-work rule
+
+Use two coordinated lanes where practical:
+
+**Codex lane**
+- Unity implementation;
+- prefab/runtime integration;
+- scene placement;
+- animation/presentation code;
+- tests/builds/validation;
+- performance and regression safety.
+
+**ChatGPT lane**
+- art direction and consistency review;
+- web/asset research with license verification;
+- model/environment/FX/audio candidate shortlists;
+- reference boards / visual concepts where useful;
+- specifications, review checklists and independent PR review.
+
+The lanes must not edit the same implementation branch concurrently. ChatGPT should preferably deliver research/spec/assets or isolated documentation/reference branches; Codex integrates into the active Unity feature branch.
+
+Claude audit can arrive asynchronously. Critical/Major correctness or release-safety findings may interrupt Phase 3; design/polish suggestions are triaged into the roadmap rather than automatically accepted.
