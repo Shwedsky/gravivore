@@ -141,6 +141,8 @@ Write-Host "Build flavor: $Flavor"
 Write-Host "Writing build log: $logPath"
 
 $processArguments = @($unityArgs | ForEach-Object { ConvertTo-ProcessArgument $_ })
+$playerSettingsPath = Join-Path $projectRoot "ProjectSettings\ProjectSettings.asset"
+$originalPlayerSettings = [IO.File]::ReadAllBytes($playerSettingsPath)
 try {
     $unityProcess = Start-Process `
         -FilePath $unity `
@@ -153,6 +155,11 @@ try {
 }
 catch {
     throw "Unable to start Unity process '$unity': $($_.Exception.Message)"
+}
+finally {
+    # Unity can serialize platform defaults before the scoped build method runs.
+    # Restore the caller's exact committed/local settings after Unity has exited.
+    [IO.File]::WriteAllBytes($playerSettingsPath, $originalPlayerSettings)
 }
 
 $unityExitCode = $unityProcess.ExitCode
