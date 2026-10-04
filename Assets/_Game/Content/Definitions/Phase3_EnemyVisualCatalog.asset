@@ -1,0 +1,460 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b75d40ae2f6c4f1ab8930e57c16d42a8, type: 3}
+  m_Name: Phase3_EnemyVisualCatalog
+  m_EditorClassIdentifier:
+  _recipes:
+  - _enemyId: scout-drone
+    _useLegacyPresentationPrefab: 0
+    _parts:
+    - _name: Sensor Chassis
+      _kind: 0
+      _primitiveType: 3
+      _localPosition: {x: 0, y: 0.78, z: 0}
+      _localScale: {x: 0.85, y: 0.22, z: 1.12}
+      _localEulerAngles: {x: 0, y: 0, z: 0}
+      _beamFrom: {x: 0, y: 0, z: 0}
+      _beamTo: {x: 0, y: 0, z: 1}
+      _beamThickness: 0.1
+      _materialRole: 1
+    - _name: Forward Sensor
+      _kind: 0
+      _primitiveType: 2
+      _localPosition: {x: 0, y: 0.79, z: 0.61}
+      _localScale: {x: 0.26, y: 0.08, z: 0.26}
+      _localEulerAngles: {x: 90, y: 0, z: 0}
+      _beamFrom: {x: 0, y: 0, z: 0}
+      _beamTo: {x: 0, y: 0, z: 1}
+      _beamThickness: 0.1
+      _materialRole: 3
+    - _name: Left Fin
+      _kind: 0
+      _primitiveType: 3
+      _localPosition: {x: -0.58, y: 0.76, z: -0.02}
+      _localScale: {x: 0.52, y: 0.08, z: 0.74}
+      _localEulerAngles: {x: 0, y: -12, z: -5}
+      _beamFrom: {x: 0, y: 0, z: 0}
+      _beamTo: {x: 0, y: 0, z: 1}
+      _beamThickness: 0.1
+      _materialRole: 0
+    - _name: Right Fin
+      _kind: 0
+      _primitiveType: 3
+      _localPosition: {x: 0.58, y: 0.76, z: -0.02}
+      _localScale: {x: 0.52, y: 0.08, z: 0.74}
+      _localEulerAngles: {x: 0, y: 12, z: 5}
+      _beamFrom: {x: 0, y: 0, z: 0}
+      _beamTo: {x: 0, y: 0, z: 1}
+      _beamThickness: 0.1
+      _materialRole: 0
+    - _name: Left Thruster
+      _kind: 0
+      _primitiveType: 2
+      _localPosition: {x: -0.31, y: 0.74, z: -0.62}
+      _localScale: {x: 0.18, y: 0.24, z: 0.18}
+      _localEulerAngles: {x: 90, y: 0, z: 0}
+      _beamFrom: {x: 0, y: 0, z: 0}
+      _beamTo: {x: 0, y: 0, z: 1}
+      _beamThickness: 0.1
+      _materialRole: 4
+    - _name: Right Thruster
+      _kind: 0
+      _primitiveType: 2
+      _localPosition: {x: 0.31, y: 0.74, z: -0.62}
+      _localScale: {x: 0.18, y: 0.24, z: 0.18}
+      _localEulerAngles: {x: 90, y: 0, z: 0}
+      _beamFrom: {x: 0, y: 0, z: 0}
+      _beamTo: {x: 0, y: 0, z: 1}
+      _beamThickness: 0.1
+      _materialRole: 4
+    - _name: Lower Sensor Keel
+      _kind: 0
+      _primitiveType: 3
+      _localPosition: {x: 0, y: 0.54, z: 0.08}
+      _localScale: {x: 0.22, y: 0.22, z: 0.64}
+      _localEulerAngles: {x: 6, y: 0, z: 0}
+      _beamFrom: {x: 0, y: 0, z: 0}
+      _beamTo: {x: 0, y: 0, z: 1}
+      _beamThickness: 0.1
+      _materialRole: 0
+  - _enemyId: cutter-unit
+    _useLegacyPresentationPrefab: 1
+    _parts:
+    - _name: Low Chassis
+      _kind: 0
+      _primitiveType: 3
+      _localPosition: {x: 0, y: 0.5, z: 0}
+      _localScale: {x: 1.24, y: 0.3, z: 1.38}
+      _localEulerAngles: {x: 0, y: 0, z: 0}
+      _beamFrom: {x: 0, y: 0, z: 0}
+      _beamTo: {x: 0, y: 0, z: 1}
+      _beamThickness: 0.1
+      _materialRole: 1
+    - _name: Left Runner
+      _kind: 0
+      _primitiveType: 3
+      _localPosition: {x: -0.53, y: 0.27, z: 0}
+      _localScale: {x: 0.25, y: 0.22, z: 1.52}
+      _localEulerAngles: {x: 0, y: 0, z: 0}
+      _beamFrom: {x: 0, y: 0, z: 0}
+      _beamTo: {x: 0, y: 0, z: 1}
+      _beamThickness: 0.1
+      _materialRole: 0
+    - _name: Right Runner
+      _kind: 0
+      _primitiveType: 3
+      _localPosition: {x: 0.53, y: 0.27, z: 0}
+      _localScale: {x: 0.25, y: 0.22, z: 1.52}
+      _localEulerAngles: {x: 0, y: 0, z: 0}
+      _beamFrom: {x: 0, y: 0, z: 0}
+      _beamTo: {x: 0, y: 0, z: 1}
+      _beamThickness: 0.1
+      _materialRole: 0
+    - _name: Long Cutter
+      _kind: 1
+      _primitiveType: 3
+      _localPosition: {x: 0, y: 0, z: 0}
+      _localScale: {x: 1, y: 1, z: 1}
+      _localEulerAngles: {x: 0, y: 0, z: 0}
+      _beamFrom: {x: -0.38, y: 0.55, z: 0.35}
+      _beamTo: {x: -0.78, y: 0.42, z: 1.3}
+      _beamThickness: 0.17
+      _materialRole: 2
+    - _name: Short Cutter
+      _kind: 1
+      _primitiveType: 3
+      _localPosition: {x: 0, y: 0, z: 0}
+      _localScale: {x: 1, y: 1, z: 1}
+      _localEulerAngles: {x: 0, y: 0, z: 0}
+      _beamFrom: {x: 0.38, y: 0.55, z: 0.32}
+      _beamTo: {x: 0.65, y: 0.49, z: 1}
+      _beamThickness: 0.2
+      _materialRole: 2
+    - _name: Offset Shield
+      _kind: 0
+      _primitiveType: 3
+      _localPosition: {x: 0.52, y: 0.7, z: -0.08}
+      _localScale: {x: 0.52, y: 0.56, z: 0.2}
+      _localEulerAngles: {x: 0, y: -12, z: 0}
+      _beamFrom: {x: 0, y: 0, z: 0}
+      _beamTo: {x: 0, y: 0, z: 1}
+      _beamThickness: 0.1
+      _materialRole: 0
+    - _name: Hostile Core
+      _kind: 0
+      _primitiveType: 2
+      _localPosition: {x: -0.12, y: 0.69, z: 0.52}
+      _localScale: {x: 0.2, y: 0.08, z: 0.2}
+      _localEulerAngles: {x: 90, y: 0, z: 0}
+      _beamFrom: {x: 0, y: 0, z: 0}
+      _beamTo: {x: 0, y: 0, z: 1}
+      _beamThickness: 0.1
+      _materialRole: 3
+  - _enemyId: arc-drone
+    _useLegacyPresentationPrefab: 0
+    _parts:
+    - _name: Arc Body
+      _kind: 0
+      _primitiveType: 2
+      _localPosition: {x: 0, y: 0.76, z: 0}
+      _localScale: {x: 0.72, y: 0.24, z: 0.72}
+      _localEulerAngles: {x: 0, y: 0, z: 0}
+      _beamFrom: {x: 0, y: 0, z: 0}
+      _beamTo: {x: 0, y: 0, z: 1}
+      _beamThickness: 0.1
+      _materialRole: 0
+    - _name: Arc Armor
+      _kind: 0
+      _primitiveType: 3
+      _localPosition: {x: 0, y: 0.76, z: 0}
+      _localScale: {x: 0.88, y: 0.24, z: 0.72}
+      _localEulerAngles: {x: 0, y: 45, z: 0}
+      _beamFrom: {x: 0, y: 0, z: 0}
+      _beamTo: {x: 0, y: 0, z: 1}
+      _beamThickness: 0.1
+      _materialRole: 1
+    - _name: Left Arc Fork
+      _kind: 1
+      _primitiveType: 3
+      _localPosition: {x: 0, y: 0, z: 0}
+      _localScale: {x: 1, y: 1, z: 1}
+      _localEulerAngles: {x: 0, y: 0, z: 0}
+      _beamFrom: {x: -0.25, y: 0.78, z: 0.24}
+      _beamTo: {x: -0.44, y: 1.36, z: 0.74}
+      _beamThickness: 0.13
+      _materialRole: 2
+    - _name: Right Arc Fork
+      _kind: 1
+      _primitiveType: 3
+      _localPosition: {x: 0, y: 0, z: 0}
+      _localScale: {x: 1, y: 1, z: 1}
+      _localEulerAngles: {x: 0, y: 0, z: 0}
+      _beamFrom: {x: 0.25, y: 0.78, z: 0.24}
+      _beamTo: {x: 0.44, y: 1.36, z: 0.74}
+      _beamThickness: 0.13
+      _materialRole: 2
+    - _name: Left Coil
+      _kind: 0
+      _primitiveType: 2
+      _localPosition: {x: -0.42, y: 1.17, z: 0.56}
+      _localScale: {x: 0.18, y: 0.24, z: 0.18}
+      _localEulerAngles: {x: 24, y: 0, z: -18}
+      _beamFrom: {x: 0, y: 0, z: 0}
+      _beamTo: {x: 0, y: 0, z: 1}
+      _beamThickness: 0.1
+      _materialRole: 3
+    - _name: Right Coil
+      _kind: 0
+      _primitiveType: 2
+      _localPosition: {x: 0.42, y: 1.17, z: 0.56}
+      _localScale: {x: 0.18, y: 0.24, z: 0.18}
+      _localEulerAngles: {x: 24, y: 0, z: 18}
+      _beamFrom: {x: 0, y: 0, z: 0}
+      _beamTo: {x: 0, y: 0, z: 1}
+      _beamThickness: 0.1
+      _materialRole: 3
+    - _name: Rear Stabilizer
+      _kind: 0
+      _primitiveType: 3
+      _localPosition: {x: 0, y: 0.59, z: -0.58}
+      _localScale: {x: 0.65, y: 0.16, z: 0.56}
+      _localEulerAngles: {x: 0, y: 0, z: 0}
+      _beamFrom: {x: 0, y: 0, z: 0}
+      _beamTo: {x: 0, y: 0, z: 1}
+      _beamThickness: 0.1
+      _materialRole: 1
+  - _enemyId: warden
+    _useLegacyPresentationPrefab: 0
+    _parts:
+    - _name: Warden Chassis
+      _kind: 0
+      _primitiveType: 3
+      _localPosition: {x: 0, y: 0.72, z: -0.04}
+      _localScale: {x: 1.34, y: 0.46, z: 1.34}
+      _localEulerAngles: {x: 0, y: 0, z: 0}
+      _beamFrom: {x: 0, y: 0, z: 0}
+      _beamTo: {x: 0, y: 0, z: 1}
+      _beamThickness: 0.1
+      _materialRole: 0
+    - _name: Forward Shield
+      _kind: 0
+      _primitiveType: 3
+      _localPosition: {x: 0, y: 0.86, z: 0.7}
+      _localScale: {x: 1.58, y: 0.78, z: 0.2}
+      _localEulerAngles: {x: -8, y: 0, z: 0}
+      _beamFrom: {x: 0, y: 0, z: 0}
+      _beamTo: {x: 0, y: 0, z: 1}
+      _beamThickness: 0.1
+      _materialRole: 2
+    - _name: Shield Core
+      _kind: 0
+      _primitiveType: 2
+      _localPosition: {x: 0, y: 0.88, z: 0.82}
+      _localScale: {x: 0.22, y: 0.08, z: 0.22}
+      _localEulerAngles: {x: 90, y: 0, z: 0}
+      _beamFrom: {x: 0, y: 0, z: 0}
+      _beamTo: {x: 0, y: 0, z: 1}
+      _beamThickness: 0.1
+      _materialRole: 3
+    - _name: Leg FL
+      _kind: 1
+      _primitiveType: 3
+      _localPosition: {x: 0, y: 0, z: 0}
+      _localScale: {x: 1, y: 1, z: 1}
+      _localEulerAngles: {x: 0, y: 0, z: 0}
+      _beamFrom: {x: -0.5, y: 0.62, z: 0.34}
+      _beamTo: {x: -0.675, y: 0.18, z: 0.435}
+      _beamThickness: 0.18
+      _materialRole: 1
+    - _name: Foot FL
+      _kind: 0
+      _primitiveType: 3
+      _localPosition: {x: -0.675, y: 0.12, z: 0.435}
+      _localScale: {x: 0.36, y: 0.14, z: 0.42}
+      _localEulerAngles: {x: 0, y: 0, z: 0}
+      _beamFrom: {x: 0, y: 0, z: 0}
+      _beamTo: {x: 0, y: 0, z: 1}
+      _beamThickness: 0.1
+      _materialRole: 0
+    - _name: Leg FR
+      _kind: 1
+      _primitiveType: 3
+      _localPosition: {x: 0, y: 0, z: 0}
+      _localScale: {x: 1, y: 1, z: 1}
+      _localEulerAngles: {x: 0, y: 0, z: 0}
+      _beamFrom: {x: 0.5, y: 0.62, z: 0.34}
+      _beamTo: {x: 0.675, y: 0.18, z: 0.435}
+      _beamThickness: 0.18
+      _materialRole: 1
+    - _name: Foot FR
+      _kind: 0
+      _primitiveType: 3
+      _localPosition: {x: 0.675, y: 0.12, z: 0.435}
+      _localScale: {x: 0.36, y: 0.14, z: 0.42}
+      _localEulerAngles: {x: 0, y: 0, z: 0}
+      _beamFrom: {x: 0, y: 0, z: 0}
+      _beamTo: {x: 0, y: 0, z: 1}
+      _beamThickness: 0.1
+      _materialRole: 0
+    - _name: Leg RL
+      _kind: 1
+      _primitiveType: 3
+      _localPosition: {x: 0, y: 0, z: 0}
+      _localScale: {x: 1, y: 1, z: 1}
+      _localEulerAngles: {x: 0, y: 0, z: 0}
+      _beamFrom: {x: -0.5, y: 0.62, z: -0.45}
+      _beamTo: {x: -0.675, y: 0.18, z: -0.576}
+      _beamThickness: 0.18
+      _materialRole: 1
+    - _name: Foot RL
+      _kind: 0
+      _primitiveType: 3
+      _localPosition: {x: -0.675, y: 0.12, z: -0.576}
+      _localScale: {x: 0.36, y: 0.14, z: 0.42}
+      _localEulerAngles: {x: 0, y: 0, z: 0}
+      _beamFrom: {x: 0, y: 0, z: 0}
+      _beamTo: {x: 0, y: 0, z: 1}
+      _beamThickness: 0.1
+      _materialRole: 0
+    - _name: Leg RR
+      _kind: 1
+      _primitiveType: 3
+      _localPosition: {x: 0, y: 0, z: 0}
+      _localScale: {x: 1, y: 1, z: 1}
+      _localEulerAngles: {x: 0, y: 0, z: 0}
+      _beamFrom: {x: 0.5, y: 0.62, z: -0.45}
+      _beamTo: {x: 0.675, y: 0.18, z: -0.576}
+      _beamThickness: 0.18
+      _materialRole: 1
+    - _name: Foot RR
+      _kind: 0
+      _primitiveType: 3
+      _localPosition: {x: 0.675, y: 0.12, z: -0.576}
+      _localScale: {x: 0.36, y: 0.14, z: 0.42}
+      _localEulerAngles: {x: 0, y: 0, z: 0}
+      _beamFrom: {x: 0, y: 0, z: 0}
+      _beamTo: {x: 0, y: 0, z: 1}
+      _beamThickness: 0.1
+      _materialRole: 0
+    - _name: Top Armor
+      _kind: 0
+      _primitiveType: 3
+      _localPosition: {x: 0, y: 1.1, z: -0.16}
+      _localScale: {x: 0.9, y: 0.2, z: 0.72}
+      _localEulerAngles: {x: 0, y: 0, z: 0}
+      _beamFrom: {x: 0, y: 0, z: 0}
+      _beamTo: {x: 0, y: 0, z: 1}
+      _beamThickness: 0.1
+      _materialRole: 1
+  - _enemyId: carrier
+    _useLegacyPresentationPrefab: 0
+    _parts:
+    - _name: Carrier Lower Chassis
+      _kind: 0
+      _primitiveType: 3
+      _localPosition: {x: 0, y: 0.52, z: 0}
+      _localScale: {x: 1.54, y: 0.42, z: 1.72}
+      _localEulerAngles: {x: 0, y: 0, z: 0}
+      _beamFrom: {x: 0, y: 0, z: 0}
+      _beamTo: {x: 0, y: 0, z: 1}
+      _beamThickness: 0.1
+      _materialRole: 0
+    - _name: Cargo Power Pack
+      _kind: 0
+      _primitiveType: 3
+      _localPosition: {x: 0, y: 1.02, z: -0.3}
+      _localScale: {x: 1.3, y: 0.68, z: 0.92}
+      _localEulerAngles: {x: -4, y: 0, z: 0}
+      _beamFrom: {x: 0, y: 0, z: 0}
+      _beamTo: {x: 0, y: 0, z: 1}
+      _beamThickness: 0.1
+      _materialRole: 1
+    - _name: Front Ram
+      _kind: 0
+      _primitiveType: 3
+      _localPosition: {x: 0, y: 0.58, z: 0.96}
+      _localScale: {x: 1.12, y: 0.26, z: 0.34}
+      _localEulerAngles: {x: -8, y: 0, z: 0}
+      _beamFrom: {x: 0, y: 0, z: 0}
+      _beamTo: {x: 0, y: 0, z: 1}
+      _beamThickness: 0.1
+      _materialRole: 2
+    - _name: Left Fork
+      _kind: 1
+      _primitiveType: 3
+      _localPosition: {x: 0, y: 0, z: 0}
+      _localScale: {x: 1, y: 1, z: 1}
+      _localEulerAngles: {x: 0, y: 0, z: 0}
+      _beamFrom: {x: -0.38, y: 0.45, z: 0.62}
+      _beamTo: {x: -0.5, y: 0.26, z: 1.42}
+      _beamThickness: 0.17
+      _materialRole: 2
+    - _name: Right Fork
+      _kind: 1
+      _primitiveType: 3
+      _localPosition: {x: 0, y: 0, z: 0}
+      _localScale: {x: 1, y: 1, z: 1}
+      _localEulerAngles: {x: 0, y: 0, z: 0}
+      _beamFrom: {x: 0.38, y: 0.45, z: 0.62}
+      _beamTo: {x: 0.5, y: 0.26, z: 1.42}
+      _beamThickness: 0.17
+      _materialRole: 2
+    - _name: Wheel FL
+      _kind: 0
+      _primitiveType: 2
+      _localPosition: {x: -0.73, y: 0.35, z: 0.48}
+      _localScale: {x: 0.34, y: 0.16, z: 0.34}
+      _localEulerAngles: {x: 0, y: 0, z: 90}
+      _beamFrom: {x: 0, y: 0, z: 0}
+      _beamTo: {x: 0, y: 0, z: 1}
+      _beamThickness: 0.1
+      _materialRole: 1
+    - _name: Wheel FR
+      _kind: 0
+      _primitiveType: 2
+      _localPosition: {x: 0.73, y: 0.35, z: 0.48}
+      _localScale: {x: 0.34, y: 0.16, z: 0.34}
+      _localEulerAngles: {x: 0, y: 0, z: 90}
+      _beamFrom: {x: 0, y: 0, z: 0}
+      _beamTo: {x: 0, y: 0, z: 1}
+      _beamThickness: 0.1
+      _materialRole: 1
+    - _name: Wheel RL
+      _kind: 0
+      _primitiveType: 2
+      _localPosition: {x: -0.73, y: 0.35, z: -0.5}
+      _localScale: {x: 0.34, y: 0.16, z: 0.34}
+      _localEulerAngles: {x: 0, y: 0, z: 90}
+      _beamFrom: {x: 0, y: 0, z: 0}
+      _beamTo: {x: 0, y: 0, z: 1}
+      _beamThickness: 0.1
+      _materialRole: 1
+    - _name: Wheel RR
+      _kind: 0
+      _primitiveType: 2
+      _localPosition: {x: 0.73, y: 0.35, z: -0.5}
+      _localScale: {x: 0.34, y: 0.16, z: 0.34}
+      _localEulerAngles: {x: 0, y: 0, z: 90}
+      _beamFrom: {x: 0, y: 0, z: 0}
+      _beamTo: {x: 0, y: 0, z: 1}
+      _beamThickness: 0.1
+      _materialRole: 1
+    - _name: Rear Hostile Reactor
+      _kind: 0
+      _primitiveType: 2
+      _localPosition: {x: 0, y: 1.07, z: -0.79}
+      _localScale: {x: 0.3, y: 0.12, z: 0.3}
+      _localEulerAngles: {x: 90, y: 0, z: 0}
+      _beamFrom: {x: 0, y: 0, z: 0}
+      _beamTo: {x: 0, y: 0, z: 1}
+      _beamThickness: 0.1
+      _materialRole: 3
