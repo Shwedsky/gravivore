@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Gravivore.Gameplay.Player;
 using Gravivore.Gameplay.Progression;
+using Gravivore.Presentation.Assets;
 using UnityEngine;
 
 namespace Gravivore.Presentation.Evolution
@@ -20,10 +21,12 @@ namespace Gravivore.Presentation.Evolution
             {
                 Tier = tier;
                 GameObject = gameObject;
+                Sockets = new PresentationSocketSet(gameObject.transform);
             }
 
             public EvolutionTier Tier { get; }
             public GameObject GameObject { get; }
+            public PresentationSocketSet Sockets { get; }
         }
 
         private readonly struct AccentModuleInstance
@@ -43,6 +46,8 @@ namespace Gravivore.Presentation.Evolution
         private AccentModuleInstance[] _accentModules;
         private Material _moduleMaterial;
         private bool _isInitialized;
+        private Transform _visualRoot;
+        private CharacterVisualBinding _binding;
 
         public Transform GetTierForm(EvolutionTier tier)
         {
@@ -80,16 +85,25 @@ namespace Gravivore.Presentation.Evolution
             }
 
             _sockets = CreateSockets(visualRoot);
+            _visualRoot = visualRoot;
+            _binding = gameObject.GetComponent<CharacterVisualBinding>() ?? gameObject.AddComponent<CharacterVisualBinding>();
             if (catalog.HasTierPrefabs)
             {
                 _tierModules = new TierModuleInstance[catalog.TierPrefabs.Length];
                 for (var i = 0; i < _tierModules.Length; i++)
                 {
-                    var form = Instantiate(catalog.TierPrefabs[i], visualRoot, false);
-                    form.name = catalog.TierPrefabs[i].name;
-                    form.transform.localPosition = Vector3.zero;
-                    form.transform.localRotation = Quaternion.identity;
-                    form.transform.localScale = Vector3.one;
+                    var binding = catalog.TierOverrides.Length != 0 ? catalog.TierOverrides[i] : null;
+                    GameObject form;
+                    if (binding != null && binding.HasPrefab) form = binding.InstantiateUnder(visualRoot);
+                    else
+                    {
+                        PresentationPrefabValidation.ValidateOrThrow(catalog.TierPrefabs[i]);
+                        form = Instantiate(catalog.TierPrefabs[i], visualRoot, false);
+                        form.name = catalog.TierPrefabs[i].name;
+                        form.transform.localPosition = Vector3.zero;
+                        form.transform.localRotation = Quaternion.identity;
+                        form.transform.localScale = Vector3.one;
+                    }
                     form.SetActive(false);
                     _tierModules[i] = new TierModuleInstance((EvolutionTier)i, form);
                 }
@@ -137,6 +151,8 @@ namespace Gravivore.Presentation.Evolution
             for (var i = 0; i < _tierModules.Length; i++)
             {
                 _tierModules[i].GameObject.SetActive(_tierModules[i].Tier == state.Tier);
+                if (_tierModules[i].Tier == state.Tier)
+                    _binding.Bind(_visualRoot, _tierModules[i].GameObject.transform, _tierModules[i].Sockets);
             }
 
             for (var i = 0; i < _accentModules.Length; i++)

@@ -33,10 +33,16 @@ namespace Gravivore.Presentation.Assets
         [SerializeField] private string _id;
         [SerializeField] private S15VisualPart[] _parts = Array.Empty<S15VisualPart>();
         [SerializeField] private GameObject _presentationPrefab;
+        [SerializeField] private Vector3 _localPosition;
+        [SerializeField] private Vector3 _localEulerAngles;
+        [SerializeField] private Vector3 _localScale = Vector3.one;
 
         public string Id => _id;
         public int PartCount => _parts?.Length ?? 0;
         public GameObject PresentationPrefab => _presentationPrefab;
+        public Vector3 LocalPosition => _localPosition;
+        public Quaternion LocalRotation => Quaternion.Euler(_localEulerAngles);
+        public Vector3 LocalScale => _localScale;
         public S15VisualPart GetPart(int index) => _parts[index];
     }
 
@@ -148,10 +154,15 @@ namespace Gravivore.Presentation.Assets
 
         private static void ValidateRecipe(S15VisualRecipe recipe, string label)
         {
-            if (recipe == null || string.IsNullOrWhiteSpace(recipe.Id) || recipe.PartCount == 0)
+            if (recipe == null || string.IsNullOrWhiteSpace(recipe.Id) ||
+                recipe.PresentationPrefab == null && recipe.PartCount == 0)
                 throw new InvalidOperationException($"S15 {label} recipe is incomplete.");
+            PresentationModelBinding.ValidateTransform(recipe.LocalPosition, recipe.LocalRotation.eulerAngles, recipe.LocalScale);
             if (recipe.PresentationPrefab != null)
+            {
                 PresentationPrefabValidation.ValidateOrThrow(recipe.PresentationPrefab);
+                return;
+            }
             for (var i = 0; i < recipe.PartCount; i++)
             {
                 var part = recipe.GetPart(i);
@@ -159,22 +170,35 @@ namespace Gravivore.Presentation.Assets
                     throw new InvalidOperationException($"S15 {label} part {i} is invalid.");
                 if (part.SourceModel.GetComponentInChildren<MeshFilter>(true) == null)
                     throw new InvalidOperationException($"S15 {label} part {i} has no mesh.");
+                PresentationPrefabValidation.ValidateSourceOrThrow(part.SourceModel);
             }
         }
     }
 
-    internal static class PresentationPrefabValidation
+    public static class PresentationPrefabValidation
     {
         public static void ValidateOrThrow(GameObject prefab)
         {
-            if (prefab == null || prefab.GetComponentInChildren<MeshFilter>(true) == null)
+            if (prefab == null || prefab.GetComponentInChildren<MeshFilter>(true) == null &&
+                prefab.GetComponentInChildren<SkinnedMeshRenderer>(true) == null)
                 throw new InvalidOperationException("Presentation prefab requires mesh geometry.");
-            if (prefab.GetComponentsInChildren<MonoBehaviour>(true).Length != 0 ||
-                prefab.GetComponentsInChildren<Collider>(true).Length != 0 ||
-                prefab.GetComponentsInChildren<Rigidbody>(true).Length != 0 ||
-                prefab.GetComponentsInChildren<Light>(true).Length != 0 ||
-                prefab.GetComponentsInChildren<UnityEngine.Camera>(true).Length != 0)
-                throw new InvalidOperationException("Presentation prefab must contain no gameplay scripts, physics, lights or cameras.");
+            ValidateComponents(prefab, false);
+            _ = new PresentationSocketSet(prefab.transform);
+        }
+
+        // Legacy kitbash parts sanitize physics/light/camera components, but scripts must never be instantiated.
+        public static void ValidateSourceOrThrow(GameObject source) => ValidateComponents(source, true);
+
+        private static void ValidateComponents(GameObject prefab, bool legacyPart)
+        {
+            foreach (var component in prefab.GetComponentsInChildren<Component>(true))
+            {
+                if (component is Transform || component is MeshFilter || component is Renderer || component is LODGroup)
+                    continue;
+                if (legacyPart && (component is Collider || component is Light || component is UnityEngine.Camera))
+                    continue;
+                throw new InvalidOperationException("Presentation prefab must contain only transforms, mesh renderers and LODs; remove scripts, physics, lights, cameras and playback components.");
+            }
         }
     }
 }

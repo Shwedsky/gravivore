@@ -13,12 +13,14 @@ namespace Gravivore.Presentation.Evolution
             EvolutionConfiguration selection,
             EvolutionTierModuleSet[] tierModuleSets,
             EvolutionAccentModule[] accentModules,
-            GameObject[] tierPrefabs = null)
+            GameObject[] tierPrefabs = null,
+            PresentationModelBinding[] tierOverrides = null)
         {
             Selection = selection ?? throw new ArgumentNullException(nameof(selection));
             TierModuleSets = tierModuleSets ?? throw new ArgumentNullException(nameof(tierModuleSets));
             AccentModules = accentModules ?? throw new ArgumentNullException(nameof(accentModules));
             TierPrefabs = tierPrefabs ?? Array.Empty<GameObject>();
+            TierOverrides = tierOverrides ?? Array.Empty<PresentationModelBinding>();
             EvolutionDefinition.ValidateCatalog(this);
         }
 
@@ -26,6 +28,7 @@ namespace Gravivore.Presentation.Evolution
         public EvolutionTierModuleSet[] TierModuleSets { get; }
         public EvolutionAccentModule[] AccentModules { get; }
         public GameObject[] TierPrefabs { get; }
+        public PresentationModelBinding[] TierOverrides { get; }
         public bool HasTierPrefabs => TierPrefabs.Length != 0;
     }
 
@@ -45,6 +48,7 @@ namespace Gravivore.Presentation.Evolution
         [SerializeField] private EvolutionTierModuleSet[] _tierModuleSets = Array.Empty<EvolutionTierModuleSet>();
         [SerializeField] private EvolutionAccentModule[] _accentModules = Array.Empty<EvolutionAccentModule>();
         [SerializeField] private GameObject[] _tierPrefabs = Array.Empty<GameObject>();
+        [SerializeField] private PresentationModelBinding[] _tierOverrides = Array.Empty<PresentationModelBinding>();
         [SerializeField] private Vector3 _attackPresentationOffset;
 
         public bool HasTierPrefabs => _tierPrefabs != null && _tierPrefabs.Length != 0;
@@ -54,7 +58,8 @@ namespace Gravivore.Presentation.Evolution
             new EvolutionConfiguration(_tier1Threshold, _tier2Threshold, _dominancePriority),
             _tierModuleSets,
             _accentModules,
-            _tierPrefabs);
+            _tierPrefabs,
+            _tierOverrides);
 
         public void ValidateOrThrow()
         {
@@ -65,6 +70,11 @@ namespace Gravivore.Presentation.Evolution
         {
             const int tierCount = 3;
             const int statCount = 5;
+            if (catalog.TierOverrides.Length != 0 && catalog.TierOverrides.Length != tierCount)
+                throw new InvalidOperationException("Player visual overrides must contain Tier0, Tier1, Tier2 slots.");
+            foreach (var binding in catalog.TierOverrides)
+                if (binding == null) throw new InvalidOperationException("Player visual override slot is missing.");
+                else binding.ValidateOrThrow();
             if (catalog.HasTierPrefabs)
             {
                 if (catalog.TierPrefabs.Length != tierCount)
