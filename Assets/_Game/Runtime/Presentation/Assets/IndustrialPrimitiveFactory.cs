@@ -36,7 +36,12 @@ namespace Gravivore.Presentation.Assets
             visual.transform.localScale = localScale;
 
             var collider = visual.GetComponent<Collider>();
-            if (collider != null) collider.enabled = false;
+            if (collider != null)
+            {
+                collider.enabled = false;
+                if (Application.isPlaying) UnityEngine.Object.Destroy(collider);
+                else UnityEngine.Object.DestroyImmediate(collider);
+            }
 
             var renderer = visual.GetComponent<Renderer>();
             renderer.sharedMaterial = sharedMaterial;
