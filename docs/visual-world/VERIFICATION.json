@@ -1,0 +1,70 @@
+{
+  "milestone": "PHASE 3A — VISUAL WORLD INTEGRATION FOUNDATION",
+  "base": "8171376c539b9247808ede428711dd44070b73ec",
+  "branch": "codex/visual-world-integration-foundation",
+  "unityVersion": "6000.3.0f1",
+  "date": "2026-10-04",
+  "compile": {
+    "result": "Passed",
+    "exitCode": 0,
+    "localLogPath": "Builds/Logs/visual-foundation-compile.log"
+  },
+  "editMode": {
+    "result": "Passed",
+    "total": 312,
+    "passed": 312,
+    "failed": 0,
+    "skipped": 0,
+    "durationSeconds": 3.9631301,
+    "localResultPath": "Builds/Logs/visual-foundation-editmode.xml"
+  },
+  "playMode": {
+    "result": "Passed",
+    "total": 75,
+    "passed": 75,
+    "failed": 0,
+    "skipped": 0,
+    "durationSeconds": 11.3637894,
+    "localResultPath": "Builds/Logs/visual-foundation-playmode.xml"
+  },
+  "projectValidator": {
+    "result": "Passed",
+    "exitCode": 0,
+    "localLogPath": "Builds/Logs/visual-foundation-validator.log"
+  },
+  "android": {
+    "run": false,
+    "reason": "Explicitly optional foundation milestone; full suites passed and no gameplay/build settings changed.",
+    "newApk": null,
+    "newDeviceResultClaimed": false
+  },
+  "unchanged": [
+    "Gameplay domain source",
+    "Stats and balance assets",
+    "Recovery / adaptive respawn",
+    "Save schema",
+    "Progression / encounter repeatability",
+    "Spawn layout / camera settings",
+    "Combat timing / audio",
+    "Packages",
+    "EditorBuildSettings / Android settings"
+  ],
+  "newTestCases": {
+    "editMode": 16,
+    "playMode": 4
+  },
+  "regressionCoverage": [
+    "Phase 2 gait / attack / audio / HP timing",
+    "Save / progression",
+    "Adaptive respawn",
+    "Boss reset / world gates"
+  ],
+  "structuralCaptures": [
+    "docs/visual-world/images/01-chapter-roots.png",
+    "docs/visual-world/images/02-repair-hub-anchors.png",
+    "docs/visual-world/images/03-five-ordinary-spots.png",
+    "docs/visual-world/images/04-elite-boss-roots.png",
+    "docs/visual-world/images/05-isolated-art-review.png"
+  ],
+  "captureNote": "Actual Unity renders, visually inspected; test-only markers/captions, no final-art claims."
+}

@@ -156,6 +156,7 @@ namespace Gravivore.Editor
             ValidateS15Assets();
             ValidateS20Balance();
             ValidateCanonicalScenes();
+            VisualIntegration.VisualIntegrationValidator.ValidateOrThrow();
         }
 
         private static void ValidateS20Balance()

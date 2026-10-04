@@ -55,6 +55,7 @@ namespace Gravivore.Presentation.Composition
         [SerializeField] private PresentationMaterialPalette _materialPalette;
         [SerializeField] private S14PresentationDefinition _s14PresentationDefinition;
         [SerializeField] private S15VisualCatalog _s15VisualCatalog;
+        [SerializeField] private ChapterVisualEnvironment _visualEnvironment;
         [SerializeField] private Vector3 _playerSpawn = Vector3.zero;
         [SerializeField, Min(0f)] private float _postRespawnInvulnerabilitySeconds = 1.5f;
 
@@ -99,6 +100,7 @@ namespace Gravivore.Presentation.Composition
         public WorldUnlockService WorldUnlocks { get; private set; }
 
         public Chapter01WorldPresenter WorldPresenter { get; private set; }
+        public ChapterVisualEnvironment VisualEnvironment => _visualEnvironment;
 
         public MagnetarGuardController MagnetarGuard { get; private set; }
 
@@ -169,6 +171,7 @@ namespace Gravivore.Presentation.Composition
             _playerRecoverySettings.ValidateOrThrow();
             _s14PresentationDefinition.ValidateOrThrow();
             _s15VisualCatalog.ValidateOrThrow();
+            _visualEnvironment?.Initialize();
             InitializeMonetization();
 
             var statsConfiguration = _playerStatsDefinition.Configuration;
@@ -568,7 +571,7 @@ namespace Gravivore.Presentation.Composition
             var worldObject = new GameObject("Chapter 01 World", typeof(Chapter01WorldPresenter));
             worldObject.transform.SetParent(transform, false);
             WorldPresenter = worldObject.GetComponent<Chapter01WorldPresenter>();
-            WorldPresenter.Initialize(configuration, state, _materialPalette.LitMaterial, _s15VisualCatalog);
+            WorldPresenter.Initialize(configuration, state, _materialPalette.LitMaterial, _s15VisualCatalog, _visualEnvironment);
         }
 
         private void InitializeQuests(QuestCatalog catalog, Chapter01WorldConfiguration world)
@@ -649,6 +652,8 @@ namespace Gravivore.Presentation.Composition
                     _gravityAttackSettings.BlockerClearance),
                 _profileSession.State.World,
                 BossCompletion);
+            ApplyEncounterBinding(eliteObject.transform, _visualEnvironment?.Definition.Elite);
+            ApplyEncounterBinding(bossObject.transform, _visualEnvironment?.Definition.Boss);
 
             var presentationObject = new GameObject("Encounter Telegraph Presentation", typeof(EncounterTelegraphPresenter));
             presentationObject.transform.SetParent(transform, false);
@@ -660,6 +665,22 @@ namespace Gravivore.Presentation.Composition
         {
             _eliteActivationBridge = new EliteEncounterActivationBridge(WorldUnlocks.State, MagnetarGuard);
             _eliteWorldUnlockBridge = new EliteWorldUnlockBridge(MagnetarGuard, WorldUnlocks);
+        }
+
+        private static void ApplyEncounterBinding(Transform authority, PresentationModelBinding binding)
+        {
+            var visualRoot = new GameObject("Encounter Visual Root").transform;
+            visualRoot.SetParent(authority, false);
+            var fallback = authority.Find(authority.name + " Visual");
+            if (fallback != null) fallback.SetParent(visualRoot, true);
+            var active = fallback;
+            if (binding != null && binding.HasPrefab)
+            {
+                active = binding.InstantiateUnder(visualRoot).transform;
+                if (fallback != null) fallback.gameObject.SetActive(false);
+            }
+            var sockets = active != null ? new PresentationSocketSet(active) : null;
+            authority.gameObject.AddComponent<CharacterVisualBinding>().Bind(visualRoot, active, sockets);
         }
 
         private GameObject CreateEncounterObject(
@@ -830,6 +851,7 @@ namespace Gravivore.Presentation.Composition
 
         private void CreateLight()
         {
+            if (_visualEnvironment != null && _visualEnvironment.KeyLight != null) return;
             var lightObject = new GameObject("Directional Light", typeof(Light));
             lightObject.transform.SetParent(transform, false);
             lightObject.transform.rotation = Quaternion.Euler(50f, -30f, 0f);

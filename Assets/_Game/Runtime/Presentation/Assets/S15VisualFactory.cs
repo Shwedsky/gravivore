@@ -27,6 +27,8 @@ namespace Gravivore.Presentation.Assets
         private readonly Dictionary<string, GameObject> _visuals = new Dictionary<string, GameObject>(StringComparer.Ordinal);
         private GameObject _activeVisual;
         private string _activeId;
+        private readonly Dictionary<string, PresentationSocketSet> _sockets = new Dictionary<string, PresentationSocketSet>(StringComparer.Ordinal);
+        private readonly CharacterVisualBinding _binding;
 
         public S15EnemyVisualState(Transform parent, S15VisualCatalog catalog)
         {
@@ -34,6 +36,7 @@ namespace Gravivore.Presentation.Assets
             _catalog = catalog != null ? catalog : throw new ArgumentNullException(nameof(catalog));
             _root = new GameObject("Enemy Art Root").transform;
             _root.SetParent(parent, false);
+            _binding = parent.GetComponent<CharacterVisualBinding>() ?? parent.gameObject.AddComponent<CharacterVisualBinding>();
         }
 
         public void Apply(string enemyId)
@@ -45,16 +48,22 @@ namespace Gravivore.Presentation.Assets
             {
                 _activeVisual = S15VisualFactory.Build(_root, recipe, _catalog);
                 _visuals.Add(enemyId, _activeVisual);
+                _sockets.Add(enemyId, new PresentationSocketSet(ModelRoot(_activeVisual, recipe)));
             }
             _activeVisual.SetActive(true);
             _activeId = enemyId;
+            _binding.Bind(_root, ModelRoot(_activeVisual, recipe), _sockets[enemyId]);
         }
+
+        private static Transform ModelRoot(GameObject visual, S15VisualRecipe recipe) =>
+            recipe.PresentationPrefab != null ? visual.transform.GetChild(0) : visual.transform;
 
         public void Reset()
         {
             if (_activeVisual != null) _activeVisual.SetActive(false);
             _activeVisual = null;
             _activeId = null;
+            _binding.Bind(_root, null, null);
             _root.localPosition = Vector3.zero;
             _root.localRotation = Quaternion.identity;
             _root.localScale = Vector3.one;
@@ -72,6 +81,9 @@ namespace Gravivore.Presentation.Assets
             if (catalog == null) throw new ArgumentNullException(nameof(catalog));
             var root = new GameObject($"S15 Visual [{recipe.Id}]");
             root.transform.SetParent(parent, false);
+            root.transform.localPosition = recipe.LocalPosition;
+            root.transform.localRotation = recipe.LocalRotation;
+            root.transform.localScale = recipe.LocalScale;
             if (recipe.PresentationPrefab != null)
             {
                 PresentationPrefabValidation.ValidateOrThrow(recipe.PresentationPrefab);
@@ -91,6 +103,7 @@ namespace Gravivore.Presentation.Assets
             if (parent == null) throw new ArgumentNullException(nameof(parent));
             if (part == null || part.SourceModel == null) throw new ArgumentNullException(nameof(part));
             if (catalog == null) throw new ArgumentNullException(nameof(catalog));
+            PresentationPrefabValidation.ValidateSourceOrThrow(part.SourceModel);
             var partObject = new GameObject($"Part {index + 1} {part.SourceModel.name}");
             partObject.transform.SetParent(parent, false);
             partObject.transform.localPosition = part.LocalPosition;

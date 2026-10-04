@@ -19,7 +19,7 @@ namespace Gravivore.Tests.PlayMode
 
         public S01SceneCompositionRoot Root { get; private set; }
 
-        public IEnumerator Load()
+        public IEnumerator Load(Action<S01SceneCompositionRoot> configure = null)
         {
             void Configure(Scene scene, LoadSceneMode mode)
             {
@@ -29,6 +29,7 @@ namespace Gravivore.Tests.PlayMode
                     if (!roots[i].TryGetComponent(out S01SceneCompositionRoot root)) continue;
                     Root = root;
                     Root.ConfigurePersistence(_directory, _time);
+                    configure?.Invoke(Root);
                     return;
                 }
             }

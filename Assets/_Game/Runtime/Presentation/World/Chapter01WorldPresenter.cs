@@ -16,6 +16,9 @@ namespace Gravivore.Presentation.World
         private S15VisualCatalog _s15VisualCatalog;
         private Collider[] _perimeterColliders;
         private bool _initialized;
+        private ChapterVisualEnvironment _environment;
+        public Transform GameplayRoot { get; private set; }
+        public Transform VisualRoot { get; private set; }
 
         public WorldGateView EliteGate { get; private set; }
         public WorldGateView BossGate { get; private set; }
@@ -25,13 +28,19 @@ namespace Gravivore.Presentation.World
             Chapter01WorldConfiguration configuration,
             WorldUnlockState state,
             Material litMaterial,
-            S15VisualCatalog s15VisualCatalog = null)
+            S15VisualCatalog s15VisualCatalog = null,
+            ChapterVisualEnvironment environment = null)
         {
             if (_initialized) throw new InvalidOperationException("World presenter is already initialized.");
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _state = state ?? throw new ArgumentNullException(nameof(state));
             _litMaterial = litMaterial != null ? litMaterial : throw new ArgumentNullException(nameof(litMaterial));
             _s15VisualCatalog = s15VisualCatalog;
+            _environment = environment;
+            GameplayRoot = new GameObject("Gameplay Geometry").transform;
+            GameplayRoot.SetParent(transform, false);
+            VisualRoot = new GameObject("Chapter 01 Placeholder Geometry").transform;
+            VisualRoot.SetParent(environment != null ? environment.FallbackRoot : transform, false);
 
             BuildGround();
             BuildPerimeterBoundaries();
@@ -75,10 +84,11 @@ namespace Gravivore.Presentation.World
         {
             var ground = GameObject.CreatePrimitive(PrimitiveType.Cube);
             ground.name = "Chapter 01 Movement Ground";
-            ground.transform.SetParent(transform, false);
+            ground.transform.SetParent(GameplayRoot, false);
             ground.transform.position = _configuration.GroundCenter + Vector3.down * 0.15f;
             ground.transform.localScale = new Vector3(_configuration.GroundSize.x, 0.25f, _configuration.GroundSize.y);
             SetMaterial(ground, new Color(0.09f, 0.12f, 0.14f, 1f));
+            SeparateBoxVisual(ground, ground.GetComponent<Renderer>().sharedMaterial, VisualRoot);
         }
 
         private void BuildBasin()
@@ -142,7 +152,7 @@ namespace Gravivore.Presentation.World
                 if (_s15VisualCatalog != null)
                 {
                     var landmarkRoot = new GameObject($"Landmark {zone.Id}");
-                    landmarkRoot.transform.SetParent(transform, false);
+                    landmarkRoot.transform.SetParent(_environment != null ? _environment.GetRegion(zone.Id).Landmark : VisualRoot, false);
                     landmarkRoot.transform.position = zone.LandmarkPosition;
                     landmarkRoot.transform.rotation = Quaternion.Euler(0f, i * 28f, 0f);
                     S15VisualFactory.Build(
@@ -178,10 +188,10 @@ namespace Gravivore.Presentation.World
         private WorldGateView BuildGate(WorldGateConfiguration configuration, Color color)
         {
             var gateObject = new GameObject(configuration.Id, typeof(WorldGateView));
-            gateObject.transform.SetParent(transform, false);
+            gateObject.transform.SetParent(GameplayRoot, false);
             gateObject.transform.position = configuration.Position;
             var view = gateObject.GetComponent<WorldGateView>();
-            view.Build(configuration.Size, _configuration.Bounds, color, CreateMaterial);
+            view.Build(configuration.Size, _configuration.Bounds, color, CreateMaterial, VisualRoot);
             return view;
         }
 
@@ -195,10 +205,11 @@ namespace Gravivore.Presentation.World
             var blocker = GameObject.CreatePrimitive(PrimitiveType.Cube);
             blocker.name = name;
             blocker.layer = layer;
-            blocker.transform.SetParent(transform, false);
+            blocker.transform.SetParent(GameplayRoot, false);
             blocker.transform.position = position;
             blocker.transform.localScale = size;
             blocker.GetComponent<Renderer>().sharedMaterial = material;
+            SeparateBoxVisual(blocker, material, VisualRoot);
             return blocker.GetComponent<Collider>();
         }
 
@@ -215,11 +226,34 @@ namespace Gravivore.Presentation.World
         {
             var visual = GameObject.CreatePrimitive(type);
             visual.name = name;
-            visual.transform.SetParent(transform, false);
+            visual.transform.SetParent(VisualRoot, false);
             visual.transform.position = position;
             var collider = visual.GetComponent<Collider>();
-            if (collider != null) collider.enabled = false;
+            if (collider != null) { collider.enabled = false; Remove(collider); }
             return visual;
+        }
+
+        internal static GameObject SeparateBoxVisual(GameObject authority, Material material, Transform visualParent)
+        {
+            var visual = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            visual.name = authority.name + " Visual";
+            visual.transform.SetParent(visualParent, false);
+            visual.transform.SetPositionAndRotation(authority.transform.position, authority.transform.rotation);
+            visual.transform.localScale = authority.transform.lossyScale;
+            var collider = visual.GetComponent<Collider>();
+            collider.enabled = false; Remove(collider);
+            visual.GetComponent<Renderer>().sharedMaterial = material;
+            var renderer = authority.GetComponent<Renderer>();
+            if (renderer != null) { renderer.enabled = false; Remove(renderer); }
+            var mesh = authority.GetComponent<MeshFilter>();
+            if (mesh != null) Remove(mesh);
+            return visual;
+        }
+
+        private static void Remove(UnityEngine.Object value)
+        {
+            if (Application.isPlaying) UnityEngine.Object.Destroy(value);
+            else UnityEngine.Object.DestroyImmediate(value);
         }
 
         private void SetMaterial(GameObject target, Color color)
@@ -248,10 +282,13 @@ namespace Gravivore.Presentation.World
     public sealed class WorldGateView : MonoBehaviour
     {
         private GameObject _barrier;
+        private GameObject _barrierVisual;
+        private Transform _visualRoot;
         public Collider BlockingCollider { get; private set; }
         public bool IsLocked => _barrier != null && _barrier.activeSelf;
 
-        public void Build(Vector3 size, WorldBounds bounds, Color color, Func<Color, Material> materialFactory)
+        public void Build(Vector3 size, WorldBounds bounds, Color color, Func<Color, Material> materialFactory,
+            Transform visualParent = null)
         {
             var hardBlockerLayer = LayerMask.NameToLayer("HardBlocker");
             if (hardBlockerLayer < 0) throw new InvalidOperationException("HardBlocker layer is required for world gates.");
@@ -267,6 +304,9 @@ namespace Gravivore.Presentation.World
             var material = materialFactory(color) ??
                 throw new InvalidOperationException("World gates require a valid material.");
             _barrier.GetComponent<Renderer>().sharedMaterial = material;
+            _visualRoot = new GameObject(name + " Visuals").transform;
+            _visualRoot.SetParent(visualParent != null ? visualParent : transform, false);
+            _barrierVisual = Chapter01WorldPresenter.SeparateBoxVisual(_barrier, material, _visualRoot);
 
             var openingMinX = transform.position.x - size.x * 0.5f;
             var openingMaxX = transform.position.x + size.x * 0.5f;
@@ -296,6 +336,7 @@ namespace Gravivore.Presentation.World
             if (_barrier == null) return;
             _barrier.SetActive(locked);
             BlockingCollider.enabled = locked;
+            _barrierVisual.SetActive(locked);
         }
 
         private void BuildFlank(string name, float centerX, float width, Vector3 gateSize, Material material)
@@ -307,6 +348,7 @@ namespace Gravivore.Presentation.World
             flank.transform.localPosition = new Vector3(centerX, gateSize.y * 0.5f, 0f);
             flank.transform.localScale = new Vector3(width, gateSize.y, gateSize.z);
             flank.GetComponent<Renderer>().sharedMaterial = material;
+            Chapter01WorldPresenter.SeparateBoxVisual(flank, material, _visualRoot);
         }
     }
 }

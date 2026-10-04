@@ -3,6 +3,7 @@ using Gravivore.Gameplay.Progression;
 using Gravivore.Presentation.Combat;
 using Gravivore.Presentation.Evolution;
 using Gravivore.Presentation.Feedback;
+using Gravivore.Presentation.Assets;
 using UnityEngine;
 
 namespace Gravivore.Presentation.Player
@@ -35,11 +36,16 @@ namespace Gravivore.Presentation.Player
             public Vector3 CoreScale;
             public readonly MaterialPropertyBlock Properties = new MaterialPropertyBlock();
             public Joint Body;
+            public bool HasProceduralJoints;
+            public Quaternion FormRestRotation;
+            public PresentationSocketSet Sockets;
             public Joint[] Hips = new Joint[2], Knees = new Joint[2], Feet = new Joint[2], Arms = new Joint[2], Elbows = new Joint[2];
         }
 
         private Rig[] _rigs;
         private Transform _authority, _socket;
+        private Vector3 _socketRestPosition;
+        private Quaternion _socketRestRotation;
         private PlayerEvolutionView _view;
         private S14PresentationDefinition _settings;
         private GravityLashVfxPool _lash;
@@ -62,11 +68,17 @@ namespace Gravivore.Presentation.Player
         {
             _authority = authority; _view = view; _socket = socket; _settings = settings;
             _lash = lash; _audio = audio; _previousPosition = authority.position;
+            _socketRestPosition = socket.localPosition; _socketRestRotation = socket.localRotation;
             _rigs = new Rig[3];
             for (var t = 0; t < _rigs.Length; t++)
             {
                 var form = view.GetTierForm((EvolutionTier)t);
-                var rig = new Rig { Form = form };
+                var rig = new Rig { Form = form, FormRestRotation = form.localRotation,
+                    Sockets = new PresentationSocketSet(form) };
+                _rigs[t] = rig;
+                // Whole-form candidate swaps need not reproduce the prototype's private joint hierarchy.
+                if (!HasPrototypeJoints(form)) continue;
+                rig.HasProceduralJoints = true;
                 rig.Body = new Joint(form.Find("01_RobotBody_CommonIdentity"));
                 rig.Core = form.Find("01_RobotBody_CommonIdentity/GravityCore_Common");
                 rig.CoreRenderer = rig.Core.GetComponent<Renderer>();
@@ -85,6 +97,19 @@ namespace Gravivore.Presentation.Player
                 _rigs[t] = rig;
             }
             _lash.CuePlayed += OnAttackCue;
+        }
+
+        private static bool HasPrototypeJoints(Transform form)
+        {
+            if (form.Find("01_RobotBody_CommonIdentity/GravityCore_Common")?.GetComponent<Renderer>() == null) return false;
+            foreach (var side in new[] { "Left", "Right" })
+            {
+                var hip = form.Find("02_TwoMechanicalLegs_Common/" + side + "Leg/HipPivot");
+                var arm = form.Find("03_ArticulatedGravityArms_Common/" + side + "WeaponPivot");
+                if (hip == null || hip.Find("KneePivot/FootPivot") == null ||
+                    arm == null || arm.Find("ElbowPivot") == null) return false;
+            }
+            return true;
         }
 
         private void OnAttackCue(GravityLashCue cue, Vector3 destination)
@@ -135,8 +160,16 @@ namespace Gravivore.Presentation.Player
             var attacking = _attackRemaining > 0;
             var aim = _aim - _authority.position; aim.y = 0;
             if (attacking && aim.sqrMagnitude > 0.0001f)
-                rig.Form.rotation = Quaternion.LookRotation(aim);
-            else rig.Form.localRotation = Quaternion.identity;
+                rig.Form.rotation = Quaternion.LookRotation(aim) * rig.FormRestRotation;
+            else rig.Form.localRotation = rig.FormRestRotation;
+            if (!rig.HasProceduralJoints)
+            {
+                if (rig.Sockets.TryGet(Gravivore.Presentation.Assets.PresentationSocket.AttackOrigin, out var origin))
+                    _socket.SetPositionAndRotation(origin.position, origin.rotation);
+                else
+                { _socket.localPosition = _socketRestPosition; _socket.localRotation = _socketRestRotation; }
+                return; // Imported geometry may remain static until its own presentation gait is integrated.
+            }
             var direction = IsWalking ? rig.Form.InverseTransformDirection(ObservedVelocity).normalized : Vector3.forward;
             var idle = Mathf.Sin(_time * 1.8f) * _settings.MechIdleDegrees;
             var charge = attacking && _attackPhase == GravityLashCue.Windup;
