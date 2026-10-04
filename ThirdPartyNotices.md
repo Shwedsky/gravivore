@@ -56,6 +56,19 @@
 
 Expanded original-source research, licenses and rejection/acquisition reasons are recorded in `docs/ART_ASSET_SHORTLIST.md`. Colorado Stark and Robot Enemy Pack archives were inspected in ignored research storage only. Quaternius, Molten Maps, Ryan/rcorre, Mech Drone, Masterxeon, Markom3D and all other reviewed candidates have no imported files in this spike. Unresolved licensing or download availability is not treated as permission to redistribute.
 
+## Phase 2 combat audio — Kenney
+
+- Packs/authors: Sci-Fi Sounds 1.0 (Kenney, 2020) and Impact Sounds 1.0 (Kenney, 2019).
+- Official sources: https://kenney.nl/assets/sci-fi-sounds and https://kenney.nl/assets/impact-sounds
+- License: CC0 1.0 Universal; https://creativecommons.org/publicdomain/zero/1.0/
+- Verified: 2026-10-03, against both official pack pages and each downloaded archive's License.txt.
+- Attribution required: no; credit Kenney voluntarily.
+- Imported originals: Assets/ThirdParty/Kenney/CombatAudio — eight OGG files plus SciFi_License.txt and Impact_License.txt.
+- Runtime derivatives: Assets/_Game/Content/Audio/PlayerFeel — Step, Charge, Release, Impact, EnemyHit, EnemyDeath, PlayerHit, PlayerDeath WAVs.
+- Processing: silence trim, duration cap, mono PCM, peak normalization and short fades; reproducible in PlayerFeelAssetConfigurator.Configure.
+- Exact source-to-event mapping and archive checksums: docs/PLAYER_FEEL_COMBAT_PRESENTATION.md.
+- No ripped game sounds or purchased dependency; unchanged encounter/progression placeholders are project-generated S14 cues.
+
 ## Import template (future additions)
 
 When importing any external asset, append:

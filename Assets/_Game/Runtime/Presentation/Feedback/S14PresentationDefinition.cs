@@ -17,7 +17,7 @@ namespace Gravivore.Presentation.Feedback
         [SerializeField, Min(0.01f)] private float _deathDuration = 0.3f;
         [SerializeField, Min(0.01f)] private float _assimilationDuration = 0.45f;
         [SerializeField, Min(0.01f)] private float _evolutionDuration = 0.55f;
-        [SerializeField, Min(0.01f)] private float _lashWindupDuration = 0.05f;
+        [SerializeField, Min(0.01f)] private float _lashWindupDuration = 0.15f;
         [SerializeField, Min(0.01f)] private float _lashBeamDuration = 0.08f;
         [SerializeField, Min(0.01f)] private float _lashImpactDuration = 0.12f;
 
@@ -37,6 +37,29 @@ namespace Gravivore.Presentation.Feedback
         [SerializeField] private AudioClip _evolutionClip;
         [SerializeField] private AudioClip _telegraphClip;
         [SerializeField] private AudioClip _bossImpactClip;
+
+        [Header("Mech presentation only")]
+        [SerializeField, Min(0.1f)] private float _mechStride = 1.15f;
+        [SerializeField] private float _mechHipDegrees = 27f;
+        [SerializeField] private float _mechKneeDegrees = 42f;
+        [SerializeField] private float _mechFootLift = 0.09f;
+        [SerializeField] private float _mechIdleDegrees = 0.6f;
+        [SerializeField, Min(0.1f)] private float _stepMinimumInterval = 0.28f;
+        [SerializeField] private AudioClip _stepClip;
+        [SerializeField] private AudioClip _releaseClip;
+        [SerializeField] private AudioClip _playerHitClip;
+        [SerializeField] private AudioClip _playerDeathClip;
+
+        public float MechStride => _mechStride;
+        public float MechHipDegrees => _mechHipDegrees;
+        public float MechKneeDegrees => _mechKneeDegrees;
+        public float MechFootLift => _mechFootLift;
+        public float MechIdleDegrees => _mechIdleDegrees;
+        public float StepMinimumInterval => _stepMinimumInterval;
+        public AudioClip StepClip => _stepClip != null ? _stepClip : _hitClip;
+        public AudioClip ReleaseClip => _releaseClip != null ? _releaseClip : _lashImpactClip;
+        public AudioClip PlayerHitClip => _playerHitClip != null ? _playerHitClip : _hitClip;
+        public AudioClip PlayerDeathClip => _playerDeathClip != null ? _playerDeathClip : _deathClip;
 
         public int HitPoolSize => _hitPoolSize;
         public int DeathPoolSize => _deathPoolSize;

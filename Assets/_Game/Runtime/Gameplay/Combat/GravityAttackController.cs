@@ -17,6 +17,7 @@ namespace Gravivore.Gameplay.Combat
         private IGravityLashVfx _lashVfx;
         private IPlayerCombatActivity _combatActivity;
         private CombatTarget _currentTarget;
+        private ITargetable _chargingTarget;
         private float _scanRemaining;
         private bool _hasCurrentTarget;
         private bool _isInitialized;
@@ -62,6 +63,8 @@ namespace Gravivore.Gameplay.Combat
             }
         }
 
+        private void OnDisable() => CancelPresentationCharge();
+
         public void Tick(float deltaTime)
         {
             if (!_isInitialized)
@@ -87,6 +90,8 @@ namespace Gravivore.Gameplay.Combat
             }
 
             var hasValidTarget = _hasCurrentTarget && IsCurrentTargetValid();
+            if (!hasValidTarget || !ReferenceEquals(_chargingTarget, _currentTarget.Targetable))
+                CancelPresentationCharge();
             if (_cadence.Advance(
                     deltaTime,
                     hasValidTarget,
@@ -94,6 +99,36 @@ namespace Gravivore.Gameplay.Combat
             {
                 ExecuteAttack();
             }
+            else if (hasValidTarget)
+            {
+                TryBeginPresentationCharge();
+            }
+        }
+
+        private void TryBeginPresentationCharge()
+        {
+            if (_chargingTarget != null || !(_lashVfx is IPrechargedGravityLashVfx prepared)) return;
+            try
+            {
+                var remaining = _cadence.RemainingCooldown;
+                if (remaining <= 0f || remaining > prepared.ChargeDuration) return;
+                _chargingTarget = _currentTarget.Targetable;
+                prepared.BeginCharge(_attackOrigin.position, _chargingTarget.TargetPoint.position,
+                    _chargingTarget, remaining);
+            }
+            catch (Exception exception)
+            {
+                Debug.LogException(exception);
+                CancelPresentationCharge();
+            }
+        }
+
+        private void CancelPresentationCharge()
+        {
+            if (_chargingTarget == null) return;
+            _chargingTarget = null;
+            try { if (_lashVfx is IPrechargedGravityLashVfx prepared) prepared.CancelCharge(); }
+            catch (Exception exception) { Debug.LogException(exception); }
         }
 
         private void RefreshTarget()
@@ -134,12 +169,16 @@ namespace Gravivore.Gameplay.Combat
             var targetPoint = _currentTarget.Targetable.TargetPoint.position;
             try
             {
-                _lashVfx.Play(origin, targetPoint);
+                if (_lashVfx is ITrackedGravityLashVfx tracked)
+                    tracked.Play(origin, targetPoint, _currentTarget.Targetable);
+                else _lashVfx.Play(origin, targetPoint);
             }
             catch (Exception exception)
             {
                 Debug.LogException(exception);
+                CancelPresentationCharge();
             }
+            _chargingTarget = null;
             var damageResult = _currentTarget.Damageable.ApplyDamage(new DamageRequest(
                 _playerStats.DerivedStats.BaseDamage,
                 DamageType.Gravity));
@@ -197,6 +236,7 @@ namespace Gravivore.Gameplay.Combat
 
         private void ClearCurrentTarget()
         {
+            CancelPresentationCharge();
             _hasCurrentTarget = false;
             _currentTarget = default;
         }

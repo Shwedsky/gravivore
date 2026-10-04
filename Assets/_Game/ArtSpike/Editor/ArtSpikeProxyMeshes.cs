@@ -79,6 +79,29 @@ namespace Gravivore.ArtSpike.Editor
             AssetDatabase.SaveAssets();
         }
 
+        public static void BuildPlayerRefinement()
+        {
+            Write("MechCarapace", b =>
+            {
+                b.Box(Vector3.zero, new Vector3(.70f, .76f, .72f), 1, .7f);
+                foreach (var side in new[] { -1, 1 })
+                    b.Box(new Vector3(side * .25f, .12f, .12f), new Vector3(.43f, .88f, .68f), 0, .65f);
+                b.Cylinder(new Vector3(0, -.35f, -.08f), .19f, .55f, Quaternion.Euler(0, 0, 90), 1);
+            });
+            Write("MechPelvis", b =>
+            {
+                b.Box(Vector3.zero, new Vector3(1, .8f, 1), 0, .58f);
+                b.Cylinder(Vector3.zero, .32f, 1.1f, Quaternion.Euler(0, 0, 90), 1);
+            });
+            Write("MechForearm", b =>
+            {
+                b.Cylinder(Vector3.zero, .37f, .88f, Quaternion.Euler(90, 0, 0), 1);
+                foreach (var side in new[] { -1, 1 })
+                    b.Box(new Vector3(side * .31f, 0, -.06f), new Vector3(.3f, .82f, .8f), 0, .7f);
+            });
+            AssetDatabase.SaveAssets();
+        }
+
         private static void Write(string name, System.Action<Geometry> author)
         {
             var path = Folder + "/" + name + ".asset";
@@ -98,7 +121,7 @@ namespace Gravivore.ArtSpike.Editor
             private readonly List<int>[] _triangles = { new List<int>(), new List<int>() };
 
             // Chamfered octagonal footprint and separate top/bottom bevel bands.
-            public void Box(Vector3 centre, Vector3 size, int material)
+            public void Box(Vector3 centre, Vector3 size, int material, float lowerTaper = 1f)
             {
                 var footprint = new[] { new Vector2(-.38f,-.5f), new Vector2(.38f,-.5f),
                     new Vector2(.5f,-.38f), new Vector2(.5f,.38f), new Vector2(.38f,.5f),
@@ -108,7 +131,7 @@ namespace Gravivore.ArtSpike.Editor
                 for (var y = 0; y < 4; y++)
                     for (var p = 0; p < 8; p++)
                     {
-                        var bevel = y == 0 || y == 3 ? .88f : 1f;
+                        var bevel = (y == 0 || y == 3 ? .88f : 1f) * Mathf.Lerp(lowerTaper, 1f, (levels[y] + .5f));
                         rings[y, p] = centre + Vector3.Scale(size,
                             new Vector3(footprint[p].x * bevel, levels[y], footprint[p].y * bevel));
                     }

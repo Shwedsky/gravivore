@@ -231,7 +231,7 @@ The boss should preserve the previously approved large industrial-mech visual di
 |---|---|---|---|---|
 | 0. Prototype checkpoint | S20 + ART V3 + mecha + adaptive respawn merged | Stable baseline now exists | Completed | main green and reproducible |
 | 1. External design review | Independent main audit and product/system review | Second opinion before economy/retention decisions | Claude | Findings triaged; advisory, not blocking safe presentation work |
-| 2. Player feel & combat presentation | Better mecha silhouette; visible walking/idle; attack motion; attack/impact VFX; initial real combat SFX | Player is on screen continuously; current sliding/placeholder combat presentation limits perceived quality | Codex + asset research | Android device review: movement and attacks feel coherent |
+| 2. Player feel & combat presentation | Better mecha silhouette; visible walking/idle; attack motion; attack/impact VFX; initial real combat SFX | Player is on screen continuously; current sliding/placeholder combat presentation limits perceived quality | Codex + asset research | Implemented; device review PENDING — [delivery notes](PLAYER_FEEL_COMBAT_PRESENTATION.md), [checklist](PLAYER_FEEL_DEVICE_CHECKLIST.md) |
 | 3. Chapter 1 content loop | Repair hub; repeatable elite; repeatable boss; stronger spots near elite/boss; reward contracts; timer/cap state | Turns technical slice into repeatable game loop | Codex | Android loop works without progression/save regressions |
 | 4. Map/minimap MVP | Player + POIs + elite/boss/repair hub + respawn availability/timers | Useful after POI layout and timers exist | Codex | Mobile readability/device review |
 | 5. Audio/music pass | Complete SFX families, mix categories, repair/elite/boss cues, audition music loops | Major perceived-quality gain after combat presentation hooks exist | Asset research + Codex | Device audio review |
@@ -289,7 +289,7 @@ When the full audit is available:
 
 ## Current next action
 
-Start **Phase 2 — Player feel & combat presentation** from current `main`.
+Review the **Phase 2 — Player feel & combat presentation** DEV delivery. Implementation notes: [PLAYER_FEEL_COMBAT_PRESENTATION.md](PLAYER_FEEL_COMBAT_PRESENTATION.md). Device acceptance remains **PENDING**: [PLAYER_FEEL_DEVICE_CHECKLIST.md](PLAYER_FEEL_DEVICE_CHECKLIST.md). Phase 3 has not started.
 
 Primary focus:
 1. continue improving G-0 away from temporary proxy quality toward the agreed mecha-robot direction;
