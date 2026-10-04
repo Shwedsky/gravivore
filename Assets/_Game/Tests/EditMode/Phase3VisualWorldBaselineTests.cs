@@ -10,7 +10,25 @@ namespace Gravivore.Tests.EditMode
     public sealed class Phase3VisualWorldBaselineTests
     {
         private const string WorldDefinitionPath = "Assets/_Game/Content/Definitions/S08_Chapter01World.asset";
-        private const string CatalogPath = "Assets/_Game/Content/Definitions/S15_VisualCatalog.asset";
+        private const string LegacyCatalogPath = "Assets/_Game/Content/Definitions/S15_VisualCatalog.asset";
+        private const string Phase3CatalogPath = "Assets/_Game/Content/Definitions/Phase3_EnemyVisualCatalog.asset";
+
+        [Test]
+        public void Phase3CatalogDefinesAllFiveOrdinaryEnemyFamiliesAsData()
+        {
+            var catalog = AssetDatabase.LoadAssetAtPath<Phase3EnemyVisualCatalog>(Phase3CatalogPath);
+            Assert.That(catalog, Is.Not.Null);
+            Assert.DoesNotThrow(catalog.ValidateOrThrow);
+            Assert.That(catalog.Count, Is.EqualTo(5));
+
+            foreach (var id in new[] { "scout-drone", "cutter-unit", "arc-drone", "warden", "carrier" })
+            {
+                Assert.That(catalog.TryGet(id, out var recipe), Is.True, id);
+                Assert.That(recipe.PartCount, Is.GreaterThanOrEqualTo(7), id);
+            }
+
+            Assert.That(catalog.Get("cutter-unit").UseLegacyPresentationPrefab, Is.True);
+        }
 
         [Test]
         public void ChapterBaselineBuildsFiveLandmarksAndNoPresentationColliderAuthority()
@@ -55,11 +73,13 @@ namespace Gravivore.Tests.EditMode
             var material = CreateTestMaterial();
             try
             {
+                var catalog = AssetDatabase.LoadAssetAtPath<Phase3EnemyVisualCatalog>(Phase3CatalogPath);
+                Assert.That(catalog, Is.Not.Null);
                 var ids = new[] { "scout-drone", "cutter-unit", "arc-drone", "warden", "carrier" };
                 var rendererCounts = ids
                     .Select(id =>
                     {
-                        var visual = Phase3EnemyVisualFactory.BuildPreview(parent.transform, id, material);
+                        var visual = Phase3EnemyVisualFactory.BuildPreview(parent.transform, catalog.Get(id), material);
                         Assert.That(IndustrialPrimitiveFactory.CountEnabledColliders(visual), Is.Zero, id);
                         Assert.That(visual.GetComponentsInChildren<MonoBehaviour>(true), Is.Empty, id);
                         var renderers = visual.GetComponentsInChildren<Renderer>(true);
@@ -85,15 +105,17 @@ namespace Gravivore.Tests.EditMode
             var material = CreateTestMaterial();
             try
             {
-                var catalog = AssetDatabase.LoadAssetAtPath<S15VisualCatalog>(CatalogPath);
-                Assert.That(catalog, Is.Not.Null);
-                var state = new Phase3EnemyVisualState(parent.transform, catalog, material);
+                var legacyCatalog = AssetDatabase.LoadAssetAtPath<S15VisualCatalog>(LegacyCatalogPath);
+                var phase3Catalog = AssetDatabase.LoadAssetAtPath<Phase3EnemyVisualCatalog>(Phase3CatalogPath);
+                Assert.That(legacyCatalog, Is.Not.Null);
+                Assert.That(phase3Catalog, Is.Not.Null);
+                var state = new Phase3EnemyVisualState(parent.transform, legacyCatalog, phase3Catalog, material);
 
                 state.Apply("cutter-unit");
 
                 Assert.That(state.ActiveId, Is.EqualTo("cutter-unit"));
                 Assert.That(parent.GetComponentsInChildren<Transform>(true)
-                    .Any(t => t.name.Contains("accepted ART V3")), Is.True);
+                    .Any(t => t.name.Contains("accepted legacy presentation")), Is.True);
             }
             finally
             {
