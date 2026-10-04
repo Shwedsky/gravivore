@@ -4,11 +4,14 @@ Status: **PHASE 3C VISUAL WORLD INTEGRATION: DEVICE REVIEW PENDING**
 
 ## Base and scope
 
-Current main / merged foundation #38: `dd7392ff92755d29ee424bf3c8e9b61bdd4ada84`.
+Merged foundation #38: `dd7392ff92755d29ee424bf3c8e9b61bdd4ada84`.
+Current integration base / origin/main: `fdd57366eefd5958a083e32e256d262733d98cda`.
 Verified #39 head: `2ea9ac9e80f94fb5efffa6570b8f6e01aa032327`.
-Its merge-base with main is exactly the foundation merge SHA: two commits ahead, zero behind.
+At intake, its merge-base with then-current main was exactly the foundation merge SHA: two commits ahead, zero behind.
 Integration branch: `codex/phase3c-visual-world-integration`, created directly from that head.
 #39 was neither merged nor modified remotely; #37 was not used.
+
+During Android verification, main advanced by five commits that add four future Chapter1 repeatable-loop design documents. The unpublished integration branch was rebased onto that main without file conflicts. `Assets`, `Packages`, `ProjectSettings` and `build-android.ps1` are byte-identical to the fully tested pre-sync tree; the new main documents are preserved and no loop implementation was added. Android was rebuilt from the rebased branch to record a reachable source commit.
 
 This is the first integrated Chapter01 review build, not final visual acceptance. The chapter now has distinct machinery, a repair bay, travel infrastructure, an elite and a boss. The simple modular geometry, static actors and sparse transitions still prevent external visual acceptance. Device review and asset replacement remain real gates.
 
