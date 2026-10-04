@@ -149,7 +149,7 @@ namespace Gravivore.Tests.PlayMode
             Assert.IsTrue(scene.Root.Progression.TryGrant(new EnemyDeathEvent(
                 new EnemyLifeId(Guid.NewGuid()), "scout-drone", Vector3.zero)));
         private static Transform CutterForm(OrdinaryEnemyController enemy) =>
-            enemy.transform.Find("Phase 3 Enemy Art Root/S15 Visual [cutter-unit]/Cutter_ArtSpike");
+            enemy.transform.Find("Phase 3 Enemy Art Root/Phase3 Enemy [cutter-unit / accepted legacy presentation]/Cutter_ArtSpike");
         private static OrdinaryEnemyController[] Cutters(CanonicalSceneTestScope scene) =>
             scene.Root.GetComponentsInChildren<OrdinaryEnemyController>()
                 .Where(e => e.IsAlive && CutterForm(e) != null && CutterForm(e).gameObject.activeInHierarchy).ToArray();
