@@ -162,6 +162,8 @@ See [RUNTIME_REVIEW.json](phase3c/RUNTIME_REVIEW.json) for final runtime samples
 
 Renderer/material-slot cost is the more relevant warning than triangle count for this kitbash. There is no claim of mobile batching efficiency or 60 FPS. Sustained device measurement remains pending.
 
+**Pressure assessment: materially increased art inventory versus the sparse foundation/prototype world.** The integrated environment has 150 active renderers, and the boss model adds 23 renderers / 24 slots / 6 unique materials for 5,968 triangles. The scene snapshots above include the world and actors together. No matched before/after camera benchmark was taken, so these figures establish current pressure, not an exact delta or draw-call count. Shared materials do not by themselves prove batching. Device review must measure CPU/GPU frame time and sustained FPS in ordinary combat and the boss encounter before this art load is accepted.
+
 ## Regression verification
 
 Unity 6000.3.0f1. Compile and ProjectValidator executed successfully. Full EditMode: **318/318** (baseline 312 + six binding/intake cases). Full PlayMode: **78/78** (baseline 75 + three integration tests). Zero failed/skipped tests, including all capture fixtures. No subjective quality tests were added.
@@ -169,6 +171,16 @@ Unity 6000.3.0f1. Compile and ProjectValidator executed successfully. Full EditM
 New runtime tests cover actual canonical bindings, safe socket fallbacks, hub alignment, collision authority dimensions, visible locked gates with prototype visuals hidden, and pooled Scout→Carrier model/life/socket reuse. Existing full suites retain combat timing/cadence, observer-failure safety, first attack, target loss, recycled lives, save/progression, regen, offline return, respawn, gates and encounter reset checks.
 
 Legacy tests were adapted only where they asserted an empty foundation or the pre-integration world: new empty-definition fallback safety remains independently tested; legitimate Phase3B runtime dependencies are allowed while comparison-bay scenery/lighting remain forbidden; Cutter and S15 fallback data checks stay intact. Review scenes remain absent from build scenes. No gameplay/Core/Persistence/Platform code, balance/config, camera setting, player model or save schema changed.
+
+## External audit compatibility
+
+- **Changes save schema: NO.** `SaveSchema.CurrentVersion` remains 1; DTOs, restore validation, migrations and save/offline configuration are unchanged. Presentation mesh repairs/bindings do not rename or remove persisted gameplay content IDs.
+- **Changes applicationId/build flavor behavior: NO.** `AndroidBuild`, `GravivoreVersion`, `build-android.ps1` and committed PlayerSettings are unchanged. Existing Dev/Candidate applicationId and persistentDataPath sharing remains; no release isolation is implemented here.
+- **Changes encounter persistence: NO.** Elite/boss gameplay, one-time completion state, rewards and save contracts are unchanged. No repeatable encounters or save schema v2 implementation was added.
+- **Materially increases renderer/material pressure: YES.** The integrated content adds substantial renderable inventory; ordinary, mixed-family and boss pressure is reported above. Exact comparative GPU cost and device FPS remain unmeasured.
+- **Creates new conflicts with MJ-1/MJ-2/MJ-3: none identified.** The diff contains no changes to the relevant persistence/build/encounter implementations, and full regression suites passed. MJ-1 strict restore and MJ-2 shared storage remain inherited deferred findings. MJ-3 is addressed at design level by merged [Phase4 specification #40](https://github.com/Shwedsky/gravivore/pull/40); its design documents are preserved unchanged and implementation remains outside Phase3C.
+
+This audit addendum updates reporting only. Existing compile, full EditMode/PlayMode, ProjectValidator and Android results still apply to identical runtime/assets/build files; they were not rerun for this documentation-only addition. The APK, checksum and captures remain unchanged. No Phase3C correctness regression was identified that requires persistence/release hardening.
 
 ## Android and device review
 
