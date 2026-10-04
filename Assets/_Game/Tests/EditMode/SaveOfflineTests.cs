@@ -792,15 +792,55 @@ namespace Gravivore.Tests.EditMode
         }
 
         [Test]
-        public void ProfileRestore_TuningChangeNormalizesResidualXpWithoutWipingProgress()
+        public void ProfileRestore_ExistingCurrentV1SaveRestoresWithoutDataLoss()
         {
             var context = CreateContext();
             var dto = FreshDto(context, Utc(2026, 10, 4, 12));
+
+            var restored = ProfileSaveMapper.Restore(dto, context);
+
+            Assert.That(restored.ProfileId.ToString("D"), Is.EqualTo(dto.profileId));
+            Assert.That(restored.PlayerStats.BaseLevels.Power, Is.EqualTo(dto.player.powerLevel));
+            Assert.That(restored.Progression.TotalAssimilationScore, Is.EqualTo(dto.player.totalAssimilationScore));
+        }
+
+        [Test]
+        public void Repository_MalformedMainStillRestoresValidatedBackup()
+        {
+            var directory = CreateTemporaryDirectory();
+            var context = CreateContext();
+            var time = new ManualTimeProvider(Utc(2026, 10, 4, 12));
+            var diagnostics = new RecordingDiagnostics();
+            var repository = CreateRepository(directory, time, diagnostics);
+            Func<SaveRootDto> freshFactory = () => FreshDto(context, time.UtcNow);
+            Action<SaveRootDto> validate = dto => ProfileSaveMapper.Restore(dto, context);
+
+            var first = freshFactory();
+            repository.Save(first, freshFactory, validate);
+            first.lastSeenUtc = time.UtcNow.AddMinutes(1).ToString("O");
+            repository.Save(first, freshFactory, validate);
+            File.WriteAllText(repository.MainPath, "{");
+
+            var loaded = repository.LoadOrCreate(freshFactory, validate);
+
+            Assert.That(loaded.RecoveredFromBackup, Is.True);
+            Assert.That(loaded.WasCreated, Is.False);
+            Assert.That(loaded.Save.profileId, Is.EqualTo(first.profileId));
+            Assert.That(diagnostics.WarningCount, Is.GreaterThan(0));
+        }
+
+        [Test]
+        public void ProfileRestore_TuningChangeNormalizesResidualXpWithoutWipingProgress()
+        {
+            var oldContext = CreateContext(10, 10f);
+            var dto = FreshDto(oldContext, Utc(2026, 10, 4, 12));
             dto.player.powerLevel = 1;
             dto.player.powerExperience = 5f;
-            var warnings = new List<string>();
+            Assert.DoesNotThrow(() => ProfileSaveMapper.Restore(dto, oldContext));
 
-            var restored = ProfileSaveMapper.Restore(dto, context, warnings.Add);
+            var currentContext = CreateContext(10, 2f);
+            var warnings = new List<string>();
+            var restored = ProfileSaveMapper.Restore(dto, currentContext, warnings.Add);
 
             Assert.That(restored.PlayerStats.BaseLevels.Power, Is.EqualTo(3));
             Assert.That(restored.Progression.GetStatExperience(PlayerStatType.Power), Is.EqualTo(1f).Within(0.0001f));
@@ -945,7 +985,9 @@ namespace Gravivore.Tests.EditMode
                 fileSystem);
         }
 
-        private static ProfileRestoreContext CreateContext(int maximumLevel = 10)
+        private static ProfileRestoreContext CreateContext(
+            int maximumLevel = 10,
+            float thresholdLevelOneCost = 2f)
         {
             var curve = new StatCurve(maximumLevel, 1f, 1f, 0f, 0f, 1000f);
             var stats = new PlayerStatsConfiguration(
@@ -958,7 +1000,7 @@ namespace Gravivore.Tests.EditMode
                 20f,
                 new PlayerStatLevels(1, 1, 1, 1, 1));
             var progression = new ProgressionConfiguration(
-                new ProgressionThresholdCurve(2f, 0f, 0f, 1000f),
+                new ProgressionThresholdCurve(thresholdLevelOneCost, 0f, 0f, 1000f),
                 new[]
                 {
                     new CoreReward("scout-drone", PlayerStatType.Power, 1f, 1),
