@@ -10,7 +10,7 @@ namespace Gravivore.Tests.PlayMode
     public sealed class S15AssetIntegrationSmokeTests
     {
         [UnityTest]
-        public IEnumerator CanonicalScene_BuildsPlayerAndEnvironmentFromAuthoredMeshes()
+        public IEnumerator CanonicalScene_BuildsPlayerAndPhase3EnvironmentPresentation()
         {
             var scene = new CanonicalSceneTestScope();
             yield return scene.Load();
@@ -20,8 +20,10 @@ namespace Gravivore.Tests.PlayMode
                 playerVisual = scene.Root.PlayerObject.transform.Find("Player Visual Root/G0_Tier0_ArtSpike");
             Assert.IsNotNull(playerVisual);
             Assert.That(playerVisual.GetComponentsInChildren<MeshRenderer>(true), Has.Length.GreaterThanOrEqualTo(3));
-            Assert.IsNotNull(GameObject.Find("Landmark relay-yard/S15 Visual [relay-yard]"));
-            Assert.IsNotNull(GameObject.Find("Landmark hauler-graveyard/S15 Visual [hauler-graveyard]"));
+            var visualWorld = scene.Root.WorldPresenter.VisualBaseline.Root.transform;
+            Assert.IsNotNull(visualWorld.Find("Zone Landmark [relay-yard]"));
+            Assert.IsNotNull(visualWorld.Find("Zone Landmark [hauler-graveyard]"));
+            Assert.IsNotNull(visualWorld.Find("Repair Hub"));
 
             yield return scene.Cleanup();
         }
