@@ -40,7 +40,7 @@ namespace Gravivore.Presentation.Composition
 
         private static void AttachToProductionRoots()
         {
-            var roots = Object.FindObjectsByType<S01SceneCompositionRoot>(FindObjectsSortMode.None);
+            var roots = UnityEngine.Object.FindObjectsByType<S01SceneCompositionRoot>(FindObjectsSortMode.None);
             for (var i = 0; i < roots.Length; i++)
             {
                 var root = roots[i];
