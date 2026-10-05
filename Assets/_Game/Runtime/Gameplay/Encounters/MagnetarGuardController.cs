@@ -83,6 +83,20 @@ namespace Gravivore.Gameplay.Encounters
 
         public bool IsHostileTo(CombatFaction faction) => faction == CombatFaction.Player;
 
+        public bool ResetForRepeat()
+        {
+            if (!_initialized || IsAlive || State != MagnetarGuardState.Dead) return false;
+            CancelActiveShockwave();
+            _encounterActive = false;
+            _body.enabled = false;
+            _sensingCollider.enabled = false;
+            transform.position = _configuration.SpawnPosition;
+            transform.rotation = Quaternion.identity;
+            _health.Reset(_configuration.MaximumHitPoints);
+            _brain.Reset();
+            return true;
+        }
+
         public DamageResult ApplyDamage(in DamageRequest request)
         {
             if (!IsAlive) return new DamageResult(0f, false);

@@ -5,7 +5,7 @@ namespace Gravivore.Persistence.Profile
 {
     public static class SaveSchema
     {
-        public const int CurrentVersion = 1;
+        public const int CurrentVersion = 2;
     }
 
     [Serializable]
@@ -21,6 +21,7 @@ namespace Gravivore.Persistence.Profile
         public QuestSaveDto quest;
         public InventorySaveDto inventory;
         public OfflineSaveDto offline;
+        public Chapter1RepeatableSaveDto repeatable;
     }
 
     [Serializable]
@@ -63,6 +64,36 @@ namespace Gravivore.Persistence.Profile
     }
 
     [Serializable]
+    public sealed class Chapter1RepeatableSaveDto
+    {
+        public string effectiveUtcFloor;
+        public RepeatableEncounterSaveDto magnetar;
+        public RepeatableEncounterSaveDto custodian;
+        public PendingEncounterRewardSaveDto pendingReward;
+    }
+
+    [Serializable]
+    public sealed class RepeatableEncounterSaveDto
+    {
+        public string nextAvailableUtc;
+        public string rewardWindowStartedUtc;
+        public int rewardedKillsInWindow;
+    }
+
+    [Serializable]
+    public sealed class PendingEncounterRewardSaveDto
+    {
+        public string transactionId;
+        public int encounterKind;
+        public int entitlement;
+        public string enemyId;
+        public int stat;
+        public float statExperience;
+        public long assimilationScore;
+        public int phase;
+    }
+
+    [Serializable]
     public sealed class LegacySaveRootV0Dto
     {
         public int schemaVersion;
@@ -74,5 +105,20 @@ namespace Gravivore.Persistence.Profile
         public BossCompletionSaveDto boss;
         public QuestSaveDto quest;
         public InventorySaveDto inventory;
+    }
+
+    [Serializable]
+    public sealed class LegacySaveRootV1Dto
+    {
+        public int schemaVersion;
+        public string profileId;
+        public string createdUtc;
+        public string lastSeenUtc;
+        public PlayerProgressionSaveDto player;
+        public WorldSaveDto world;
+        public BossCompletionSaveDto boss;
+        public QuestSaveDto quest;
+        public InventorySaveDto inventory;
+        public OfflineSaveDto offline;
     }
 }

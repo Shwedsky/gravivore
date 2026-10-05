@@ -14,10 +14,11 @@ namespace Gravivore.Tests.PlayMode
         private readonly string _directory = Path.Combine(
             Path.GetTempPath(),
             "gravivore-canonical-playmode-" + Guid.NewGuid().ToString("N"));
-        private readonly ITimeProvider _time = new FixedTimeProvider(
+        private readonly FixedTimeProvider _time = new FixedTimeProvider(
             new DateTime(2031, 4, 5, 12, 0, 0, DateTimeKind.Utc));
 
         public S01SceneCompositionRoot Root { get; private set; }
+        public void AdvanceTime(TimeSpan duration) => _time.UtcNow += duration;
 
         public IEnumerator Load(Action<S01SceneCompositionRoot> configure = null)
         {
@@ -54,7 +55,7 @@ namespace Gravivore.Tests.PlayMode
         private sealed class FixedTimeProvider : ITimeProvider
         {
             public FixedTimeProvider(DateTime utcNow) => UtcNow = utcNow;
-            public DateTime UtcNow { get; }
+            public DateTime UtcNow { get; set; }
         }
     }
 }

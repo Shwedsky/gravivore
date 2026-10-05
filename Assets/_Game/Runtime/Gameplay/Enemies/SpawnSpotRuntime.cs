@@ -36,6 +36,7 @@ namespace Gravivore.Gameplay.Enemies
         private float _elapsedTime;
         private int _nextAnchorIndex;
         private bool _isDisposed;
+        private bool _active = true;
 
         public SpawnSpotRuntime(
             SpawnSpotRuntimeConfiguration configuration,
@@ -65,6 +66,26 @@ namespace Gravivore.Gameplay.Enemies
         }
 
         public string Id => _configuration.Id;
+        public bool IsActive => _active;
+
+        public void SetActive(bool active)
+        {
+            if (_active == active) return;
+            _active = active;
+            if (active) return;
+            for (var i = _liveEnemies.Count - 1; i >= 0; i--)
+            {
+                var entry = _liveEnemies[i];
+                entry.Enemy.Damaged -= HandleEnemyDamaged;
+                entry.Enemy.Died -= HandleEnemyDied;
+                _occupiedAnchors[entry.AnchorIndex] = false;
+                _population.RegisterRecycle();
+                _globalCapacity.Release();
+                _pool.Return(entry.Enemy);
+                _respawnSchedule.Schedule(_elapsedTime);
+            }
+            _liveEnemies.Clear();
+        }
 
         public int LiveCount => _population.LiveCount;
 
@@ -96,7 +117,7 @@ namespace Gravivore.Gameplay.Enemies
 
             _elapsedTime += deltaTime;
             _adaptiveRespawn.AdvanceTo(_elapsedTime);
-            while (_population.NeedsSpawn && _respawnSchedule.HasReady(_elapsedTime))
+            while (_active && _population.NeedsSpawn && _respawnSchedule.HasReady(_elapsedTime))
             {
                 if (!TrySpawnOne())
                 {
@@ -210,7 +231,8 @@ namespace Gravivore.Gameplay.Enemies
         private void HandleEnemyDied(EnemyDeathEvent death)
         {
             _adaptiveRespawn.RegisterKill(_elapsedTime);
-            SafeEventDispatch.Publish(EnemyDied, death);
+            SafeEventDispatch.Publish(EnemyDied, new EnemyDeathEvent(death.LifeId, death.EnemyId,
+                death.Position, _configuration.RewardMultiplier));
         }
 
         private void HandleEnemyDamaged(EnemyDamageEvent damage)

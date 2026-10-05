@@ -7,7 +7,7 @@ namespace Gravivore.Presentation.UI
     {
         public const string CyrillicValidationSample = "ПРОЧНОСТЬ МАНЁВРЕННОСТЬ";
         public const string Durability = "ПРОЧНОСТЬ";
-        public const string BossName = "ХРАНИТЕЛЬ M-0";
+        public const string BossName = "ХРАНИТЕЛЬ М-0";
         public const string Paused = "ПАУЗА";
         public const string GameMenu = "МЕНЮ";
         public const string Characteristics = "ХАРАКТЕРИСТИКИ";
@@ -18,7 +18,7 @@ namespace Gravivore.Presentation.UI
         public const string WelcomeBack = "С ВОЗВРАЩЕНИЕМ";
         public const string Claim = "ЗАБРАТЬ";
         public const string ChapterComplete = "ГЛАВА ЗАВЕРШЕНА";
-        public const string BossDefeated = "Хранитель M-0 уничтожен";
+        public const string BossDefeated = "Хранитель М-0 уничтожен";
         public const string ContinueExploring = "ПРОДОЛЖИТЬ ИГРУ";
         public const string PrimarySequenceComplete = "ОСНОВНАЯ ЦЕПОЧКА ЗАВЕРШЕНА";
 
@@ -31,7 +31,7 @@ namespace Gravivore.Presentation.UI
                 case PlayerStatType.Armor: return "Броня";
                 case PlayerStatType.Flux: return "Поток";
                 case PlayerStatType.Mobility: return "Манёвренность";
-                default: return stat.ToString();
+                default: return "Характеристика";
             }
         }
 
@@ -52,7 +52,7 @@ namespace Gravivore.Presentation.UI
                 case Gravivore.Gameplay.Equipment.EquipmentSlot.Core: return "Ядро";
                 case Gravivore.Gameplay.Equipment.EquipmentSlot.Chassis: return "Корпус";
                 case Gravivore.Gameplay.Equipment.EquipmentSlot.Module: return "Модуль";
-                default: return slot.ToString();
+                default: return "Ячейка";
             }
         }
         public static string Away(string duration) => $"ВНЕ ИГРЫ {duration}";
@@ -62,6 +62,33 @@ namespace Gravivore.Presentation.UI
         public static string IntroProgress(int current, int required) => $"Вводные цели {current}/{required}";
         public static string AssimilationReward(float experience, PlayerStatType stat) =>
             $"+{experience:0.#} {StatName(stat)}";
+
+        public static string SpotName(string id)
+        {
+            switch (id)
+            {
+                case "relay-yard": return "Релейный двор";
+                case "cutting-floor": return "Разделочный цех";
+                case "shield-dump": return "Свалка щитов";
+                case "capacitor-field": return "Поле конденсаторов";
+                case "hauler-graveyard": return "Кладбище тягачей";
+                default: return "Зона";
+            }
+        }
+
+        public static string BossState(Gravivore.Gameplay.Encounters.CustodianBossState state)
+        {
+            switch (state)
+            {
+                case Gravivore.Gameplay.Encounters.CustodianBossState.Dormant: return "ожидание";
+                case Gravivore.Gameplay.Encounters.CustodianBossState.Engaging: return "бой";
+                case Gravivore.Gameplay.Encounters.CustodianBossState.Telegraphing: return "подготовка атаки";
+                case Gravivore.Gameplay.Encounters.CustodianBossState.ExecutingAttack: return "атака";
+                case Gravivore.Gameplay.Encounters.CustodianBossState.Recovery: return "восстановление";
+                case Gravivore.Gameplay.Encounters.CustodianBossState.Resetting: return "возврат";
+                default: return "уничтожен";
+            }
+        }
 
         public static bool FontSupportsCyrillic(Font font)
         {

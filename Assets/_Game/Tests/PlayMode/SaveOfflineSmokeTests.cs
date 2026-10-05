@@ -93,9 +93,11 @@ namespace Gravivore.Tests.PlayMode
             Assert.IsTrue(restored.WorldUnlocks.State.EliteDefeated);
             Assert.IsTrue(restored.WorldUnlocks.State.BossGateUnlocked);
             Assert.IsTrue(restored.BossCompletion.IsDefeated);
-            Assert.IsFalse(restored.MagnetarGuard.IsEncounterActive);
+            Assert.IsTrue(restored.MagnetarGuard.IsEncounterActive, "The saved first clear stays permanent while its repeat becomes available after 15 minutes.");
             Assert.That(restored.CustodianBoss.State, Is.EqualTo(
-                Gravivore.Gameplay.Encounters.CustodianBossState.Dead));
+                Gravivore.Gameplay.Encounters.CustodianBossState.Dormant));
+            Assert.That(restored.MapMarkers.GetMarker(10).RemainingSeconds, Is.Zero);
+            Assert.That(restored.MapMarkers.GetMarker(11).RemainingSeconds, Is.Zero);
             Assert.IsFalse(restored.CustodianBoss.CanBeTargeted);
             Assert.That(restored.OfflineRewards.State.PendingReward, Is.EqualTo(15));
             Assert.That(restored.OfflineReturnSummary.EarnedAmount, Is.EqualTo(15));

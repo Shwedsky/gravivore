@@ -1,0 +1,154 @@
+{
+  "baseline": "60b4035a2a1528a0211ff877e00cf206c0e607c4",
+  "runtimeSource": "01c6b1ad510f946de3349a60e76219142e8e948f",
+  "branch": "integration/chapter1-runtime-consolidation",
+  "unity": "6000.3.0f1",
+  "checkedUtc": "2026-10-05T17:30:43.7898691Z",
+  "compile": "passed",
+  "projectValidator": "passed",
+  "editMode": {
+    "total": 386,
+    "passed": 386,
+    "failed": 0,
+    "skipped": 0,
+    "skippedTests": [],
+    "stabilizationTests": [
+      {
+        "name": "Gravivore.Tests.EditMode.Chapter1WarningReadabilityTests.WarningFill_MatchesContourPersistsAndReusesItsMesh(\"HostileTelegraphBase\",3.2f,0.0f,0.0f,32)",
+        "result": "Passed"
+      },
+      {
+        "name": "Gravivore.Tests.EditMode.Chapter1WarningReadabilityTests.WarningFill_MatchesContourPersistsAndReusesItsMesh(\"BossCircleTelegraph\",4.0f,0.0f,0.0f,32)",
+        "result": "Passed"
+      },
+      {
+        "name": "Gravivore.Tests.EditMode.Chapter1WarningReadabilityTests.WarningFill_MatchesContourPersistsAndReusesItsMesh(\"BossConeTelegraph\",6.0f,0.0f,35.0f,22)",
+        "result": "Passed"
+      },
+      {
+        "name": "Gravivore.Tests.EditMode.Chapter1WarningReadabilityTests.WarningFill_MatchesContourPersistsAndReusesItsMesh(\"BossLineTelegraph\",7.0f,1.8f,0.0f,4)",
+        "result": "Passed"
+      }
+    ]
+  },
+  "playMode": {
+    "total": 93,
+    "passed": 92,
+    "failed": 0,
+    "skipped": 1,
+    "skippedTests": [
+      {
+        "name": "Gravivore.Tests.PlayMode.VisualIntegrationSmokeTests.CaptureStructuralFoundationWhenRequested",
+        "reason": "Set GRAVIVORE_VISUAL_INTEGRATION_QA to export structural review captures."
+      }
+    ],
+    "stabilizationTests": [
+      {
+        "name": "Gravivore.Tests.PlayMode.Chapter1DeviceStabilizationSmokeTests.ActualNonlethalEnemyHit_UsesDirectionalHostileImpactWithoutLegacyRedDiscs",
+        "result": "Passed"
+      },
+      {
+        "name": "Gravivore.Tests.PlayMode.Chapter1DeviceStabilizationSmokeTests.FreshProfile_PreEliteStrongPackSpawnsWithoutUnlockAndPhysicalGatesRemainIntact",
+        "result": "Passed"
+      },
+      {
+        "name": "Gravivore.Tests.PlayMode.Chapter1DeviceStabilizationSmokeTests.ProductionUi_AllMarkersEquipmentStatesAndDeveloperSurfaceUseRussian",
+        "result": "Passed"
+      }
+    ]
+  },
+  "captures": [
+    {
+      "file": "01_russian_map.png",
+      "bytes": 50282,
+      "sha256": "DCE115C40ACCE62EC660358F1CCBA359F8755E179EB2E7E8D0D18EEE5F755F0D",
+      "width": 540,
+      "height": 960,
+      "provenance": "Unity Camera.Render in actual Chapter01 PlayMode; controlled portrait camera and authoritative runtime events"
+    },
+    {
+      "file": "02_strong_spot_pre_elite.png",
+      "bytes": 366056,
+      "sha256": "3088CC0E4A1CF1B55D4E5311DB7CD54E244C6FD539118B517867C122E69299F1",
+      "width": 540,
+      "height": 960,
+      "provenance": "Unity Camera.Render in actual Chapter01 PlayMode; controlled portrait camera and authoritative runtime events"
+    },
+    {
+      "file": "03_magnetar_telegraph.png",
+      "bytes": 182662,
+      "sha256": "8651808E616606003CBD8124108748C5C068D932483296357BE909A8C19CA7EE",
+      "width": 540,
+      "height": 960,
+      "provenance": "Unity Camera.Render in actual Chapter01 PlayMode; controlled portrait camera and authoritative runtime events"
+    },
+    {
+      "file": "04_boss_cone_readability.png",
+      "bytes": 200781,
+      "sha256": "7DE35401D834ED63D568C6D0D97A86534163998EB5DF53ED84309CDCFF1A6818",
+      "width": 540,
+      "height": 960,
+      "provenance": "Unity Camera.Render in actual Chapter01 PlayMode; controlled portrait camera and authoritative runtime events"
+    },
+    {
+      "file": "05_boss_line_readability.png",
+      "bytes": 198575,
+      "sha256": "209B56E7BEE2C0272EF300187B3E4BA04205AE77B0A26665C432313AD95D51F3",
+      "width": 540,
+      "height": 960,
+      "provenance": "Unity Camera.Render in actual Chapter01 PlayMode; controlled portrait camera and authoritative runtime events"
+    },
+    {
+      "file": "06_boss_circle_readability.png",
+      "bytes": 198153,
+      "sha256": "85CEF1BE5AB6A14E7F82FD4C2AB06DD87FA32B1C3297648DF84012E8757018AE",
+      "width": 540,
+      "height": 960,
+      "provenance": "Unity Camera.Render in actual Chapter01 PlayMode; controlled portrait camera and authoritative runtime events"
+    },
+    {
+      "file": "07_enemy_impact_updated.png",
+      "bytes": 369256,
+      "sha256": "F69819680E3D71635BFB2596F6FFFE9C02C319A46168892AC2D567C53701279D",
+      "width": 540,
+      "height": 960,
+      "provenance": "Unity Camera.Render in actual Chapter01 PlayMode; controlled portrait camera and authoritative runtime events"
+    },
+    {
+      "file": "08_repair_hub_russian.png",
+      "bytes": 373087,
+      "sha256": "A45F7F6ACF8415E5FC59D0382ADD1F6FC4DF83DE1417F9B7DD5725243D1FA32B",
+      "width": 540,
+      "height": 960,
+      "provenance": "Unity Camera.Render in actual Chapter01 PlayMode; controlled portrait camera and authoritative runtime events"
+    }
+  ],
+  "rawEvidence": [
+    {
+      "path": "Builds/StabilizationLogs/compile-validator.log",
+      "sha256": "05BB60C7366114A664469F054F634998F421ECAF28E9AA17551A2B09EE267271"
+    },
+    {
+      "path": "Builds/StabilizationLogs/editmode.log",
+      "sha256": "93866CBC2E78397713E39F7F0E0790785EAAE8265DA8E6747A0D5FC6030DF65A"
+    },
+    {
+      "path": "Builds/StabilizationLogs/editmode.xml",
+      "sha256": "BF68986352FFD5026EF066BEE773ED43A14E895C9241BFD8A9C74F40D265E5AE"
+    },
+    {
+      "path": "Builds/StabilizationLogs/playmode.log",
+      "sha256": "B35F8CB564CC6C6D482643F15ED90DF2D277747B6CC31894DB39396D75CEED53"
+    },
+    {
+      "path": "Builds/StabilizationLogs/playmode.xml",
+      "sha256": "8E7D8017273A232B8E7BDDAD7A36A26C33BFA8A8A54399953ADD49EEFA6C1882"
+    }
+  ],
+  "unchanged": [
+    "Assets/_Game/Runtime/Gameplay",
+    "Assets/_Game/Runtime/Persistence",
+    "VisualReplacementProofV1",
+    "Phase6B audio assets"
+  ]
+}

@@ -37,6 +37,8 @@ namespace Gravivore.Gameplay.Encounters
         public event Action<BossEncounterResetEvent> EncounterReset;
         public event Action<BossEncounterStartedEvent> EncounterStarted;
         public event Action<DamageResult> Damaged;
+        public event Action<BossDefeatedEvent> Defeated;
+        private bool _externalDefeatAuthority;
 
         public Transform TargetPoint => _targetPoint;
         public string Id => _configuration.Id;
@@ -64,7 +66,8 @@ namespace Gravivore.Gameplay.Encounters
             PlayerHealthController playerHealth,
             IPullDestinationResolver chargeResolver,
             IBossEncounterAccess encounterAccess,
-            BossCompletionState completion)
+            BossCompletionState completion,
+            bool externalDefeatAuthority = false)
         {
             if (_initialized) throw new InvalidOperationException("Custodian boss is already initialized.");
             _body = body != null ? body : throw new ArgumentNullException(nameof(body));
@@ -76,6 +79,7 @@ namespace Gravivore.Gameplay.Encounters
             _chargeResolver = chargeResolver ?? throw new ArgumentNullException(nameof(chargeResolver));
             _encounterAccess = encounterAccess ?? throw new ArgumentNullException(nameof(encounterAccess));
             _completion = completion ?? throw new ArgumentNullException(nameof(completion));
+            _externalDefeatAuthority = externalDefeatAuthority;
             ValidateSensingCollider(targetLayer);
             ConfigureBody();
             _health.Reset(configuration.MaximumHitPoints);
@@ -100,9 +104,12 @@ namespace Gravivore.Gameplay.Encounters
             SafeEventDispatch.Publish(Damaged, result);
             if (!result.WasLethal) return result;
             _stateMachine.MarkDead();
+            _body.enabled = false;
+            _sensingCollider.enabled = false;
             try
             {
-                _completion.TryRecordDefeat(_configuration.Id, transform.position);
+                if (!_externalDefeatAuthority) _completion.TryRecordDefeat(_configuration.Id, transform.position);
+                SafeEventDispatch.Publish(Defeated, new BossDefeatedEvent(_configuration.Id, transform.position));
             }
             catch (Exception exception)
             {
@@ -115,6 +122,21 @@ namespace Gravivore.Gameplay.Encounters
         public bool TryDisplace(Vector3 destination, in DisplacementContext context)
         {
             return false;
+        }
+
+        public bool ResetForRepeat()
+        {
+            if (!_initialized || State != CustodianBossState.Dead || !_encounterAccess.CanEngage) return false;
+            _health.Reset(_configuration.MaximumHitPoints);
+            _stateMachine = new CustodianBossStateMachine(_configuration);
+            _telegraphOrigin = default;
+            _telegraphDirection = default;
+            _outsideArenaSeconds = 0f;
+            SetPosition(_configuration.StartPosition);
+            _sensingCollider.enabled = true;
+            SafeEventDispatch.Publish(EncounterReset,
+                new BossEncounterResetEvent(_configuration.Id, _configuration.StartPosition));
+            return true;
         }
 
         public void Tick(float deltaTime)

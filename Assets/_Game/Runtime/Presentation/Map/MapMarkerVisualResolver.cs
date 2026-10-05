@@ -55,8 +55,8 @@ namespace Gravivore.Presentation.Map
             var locked = marker.ProgressionLocked;
             var cooldown = marker.Availability == MapAvailabilityState.Cooldown;
             var completed = !locked &&
-                            marker.Kind == MapMarkerKind.Boss &&
-                            marker.Availability == MapAvailabilityState.Defeated;
+                            ((marker.Kind == MapMarkerKind.Boss || marker.Kind == MapMarkerKind.Elite) && marker.FirstClearCompleted ||
+                             marker.Kind == MapMarkerKind.Boss && marker.Availability == MapAvailabilityState.Defeated);
             var inactive = !locked && !completed &&
                            (marker.Availability == MapAvailabilityState.Inactive ||
                             marker.Availability == MapAvailabilityState.Defeated);

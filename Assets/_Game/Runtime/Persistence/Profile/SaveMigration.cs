@@ -69,12 +69,14 @@ namespace Gravivore.Persistence.Profile
             if (migrations == null) throw new ArgumentNullException(nameof(migrations));
             for (var i = 0; i < migrations.Count; i++)
             {
-                var migration = migrations[i] ?? throw new ArgumentException("Migration entries cannot be null.", nameof(migrations));
-                if (migration.FromVersion < 0 || migration.ToVersion != migration.FromVersion + 1 ||
-                    !_migrations.TryAdd(migration.FromVersion, migration))
-                {
-                    throw new ArgumentException("Migrations must be unique sequential steps.", nameof(migrations));
-                }
+                Register(migrations[i] ?? throw new ArgumentException("Migration entries cannot be null.", nameof(migrations)));
+            }
+
+            // Sequential migrations introduced by the persistence assembly are registered here so
+            // presentation/composition callers do not need to change whenever the schema advances.
+            if (_currentVersion >= 2 && !_migrations.ContainsKey(1))
+            {
+                Register(new SaveMigrationV1ToV2());
             }
         }
 
@@ -114,6 +116,15 @@ namespace Gravivore.Persistence.Profile
 
             return new SaveMigrationResult(save, migrated);
         }
+
+        private void Register(ISaveMigration migration)
+        {
+            if (migration.FromVersion < 0 || migration.ToVersion != migration.FromVersion + 1 ||
+                !_migrations.TryAdd(migration.FromVersion, migration))
+            {
+                throw new ArgumentException("Migrations must be unique sequential steps.", nameof(migration));
+            }
+        }
     }
 
     public sealed class SaveMigrationV0ToV1 : ISaveMigration
@@ -139,6 +150,66 @@ namespace Gravivore.Persistence.Profile
                 inventory = legacy.inventory,
                 offline = defaults.offline
             };
+        }
+    }
+
+    public sealed class SaveMigrationV1ToV2 : ISaveMigration
+    {
+        public int FromVersion => 1;
+        public int ToVersion => 2;
+
+        public SaveRootDto Migrate(string sourceJson, ISaveSerializer serializer, SaveRootDto defaults)
+        {
+            if (serializer == null) throw new ArgumentNullException(nameof(serializer));
+            if (defaults == null) throw new ArgumentNullException(nameof(defaults));
+            var legacy = serializer.Deserialize<LegacySaveRootV1Dto>(sourceJson);
+            var defaultRepeatable = defaults.repeatable ?? CreateFreshRepeatable(legacy.lastSeenUtc);
+
+            return new SaveRootDto
+            {
+                schemaVersion = ToVersion,
+                profileId = legacy.profileId,
+                createdUtc = legacy.createdUtc,
+                lastSeenUtc = legacy.lastSeenUtc,
+                player = legacy.player,
+                world = legacy.world,
+                boss = legacy.boss,
+                quest = legacy.quest,
+                inventory = legacy.inventory,
+                offline = legacy.offline,
+                repeatable = new Chapter1RepeatableSaveDto
+                {
+                    // v1 had no encounter kill timestamps. A historical first clear therefore
+                    // migrates with no cooldown and is immediately repeatable by contract.
+                    effectiveUtcFloor = legacy.lastSeenUtc,
+                    magnetar = CloneEncounter(defaultRepeatable.magnetar),
+                    custodian = CloneEncounter(defaultRepeatable.custodian),
+                    pendingReward = null
+                }
+            };
+        }
+
+        private static Chapter1RepeatableSaveDto CreateFreshRepeatable(string floorUtc)
+        {
+            return new Chapter1RepeatableSaveDto
+            {
+                effectiveUtcFloor = floorUtc,
+                magnetar = new RepeatableEncounterSaveDto(),
+                custodian = new RepeatableEncounterSaveDto(),
+                pendingReward = null
+            };
+        }
+
+        private static RepeatableEncounterSaveDto CloneEncounter(RepeatableEncounterSaveDto source)
+        {
+            return source == null
+                ? new RepeatableEncounterSaveDto()
+                : new RepeatableEncounterSaveDto
+                {
+                    nextAvailableUtc = source.nextAvailableUtc,
+                    rewardWindowStartedUtc = source.rewardWindowStartedUtc,
+                    rewardedKillsInWindow = source.rewardedKillsInWindow
+                };
         }
     }
 }

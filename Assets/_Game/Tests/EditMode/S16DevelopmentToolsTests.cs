@@ -186,7 +186,7 @@ namespace Gravivore.Tests.EditMode
         }
 
         [Test]
-        public void DevelopmentSources_AreCompileGuardedAndSaveSchemaIsUnchanged()
+        public void DevelopmentSources_AreCompileGuardedAndSaveSchemaIsCurrent()
         {
             var projectRoot = Directory.GetParent(Application.dataPath).FullName;
             var developmentDirectory = Path.Combine(projectRoot, "Assets", "_Game", "Runtime", "Presentation", "Development");
@@ -195,7 +195,7 @@ namespace Gravivore.Tests.EditMode
                 StringAssert.StartsWith("#if UNITY_EDITOR || DEVELOPMENT_BUILD", File.ReadAllText(path));
             }
 
-            Assert.That(SaveSchema.CurrentVersion, Is.EqualTo(1));
+            Assert.That(SaveSchema.CurrentVersion, Is.EqualTo(2));
         }
 
         private static PlayerStatsState CreateStats()

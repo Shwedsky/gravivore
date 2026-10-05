@@ -8,7 +8,7 @@ namespace Gravivore.Gameplay.Enemies
 {
     public readonly struct EnemyDeathEvent
     {
-        public EnemyDeathEvent(EnemyLifeId lifeId, string enemyId, Vector3 position)
+        public EnemyDeathEvent(EnemyLifeId lifeId, string enemyId, Vector3 position, float rewardMultiplier = 1f)
         {
             if (!lifeId.IsValid)
             {
@@ -23,6 +23,9 @@ namespace Gravivore.Gameplay.Enemies
             LifeId = lifeId;
             EnemyId = enemyId;
             Position = position;
+            if (float.IsNaN(rewardMultiplier) || float.IsInfinity(rewardMultiplier) || rewardMultiplier <= 0f)
+                throw new ArgumentOutOfRangeException(nameof(rewardMultiplier));
+            RewardMultiplier = rewardMultiplier;
         }
 
         public EnemyLifeId LifeId { get; }
@@ -30,6 +33,7 @@ namespace Gravivore.Gameplay.Enemies
         public string EnemyId { get; }
 
         public Vector3 Position { get; }
+        public float RewardMultiplier { get; }
     }
 
     public readonly struct EnemyDamageEvent

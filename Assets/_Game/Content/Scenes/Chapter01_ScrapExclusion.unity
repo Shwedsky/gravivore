@@ -162,8 +162,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 50b4a4e0ce4e4dada7aeb9e225c6183a, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   _movementSettings: {fileID: 11400000, guid: 815f13c7187f42a5a564a1c0e4c11762, type: 2}
   _playerStatsDefinition: {fileID: 11400000, guid: af6ee0888c924cf7aa88b7c0eea46136, type: 2}
   _playerRecoverySettings: {fileID: 11400000, guid: 7fa8e3ff161742df82143efbd1742e90, type: 2}
@@ -188,6 +188,7 @@ MonoBehaviour:
   _cameraSettings: {fileID: 11400000, guid: a547497423d645179941e44e6214b058, type: 2}
   _materialPalette: {fileID: 11400000, guid: 59c9cf30794010b42b51cfa2149e9e4a, type: 2}
   _s14PresentationDefinition: {fileID: 11400000, guid: 27a4342859972e940af21cc9752ef26b, type: 2}
+  _phase6BProductionDefinition: {fileID: 11400000, guid: ec57d15af5a74840a189469ade01a3aa, type: 2}
   _s15VisualCatalog: {fileID: 11400000, guid: b3163adf27a5ccb4c92aa12eae129dfa, type: 2}
   _visualEnvironment: {fileID: 707714296}
   _playerSpawn: {x: 0, y: 0, z: -30}
@@ -1869,7 +1870,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5110ec6ccd9fecb4e90ddb7e85cdbba9, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Gravivore.Presentation::Gravivore.Presentation.World.ChapterVisualEnvironment
   _definition: {fileID: 11400000, guid: 32bf88e9256235d4892c007e7e8381ff, type: 2}
   _fallbackRoot: {fileID: 103115172}
@@ -1884,11 +1885,11 @@ MonoBehaviour:
   _showFallbackEnvironment: 0
   _regions:
   - _id: repair-hub
-    _enemyId:
+    _enemyId: 
     _root: {fileID: 1055695912}
     _landmark: {fileID: 0}
   - _id: start-region
-    _enemyId:
+    _enemyId: 
     _root: {fileID: 1244400377}
     _landmark: {fileID: 0}
   - _id: relay-yard

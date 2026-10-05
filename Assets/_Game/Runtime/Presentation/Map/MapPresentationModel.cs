@@ -1,4 +1,5 @@
 using System;
+using Gravivore.Gameplay.Encounters;
 using UnityEngine;
 
 namespace Gravivore.Presentation.Map
@@ -43,7 +44,11 @@ namespace Gravivore.Presentation.Map
             float headingDegrees = 0f,
             float remainingSeconds = 0f,
             float cooldownProgress01 = -1f,
-            MapRewardState rewardState = MapRewardState.Unknown)
+            MapRewardState rewardState = MapRewardState.Unknown,
+            bool firstClearCompleted = false,
+            EncounterRewardEntitlement rewardEntitlement = EncounterRewardEntitlement.FirstClear,
+            int premiumRewardsRemaining = 0,
+            float rewardWindowRemainingSeconds = 0f)
         {
             if (string.IsNullOrEmpty(id)) throw new ArgumentException("Marker id is required.", nameof(id));
             Id = id;
@@ -57,6 +62,10 @@ namespace Gravivore.Presentation.Map
             RemainingSeconds = Mathf.Max(0f, remainingSeconds);
             CooldownProgress01 = cooldownProgress01 < 0f ? -1f : Mathf.Clamp01(cooldownProgress01);
             RewardState = rewardState;
+            FirstClearCompleted = firstClearCompleted;
+            RewardEntitlement = rewardEntitlement;
+            PremiumRewardsRemaining = premiumRewardsRemaining;
+            RewardWindowRemainingSeconds = rewardWindowRemainingSeconds;
         }
 
         public string Id { get; }
@@ -70,6 +79,10 @@ namespace Gravivore.Presentation.Map
         public float RemainingSeconds { get; }
         public float CooldownProgress01 { get; }
         public MapRewardState RewardState { get; }
+        public bool FirstClearCompleted { get; }
+        public EncounterRewardEntitlement RewardEntitlement { get; }
+        public int PremiumRewardsRemaining { get; }
+        public float RewardWindowRemainingSeconds { get; }
 
         public bool Equals(MapMarkerSnapshot other) =>
             Id == other.Id &&
@@ -82,7 +95,9 @@ namespace Gravivore.Presentation.Map
             Mathf.Approximately(HeadingDegrees, other.HeadingDegrees) &&
             Mathf.Approximately(RemainingSeconds, other.RemainingSeconds) &&
             Mathf.Approximately(CooldownProgress01, other.CooldownProgress01) &&
-            RewardState == other.RewardState;
+            RewardState == other.RewardState && FirstClearCompleted == other.FirstClearCompleted &&
+            RewardEntitlement == other.RewardEntitlement && PremiumRewardsRemaining == other.PremiumRewardsRemaining &&
+            Mathf.Approximately(RewardWindowRemainingSeconds, other.RewardWindowRemainingSeconds);
 
         public override bool Equals(object obj) => obj is MapMarkerSnapshot other && Equals(other);
         public override int GetHashCode() => Id.GetHashCode();

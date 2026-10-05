@@ -28,7 +28,7 @@ namespace Gravivore.Presentation.Combat
             MagnetarGuardController elite,
             CustodianBossController boss,
             BossCompletionState completion,
-            Material litMaterial)
+            Material litMaterial, bool phase6BOwned = false)
         {
             _elite = elite != null ? elite : throw new ArgumentNullException(nameof(elite));
             _boss = boss != null ? boss : throw new ArgumentNullException(nameof(boss));
@@ -39,6 +39,7 @@ namespace Gravivore.Presentation.Combat
             _bossCone = CreateIndicator("Boss Cone Telegraph", PrimitiveType.Cube, new Color(0.92f, 0.18f, 0.18f, 1f), litMaterial);
             _bossLine = CreateIndicator("Boss Line Telegraph", PrimitiveType.Cube, new Color(0.92f, 0.18f, 0.18f, 1f), litMaterial);
             _impact = CreateIndicator("Boss Damage Impact", PrimitiveType.Cylinder, new Color(1f, 0.9f, 0.3f, 1f), litMaterial);
+            if (phase6BOwned) return;
             _elite.TelegraphStarted += HandleEliteTelegraph;
             _elite.ShockwaveResolved += HandleEliteResolved;
             _elite.ShockwaveCancelled += HandleEliteCancelled;

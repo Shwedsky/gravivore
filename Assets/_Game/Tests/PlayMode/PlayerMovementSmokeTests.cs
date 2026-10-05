@@ -33,7 +33,7 @@ namespace Gravivore.Tests.PlayMode
                 compositionRoot.PlayerHealth.Armor,
                 Is.EqualTo(compositionRoot.PlayerStats.DerivedStats.ArmorValue));
             Assert.IsNotNull(compositionRoot.EnemyPopulation);
-            Assert.That(compositionRoot.EnemyPopulation.SpotCount, Is.EqualTo(5));
+            Assert.That(compositionRoot.EnemyPopulation.SpotCount, Is.EqualTo(9));
             Assert.IsNotNull(compositionRoot.Progression);
             Assert.That(compositionRoot.Progression.State.TotalAssimilationScore, Is.Zero);
             Assert.IsNotNull(compositionRoot.EvolutionPresenter);

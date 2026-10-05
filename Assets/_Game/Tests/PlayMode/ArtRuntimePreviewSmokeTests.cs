@@ -102,7 +102,7 @@ namespace Gravivore.Tests.PlayMode
             var socket = player.transform.Find("Player Visual Root/Gravity Lash Presentation Origin");
             Assert.That(socket.position.y - player.transform.position.y, Is.InRange(1f, 1.2f));
             vfx.Play(player.transform.position, cutters[0].TargetPoint.position);
-            var beam = vfx.LastPlayedObject.GetComponent<LineRenderer>();
+            var beam = vfx.LastPlayedObject.GetComponentInChildren<LineRenderer>(true);
             Assert.That(beam.GetPosition(0), Is.EqualTo(socket.position));
             Assert.That(beam.GetPosition(1), Is.EqualTo(cutters[0].TargetPoint.position));
             Assert.That(player.transform.position, Is.EqualTo(new Vector3(0, 0, 35)));

@@ -13,6 +13,7 @@ namespace Gravivore.Gameplay.Enemies
         private SpawnSpotRuntime[] _spots;
         private LiveEnemyCapCoordinator _globalCapacity;
         private bool _isInitialized;
+        private Func<int, bool> _spotActivation;
 
         public int SpotCount => _spots != null ? _spots.Length : 0;
 
@@ -32,7 +33,8 @@ namespace Gravivore.Gameplay.Enemies
             int targetLayer,
             Material visualMaterial,
             IEnemyVisualFactory visualFactory = null,
-            PlayerStatsState playerStats = null)
+            PlayerStatsState playerStats = null,
+            Func<int, bool> spotActivation = null)
         {
             if (_isInitialized)
             {
@@ -60,6 +62,7 @@ namespace Gravivore.Gameplay.Enemies
             }
 
             _globalCapacity = new LiveEnemyCapCoordinator(globalLiveEnemyCap);
+            _spotActivation = spotActivation;
             var poolObject = new GameObject("Ordinary Enemy Pool");
             poolObject.transform.SetParent(transform, false);
             var pool = new OrdinaryEnemyPool(
@@ -103,10 +106,10 @@ namespace Gravivore.Gameplay.Enemies
                 throw new InvalidOperationException("Enemy population controller must be initialized before ticking.");
             }
 
-            for (var i = 0; i < _spots.Length; i++)
-            {
-                _spots[i].Tick(deltaTime);
-            }
+            // Return distant packs before admitting a nearby pack to the shared capacity.
+            if (_spotActivation != null)
+                for (var i = 0; i < _spots.Length; i++) _spots[i].SetActive(_spotActivation(i));
+            for (var i = 0; i < _spots.Length; i++) _spots[i].Tick(deltaTime);
         }
 
         private void Update()

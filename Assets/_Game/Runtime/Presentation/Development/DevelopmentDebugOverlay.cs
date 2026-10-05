@@ -65,7 +65,7 @@ namespace Gravivore.Presentation.Development
 
             var toggle = HudUiFactory.CreateCompactButton(
                 hudRoot, "DEV Toggle", new Vector2(0.70f, 0.925f), new Vector2(0.82f, 0.985f),
-                "DEV", Toggle, out var toggleVisual);
+                "ТЕСТ", Toggle, out var toggleVisual);
             ToggleRect = toggle.GetComponent<RectTransform>();
             ToggleVisualRect = toggleVisual;
             _panel = HudUiFactory.CreatePanel(hudRoot, "Development Tools", new Vector2(0.04f, 0.08f), new Vector2(0.96f, 0.91f), HudUiFactory.ModalBackdropColor, true);
@@ -126,12 +126,12 @@ namespace Gravivore.Presentation.Development
             var levels = _stats.BaseLevels;
             var position = _player.position;
             _buffer.Clear();
-            _buffer.AppendFormat("FPS {0:0.0} / {1:0.0} ms\n", 1f / _smoothedFrameSeconds, _smoothedFrameSeconds * 1000f);
+            _buffer.AppendFormat("Кадры/с {0:0.0} / {1:0.0} мс\n", 1f / _smoothedFrameSeconds, _smoothedFrameSeconds * 1000f);
             _buffer.AppendFormat("Враги {0}/{1}  Позиция {2:0.0}, {3:0.0}, {4:0.0}\n", _population.LiveEnemyCount, _population.GlobalLiveEnemyCap, position.x, position.y, position.z);
-            _buffer.AppendFormat("HP {0:0}/{1:0}  P/H/A/F/M {2}/{3}/{4}/{5}/{6}\n", _health.CurrentHitPoints, _health.MaximumHitPoints, levels.Power, levels.Hull, levels.Armor, levels.Flux, levels.Mobility);
+            _buffer.AppendFormat("Прочность {0:0}/{1:0}  Мощ./Корп./Брон./Пот./Ман. {2}/{3}/{4}/{5}/{6}\n", _health.CurrentHitPoints, _health.MaximumHitPoints, levels.Power, levels.Hull, levels.Armor, levels.Flux, levels.Mobility);
             _buffer.AppendFormat("Ассимиляция {0}  Элита {1}\n", _progression.State.TotalAssimilationScore, _world.EliteDefeated ? "побеждена" : (_world.EliteGateUnlocked ? "открыта" : "закрыта"));
-            _buffer.AppendFormat("Босс {0} / завершён {1}\n", _boss.State, _completion.IsDefeated ? "да" : "нет");
-            _buffer.AppendFormat("Сессия {0:0}s  убийства {1}  смерти {2}  уровни +{3}\n", _summary.ElapsedSeconds, _summary.OrdinaryEnemiesDefeated, _summary.PlayerDeaths, _summary.StatLevelUps);
+            _buffer.AppendFormat("Босс {0} / завершён {1}\n", RussianUiText.BossState(_boss.State), _completion.IsDefeated ? "да" : "нет");
+            _buffer.AppendFormat("Сессия {0:0} с  убийства {1}  смерти {2}  уровни +{3}\n", _summary.ElapsedSeconds, _summary.OrdinaryEnemiesDefeated, _summary.PlayerDeaths, _summary.StatLevelUps);
             _buffer.AppendFormat("Босс: попытки {0}  сбросы {1}", _summary.BossAttempts, _summary.BossResets);
             _metrics.text = _buffer.ToString();
         }

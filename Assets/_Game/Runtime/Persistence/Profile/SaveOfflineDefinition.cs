@@ -41,7 +41,10 @@ namespace Gravivore.Persistence.Profile
     [CreateAssetMenu(fileName = "SaveOffline", menuName = "Gravivore/Persistence/Save and Offline")]
     public sealed class SaveOfflineDefinition : ScriptableObject
     {
-        [SerializeField, Min(1)] private int _currentSchemaVersion = SaveSchema.CurrentVersion;
+        // Retained only for backward compatibility with existing authored assets. Runtime schema
+        // currentness belongs to compiled persistence code, so stale serialized values cannot pin
+        // a newer build to an older migration target.
+        [SerializeField, HideInInspector] private int _currentSchemaVersion = SaveSchema.CurrentVersion;
         [SerializeField, Range(0.1f, 10f)] private float _autosaveDelaySeconds = 2f;
         [SerializeField, Min(0f)] private float _activeBaselineUnitsPerHour = 120f;
         [SerializeField, Range(0.01f, 1f)] private float _offlineEfficiency = 0.25f;
@@ -49,7 +52,7 @@ namespace Gravivore.Persistence.Profile
         [SerializeField, Min(1f)] private float _minimumResumeAbsenceSeconds = 60f;
 
         public SaveOfflineConfiguration Configuration => new SaveOfflineConfiguration(
-            _currentSchemaVersion,
+            SaveSchema.CurrentVersion,
             _autosaveDelaySeconds,
             new OfflineRewardConfiguration(
                 _activeBaselineUnitsPerHour,
@@ -61,11 +64,7 @@ namespace Gravivore.Persistence.Profile
 
         public void ValidateOrThrow()
         {
-            var configuration = Configuration;
-            if (configuration.CurrentSchemaVersion != SaveSchema.CurrentVersion)
-            {
-                throw new InvalidOperationException("Authored save schema must match the compiled current schema.");
-            }
+            _ = Configuration;
         }
     }
 }

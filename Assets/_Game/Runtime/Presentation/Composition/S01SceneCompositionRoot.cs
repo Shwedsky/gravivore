@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using Gravivore.Presentation.AudioVfx;
+using Gravivore.Presentation.Map;
 using Gravivore.Core.Time;
 using Gravivore.Gameplay.Combat;
 using Gravivore.Gameplay.Enemies;
@@ -54,6 +57,7 @@ namespace Gravivore.Presentation.Composition
         [SerializeField] private CameraFollowSettings _cameraSettings;
         [SerializeField] private PresentationMaterialPalette _materialPalette;
         [SerializeField] private S14PresentationDefinition _s14PresentationDefinition;
+        [SerializeField] private Phase6BProductionDefinition _phase6BProductionDefinition;
         [SerializeField] private S15VisualCatalog _s15VisualCatalog;
         [SerializeField] private ChapterVisualEnvironment _visualEnvironment;
         [SerializeField] private Vector3 _playerSpawn = Vector3.zero;
@@ -62,8 +66,8 @@ namespace Gravivore.Presentation.Composition
         private Material _eliteMaterial;
         private Material _bossMaterial;
         private Transform _playerVisualRoot;
-        private EliteEncounterActivationBridge _eliteActivationBridge;
-        private EliteWorldUnlockBridge _eliteWorldUnlockBridge;
+        private float _repeatRetryRemaining;
+        private float[] _strongActivationRadii;
         private QuestMovementSignal _questMovementSignal;
         private bool _isComposed;
         private RectTransform _hudRoot;
@@ -123,6 +127,22 @@ namespace Gravivore.Presentation.Composition
 
         public EncounterTelegraphPresenter EncounterTelegraphs { get; private set; }
         public IWorldMarkerSource WorldMarkers { get; private set; }
+        public IMapMarkerSource MapMarkers { get; private set; }
+        public Chapter1EncounterRuntime Chapter1Encounters { get; private set; }
+        public Chapter1WorldMarkerAuthority MarkerAuthority { get; private set; }
+        public IReadOnlyList<StrongOrdinarySpotDefinition> StrongSpots { get; private set; }
+        public Chapter01MapProductionIntegration MapIntegration { get; private set; }
+        public Phase6BCombatProductionBridge Phase6BCombat { get; private set; }
+        public RepairHubProductionPresenter RepairHub { get; private set; }
+        public int SaveSchemaVersion => SaveSchema.CurrentVersion;
+        public MapWorldBounds MapBounds
+        {
+            get
+            {
+                var bounds = _worldDefinition.Configuration.Bounds;
+                return new MapWorldBounds(bounds.MinX, bounds.MaxX, bounds.MinZ, bounds.MaxZ);
+            }
+        }
         public PlayerHealthHudPresenter PlayerHealthHud { get; private set; }
         public PlayerStatsHudPresenter PlayerStatsHud { get; private set; }
         public BossHealthHudPresenter BossHealthHud { get; private set; }
@@ -167,6 +187,8 @@ namespace Gravivore.Presentation.Composition
                     "Scene composition requires movement, stats, equipment, attack, progression, quests, evolution, world, elite, boss, five spawn spots, joystick, camera, and material settings.");
             }
 
+            if (_phase6BProductionDefinition == null) throw new InvalidOperationException("Production Phase6B definition is required.");
+            _phase6BProductionDefinition.ValidateOrThrow();
             _materialPalette.ValidateOrThrow();
             _playerRecoverySettings.ValidateOrThrow();
             _s14PresentationDefinition.ValidateOrThrow();
@@ -212,10 +234,20 @@ namespace Gravivore.Presentation.Composition
             InitializeEncounterActors(worldConfiguration, bossConfiguration);
             InitializeQuests(questCatalog, worldConfiguration);
             InitializeWorld(worldConfiguration);
-            WireEncounterWorldBridges();
+            Chapter1Encounters.Attach(MagnetarGuard, CustodianBoss, Quests);
+            MarkerAuthority = new Chapter1WorldMarkerAuthority(Chapter1Encounters.Encounters, StrongSpots);
+            MapMarkers = new Chapter1WorldMarkerMapAdapter(PlayerObject.transform, EnemyPopulation,
+                MagnetarGuard, CustodianBoss, WorldUnlocks.State, MarkerAuthority,
+                _spawnSpotDefinitions.Length, _playerSpawn);
             WorldMarkers = new WorldMarkerReadModel(PlayerObject.transform, EnemyPopulation,
                 MagnetarGuard, CustodianBoss, WorldUnlocks.State);
             InitializeEvolution();
+            Phase6BCombat = gameObject.AddComponent<Phase6BCombatProductionBridge>();
+            Phase6BCombat.Initialize(this, _gravityLashVfx, _phase6BProductionDefinition);
+            var repairObject = new GameObject("Repair Hub Presentation", typeof(RepairHubProductionPresenter));
+            repairObject.transform.SetParent(transform, false);
+            RepairHub = repairObject.GetComponent<RepairHubProductionPresenter>();
+            RepairHub.Initialize(PlayerHealth, _playerSpawn, _playerRecoverySettings.Configuration, _phase6BProductionDefinition);
             InitializeS14Presentation();
             if (_evolutionDefinition.HasTierPrefabs)
             {
@@ -238,6 +270,8 @@ namespace Gravivore.Presentation.Composition
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
             InitializeDevelopmentTools(uiTouchExclusion, topTouchExclusion, worldConfiguration, bossConfiguration);
 #endif
+            MapIntegration = gameObject.AddComponent<Chapter01MapProductionIntegration>();
+            MapIntegration.Initialize(this);
             _isComposed = true;
         }
 
@@ -577,7 +611,7 @@ namespace Gravivore.Presentation.Composition
         private void InitializeQuests(QuestCatalog catalog, Chapter01WorldConfiguration world)
         {
             var state = _profileSession.State.Quests;
-            Quests = new QuestService(catalog, state, Progression, MagnetarGuard, BossCompletion);
+            Quests = new QuestService(catalog, state, Progression, null, BossCompletion);
 
             var movementObject = new GameObject("Quest Movement Signal", typeof(QuestMovementSignal));
             movementObject.transform.SetParent(transform, false);
@@ -627,6 +661,10 @@ namespace Gravivore.Presentation.Composition
                 _magnetarGuardDefinition.Configuration,
                 PlayerObject.transform,
                 PlayerHealth);
+            if (!ProgressionUnit(progressionId: _spawnSpotDefinitions[3].CreateRuntimeConfiguration().Enemy.Id, out var eliteUnit) ||
+                !ProgressionUnit(progressionId: _spawnSpotDefinitions[4].CreateRuntimeConfiguration().Enemy.Id, out var bossUnit))
+                throw new InvalidOperationException("Encounter ordinary reward comparison units are required.");
+            Chapter1Encounters = new Chapter1EncounterRuntime(_profileSession, _progressionDefinition.Configuration, eliteUnit, bossUnit);
             var bossObject = CreateEncounterObject(
                 "Custodian M-0",
                 typeof(CustodianBossController),
@@ -650,22 +688,19 @@ namespace Gravivore.Presentation.Composition
                 new PhysicsPullDestinationResolver(
                     _gravityAttackSettings.HardBlockerLayers,
                     _gravityAttackSettings.BlockerClearance),
-                _profileSession.State.World,
-                BossCompletion);
+                Chapter1Encounters,
+                BossCompletion, externalDefeatAuthority: true);
             ApplyEncounterBinding(eliteObject.transform, _visualEnvironment?.Definition.Elite);
             ApplyEncounterBinding(bossObject.transform, _visualEnvironment?.Definition.Boss);
 
             var presentationObject = new GameObject("Encounter Telegraph Presentation", typeof(EncounterTelegraphPresenter));
             presentationObject.transform.SetParent(transform, false);
             EncounterTelegraphs = presentationObject.GetComponent<EncounterTelegraphPresenter>();
-            EncounterTelegraphs.Initialize(MagnetarGuard, CustodianBoss, BossCompletion, _materialPalette.LitMaterial);
+            EncounterTelegraphs.Initialize(MagnetarGuard, CustodianBoss, BossCompletion, _materialPalette.LitMaterial, phase6BOwned: true);
         }
 
-        private void WireEncounterWorldBridges()
-        {
-            _eliteActivationBridge = new EliteEncounterActivationBridge(WorldUnlocks.State, MagnetarGuard);
-            _eliteWorldUnlockBridge = new EliteWorldUnlockBridge(MagnetarGuard, WorldUnlocks);
-        }
+        private bool ProgressionUnit(string progressionId, out CoreReward reward) =>
+            _progressionDefinition.Configuration.TryGetReward(progressionId, out reward);
 
         private static void ApplyEncounterBinding(Transform authority, PresentationModelBinding binding)
         {
@@ -731,7 +766,7 @@ namespace Gravivore.Presentation.Composition
                 presentationOrigin.SetParent(_playerVisualRoot, false);
                 presentationOrigin.localPosition = _evolutionDefinition.AttackPresentationOffset;
             }
-            _gravityLashVfx.Initialize(_gravityAttackSettings, _materialPalette.UnlitMaterial, _s14PresentationDefinition, presentationOrigin);
+            _gravityLashVfx.Initialize(_gravityAttackSettings, _materialPalette.UnlitMaterial, _s14PresentationDefinition, presentationOrigin, _phase6BProductionDefinition);
 
             var targetSensor = new PhysicsTargetSensor(
                 _gravityAttackSettings.TargetColliderCapacity,
@@ -804,7 +839,22 @@ namespace Gravivore.Presentation.Composition
                 throw new InvalidOperationException("The CombatTarget layer is required for enemy sensing colliders.");
             }
 
-            var configurations = new SpawnSpotRuntimeConfiguration[_spawnSpotDefinitions.Length];
+            var ordinary = new SpawnSpotRuntimeConfiguration[_spawnSpotDefinitions.Length];
+            var positions = new Vector3[ordinary.Length];
+            for (var i = 0; i < ordinary.Length; i++)
+            {
+                ordinary[i] = _spawnSpotDefinitions[i].CreateRuntimeConfiguration();
+                positions[i] = ordinary[i].WorldOrigin;
+            }
+            StrongSpots = Chapter1StrongOrdinarySpotCatalog.Create(_worldDefinition.Configuration, positions);
+            _strongActivationRadii = new float[StrongSpots.Count];
+            var configurations = new SpawnSpotRuntimeConfiguration[ordinary.Length + StrongSpots.Count];
+            for (var i = 0; i < StrongSpots.Count; i++)
+            {
+                var source = ordinary[StrongSpots[i].Region == StrongOrdinaryRegion.Elite ? 3 : 4];
+                configurations[ordinary.Length + i] = StrongSpots[i].CreateSpawnConfiguration(source);
+                _strongActivationRadii[i] = source.Enemy.Behavior.AggroReleaseRadius + source.MinimumPlayerDistance;
+            }
             for (var i = 0; i < _spawnSpotDefinitions.Length; i++)
             {
                 if (_spawnSpotDefinitions[i] == null)
@@ -826,7 +876,19 @@ namespace Gravivore.Presentation.Composition
                 targetLayer,
                 _materialPalette.LitMaterial,
                 new S15EnemyVisualFactory(_s15VisualCatalog),
-                PlayerStats);
+                PlayerStats, spotActivation: IsSpawnSpotActive);
+        }
+
+        private bool IsSpawnSpotActive(int index)
+        {
+            if (index < _spawnSpotDefinitions.Length) return true;
+            var strong = StrongSpots[index - _spawnSpotDefinitions.Length];
+            var radius = _strongActivationRadii[index - _spawnSpotDefinitions.Length];
+            var offset = PlayerObject.transform.position - strong.Position;
+            offset.y = 0f;
+            // Genuine gate colliders govern traversal. Accessible packs must not wait for
+            // progression flags; proximity only manages the shared pool cap.
+            return offset.sqrMagnitude <= radius * radius;
         }
 
         private Transform CreateCamera(Transform target)
@@ -882,8 +944,7 @@ namespace Gravivore.Presentation.Composition
             QuestTracker?.Shutdown();
             CustodianBoss?.Shutdown();
             Quests?.Dispose();
-            _eliteActivationBridge?.Dispose();
-            _eliteWorldUnlockBridge?.Dispose();
+            Chapter1Encounters?.Dispose();
             WorldPresenter?.Shutdown();
             WorldUnlocks?.Dispose();
             Progression?.Dispose();
@@ -900,6 +961,13 @@ namespace Gravivore.Presentation.Composition
 
         private void Update()
         {
+            _repeatRetryRemaining -= Time.unscaledDeltaTime;
+            if (_isComposed && _repeatRetryRemaining <= 0f)
+            {
+                Chapter1Encounters.Tick();
+                EvolutionPresenter.ApplyCurrentState();
+                _repeatRetryRemaining = 1f;
+            }
             SaveCoordinator?.Tick(Time.unscaledDeltaTime);
         }
 

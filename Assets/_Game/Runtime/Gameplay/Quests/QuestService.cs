@@ -185,6 +185,12 @@ namespace Gravivore.Gameplay.Quests
                 null);
         }
 
+        public void RecordEliteDefeated(string eliteId) =>
+            HandleEliteDefeated(new MagnetarGuardDefeatedEvent(eliteId, default));
+
+        public void RecordBossDefeated(string bossId) =>
+            HandleBossDefeated(new BossDefeatedEvent(bossId, default));
+
         private void HandleBossDefeated(BossDefeatedEvent defeated)
         {
             AdvanceAndPublish(

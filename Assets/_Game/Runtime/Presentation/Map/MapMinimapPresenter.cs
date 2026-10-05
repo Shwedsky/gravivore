@@ -219,7 +219,7 @@ namespace Gravivore.Presentation.Map
             _compactSurface.gameObject.AddComponent<RectMask2D>();
             MapUiFactory.CreateGrid(_compactSurface, 4, 4);
 
-            var north = MapUiFactory.CreateText(compactPanel, "North", "N", 15, TextAnchor.UpperCenter);
+            var north = MapUiFactory.CreateText(compactPanel, "North", "С", 15, TextAnchor.UpperCenter);
             north.color = new Color(0.72f, 0.86f, 0.87f, 0.86f);
             north.rectTransform.anchorMin = new Vector2(0.42f, 0.88f);
             north.rectTransform.anchorMax = new Vector2(0.58f, 0.99f);
@@ -246,11 +246,11 @@ namespace Gravivore.Presentation.Map
             closeRect.offsetMax = Vector2.zero;
             var closeButton = MapUiFactory.AddButton(closeRect);
             closeButton.onClick.AddListener(CloseExpanded);
-            var closeLabel = MapUiFactory.CreateText(closeRect, "Label", "X", 24, TextAnchor.MiddleCenter);
+            var closeLabel = MapUiFactory.CreateText(closeRect, "Label", "×", 24, TextAnchor.MiddleCenter);
             MapUiFactory.Stretch(closeLabel.rectTransform);
 
             var fitRoot = MapUiFactory.CreateRect(_expandedRoot, "MapFitArea");
-            fitRoot.anchorMin = new Vector2(0.08f, 0.17f);
+            fitRoot.anchorMin = new Vector2(0.08f, 0.195f);
             fitRoot.anchorMax = new Vector2(0.92f, 0.90f);
             fitRoot.offsetMin = Vector2.zero;
             fitRoot.offsetMax = Vector2.zero;
@@ -265,7 +265,7 @@ namespace Gravivore.Presentation.Map
             backgroundButton.onClick.AddListener(ClearSelection);
             MapUiFactory.CreateGrid(_expandedSurface, 6, 10);
 
-            var north = MapUiFactory.CreateText(_expandedSurface, "North", "N", 18, TextAnchor.UpperCenter);
+            var north = MapUiFactory.CreateText(_expandedSurface, "North", "С", 18, TextAnchor.UpperCenter);
             north.rectTransform.anchorMin = new Vector2(0.42f, 0.955f);
             north.rectTransform.anchorMax = new Vector2(0.58f, 0.995f);
             north.rectTransform.offsetMin = Vector2.zero;
@@ -274,17 +274,17 @@ namespace Gravivore.Presentation.Map
 
             _detailsPanel = MapUiFactory.CreatePanel(_expandedRoot, "PoiDetails", new Color(0.035f, 0.075f, 0.085f, 0.98f));
             _detailsPanel.anchorMin = new Vector2(0.06f, 0.025f);
-            _detailsPanel.anchorMax = new Vector2(0.94f, 0.145f);
+            _detailsPanel.anchorMax = new Vector2(0.94f, 0.17f);
             _detailsPanel.offsetMin = Vector2.zero;
             _detailsPanel.offsetMax = Vector2.zero;
-            _detailsText = MapUiFactory.CreateText(_detailsPanel, "DetailsText", string.Empty, 17, TextAnchor.MiddleLeft);
+            _detailsText = MapUiFactory.CreateText(_detailsPanel, "DetailsText", string.Empty, 22, TextAnchor.MiddleLeft);
             _detailsText.rectTransform.anchorMin = new Vector2(0.04f, 0.08f);
             _detailsText.rectTransform.anchorMax = new Vector2(0.96f, 0.92f);
             _detailsText.rectTransform.offsetMin = Vector2.zero;
             _detailsText.rectTransform.offsetMax = Vector2.zero;
             _detailsText.resizeTextForBestFit = true;
-            _detailsText.resizeTextMinSize = 13;
-            _detailsText.resizeTextMaxSize = 18;
+            _detailsText.resizeTextMinSize = 18;
+            _detailsText.resizeTextMaxSize = 22;
             _detailsText.horizontalOverflow = HorizontalWrapMode.Wrap;
             _detailsText.verticalOverflow = VerticalWrapMode.Truncate;
             _detailsPanel.gameObject.SetActive(false);
@@ -364,18 +364,26 @@ namespace Gravivore.Presentation.Map
             a.DisplayName == b.DisplayName &&
             a.Availability == b.Availability &&
             a.ProgressionLocked == b.ProgressionLocked &&
-            a.RewardState == b.RewardState;
+            a.RewardState == b.RewardState && a.FirstClearCompleted == b.FirstClearCompleted &&
+            a.RewardEntitlement == b.RewardEntitlement && a.PremiumRewardsRemaining == b.PremiumRewardsRemaining &&
+            Mathf.FloorToInt(a.RewardWindowRemainingSeconds) == Mathf.FloorToInt(b.RewardWindowRemainingSeconds);
 
         private static string BuildDetails(MapMarkerSnapshot marker)
         {
             var state = marker.ProgressionLocked ? "ЗАБЛОКИРОВАНО" : AvailabilityText(marker.Availability);
             var text = $"{marker.DisplayName}  ·  {state}";
             if (marker.Availability == MapAvailabilityState.Cooldown && marker.RemainingSeconds > 0f)
-                text += $"  ·  {MapTimerFormatter.FormatExact(marker.RemainingSeconds)}";
+                text += $"\nДоступно через {MapTimerFormatter.FormatExact(marker.RemainingSeconds)}";
             if (marker.RewardState == MapRewardState.Full)
-                text += "  ·  НАГРАДА ДОСТУПНА";
+                text += marker.FirstClearCompleted ? "  ·  ПОВЫШЕННАЯ НАГРАДА" : "  ·  НАГРАДА ЗА ПЕРВОЕ ПРОХОЖДЕНИЕ";
             else if (marker.RewardState == MapRewardState.CappedFallback)
                 text += "  ·  БАЗОВАЯ НАГРАДА";
+            if (marker.Kind == MapMarkerKind.Elite || marker.Kind == MapMarkerKind.Boss)
+            {
+                text += marker.FirstClearCompleted ? "  ·  ПОВТОР" : "  ·  ПЕРВОЕ ПРОХОЖДЕНИЕ";
+                if (marker.FirstClearCompleted)
+                    text += $"  ·  ПОВЫШЕННЫХ НАГРАД ОСТАЛОСЬ: {marker.PremiumRewardsRemaining}";
+            }
             return text;
         }
 
