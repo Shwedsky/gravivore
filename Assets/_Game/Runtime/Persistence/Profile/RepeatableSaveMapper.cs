@@ -6,7 +6,7 @@ using Gravivore.Gameplay.Progression;
 
 namespace Gravivore.Persistence.Profile
 {
-    internal static class RepeatableSaveMapper
+    public static class RepeatableSaveMapper
     {
         public static Chapter1RepeatableState Restore(Chapter1RepeatableSaveDto dto, out DateTime effectiveUtcFloor)
         {
@@ -31,53 +31,31 @@ namespace Gravivore.Persistence.Profile
             };
         }
 
-        private static RepeatableEncounterState RestoreEncounter(
-            RepeatableEncounterSaveDto dto,
-            RepeatableEncounterKind kind)
+        private static RepeatableEncounterState RestoreEncounter(RepeatableEncounterSaveDto dto, RepeatableEncounterKind kind)
         {
             if (dto == null) throw new ArgumentException($"Repeatable {kind} state is required.", nameof(dto));
             var rules = RepeatableEncounterService.GetRules(kind);
             if (dto.rewardedKillsInWindow < 0 || dto.rewardedKillsInWindow > rules.PremiumCap)
-            {
                 throw new ArgumentOutOfRangeException(nameof(dto), $"Repeatable {kind} premium count is invalid.");
-            }
-
             var nextAvailable = ParseOptionalUtc(dto.nextAvailableUtc, nameof(dto.nextAvailableUtc));
             var windowStarted = ParseOptionalUtc(dto.rewardWindowStartedUtc, nameof(dto.rewardWindowStartedUtc));
             if (!windowStarted.HasValue && dto.rewardedKillsInWindow != 0)
-            {
                 throw new ArgumentException($"Repeatable {kind} premium count requires a reward window.", nameof(dto));
-            }
-
             return new RepeatableEncounterState(nextAvailable, windowStarted, dto.rewardedKillsInWindow);
         }
 
         private static PendingEncounterReward RestorePending(PendingEncounterRewardSaveDto dto)
         {
             if (dto == null) return null;
-            if (string.IsNullOrWhiteSpace(dto.transactionId))
-            {
-                throw new ArgumentException("Pending reward transaction id is required.", nameof(dto));
-            }
+            if (string.IsNullOrWhiteSpace(dto.transactionId)) throw new ArgumentException("Pending reward transaction id is required.", nameof(dto));
             if (!Enum.IsDefined(typeof(RepeatableEncounterKind), dto.encounterKind) ||
                 !Enum.IsDefined(typeof(EncounterRewardEntitlement), dto.entitlement) ||
                 !Enum.IsDefined(typeof(PlayerStatType), dto.stat) ||
                 !Enum.IsDefined(typeof(PendingRewardPhase), dto.phase))
-            {
                 throw new ArgumentException("Pending reward transaction contains an unknown enum identifier.", nameof(dto));
-            }
-
-            var reward = new CoreReward(
-                dto.enemyId,
-                (PlayerStatType)dto.stat,
-                dto.statExperience,
-                dto.assimilationScore);
-            return new PendingEncounterReward(
-                dto.transactionId,
-                (RepeatableEncounterKind)dto.encounterKind,
-                (EncounterRewardEntitlement)dto.entitlement,
-                reward,
-                (PendingRewardPhase)dto.phase);
+            var reward = new CoreReward(dto.enemyId, (PlayerStatType)dto.stat, dto.statExperience, dto.assimilationScore);
+            return new PendingEncounterReward(dto.transactionId, (RepeatableEncounterKind)dto.encounterKind,
+                (EncounterRewardEntitlement)dto.entitlement, reward, (PendingRewardPhase)dto.phase);
         }
 
         private static RepeatableEncounterSaveDto ToDto(RepeatableEncounterState state)
@@ -113,28 +91,17 @@ namespace Gravivore.Persistence.Profile
             return ParseUtc(value, name);
         }
 
-        private static DateTime? ParseOptionalUtc(string value, string name) =>
-            string.IsNullOrWhiteSpace(value) ? (DateTime?)null : ParseUtc(value, name);
-
+        private static DateTime? ParseOptionalUtc(string value, string name) => string.IsNullOrWhiteSpace(value) ? (DateTime?)null : ParseUtc(value, name);
         private static DateTime ParseUtc(string value, string name)
         {
-            if (!DateTime.TryParseExact(
-                    value,
-                    "O",
-                    CultureInfo.InvariantCulture,
-                    DateTimeStyles.RoundtripKind,
-                    out var result) || result.Kind != DateTimeKind.Utc)
-            {
+            if (!DateTime.TryParseExact(value, "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind, out var result) || result.Kind != DateTimeKind.Utc)
                 throw new ArgumentException("Timestamp must be round-trip UTC.", name);
-            }
             return result;
         }
-
         private static void RequireUtc(DateTime value, string name)
         {
             if (value.Kind != DateTimeKind.Utc) throw new ArgumentException("Timestamp must be UTC.", name);
         }
-
         private static string FormatUtc(DateTime value) => value.ToString("O", CultureInfo.InvariantCulture);
     }
 }
