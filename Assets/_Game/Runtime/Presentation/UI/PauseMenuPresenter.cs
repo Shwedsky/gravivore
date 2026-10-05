@@ -52,7 +52,7 @@ namespace Gravivore.Presentation.UI
 
             var pauseButton = HudUiFactory.CreateCompactButton(
                 hudRoot, "Menu Button", new Vector2(0.84f, 0.925f), new Vector2(0.97f, 0.985f),
-                "II", Open, out var pauseVisual);
+                "МЕНЮ", Open, out var pauseVisual);
             PauseButtonRect = pauseButton.GetComponent<RectTransform>();
             PauseButtonVisualRect = pauseVisual;
 

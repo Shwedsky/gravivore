@@ -186,7 +186,10 @@ namespace Gravivore.Presentation.Combat
         {
             EnsureInitialized();
             _audio.TryPlay(Phase6BAudioCue.EnemyMechanicalHit, position, variationSeed);
-            _vfx.TryPlay(Phase6BVfxCue.HostileImpact, position + Vector3.up * 0.7f, position);
+            var origin = position + Vector3.up * 0.7f;
+            var direction = ResolveOrigin(transform.position) - position;
+            direction.y = 0.25f;
+            _vfx.TryPlay(Phase6BVfxCue.HostileImpact, origin, origin + direction.normalized);
         }
 
         public void PlayEnemyShutdown(Vector3 position, int variationSeed)

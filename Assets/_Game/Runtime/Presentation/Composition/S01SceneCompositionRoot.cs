@@ -883,12 +883,12 @@ namespace Gravivore.Presentation.Composition
         {
             if (index < _spawnSpotDefinitions.Length) return true;
             var strong = StrongSpots[index - _spawnSpotDefinitions.Length];
-            var unlocked = strong.Region == StrongOrdinaryRegion.Elite
-                ? WorldUnlocks.State.EliteGateUnlocked : WorldUnlocks.State.BossGateUnlocked;
             var radius = _strongActivationRadii[index - _spawnSpotDefinitions.Length];
             var offset = PlayerObject.transform.position - strong.Position;
             offset.y = 0f;
-            return unlocked && offset.sqrMagnitude <= radius * radius;
+            // Genuine gate colliders govern traversal. Accessible packs must not wait for
+            // progression flags; proximity only manages the shared pool cap.
+            return offset.sqrMagnitude <= radius * radius;
         }
 
         private Transform CreateCamera(Transform target)

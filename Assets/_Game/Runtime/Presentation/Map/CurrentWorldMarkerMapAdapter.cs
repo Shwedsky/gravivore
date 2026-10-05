@@ -85,7 +85,7 @@ namespace Gravivore.Presentation.Map
                 case WorldMarkerKind.Player: return "Игрок";
                 case WorldMarkerKind.Elite: return "Элита";
                 case WorldMarkerKind.Boss: return "Босс";
-                case WorldMarkerKind.RegularSpot: return marker.Id;
+                case WorldMarkerKind.RegularSpot: return Gravivore.Presentation.UI.RussianUiText.SpotName(marker.Id);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(marker), marker.Kind, "Unsupported current world marker kind.");
             }

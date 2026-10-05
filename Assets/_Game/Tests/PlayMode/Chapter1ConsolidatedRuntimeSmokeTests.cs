@@ -60,8 +60,8 @@ namespace Gravivore.Tests.PlayMode
             map.CloseExpanded();
             for (var i = 0; i < 5; i++) Assert.That(root.EnemyPopulation.GetSpot(i).LiveCount, Is.EqualTo(4));
             for (var i = 5; i < 9; i++) Assert.That(root.EnemyPopulation.GetSpot(i).LiveCount, Is.Zero);
-            root.WorldUnlocks.PrepareEliteEncounterForDevelopment();
-            root.MagnetarGuard.ApplyDamage(new DamageRequest(100000f, DamageType.Gravity));
+            Assert.That(root.WorldUnlocks.State.EliteGateUnlocked, Is.False);
+            Assert.That(root.WorldUnlocks.State.BossGateUnlocked, Is.False);
             for (var i = 5; i < 9; i++)
             {
                 Move(root, root.EnemyPopulation.GetSpot(i).Position + Vector3.back * 5f);
@@ -221,9 +221,21 @@ namespace Gravivore.Tests.PlayMode
             root.MapIntegration.MapPresenter.RefreshNow();
         }
 
-        private static void Capture(S01SceneCompositionRoot root, string name)
+        internal static void Capture(S01SceneCompositionRoot root, string name)
         {
-            if (Environment.GetEnvironmentVariable("GRAVIVORE_CAPTURE_EVIDENCE") != "1") return;
+            var stabilization = Environment.GetEnvironmentVariable("GRAVIVORE_STABILIZATION_EVIDENCE") == "1";
+            if (!stabilization && Environment.GetEnvironmentVariable("GRAVIVORE_CAPTURE_EVIDENCE") != "1") return;
+            if (stabilization)
+            {
+                switch (name)
+                {
+                    case "06_magnetar.png": name = "03_magnetar_telegraph.png"; break;
+                    case "07_boss_cone.png": name = "04_boss_cone_readability.png"; break;
+                    case "08_boss_line.png": name = "05_boss_line_readability.png"; break;
+                    case "09_boss_circle.png": name = "06_boss_circle_readability.png"; break;
+                    default: if (!name.EndsWith("_russian.png") && name != "02_strong_spot_pre_elite.png" && name != "07_enemy_impact_updated.png" && name != "01_russian_map.png") return; break;
+                }
+            }
             var camera = UnityEngine.Camera.main;
             camera.GetComponent<PortraitFollowCamera>().enabled = false;
             camera.transform.position = root.PlayerObject.transform.position + new Vector3(0f, 14f, -10f);
@@ -242,7 +254,7 @@ namespace Gravivore.Tests.PlayMode
                 Canvas.ForceUpdateCanvases(); camera.Render();
                 RenderTexture.active = target;
                 texture.ReadPixels(new Rect(0, 0, 540, 960), 0, 0); texture.Apply();
-                var directory = Path.Combine(Application.dataPath, "../Builds/Evidence");
+                var directory = Path.Combine(Application.dataPath, stabilization ? "../Builds/StabilizationEvidence" : "../Builds/Evidence");
                 Directory.CreateDirectory(directory); File.WriteAllBytes(Path.Combine(directory, name), texture.EncodeToPNG());
             }
             finally

@@ -2,6 +2,7 @@ using System;
 using Gravivore.Gameplay.Encounters;
 using Gravivore.Gameplay.Enemies;
 using Gravivore.Gameplay.World;
+using Gravivore.Presentation.UI;
 using UnityEngine;
 
 namespace Gravivore.Presentation.Map
@@ -45,7 +46,7 @@ namespace Gravivore.Presentation.Map
                 var position = strong ? _authority.ReadStrongOrdinary(index - _ordinaryCount - 1).Position : spot.Position;
                 return new MapMarkerSnapshot(spot.Id, strong ? MapMarkerKind.StrongOrdinary : MapMarkerKind.Ordinary,
                     position, spot.LiveCount > 0 || strong && !spot.IsActive ? MapAvailabilityState.Available : MapAvailabilityState.Cooldown,
-                    strong ? "Усиленный отряд" : spot.Id, remainingSeconds: spot.SecondsUntilNextRespawn);
+                    strong ? "Усиленная зона" : RussianUiText.SpotName(spot.Id), remainingSeconds: spot.SecondsUntilNextRespawn);
             }
             if (index == Count - 1) return new MapMarkerSnapshot("repair-hub", MapMarkerKind.RepairHub,
                 _repairPosition, MapAvailabilityState.Available, "Ремонтный узел");
