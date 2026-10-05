@@ -230,7 +230,7 @@ namespace Gravivore.Tests.EditMode
         }
 
         [Test]
-        public void InvalidQuestOrObjectiveId_IsRejected()
+        public void InvalidQuestId_IsRejectedAndRemovedOptionalObjectiveIsDropped()
         {
             using var rig = QuestRig.Create();
             var dto = QuestSaveMapper.ToDto(rig.Quests.State, rig.Catalog);
@@ -239,7 +239,10 @@ namespace Gravivore.Tests.EditMode
 
             dto.questId = rig.Catalog.QuestId;
             dto.objectives[0].objectiveId = "missing";
-            Assert.Throws<ArgumentException>(() => QuestSaveMapper.Restore(rig.Catalog, dto));
+            var warningCount = 0;
+            var restored = QuestSaveMapper.Restore(rig.Catalog, dto, _ => warningCount++);
+            Assert.That(warningCount, Is.EqualTo(1));
+            Assert.That(restored.GetProgress(rig.Catalog.GetObjective(0).Id), Is.Zero);
         }
 
         [Test]

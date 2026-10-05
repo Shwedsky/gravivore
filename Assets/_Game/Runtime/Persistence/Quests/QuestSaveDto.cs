@@ -59,7 +59,10 @@ namespace Gravivore.Persistence.Quests
             };
         }
 
-        public static QuestState Restore(QuestCatalog catalog, QuestSaveDto dto)
+        public static QuestState Restore(
+            QuestCatalog catalog,
+            QuestSaveDto dto,
+            Action<string> optionalContentWarning = null)
         {
             if (catalog == null) throw new ArgumentNullException(nameof(catalog));
             if (dto == null) throw new ArgumentNullException(nameof(dto));
@@ -75,10 +78,11 @@ namespace Gravivore.Persistence.Quests
             {
                 for (var i = 0; i < dto.objectives.Length; i++)
                 {
-                    var entry = dto.objectives[i];
-                    if (entry == null || !catalog.TryGetObjective(entry.objectiveId, out var objective))
+                    var entry = dto.objectives[i] ??
+                                throw new ArgumentException("Quest DTO objective entries cannot be null.", nameof(dto));
+                    if (string.IsNullOrWhiteSpace(entry.objectiveId))
                     {
-                        throw new ArgumentException("Quest DTO contains an unknown objective id.", nameof(dto));
+                        throw new ArgumentException("Quest DTO objective ids must be non-empty.", nameof(dto));
                     }
 
                     if (!objectiveIds.Add(entry.objectiveId))
@@ -86,7 +90,19 @@ namespace Gravivore.Persistence.Quests
                         throw new ArgumentException("Quest DTO contains a duplicate objective entry.", nameof(dto));
                     }
 
-                    if (entry.progress < 0 || entry.progress > objective.RequiredCount)
+                    if (entry.progress < 0)
+                    {
+                        throw new ArgumentOutOfRangeException(nameof(dto), $"Invalid progress for {entry.objectiveId}.");
+                    }
+
+                    if (!catalog.TryGetObjective(entry.objectiveId, out var objective))
+                    {
+                        optionalContentWarning?.Invoke(
+                            $"Dropped removed quest objective reference '{entry.objectiveId}'.");
+                        continue;
+                    }
+
+                    if (entry.progress > objective.RequiredCount)
                     {
                         throw new ArgumentOutOfRangeException(nameof(dto), $"Invalid progress for {entry.objectiveId}.");
                     }

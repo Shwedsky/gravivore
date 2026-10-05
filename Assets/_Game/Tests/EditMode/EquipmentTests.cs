@@ -152,11 +152,12 @@ namespace Gravivore.Tests.EditMode
         }
 
         [Test]
-        public void SaveMapper_RejectsUnknownDuplicateUnownedAndWrongSlotData()
+        public void SaveMapper_DropsRemovedItemsAndRejectsDuplicateUnownedAndWrongSlotData()
         {
             var catalog = CreateCatalog();
-            Assert.Throws<System.Collections.Generic.KeyNotFoundException>(() => InventorySaveMapper.Restore(
-                Dto(new[] { "unknown" }), catalog));
+            var restored = InventorySaveMapper.Restore(Dto(new[] { "unknown", "damage-core" }), catalog);
+            Assert.IsFalse(restored.HasItem("unknown"));
+            Assert.IsTrue(restored.HasItem("damage-core"));
             Assert.Throws<ArgumentException>(() => InventorySaveMapper.Restore(
                 Dto(new[] { "damage-core", "damage-core" }), catalog));
             Assert.Throws<ArgumentException>(() => InventorySaveMapper.Restore(

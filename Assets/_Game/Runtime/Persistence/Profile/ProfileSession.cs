@@ -80,7 +80,10 @@ namespace Gravivore.Persistence.Profile
                 persistenceSuspended = true;
             }
 
-            var state = ProfileSaveMapper.Restore(loadResult.Save, context);
+            var state = ProfileSaveMapper.Restore(
+                loadResult.Save,
+                context,
+                CreateOptionalContentWarningSink(diagnostics));
             var offlineRewards = new OfflineRewardService(configuration.OfflineReward, state.Offline);
             OfflineReturnSummary summary;
             if (loadResult.WasCreated || !OfflineRewardEligibility.IsUnlocked(state.Quests))
@@ -185,6 +188,15 @@ namespace Gravivore.Persistence.Profile
             return true;
         }
 #endif
+
+        private static Action<string> CreateOptionalContentWarningSink(ISaveDiagnostics diagnostics)
+        {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            return message => diagnostics.Warning(message);
+#else
+            return null;
+#endif
+        }
 
         private static bool IsStorageFailure(Exception exception)
         {

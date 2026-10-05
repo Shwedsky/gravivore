@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Text;
 using Gravivore.Core.Time;
 using UnityEngine;
 
@@ -63,7 +64,25 @@ namespace Gravivore.Persistence.Profile
         public void CreateDirectory(string path) => Directory.CreateDirectory(path);
         public bool FileExists(string path) => File.Exists(path);
         public string ReadAllText(string path) => File.ReadAllText(path);
-        public void WriteAllText(string path, string contents) => File.WriteAllText(path, contents);
+        public void WriteAllText(string path, string contents)
+        {
+            using var stream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None);
+            using var writer = new StreamWriter(stream, new UTF8Encoding(false), 4096, true);
+            writer.Write(contents);
+            writer.Flush();
+            try
+            {
+                stream.Flush(true);
+            }
+            catch (PlatformNotSupportedException)
+            {
+                stream.Flush();
+            }
+            catch (NotSupportedException)
+            {
+                stream.Flush();
+            }
+        }
         public void CopyFile(string source, string destination, bool overwrite) => File.Copy(source, destination, overwrite);
         public void MoveFile(string source, string destination) => File.Move(source, destination);
         public void DeleteFile(string path) => File.Delete(path);
