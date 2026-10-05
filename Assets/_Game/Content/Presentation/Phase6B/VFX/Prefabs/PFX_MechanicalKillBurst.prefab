@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &100041
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 100042}
+  - component: {fileID: 100043}
+  m_Layer: 0
+  m_Name: PFX_MechanicalKillBurst
+  m_TagString: Untagged
+  m_IsActive: 1
+--- !u!4 &100042
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100041}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+--- !u!114 &100043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100041}
+  m_Enabled: 1
+  m_Script: {fileID: 11500000, guid: 26efcc22181d6c14f046e01130f51d9d, type: 3}
+  m_EditorClassIdentifier: Gravivore.Presentation::Gravivore.Presentation.AudioVfx.Phase6BVfxInstance
+  _cue: 4
+  _shape: 1
+  _duration: 0.3
+  _color: {r: 0.35, g: 0.9, b: 1, a: 0.72}
+  _particleCount: 22
+  _range: 0.7
+  _width: 0.06
+  _angleDegrees: 45
+  _material: {fileID: 2100000, guid: 4bdd24c3c4b07ef9106a168078a0efbd, type: 2}

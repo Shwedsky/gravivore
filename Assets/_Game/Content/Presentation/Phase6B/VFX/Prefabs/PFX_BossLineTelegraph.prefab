@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &100081
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 100082}
+  - component: {fileID: 100083}
+  m_Layer: 0
+  m_Name: PFX_BossLineTelegraph
+  m_TagString: Untagged
+  m_IsActive: 1
+--- !u!4 &100082
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100081}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+--- !u!114 &100083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100081}
+  m_Enabled: 1
+  m_Script: {fileID: 11500000, guid: 26efcc22181d6c14f046e01130f51d9d, type: 3}
+  m_EditorClassIdentifier: Gravivore.Presentation::Gravivore.Presentation.AudioVfx.Phase6BVfxInstance
+  _cue: 8
+  _shape: 5
+  _duration: 0.8
+  _color: {r: 1, g: 0.18, b: 0.05, a: 0.8}
+  _particleCount: 2
+  _range: 5.4
+  _width: 0.065
+  _angleDegrees: 40
+  _material: {fileID: 2100000, guid: 24ff931e843385fc117d2d0e2faf61b4, type: 2}
