@@ -141,4 +141,64 @@ namespace Gravivore.Persistence.Profile
             };
         }
     }
+
+    public sealed class SaveMigrationV1ToV2 : ISaveMigration
+    {
+        public int FromVersion => 1;
+        public int ToVersion => 2;
+
+        public SaveRootDto Migrate(string sourceJson, ISaveSerializer serializer, SaveRootDto defaults)
+        {
+            if (serializer == null) throw new ArgumentNullException(nameof(serializer));
+            if (defaults == null) throw new ArgumentNullException(nameof(defaults));
+            var legacy = serializer.Deserialize<LegacySaveRootV1Dto>(sourceJson);
+            var defaultRepeatable = defaults.repeatable ?? CreateFreshRepeatable(legacy.lastSeenUtc);
+
+            return new SaveRootDto
+            {
+                schemaVersion = ToVersion,
+                profileId = legacy.profileId,
+                createdUtc = legacy.createdUtc,
+                lastSeenUtc = legacy.lastSeenUtc,
+                player = legacy.player,
+                world = legacy.world,
+                boss = legacy.boss,
+                quest = legacy.quest,
+                inventory = legacy.inventory,
+                offline = legacy.offline,
+                repeatable = new Chapter1RepeatableSaveDto
+                {
+                    // v1 had no encounter kill timestamps. A historical first clear therefore
+                    // migrates with no cooldown and is immediately repeatable by contract.
+                    effectiveUtcFloor = legacy.lastSeenUtc,
+                    magnetar = CloneEncounter(defaultRepeatable.magnetar),
+                    custodian = CloneEncounter(defaultRepeatable.custodian),
+                    pendingReward = null
+                }
+            };
+        }
+
+        private static Chapter1RepeatableSaveDto CreateFreshRepeatable(string floorUtc)
+        {
+            return new Chapter1RepeatableSaveDto
+            {
+                effectiveUtcFloor = floorUtc,
+                magnetar = new RepeatableEncounterSaveDto(),
+                custodian = new RepeatableEncounterSaveDto(),
+                pendingReward = null
+            };
+        }
+
+        private static RepeatableEncounterSaveDto CloneEncounter(RepeatableEncounterSaveDto source)
+        {
+            return source == null
+                ? new RepeatableEncounterSaveDto()
+                : new RepeatableEncounterSaveDto
+                {
+                    nextAvailableUtc = source.nextAvailableUtc,
+                    rewardWindowStartedUtc = source.rewardWindowStartedUtc,
+                    rewardedKillsInWindow = source.rewardedKillsInWindow
+                };
+        }
+    }
 }
