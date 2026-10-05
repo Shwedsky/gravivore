@@ -15,13 +15,16 @@ namespace Gravivore.Persistence.Profile
         private readonly ProfileSession _session;
         private readonly RepeatableEncounterService _encounters;
         private readonly AuthoredRewardApplier _rewardApplier;
+        private readonly Action<PendingEncounterReward> _completeFirstClear;
 
         public RepeatableRewardTransactionCoordinator(
             ProfileSession session,
-            AuthoredRewardApplier rewardApplier)
+            AuthoredRewardApplier rewardApplier,
+            Action<PendingEncounterReward> completeFirstClear = null)
         {
             _session = session ?? throw new ArgumentNullException(nameof(session));
             _rewardApplier = rewardApplier ?? throw new ArgumentNullException(nameof(rewardApplier));
+            _completeFirstClear = completeFirstClear;
             _encounters = new RepeatableEncounterService(session.State.Repeatable, session.EffectiveTime);
         }
 
@@ -64,6 +67,7 @@ namespace Gravivore.Persistence.Profile
 
                 _rewardApplier.Apply(pending.Reward);
                 pending.MarkApplied();
+                _completeFirstClear?.Invoke(pending);
                 if (!_session.FlushNow())
                 {
                     // Memory is Applied. If this process crashes, disk is still Prepared with the
@@ -78,8 +82,15 @@ namespace Gravivore.Persistence.Profile
                 throw new InvalidOperationException("Unknown pending reward phase.");
             }
 
+            // Applied may be in memory after a failed Applied save. Establish that checkpoint
+            // before clearing, including when recovering a previous in-session failure.
+            _completeFirstClear?.Invoke(pending);
+            if (!_session.FlushNow()) return false;
             _session.State.Repeatable.ClearPending(pending.TransactionId);
-            return _session.FlushNow();
+            if (_session.FlushNow()) return true;
+            // Keep Applied in memory so a failed final checkpoint remains retryable.
+            _session.State.Repeatable.SetPending(pending);
+            return false;
         }
     }
 }

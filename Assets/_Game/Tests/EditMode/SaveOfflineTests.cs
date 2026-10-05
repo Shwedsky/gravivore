@@ -165,7 +165,7 @@ namespace Gravivore.Tests.EditMode
             var migrated = repository.LoadOrCreate(fresh, validate);
 
             Assert.IsTrue(migrated.WasMigrated);
-            Assert.That(migrated.Save.schemaVersion, Is.EqualTo(1));
+            Assert.That(migrated.Save.schemaVersion, Is.EqualTo(SaveSchema.CurrentVersion));
             Assert.That(migrated.Save.profileId, Is.EqualTo(first.Save.profileId));
             Assert.IsNotNull(migrated.Save.offline);
             Assert.That(migrated.Save.offline.pendingReward, Is.Zero);
@@ -174,7 +174,7 @@ namespace Gravivore.Tests.EditMode
             if (File.Exists(repository.BackupPath)) File.Delete(repository.BackupPath);
             var incompleteLegacy = repository.LoadOrCreate(fresh, validate);
             Assert.IsTrue(incompleteLegacy.WasCreated);
-            Assert.That(incompleteLegacy.Save.schemaVersion, Is.EqualTo(1));
+            Assert.That(incompleteLegacy.Save.schemaVersion, Is.EqualTo(SaveSchema.CurrentVersion));
         }
 
         [Test]
@@ -186,7 +186,7 @@ namespace Gravivore.Tests.EditMode
 
             Assert.Throws<NotSupportedException>(() => pipeline.MigrateToCurrent("{\"schemaVersion\":2}", defaults));
             Assert.Throws<ArgumentException>(() => pipeline.MigrateToCurrent("{\"schemaVersion\":-1}", defaults));
-            var missing = new SaveMigrationPipeline(2, serializer, new ISaveMigration[] { new SaveMigrationV0ToV1() });
+            var missing = new SaveMigrationPipeline(3, serializer, new ISaveMigration[] { new SaveMigrationV0ToV1() });
             Assert.Throws<NotSupportedException>(() => missing.MigrateToCurrent("{\"schemaVersion\":0}", defaults));
             var invalidResult = new SaveMigrationPipeline(
                 1,
@@ -565,7 +565,7 @@ namespace Gravivore.Tests.EditMode
 
             Assert.That(rollback.ReturnSummary.EarnedAmount, Is.Zero);
             Assert.That(rollback.ReturnSummary.ClockAnomaly, Is.EqualTo(OfflineClockAnomaly.NonPositiveElapsed));
-            Assert.That(rollback.State.LastSeenUtc, Is.EqualTo(time.UtcNow));
+            Assert.That(rollback.State.LastSeenUtc, Is.EqualTo(initial.State.EffectiveUtcFloor));
             Assert.IsTrue(rollback.StartupCheckpointSucceeded);
             Assert.That(repeated.State.Offline.PendingReward, Is.Zero);
         }
@@ -997,13 +997,13 @@ namespace Gravivore.Tests.EditMode
             return new JsonProfileRepository(
                 directory,
                 serializer,
-                new SaveMigrationPipeline(1, serializer, new ISaveMigration[] { new SaveMigrationV0ToV1() }),
+                new SaveMigrationPipeline(SaveSchema.CurrentVersion, serializer, new ISaveMigration[] { new SaveMigrationV0ToV1() }),
                 time,
                 diagnostics ?? new RecordingDiagnostics(),
                 fileSystem);
         }
 
-        private static ProfileRestoreContext CreateContext(
+        internal static ProfileRestoreContext CreateContext(
             int maximumLevel = 10,
             float thresholdLevelOneCost = 2f)
         {

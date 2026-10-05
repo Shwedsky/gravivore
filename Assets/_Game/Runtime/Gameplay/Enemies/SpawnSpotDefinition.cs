@@ -14,7 +14,8 @@ namespace Gravivore.Gameplay.Enemies
             float minimumPlayerDistance,
             float minimumRespawnDelay,
             float maximumRespawnDelay,
-            AdaptiveRespawnPolicy adaptiveRespawn = default)
+            AdaptiveRespawnPolicy adaptiveRespawn = default,
+            float rewardMultiplier = 1f)
         {
             if (string.IsNullOrWhiteSpace(id))
             {
@@ -48,6 +49,9 @@ namespace Gravivore.Gameplay.Enemies
             if ((double)maximumRespawnDelay + adaptiveRespawn.MaximumSteps * (double)adaptiveRespawn.DelayPerStep > float.MaxValue)
                 throw new ArgumentOutOfRangeException(nameof(adaptiveRespawn));
             AdaptiveRespawn = adaptiveRespawn;
+            if (float.IsNaN(rewardMultiplier) || float.IsInfinity(rewardMultiplier) || rewardMultiplier <= 0f)
+                throw new ArgumentOutOfRangeException(nameof(rewardMultiplier));
+            RewardMultiplier = rewardMultiplier;
         }
 
         public string Id { get; }
@@ -64,6 +68,7 @@ namespace Gravivore.Gameplay.Enemies
 
         public RespawnDelayPolicy RespawnDelay { get; }
         public AdaptiveRespawnPolicy AdaptiveRespawn { get; }
+        public float RewardMultiplier { get; }
 
         public Vector3 GetAnchorWorldPosition(int index)
         {

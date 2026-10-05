@@ -32,7 +32,8 @@ namespace Gravivore.Gameplay.Enemies
             int targetLayer,
             Material visualMaterial,
             IEnemyVisualFactory visualFactory = null,
-            PlayerStatsState playerStats = null)
+            PlayerStatsState playerStats = null,
+            bool shareCapacityAcrossSpots = false)
         {
             if (_isInitialized)
             {
@@ -78,7 +79,10 @@ namespace Gravivore.Gameplay.Enemies
                     _globalCapacity,
                     player,
                     playerDamageable,
-                    new SystemRandomSource(1709 + (i * 7919)));
+                    new SystemRandomSource(1709 + (i * 7919)),
+                    shareCapacityAcrossSpots
+                        ? Math.Max(1, globalLiveEnemyCap / _spots.Length + (i < globalLiveEnemyCap % _spots.Length ? 1 : 0))
+                        : int.MaxValue);
                 _spots[i].EnemyDied += HandleEnemyDied;
                 _spots[i].EnemyDamaged += HandleEnemyDamaged;
             }

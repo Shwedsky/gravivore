@@ -139,7 +139,8 @@ namespace Gravivore.Tests.PlayMode
             Assert.That(enemy.CurrentHitPoints, Is.LessThan(hp));
             if (enemy.IsAlive) Assert.That(Vector3.Distance(enemy.transform.position, root.PlayerObject.transform.position), Is.LessThan(distance));
             Assert.IsTrue(lash.LastPlayedObject.activeSelf, "Beam must exist in the same call as HP/feedback.");
-            Assert.That(root.CombatFeedback.EnemyHitPool.ActiveCount + root.CombatFeedback.EnemyDeathPool.ActiveCount, Is.GreaterThan(0));
+            Assert.That(root.Phase6BCombat.EnemyHitCount + root.Phase6BCombat.EnemyDeathCount, Is.GreaterThan(0));
+            Assert.That(root.CombatFeedback.EnemyHitPool.ActiveCount + root.CombatFeedback.EnemyDeathPool.ActiveCount, Is.Zero);
         }
 
         [UnityTest]

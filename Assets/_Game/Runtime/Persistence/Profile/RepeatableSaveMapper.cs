@@ -47,6 +47,11 @@ namespace Gravivore.Persistence.Profile
         private static PendingEncounterReward RestorePending(PendingEncounterRewardSaveDto dto)
         {
             if (dto == null) return null;
+            // JsonUtility materializes a null nested DTO as a default object on round-trip.
+            // Only the entirely empty representation means no pending transaction.
+            if (string.IsNullOrEmpty(dto.transactionId) && string.IsNullOrEmpty(dto.enemyId) &&
+                dto.encounterKind == 0 && dto.entitlement == 0 && dto.stat == 0 &&
+                dto.statExperience == 0f && dto.assimilationScore == 0 && dto.phase == 0) return null;
             if (string.IsNullOrWhiteSpace(dto.transactionId)) throw new ArgumentException("Pending reward transaction id is required.", nameof(dto));
             if (!Enum.IsDefined(typeof(RepeatableEncounterKind), dto.encounterKind) ||
                 !Enum.IsDefined(typeof(EncounterRewardEntitlement), dto.entitlement) ||

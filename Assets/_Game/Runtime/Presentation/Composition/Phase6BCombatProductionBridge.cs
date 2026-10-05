@@ -1,88 +1,136 @@
-using System.Collections;
+using System;
+using Gravivore.Gameplay.Combat;
 using Gravivore.Gameplay.Enemies;
+using Gravivore.Gameplay.Encounters;
+using Gravivore.Presentation.AudioVfx;
 using Gravivore.Presentation.Combat;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace Gravivore.Presentation.Composition
 {
-    /// <summary>
-    /// Production Chapter01 observer for Phase6B ordinary-enemy feedback. It only consumes
-    /// authoritative EnemyPopulation events and never writes combat/gameplay state.
-    /// </summary>
+    /// <summary>Observes authoritative events. Does not schedule attacks, damage, or rewards.</summary>
     [DisallowMultipleComponent]
     public sealed class Phase6BCombatProductionBridge : MonoBehaviour
     {
         private S01SceneCompositionRoot _root;
-        private EnemyPopulationController _enemies;
-        private GravityLashVfxPool _phase6BPresentation;
+        private GravityLashVfxPool _presentation;
+        public Phase6BVfxCue LastTelegraphCue { get; private set; }
+        public float LastTelegraphDuration { get; private set; }
+        public int EnemyHitCount { get; private set; }
+        public int EnemyDeathCount { get; private set; }
+        public int EliteAttackCount { get; private set; }
+        public int BossTelegraphCount { get; private set; }
+        public Phase6BVfxPool Vfx => _presentation.Vfx;
 
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-        private static void RegisterSceneHook()
+        public void Initialize(S01SceneCompositionRoot root, GravityLashVfxPool presentation)
         {
-            SceneManager.sceneLoaded -= HandleSceneLoaded;
-            SceneManager.sceneLoaded += HandleSceneLoaded;
+            _root = root != null ? root : throw new ArgumentNullException(nameof(root));
+            _presentation = presentation != null ? presentation : throw new ArgumentNullException(nameof(presentation));
+            if (!presentation.UsesPhase6BProductionPack) throw new InvalidOperationException("Phase6B pack required.");
+            root.EnemyPopulation.EnemyDamaged += EnemyDamaged;
+            root.EnemyPopulation.EnemyDied += EnemyDied;
+            root.MagnetarGuard.TelegraphStarted += EliteTelegraph;
+            root.MagnetarGuard.ShockwaveResolved += EliteResolved;
+            root.MagnetarGuard.ShockwaveCancelled += EliteCancelled;
+            root.MagnetarGuard.Damaged += EliteDamaged;
+            root.MagnetarGuard.Defeated += EliteDefeated;
+            root.CustodianBoss.TelegraphStarted += BossTelegraph;
+            root.CustodianBoss.AttackResolved += BossResolved;
+            root.CustodianBoss.EncounterReset += BossReset;
+            root.CustodianBoss.Damaged += BossDamaged;
+            root.CustodianBoss.Defeated += BossDefeated;
         }
 
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-        private static void AttachInAlreadyLoadedScene()
+        private void EnemyDamaged(EnemyDamageEvent value)
         {
-            AttachToProductionRoots();
+            if (value.Result.WasLethal) return;
+            EnemyHitCount++;
+            _presentation.PlayEnemyHit(value.Position, value.LifeId.GetHashCode());
         }
-
-        private static void HandleSceneLoaded(Scene scene, LoadSceneMode mode)
+        private void EnemyDied(EnemyDeathEvent value)
         {
-            AttachToProductionRoots();
+            EnemyDeathCount++;
+            _presentation.PlayEnemyShutdown(value.Position, value.LifeId.GetHashCode());
         }
-
-        private static void AttachToProductionRoots()
+        private void EliteTelegraph(EliteShockwaveTelegraphEvent value)
         {
-            var roots = UnityEngine.Object.FindObjectsByType<S01SceneCompositionRoot>(FindObjectsSortMode.None);
-            for (var i = 0; i < roots.Length; i++)
+            EliteAttackCount++;
+            _presentation.Audio.TryPlay(Phase6BAudioCue.MagnetarSignature, value.Origin);
+            Vfx.TryPlayTelegraph(Phase6BVfxCue.HostileTelegraphBase, value.Origin, Vector3.forward,
+                value.Radius, 0f, 0f, value.Duration);
+        }
+        private void EliteResolved(EliteShockwaveResolvedEvent value)
+        {
+            Vfx.StopCue(Phase6BVfxCue.HostileTelegraphBase);
+            var position = _root.MagnetarGuard.transform.position;
+            Vfx.TryPlay(Phase6BVfxCue.HostileImpact, position, position);
+        }
+        private void EliteCancelled(EliteShockwaveCancelledEvent value) => Vfx.StopCue(Phase6BVfxCue.HostileTelegraphBase);
+        private void EliteDamaged(DamageResult value)
+        {
+            if (!value.WasLethal) _presentation.PlayEnemyHit(_root.MagnetarGuard.transform.position, 0);
+        }
+        private void EliteDefeated(MagnetarGuardDefeatedEvent value)
+        {
+            Vfx.StopCue(Phase6BVfxCue.HostileTelegraphBase);
+            _presentation.PlayEnemyShutdown(value.Position, 0);
+        }
+        private void BossTelegraph(BossTelegraphEvent value)
+        {
+            StopBossTelegraphs();
+            BossTelegraphCount++;
+            Phase6BAudioCue audio;
+            switch (value.Attack)
             {
-                var root = roots[i];
-                if (root == null || root.GetComponent<Phase6BCombatProductionBridge>() != null) continue;
-                root.gameObject.AddComponent<Phase6BCombatProductionBridge>();
+                case BossAttackType.ConeSweep: LastTelegraphCue = Phase6BVfxCue.BossConeTelegraph; audio = Phase6BAudioCue.CustodianCone; break;
+                case BossAttackType.LineCharge: LastTelegraphCue = Phase6BVfxCue.BossLineTelegraph; audio = Phase6BAudioCue.CustodianLine; break;
+                case BossAttackType.CirclePulse: LastTelegraphCue = Phase6BVfxCue.BossCircleTelegraph; audio = Phase6BAudioCue.CustodianCircle; break;
+                default: throw new ArgumentOutOfRangeException(nameof(value));
             }
+            LastTelegraphDuration = value.Duration;
+            _presentation.Audio.TryPlay(audio, value.Origin);
+            Vfx.TryPlayTelegraph(LastTelegraphCue, value.Origin, value.Direction,
+                value.Range, value.Width, value.HalfAngleDegrees, value.Duration);
         }
-
-        private IEnumerator Start()
+        private void BossResolved(BossAttackResolvedEvent value)
         {
-            _root = GetComponent<S01SceneCompositionRoot>();
-            if (_root == null) yield break;
-
-            while (_root.EnemyPopulation == null)
-                yield return null;
-
-            _phase6BPresentation = _root.GetComponentInChildren<GravityLashVfxPool>(true);
-            if (_phase6BPresentation == null || !_phase6BPresentation.UsesPhase6BProductionPack)
-            {
-                Debug.LogError("Phase6B combat bridge requires the production Gravity Lash Phase6B presentation facade.", this);
-                yield break;
-            }
-
-            _enemies = _root.EnemyPopulation;
-            _enemies.EnemyDamaged += HandleEnemyDamaged;
-            _enemies.EnemyDied += HandleEnemyDied;
+            StopBossTelegraphs();
+            var position = _root.CustodianBoss.transform.position;
+            Vfx.TryPlay(Phase6BVfxCue.HostileImpact, position, position);
         }
-
-        private void HandleEnemyDamaged(EnemyDamageEvent damage)
+        private void BossReset(BossEncounterResetEvent value) => StopBossTelegraphs();
+        private void BossDamaged(DamageResult value)
         {
-            if (damage.Result.WasLethal) return;
-            _phase6BPresentation.PlayEnemyHit(damage.Position, damage.LifeId.GetHashCode());
+            if (!value.WasLethal) _presentation.PlayEnemyHit(_root.CustodianBoss.transform.position, 1);
         }
-
-        private void HandleEnemyDied(EnemyDeathEvent death)
+        private void BossDefeated(BossDefeatedEvent value)
         {
-            _phase6BPresentation.PlayEnemyShutdown(death.Position, death.LifeId.GetHashCode());
+            StopBossTelegraphs();
+            _presentation.PlayEnemyShutdown(value.Position, 1);
         }
-
+        private void StopBossTelegraphs()
+        {
+            Vfx.StopCue(Phase6BVfxCue.BossConeTelegraph);
+            Vfx.StopCue(Phase6BVfxCue.BossLineTelegraph);
+            Vfx.StopCue(Phase6BVfxCue.BossCircleTelegraph);
+        }
         private void OnDestroy()
         {
-            if (_enemies == null) return;
-            _enemies.EnemyDamaged -= HandleEnemyDamaged;
-            _enemies.EnemyDied -= HandleEnemyDied;
-            _enemies = null;
+            if (_root == null) return;
+            var enemies = _root.EnemyPopulation;
+            if (enemies != null) { enemies.EnemyDamaged -= EnemyDamaged; enemies.EnemyDied -= EnemyDied; }
+            var elite = _root.MagnetarGuard;
+            if (elite != null)
+            {
+                elite.TelegraphStarted -= EliteTelegraph; elite.ShockwaveResolved -= EliteResolved;
+                elite.ShockwaveCancelled -= EliteCancelled; elite.Damaged -= EliteDamaged; elite.Defeated -= EliteDefeated;
+            }
+            var boss = _root.CustodianBoss;
+            if (boss != null)
+            {
+                boss.TelegraphStarted -= BossTelegraph; boss.AttackResolved -= BossResolved; boss.EncounterReset -= BossReset;
+                boss.Damaged -= BossDamaged; boss.Defeated -= BossDefeated;
+            }
         }
     }
 }

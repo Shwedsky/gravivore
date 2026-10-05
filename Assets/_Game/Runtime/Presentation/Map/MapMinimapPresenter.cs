@@ -364,7 +364,9 @@ namespace Gravivore.Presentation.Map
             a.DisplayName == b.DisplayName &&
             a.Availability == b.Availability &&
             a.ProgressionLocked == b.ProgressionLocked &&
-            a.RewardState == b.RewardState;
+            a.RewardState == b.RewardState && a.FirstClearCompleted == b.FirstClearCompleted &&
+            a.RewardEntitlement == b.RewardEntitlement && a.PremiumRewardsRemaining == b.PremiumRewardsRemaining &&
+            Mathf.FloorToInt(a.RewardWindowRemainingSeconds) == Mathf.FloorToInt(b.RewardWindowRemainingSeconds);
 
         private static string BuildDetails(MapMarkerSnapshot marker)
         {
@@ -376,6 +378,12 @@ namespace Gravivore.Presentation.Map
                 text += "  ·  НАГРАДА ДОСТУПНА";
             else if (marker.RewardState == MapRewardState.CappedFallback)
                 text += "  ·  БАЗОВАЯ НАГРАДА";
+            if (marker.Kind == MapMarkerKind.Elite || marker.Kind == MapMarkerKind.Boss)
+            {
+                text += marker.FirstClearCompleted ? "  ·  ПОВТОР" : "  ·  ПЕРВОЕ ПРОХОЖДЕНИЕ";
+                if (marker.FirstClearCompleted)
+                    text += $"  ·  ПОЛНЫХ НАГРАД: {marker.PremiumRewardsRemaining}";
+            }
             return text;
         }
 

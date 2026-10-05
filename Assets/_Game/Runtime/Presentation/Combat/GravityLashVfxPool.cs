@@ -67,6 +67,8 @@ namespace Gravivore.Presentation.Combat
         public float ChargeDuration => _windupDuration;
         public bool UsesPhase6BProductionPack => _isInitialized && _audio != null && _vfx != null;
         public int Phase6BCreatedVfxCount => _vfx != null ? _vfx.CreatedInstanceCount : 0;
+        public Phase6BAudioPlayer Audio => _audio;
+        public Phase6BVfxPool Vfx => _vfx;
 
         public void Initialize(GravityAttackSettings settings, Material unlitMaterial)
         {
@@ -77,14 +79,15 @@ namespace Gravivore.Presentation.Combat
             GravityAttackSettings settings,
             Material unlitMaterial,
             S14PresentationDefinition presentation,
-            Transform presentationOrigin = null)
+            Transform presentationOrigin = null,
+            Phase6BProductionDefinition productionDefinition = null)
         {
             if (_isInitialized) throw new InvalidOperationException("Gravity lash presentation is already initialized.");
             if (settings == null) throw new ArgumentNullException(nameof(settings));
             if (unlitMaterial == null) throw new ArgumentNullException(nameof(unlitMaterial));
             settings.ValidateOrThrow();
 
-            var definition = Phase6BProductionDefinition.LoadRequired();
+            var definition = productionDefinition != null ? productionDefinition : Phase6BProductionDefinition.LoadRequired();
             _presentationOrigin = presentationOrigin;
             _windupDuration = presentation != null ? presentation.LashWindupDuration : 0f;
             _beamDuration = presentation != null ? presentation.LashBeamDuration : settings.VfxDuration * 0.45f;
@@ -98,7 +101,7 @@ namespace Gravivore.Presentation.Combat
             var vfxObject = new GameObject("Phase6B Production VFX", typeof(Phase6BVfxPool));
             vfxObject.transform.SetParent(transform, false);
             _vfx = vfxObject.GetComponent<Phase6BVfxPool>();
-            _vfx.Initialize(definition.CreateCheckpoint2Bindings());
+            _vfx.Initialize(definition.CreateCombatBindings());
 
             _sequences = new Sequence[settings.VfxPoolSize];
             for (var i = 0; i < _sequences.Length; i++) _sequences[i] = new Sequence();
@@ -223,7 +226,15 @@ namespace Gravivore.Presentation.Combat
         }
 
         private void Update() => Tick(Time.deltaTime);
-        private void OnDisable() => CancelCharge();
+        private void OnDisable()
+        {
+            CancelCharge();
+            if (_sequences != null)
+                for (var i = 0; i < _sequences.Length; i++) ResetSequence(_sequences[i]);
+            ActiveCount = 0;
+            _audio?.StopAll();
+            _vfx?.StopAll();
+        }
 
         private Sequence FindAvailable()
         {

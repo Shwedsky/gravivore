@@ -54,6 +54,12 @@ namespace Gravivore.Gameplay.Progression
                 return false;
             }
 
+            if (death.RewardMultiplier != 1f)
+                reward = new CoreReward(reward.EnemyId, reward.Stat,
+                    reward.StatExperience * death.RewardMultiplier,
+                    checked((long)Math.Round(reward.AssimilationScore * (double)death.RewardMultiplier,
+                        MidpointRounding.AwayFromZero)));
+
             var previousLevel = _playerStats.BaseLevels.GetLevel(reward.Stat);
             var maximumLevel = _playerStats.GetMaximumLevel(reward.Stat);
             var previousExperience = State.GetStatExperience(reward.Stat);

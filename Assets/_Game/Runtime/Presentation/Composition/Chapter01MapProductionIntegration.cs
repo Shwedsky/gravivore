@@ -20,51 +20,9 @@ namespace Gravivore.Presentation.Composition
 
         public MapMinimapPresenter MapPresenter { get; private set; }
 
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-        private static void RegisterSceneHook()
+        public void Initialize(S01SceneCompositionRoot root)
         {
-            SceneManager.sceneLoaded -= HandleSceneLoaded;
-            SceneManager.sceneLoaded += HandleSceneLoaded;
-        }
-
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-        private static void AttachInAlreadyLoadedScene()
-        {
-            AttachToProductionRoots();
-        }
-
-        private static void HandleSceneLoaded(Scene scene, LoadSceneMode mode)
-        {
-            AttachToProductionRoots();
-        }
-
-        private static void AttachToProductionRoots()
-        {
-            var roots = UnityEngine.Object.FindObjectsByType<S01SceneCompositionRoot>(FindObjectsSortMode.None);
-            for (var i = 0; i < roots.Length; i++)
-            {
-                var root = roots[i];
-                if (root == null || root.GetComponent<Chapter01MapProductionIntegration>() != null) continue;
-                root.gameObject.AddComponent<Chapter01MapProductionIntegration>();
-            }
-        }
-
-        private IEnumerator Start()
-        {
-            _root = GetComponent<S01SceneCompositionRoot>();
-            if (_root == null) yield break;
-
-            // S01SceneCompositionRoot composes in Start. Wait until the authoritative Chapter01
-            // read model and the production HUD are fully available before attaching presentation.
-            while (_root.WorldMarkers == null ||
-                   _root.PlayerObject == null ||
-                   _root.PauseMenu == null ||
-                   _root.OfflineRewardPanel == null ||
-                   _root.ChapterCompletion == null)
-            {
-                yield return null;
-            }
-
+            _root = root != null ? root : throw new ArgumentNullException(nameof(root));
             InitializeProductionMap();
         }
 
@@ -93,9 +51,7 @@ namespace Gravivore.Presentation.Composition
 
                 MapPresenter = mapObject.GetComponent<MapMinimapPresenter>();
                 MapPresenter.Initialize(
-                    new CurrentWorldMarkerMapAdapter(
-                        _root.WorldMarkers,
-                        () => _root.PlayerObject != null ? _root.PlayerObject.transform.eulerAngles.y : 0f));
+                    _root.MapMarkers, _root.MapBounds);
             }
 
             RebuildProductionTouchExclusion(safeAreaRect);

@@ -35,7 +35,13 @@ namespace Gravivore.Gameplay.Progression
             if (nextLevel == maximumLevel) nextExperience = 0f;
             var nextTotal = checked(_state.TotalAssimilationScore + reward.AssimilationScore);
             _state.CommitAuthoredReward(reward.Stat, nextExperience, nextTotal);
-            if (nextLevel != previousLevel) _playerStats.SetLevel(reward.Stat, nextLevel);
+            if (nextLevel != previousLevel)
+            {
+                // Stats commit before notifying observers. A failing observer cannot turn a
+                // committed reward into a Prepared transaction that would grant it again.
+                try { _playerStats.SetLevel(reward.Stat, nextLevel); }
+                catch (Exception exception) { UnityEngine.Debug.LogException(exception); }
+            }
         }
     }
 }

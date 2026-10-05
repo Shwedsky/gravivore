@@ -36,6 +36,7 @@ namespace Gravivore.Gameplay.Enemies
         private float _elapsedTime;
         private int _nextAnchorIndex;
         private bool _isDisposed;
+        private readonly int _liveBudget;
 
         public SpawnSpotRuntime(
             SpawnSpotRuntimeConfiguration configuration,
@@ -43,9 +44,12 @@ namespace Gravivore.Gameplay.Enemies
             ILiveEnemyCapacity globalCapacity,
             Transform player,
             IDamageable playerDamageable,
-            IRandomSource random)
+            IRandomSource random,
+            int liveBudget = int.MaxValue)
         {
             _configuration = configuration;
+            if (liveBudget < 1) throw new ArgumentOutOfRangeException(nameof(liveBudget));
+            _liveBudget = liveBudget;
             _pool = pool ?? throw new ArgumentNullException(nameof(pool));
             _globalCapacity = globalCapacity ?? throw new ArgumentNullException(nameof(globalCapacity));
             _player = player != null ? player : throw new ArgumentNullException(nameof(player));
@@ -137,6 +141,7 @@ namespace Gravivore.Gameplay.Enemies
 
         private bool TrySpawnOne()
         {
+            if (LiveCount >= _liveBudget) return false;
             for (var i = 0; i < _configuration.AnchorOffsets.Length; i++)
             {
                 _anchorDistances[i] = Vector3.Distance(
@@ -210,7 +215,8 @@ namespace Gravivore.Gameplay.Enemies
         private void HandleEnemyDied(EnemyDeathEvent death)
         {
             _adaptiveRespawn.RegisterKill(_elapsedTime);
-            SafeEventDispatch.Publish(EnemyDied, death);
+            SafeEventDispatch.Publish(EnemyDied, new EnemyDeathEvent(death.LifeId, death.EnemyId,
+                death.Position, _configuration.RewardMultiplier));
         }
 
         private void HandleEnemyDamaged(EnemyDamageEvent damage)

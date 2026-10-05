@@ -228,26 +228,30 @@ namespace Gravivore.Presentation.Feedback
             TryPlayAudio(lethal ? S14AudioCue.Death : S14AudioCue.Hit);
         }
 
-        private void HandleEliteTelegraph(EliteShockwaveTelegraphEvent value) => TryPlayAudio(S14AudioCue.Telegraph);
-        private void HandleBossTelegraph(BossTelegraphEvent value) => TryPlayAudio(S14AudioCue.Telegraph);
+        private void HandleEliteTelegraph(EliteShockwaveTelegraphEvent value) { if (!_phase6BPlayerEnemyOwned) TryPlayAudio(S14AudioCue.Telegraph); }
+        private void HandleBossTelegraph(BossTelegraphEvent value) { if (!_phase6BPlayerEnemyOwned) TryPlayAudio(S14AudioCue.Telegraph); }
 
         private void HandleEliteImpact(EliteShockwaveResolvedEvent value)
         {
+            if (_phase6BPlayerEnemyOwned) return;
             TryPlayAudio(S14AudioCue.BossImpact);
         }
 
         private void HandleBossImpact(BossAttackResolvedEvent value)
         {
+            if (_phase6BPlayerEnemyOwned) return;
             TryPlayAudio(S14AudioCue.BossImpact);
         }
 
         private void HandleEliteDamaged(Gravivore.Gameplay.Combat.DamageResult damage)
         {
+            if (_phase6BPlayerEnemyOwned) return;
             TryPlayPool(EnemyHitPool, _elite.transform.position + Vector3.up, _definition.HitDuration, 0.18f, 0.75f);
         }
 
         private void HandleBossDamaged(Gravivore.Gameplay.Combat.DamageResult damage)
         {
+            if (_phase6BPlayerEnemyOwned) return;
             TryPlayPool(EnemyHitPool, _boss.transform.position + Vector3.up, _definition.HitDuration, 0.22f, 0.9f);
         }
 

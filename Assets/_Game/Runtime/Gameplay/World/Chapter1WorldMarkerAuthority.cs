@@ -94,6 +94,13 @@ namespace Gravivore.Gameplay.World
             return result;
         }
 
+        public Chapter1MarkerState ReadStrongOrdinary(int index)
+        {
+            var spot = _strongSpots[index];
+            return new Chapter1MarkerState(spot.Id, Chapter1MarkerKind.StrongOrdinary, spot.Position,
+                false, true, TimeSpan.Zero, EncounterRewardEntitlement.FallbackRepeat, 0, TimeSpan.Zero);
+        }
+
         private static Chapter1MarkerState ToMarker(
             string id,
             Chapter1MarkerKind kind,
