@@ -12,6 +12,7 @@ namespace Gravivore.Presentation.Composition
         private Vector3 _repairPosition;
         private float _radiusSquared;
         private float _interval;
+        private float _groundEffectVisualLift;
         private float _remaining;
         private Phase6BAudioPlayer _audio;
         private Phase6BVfxPool _vfx;
@@ -25,6 +26,7 @@ namespace Gravivore.Presentation.Composition
             _repairPosition = repairPosition;
             _radiusSquared = recovery.RespawnZoneRadius * recovery.RespawnZoneRadius;
             _interval = definition.RepairPresentationInterval;
+            _groundEffectVisualLift = definition.GroundEffectVisualLift;
             _audio = gameObject.AddComponent<Phase6BAudioPlayer>();
             _audio.Initialize(definition.AudioBank, 1);
             _vfx = gameObject.AddComponent<Phase6BVfxPool>();
@@ -53,7 +55,7 @@ namespace Gravivore.Presentation.Composition
             var target = _health.transform.position + Vector3.up * 0.8f;
             _vfx.TryPlay(Phase6BVfxCue.RepairBeam, _repairPosition + Vector3.up, target, _interval);
             _vfx.TryPlay(Phase6BVfxCue.WeldingSparks, target, target, _interval);
-            _vfx.TryPlay(Phase6BVfxCue.ScannerSweep, _repairPosition, target, _interval);
+            _vfx.TryPlay(Phase6BVfxCue.ScannerSweep, _repairPosition + Vector3.up * _groundEffectVisualLift, target, _interval);
             _remaining = _interval;
         }
 

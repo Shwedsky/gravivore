@@ -14,6 +14,7 @@ namespace Gravivore.Presentation.Composition
     {
         private S01SceneCompositionRoot _root;
         private GravityLashVfxPool _presentation;
+        private float _groundEffectVisualLift;
         public Phase6BVfxCue LastTelegraphCue { get; private set; }
         public float LastTelegraphDuration { get; private set; }
         public int EnemyHitCount { get; private set; }
@@ -22,10 +23,12 @@ namespace Gravivore.Presentation.Composition
         public int BossTelegraphCount { get; private set; }
         public Phase6BVfxPool Vfx => _presentation.Vfx;
 
-        public void Initialize(S01SceneCompositionRoot root, GravityLashVfxPool presentation)
+        public void Initialize(S01SceneCompositionRoot root, GravityLashVfxPool presentation, Phase6BProductionDefinition definition)
         {
             _root = root != null ? root : throw new ArgumentNullException(nameof(root));
             _presentation = presentation != null ? presentation : throw new ArgumentNullException(nameof(presentation));
+            if (definition == null) throw new ArgumentNullException(nameof(definition));
+            _groundEffectVisualLift = definition.GroundEffectVisualLift;
             if (!presentation.UsesPhase6BProductionPack) throw new InvalidOperationException("Phase6B pack required.");
             root.EnemyPopulation.EnemyDamaged += EnemyDamaged;
             root.EnemyPopulation.EnemyDied += EnemyDied;
@@ -56,7 +59,7 @@ namespace Gravivore.Presentation.Composition
         {
             EliteAttackCount++;
             _presentation.Audio.TryPlay(Phase6BAudioCue.MagnetarSignature, value.Origin);
-            Vfx.TryPlayTelegraph(Phase6BVfxCue.HostileTelegraphBase, value.Origin, Vector3.forward,
+            Vfx.TryPlayTelegraph(Phase6BVfxCue.HostileTelegraphBase, value.Origin + Vector3.up * _groundEffectVisualLift, Vector3.forward,
                 value.Radius, 0f, 0f, value.Duration);
         }
         private void EliteResolved(EliteShockwaveResolvedEvent value)
@@ -89,7 +92,7 @@ namespace Gravivore.Presentation.Composition
             }
             LastTelegraphDuration = value.Duration;
             _presentation.Audio.TryPlay(audio, value.Origin);
-            Vfx.TryPlayTelegraph(LastTelegraphCue, value.Origin, value.Direction,
+            Vfx.TryPlayTelegraph(LastTelegraphCue, value.Origin + Vector3.up * _groundEffectVisualLift, value.Direction,
                 value.Range, value.Width, value.HalfAngleDegrees, value.Duration);
         }
         private void BossResolved(BossAttackResolvedEvent value)

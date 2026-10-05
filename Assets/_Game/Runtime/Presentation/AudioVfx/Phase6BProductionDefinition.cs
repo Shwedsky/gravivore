@@ -23,9 +23,11 @@ namespace Gravivore.Presentation.AudioVfx
         [SerializeField] private Phase6BVfxInstance _weldingSparks;
         [SerializeField] private Phase6BVfxInstance _scannerSweep;
         [SerializeField, Min(0.05f)] private float _repairPresentationInterval = 0.35f;
+        [SerializeField, Min(0f)] private float _groundEffectVisualLift = 0.35f;
 
         public Phase6BAudioBank AudioBank => _audioBank;
         public float RepairPresentationInterval => _repairPresentationInterval;
+        public float GroundEffectVisualLift => _groundEffectVisualLift;
 
         public Phase6BVfxPool.Binding[] CreateCombatBindings()
         {
@@ -91,6 +93,8 @@ namespace Gravivore.Presentation.AudioVfx
             ValidatePrefab(_weldingSparks, Phase6BVfxCue.WeldingSparks);
             ValidatePrefab(_scannerSweep, Phase6BVfxCue.ScannerSweep);
             if (_repairPresentationInterval <= 0f) throw new InvalidOperationException("Repair presentation interval must be positive.");
+            if (float.IsNaN(_groundEffectVisualLift) || float.IsInfinity(_groundEffectVisualLift) || _groundEffectVisualLift < 0f)
+                throw new InvalidOperationException("Ground effect visual lift must be finite and nonnegative.");
         }
 
         private static void ValidatePrefab(Phase6BVfxInstance prefab, Phase6BVfxCue expected)

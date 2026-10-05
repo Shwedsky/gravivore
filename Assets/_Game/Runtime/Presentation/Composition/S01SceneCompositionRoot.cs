@@ -243,7 +243,7 @@ namespace Gravivore.Presentation.Composition
                 MagnetarGuard, CustodianBoss, WorldUnlocks.State);
             InitializeEvolution();
             Phase6BCombat = gameObject.AddComponent<Phase6BCombatProductionBridge>();
-            Phase6BCombat.Initialize(this, _gravityLashVfx);
+            Phase6BCombat.Initialize(this, _gravityLashVfx, _phase6BProductionDefinition);
             var repairObject = new GameObject("Repair Hub Presentation", typeof(RepairHubProductionPresenter));
             repairObject.transform.SetParent(transform, false);
             RepairHub = repairObject.GetComponent<RepairHubProductionPresenter>();

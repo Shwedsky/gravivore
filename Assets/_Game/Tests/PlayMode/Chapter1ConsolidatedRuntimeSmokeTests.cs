@@ -175,6 +175,10 @@ namespace Gravivore.Tests.PlayMode
                 var hp = root.PlayerHealth.CurrentHitPoints;
                 boss.Tick(.25f);
                 Assert.That(root.PlayerHealth.CurrentHitPoints, Is.EqualTo(hp), "Warning presentation cannot commit damage.");
+                var geometry = instance.GetComponentInChildren<LineRenderer>();
+                Assert.That(geometry.positionCount, Is.EqualTo(i == 0 ? 32 : i == 1 ? 22 : 4));
+                Assert.That(geometry.GetPosition(0).y, Is.GreaterThan(.3f), "Cosmetic warnings must clear the authored visual deck.");
+                yield return null; // Render an actual engine frame before capturing newly enabled geometry.
                 Capture(root, evidence[i]);
                 boss.Tick(2f); boss.Tick(0f); boss.Tick(2f);
                 if (i < 2) boss.Tick(0f);
