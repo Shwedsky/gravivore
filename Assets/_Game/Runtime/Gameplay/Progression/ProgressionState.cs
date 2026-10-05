@@ -50,32 +50,23 @@ namespace Gravivore.Gameplay.Progression
     public sealed class ProgressionState
     {
         private const int StatCount = 5;
-
         private readonly float[] _statExperience = new float[StatCount];
         private readonly HashSet<string> _firstKills = new HashSet<string>(StringComparer.Ordinal);
         private readonly HashSet<EnemyLifeId> _processedLives = new HashSet<EnemyLifeId>();
 
         public long TotalAssimilationScore { get; private set; }
-
         public int ProcessedLifeCount => _processedLives.Count;
 
         public static ProgressionState Restore(in ProgressionSnapshot snapshot)
         {
-            if (snapshot.TotalAssimilationScore < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(snapshot), "Total assimilation cannot be negative.");
-            }
-
+            if (snapshot.TotalAssimilationScore < 0) throw new ArgumentOutOfRangeException(nameof(snapshot), "Total assimilation cannot be negative.");
             var state = new ProgressionState { TotalAssimilationScore = snapshot.TotalAssimilationScore };
             for (var i = 0; i < StatCount; i++)
             {
                 var stat = (PlayerStatType)i;
                 var experience = snapshot.GetStatExperience(stat);
                 if (float.IsNaN(experience) || float.IsInfinity(experience) || experience < 0f)
-                {
                     throw new ArgumentOutOfRangeException(nameof(snapshot), $"Invalid experience for {stat}.");
-                }
-
                 state._statExperience[i] = experience;
             }
 
@@ -84,69 +75,45 @@ namespace Gravivore.Gameplay.Progression
                 foreach (var enemyId in snapshot.FirstKillEnemyIds)
                 {
                     if (string.IsNullOrWhiteSpace(enemyId) || !state._firstKills.Add(enemyId))
-                    {
                         throw new ArgumentException("First-kill ids must be non-empty and unique.", nameof(snapshot));
-                    }
                 }
             }
-
             return state;
         }
 
-        public float GetStatExperience(PlayerStatType stat)
-        {
-            return _statExperience[GetStatIndex(stat)];
-        }
+        public float GetStatExperience(PlayerStatType stat) => _statExperience[GetStatIndex(stat)];
 
         public bool HasFirstKill(string enemyId)
         {
-            if (string.IsNullOrWhiteSpace(enemyId))
-            {
-                throw new ArgumentException("Enemy id is required.", nameof(enemyId));
-            }
-
+            if (string.IsNullOrWhiteSpace(enemyId)) throw new ArgumentException("Enemy id is required.", nameof(enemyId));
             return _firstKills.Contains(enemyId);
         }
 
-        internal bool HasProcessed(EnemyLifeId lifeId)
-        {
-            return _processedLives.Contains(lifeId);
-        }
+        internal bool HasProcessed(EnemyLifeId lifeId) => _processedLives.Contains(lifeId);
 
-        internal void Commit(
-            EnemyLifeId lifeId,
-            string enemyId,
-            PlayerStatType stat,
-            float statExperience,
-            long totalAssimilationScore,
-            bool isFirstKill)
+        internal void Commit(EnemyLifeId lifeId, string enemyId, PlayerStatType stat, float statExperience, long totalAssimilationScore, bool isFirstKill)
         {
-            if (!_processedLives.Add(lifeId))
-            {
-                throw new InvalidOperationException("Enemy life was already processed.");
-            }
-
+            if (!_processedLives.Add(lifeId)) throw new InvalidOperationException("Enemy life was already processed.");
             _statExperience[GetStatIndex(stat)] = statExperience;
             TotalAssimilationScore = totalAssimilationScore;
-            if (isFirstKill && !_firstKills.Add(enemyId))
-            {
-                throw new InvalidOperationException("First-kill state is inconsistent.");
-            }
+            if (isFirstKill && !_firstKills.Add(enemyId)) throw new InvalidOperationException("First-kill state is inconsistent.");
+        }
+
+        internal void CommitAuthoredReward(PlayerStatType stat, float statExperience, long totalAssimilationScore)
+        {
+            if (float.IsNaN(statExperience) || float.IsInfinity(statExperience) || statExperience < 0f)
+                throw new ArgumentOutOfRangeException(nameof(statExperience));
+            if (totalAssimilationScore < TotalAssimilationScore)
+                throw new ArgumentOutOfRangeException(nameof(totalAssimilationScore));
+            _statExperience[GetStatIndex(stat)] = statExperience;
+            TotalAssimilationScore = totalAssimilationScore;
         }
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
         internal bool EnsureMinimumAssimilationScoreForDevelopment(long minimumScore)
         {
-            if (minimumScore < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(minimumScore));
-            }
-
-            if (TotalAssimilationScore >= minimumScore)
-            {
-                return false;
-            }
-
+            if (minimumScore < 0) throw new ArgumentOutOfRangeException(nameof(minimumScore));
+            if (TotalAssimilationScore >= minimumScore) return false;
             TotalAssimilationScore = minimumScore;
             return true;
         }
@@ -169,11 +136,7 @@ namespace Gravivore.Gameplay.Progression
         private static int GetStatIndex(PlayerStatType stat)
         {
             var index = (int)stat;
-            if (index < 0 || index >= StatCount)
-            {
-                throw new ArgumentOutOfRangeException(nameof(stat));
-            }
-
+            if (index < 0 || index >= StatCount) throw new ArgumentOutOfRangeException(nameof(stat));
             return index;
         }
     }

@@ -8,7 +8,7 @@ namespace Gravivore.Persistence.Profile
     {
         private readonly IProfileRepository _repository;
         private readonly ProfileRestoreContext _context;
-        private readonly ITimeProvider _time;
+        private readonly ITimeProvider _sourceTime;
         private readonly ISaveDiagnostics _diagnostics;
         private readonly TimeSpan _minimumResumeAbsence;
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
@@ -18,7 +18,7 @@ namespace Gravivore.Persistence.Profile
         private ProfileSession(
             IProfileRepository repository,
             ProfileRestoreContext context,
-            ITimeProvider time,
+            ITimeProvider sourceTime,
             ISaveDiagnostics diagnostics,
             ProfileRuntimeState state,
             OfflineRewardService offlineRewards,
@@ -29,9 +29,10 @@ namespace Gravivore.Persistence.Profile
         {
             _repository = repository;
             _context = context;
-            _time = time;
+            _sourceTime = sourceTime;
             _diagnostics = diagnostics;
             State = state;
+            EffectiveTime = new ProfileEffectiveUtcTimeProvider(sourceTime, state);
             OfflineRewards = offlineRewards;
             ReturnSummary = returnSummary;
             LoadResult = loadResult;
@@ -40,6 +41,7 @@ namespace Gravivore.Persistence.Profile
         }
 
         public ProfileRuntimeState State { get; }
+        public ITimeProvider EffectiveTime { get; }
         public OfflineRewardService OfflineRewards { get; }
         public OfflineReturnSummary ReturnSummary { get; }
         public ProfileLoadResult LoadResult { get; }
@@ -57,13 +59,10 @@ namespace Gravivore.Persistence.Profile
             if (context == null) throw new ArgumentNullException(nameof(context));
             if (time == null) throw new ArgumentNullException(nameof(time));
             if (diagnostics == null) throw new ArgumentNullException(nameof(diagnostics));
-            var now = time.UtcNow;
+            var observedNow = time.UtcNow;
             Func<SaveRootDto> freshFactory = () =>
-                ProfileSaveMapper.ToDto(ProfileSaveMapper.CreateFresh(context, now), context);
-            Action<SaveRootDto> validate = dto =>
-            {
-                _ = ProfileSaveMapper.Restore(dto, context);
-            };
+                ProfileSaveMapper.ToDto(ProfileSaveMapper.CreateFresh(context, observedNow), context);
+            Action<SaveRootDto> validate = dto => { _ = ProfileSaveMapper.Restore(dto, context); };
 
             ProfileLoadResult loadResult;
             var persistenceSuspended = false;
@@ -84,6 +83,8 @@ namespace Gravivore.Persistence.Profile
                 loadResult.Save,
                 context,
                 CreateOptionalContentWarningSink(diagnostics));
+            var effectiveTime = new ProfileEffectiveUtcTimeProvider(time, state);
+            var now = effectiveTime.UtcNow;
             var offlineRewards = new OfflineRewardService(configuration.OfflineReward, state.Offline);
             OfflineReturnSummary summary;
             if (loadResult.WasCreated || !OfflineRewardEligibility.IsUnlocked(state.Quests))
@@ -118,7 +119,7 @@ namespace Gravivore.Persistence.Profile
 
         public OfflineReturnSummary ProcessResume()
         {
-            var now = _time.UtcNow;
+            var now = EffectiveTime.UtcNow;
             var elapsed = now - State.LastSeenUtc;
             OfflineReturnSummary summary;
             if (elapsed <= TimeSpan.Zero)
@@ -158,7 +159,7 @@ namespace Gravivore.Persistence.Profile
             if (_profileReset) return false;
 #endif
             if (PersistenceSuspended) return false;
-            State.SetLastSeenUtc(_time.UtcNow);
+            State.SetLastSeenUtc(EffectiveTime.UtcNow);
             Func<SaveRootDto> freshFactory = () =>
                 ProfileSaveMapper.ToDto(ProfileSaveMapper.CreateFresh(_context, State.LastSeenUtc), _context);
             try
@@ -166,10 +167,7 @@ namespace Gravivore.Persistence.Profile
                 _repository.Save(
                     ProfileSaveMapper.ToDto(State, _context),
                     freshFactory,
-                    dto =>
-                    {
-                        _ = ProfileSaveMapper.Restore(dto, _context);
-                    });
+                    dto => { _ = ProfileSaveMapper.Restore(dto, _context); });
                 return true;
             }
             catch (Exception exception)
