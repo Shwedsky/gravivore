@@ -4,6 +4,7 @@ using Gravivore.Gameplay.Encounters;
 using Gravivore.Gameplay.Player;
 using Gravivore.Gameplay.Progression;
 using Gravivore.Presentation.Combat;
+using Gravivore.Presentation.Composition;
 using Gravivore.Presentation.Evolution;
 using UnityEngine;
 
@@ -23,6 +24,7 @@ namespace Gravivore.Presentation.Feedback
         private S14PresentationDefinition _definition;
         private S14AudioPresenter _audio;
         private IHapticFeedback _haptics;
+        private bool _phase6BPlayerEnemyOwned;
         private readonly Material[] _materials = new Material[6];
         private OrdinaryEnemyController[] _reactionEnemies;
         private Transform[] _reactionVisuals;
@@ -64,6 +66,11 @@ namespace Gravivore.Presentation.Feedback
             _haptics = haptics ?? throw new ArgumentNullException(nameof(haptics));
             if (unlitMaterial == null) throw new ArgumentNullException(nameof(unlitMaterial));
             _definition.ValidateOrThrow();
+
+            // When the production Phase6B bridge is attached to the real S01 root it owns
+            // Gravity Lash audio/VFX and ordinary-enemy hit/death presentation. S14 keeps its
+            // unrelated player, progression, haptic, elite and boss responsibilities.
+            _phase6BPlayerEnemyOwned = GetComponentInParent<Phase6BCombatProductionBridge>() != null;
 
             EnemyHitPool = CreatePool("Enemy Hit VFX", _definition.HitPoolSize, unlitMaterial, _definition.HitColor, 0);
             EnemyDeathPool = CreatePool("Enemy Death VFX", _definition.DeathPoolSize, unlitMaterial, _definition.DeathColor, 1);
@@ -137,7 +144,7 @@ namespace Gravivore.Presentation.Feedback
 
         private void HandleEnemyDamaged(EnemyDamageEvent damage)
         {
-            if (damage.Result.WasLethal) return;
+            if (_phase6BPlayerEnemyOwned || damage.Result.WasLethal) return;
             for (var i = 0; i < _reactionEnemies.Length; i++)
                 if (_reactionEnemies[i].LifeId.Equals(damage.LifeId))
                 {
@@ -151,6 +158,7 @@ namespace Gravivore.Presentation.Feedback
 
         private void HandleEnemyDied(EnemyDeathEvent death)
         {
+            if (_phase6BPlayerEnemyOwned) return;
             PlayHit(death.Position, true);
         }
 
@@ -182,6 +190,7 @@ namespace Gravivore.Presentation.Feedback
 
         private void HandleLashCue(GravityLashCue cue, Vector3 position)
         {
+            if (_phase6BPlayerEnemyOwned) return;
             if (cue == GravityLashCue.Windup) TryPlayAudio(S14AudioCue.LashWindup);
             if (cue == GravityLashCue.Beam) TryPlayAudio(S14AudioCue.Release);
             if (cue == GravityLashCue.Impact) TryPlayAudio(S14AudioCue.LashImpact);
@@ -213,7 +222,6 @@ namespace Gravivore.Presentation.Feedback
 
         private void PlayHit(Vector3 position, bool lethal)
         {
-            // Synchronous authoritative event snapshot; no delayed callback retains a pooled life.
             TryPlayPool(lethal ? EnemyDeathPool : EnemyHitPool, position + Vector3.up * .7f,
                 lethal ? _definition.DeathDuration : _definition.HitDuration,
                 lethal ? .4f : .25f, lethal ? 1.5f : .8f);
