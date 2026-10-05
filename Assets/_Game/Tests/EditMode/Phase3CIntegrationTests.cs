@@ -11,11 +11,11 @@ namespace Gravivore.Tests.EditMode
 {
     public sealed class Phase3CIntegrationTests
     {
-        [TestCase("scout-drone", "ScoutDrone_Phase3B")]
+        [TestCase("scout-drone", "ScoutDrone_Phase3D")]
         [TestCase("cutter-unit", "Cutter_ArtSpike")]
-        [TestCase("arc-drone", "ArcDrone_Phase3B")]
-        [TestCase("warden", "Warden_Phase3B")]
-        [TestCase("carrier", "Carrier_Phase3B")]
+        [TestCase("arc-drone", "ArcDrone_Phase3D")]
+        [TestCase("warden", "Warden_Phase3D")]
+        [TestCase("carrier", "Carrier_Phase3D")]
         public void CanonicalOrdinaryBindingsRetainFallbackDataAndSafeMeshes(string id, string model)
         {
             var catalog = AssetDatabase.LoadAssetAtPath<S15VisualCatalog>(S15AssetConfigurator.CatalogPath);
@@ -36,9 +36,9 @@ namespace Gravivore.Tests.EditMode
                 Assert.That(report.missingMeshes + report.missingMaterials + report.brokenTextureReferences, Is.Zero, path);
             }
             var definition = AssetDatabase.LoadAssetAtPath<ChapterVisualIntegrationDefinition>(VisualIntegrationFoundationBuilder.DefinitionPath);
-            Assert.That(definition.Elite.Prefab.name, Is.EqualTo("MagnetarGuard_Phase3B"));
-            Assert.That(definition.Boss.Prefab.name, Is.EqualTo("CustodianM0_Phase3B"));
-            Assert.That(definition.RepairHub.Prefab.name, Is.EqualTo("RepairHub_Phase3B"));
+            Assert.That(definition.Elite.Prefab.name, Is.EqualTo("MagnetarGuard_Phase3D"));
+            Assert.That(definition.Boss.Prefab.name, Is.EqualTo("CustodianM0_Phase3D"));
+            Assert.That(definition.RepairHub.Prefab.name, Is.EqualTo("RepairHub_Phase3D"));
         }
     }
 }

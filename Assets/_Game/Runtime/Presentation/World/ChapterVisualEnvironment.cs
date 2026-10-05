@@ -37,6 +37,7 @@ namespace Gravivore.Presentation.World
         [SerializeField] private bool _showFallbackEnvironment = true;
         [SerializeField] private VisualRegionBinding[] _regions = Array.Empty<VisualRegionBinding>();
         [SerializeField] private EnvironmentDressingBinding[] _dressing = Array.Empty<EnvironmentDressingBinding>();
+        private Phase3DMechanicalMotionPresenter _phase3DMotion;
         private bool _initialized;
 
         public ChapterVisualIntegrationDefinition Definition => _definition;
@@ -60,6 +61,15 @@ namespace Gravivore.Presentation.World
             ValidateOrThrow();
             for (var i = 0; i < _dressing.Length; i++) _dressing[i].Model.InstantiateUnder(_dressing[i].Anchor);
             _definition.RepairHub.InstantiateUnder(GetRegion("repair-hub").Root.Find("MainPlatform"));
+
+            if (_phase3DMotion == null)
+            {
+                var motionObject = new GameObject("Phase 3D Mechanical Motion", typeof(Phase3DMechanicalMotionPresenter));
+                motionObject.transform.SetParent(transform.parent, false);
+                _phase3DMotion = motionObject.GetComponent<Phase3DMechanicalMotionPresenter>();
+                _phase3DMotion.Initialize(transform);
+            }
+
             _fallbackRoot.gameObject.SetActive(_showFallbackEnvironment);
             _initialized = true;
         }
@@ -95,6 +105,15 @@ namespace Gravivore.Presentation.World
             if (GetRegion("repair-hub").Root.Find("MainPlatform") == null ||
                 GetRegion("repair-hub").Root.Find("PlayerDockPoint") == null)
                 throw new InvalidOperationException("Repair hub integration anchors are required.");
+        }
+
+        private void OnDestroy()
+        {
+            if (_phase3DMotion == null) return;
+            var motionObject = _phase3DMotion.gameObject;
+            _phase3DMotion = null;
+            if (Application.isPlaying) Destroy(motionObject);
+            else DestroyImmediate(motionObject);
         }
     }
 }

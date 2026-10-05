@@ -21,7 +21,7 @@ namespace Gravivore.Tests.PlayMode
     public sealed class Phase3CIntegrationSmokeTests
     {
         private CanonicalSceneTestScope _scene;
-        private static readonly string[] Names = { "ScoutDrone_Phase3B", "Cutter_ArtSpike", "Warden_Phase3B", "ArcDrone_Phase3B", "Carrier_Phase3B" };
+        private static readonly string[] Names = { "ScoutDrone_Phase3D", "Cutter_ArtSpike", "Warden_Phase3D", "ArcDrone_Phase3D", "Carrier_Phase3D" };
         private static readonly PresentationSocket[] Roles = { PresentationSocket.Core, PresentationSocket.Sensor,
             PresentationSocket.AttackOrigin,PresentationSocket.HitCenter,PresentationSocket.GroundContact,
             PresentationSocket.VfxTop,PresentationSocket.VfxRear,PresentationSocket.TelegraphOrigin };
@@ -62,7 +62,7 @@ namespace Gravivore.Tests.PlayMode
                 Assert.That(binding.VisualRoot.GetComponentsInChildren<Collider>(true), Is.Empty);
             }
             var hub = environment.GetRegion("repair-hub").Root;
-            var model = hub.Find("MainPlatform/RepairHub_Phase3B"); Assert.IsNotNull(model);
+            var model = hub.Find("MainPlatform/RepairHub_Phase3D"); Assert.IsNotNull(model);
             Assert.That(Vector3.Distance(hub.Find("PlayerDockPoint").position, model.Find("ServicePoint").position), Is.LessThan(.001f));
             var anchors = new[] { "ManipulatorLeft", "ManipulatorRight", "RearManipulatorA", "RearManipulatorB", "RepairBeamOriginLeft", "RepairBeamOriginRight", "RepairBeamOriginRearA", "RepairBeamOriginRearB", "AmbientFxRoot" };
             var refs = new[] { "ManipulatorMount_L", "ManipulatorMount_R", "RearManipulatorMount_A", "RearManipulatorMount_B", "BeamEmitter_L", "BeamEmitter_R", "BeamEmitter_RearA", "BeamEmitter_RearB", "AmbientFxVisualRoot" };
@@ -106,7 +106,7 @@ namespace Gravivore.Tests.PlayMode
             pool.Return(enemy); Assert.IsNull(binding.ActiveModel); Assert.IsNull(binding.Sockets);
             var reused = pool.Acquire(Config("carrier"),_scene.Root.PlayerObject.transform,_scene.Root.PlayerHealth,Vector3.one,pool.Return);
             Assert.AreSame(enemy,reused); Assert.That(reused.LifeId,Is.Not.EqualTo(life));
-            Assert.That(binding.ActiveModel.name,Is.EqualTo("Carrier_Phase3B"));
+            Assert.That(binding.ActiveModel.name,Is.EqualTo("Carrier_Phase3D"));
             Assert.AreSame(reused.TargetPoint,binding.GetSocketOr(PresentationSocket.Sensor,reused.TargetPoint));
             Assert.IsFalse(oldSensor.gameObject.activeInHierarchy);
             Assert.That(binding.VisualRoot.localPosition,Is.EqualTo(Vector3.zero));

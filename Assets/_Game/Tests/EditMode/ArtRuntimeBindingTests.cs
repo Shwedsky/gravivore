@@ -43,7 +43,7 @@ namespace Gravivore.Tests.EditMode
                     Assert.That(AssetDatabase.GetAssetPath(recipe.PresentationPrefab), Is.EqualTo(Art + "Enemies/Cutter_ArtSpike.prefab"));
                 else
                 {
-                    Assert.That(AssetDatabase.GetAssetPath(recipe.PresentationPrefab), Does.StartWith("Assets/_Game/Phase3B/Prefabs/Enemies/"),id);
+                    Assert.That(AssetDatabase.GetAssetPath(recipe.PresentationPrefab), Does.StartWith("Assets/_Game/Phase3D/Prefabs/Enemies/"),id);
                     Assert.DoesNotThrow(() => PresentationPrefabValidation.ValidateOrThrow(recipe.PresentationPrefab));
                 }
                 for (var i = 0; i < recipe.PartCount; i++)
