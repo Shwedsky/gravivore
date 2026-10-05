@@ -6,9 +6,9 @@ namespace Gravivore.Persistence.Profile
 {
     /// <summary>
     /// Owns the durable repeat-reward sequence:
-    /// prepare state -> save -> apply reward -> save applied phase -> clear -> save.
-    /// A Prepared transaction is safe to re-apply only after reload because its durable profile
-    /// still contains the pre-reward progression snapshot. An Applied transaction is never applied again.
+    /// prepare state -> durable save -> apply reward -> durable applied save -> clear -> durable save.
+    /// A Prepared transaction on disk always corresponds to the pre-reward progression snapshot.
+    /// An Applied transaction is never applied again.
     /// </summary>
     public sealed class RepeatableRewardTransactionCoordinator
     {
@@ -40,28 +40,35 @@ namespace Gravivore.Persistence.Profile
             _encounters.PrepareDefeat(encounterKind, firstClearCompletedBeforeKill, reward);
             if (!_session.FlushNow())
             {
-                // Nothing has been granted yet. Keep the Prepared transaction in memory so a later
-                // save/recovery can continue without silently losing the kill entitlement.
+                // No reward has been granted. The transaction remains Prepared in memory and a retry
+                // must establish the durable Prepared checkpoint before applying it.
                 return false;
             }
 
-            return RecoverPending();
+            return RecoverPending(preparedCheckpointAlreadyDurable: true);
         }
 
-        public bool RecoverPending()
+        public bool RecoverPending() => RecoverPending(preparedCheckpointAlreadyDurable: false);
+
+        private bool RecoverPending(bool preparedCheckpointAlreadyDurable)
         {
             var pending = _session.State.Repeatable.PendingReward;
             if (pending == null) return true;
 
             if (pending.Phase == PendingRewardPhase.Prepared)
             {
+                // On startup this is intentionally conservative: re-saving Prepared is harmless and
+                // proves durable state is still available before reward application. In-session callers
+                // that just completed the prepare flush can skip the redundant write.
+                if (!preparedCheckpointAlreadyDurable && !_session.FlushNow()) return false;
+
                 _rewardApplier.Apply(pending.Reward);
                 pending.MarkApplied();
                 if (!_session.FlushNow())
                 {
-                    // In-memory progression and phase are Applied. Disk remains Prepared with the
-                    // pre-reward progression snapshot; a crash therefore reloads a state where a
-                    // single application is still required, while an in-session retry cannot double grant.
+                    // Memory is Applied. If this process crashes, disk is still Prepared with the
+                    // pre-reward progression snapshot, so recovery applies exactly once. If it does
+                    // not crash, an in-session retry sees Applied and will not grant again.
                     return false;
                 }
             }
