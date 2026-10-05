@@ -20,5 +20,17 @@ namespace Gravivore.Persistence.Profile
         }
 
         public DateTime UtcNow => _state.AdvanceEffectiveUtcFloor(_source.UtcNow);
+
+        public static DateTime ClampToPersistedFloor(DateTime persistedFloorUtc, DateTime observedUtc)
+        {
+            RequireUtc(persistedFloorUtc, nameof(persistedFloorUtc));
+            RequireUtc(observedUtc, nameof(observedUtc));
+            return observedUtc > persistedFloorUtc ? observedUtc : persistedFloorUtc;
+        }
+
+        private static void RequireUtc(DateTime value, string name)
+        {
+            if (value.Kind != DateTimeKind.Utc) throw new ArgumentException("Timestamp must be UTC.", name);
+        }
     }
 }
