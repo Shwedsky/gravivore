@@ -55,16 +55,25 @@ namespace Gravivore.Tests.PlayMode
             Assert.That(root.MapMarkers.GetMarker(0).HeadingDegrees, Is.EqualTo(90f).Within(.001f));
             map.OpenExpanded(); map.RefreshNow();
             Assert.That(map.CachedMarkerCount, Is.EqualTo(13));
-            for (var i = 5; i < 9; i++)
-            {
-                Assert.That(root.EnemyPopulation.GetSpot(i).LiveCount, Is.GreaterThan(0), "Strong spots cannot starve behind the global cap.");
-                Assert.That(root.MapMarkers.GetMarker(i + 1).Kind, Is.EqualTo(MapMarkerKind.StrongOrdinary));
-            }
             Assert.That(map.SelectMarker("strong-elite-a"), Is.True);
             Capture(root, "02_expanded_map.png");
             map.CloseExpanded();
+            for (var i = 0; i < 5; i++) Assert.That(root.EnemyPopulation.GetSpot(i).LiveCount, Is.EqualTo(4));
+            for (var i = 5; i < 9; i++) Assert.That(root.EnemyPopulation.GetSpot(i).LiveCount, Is.Zero);
+            root.WorldUnlocks.PrepareEliteEncounterForDevelopment();
+            root.MagnetarGuard.ApplyDamage(new DamageRequest(100000f, DamageType.Gravity));
+            for (var i = 5; i < 9; i++)
+            {
+                Move(root, root.EnemyPopulation.GetSpot(i).Position + Vector3.back * 5f);
+                root.EnemyPopulation.Tick(0f);
+                Assert.That(root.EnemyPopulation.GetSpot(i).LiveCount, Is.GreaterThan(0), "Strong spots cannot starve behind the global cap.");
+                Assert.That(root.MapMarkers.GetMarker(i + 1).Kind, Is.EqualTo(MapMarkerKind.StrongOrdinary));
+                Assert.That(root.EnemyPopulation.LiveEnemyCount, Is.LessThanOrEqualTo(25));
+            }
             var strong = root.EnemyPopulation.GetSpot(5);
             var independent = root.EnemyPopulation.GetSpot(6);
+            Move(root, strong.Position + Vector3.back * 5f);
+            root.EnemyPopulation.Tick(0f);
             var baseline = root.EnemyPopulation.GetSpot(3).GetLiveEnemy(0);
             Assert.That(strong.GetLiveEnemy(0).CurrentHitPoints, Is.GreaterThan(baseline.CurrentHitPoints));
             var rewards = 0f;

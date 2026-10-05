@@ -2,6 +2,7 @@ using System;
 using Gravivore.Gameplay.Encounters;
 using Gravivore.Gameplay.Progression;
 using Gravivore.Gameplay.Quests;
+using Gravivore.Gameplay.World;
 
 namespace Gravivore.Persistence.Profile
 {
@@ -22,6 +23,7 @@ namespace Gravivore.Persistence.Profile
             Transactions = new RepeatableRewardTransactionCoordinator(session,
                 new AuthoredRewardApplier(session.State.PlayerStats, session.State.Progression, progression),
                 CompleteFirstClear);
+            session.State.World.GateUnlocked += HandleGateUnlocked;
         }
 
         public RepeatableRewardTransactionCoordinator Transactions { get; }
@@ -60,6 +62,13 @@ namespace Gravivore.Persistence.Profile
 
         private void HandleEliteDefeated(MagnetarGuardDefeatedEvent value) =>
             Commit(RepeatableEncounterKind.Magnetar, _session.State.World.EliteDefeated, value.EliteId);
+        private void HandleGateUnlocked(WorldGateUnlockedEvent value)
+        {
+            if (_elite != null && _session.State.Repeatable.PendingReward == null &&
+                _session.State.World.EliteGateUnlocked &&
+                Encounters.Read(RepeatableEncounterKind.Magnetar, _session.State.World.EliteDefeated).Available)
+                _elite.ActivateEncounter();
+        }
         private void HandleBossDefeated(BossDefeatedEvent value) =>
             Commit(RepeatableEncounterKind.Custodian, _session.State.Boss.IsDefeated, value.BossId);
 
@@ -90,6 +99,7 @@ namespace Gravivore.Persistence.Profile
 
         public void Dispose()
         {
+            _session.State.World.GateUnlocked -= HandleGateUnlocked;
             if (_elite != null) _elite.Defeated -= HandleEliteDefeated;
             if (_boss != null) _boss.Defeated -= HandleBossDefeated;
             _elite = null;

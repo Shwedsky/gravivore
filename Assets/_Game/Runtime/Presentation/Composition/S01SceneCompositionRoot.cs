@@ -67,6 +67,7 @@ namespace Gravivore.Presentation.Composition
         private Material _bossMaterial;
         private Transform _playerVisualRoot;
         private float _repeatRetryRemaining;
+        private float[] _strongActivationRadii;
         private QuestMovementSignal _questMovementSignal;
         private bool _isComposed;
         private RectTransform _hudRoot;
@@ -846,11 +847,13 @@ namespace Gravivore.Presentation.Composition
                 positions[i] = ordinary[i].WorldOrigin;
             }
             StrongSpots = Chapter1StrongOrdinarySpotCatalog.Create(_worldDefinition.Configuration, positions);
+            _strongActivationRadii = new float[StrongSpots.Count];
             var configurations = new SpawnSpotRuntimeConfiguration[ordinary.Length + StrongSpots.Count];
             for (var i = 0; i < StrongSpots.Count; i++)
             {
                 var source = ordinary[StrongSpots[i].Region == StrongOrdinaryRegion.Elite ? 3 : 4];
                 configurations[ordinary.Length + i] = StrongSpots[i].CreateSpawnConfiguration(source);
+                _strongActivationRadii[i] = source.Enemy.Behavior.AggroReleaseRadius + source.MinimumPlayerDistance;
             }
             for (var i = 0; i < _spawnSpotDefinitions.Length; i++)
             {
@@ -873,7 +876,19 @@ namespace Gravivore.Presentation.Composition
                 targetLayer,
                 _materialPalette.LitMaterial,
                 new S15EnemyVisualFactory(_s15VisualCatalog),
-                PlayerStats, shareCapacityAcrossSpots: true);
+                PlayerStats, spotActivation: IsSpawnSpotActive);
+        }
+
+        private bool IsSpawnSpotActive(int index)
+        {
+            if (index < _spawnSpotDefinitions.Length) return true;
+            var strong = StrongSpots[index - _spawnSpotDefinitions.Length];
+            var unlocked = strong.Region == StrongOrdinaryRegion.Elite
+                ? WorldUnlocks.State.EliteGateUnlocked : WorldUnlocks.State.BossGateUnlocked;
+            var radius = _strongActivationRadii[index - _spawnSpotDefinitions.Length];
+            var offset = PlayerObject.transform.position - strong.Position;
+            offset.y = 0f;
+            return unlocked && offset.sqrMagnitude <= radius * radius;
         }
 
         private Transform CreateCamera(Transform target)

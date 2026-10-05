@@ -113,13 +113,13 @@ namespace Gravivore.Gameplay.Enemies
             var spots = new[]
             {
                 new StrongOrdinarySpotDefinition("strong-elite-a", StrongOrdinaryRegion.Elite,
-                    ClampInside(world.Bounds, eliteBase + new Vector3(-6f, 0f, -5f)), 1.3f, 1.2f, 1.75f, 14f, pressure),
+                    ClampInside(world.Bounds, eliteBase + new Vector3(-18f, 0f, -5f)), 1.3f, 1.2f, 1.75f, 14f, pressure),
                 new StrongOrdinarySpotDefinition("strong-elite-b", StrongOrdinaryRegion.Elite,
-                    ClampInside(world.Bounds, eliteBase + new Vector3(7f, 0f, 4f)), 1.4f, 1.25f, 2f, 16f, pressure),
+                    ClampInside(world.Bounds, eliteBase + new Vector3(18f, 0f, 4f)), 1.4f, 1.25f, 2f, 16f, pressure),
                 new StrongOrdinarySpotDefinition("strong-boss-a", StrongOrdinaryRegion.Boss,
-                    ClampInside(world.Bounds, bossBase + new Vector3(-world.BossArenaRadius * 0.55f, 0f, 0f)), 1.55f, 1.35f, 2.25f, 16f, pressure),
+                    ClampInside(world.Bounds, bossBase + new Vector3(-18f, 0f, 0f)), 1.55f, 1.35f, 2.25f, 16f, pressure),
                 new StrongOrdinarySpotDefinition("strong-boss-b", StrongOrdinaryRegion.Boss,
-                    ClampInside(world.Bounds, bossBase + new Vector3(world.BossArenaRadius * 0.45f, 0f, -world.BossArenaRadius * 0.35f)), 1.7f, 1.45f, 2.75f, 19f, pressure)
+                    ClampInside(world.Bounds, bossBase + new Vector3(18f, 0f, -world.BossArenaRadius * 0.35f)), 1.7f, 1.45f, 2.75f, 19f, pressure)
             };
             ValidateDistinct(spots, existingOrdinaryPositions);
             return spots;

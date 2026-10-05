@@ -31,6 +31,7 @@ namespace Gravivore.Presentation.Combat
             public ITargetable Target;
             public EnemyLifeId Life;
             public bool Active;
+            public Phase6BVfxInstance Effect;
         }
 
         private Sequence[] _sequences;
@@ -101,7 +102,12 @@ namespace Gravivore.Presentation.Combat
             var vfxObject = new GameObject("Phase6B Production VFX", typeof(Phase6BVfxPool));
             vfxObject.transform.SetParent(transform, false);
             _vfx = vfxObject.GetComponent<Phase6BVfxPool>();
-            _vfx.Initialize(definition.CreateCombatBindings());
+            var bindings = definition.CreateCombatBindings();
+            for (var i = 0; i < bindings.Length; i++)
+                if (bindings[i].Cue <= Phase6BVfxCue.PlayerImpact)
+                    bindings[i] = new Phase6BVfxPool.Binding(bindings[i].Cue, bindings[i].Prefab,
+                        Mathf.Min(bindings[i].Capacity, settings.VfxPoolSize));
+            _vfx.Initialize(bindings);
 
             _sequences = new Sequence[settings.VfxPoolSize];
             for (var i = 0; i < _sequences.Length; i++) _sequences[i] = new Sequence();
@@ -124,10 +130,12 @@ namespace Gravivore.Presentation.Combat
             _charging = sequence;
             ActiveCount++;
 
+            PublishCue(GravityLashCue.Windup, destination);
             var resolvedOrigin = ResolveOrigin(origin);
             _audio.TryPlay(Phase6BAudioCue.GravityLashCharge, resolvedOrigin);
             _vfx.TryPlay(Phase6BVfxCue.PlayerCharge, resolvedOrigin, destination, remainingUntilCommit);
-            PublishCue(GravityLashCue.Windup, destination);
+            sequence.Effect = _vfx.LastPlayedInstance;
+            LastPlayedObject = sequence.Effect.gameObject;
         }
 
         public void CancelCharge()
@@ -165,11 +173,13 @@ namespace Gravivore.Presentation.Combat
             sequence.Phase = GravityLashCue.Beam;
             sequence.Remaining = _beamDuration;
 
+            PublishCue(GravityLashCue.Beam, destination);
             var resolvedOrigin = ResolveOrigin(origin);
             _audio.TryPlay(Phase6BAudioCue.GravityLashRelease, resolvedOrigin);
             _vfx.TryPlay(Phase6BVfxCue.PlayerReleaseFlash, resolvedOrigin, destination);
             _vfx.TryPlay(Phase6BVfxCue.GravityLashTravel, resolvedOrigin, destination, _beamDuration);
-            PublishCue(GravityLashCue.Beam, destination);
+            sequence.Effect = _vfx.LastPlayedInstance;
+            LastPlayedObject = sequence.Effect.gameObject;
         }
 
         public void PlayEnemyHit(Vector3 position, int variationSeed)
@@ -199,6 +209,8 @@ namespace Gravivore.Presentation.Combat
 
                 if (sequence.Phase == GravityLashCue.Windup)
                 {
+                    sequence.Remaining = Mathf.Max(0f, sequence.Remaining - deltaTime);
+                    if (sequence.Remaining <= 0f) sequence.Effect?.StopImmediate();
                     if (sequence.Target != null && !IsTargetLive(sequence) && ReferenceEquals(sequence, _charging))
                         CancelCharge();
                     continue;
@@ -212,10 +224,12 @@ namespace Gravivore.Presentation.Combat
 
                 if (sequence.Phase == GravityLashCue.Beam)
                 {
+                    sequence.Effect?.StopImmediate();
                     sequence.Phase = GravityLashCue.Impact;
                     sequence.Remaining = _impactDuration;
                     _audio.TryPlay(Phase6BAudioCue.GravityLashImpact, sequence.Destination);
                     _vfx.TryPlay(Phase6BVfxCue.PlayerImpact, sequence.Destination, sequence.Destination);
+                    sequence.Effect = _vfx.LastPlayedInstance;
                     PublishCue(GravityLashCue.Impact, sequence.Destination);
                     continue;
                 }
@@ -282,6 +296,8 @@ namespace Gravivore.Presentation.Combat
 
         private static void ResetSequence(Sequence sequence)
         {
+            sequence.Effect?.StopImmediate();
+            sequence.Effect = null;
             sequence.Active = false;
             sequence.Remaining = 0f;
             sequence.Target = null;

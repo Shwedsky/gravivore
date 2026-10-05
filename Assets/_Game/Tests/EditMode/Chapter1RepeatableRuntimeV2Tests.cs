@@ -5,7 +5,9 @@ using Gravivore.Gameplay.Enemies;
 using Gravivore.Gameplay.Player;
 using Gravivore.Gameplay.Progression;
 using Gravivore.Persistence.Profile;
+using Gravivore.Presentation.World;
 using NUnit.Framework;
+using UnityEditor;
 using UnityEngine;
 
 namespace Gravivore.Tests.EditMode
@@ -13,6 +15,47 @@ namespace Gravivore.Tests.EditMode
     public sealed class Chapter1RepeatableRuntimeV2Tests
     {
         private static readonly DateTime T0 = new DateTime(2026, 10, 5, 9, 0, 0, DateTimeKind.Utc);
+
+        [Test]
+        public void StrongSpawnAnchors_ClearCentralTraversalAndBothEncounterAcquisitionAreas()
+        {
+            var world = AssetDatabase.LoadAssetAtPath<Chapter01WorldDefinition>(
+                "Assets/_Game/Content/Definitions/S08_Chapter01World.asset").Configuration;
+            var elite = AssetDatabase.LoadAssetAtPath<MagnetarGuardDefinition>(
+                "Assets/_Game/Content/Definitions/S09_MagnetarGuard.asset").Configuration;
+            var eliteSource = AssetDatabase.LoadAssetAtPath<SpawnSpotDefinition>(
+                "Assets/_Game/Content/Definitions/S04_SpawnSpot_CapacitorField.asset").CreateRuntimeConfiguration();
+            var bossSource = AssetDatabase.LoadAssetAtPath<SpawnSpotDefinition>(
+                "Assets/_Game/Content/Definitions/S04_SpawnSpot_HaulerGraveyard.asset").CreateRuntimeConfiguration();
+            foreach (var strong in Chapter1StrongOrdinarySpotCatalog.Create(world))
+            {
+                var source = strong.Region == StrongOrdinaryRegion.Elite ? eliteSource : bossSource;
+                var configuration = strong.CreateSpawnConfiguration(source);
+                for (var i = 0; i < configuration.AnchorOffsets.Length; i++)
+                {
+                    var anchor = configuration.GetAnchorWorldPosition(i);
+                    var ordinaryRadius = source.Enemy.Behavior.AggroRadius;
+                    Assert.That(Mathf.Abs(anchor.x), Is.GreaterThan(ordinaryRadius + 1f), strong.Id);
+                    Assert.That(Vector3.Distance(anchor, elite.SpawnPosition),
+                        Is.GreaterThan(elite.AggroRadius + ordinaryRadius + 1f), strong.Id);
+                    Assert.That(Vector3.Distance(anchor, world.BossArenaCenter),
+                        Is.GreaterThan(world.BossArenaRadius + ordinaryRadius + 1f), strong.Id);
+                    Assert.That(anchor.x, Is.InRange(world.Bounds.MinX, world.Bounds.MaxX));
+                    Assert.That(anchor.z, Is.InRange(world.Bounds.MinZ, world.Bounds.MaxZ));
+                }
+            }
+        }
+
+        [Test]
+        public void EmptyPendingDto_RoundTripsThroughUnityJsonButPartialTransactionsAreRejected()
+        {
+            var serializer = new UnityJsonSaveSerializer();
+            var dto = RepeatableSaveMapper.ToDto(new Chapter1RepeatableState(), T0);
+            dto = serializer.Deserialize<Chapter1RepeatableSaveDto>(serializer.Serialize(dto));
+            Assert.That(RepeatableSaveMapper.Restore(dto, out _).PendingReward, Is.Null);
+            dto.pendingReward = new PendingEncounterRewardSaveDto { assimilationScore = 1 };
+            Assert.Throws<ArgumentException>(() => RepeatableSaveMapper.Restore(dto, out _));
+        }
 
         [Test]
         public void Migration_V1ToV2_PreservesHistoricalFirstClearsAndMakesRepeatsImmediatelyAvailable()

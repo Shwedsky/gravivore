@@ -15,7 +15,6 @@ namespace Gravivore.Tests.EditMode
         [TestCase(1)]
         [TestCase(2)]
         [TestCase(3)]
-        [TestCase(4)]
         public void EveryFailedCheckpoint_CanRetryInSessionWithoutDuplicatingReward(int checkpoint)
         {
             var repository = new FaultRepository();
@@ -35,7 +34,6 @@ namespace Gravivore.Tests.EditMode
 
         [TestCase(2)]
         [TestCase(3)]
-        [TestCase(4)]
         public void CrashAfterPreparedCheckpoint_ReloadRecoversExactlyOnce(int checkpoint)
         {
             var repository = new FaultRepository();

@@ -84,13 +84,13 @@ namespace Gravivore.Tests.PlayMode
             var spot = root.EnemyPopulation.GetSpot(0);
             var untouched = root.EnemyPopulation.GetSpot(1);
             var markers = root.WorldMarkers;
-            Assert.That(markers.Count, Is.EqualTo(8));
+            Assert.That(markers.Count, Is.EqualTo(12));
             Assert.That(markers.GetMarker(0).Position, Is.EqualTo(root.PlayerObject.transform.position));
-            Assert.That(markers.GetMarker(6).Kind, Is.EqualTo(WorldMarkerKind.Elite));
-            Assert.That(markers.GetMarker(7).Kind, Is.EqualTo(WorldMarkerKind.Boss));
-            Assert.That(markers.GetMarker(6).Status, Is.EqualTo(WorldMarkerStatus.Locked));
-            Assert.That(markers.GetMarker(7).Status, Is.EqualTo(WorldMarkerStatus.Locked));
-            Assert.Throws<ArgumentOutOfRangeException>(() => markers.GetMarker(8));
+            Assert.That(markers.GetMarker(10).Kind, Is.EqualTo(WorldMarkerKind.Elite));
+            Assert.That(markers.GetMarker(11).Kind, Is.EqualTo(WorldMarkerKind.Boss));
+            Assert.That(markers.GetMarker(10).Status, Is.EqualTo(WorldMarkerStatus.Locked));
+            Assert.That(markers.GetMarker(11).Status, Is.EqualTo(WorldMarkerStatus.Locked));
+            Assert.Throws<ArgumentOutOfRangeException>(() => markers.GetMarker(12));
 
             var initialScore = root.Progression.State.TotalAssimilationScore;
             var first = spot.GetLiveEnemy(0);
@@ -130,7 +130,7 @@ namespace Gravivore.Tests.PlayMode
                 new WorldUnlockSnapshot(true, true, true));
             var restoredMarkers = new WorldMarkerReadModel(root.PlayerObject.transform, root.EnemyPopulation,
                 root.MagnetarGuard, root.CustodianBoss, restored);
-            Assert.That(restoredMarkers.GetMarker(6).Status, Is.EqualTo(WorldMarkerStatus.Defeated));
+            Assert.That(restoredMarkers.GetMarker(10).Status, Is.EqualTo(WorldMarkerStatus.Defeated));
         }
 
         private void CapturePreviewIfRequested(EvolutionTier tier, bool detail)

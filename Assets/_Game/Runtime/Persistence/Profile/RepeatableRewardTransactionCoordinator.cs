@@ -57,6 +57,7 @@ namespace Gravivore.Persistence.Profile
         {
             var pending = _session.State.Repeatable.PendingReward;
             if (pending == null) return true;
+            var appliedCheckpointDurable = false;
 
             if (pending.Phase == PendingRewardPhase.Prepared)
             {
@@ -75,6 +76,7 @@ namespace Gravivore.Persistence.Profile
                     // not crash, an in-session retry sees Applied and will not grant again.
                     return false;
                 }
+                appliedCheckpointDurable = true;
             }
 
             if (pending.Phase != PendingRewardPhase.Applied)
@@ -84,8 +86,11 @@ namespace Gravivore.Persistence.Profile
 
             // Applied may be in memory after a failed Applied save. Establish that checkpoint
             // before clearing, including when recovering a previous in-session failure.
-            _completeFirstClear?.Invoke(pending);
-            if (!_session.FlushNow()) return false;
+            if (!appliedCheckpointDurable)
+            {
+                _completeFirstClear?.Invoke(pending);
+                if (!_session.FlushNow()) return false;
+            }
             _session.State.Repeatable.ClearPending(pending.TransactionId);
             if (_session.FlushNow()) return true;
             // Keep Applied in memory so a failed final checkpoint remains retryable.

@@ -8,6 +8,7 @@ using Gravivore.Gameplay.Combat;
 using Gravivore.Gameplay.Enemies;
 using Gravivore.Gameplay.Player;
 using Gravivore.Gameplay.Progression;
+using Gravivore.Presentation.AudioVfx;
 using Gravivore.Presentation.Combat;
 using Gravivore.Presentation.Evolution;
 using Gravivore.Presentation.Feedback;
@@ -101,12 +102,15 @@ namespace Gravivore.Tests.PlayMode
                     var authority = player.position;
                     cues.Clear(); lash.BeginCharge(authority, destination, null, .15f);
                     Assert.That(cues, Is.EqualTo(new[] { GravityLashCue.Windup }));
-                    var beam = lash.LastPlayedObject.GetComponent<LineRenderer>();
-                    Assert.IsFalse(beam.gameObject.activeSelf);
+                    var travel = lash.Vfx.GetComponentsInChildren<Gravivore.Presentation.AudioVfx.Phase6BVfxInstance>(true)
+                        .First(x => x.Cue == Gravivore.Presentation.AudioVfx.Phase6BVfxCue.GravityLashTravel);
+                    var beam = travel.GetComponentInChildren<LineRenderer>(true);
+                    Assert.IsFalse(travel.IsPlaying);
                     lash.Tick(.15f);
-                    Assert.IsFalse(beam.gameObject.activeSelf, "Charge expiry cannot release an attack.");
+                    Assert.IsFalse(travel.IsPlaying, "Charge expiry cannot release an attack.");
                     lash.Play(authority, destination);
-                    Assert.IsTrue(beam.gameObject.activeSelf);
+                    beam = lash.LastPlayedObject.GetComponentInChildren<LineRenderer>(true);
+                    Assert.IsTrue(lash.LastPlayedObject.activeSelf);
                     Assert.That(Vector3.Distance(beam.GetPosition(0), motion.PresentationSocket.position), Is.LessThan(.001f));
                     var core = view.GetTierForm(tier).Find("01_RobotBody_CommonIdentity/GravityCore_Common");
                     Assert.That(Vector3.Distance(motion.PresentationSocket.position, core.position), Is.InRange(.1f,.14f));
@@ -292,7 +296,8 @@ namespace Gravivore.Tests.PlayMode
             var capacity = root.CombatFeedback.EnemyDeathPool.Capacity;
             enemy.ApplyDamage(new DamageRequest(100000, DamageType.Gravity));
             Assert.IsFalse(enemy.IsAlive);
-            Assert.That(root.CombatFeedback.EnemyDeathPool.ActiveCount, Is.EqualTo(1));
+            Assert.That(root.CombatFeedback.EnemyDeathPool.ActiveCount, Is.Zero);
+            Assert.That(root.Phase6BCombat.EnemyDeathCount, Is.EqualTo(1));
             Assert.That(root.CombatFeedback.EnemyHitPool.ActiveCount, Is.Zero);
             Assert.That(root.CombatFeedback.EnemyDeathPool.Capacity, Is.EqualTo(capacity));
             var stats = root.PlayerStats.BaseLevels;
@@ -345,7 +350,9 @@ namespace Gravivore.Tests.PlayMode
             var hpBeforeCharge = cutter.CurrentHitPoints;
             attack.Tick(interval - .14f); motion.Tick(.016f);
             Assert.That(cutter.CurrentHitPoints, Is.EqualTo(hpBeforeCharge));
-            Assert.IsFalse(lash.LastPlayedObject.activeSelf);
+            Assert.IsTrue(lash.LastPlayedObject.activeSelf, "The production charge is visible before the damage commit.");
+            Assert.That(lash.Vfx.GetComponentsInChildren<Phase6BVfxInstance>(true)
+                .Any(x => x.Cue == Phase6BVfxCue.GravityLashTravel && x.IsPlaying), Is.False);
             Capture("07_Attack_Charge", false);
             attack.Tick(.141f);
             Assert.That(cutter.CurrentHitPoints, Is.LessThan(hpBeforeCharge));
@@ -362,7 +369,10 @@ namespace Gravivore.Tests.PlayMode
                 activePulseObjects = root.GetComponentsInChildren<PooledPulseVfx>(true).Sum(p => p.ActiveCount),
                 presentationMotionControllers = root.GetComponentsInChildren<MechMotionPresenter>().Length
             };
-            Assert.That(snapshot.activeParticleSystems, Is.Zero);
+            var particles = root.GetComponentsInChildren<ParticleSystem>(true);
+            Assert.That(particles.Length, Is.LessThanOrEqualTo(
+                lash.Phase6BCreatedVfxCount + root.RepairHub.Vfx.CreatedInstanceCount));
+            foreach (var particle in particles) Assert.That(particle.main.maxParticles, Is.LessThanOrEqualTo(64));
             Assert.That(snapshot.presentationMotionControllers, Is.EqualTo(1));
             var directory = Environment.GetEnvironmentVariable("GRAVIVORE_PLAYER_FEEL_QA");
             if (!string.IsNullOrEmpty(directory))

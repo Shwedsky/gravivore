@@ -36,7 +36,7 @@ namespace Gravivore.Gameplay.Enemies
         private float _elapsedTime;
         private int _nextAnchorIndex;
         private bool _isDisposed;
-        private readonly int _liveBudget;
+        private bool _active = true;
 
         public SpawnSpotRuntime(
             SpawnSpotRuntimeConfiguration configuration,
@@ -44,12 +44,9 @@ namespace Gravivore.Gameplay.Enemies
             ILiveEnemyCapacity globalCapacity,
             Transform player,
             IDamageable playerDamageable,
-            IRandomSource random,
-            int liveBudget = int.MaxValue)
+            IRandomSource random)
         {
             _configuration = configuration;
-            if (liveBudget < 1) throw new ArgumentOutOfRangeException(nameof(liveBudget));
-            _liveBudget = liveBudget;
             _pool = pool ?? throw new ArgumentNullException(nameof(pool));
             _globalCapacity = globalCapacity ?? throw new ArgumentNullException(nameof(globalCapacity));
             _player = player != null ? player : throw new ArgumentNullException(nameof(player));
@@ -69,6 +66,26 @@ namespace Gravivore.Gameplay.Enemies
         }
 
         public string Id => _configuration.Id;
+        public bool IsActive => _active;
+
+        public void SetActive(bool active)
+        {
+            if (_active == active) return;
+            _active = active;
+            if (active) return;
+            for (var i = _liveEnemies.Count - 1; i >= 0; i--)
+            {
+                var entry = _liveEnemies[i];
+                entry.Enemy.Damaged -= HandleEnemyDamaged;
+                entry.Enemy.Died -= HandleEnemyDied;
+                _occupiedAnchors[entry.AnchorIndex] = false;
+                _population.RegisterRecycle();
+                _globalCapacity.Release();
+                _pool.Return(entry.Enemy);
+                _respawnSchedule.Schedule(_elapsedTime);
+            }
+            _liveEnemies.Clear();
+        }
 
         public int LiveCount => _population.LiveCount;
 
@@ -100,7 +117,7 @@ namespace Gravivore.Gameplay.Enemies
 
             _elapsedTime += deltaTime;
             _adaptiveRespawn.AdvanceTo(_elapsedTime);
-            while (_population.NeedsSpawn && _respawnSchedule.HasReady(_elapsedTime))
+            while (_active && _population.NeedsSpawn && _respawnSchedule.HasReady(_elapsedTime))
             {
                 if (!TrySpawnOne())
                 {
@@ -141,7 +158,6 @@ namespace Gravivore.Gameplay.Enemies
 
         private bool TrySpawnOne()
         {
-            if (LiveCount >= _liveBudget) return false;
             for (var i = 0; i < _configuration.AnchorOffsets.Length; i++)
             {
                 _anchorDistances[i] = Vector3.Distance(

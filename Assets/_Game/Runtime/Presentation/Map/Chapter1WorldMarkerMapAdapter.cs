@@ -44,7 +44,7 @@ namespace Gravivore.Presentation.Map
                 var strong = index > _ordinaryCount;
                 var position = strong ? _authority.ReadStrongOrdinary(index - _ordinaryCount - 1).Position : spot.Position;
                 return new MapMarkerSnapshot(spot.Id, strong ? MapMarkerKind.StrongOrdinary : MapMarkerKind.Ordinary,
-                    position, spot.LiveCount > 0 ? MapAvailabilityState.Available : MapAvailabilityState.Cooldown,
+                    position, spot.LiveCount > 0 || strong && !spot.IsActive ? MapAvailabilityState.Available : MapAvailabilityState.Cooldown,
                     strong ? "Усиленный отряд" : spot.Id, remainingSeconds: spot.SecondsUntilNextRespawn);
             }
             if (index == Count - 1) return new MapMarkerSnapshot("repair-hub", MapMarkerKind.RepairHub,
