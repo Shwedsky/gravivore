@@ -69,12 +69,14 @@ namespace Gravivore.Persistence.Profile
             if (migrations == null) throw new ArgumentNullException(nameof(migrations));
             for (var i = 0; i < migrations.Count; i++)
             {
-                var migration = migrations[i] ?? throw new ArgumentException("Migration entries cannot be null.", nameof(migrations));
-                if (migration.FromVersion < 0 || migration.ToVersion != migration.FromVersion + 1 ||
-                    !_migrations.TryAdd(migration.FromVersion, migration))
-                {
-                    throw new ArgumentException("Migrations must be unique sequential steps.", nameof(migrations));
-                }
+                Register(migrations[i] ?? throw new ArgumentException("Migration entries cannot be null.", nameof(migrations)));
+            }
+
+            // Sequential migrations introduced by the persistence assembly are registered here so
+            // presentation/composition callers do not need to change whenever the schema advances.
+            if (_currentVersion >= 2 && !_migrations.ContainsKey(1))
+            {
+                Register(new SaveMigrationV1ToV2());
             }
         }
 
@@ -113,6 +115,15 @@ namespace Gravivore.Persistence.Profile
             }
 
             return new SaveMigrationResult(save, migrated);
+        }
+
+        private void Register(ISaveMigration migration)
+        {
+            if (migration.FromVersion < 0 || migration.ToVersion != migration.FromVersion + 1 ||
+                !_migrations.TryAdd(migration.FromVersion, migration))
+            {
+                throw new ArgumentException("Migrations must be unique sequential steps.", nameof(migration));
+            }
         }
     }
 
