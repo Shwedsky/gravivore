@@ -18,6 +18,56 @@ namespace Gravivore.Tests.PlayMode
     public sealed class EliteBossSmokeTests
     {
         [UnityTest]
+        public IEnumerator ActiveBoss_AccessChangesDoNotHealOrTeleport_ExitGraceResetsExactlyOnce()
+        {
+            var root = new GameObject("Device correction boss regression");
+            var player = CreatePlayer(root.transform, new Vector3(0, 0, 27), Vector3.zero);
+            var access = new MutableBossAccess();
+            var boss = CreateBoss(root.transform, player, new BossCompletionState("custodian-m0"), access);
+            boss.enabled = false;
+            access.CanEngage = false;
+            boss.Tick(0);
+            Assert.That(boss.State, Is.EqualTo(CustodianBossState.Dormant));
+            access.CanEngage = true;
+            boss.Tick(0);
+            boss.ApplyDamage(new DamageRequest(600, DamageType.Gravity));
+            Assert.That(boss.CurrentHitPoints / boss.MaximumHitPoints, Is.InRange(.4f, .6f));
+            var hp = boss.CurrentHitPoints;
+            // Distinct from the start so a concealed teleport is detectable.
+            boss.transform.position += Vector3.right;
+            var position = boss.transform.position;
+            var resets = 0;
+            boss.EncounterReset += _ => resets++;
+            access.CanEngage = false;
+            boss.Tick(.2f);
+            Assert.IsTrue(boss.CanBeTargeted);
+            Assert.That(boss.CurrentHitPoints, Is.EqualTo(hp));
+            Assert.That(boss.transform.position, Is.EqualTo(position));
+            player.transform.position = new Vector3(10, 0, 27);
+            boss.Tick(1.2f);
+            Assert.That(resets, Is.Zero);
+            Assert.That(boss.CurrentHitPoints, Is.EqualTo(hp));
+            Assert.That(boss.transform.position, Is.EqualTo(position));
+            player.transform.position = new Vector3(0, 0, 27);
+            boss.Tick(0);
+            player.transform.position = new Vector3(10, 0, 27);
+            boss.Tick(2.9f);
+            Assert.That(resets, Is.Zero, "Re-entry must clear the previous exit interval.");
+            Assert.That(boss.CurrentHitPoints, Is.EqualTo(hp));
+            boss.Tick(.11f);
+            boss.Tick(10);
+            Assert.That(resets, Is.EqualTo(1));
+            Assert.That(boss.CurrentHitPoints, Is.EqualTo(boss.MaximumHitPoints));
+            Assert.That(boss.transform.position, Is.EqualTo(new Vector3(0, 0, 27)));
+            UnityEngine.Object.Destroy(root);
+            yield return null;
+        }
+
+        private sealed class MutableBossAccess : IBossEncounterAccess
+        {
+            public bool CanEngage { get; set; } = true;
+        }
+        [UnityTest]
         public IEnumerator MagnetarGuard_IsTargetableUsesReducedPullAndUnlocksBossGateOnce()
         {
             var root = new GameObject("S09 Elite Smoke Root");
@@ -266,7 +316,8 @@ namespace Gravivore.Tests.PlayMode
         private static CustodianBossController CreateBoss(
             Transform parent,
             PlayerHealthController player,
-            BossCompletionState completion)
+            BossCompletionState completion,
+            IBossEncounterAccess access = null)
         {
             var gameObject = new GameObject("Custodian M-0 Test", typeof(CharacterController), typeof(CustodianBossController));
             gameObject.transform.SetParent(parent, false);
@@ -277,7 +328,7 @@ namespace Gravivore.Tests.PlayMode
             controller.Initialize(
                 gameObject.GetComponent<CharacterController>(), target.transform, target.GetComponent<Collider>(), 9,
                 CreateBossConfiguration(), player.transform, player, new PassthroughPullResolver(),
-                AlwaysBossEncounterAccess.Instance, completion);
+                access ?? AlwaysBossEncounterAccess.Instance, completion);
             return controller;
         }
 

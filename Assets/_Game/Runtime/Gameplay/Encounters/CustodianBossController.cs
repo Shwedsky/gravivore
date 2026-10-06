@@ -43,7 +43,9 @@ namespace Gravivore.Gameplay.Encounters
         public Transform TargetPoint => _targetPoint;
         public string Id => _configuration.Id;
         public Transform DisplacementRoot => transform;
-        public bool CanBeTargeted => _encounterAccess != null && _encounterAccess.CanEngage &&
+        // Access controls admission. A fight already in progress remains targetable
+        // while availability/reward-window state changes underneath it.
+        public bool CanBeTargeted => _encounterAccess != null &&
                                      IsAlive && State != CustodianBossState.Dormant &&
                                      State != CustodianBossState.Resetting &&
                                      State != CustodianBossState.Dead;
@@ -143,18 +145,13 @@ namespace Gravivore.Gameplay.Encounters
         {
             if (!_initialized) throw new InvalidOperationException("Custodian boss must be initialized before ticking.");
             if (State == CustodianBossState.Dead) return;
-            if (!_encounterAccess.CanEngage)
-            {
-                if (State != CustodianBossState.Dormant) ResetEncounter();
-                return;
-            }
             var playerInsideArena = BossAttackGeometry.IsInsideCircle(
                 _configuration.ArenaCenter,
                 _player.position,
                 _configuration.ArenaRadius);
             if (State == CustodianBossState.Dormant)
             {
-                if (!playerInsideArena || !_playerHealth.IsAlive) return;
+                if (!_encounterAccess.CanEngage || !playerInsideArena || !_playerHealth.IsAlive) return;
                 _stateMachine.Engage();
                 SafeEventDispatch.Publish(
                     EncounterStarted,

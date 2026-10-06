@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="7" result="Passed" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-06 22:42:50Z" end-time="2026-10-06 22:42:50Z" duration="0,4035776">
+  <test-suite type="TestSuite" id="1134" name="GRAVIVORE" fullname="GRAVIVORE" runstate="Runnable" testcasecount="99" result="Passed" start-time="2026-10-06 22:42:50Z" end-time="2026-10-06 22:42:50Z" duration="0.403578" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1128" name="Gravivore.PlayModeTests.dll" fullname="C:/Users/pamak/Documents/ChatGPT/gravivore/.codex-worktrees/first-visual-slice-apk-v1/Library/ScriptAssemblies/Gravivore.PlayModeTests.dll" runstate="Runnable" testcasecount="99" result="Passed" start-time="2026-10-06 22:42:50Z" end-time="2026-10-06 22:42:50Z" duration="0.390036" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="22216" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1129" name="Gravivore" fullname="Gravivore" runstate="Runnable" testcasecount="99" result="Passed" start-time="2026-10-06 22:42:50Z" end-time="2026-10-06 22:42:50Z" duration="0.387348" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1130" name="Tests" fullname="Gravivore.Tests" runstate="Runnable" testcasecount="99" result="Passed" start-time="2026-10-06 22:42:50Z" end-time="2026-10-06 22:42:50Z" duration="0.385123" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1131" name="PlayMode" fullname="Gravivore.Tests.PlayMode" runstate="Runnable" testcasecount="99" result="Passed" start-time="2026-10-06 22:42:50Z" end-time="2026-10-06 22:42:50Z" duration="0.382750" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1014" name="EliteBossSmokeTests" fullname="Gravivore.Tests.PlayMode.EliteBossSmokeTests" classname="Gravivore.Tests.PlayMode.EliteBossSmokeTests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-10-06 22:42:50Z" end-time="2026-10-06 22:42:50Z" duration="0.376983" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1015" name="ActiveBoss_AccessChangesDoNotHealOrTeleport_ExitGraceResetsExactlyOnce" fullname="Gravivore.Tests.PlayMode.EliteBossSmokeTests.ActiveBoss_AccessChangesDoNotHealOrTeleport_ExitGraceResetsExactlyOnce" methodname="ActiveBoss_AccessChangesDoNotHealOrTeleport_ExitGraceResetsExactlyOnce" classname="Gravivore.Tests.PlayMode.EliteBossSmokeTests" runstate="Runnable" seed="522358454" result="Passed" start-time="2026-10-06 22:42:50Z" end-time="2026-10-06 22:42:50Z" duration="0.193631" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1019" name="Boss_TakesDamageNeverDisplacesAndCompletesExactlyOnce" fullname="Gravivore.Tests.PlayMode.EliteBossSmokeTests.Boss_TakesDamageNeverDisplacesAndCompletesExactlyOnce" methodname="Boss_TakesDamageNeverDisplacesAndCompletesExactlyOnce" classname="Gravivore.Tests.PlayMode.EliteBossSmokeTests" runstate="Runnable" seed="510699653" result="Passed" start-time="2026-10-06 22:42:50Z" end-time="2026-10-06 22:42:50Z" duration="0.010044" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1017" name="BossSequence_ShowsEveryTelegraphAndImpactChecksCurrentPlayerGeometry" fullname="Gravivore.Tests.PlayMode.EliteBossSmokeTests.BossSequence_ShowsEveryTelegraphAndImpactChecksCurrentPlayerGeometry" methodname="BossSequence_ShowsEveryTelegraphAndImpactChecksCurrentPlayerGeometry" classname="Gravivore.Tests.PlayMode.EliteBossSmokeTests" runstate="Runnable" seed="1059522818" result="Passed" start-time="2026-10-06 22:42:50Z" end-time="2026-10-06 22:42:50Z" duration="0.121848" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1021" name="MagnetarDeathDuringTelegraph_HidesIndicatorAndCannotResolveDamage" fullname="Gravivore.Tests.PlayMode.EliteBossSmokeTests.MagnetarDeathDuringTelegraph_HidesIndicatorAndCannotResolveDamage" methodname="MagnetarDeathDuringTelegraph_HidesIndicatorAndCannotResolveDamage" classname="Gravivore.Tests.PlayMode.EliteBossSmokeTests" runstate="Runnable" seed="1423925103" result="Passed" start-time="2026-10-06 22:42:50Z" end-time="2026-10-06 22:42:50Z" duration="0.007630" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1016" name="MagnetarGuard_IsTargetableUsesReducedPullAndUnlocksBossGateOnce" fullname="Gravivore.Tests.PlayMode.EliteBossSmokeTests.MagnetarGuard_IsTargetableUsesReducedPullAndUnlocksBossGateOnce" methodname="MagnetarGuard_IsTargetableUsesReducedPullAndUnlocksBossGateOnce" classname="Gravivore.Tests.PlayMode.EliteBossSmokeTests" runstate="Runnable" seed="1642421893" result="Passed" start-time="2026-10-06 22:42:50Z" end-time="2026-10-06 22:42:50Z" duration="0.016345" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1018" name="PlayerDeathAndProlongedArenaExit_ResetBossHealthPositionAndTransientState" fullname="Gravivore.Tests.PlayMode.EliteBossSmokeTests.PlayerDeathAndProlongedArenaExit_ResetBossHealthPositionAndTransientState" methodname="PlayerDeathAndProlongedArenaExit_ResetBossHealthPositionAndTransientState" classname="Gravivore.Tests.PlayMode.EliteBossSmokeTests" runstate="Runnable" seed="1054929588" result="Passed" start-time="2026-10-06 22:42:50Z" end-time="2026-10-06 22:42:50Z" duration="0.004942" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1020" name="RestoredBossDefeat_StartsDeadAndCannotReengage" fullname="Gravivore.Tests.PlayMode.EliteBossSmokeTests.RestoredBossDefeat_StartsDeadAndCannotReengage" methodname="RestoredBossDefeat_StartsDeadAndCannotReengage" classname="Gravivore.Tests.PlayMode.EliteBossSmokeTests" runstate="Runnable" seed="576706308" result="Passed" start-time="2026-10-06 22:42:50Z" end-time="2026-10-06 22:42:50Z" duration="0.003222" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Saving results to: C:/Users/pamak/AppData/LocalLow/Project Gravivore/GRAVIVORE\TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
