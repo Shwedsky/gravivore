@@ -14,6 +14,12 @@ Primary evidence: [three-scale Unity board](evidence-v21/unity/04_G0_scale_compa
 
 Exact proportion metrics, camera/footprint values, all captures and limitations are in `G0_BIPEDAL_V21_PROPORTION_REVIEW.md` and `G0_UNITY_SCALE_REVIEW.md`. Verification results are recorded after execution in `data-v21/verification_summary.json`.
 
+Executed verification: saved V2.1 reopened and normalization/provenance checks passed; all five Blender and eight required Unity captures checked, and both boards verified as exact source pixels. Unity compile and project validation passed. **EditMode 388 passed / 0 failed; PlayMode 93 passed / 0 failed / 1 optional structural capture skipped** (`GRAVIVORE_VISUAL_INTEGRATION_QA` unset). New tests verify production dependency exclusion, persistent static review scene materials and unchanged live player/camera/gate authority under all visual scale transforms.
+
+Fresh **dev Android APK 0.1.0+2 / ARM64** built at 2026-10-06 19:05:52 Europe/Moscow, from checkpoint `1f117bd7474e6da57cb4bd1d950d8b6f33564eed`; Unity exit 0 and installed-aapt manifest/package verification passed. Application id `com.gravivore.mobile.dev`. APK path: `C:/Users/pamak/Documents/ChatGPT/gravivore/.codex-worktrees/g0-bipedal-blockout-v2/Builds/Android/gravivore-dev-0.1.0+2.apk`. It exercises the existing runtime; the isolated G-0 review scene/model is excluded from production dependencies/build scenes. Final documentation/attribution changes do not enter the APK. Logs/XML/build metadata are in `verification-v21/`; hash/byte count in `data-v21/verification_summary.json`.
+
+Unity-generated serialization changes in existing production assets/settings and the existing performance audit were restored after verification. Runtime/content/third-party assets, packages and project settings match starting HEAD `212269e` (main baseline `40b682d`). No tests are represented as executed on an Android device.
+
 No production prefab replacement, final texturing/UV/rig/animation/LOD, runtime composition change or merge. This pass stops at the human review gate. Next spec id: **none authorized**; next gate is the human V2.1 proportion/scale decision.
 
 G-0 BIPEDAL V2.1: PROPORTION + UNITY SCALE REVIEW READY FOR HUMAN DECISION

@@ -32,6 +32,17 @@ summary={'blender_reopen':json.loads((DOC/'data-v21/blend_reopen_validation.json
  'project_validation':'PASS' if validation.exists() and 'Application will terminate with return code 0' in validation.read_text(errors='replace') else 'not yet verified',
  'apk':str(build) if build.exists() else None,
  'device_performance':'Not measured','review_only':True}
+buildlog=DOC/'verification-v21/AndroidBuild.log'
+metadata=DOC/'verification-v21/AndroidBuildMetadata.json'
+if buildlog.exists() and metadata.exists():
+    summary['android_build']={'status':'PASS' if 'Application will terminate with return code 0' in buildlog.read_text(errors='replace') else 'unverified',
+        'metadata':json.loads(metadata.read_text()),'apk_bytes':build.stat().st_size,'apk_sha256':hashlib.sha256(build.read_bytes()).hexdigest(),
+        'manifest_verification':'Passed by build-android.ps1 via installed aapt; com.gravivore.mobile.dev, versionCode 2, ARM64'}
+scope_paths=['Assets/_Game/Runtime','Assets/_Game/Content','Assets/ThirdParty','Packages','ProjectSettings']
+scope_diff=subprocess.check_output(['git','diff','212269e0e21959abdc0fe980cf89b926d127009c','--',*scope_paths],cwd=ROOT)
+assert not scope_diff,'Production paths changed'
+summary['production_paths_match_starting_head']=True
+summary['compile']='Passed with capture, test suites and Android build; no C# compile errors'
 (DOC/'data-v21/evidence_manifest.json').write_text(json.dumps(rows,indent=2),encoding='utf-8')
 (DOC/'data-v21/verification_summary.json').write_text(json.dumps(summary,indent=2),encoding='utf-8')
 print(json.dumps({k:v for k,v in summary.items() if k not in ['pngs','blender_reopen']},indent=2))

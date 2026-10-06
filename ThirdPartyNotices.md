@@ -82,6 +82,7 @@ Expanded original-source research, licenses and rejection/acquisition reasons ar
 - Comparison evidence also displays the original donor silhouette and source materials, rest pose, equal-height normalization; source textures may be downsampled/packed solely for portable comparison. No original full donor is bound to gameplay.
 - Attribution required: yes. Preserve this title/author/source/license and modification notice with adapted geometry and donor comparison renders; no author endorsement is implied.
 - Raw archive, extracted source and imported animation remain local ignored inspection inputs. The final authoring file must include an internal attribution text block. Exact per-object mapping and adaptation metrics accompany the review.
+- V2.1 revision (2026-10-06): the same 17 adapted mechanisms continue in `art/visual-production-v2/g0/G0_Bipedal_Blockout_V21.blend` and static review export `Assets/_Game/ArtReview/G0V21/Models/G0_Bipedal_V21_Review.fbx`. V2.1 shortens/reframes the legs and widens pelvis/limb mechanisms; original V2 attribution text remains embedded. Review-only Unity import, no donor animation or production binding. Preserve this credit with both source and export.
 
 ## Import template (future additions)
 
