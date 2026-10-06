@@ -134,7 +134,7 @@ report={'status':'PASS','source':str(SOURCE),'source_sha256':hashlib.sha256(SOUR
  'before':before,'after':after,'total_hero_objects':len(hero.all_objects),'bones':len(rig.data.bones),
  'hip_height_before':HIP_HEIGHT,'hip_height_after':HIP_HEIGHT*.875,'leg_length_change_percent':-12.5,
  'ground_correction':ground,'root_position':list(root.location),'root_scale':list(root.scale),
- 'forward':'Blender -Y; exported Unity +Z','up':'Blender Z; Unity Y','unit_scale':1,
+ 'forward':'Blender -Y; imported Unity -Z (verified chest-center probe)','up':'Blender Z; Unity Y','unit_scale':1,
  'source_not_scaled_for_unity':True,'zero_rotations_unit_positive_scales':True}
 (DATA/'proportion_metrics.json').write_text(json.dumps(report,indent=2),encoding='utf-8')
 

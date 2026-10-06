@@ -24,7 +24,7 @@ V2.1: **142 mesh objects, 159 total hero objects, 29,417 evaluated triangles**. 
 - Root at `(0,0,0)`; every hero object has scale `(1,1,1)`, zero object rotation and no negative scale. Evaluated feet contact Z=0.
 - Source is not resized to Unity gameplay dimensions. Unity presentation fit is a separate transform, documented in the scale review.
 - Editable source: `art/visual-production-v2/g0/G0_Bipedal_Blockout_V21.blend`.
-- Static evaluated review export: `Assets/_Game/ArtReview/G0V21/Models/G0_Bipedal_V21_Review.fbx`. No rig/animation/camera/reference exported. Unity uses Y up, +Z forward after FBX axis conversion.
+- Static evaluated review export: `Assets/_Game/ArtReview/G0V21/Models/G0_Bipedal_V21_Review.fbx`. No rig/animation/camera/reference exported. Unity uses Y up, **-Z forward**, verified from the imported chest-center Z=-0.29 versus positive-Z rear containment. The review faces the camera with zero yaw.
 - Reproduction: `Tools/g0-bipedal-v2/refine_v21.py`, `render_v21.py`, `verify_v21.py`.
 - Exact metrics: `data-v21/proportion_metrics.json`; independent reopened-file checks: `data-v21/blend_reopen_validation.json`.
 
