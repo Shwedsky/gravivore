@@ -1,0 +1,371 @@
+[
+  {
+    "name": "blue_metal_plate",
+    "source_blend": ".asset-intake-tmp\\materials\\blue_metal_plate_2k.blend\\blue_metal_plate_2k.blend",
+    "source_materials": [
+      {
+        "name": "blue_metal_plate",
+        "nodes": [
+          "ShaderNodeOutputMaterial",
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeTexImage",
+          "ShaderNodeDisplacement",
+          "ShaderNodeTexImage",
+          "ShaderNodeTexImage",
+          "ShaderNodeTexImage",
+          "ShaderNodeNormalMap",
+          "ShaderNodeMapping",
+          "NodeReroute",
+          "ShaderNodeTexCoord",
+          "NodeFrame",
+          "NodeFrame"
+        ]
+      }
+    ],
+    "maps": [
+      {
+        "channel": "basecolor",
+        "source": ".asset-intake-tmp/materials/blue_metal_plate_2k.blend/textures/blue_metal_plate_diff_2k.jpg",
+        "output": "art/visual-production-v2/materials/blue_metal_plate/blue_metal_plate_basecolor_2k.png",
+        "source_size": [
+          2048,
+          2048
+        ],
+        "size": [
+          2048,
+          2048
+        ],
+        "source_sha256": "82855f6297ad07ea7ea4d1c501e6b56ed4c9c758653ca126bda9fd0ebba63c59",
+        "sha256": "23ec5e3c47266665b60675a6ba4c2071dc7d6e24854b8ac3ea991e5c81f1de6b",
+        "bytes": 4472825,
+        "color_space": "sRGB",
+        "bit_depth": 8
+      },
+      {
+        "channel": "normal_gl",
+        "source": ".asset-intake-tmp/materials/blue_metal_plate_2k.blend/textures/blue_metal_plate_nor_gl_2k.exr",
+        "output": "art/visual-production-v2/materials/blue_metal_plate/blue_metal_plate_normal_gl_2k.png",
+        "source_size": [
+          2048,
+          2048
+        ],
+        "size": [
+          2048,
+          2048
+        ],
+        "source_sha256": "ed44a6ad20a849dfa10b347b95c5797f317510518d7cf5a557382e913ba24df3",
+        "sha256": "b43c44f3873005fd6bd61ed17e7cd651d5680c0ab8d0634630a316fadf3d0149",
+        "bytes": 2735296,
+        "color_space": "linear",
+        "bit_depth": 8
+      },
+      {
+        "channel": "roughness",
+        "source": ".asset-intake-tmp/materials/blue_metal_plate_2k.blend/textures/blue_metal_plate_rough_2k.exr",
+        "output": "art/visual-production-v2/materials/blue_metal_plate/blue_metal_plate_roughness_2k.png",
+        "source_size": [
+          2048,
+          2048
+        ],
+        "size": [
+          2048,
+          2048
+        ],
+        "source_sha256": "88be1bfd4e20ba7678632dd9fa3f7ce3fdeeb2f194e6fad5650c68920739c09a",
+        "sha256": "0e853257e5648b643af0d98890173f89612bf4b112774c9c5901b21d8e8c7efa",
+        "bytes": 1900713,
+        "color_space": "linear",
+        "bit_depth": 8
+      }
+    ],
+    "omitted": [
+      "blue_metal_plate_disp_2k.png"
+    ]
+  },
+  {
+    "name": "metal_grate_rusty",
+    "source_blend": ".asset-intake-tmp\\materials\\metal_grate_rusty_2k.blend\\metal_grate_rusty_2k.blend",
+    "source_materials": [
+      {
+        "name": "metal_grate_rusty",
+        "nodes": [
+          "NodeFrame",
+          "NodeFrame",
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeNormalMap",
+          "ShaderNodeMapping",
+          "ShaderNodeTexCoord",
+          "NodeReroute",
+          "ShaderNodeTexImage",
+          "ShaderNodeTexImage",
+          "ShaderNodeTexImage",
+          "ShaderNodeTexImage",
+          "ShaderNodeTexImage",
+          "ShaderNodeOutputMaterial",
+          "ShaderNodeDisplacement"
+        ]
+      }
+    ],
+    "maps": [
+      {
+        "channel": "basecolor",
+        "source": ".asset-intake-tmp/materials/metal_grate_rusty_2k.blend/textures/metal_grate_rusty_diff_2k.jpg",
+        "output": "art/visual-production-v2/materials/metal_grate_rusty/metal_grate_rusty_basecolor_2k.png",
+        "source_size": [
+          2048,
+          2048
+        ],
+        "size": [
+          2048,
+          2048
+        ],
+        "source_sha256": "7ba7b58b5e743d9bd5892551cf087c60239d0aefdf06156f08e0da15010aec60",
+        "sha256": "ee9f7a9f4346872dad05a3d35e3e9124c5b5ce462ffa6c7c932aa8f1b37647fa",
+        "bytes": 7757220,
+        "color_space": "sRGB",
+        "bit_depth": 8
+      },
+      {
+        "channel": "normal_gl",
+        "source": ".asset-intake-tmp/materials/metal_grate_rusty_2k.blend/textures/metal_grate_rusty_nor_gl_2k.exr",
+        "output": "art/visual-production-v2/materials/metal_grate_rusty/metal_grate_rusty_normal_gl_2k.png",
+        "source_size": [
+          2048,
+          2048
+        ],
+        "size": [
+          2048,
+          2048
+        ],
+        "source_sha256": "4750a567c0033026a6687da37f4bf49a4c1fff9dfcee2f52649c32daa3e4a496",
+        "sha256": "556667748fb20817c56512a12338502644ef669c7d960e965028e107a038f429",
+        "bytes": 7692883,
+        "color_space": "linear",
+        "bit_depth": 8
+      },
+      {
+        "channel": "roughness",
+        "source": ".asset-intake-tmp/materials/metal_grate_rusty_2k.blend/textures/metal_grate_rusty_rough_2k.exr",
+        "output": "art/visual-production-v2/materials/metal_grate_rusty/metal_grate_rusty_roughness_2k.png",
+        "source_size": [
+          2048,
+          2048
+        ],
+        "size": [
+          2048,
+          2048
+        ],
+        "source_sha256": "53cffe992b278721ea93b1a2292a2c185ffd0ec92fa44ea16a2eee3d401bebb3",
+        "sha256": "ae16997e8cbfb4667980a9e39ce6bde089f648329d68922a3dfeb80d8d9dd56a",
+        "bytes": 3213284,
+        "color_space": "linear",
+        "bit_depth": 8
+      },
+      {
+        "channel": "metallic",
+        "source": ".asset-intake-tmp/materials/metal_grate_rusty_2k.blend/textures/metal_grate_rusty_metal_2k.exr",
+        "output": "art/visual-production-v2/materials/metal_grate_rusty/metal_grate_rusty_metallic_2k.png",
+        "source_size": [
+          2048,
+          2048
+        ],
+        "size": [
+          2048,
+          2048
+        ],
+        "source_sha256": "b5f5c60c25a12c5eba734aee3bd52a4fefcf87f87c0f4db9acb26b7b63265c99",
+        "sha256": "06ae7cd905b8cf26ae1427cbf4f3732515e8e3da0d74eecf3644dbadb00812e9",
+        "bytes": 3148839,
+        "color_space": "linear",
+        "bit_depth": 8
+      }
+    ],
+    "omitted": [
+      "metal_grate_rusty_disp_2k.png"
+    ]
+  },
+  {
+    "name": "metal_plate",
+    "source_blend": ".asset-intake-tmp\\materials\\metal_plate_2k.blend\\metal_plate_2k.blend",
+    "source_materials": [
+      {
+        "name": "metal_plate",
+        "nodes": [
+          "NodeFrame",
+          "NodeFrame",
+          "ShaderNodeOutputMaterial",
+          "ShaderNodeDisplacement",
+          "ShaderNodeTexCoord",
+          "ShaderNodeMapping",
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeNormalMap",
+          "ShaderNodeTexImage",
+          "ShaderNodeTexImage",
+          "ShaderNodeTexImage",
+          "ShaderNodeTexImage",
+          "ShaderNodeTexImage"
+        ]
+      }
+    ],
+    "maps": [
+      {
+        "channel": "basecolor",
+        "source": ".asset-intake-tmp/materials/metal_plate_2k.blend/textures/metal_plate_diff_2k.jpg",
+        "output": "art/visual-production-v2/materials/metal_plate/metal_plate_basecolor_2k.png",
+        "source_size": [
+          2048,
+          2048
+        ],
+        "size": [
+          2048,
+          2048
+        ],
+        "source_sha256": "864c9a653acd1f5034c9bbe7f955b18cc9687a81bbdfa805e7a2319939676910",
+        "sha256": "eacf25ed1a94410b0fc7392de2f7fc900a4105e7666fc8de89c5a479beeff8af",
+        "bytes": 6363354,
+        "color_space": "sRGB",
+        "bit_depth": 8
+      },
+      {
+        "channel": "normal_gl",
+        "source": ".asset-intake-tmp/materials/metal_plate_2k.blend/textures/metal_plate_nor_gl_2k.exr",
+        "output": "art/visual-production-v2/materials/metal_plate/metal_plate_normal_gl_2k.png",
+        "source_size": [
+          2048,
+          2048
+        ],
+        "size": [
+          2048,
+          2048
+        ],
+        "source_sha256": "90090c4cdb51f16f335d4f268422f30a780ce3f93ca9f4be20b0f86ee4bda2c6",
+        "sha256": "edaf8950e18cd0f1839a4d63b597a96014520ddc6833f5ce0e894ba4c9987f6a",
+        "bytes": 6471965,
+        "color_space": "linear",
+        "bit_depth": 8
+      },
+      {
+        "channel": "roughness",
+        "source": ".asset-intake-tmp/materials/metal_plate_2k.blend/textures/metal_plate_rough_2k.exr",
+        "output": "art/visual-production-v2/materials/metal_plate/metal_plate_roughness_2k.png",
+        "source_size": [
+          2048,
+          2048
+        ],
+        "size": [
+          2048,
+          2048
+        ],
+        "source_sha256": "a257931e067da0980bcc5079894d6d701aa09878ff05b0f41fcfb7d84c314ead",
+        "sha256": "f0ed9c2c857ebbc8831c0ce14071715983d71ef1721e41aee2b190d7bb8d0f25",
+        "bytes": 2998366,
+        "color_space": "linear",
+        "bit_depth": 8
+      },
+      {
+        "channel": "metallic",
+        "source": ".asset-intake-tmp/materials/metal_plate_2k.blend/textures/metal_plate_metal_2k.exr",
+        "output": "art/visual-production-v2/materials/metal_plate/metal_plate_metallic_2k.png",
+        "source_size": [
+          2048,
+          2048
+        ],
+        "size": [
+          2048,
+          2048
+        ],
+        "source_sha256": "190d94195ca0ed2c839fa1e72cd011ae2eb0d5f410b895b3c5873dec48decd57",
+        "sha256": "25af266e9ce1e4e8e053afb545f9dc5a0b344ef44f33e2130c36cf3d52a59790",
+        "bytes": 3185730,
+        "color_space": "linear",
+        "bit_depth": 8
+      }
+    ],
+    "omitted": [
+      "metal_plate_disp_2k.png"
+    ]
+  },
+  {
+    "name": "rusty_metal_grid",
+    "source_blend": ".asset-intake-tmp\\materials\\rusty_metal_grid_2k.blend\\rusty_metal_grid_2k.blend",
+    "source_materials": [
+      {
+        "name": "rusty_metal_grid",
+        "nodes": [
+          "ShaderNodeOutputMaterial",
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeTexImage",
+          "ShaderNodeDisplacement",
+          "ShaderNodeTexImage",
+          "ShaderNodeTexImage",
+          "ShaderNodeTexImage",
+          "ShaderNodeNormalMap",
+          "ShaderNodeMapping",
+          "NodeReroute",
+          "ShaderNodeTexCoord",
+          "NodeFrame",
+          "NodeFrame"
+        ]
+      }
+    ],
+    "maps": [
+      {
+        "channel": "basecolor",
+        "source": ".asset-intake-tmp/materials/rusty_metal_grid_2k.blend/textures/rusty_metal_grid_diff_2k.jpg",
+        "output": "art/visual-production-v2/materials/rusty_metal_grid/rusty_metal_grid_basecolor_2k.png",
+        "source_size": [
+          2048,
+          2048
+        ],
+        "size": [
+          2048,
+          2048
+        ],
+        "source_sha256": "ad7209285fd7b1dde37d6aa7e12572f50c3086478a16d9453153c924ee22f8e2",
+        "sha256": "83699492062565935bb21d427d35c7574cb95b7159283fe3cee3ad9bbe1c2172",
+        "bytes": 6256715,
+        "color_space": "sRGB",
+        "bit_depth": 8
+      },
+      {
+        "channel": "normal_gl",
+        "source": ".asset-intake-tmp/materials/rusty_metal_grid_2k.blend/textures/rusty_metal_grid_nor_gl_2k.exr",
+        "output": "art/visual-production-v2/materials/rusty_metal_grid/rusty_metal_grid_normal_gl_2k.png",
+        "source_size": [
+          2048,
+          2048
+        ],
+        "size": [
+          2048,
+          2048
+        ],
+        "source_sha256": "4b131b83623dfb406fb537f7483d439154ad0d97b83c58aa09f54645a13b11a7",
+        "sha256": "b38e0125bb77deb1f84875f4b041f2860df783091b7ad1185edabec01c00f427",
+        "bytes": 7166857,
+        "color_space": "linear",
+        "bit_depth": 8
+      },
+      {
+        "channel": "roughness",
+        "source": ".asset-intake-tmp/materials/rusty_metal_grid_2k.blend/textures/rusty_metal_grid_rough_2k.exr",
+        "output": "art/visual-production-v2/materials/rusty_metal_grid/rusty_metal_grid_roughness_2k.png",
+        "source_size": [
+          2048,
+          2048
+        ],
+        "size": [
+          2048,
+          2048
+        ],
+        "source_sha256": "be4dec3b996126d944eaad0da47094768dd5825a51080e3111b3cb5df40d88e4",
+        "sha256": "c57106ade06828724a130efbf8ab12d865aa1337ac2166ffdaceaf54b9e5c8bf",
+        "bytes": 1883218,
+        "color_space": "linear",
+        "bit_depth": 8
+      }
+    ],
+    "omitted": [
+      "rusty_metal_grid_disp_2k.png"
+    ]
+  }
+]

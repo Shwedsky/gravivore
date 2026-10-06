@@ -1,0 +1,340 @@
+[Licensing::Module] Trying to connect to existing licensing client channel...
+Built from '6000.3/staging' branch; Version is '6000.3.0f1 (d1870ce95baf) revision 13731596'; Using compiler version '194234433'; Build Type 'Release'
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-pamak" at "2026-10-06T11:41:03.9770222Z"
+OS: 'Windows 11  (10.0.26200) 64bit Professional' Language: 'ru' Physical Memory: 13234 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1
+Date: 2026-10-06T11:41:03Z
+[Licensing::Client] Code 10 while verifying Licensing Client signature (process Id: 19808, path: "C:/Program Files/Unity Hub/UnityLicensingClient_V1/Unity.Licensing.Client.exe")
+[Licensing::Module] LicensingClient has failed validation; ignoring
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.18.3+d7ffd15
+  Session Id:              f7dbc60539ed48bf9cc566fc7d22b462
+  Correlation Id:          7c459fd213b30416cfc1ac241770b025
+  External correlation Id: 4554644478609882609
+  Machine Id:              s1AHeOo89097k/AuI7TRxz7wi4Q=
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-pamak" (connect: 0.00s, validation: 0.00s, handshake: 0.07s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-pamak-notifications" at "2026-10-06T11:41:04.048458Z"
+[Licensing::Module] Error: Access token is unavailable; failed to update
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: 5774129981942-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+[Licensing::Client] Successfully updated license, isAsync: True, time: 0.00
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] Licensing Background thread has ended after 0.08s
+
+COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Unity.exe
+-batchmode
+-nographics
+-quit
+-projectPath
+C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\visual-production-v2-modeling
+-executeMethod
+Gravivore.Editor.ProjectValidator.ValidateOrThrow
+-logFile
+C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\visual-production-v2-modeling\Builds\VisualV2Verification\ProjectValidator.log
+Successfully changed project path to: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\visual-production-v2-modeling
+C:/Users/pamak/Documents/ChatGPT/gravivore/.codex-worktrees/visual-production-v2-modeling
+DisplayDialog: Recovering Scene Backups Scene backups from a previous Editor session have been detected. Your scene might have been backed up when an Editor instance did not close correctly.
+
+Do you want to copy and preserve these backups in Assets/_Recovery/?
+This should not be called in batch mode.
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-gfx=262144"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+Player connection [2772]  Target information:
+
+Player connection [2772]  * "[IP] 192.168.1.49 [Port] 55504 [Flags] 2 [Guid] 3219713634 [EditorId] 3219713634 [Version] 1048832 [Id] WindowsEditor(7,DESKTOP-FT9PDRO) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor"
+
+Player connection [2772]  * "[IP] 172.30.224.1 [Port] 55504 [Flags] 2 [Guid] 3219713634 [EditorId] 3219713634 [Version] 1048832 [Id] WindowsEditor(7,DESKTOP-FT9PDRO) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor"
+
+Player connection [2772]  * "[IP] 198.18.0.1 [Port] 55504 [Flags] 2 [Guid] 3219713634 [EditorId] 3219713634 [Version] 1048832 [Id] WindowsEditor(7,DESKTOP-FT9PDRO) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor"
+
+Player connection [2772] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [2772] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+[Package Manager] Connected to IPC stream "Upm-4688" after 0.3 seconds.
+[Licensing::Client] Successfully resolved entitlement details
+Library Redirect Path: Library/
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+[Licensing::Client] Successfully resolved entitlement details
+Refreshing native plugins compatible for Editor in 0.14 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 6000.3.0f1 (d1870ce95baf)
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/6000.3.0f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/Users/pamak/Documents/ChatGPT/gravivore/.codex-worktrees/visual-production-v2-modeling/Assets
+Forcing GfxDevice: Null
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+NullGfxDevice:
+    Version:  NULL 1.0 [1.0]
+    Renderer: Null Device
+    Vendor:   Unity Technologies
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/6000.3.0f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/6000.3.0f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/6000.3.0f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56688
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+ImportWorker Server TCP listen port: 0
+AcceleratorClientConnectionCallback - disconnected - :0
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.3.0f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.3.0f1/Editor/Data/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll
+Registered in 0.003905 seconds.
+- Loaded All Assemblies, in  0.462 seconds
+Native extension for Android target not found
+Android Extension - Scanning For ADB Devices 291 ms
+Native extension for WindowsStandalone target not found
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.773 seconds
+Domain Reload Profiling: 1231ms
+	BeginReloadAssembly (150ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (0ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (6ms)
+	RebuildCommonClasses (43ms)
+	RebuildNativeTypeToScriptingClass (12ms)
+	initialDomainReloadingComplete (58ms)
+	LoadAllAssembliesAndSetupDomain (194ms)
+		LoadAssemblies (140ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (190ms)
+			TypeCache.Refresh (188ms)
+				TypeCache.ScanAssembly (175ms)
+			BuildScriptInfoCaches (0ms)
+			ResolveRequiredComponents (1ms)
+	FinalizeReload (773ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (733ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (388ms)
+			SetLoadedEditorAssemblies (4ms)
+			BeforeProcessingInitializeOnLoad (94ms)
+			ProcessInitializeOnLoadAttributes (163ms)
+			ProcessInitializeOnLoadMethodAttributes (83ms)
+			AfterProcessingInitializeOnLoad (0ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (0ms)
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Client] Successfully resolved entitlement details
+Application.AssetDatabase Initial Refresh Start
+Package Manager log level set to [2]
+[Package Manager] Restoring resolved packages state from cache
+[Licensing::Client] Successfully resolved entitlement details
+[Package Manager] Registered 22 packages:
+  Packages from [https://packages.unity.com]:
+    com.unity.ide.visualstudio@2.0.22 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\visual-production-v2-modeling\Library\PackageCache\com.unity.ide.visualstudio@8140e851d83e)
+    com.unity.searcher@4.9.4 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\visual-production-v2-modeling\Library\PackageCache\com.unity.searcher@d45a78918735)
+    com.unity.burst@1.8.25 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\visual-production-v2-modeling\Library\PackageCache\com.unity.burst@1df634d836b8)
+    com.unity.mathematics@1.3.3 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\visual-production-v2-modeling\Library\PackageCache\com.unity.mathematics@19a9377c4ffa)
+    com.unity.collections@2.6.2 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\visual-production-v2-modeling\Library\PackageCache\com.unity.collections@aea9d3bd5e19)
+    com.unity.nuget.mono-cecil@1.11.6 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\visual-production-v2-modeling\Library\PackageCache\com.unity.nuget.mono-cecil@ecb9724e46ff)
+    com.unity.test-framework.performance@3.2.0 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\visual-production-v2-modeling\Library\PackageCache\com.unity.test-framework.performance@0840f58e4562)
+  Built-in packages:
+    com.unity.render-pipelines.universal@17.3.0 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\visual-production-v2-modeling\Library\PackageCache\com.unity.render-pipelines.universal@d9aadd996b24)
+    com.unity.test-framework@1.6.0 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\visual-production-v2-modeling\Library\PackageCache\com.unity.test-framework@0b7a23ab2e1d)
+    com.unity.ugui@2.0.0 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\visual-production-v2-modeling\Library\PackageCache\com.unity.ugui@4ee0fac0c6e4)
+    com.unity.modules.audio@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.audio)
+    com.unity.modules.imageconversion@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.imageconversion)
+    com.unity.modules.particlesystem@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.particlesystem)
+    com.unity.modules.ui@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.ui)
+    com.unity.modules.imgui@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.imgui)
+    com.unity.ext.nunit@2.0.5 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\visual-production-v2-modeling\Library\PackageCache\com.unity.ext.nunit@d8c07649098d)
+    com.unity.modules.jsonserialize@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.jsonserialize)
+    com.unity.render-pipelines.core@17.3.0 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\visual-production-v2-modeling\Library\PackageCache\com.unity.render-pipelines.core@33b0f6d355dd)
+    com.unity.shadergraph@17.3.0 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\visual-production-v2-modeling\Library\PackageCache\com.unity.shadergraph@bd2576295577)
+    com.unity.render-pipelines.universal-config@17.0.3 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\visual-production-v2-modeling\Library\PackageCache\com.unity.render-pipelines.universal-config@8dc1aab4af1d)
+    com.unity.modules.physics@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.physics)
+    com.unity.modules.terrain@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.terrain)
+[Subsystems] No new subsystems found in resolved package list.
+[Package Manager] Done registering packages in 0.02 seconds
+Starting: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Tools\BuildPipeline\bee_backend.exe --ipc --defer-dag-verification --dagfile="Library/Bee/1300b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
+WorkingDir: C:/Users/pamak/Documents/ChatGPT/gravivore/.codex-worktrees/visual-production-v2-modeling
+DisplayProgressbar: Compiling Scripts
+ExitCode: 0 Duration: 0s336ms
+[518/648    0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+*** Tundra build success (0.30 seconds), 1 items updated, 648 evaluated
+AssetDatabase: script compilation time: 0.804218s
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.794 seconds
+Refreshing native plugins compatible for Editor in 0.30 ms, found 0 plugins.
+Native extension for Android target not found
+Native extension for WindowsStandalone target not found
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  2.717 seconds
+Domain Reload Profiling: 3504ms
+	BeginReloadAssembly (336ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (16ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (170ms)
+	RebuildCommonClasses (41ms)
+	RebuildNativeTypeToScriptingClass (12ms)
+	initialDomainReloadingComplete (35ms)
+	LoadAllAssembliesAndSetupDomain (362ms)
+		LoadAssemblies (343ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (131ms)
+			TypeCache.Refresh (93ms)
+				TypeCache.ScanAssembly (84ms)
+			BuildScriptInfoCaches (26ms)
+			ResolveRequiredComponents (9ms)
+	FinalizeReload (2718ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (2522ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (43ms)
+			SetLoadedEditorAssemblies (5ms)
+			BeforeProcessingInitializeOnLoad (188ms)
+			ProcessInitializeOnLoadAttributes (2102ms)
+			ProcessInitializeOnLoadMethodAttributes (171ms)
+			AfterProcessingInitializeOnLoad (12ms)
+			EditorAssembliesLoaded (1ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (18ms)
+Start importing ProjectSettings/GraphicsSettings.asset using Guid(00000000000000006100000000000000) (LibraryAssetImporter) -> (artifact id: '2da720d071aed74e658608417ba2773c') in 0.009496 seconds
+Start importing ProjectSettings/ProjectSettings.asset using Guid(00000000000000004000000000000000) (LibraryAssetImporter) -> (artifact id: 'da21810db2444809b20a117f15b0368f') in 0.003331 seconds
+Refreshing native plugins compatible for Editor in 0.32 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=3e179ed4d7ec5c84ea2e3f1c8ab2138e): Total: 5.067 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
+	Summary:
+		Imports: total=2 (actual=2, local cache=0, cache server=0)
+		Asset DB Process Time: managed=3 ms, native=3112 ms
+		Asset DB Callback time: managed=271 ms, native=29 ms
+		Scripting: domain reloads=1, domain reload time=795 ms, compile time=806 ms, other=48 ms
+		Project Asset Count: scripts=807, non-scripts=1694
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 1
+	InvokeCustomDependenciesCallbacks: 0.003ms
+	InvokePackagesCallback: 21.729ms
+	ApplyChangesToAssetFolders: 0.673ms
+	Scan: 135.070ms
+	OnSourceAssetsModified: 0.005ms
+	CategorizeAssetsWithTransientArtifact: 18.247ms
+	ProcessAssetsWithTransientArtifactChanges: 44.699ms
+	CategorizeAssets: 42.555ms
+	ImportOutOfDateAssets: 2739.516ms (1915.676ms without children)
+		ImportManagerImport: 14.742ms (1.234ms without children)
+			ImportInProcess: 13.452ms
+			UpdateCategorizedAssets: 0.057ms
+		CompileScripts: 805.906ms
+		ReloadNativeAssets: 0.076ms
+		UnloadImportedAssets: 1.120ms
+		ReloadImportedAssets: 0.000ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 1.026ms
+		InitializingProgressBar: 0.001ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.002ms
+		OnDemandSchedulerStart: 0.967ms
+	PostProcessAllAssets: 329.190ms
+	Hotreload: 2.181ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.323ms
+	UnloadStreamsBegin: 2.329ms
+	PersistCurrentRevisions: 0.263ms
+	UnloadStreamsEnd: 0.003ms
+	GenerateScriptTypeHashes: 2.692ms
+	Untracked: 1730.255ms
+
+Application.AssetDatabase Initial Refresh End
+Scanning for USB devices : 7.876ms
+Initializing Unity extensions:
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+[MODES] Loading mode Default (0) for mode-current-id-GRAVIVORE
+Curl error 35: Cert verify failed. Certificate could not be verified (either omitted or unsupported). UnityTls error code: 7
+Unloading 19 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 3470 unused Assets / (2.4 MB). Loaded Objects now: 4250.
+Memory consumption went from 153.9 MB to 151.5 MB.
+Total: 9.943600 ms (FindLiveObjects: 0.371400 ms CreateObjectMapping: 0.405500 ms MarkObjects: 7.849500 ms  DeleteObjects: 1.316000 ms)
+
+Curl error 35: Cert verify failed. Certificate could not be verified (either omitted or unsupported). UnityTls error code: 7
+Opening scene 'Assets/_Game/Content/Scenes/Bootstrap.unity additively'
+Loaded scene 'Assets/_Game/Content/Scenes/Bootstrap.unity'
+	Deserialize:            1.332 ms
+	Integration:            0.425 ms
+	Integration of assets:  0.002 ms
+	Thread Wait Time:       0.014 ms
+	Total Operation Time:   1.774 ms
+Opening scene 'Assets/_Game/Content/Scenes/Chapter01_ScrapExclusion.unity additively'
+Loaded scene 'Assets/_Game/Content/Scenes/Chapter01_ScrapExclusion.unity'
+	Deserialize:            21.726 ms
+	Integration:            1.876 ms
+	Integration of assets:  3.071 ms
+	Thread Wait Time:       0.020 ms
+	Total Operation Time:   26.693 ms
+Opening scene 'Assets/_Game/Content/Scenes/Chapter01_ScrapExclusion.unity additively'
+Loaded scene 'Assets/_Game/Content/Scenes/Chapter01_ScrapExclusion.unity'
+	Deserialize:            3.936 ms
+	Integration:            0.476 ms
+	Integration of assets:  0.002 ms
+	Thread Wait Time:       0.048 ms
+	Total Operation Time:   4.462 ms
+Opening scene 'Assets/_Game/ArtReview/Scenes/VisualIntegration_Review.unity additively'
+Loaded scene 'Assets/_Game/ArtReview/Scenes/VisualIntegration_Review.unity'
+	Deserialize:            2.149 ms
+	Integration:            1.029 ms
+	Integration of assets:  0.001 ms
+	Thread Wait Time:       0.015 ms
+	Total Operation Time:   3.194 ms
+Batchmode quit successfully invoked - shutting down!
+Killing ADB server in 0,0538529 seconds.
+[Physics::Module] Cleanup current backend.
+[Physics::Module] Id: 0xf2b8ea05
+Input System module state changed to: ShutdownInProgress.
+Input System polling thread exited.
+Input System module state changed to: Shutdown.
+[Licensing::IpcConnector] LicenseClient-pamak-notifications channel disconnected successfully.
+[Licensing::IpcConnector] LicenseClient-pamak channel disconnected successfully.
+AcceleratorClientConnectionCallback - disconnected - :0
+Cleanup mono
+Exiting batchmode successfully now!
+Exiting without the bug reporter. Application will terminate with return code 0
