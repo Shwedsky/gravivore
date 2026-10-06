@@ -1,0 +1,477 @@
+{
+  "source": "art\\visual-production-v2\\g0\\G0_Bipedal_Blockout_V21.blend",
+  "source_sha256": "275705338e80dadb5db2ddf2ab8e7b4eae430ce4563688050b4dde7f98955ef0",
+  "output": "art\\g0-production-v3\\G0_Production_V3.blend",
+  "baseline": {
+    "min": [
+      -1.0299999713897705,
+      -0.9614287614822388,
+      0.0
+    ],
+    "max": [
+      1.0325000286102295,
+      0.7923794984817505,
+      3.3584249019622803
+    ],
+    "dimensions": [
+      2.0625,
+      1.7538082599639893,
+      3.3584249019622803
+    ],
+    "triangles": 29417
+  },
+  "lods": [
+    {
+      "min": [
+        -1.0299999713897705,
+        -0.960283100605011,
+        0.0
+      ],
+      "max": [
+        1.0325000286102295,
+        0.7936369180679321,
+        3.3584249019622803
+      ],
+      "dimensions": [
+        2.0625,
+        1.7539200186729431,
+        3.3584249019622803
+      ],
+      "triangles": 23264,
+      "name": "G0_LOD0",
+      "vertices": 12154,
+      "reduction_ratio": 0.0,
+      "materials": 1,
+      "uv_layers": 1
+    },
+    {
+      "min": [
+        -1.0299999713897705,
+        -0.960283100605011,
+        0.0
+      ],
+      "max": [
+        1.0325000286102295,
+        0.7938403487205505,
+        3.3584249019622803
+      ],
+      "dimensions": [
+        2.0625,
+        1.7541234493255615,
+        3.3584249019622803
+      ],
+      "triangles": 13259,
+      "name": "G0_LOD1",
+      "vertices": 7114,
+      "reduction_ratio": 0.4300636176066025,
+      "materials": 1,
+      "uv_layers": 1
+    },
+    {
+      "min": [
+        -1.0299999713897705,
+        -0.960283100605011,
+        0.0
+      ],
+      "max": [
+        1.0325000286102295,
+        0.7957332134246826,
+        3.3584249019622803
+      ],
+      "dimensions": [
+        2.0625,
+        1.7560163140296936,
+        3.3584249019622803
+      ],
+      "triangles": 6978,
+      "name": "G0_LOD2",
+      "vertices": 3939,
+      "reduction_ratio": 0.7000515818431912,
+      "materials": 1,
+      "uv_layers": 1
+    }
+  ],
+  "bones": [
+    {
+      "name": "ROOT",
+      "parent": null,
+      "head": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "PELVIS",
+      "parent": "ROOT",
+      "head": [
+        0.0,
+        0.0,
+        1.7806248664855957
+      ]
+    },
+    {
+      "name": "TORSO",
+      "parent": "PELVIS",
+      "head": [
+        0.0,
+        0.0,
+        2.395624876022339
+      ]
+    },
+    {
+      "name": "SENSOR",
+      "parent": "TORSO",
+      "head": [
+        0.0,
+        0.03999999910593033,
+        3.185624837875366
+      ]
+    },
+    {
+      "name": "R_SHOULDER",
+      "parent": "TORSO",
+      "head": [
+        -0.6299999952316284,
+        0.03500000387430191,
+        2.875624895095825
+      ]
+    },
+    {
+      "name": "R_ELBOW",
+      "parent": "R_SHOULDER",
+      "head": [
+        -0.7799999713897705,
+        -0.009999997913837433,
+        2.4056248664855957
+      ]
+    },
+    {
+      "name": "R_TOOL",
+      "parent": "R_ELBOW",
+      "head": [
+        -0.8600000143051147,
+        -0.25,
+        2.0256247520446777
+      ]
+    },
+    {
+      "name": "L_SHOULDER",
+      "parent": "TORSO",
+      "head": [
+        0.6299999952316284,
+        0.03500000387430191,
+        2.875624895095825
+      ]
+    },
+    {
+      "name": "L_ELBOW",
+      "parent": "L_SHOULDER",
+      "head": [
+        0.7799999713897705,
+        -0.009999997913837433,
+        2.4056248664855957
+      ]
+    },
+    {
+      "name": "L_TOOL",
+      "parent": "L_ELBOW",
+      "head": [
+        0.8600000143051147,
+        -0.25,
+        2.0256247520446777
+      ]
+    },
+    {
+      "name": "L_JAW_INNER",
+      "parent": "L_TOOL",
+      "head": [
+        0.7900000214576721,
+        -0.2199999988079071,
+        2.085624933242798
+      ]
+    },
+    {
+      "name": "L_JAW_OUTER",
+      "parent": "L_TOOL",
+      "head": [
+        0.9700000286102295,
+        -0.2199999988079071,
+        2.085624933242798
+      ]
+    },
+    {
+      "name": "R_HIP",
+      "parent": "PELVIS",
+      "head": [
+        -0.2979999780654907,
+        0.05920000001788139,
+        1.8250000476837158
+      ]
+    },
+    {
+      "name": "R_KNEE",
+      "parent": "R_HIP",
+      "head": [
+        -0.41999998688697815,
+        -0.18000000715255737,
+        1.229374885559082
+      ]
+    },
+    {
+      "name": "R_ANKLE",
+      "parent": "R_KNEE",
+      "head": [
+        -0.44999998807907104,
+        -0.0195000022649765,
+        0.1356249898672104
+      ]
+    },
+    {
+      "name": "L_HIP",
+      "parent": "PELVIS",
+      "head": [
+        0.2979999780654907,
+        0.05920000001788139,
+        1.8250000476837158
+      ]
+    },
+    {
+      "name": "L_KNEE",
+      "parent": "L_HIP",
+      "head": [
+        0.41999998688697815,
+        -0.18000000715255737,
+        1.229374885559082
+      ]
+    },
+    {
+      "name": "L_ANKLE",
+      "parent": "L_KNEE",
+      "head": [
+        0.44999998807907104,
+        -0.0195000022649765,
+        0.1356249898672104
+      ]
+    }
+  ],
+  "clips": [
+    {
+      "name": "Idle",
+      "start": 1,
+      "end": 61,
+      "fps": 30,
+      "loop": true,
+      "in_place": true
+    },
+    {
+      "name": "Run",
+      "start": 1,
+      "end": 25,
+      "fps": 30,
+      "loop": true,
+      "in_place": true
+    },
+    {
+      "name": "Attack",
+      "start": 1,
+      "end": 25,
+      "fps": 30,
+      "loop": false,
+      "in_place": true
+    },
+    {
+      "name": "Hit",
+      "start": 1,
+      "end": 16,
+      "fps": 30,
+      "loop": false,
+      "in_place": true
+    },
+    {
+      "name": "Death",
+      "start": 1,
+      "end": 46,
+      "fps": 30,
+      "loop": false,
+      "in_place": true
+    }
+  ],
+  "refinements": [
+    {
+      "part": "R tapered thigh shield",
+      "operation": "broad recessed service panel"
+    },
+    {
+      "part": "R shin blade",
+      "operation": "broad recessed service panel"
+    },
+    {
+      "part": "L tapered thigh shield",
+      "operation": "broad recessed service panel"
+    },
+    {
+      "part": "L shin blade",
+      "operation": "broad recessed service panel"
+    },
+    {
+      "part": "Chest swept carapace -1",
+      "operation": "supported ridge, perimeter preserved"
+    },
+    {
+      "part": "Chest crown ridge -1",
+      "operation": "supported ridge, perimeter preserved"
+    },
+    {
+      "part": "Chest swept carapace 1",
+      "operation": "supported ridge, perimeter preserved"
+    },
+    {
+      "part": "Chest crown ridge 1",
+      "operation": "supported ridge, perimeter preserved"
+    },
+    {
+      "part": "R swept shoulder vane",
+      "operation": "supported ridge, perimeter preserved"
+    },
+    {
+      "part": "R upperarm dorsal shell",
+      "operation": "supported ridge, perimeter preserved"
+    },
+    {
+      "part": "R gravity gauntlet",
+      "operation": "broad recessed service panel"
+    },
+    {
+      "part": "L swept shoulder vane",
+      "operation": "supported ridge, perimeter preserved"
+    },
+    {
+      "part": "L upperarm dorsal shell",
+      "operation": "supported ridge, perimeter preserved"
+    },
+    {
+      "part": "L gravity gauntlet",
+      "operation": "broad recessed service panel"
+    },
+    {
+      "part": "Rear swept containment fin -1",
+      "operation": "broad recessed service panel"
+    },
+    {
+      "part": "Rear swept containment fin 1",
+      "operation": "broad recessed service panel"
+    },
+    {
+      "part": "R hip endcap -1",
+      "operation": "recessed bearing hub and annular retainer"
+    },
+    {
+      "part": "R hip endcap 1",
+      "operation": "recessed bearing hub and annular retainer"
+    },
+    {
+      "part": "R knee endcap -1",
+      "operation": "recessed bearing hub and annular retainer"
+    },
+    {
+      "part": "R knee endcap 1",
+      "operation": "recessed bearing hub and annular retainer"
+    },
+    {
+      "part": "R hock endcap -1",
+      "operation": "recessed bearing hub and annular retainer"
+    },
+    {
+      "part": "R hock endcap 1",
+      "operation": "recessed bearing hub and annular retainer"
+    },
+    {
+      "part": "R foot rocker endcap -1",
+      "operation": "recessed bearing hub and annular retainer"
+    },
+    {
+      "part": "R foot rocker endcap 1",
+      "operation": "recessed bearing hub and annular retainer"
+    },
+    {
+      "part": "L hip endcap -1",
+      "operation": "recessed bearing hub and annular retainer"
+    },
+    {
+      "part": "L hip endcap 1",
+      "operation": "recessed bearing hub and annular retainer"
+    },
+    {
+      "part": "L knee endcap -1",
+      "operation": "recessed bearing hub and annular retainer"
+    },
+    {
+      "part": "L knee endcap 1",
+      "operation": "recessed bearing hub and annular retainer"
+    },
+    {
+      "part": "L hock endcap -1",
+      "operation": "recessed bearing hub and annular retainer"
+    },
+    {
+      "part": "L hock endcap 1",
+      "operation": "recessed bearing hub and annular retainer"
+    },
+    {
+      "part": "L foot rocker endcap -1",
+      "operation": "recessed bearing hub and annular retainer"
+    },
+    {
+      "part": "L foot rocker endcap 1",
+      "operation": "recessed bearing hub and annular retainer"
+    },
+    {
+      "part": "R shoulder endcap -1",
+      "operation": "recessed bearing hub and annular retainer"
+    },
+    {
+      "part": "R shoulder endcap 1",
+      "operation": "recessed bearing hub and annular retainer"
+    },
+    {
+      "part": "R elbow endcap -1",
+      "operation": "recessed bearing hub and annular retainer"
+    },
+    {
+      "part": "R elbow endcap 1",
+      "operation": "recessed bearing hub and annular retainer"
+    },
+    {
+      "part": "L shoulder endcap -1",
+      "operation": "recessed bearing hub and annular retainer"
+    },
+    {
+      "part": "L shoulder endcap 1",
+      "operation": "recessed bearing hub and annular retainer"
+    },
+    {
+      "part": "L elbow endcap -1",
+      "operation": "recessed bearing hub and annular retainer"
+    },
+    {
+      "part": "L elbow endcap 1",
+      "operation": "recessed bearing hub and annular retainer"
+    },
+    {
+      "part": "R V21 instep bridge",
+      "operation": "broad recessed service panel"
+    },
+    {
+      "part": "L V21 instep bridge",
+      "operation": "broad recessed service panel"
+    }
+  ],
+  "renderer_count_per_lod": 1,
+  "material_count_per_lod": 1,
+  "texture_resolution": 2048,
+  "android_texture_cap": 1024,
+  "source_mesh_count": 142,
+  "forward": "Blender -Y; Unity orientation validated on import",
+  "presentation_fit": 0.45854827761650085
+}

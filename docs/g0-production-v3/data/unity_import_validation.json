@@ -1,0 +1,128 @@
+{
+    "engine": "6000.3.0f1",
+    "scope": "Isolated V3 production asset with unchanged Chapter01 camera and committed world/reference bindings",
+    "fit": 0.45854827761650088,
+    "cameraFov": 46.0,
+    "cameraLookAt": 0.8999999761581421,
+    "cameraOffset": {
+        "x": 0.0,
+        "y": 14.800000190734864,
+        "z": -11.199999809265137
+    },
+    "modelDimensions": {
+        "x": 2.0625,
+        "y": 1.753920078277588,
+        "z": 3.3584249019622804
+    },
+    "reviewPosition": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 57.0
+    },
+    "meshes": [
+        {
+            "name": "G0_LOD0",
+            "vertices": 26348,
+            "triangles": 23264,
+            "bones": 18,
+            "uvCount": 26348,
+            "normalCount": 26348,
+            "tangentCount": 26348,
+            "submeshes": 1,
+            "dimensions": {
+                "x": 2.0625,
+                "y": 1.753920078277588,
+                "z": 3.3584249019622804
+            }
+        },
+        {
+            "name": "G0_LOD1",
+            "vertices": 16008,
+            "triangles": 13259,
+            "bones": 18,
+            "uvCount": 16008,
+            "normalCount": 16008,
+            "tangentCount": 16008,
+            "submeshes": 1,
+            "dimensions": {
+                "x": 2.0625,
+                "y": 1.7541234493255616,
+                "z": 3.3584249019622804
+            }
+        },
+        {
+            "name": "G0_LOD2",
+            "vertices": 9558,
+            "triangles": 6978,
+            "bones": 18,
+            "uvCount": 9558,
+            "normalCount": 9558,
+            "tangentCount": 9558,
+            "submeshes": 1,
+            "dimensions": {
+                "x": 2.0625,
+                "y": 1.7560162544250489,
+                "z": 3.3584249019622804
+            }
+        }
+    ],
+    "clips": [
+        {
+            "name": "Hit",
+            "duration": 0.5,
+            "fps": 30.0,
+            "loop": false
+        },
+        {
+            "name": "Death",
+            "duration": 1.5000001192092896,
+            "fps": 30.0,
+            "loop": false
+        },
+        {
+            "name": "Attack",
+            "duration": 0.8000000715255737,
+            "fps": 30.0,
+            "loop": false
+        },
+        {
+            "name": "Idle",
+            "duration": 2.0,
+            "fps": 30.0,
+            "loop": true
+        },
+        {
+            "name": "Run",
+            "duration": 0.8000000715255737,
+            "fps": 30.0,
+            "loop": true
+        }
+    ],
+    "hierarchy": [
+        "G-0 V3 PRESENTATION ONLY",
+        "G0_LOD0",
+        "G0_LOD1",
+        "G0_LOD2",
+        "G0_V3_RIG",
+        "ROOT",
+        "PELVIS",
+        "L_HIP",
+        "L_KNEE",
+        "L_ANKLE",
+        "R_HIP",
+        "R_KNEE",
+        "R_ANKLE",
+        "TORSO",
+        "L_SHOULDER",
+        "L_ELBOW",
+        "L_TOOL",
+        "L_JAW_INNER",
+        "L_JAW_OUTER",
+        "R_SHOULDER",
+        "R_ELBOW",
+        "R_TOOL",
+        "SENSOR"
+    ],
+    "productionDependenciesUnchanged": true,
+    "rootMotionDisabled": true
+}
