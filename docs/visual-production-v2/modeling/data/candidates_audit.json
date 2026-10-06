@@ -1,0 +1,1941 @@
+[
+  {
+    "path": ".asset-intake-tmp/scout/spider-robot-rigged/source/Spider Robot_unpacked/Spider Robot.fbx",
+    "import_details": {},
+    "meshes": [
+      {
+        "name": "Spider",
+        "vertices": 2327,
+        "triangles": 4603,
+        "evaluated_triangles": 4603,
+        "uv_layers": [
+          "UVMap"
+        ],
+        "material_slots": [
+          "Material",
+          "Material.001",
+          "Material.002",
+          "Material.003",
+          "Material.004",
+          "Material.005"
+        ],
+        "modifiers": [
+          {
+            "name": "Armature",
+            "type": "ARMATURE"
+          }
+        ],
+        "vertex_groups": 31,
+        "dimensions": [
+          1.2047373056411743,
+          1.6373069286346436,
+          1.8784372806549072
+        ],
+        "negative_scale": false,
+        "topology": {
+          "boundary_edges": 236,
+          "non_manifold_edges": 150,
+          "loose_vertices": 0,
+          "zero_area_faces": 0
+        }
+      }
+    ],
+    "triangles": 4603,
+    "evaluated_triangles": 4603,
+    "materials": [
+      "Material",
+      "Material.001",
+      "Material.002",
+      "Material.003",
+      "Material.004",
+      "Material.005"
+    ],
+    "textures": [],
+    "armatures": [
+      {
+        "name": "Armature",
+        "bones": 39,
+        "bone_names": [
+          "Bone",
+          "Bone_end",
+          "Bone.001",
+          "Bone.002",
+          "Bone.003",
+          "Bone.004",
+          "Bone.005",
+          "Bone.006",
+          "Bone.006_end",
+          "Bone.007",
+          "Bone.008",
+          "Bone.009",
+          "Bone.010",
+          "Bone.011",
+          "Bone.011_end",
+          "Bone.012",
+          "Bone.013",
+          "Bone.014",
+          "Bone.015",
+          "Bone.016",
+          "Bone.016_end",
+          "Bone.017",
+          "Bone.018",
+          "Bone.019",
+          "Bone.020",
+          "Bone.021",
+          "Bone.021_end",
+          "Bone.022",
+          "Bone.023",
+          "Bone.024",
+          "Bone.025",
+          "Bone.026",
+          "Bone.026_end",
+          "Bone.027",
+          "Bone.028",
+          "Bone.029",
+          "Bone.030",
+          "Bone.031",
+          "Bone.031_end"
+        ]
+      }
+    ],
+    "actions": [],
+    "hierarchy": [
+      {
+        "name": "Armature",
+        "type": "ARMATURE",
+        "parent": null,
+        "hide_render": false
+      },
+      {
+        "name": "Spider",
+        "type": "MESH",
+        "parent": "Armature",
+        "hide_render": false
+      },
+      {
+        "name": "Camera",
+        "type": "CAMERA",
+        "parent": null,
+        "hide_render": false
+      }
+    ],
+    "id": "spider-robot-rigged"
+  },
+  {
+    "path": ".asset-intake-tmp/scout/spider-robot/source/spider.blend",
+    "import_details": {},
+    "meshes": [
+      {
+        "name": "Body",
+        "vertices": 1062,
+        "triangles": 1962,
+        "evaluated_triangles": 7848,
+        "uv_layers": [
+          "UVMap"
+        ],
+        "material_slots": [
+          "Material"
+        ],
+        "modifiers": [
+          {
+            "name": "Mirror",
+            "type": "MIRROR"
+          },
+          {
+            "name": "Mirror.001",
+            "type": "MIRROR"
+          },
+          {
+            "name": "Armature",
+            "type": "ARMATURE"
+          }
+        ],
+        "vertex_groups": 33,
+        "dimensions": [
+          1.619002342224121,
+          1.0127888917922974,
+          0.4855007231235504
+        ],
+        "negative_scale": false,
+        "topology": {
+          "boundary_edges": 92,
+          "non_manifold_edges": 4,
+          "loose_vertices": 0,
+          "zero_area_faces": 14
+        }
+      }
+    ],
+    "triangles": 1962,
+    "evaluated_triangles": 7848,
+    "materials": [
+      "Dots Stroke",
+      "Material"
+    ],
+    "textures": [
+      {
+        "name": "ImphenziaPalette01.png",
+        "path": "//..\\..\\Downloads\\ImphenziaPalette01.png",
+        "size": [
+          0,
+          0
+        ],
+        "packed": false
+      }
+    ],
+    "armatures": [
+      {
+        "name": "Spider",
+        "bones": 33,
+        "bone_names": [
+          "Root",
+          "Turret",
+          "Gun",
+          "LegA.L.001",
+          "LegB.L.001",
+          "LegC.L.001",
+          "LegA.L.002",
+          "LegB.L.002",
+          "LegC.L.002",
+          "LegA.L.003",
+          "LegB.L.003",
+          "LegC.L.003",
+          "LegA.R.001",
+          "LegB.R.001",
+          "LegC.R.001",
+          "LegA.R.002",
+          "LegB.R.002",
+          "LegC.R.002",
+          "LegA.R.003",
+          "LegB.R.003",
+          "LegC.R.003",
+          "IKPole.L.001",
+          "IKTarget.L.001",
+          "IKPole.L.002",
+          "IKTarget.L.002",
+          "IKPole.L.003",
+          "IKTarget.L.003",
+          "IKPole.R.001",
+          "IKTarget.R.001",
+          "IKPole.R.002",
+          "IKTarget.R.002",
+          "IKPole.R.003",
+          "IKTarget.R.003"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "name": "_Default",
+        "frames": [
+          1.0,
+          1.0
+        ],
+        "slots": 1
+      },
+      {
+        "name": "BigBoom",
+        "frames": [
+          1.0,
+          90.0
+        ],
+        "slots": 1
+      },
+      {
+        "name": "Fire",
+        "frames": [
+          1.0,
+          7.0
+        ],
+        "slots": 1
+      },
+      {
+        "name": "Idle",
+        "frames": [
+          1.0,
+          40.0
+        ],
+        "slots": 1
+      },
+      {
+        "name": "Walk",
+        "frames": [
+          1.0,
+          17.0
+        ],
+        "slots": 1
+      }
+    ],
+    "hierarchy": [
+      {
+        "name": "Body",
+        "type": "MESH",
+        "parent": "Spider",
+        "hide_render": false
+      },
+      {
+        "name": "Spider",
+        "type": "ARMATURE",
+        "parent": null,
+        "hide_render": false
+      }
+    ],
+    "id": "spider-robot"
+  },
+  {
+    "path": ".asset-intake-tmp/scout/robot-spider/source/spiedy_sfabblend.glb",
+    "import_details": {},
+    "meshes": [
+      {
+        "name": "Object_4",
+        "vertices": 20352,
+        "triangles": 13378,
+        "evaluated_triangles": 13378,
+        "uv_layers": [
+          "UVMap",
+          "UVMap.001",
+          "UVMap.002",
+          "UVMap.003",
+          "UVMap.004"
+        ],
+        "material_slots": [
+          "spidey_Baked"
+        ],
+        "modifiers": [],
+        "vertex_groups": 0,
+        "dimensions": [
+          5.100323677062988,
+          3.548624038696289,
+          2.0876550674438477
+        ],
+        "negative_scale": false,
+        "topology": {
+          "boundary_edges": 20266,
+          "non_manifold_edges": 0,
+          "loose_vertices": 0,
+          "zero_area_faces": 0
+        }
+      },
+      {
+        "name": "Object_6",
+        "vertices": 7336,
+        "triangles": 5376,
+        "evaluated_triangles": 5376,
+        "uv_layers": [
+          "UVMap",
+          "UVMap.001",
+          "UVMap.002",
+          "UVMap.003"
+        ],
+        "material_slots": [
+          "weapon_Baked_Baked"
+        ],
+        "modifiers": [],
+        "vertex_groups": 0,
+        "dimensions": [
+          0.24350237846374512,
+          2.7931559085845947,
+          2.396143674850464
+        ],
+        "negative_scale": false,
+        "topology": {
+          "boundary_edges": 8624,
+          "non_manifold_edges": 0,
+          "loose_vertices": 0,
+          "zero_area_faces": 0
+        }
+      }
+    ],
+    "triangles": 18754,
+    "evaluated_triangles": 18754,
+    "materials": [
+      "spidey_Baked",
+      "weapon_Baked_Baked"
+    ],
+    "textures": [
+      {
+        "name": "Image_0",
+        "path": "",
+        "size": [
+          2048,
+          2048
+        ],
+        "packed": true
+      },
+      {
+        "name": "Image_1",
+        "path": "",
+        "size": [
+          2048,
+          2048
+        ],
+        "packed": true
+      },
+      {
+        "name": "Image_2",
+        "path": "",
+        "size": [
+          2048,
+          2048
+        ],
+        "packed": true
+      },
+      {
+        "name": "Image_3",
+        "path": "",
+        "size": [
+          2048,
+          2048
+        ],
+        "packed": true
+      },
+      {
+        "name": "Image_4",
+        "path": "",
+        "size": [
+          2048,
+          2048
+        ],
+        "packed": true
+      },
+      {
+        "name": "Image_5",
+        "path": "",
+        "size": [
+          2048,
+          2048
+        ],
+        "packed": true
+      },
+      {
+        "name": "Image_6",
+        "path": "",
+        "size": [
+          2048,
+          2048
+        ],
+        "packed": true
+      }
+    ],
+    "armatures": [],
+    "actions": [],
+    "hierarchy": [
+      {
+        "name": "Sketchfab_model",
+        "type": "EMPTY",
+        "parent": null,
+        "hide_render": false
+      },
+      {
+        "name": "root",
+        "type": "EMPTY",
+        "parent": "Sketchfab_model",
+        "hide_render": false
+      },
+      {
+        "name": "GLTF_SceneRootNode",
+        "type": "EMPTY",
+        "parent": "root",
+        "hide_render": false
+      },
+      {
+        "name": "spidey_Baked_0",
+        "type": "EMPTY",
+        "parent": "GLTF_SceneRootNode",
+        "hide_render": false
+      },
+      {
+        "name": "Object_4",
+        "type": "MESH",
+        "parent": "spidey_Baked_0",
+        "hide_render": false
+      },
+      {
+        "name": "weapon_Baked_Baked_1",
+        "type": "EMPTY",
+        "parent": "GLTF_SceneRootNode",
+        "hide_render": false
+      },
+      {
+        "name": "Object_6",
+        "type": "MESH",
+        "parent": "weapon_Baked_Baked_1",
+        "hide_render": false
+      }
+    ],
+    "id": "robot-spider"
+  },
+  {
+    "path": ".asset-intake-tmp/cutter/scorpion-robot/source/scorpion.fbx",
+    "import_details": {},
+    "meshes": [
+      {
+        "name": "rdmobj07",
+        "vertices": 1237,
+        "triangles": 2374,
+        "evaluated_triangles": 2374,
+        "uv_layers": [
+          "UVW"
+        ],
+        "material_slots": [
+          "Mat"
+        ],
+        "modifiers": [],
+        "vertex_groups": 0,
+        "dimensions": [
+          14.621954917907715,
+          24.17912483215332,
+          29.608287811279297
+        ],
+        "negative_scale": false,
+        "topology": {
+          "boundary_edges": 60,
+          "non_manifold_edges": 0,
+          "loose_vertices": 0,
+          "zero_area_faces": 0
+        }
+      },
+      {
+        "name": "rdmobj03",
+        "vertices": 64,
+        "triangles": 64,
+        "evaluated_triangles": 64,
+        "uv_layers": [
+          "UVW"
+        ],
+        "material_slots": [
+          "Mat"
+        ],
+        "modifiers": [],
+        "vertex_groups": 0,
+        "dimensions": [
+          9.98563289642334,
+          9.785009384155273,
+          1.3673534393310547
+        ],
+        "negative_scale": false,
+        "topology": {
+          "boundary_edges": 64,
+          "non_manifold_edges": 0,
+          "loose_vertices": 0,
+          "zero_area_faces": 0
+        }
+      },
+      {
+        "name": "rdmobj04",
+        "vertices": 297,
+        "triangles": 568,
+        "evaluated_triangles": 568,
+        "uv_layers": [
+          "UVW"
+        ],
+        "material_slots": [
+          "Mat"
+        ],
+        "modifiers": [],
+        "vertex_groups": 0,
+        "dimensions": [
+          12.25020980834961,
+          18.030712127685547,
+          17.754825592041016
+        ],
+        "negative_scale": false,
+        "topology": {
+          "boundary_edges": 4,
+          "non_manifold_edges": 0,
+          "loose_vertices": 0,
+          "zero_area_faces": 0
+        }
+      },
+      {
+        "name": "rdmobj01",
+        "vertices": 3228,
+        "triangles": 6060,
+        "evaluated_triangles": 6060,
+        "uv_layers": [
+          "UVW"
+        ],
+        "material_slots": [
+          "Mat"
+        ],
+        "modifiers": [],
+        "vertex_groups": 0,
+        "dimensions": [
+          12.628819465637207,
+          47.34473419189453,
+          75.23822784423828
+        ],
+        "negative_scale": false,
+        "topology": {
+          "boundary_edges": 280,
+          "non_manifold_edges": 0,
+          "loose_vertices": 0,
+          "zero_area_faces": 0
+        }
+      },
+      {
+        "name": "rdmobj02",
+        "vertices": 64,
+        "triangles": 64,
+        "evaluated_triangles": 64,
+        "uv_layers": [
+          "UVW"
+        ],
+        "material_slots": [
+          "Mat"
+        ],
+        "modifiers": [],
+        "vertex_groups": 0,
+        "dimensions": [
+          8.368326187133789,
+          8.260315895080566,
+          1.2117235660552979
+        ],
+        "negative_scale": false,
+        "topology": {
+          "boundary_edges": 64,
+          "non_manifold_edges": 0,
+          "loose_vertices": 0,
+          "zero_area_faces": 0
+        }
+      },
+      {
+        "name": "rdmobj00_006",
+        "vertices": 352,
+        "triangles": 544,
+        "evaluated_triangles": 544,
+        "uv_layers": [
+          "UVW"
+        ],
+        "material_slots": [
+          "Mat"
+        ],
+        "modifiers": [],
+        "vertex_groups": 0,
+        "dimensions": [
+          11.569782257080078,
+          13.700785636901855,
+          6.390927791595459
+        ],
+        "negative_scale": false,
+        "topology": {
+          "boundary_edges": 128,
+          "non_manifold_edges": 0,
+          "loose_vertices": 0,
+          "zero_area_faces": 0
+        }
+      },
+      {
+        "name": "rdmobj06",
+        "vertices": 10316,
+        "triangles": 18832,
+        "evaluated_triangles": 18832,
+        "uv_layers": [
+          "UVW"
+        ],
+        "material_slots": [
+          "Mat"
+        ],
+        "modifiers": [],
+        "vertex_groups": 0,
+        "dimensions": [
+          61.48960494995117,
+          29.813621520996094,
+          26.295141220092773
+        ],
+        "negative_scale": false,
+        "topology": {
+          "boundary_edges": 1392,
+          "non_manifold_edges": 0,
+          "loose_vertices": 0,
+          "zero_area_faces": 0
+        }
+      },
+      {
+        "name": "rdmobj05",
+        "vertices": 576,
+        "triangles": 768,
+        "evaluated_triangles": 768,
+        "uv_layers": [
+          "UVW"
+        ],
+        "material_slots": [
+          "Mat"
+        ],
+        "modifiers": [],
+        "vertex_groups": 0,
+        "dimensions": [
+          5.740350246429443,
+          5.740350246429443,
+          6.380934715270996
+        ],
+        "negative_scale": false,
+        "topology": {
+          "boundary_edges": 384,
+          "non_manifold_edges": 0,
+          "loose_vertices": 0,
+          "zero_area_faces": 0
+        }
+      }
+    ],
+    "triangles": 29274,
+    "evaluated_triangles": 29274,
+    "materials": [
+      "Mat"
+    ],
+    "textures": [],
+    "armatures": [],
+    "actions": [],
+    "hierarchy": [
+      {
+        "name": "rdmobj07",
+        "type": "MESH",
+        "parent": "scorpion_obj",
+        "hide_render": false
+      },
+      {
+        "name": "rdmobj03",
+        "type": "MESH",
+        "parent": "scorpion_obj",
+        "hide_render": false
+      },
+      {
+        "name": "rdmobj04",
+        "type": "MESH",
+        "parent": "scorpion_obj",
+        "hide_render": false
+      },
+      {
+        "name": "scorpion_obj",
+        "type": "EMPTY",
+        "parent": null,
+        "hide_render": false
+      },
+      {
+        "name": "rdmobj01",
+        "type": "MESH",
+        "parent": "scorpion_obj",
+        "hide_render": false
+      },
+      {
+        "name": "rdmobj02",
+        "type": "MESH",
+        "parent": "scorpion_obj",
+        "hide_render": false
+      },
+      {
+        "name": "rdmobj00_006",
+        "type": "MESH",
+        "parent": "scorpion_obj",
+        "hide_render": false
+      },
+      {
+        "name": "rdmobj06",
+        "type": "MESH",
+        "parent": "scorpion_obj",
+        "hide_render": false
+      },
+      {
+        "name": "rdmobj05",
+        "type": "MESH",
+        "parent": "scorpion_obj",
+        "hide_render": false
+      }
+    ],
+    "id": "scorpion-robot"
+  },
+  {
+    "path": ".asset-intake-tmp/cutter/scorpion-mech/source/crawler.fbx",
+    "import_details": {},
+    "meshes": [
+      {
+        "name": "Crawler",
+        "vertices": 12531,
+        "triangles": 23808,
+        "evaluated_triangles": 23808,
+        "uv_layers": [
+          "UVMap"
+        ],
+        "material_slots": [
+          "Alien Metal",
+          "JSP1",
+          "JSP2"
+        ],
+        "modifiers": [],
+        "vertex_groups": 0,
+        "dimensions": [
+          8.320239067077637,
+          7.368170261383057,
+          3.207747220993042
+        ],
+        "negative_scale": false,
+        "topology": {
+          "boundary_edges": 851,
+          "non_manifold_edges": 74,
+          "loose_vertices": 0,
+          "zero_area_faces": 2040
+        }
+      }
+    ],
+    "triangles": 23808,
+    "evaluated_triangles": 23808,
+    "materials": [
+      "Alien Metal",
+      "JSP1",
+      "JSP2"
+    ],
+    "textures": [
+      {
+        "name": "alien-panels_metallic.png",
+        "path": "C:\\Users\\pamak\\Documents\\ChatGPT\\gravivore\\.codex-worktrees\\visual-production-v2-modeling\\.asset-intake-tmp\\cutter\\scorpion-mech\\source\\Textures\\alien-panels_metallic.png",
+        "size": [
+          0,
+          0
+        ],
+        "packed": false
+      },
+      {
+        "name": "alien-panels_normal-ogl.png",
+        "path": "C:\\Users\\pamak\\Documents\\ChatGPT\\gravivore\\.codex-worktrees\\visual-production-v2-modeling\\.asset-intake-tmp\\cutter\\scorpion-mech\\source\\Textures\\alien-panels_normal-ogl.png",
+        "size": [
+          0,
+          0
+        ],
+        "packed": false
+      },
+      {
+        "name": "JSp_v1_basecolor_no_labels.png",
+        "path": "C:\\Users\\pamak\\Documents\\ChatGPT\\gravivore\\.codex-worktrees\\visual-production-v2-modeling\\.asset-intake-tmp\\cutter\\scorpion-mech\\source\\Textures\\JSp_v1_basecolor_no_labels.png",
+        "size": [
+          0,
+          0
+        ],
+        "packed": false
+      },
+      {
+        "name": "JSp_v1_emissive.png",
+        "path": "C:\\Users\\pamak\\Documents\\ChatGPT\\gravivore\\.codex-worktrees\\visual-production-v2-modeling\\.asset-intake-tmp\\cutter\\scorpion-mech\\source\\Textures\\JSp_v1_emissive.png",
+        "size": [
+          0,
+          0
+        ],
+        "packed": false
+      },
+      {
+        "name": "JSp_v1_metallic_no_labels.png",
+        "path": "C:\\Users\\pamak\\Documents\\ChatGPT\\gravivore\\.codex-worktrees\\visual-production-v2-modeling\\.asset-intake-tmp\\cutter\\scorpion-mech\\source\\Textures\\JSp_v1_metallic_no_labels.png",
+        "size": [
+          0,
+          0
+        ],
+        "packed": false
+      },
+      {
+        "name": "JSp_v1_roughness.png",
+        "path": "C:\\Users\\pamak\\Documents\\ChatGPT\\gravivore\\.codex-worktrees\\visual-production-v2-modeling\\.asset-intake-tmp\\cutter\\scorpion-mech\\source\\Textures\\JSp_v1_roughness.png",
+        "size": [
+          0,
+          0
+        ],
+        "packed": false
+      },
+      {
+        "name": "JSp_v2_basecolor_no_labels.png",
+        "path": "C:\\Users\\pamak\\Documents\\ChatGPT\\gravivore\\.codex-worktrees\\visual-production-v2-modeling\\.asset-intake-tmp\\cutter\\scorpion-mech\\source\\Textures\\JSp_v2_basecolor_no_labels.png",
+        "size": [
+          0,
+          0
+        ],
+        "packed": false
+      },
+      {
+        "name": "JSp_v2_emissive.png",
+        "path": "C:\\Users\\pamak\\Documents\\ChatGPT\\gravivore\\.codex-worktrees\\visual-production-v2-modeling\\.asset-intake-tmp\\cutter\\scorpion-mech\\source\\Textures\\JSp_v2_emissive.png",
+        "size": [
+          0,
+          0
+        ],
+        "packed": false
+      },
+      {
+        "name": "JSp_v2_metallic_no_labels.png",
+        "path": "C:\\Users\\pamak\\Documents\\ChatGPT\\gravivore\\.codex-worktrees\\visual-production-v2-modeling\\.asset-intake-tmp\\cutter\\scorpion-mech\\source\\Textures\\JSp_v2_metallic_no_labels.png",
+        "size": [
+          0,
+          0
+        ],
+        "packed": false
+      },
+      {
+        "name": "JSp_v2_roughness.png",
+        "path": "C:\\Users\\pamak\\Documents\\ChatGPT\\gravivore\\.codex-worktrees\\visual-production-v2-modeling\\.asset-intake-tmp\\cutter\\scorpion-mech\\source\\Textures\\JSp_v2_roughness.png",
+        "size": [
+          0,
+          0
+        ],
+        "packed": false
+      }
+    ],
+    "armatures": [],
+    "actions": [],
+    "hierarchy": [
+      {
+        "name": "Crawler",
+        "type": "MESH",
+        "parent": null,
+        "hide_render": false
+      }
+    ],
+    "id": "scorpion-mech"
+  },
+  {
+    "path": ".asset-intake-tmp/magnetar/stalenhag-environment-project-spider-mech/source/model_unpacked/model/model.dae",
+    "import_details": {
+      "method": "static XML geometry/scene import; UV/material/skin not converted",
+      "source_geometry_count": 4,
+      "source_controller_count": 0,
+      "source_animation_count": 0,
+      "source_uv_inputs": 4
+    },
+    "meshes": [
+      {
+        "name": "meshId0_name",
+        "vertices": 13133,
+        "triangles": 17136,
+        "evaluated_triangles": 17136,
+        "uv_layers": [],
+        "material_slots": [],
+        "modifiers": [],
+        "vertex_groups": 0,
+        "dimensions": [
+          1.8877480030059814,
+          1.718574047088623,
+          0.31304270029067993
+        ],
+        "negative_scale": false,
+        "topology": {
+          "boundary_edges": 8370,
+          "non_manifold_edges": 0,
+          "loose_vertices": 0,
+          "zero_area_faces": 0
+        }
+      },
+      {
+        "name": "meshId1_name",
+        "vertices": 42718,
+        "triangles": 56050,
+        "evaluated_triangles": 56050,
+        "uv_layers": [],
+        "material_slots": [],
+        "modifiers": [],
+        "vertex_groups": 0,
+        "dimensions": [
+          0.9039512872695923,
+          0.7904525995254517,
+          0.4886130094528198
+        ],
+        "negative_scale": false,
+        "topology": {
+          "boundary_edges": 26336,
+          "non_manifold_edges": 0,
+          "loose_vertices": 0,
+          "zero_area_faces": 0
+        }
+      },
+      {
+        "name": "meshId2_name",
+        "vertices": 20632,
+        "triangles": 26232,
+        "evaluated_triangles": 26232,
+        "uv_layers": [],
+        "material_slots": [],
+        "modifiers": [],
+        "vertex_groups": 0,
+        "dimensions": [
+          0.8287529945373535,
+          0.743837296962738,
+          0.46347498893737793
+        ],
+        "negative_scale": false,
+        "topology": {
+          "boundary_edges": 14074,
+          "non_manifold_edges": 0,
+          "loose_vertices": 0,
+          "zero_area_faces": 0
+        }
+      },
+      {
+        "name": "meshId3_name",
+        "vertices": 2616,
+        "triangles": 3978,
+        "evaluated_triangles": 3978,
+        "uv_layers": [],
+        "material_slots": [],
+        "modifiers": [],
+        "vertex_groups": 0,
+        "dimensions": [
+          0.43788400292396545,
+          0.3895220160484314,
+          0.3248128890991211
+        ],
+        "negative_scale": false,
+        "topology": {
+          "boundary_edges": 1206,
+          "non_manifold_edges": 0,
+          "loose_vertices": 0,
+          "zero_area_faces": 0
+        }
+      }
+    ],
+    "triangles": 103396,
+    "evaluated_triangles": 103396,
+    "materials": [],
+    "textures": [],
+    "armatures": [],
+    "actions": [],
+    "hierarchy": [
+      {
+        "name": "g default",
+        "type": "EMPTY",
+        "parent": null,
+        "hide_render": false
+      },
+      {
+        "name": "g Spider:Cables_GEO",
+        "type": "EMPTY",
+        "parent": null,
+        "hide_render": false
+      },
+      {
+        "name": "meshId0_name",
+        "type": "MESH",
+        "parent": "g Spider:Cables_GEO",
+        "hide_render": false
+      },
+      {
+        "name": "g default.001",
+        "type": "EMPTY",
+        "parent": null,
+        "hide_render": false
+      },
+      {
+        "name": "g Spider:Spider_GEO",
+        "type": "EMPTY",
+        "parent": null,
+        "hide_render": false
+      },
+      {
+        "name": "meshId1_name",
+        "type": "MESH",
+        "parent": "g Spider:Spider_GEO",
+        "hide_render": false
+      },
+      {
+        "name": "meshId2_name",
+        "type": "MESH",
+        "parent": "g Spider:Spider_GEO",
+        "hide_render": false
+      },
+      {
+        "name": "meshId3_name",
+        "type": "MESH",
+        "parent": "g Spider:Spider_GEO",
+        "hide_render": false
+      }
+    ],
+    "id": "stalenhag-environment-project-spider-mech"
+  },
+  {
+    "path": ".asset-intake-tmp/magnetar/mechanical-spider/source/mechanical spider.fbx",
+    "import_details": {},
+    "meshes": [
+      {
+        "name": "Cylinder001",
+        "vertices": 5130,
+        "triangles": 10277,
+        "evaluated_triangles": 10277,
+        "uv_layers": [
+          "UVChannel_1"
+        ],
+        "material_slots": [
+          "Material #25",
+          "Material #26",
+          "Material #27",
+          "Material #28",
+          "Material #29",
+          "Material #30",
+          "Material #31",
+          "01 - Default",
+          "02 - Default"
+        ],
+        "modifiers": [],
+        "vertex_groups": 0,
+        "dimensions": [
+          2.2522523403167725,
+          1.9592171907424927,
+          0.5004200339317322
+        ],
+        "negative_scale": false,
+        "topology": {
+          "boundary_edges": 4,
+          "non_manifold_edges": 3,
+          "loose_vertices": 0,
+          "zero_area_faces": 44
+        }
+      },
+      {
+        "name": "Cylinder006",
+        "vertices": 5130,
+        "triangles": 10277,
+        "evaluated_triangles": 10277,
+        "uv_layers": [
+          "UVChannel_1"
+        ],
+        "material_slots": [
+          "Material #25",
+          "Material #26",
+          "Material #27",
+          "Material #28",
+          "Material #29",
+          "Material #30",
+          "Material #31",
+          "01 - Default",
+          "02 - Default"
+        ],
+        "modifiers": [],
+        "vertex_groups": 0,
+        "dimensions": [
+          2.2522523403167725,
+          1.9592171907424927,
+          0.5004200339317322
+        ],
+        "negative_scale": false,
+        "topology": {
+          "boundary_edges": 4,
+          "non_manifold_edges": 3,
+          "loose_vertices": 0,
+          "zero_area_faces": 44
+        }
+      },
+      {
+        "name": "Cylinder002",
+        "vertices": 5130,
+        "triangles": 10277,
+        "evaluated_triangles": 10277,
+        "uv_layers": [
+          "UVChannel_1"
+        ],
+        "material_slots": [
+          "Material #25",
+          "Material #26",
+          "Material #27",
+          "Material #28",
+          "Material #29",
+          "Material #30",
+          "Material #31",
+          "01 - Default",
+          "02 - Default"
+        ],
+        "modifiers": [],
+        "vertex_groups": 0,
+        "dimensions": [
+          2.2522523403167725,
+          1.9592171907424927,
+          0.500420093536377
+        ],
+        "negative_scale": false,
+        "topology": {
+          "boundary_edges": 4,
+          "non_manifold_edges": 3,
+          "loose_vertices": 0,
+          "zero_area_faces": 44
+        }
+      },
+      {
+        "name": "Cylinder004",
+        "vertices": 5130,
+        "triangles": 10277,
+        "evaluated_triangles": 10277,
+        "uv_layers": [
+          "UVChannel_1"
+        ],
+        "material_slots": [
+          "Material #25",
+          "Material #26",
+          "Material #27",
+          "Material #28",
+          "Material #29",
+          "Material #30",
+          "Material #31",
+          "01 - Default",
+          "02 - Default"
+        ],
+        "modifiers": [],
+        "vertex_groups": 0,
+        "dimensions": [
+          2.2522523403167725,
+          1.9592171907424927,
+          0.5004200339317322
+        ],
+        "negative_scale": false,
+        "topology": {
+          "boundary_edges": 4,
+          "non_manifold_edges": 3,
+          "loose_vertices": 0,
+          "zero_area_faces": 44
+        }
+      },
+      {
+        "name": "Cylinder008",
+        "vertices": 5130,
+        "triangles": 10277,
+        "evaluated_triangles": 10277,
+        "uv_layers": [
+          "UVChannel_1"
+        ],
+        "material_slots": [
+          "Material #25",
+          "Material #26",
+          "Material #27",
+          "Material #28",
+          "Material #29",
+          "Material #30",
+          "Material #31",
+          "01 - Default",
+          "02 - Default"
+        ],
+        "modifiers": [],
+        "vertex_groups": 0,
+        "dimensions": [
+          2.2522523403167725,
+          1.9592171907424927,
+          0.500420093536377
+        ],
+        "negative_scale": false,
+        "topology": {
+          "boundary_edges": 4,
+          "non_manifold_edges": 3,
+          "loose_vertices": 0,
+          "zero_area_faces": 44
+        }
+      },
+      {
+        "name": "Cylinder007",
+        "vertices": 5130,
+        "triangles": 10277,
+        "evaluated_triangles": 10277,
+        "uv_layers": [
+          "UVChannel_1"
+        ],
+        "material_slots": [
+          "Material #25",
+          "Material #26",
+          "Material #27",
+          "Material #28",
+          "Material #29",
+          "Material #30",
+          "Material #31",
+          "01 - Default",
+          "02 - Default"
+        ],
+        "modifiers": [],
+        "vertex_groups": 0,
+        "dimensions": [
+          2.2522523403167725,
+          1.9592170715332031,
+          0.500420093536377
+        ],
+        "negative_scale": false,
+        "topology": {
+          "boundary_edges": 4,
+          "non_manifold_edges": 3,
+          "loose_vertices": 0,
+          "zero_area_faces": 44
+        }
+      },
+      {
+        "name": "Box002",
+        "vertices": 9561,
+        "triangles": 19082,
+        "evaluated_triangles": 19082,
+        "uv_layers": [
+          "UVChannel_1"
+        ],
+        "material_slots": [
+          "01 - Default",
+          "02 - Default",
+          "07 - Default"
+        ],
+        "modifiers": [],
+        "vertex_groups": 0,
+        "dimensions": [
+          2.018204927444458,
+          1.1574429273605347,
+          4.283825397491455
+        ],
+        "negative_scale": false,
+        "topology": {
+          "boundary_edges": 56,
+          "non_manifold_edges": 0,
+          "loose_vertices": 0,
+          "zero_area_faces": 112
+        }
+      },
+      {
+        "name": "PhysCamera001",
+        "vertices": 5130,
+        "triangles": 10277,
+        "evaluated_triangles": 10277,
+        "uv_layers": [
+          "UVChannel_1"
+        ],
+        "material_slots": [
+          "Material #25",
+          "Material #26",
+          "Material #27",
+          "Material #28",
+          "Material #29",
+          "Material #30",
+          "Material #31",
+          "01 - Default",
+          "02 - Default"
+        ],
+        "modifiers": [],
+        "vertex_groups": 0,
+        "dimensions": [
+          2.2522523403167725,
+          1.9592171907424927,
+          0.5004200339317322
+        ],
+        "negative_scale": false,
+        "topology": {
+          "boundary_edges": 4,
+          "non_manifold_edges": 3,
+          "loose_vertices": 0,
+          "zero_area_faces": 44
+        }
+      },
+      {
+        "name": "Cylinder003",
+        "vertices": 5130,
+        "triangles": 10277,
+        "evaluated_triangles": 10277,
+        "uv_layers": [
+          "UVChannel_1"
+        ],
+        "material_slots": [
+          "Material #25",
+          "Material #26",
+          "Material #27",
+          "Material #28",
+          "Material #29",
+          "Material #30",
+          "Material #31",
+          "01 - Default",
+          "02 - Default"
+        ],
+        "modifiers": [],
+        "vertex_groups": 0,
+        "dimensions": [
+          2.2522525787353516,
+          1.9592171907424927,
+          0.5004199743270874
+        ],
+        "negative_scale": false,
+        "topology": {
+          "boundary_edges": 4,
+          "non_manifold_edges": 3,
+          "loose_vertices": 0,
+          "zero_area_faces": 44
+        }
+      }
+    ],
+    "triangles": 101298,
+    "evaluated_triangles": 101298,
+    "materials": [
+      "01 - Default",
+      "02 - Default",
+      "07 - Default",
+      "Material #25",
+      "Material #26",
+      "Material #27",
+      "Material #28",
+      "Material #29",
+      "Material #30",
+      "Material #31"
+    ],
+    "textures": [],
+    "armatures": [],
+    "actions": [],
+    "hierarchy": [
+      {
+        "name": "Cylinder001",
+        "type": "MESH",
+        "parent": null,
+        "hide_render": false
+      },
+      {
+        "name": "Cylinder006",
+        "type": "MESH",
+        "parent": null,
+        "hide_render": false
+      },
+      {
+        "name": "Cylinder002",
+        "type": "MESH",
+        "parent": null,
+        "hide_render": false
+      },
+      {
+        "name": "Cylinder004",
+        "type": "MESH",
+        "parent": null,
+        "hide_render": false
+      },
+      {
+        "name": "Cylinder008",
+        "type": "MESH",
+        "parent": null,
+        "hide_render": false
+      },
+      {
+        "name": "Cylinder007",
+        "type": "MESH",
+        "parent": null,
+        "hide_render": false
+      },
+      {
+        "name": "Box002",
+        "type": "MESH",
+        "parent": null,
+        "hide_render": false
+      },
+      {
+        "name": "PhysCamera001",
+        "type": "MESH",
+        "parent": null,
+        "hide_render": false
+      },
+      {
+        "name": "Cylinder003",
+        "type": "MESH",
+        "parent": null,
+        "hide_render": false
+      }
+    ],
+    "id": "mechanical-spider"
+  },
+  {
+    "path": ".asset-intake-tmp/magnetar/gunslinger-crab-mech-v12/source/sketchfab_3_unpacked/crab.gltf",
+    "import_details": {},
+    "meshes": [
+      {
+        "name": "labels_top",
+        "vertices": 476,
+        "triangles": 750,
+        "evaluated_triangles": 750,
+        "uv_layers": [
+          "UVMap"
+        ],
+        "material_slots": [
+          "labels_top_MAT.001"
+        ],
+        "modifiers": [],
+        "vertex_groups": 0,
+        "dimensions": [
+          2.810479164123535,
+          2.060736894607544,
+          0.3044964075088501
+        ],
+        "negative_scale": false,
+        "topology": {
+          "boundary_edges": 186,
+          "non_manifold_edges": 0,
+          "loose_vertices": 0,
+          "zero_area_faces": 0
+        }
+      },
+      {
+        "name": "labels_front",
+        "vertices": 56,
+        "triangles": 72,
+        "evaluated_triangles": 72,
+        "uv_layers": [
+          "UVMap"
+        ],
+        "material_slots": [
+          "labels_front_MAT.001"
+        ],
+        "modifiers": [],
+        "vertex_groups": 0,
+        "dimensions": [
+          2.8934779167175293,
+          0.4127166271209717,
+          0.4805881977081299
+        ],
+        "negative_scale": false,
+        "topology": {
+          "boundary_edges": 36,
+          "non_manifold_edges": 0,
+          "loose_vertices": 0,
+          "zero_area_faces": 0
+        }
+      },
+      {
+        "name": "labels_rear",
+        "vertices": 186,
+        "triangles": 292,
+        "evaluated_triangles": 292,
+        "uv_layers": [
+          "UVMap"
+        ],
+        "material_slots": [
+          "labels_rear_MAT.001"
+        ],
+        "modifiers": [],
+        "vertex_groups": 0,
+        "dimensions": [
+          2.6747443675994873,
+          0.9109925031661987,
+          0.4690847396850586
+        ],
+        "negative_scale": false,
+        "topology": {
+          "boundary_edges": 76,
+          "non_manifold_edges": 0,
+          "loose_vertices": 0,
+          "zero_area_faces": 0
+        }
+      },
+      {
+        "name": "labels_eyes",
+        "vertices": 569,
+        "triangles": 822,
+        "evaluated_triangles": 822,
+        "uv_layers": [
+          "UVMap"
+        ],
+        "material_slots": [
+          "labels_eyes_MAT.001"
+        ],
+        "modifiers": [],
+        "vertex_groups": 0,
+        "dimensions": [
+          1.70419442653656,
+          0.3362308740615845,
+          0.5981950759887695
+        ],
+        "negative_scale": false,
+        "topology": {
+          "boundary_edges": 330,
+          "non_manifold_edges": 0,
+          "loose_vertices": 0,
+          "zero_area_faces": 0
+        }
+      },
+      {
+        "name": "m_launcher_label",
+        "vertices": 70,
+        "triangles": 96,
+        "evaluated_triangles": 96,
+        "uv_layers": [
+          "UVMap"
+        ],
+        "material_slots": [
+          "m_launcher_label_MAT.001"
+        ],
+        "modifiers": [],
+        "vertex_groups": 0,
+        "dimensions": [
+          2.2982444763183594,
+          1.2159262895584106,
+          0.9666140079498291
+        ],
+        "negative_scale": false,
+        "topology": {
+          "boundary_edges": 40,
+          "non_manifold_edges": 0,
+          "loose_vertices": 0,
+          "zero_area_faces": 0
+        }
+      },
+      {
+        "name": "labels_mouth_side",
+        "vertices": 205,
+        "triangles": 216,
+        "evaluated_triangles": 216,
+        "uv_layers": [
+          "UVMap"
+        ],
+        "material_slots": [
+          "labels_mouth_side_MAT.001"
+        ],
+        "modifiers": [],
+        "vertex_groups": 0,
+        "dimensions": [
+          3.1541733741760254,
+          1.7258720397949219,
+          0.8647844791412354
+        ],
+        "negative_scale": false,
+        "topology": {
+          "boundary_edges": 180,
+          "non_manifold_edges": 0,
+          "loose_vertices": 0,
+          "zero_area_faces": 0
+        }
+      },
+      {
+        "name": "crab_legs",
+        "vertices": 15554,
+        "triangles": 15612,
+        "evaluated_triangles": 15612,
+        "uv_layers": [
+          "UVMap"
+        ],
+        "material_slots": [
+          "legs_MAT.002"
+        ],
+        "modifiers": [],
+        "vertex_groups": 0,
+        "dimensions": [
+          5.500484943389893,
+          3.2584049701690674,
+          2.418278694152832
+        ],
+        "negative_scale": false,
+        "topology": {
+          "boundary_edges": 13420,
+          "non_manifold_edges": 0,
+          "loose_vertices": 0,
+          "zero_area_faces": 0
+        }
+      },
+      {
+        "name": "crab_main",
+        "vertices": 24829,
+        "triangles": 22212,
+        "evaluated_triangles": 22212,
+        "uv_layers": [
+          "UVMap"
+        ],
+        "material_slots": [
+          "crab_main.001"
+        ],
+        "modifiers": [],
+        "vertex_groups": 0,
+        "dimensions": [
+          3.3255975246429443,
+          2.920501947402954,
+          1.513768196105957
+        ],
+        "negative_scale": false,
+        "topology": {
+          "boundary_edges": 22354,
+          "non_manifold_edges": 0,
+          "loose_vertices": 0,
+          "zero_area_faces": 0
+        }
+      },
+      {
+        "name": "m_launcher",
+        "vertices": 22182,
+        "triangles": 17368,
+        "evaluated_triangles": 17368,
+        "uv_layers": [
+          "UVMap"
+        ],
+        "material_slots": [
+          "m_launcher_MAT.002"
+        ],
+        "modifiers": [],
+        "vertex_groups": 0,
+        "dimensions": [
+          2.525963544845581,
+          1.8067060708999634,
+          1.5546897649765015
+        ],
+        "negative_scale": false,
+        "topology": {
+          "boundary_edges": 22390,
+          "non_manifold_edges": 0,
+          "loose_vertices": 0,
+          "zero_area_faces": 0
+        }
+      },
+      {
+        "name": "crab_arm_R",
+        "vertices": 21039,
+        "triangles": 17028,
+        "evaluated_triangles": 17028,
+        "uv_layers": [
+          "UVMap"
+        ],
+        "material_slots": [
+          "arm_MAT.002"
+        ],
+        "modifiers": [],
+        "vertex_groups": 0,
+        "dimensions": [
+          1.107138991355896,
+          4.340599536895752,
+          1.1121180057525635
+        ],
+        "negative_scale": true,
+        "topology": {
+          "boundary_edges": 20266,
+          "non_manifold_edges": 0,
+          "loose_vertices": 0,
+          "zero_area_faces": 0
+        }
+      },
+      {
+        "name": "crab_arm_R.001",
+        "vertices": 21039,
+        "triangles": 17028,
+        "evaluated_triangles": 17028,
+        "uv_layers": [
+          "UVMap"
+        ],
+        "material_slots": [
+          "arm_MAT.002"
+        ],
+        "modifiers": [],
+        "vertex_groups": 0,
+        "dimensions": [
+          1.107138991355896,
+          4.340599536895752,
+          1.1121180057525635
+        ],
+        "negative_scale": false,
+        "topology": {
+          "boundary_edges": 20266,
+          "non_manifold_edges": 0,
+          "loose_vertices": 0,
+          "zero_area_faces": 0
+        }
+      }
+    ],
+    "triangles": 91496,
+    "evaluated_triangles": 91496,
+    "materials": [
+      "arm_MAT.002",
+      "crab_main.001",
+      "labels_eyes_MAT.001",
+      "labels_front_MAT.001",
+      "labels_mouth_side_MAT.001",
+      "labels_rear_MAT.001",
+      "labels_top_MAT.001",
+      "legs_MAT.002",
+      "m_launcher_label_MAT.001",
+      "m_launcher_MAT.002"
+    ],
+    "textures": [
+      {
+        "name": "Blender_guncrab_v2_arm_MAT_diffuse",
+        "path": "C:\\Users\\pamak\\Documents\\ChatGPT\\gravivore\\.codex-worktrees\\visual-production-v2-modeling\\.asset-intake-tmp\\magnetar\\gunslinger-crab-mech-v12\\source\\sketchfab_3_unpacked\\Blender_guncrab_v2_arm_MAT_diffuse.jpg",
+        "size": [
+          4096,
+          4096
+        ],
+        "packed": true
+      },
+      {
+        "name": "Blender_guncrab_v2_arm_MAT_metalness-Blender_guncrab_v2_arm_MAT_roughness",
+        "path": "C:\\Users\\pamak\\Documents\\ChatGPT\\gravivore\\.codex-worktrees\\visual-production-v2-modeling\\.asset-intake-tmp\\magnetar\\gunslinger-crab-mech-v12\\source\\sketchfab_3_unpacked\\Blender_guncrab_v2_arm_MAT_metalness-Blender_guncrab_v2_arm_MAT_roughness.jpg",
+        "size": [
+          4096,
+          4096
+        ],
+        "packed": true
+      },
+      {
+        "name": "Blender_guncrab_v2_crab_main_MAT.001_diffuse",
+        "path": "C:\\Users\\pamak\\Documents\\ChatGPT\\gravivore\\.codex-worktrees\\visual-production-v2-modeling\\.asset-intake-tmp\\magnetar\\gunslinger-crab-mech-v12\\source\\sketchfab_3_unpacked\\Blender_guncrab_v2_crab_main_MAT.001_diffuse.jpg",
+        "size": [
+          4096,
+          4096
+        ],
+        "packed": true
+      },
+      {
+        "name": "Blender_guncrab_v2_crab_main_MAT.001_metalness-Blender_guncrab_v2_crab_main_MAT.001_roughness",
+        "path": "C:\\Users\\pamak\\Documents\\ChatGPT\\gravivore\\.codex-worktrees\\visual-production-v2-modeling\\.asset-intake-tmp\\magnetar\\gunslinger-crab-mech-v12\\source\\sketchfab_3_unpacked\\Blender_guncrab_v2_crab_main_MAT.001_metalness-Blender_guncrab_v2_crab_main_MAT.001_roughness.jpg",
+        "size": [
+          0,
+          0
+        ],
+        "packed": false
+      },
+      {
+        "name": "Blender_guncrab_v2_legs_MAT_diffuse",
+        "path": "C:\\Users\\pamak\\Documents\\ChatGPT\\gravivore\\.codex-worktrees\\visual-production-v2-modeling\\.asset-intake-tmp\\magnetar\\gunslinger-crab-mech-v12\\source\\sketchfab_3_unpacked\\Blender_guncrab_v2_legs_MAT_diffuse.jpg",
+        "size": [
+          4096,
+          4096
+        ],
+        "packed": true
+      },
+      {
+        "name": "Blender_guncrab_v2_legs_MAT_metalness-Blender_guncrab_v2_legs_MAT_roughness",
+        "path": "C:\\Users\\pamak\\Documents\\ChatGPT\\gravivore\\.codex-worktrees\\visual-production-v2-modeling\\.asset-intake-tmp\\magnetar\\gunslinger-crab-mech-v12\\source\\sketchfab_3_unpacked\\Blender_guncrab_v2_legs_MAT_metalness-Blender_guncrab_v2_legs_MAT_roughness.jpg",
+        "size": [
+          4096,
+          4096
+        ],
+        "packed": true
+      },
+      {
+        "name": "Blender_guncrab_v2_m_launcher_MAT_diffuse",
+        "path": "C:\\Users\\pamak\\Documents\\ChatGPT\\gravivore\\.codex-worktrees\\visual-production-v2-modeling\\.asset-intake-tmp\\magnetar\\gunslinger-crab-mech-v12\\source\\sketchfab_3_unpacked\\Blender_guncrab_v2_m_launcher_MAT_diffuse.jpg",
+        "size": [
+          4096,
+          4096
+        ],
+        "packed": true
+      },
+      {
+        "name": "Blender_guncrab_v2_m_launcher_MAT_metalness-Blender_guncrab_v2_m_launcher_MAT_roughness",
+        "path": "C:\\Users\\pamak\\Documents\\ChatGPT\\gravivore\\.codex-worktrees\\visual-production-v2-modeling\\.asset-intake-tmp\\magnetar\\gunslinger-crab-mech-v12\\source\\sketchfab_3_unpacked\\Blender_guncrab_v2_m_launcher_MAT_metalness-Blender_guncrab_v2_m_launcher_MAT_roughness.jpg",
+        "size": [
+          0,
+          0
+        ],
+        "packed": false
+      },
+      {
+        "name": "labels_eyes",
+        "path": "C:\\Users\\pamak\\Documents\\ChatGPT\\gravivore\\.codex-worktrees\\visual-production-v2-modeling\\.asset-intake-tmp\\magnetar\\gunslinger-crab-mech-v12\\source\\sketchfab_3_unpacked\\labels_eyes.png",
+        "size": [
+          2048,
+          2048
+        ],
+        "packed": true
+      },
+      {
+        "name": "labels_front_test_1",
+        "path": "C:\\Users\\pamak\\Documents\\ChatGPT\\gravivore\\.codex-worktrees\\visual-production-v2-modeling\\.asset-intake-tmp\\magnetar\\gunslinger-crab-mech-v12\\source\\sketchfab_3_unpacked\\labels_front_test_1.png",
+        "size": [
+          4096,
+          4096
+        ],
+        "packed": true
+      },
+      {
+        "name": "labels_front_test_1_metalRough",
+        "path": "C:\\Users\\pamak\\Documents\\ChatGPT\\gravivore\\.codex-worktrees\\visual-production-v2-modeling\\.asset-intake-tmp\\magnetar\\gunslinger-crab-mech-v12\\source\\sketchfab_3_unpacked\\labels_front_test_1_metalRough.png",
+        "size": [
+          4096,
+          4096
+        ],
+        "packed": true
+      },
+      {
+        "name": "labels_mouth_side",
+        "path": "C:\\Users\\pamak\\Documents\\ChatGPT\\gravivore\\.codex-worktrees\\visual-production-v2-modeling\\.asset-intake-tmp\\magnetar\\gunslinger-crab-mech-v12\\source\\sketchfab_3_unpacked\\labels_mouth_side.png",
+        "size": [
+          4096,
+          4096
+        ],
+        "packed": true
+      },
+      {
+        "name": "labels_rear",
+        "path": "C:\\Users\\pamak\\Documents\\ChatGPT\\gravivore\\.codex-worktrees\\visual-production-v2-modeling\\.asset-intake-tmp\\magnetar\\gunslinger-crab-mech-v12\\source\\sketchfab_3_unpacked\\labels_rear.png",
+        "size": [
+          1024,
+          1024
+        ],
+        "packed": true
+      },
+      {
+        "name": "labels_top_test_2",
+        "path": "C:\\Users\\pamak\\Documents\\ChatGPT\\gravivore\\.codex-worktrees\\visual-production-v2-modeling\\.asset-intake-tmp\\magnetar\\gunslinger-crab-mech-v12\\source\\sketchfab_3_unpacked\\labels_top_test_2.png",
+        "size": [
+          4096,
+          4096
+        ],
+        "packed": true
+      },
+      {
+        "name": "m_launcher_label",
+        "path": "C:\\Users\\pamak\\Documents\\ChatGPT\\gravivore\\.codex-worktrees\\visual-production-v2-modeling\\.asset-intake-tmp\\magnetar\\gunslinger-crab-mech-v12\\source\\sketchfab_3_unpacked\\m_launcher_label.png",
+        "size": [
+          1024,
+          1024
+        ],
+        "packed": true
+      }
+    ],
+    "armatures": [],
+    "actions": [],
+    "hierarchy": [
+      {
+        "name": "labels_top",
+        "type": "MESH",
+        "parent": null,
+        "hide_render": false
+      },
+      {
+        "name": "labels_front",
+        "type": "MESH",
+        "parent": null,
+        "hide_render": false
+      },
+      {
+        "name": "labels_rear",
+        "type": "MESH",
+        "parent": null,
+        "hide_render": false
+      },
+      {
+        "name": "labels_eyes",
+        "type": "MESH",
+        "parent": null,
+        "hide_render": false
+      },
+      {
+        "name": "m_launcher_label",
+        "type": "MESH",
+        "parent": null,
+        "hide_render": false
+      },
+      {
+        "name": "labels_mouth_side",
+        "type": "MESH",
+        "parent": null,
+        "hide_render": false
+      },
+      {
+        "name": "crab_legs",
+        "type": "MESH",
+        "parent": null,
+        "hide_render": false
+      },
+      {
+        "name": "crab_main",
+        "type": "MESH",
+        "parent": null,
+        "hide_render": false
+      },
+      {
+        "name": "m_launcher",
+        "type": "MESH",
+        "parent": null,
+        "hide_render": false
+      },
+      {
+        "name": "crab_arm_R",
+        "type": "MESH",
+        "parent": null,
+        "hide_render": false
+      },
+      {
+        "name": "crab_arm_R.001",
+        "type": "MESH",
+        "parent": null,
+        "hide_render": false
+      }
+    ],
+    "id": "gunslinger-crab-mech-v12"
+  }
+]
