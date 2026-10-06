@@ -1,0 +1,5981 @@
+{
+  "blender": "5.2.2 LTS",
+  "archive": "C:\\Users\\pamak\\Documents\\GRAVIVORE_ASSET_INTAKE\\g0\\catfish-mech-low-poly-animated.zip",
+  "sha256": "3c20dd24a1611d8391c4d430d8f920dc67969d641cbb93811514cb627ccf98c6",
+  "entries": [
+    {
+      "path": "source/Mech long legs Army CC export.fbx",
+      "bytes": 87818720
+    },
+    {
+      "path": "textures/green_metal_armor_30_99_Metallic.jpeg",
+      "bytes": 262771
+    },
+    {
+      "path": "textures/gun_black_metal_30_05_ao.jpg",
+      "bytes": 474335
+    },
+    {
+      "path": "textures/camo_metal_armor_30_98_Diffuse.jpeg",
+      "bytes": 5967347
+    },
+    {
+      "path": "textures/green_metal_armor_30_99_Diffuse.jpeg",
+      "bytes": 6087613
+    },
+    {
+      "path": "textures/scratched_metal_30_28_Normal.jpeg",
+      "bytes": 5649338
+    },
+    {
+      "path": "textures/gun_black_metal_30_05_Diffuse.jpeg",
+      "bytes": 443384
+    },
+    {
+      "path": "textures/gun_black_metal_30_05_Normal.jpeg",
+      "bytes": 1111910
+    },
+    {
+      "path": "textures/green_metal_armor_30_1100_Normal.jpeg",
+      "bytes": 7466753
+    },
+    {
+      "path": "textures/green_metal_armor_30_1100_Metallic.jpeg",
+      "bytes": 262771
+    },
+    {
+      "path": "textures/green_metal_armor_30_1100_Diffuse.jpeg",
+      "bytes": 7359436
+    },
+    {
+      "path": "textures/green_painted_metal_30_26_Diffuse.jpeg",
+      "bytes": 9903430
+    },
+    {
+      "path": "textures/camo_metal_armor_30_98_ao.jpg",
+      "bytes": 1763175
+    },
+    {
+      "path": "textures/scratched_metal_30_28_Metallic.jpeg",
+      "bytes": 1475035
+    },
+    {
+      "path": "textures/green_painted_metal_30_26_Normal.jpeg",
+      "bytes": 9392353
+    },
+    {
+      "path": "textures/green_metal_armor_30_99_Normal.jpeg",
+      "bytes": 4528990
+    },
+    {
+      "path": "textures/gun_black_metal_30_05_roughness.jpg",
+      "bytes": 1918657
+    },
+    {
+      "path": "textures/green_painted_metal_30_26_Metallic.jpeg",
+      "bytes": 262771
+    },
+    {
+      "path": "textures/camo_metal_armor_30_98_roughness.jpg",
+      "bytes": 1082296
+    },
+    {
+      "path": "textures/camo_metal_armor_30_98_Metallic.jpeg",
+      "bytes": 262771
+    },
+    {
+      "path": "textures/scratched_metal_30_28_Diffuse.jpeg",
+      "bytes": 8133747
+    },
+    {
+      "path": "textures/scratched_metal_30_28_roughness.jpg",
+      "bytes": 2432812
+    },
+    {
+      "path": "textures/gun_black_metal_30_05_Metallic.jpeg",
+      "bytes": 474321
+    },
+    {
+      "path": "textures/scratched_metal_30_28_ao.jpg",
+      "bytes": 3131033
+    },
+    {
+      "path": "textures/camo_metal_armor_30_98_Normal.jpeg",
+      "bytes": 8328769
+    }
+  ],
+  "source": "source\\Mech long legs Army CC export.fbx",
+  "objects": [
+    {
+      "name": "Armature",
+      "type": "ARMATURE",
+      "parent": null,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        0.01,
+        0.01,
+        0.01
+      ],
+      "dimensions": [
+        0.616283,
+        0.977312,
+        0.995783
+      ],
+      "modifiers": [],
+      "bones": [
+        {
+          "name": "RL_BoneRoot",
+          "parent": null,
+          "head_local": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "tail_local": [
+            0.0,
+            63.125237,
+            0.0
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_Hip",
+          "parent": "RL_BoneRoot",
+          "head_local": [
+            -0.0,
+            2.4e-05,
+            63.125237
+          ],
+          "tail_local": [
+            4e-06,
+            -0.282448,
+            63.657635
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_Pelvis",
+          "parent": "CC_Base_Hip",
+          "head_local": [
+            -0.0,
+            2.5e-05,
+            63.12524
+          ],
+          "tail_local": [
+            0.0,
+            -5.36931,
+            71.60865
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_L_Thigh",
+          "parent": "CC_Base_Pelvis",
+          "head_local": [
+            9.987408,
+            -0.327065,
+            62.15432
+          ],
+          "tail_local": [
+            12.97093,
+            -7.608163,
+            52.066078
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_L_Calf",
+          "parent": "CC_Base_L_Thigh",
+          "head_local": [
+            15.953588,
+            -14.888872,
+            41.977318
+          ],
+          "tail_local": [
+            15.983769,
+            -5.58843,
+            35.645847
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_L_Foot",
+          "parent": "CC_Base_L_Calf",
+          "head_local": [
+            16.044981,
+            13.015148,
+            22.986931
+          ],
+          "tail_local": [
+            16.319727,
+            -5.027901,
+            7.678798
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_L_ToeBaseShareBone",
+          "parent": "CC_Base_L_Foot",
+          "head_local": [
+            16.319141,
+            -5.020698,
+            7.670286
+          ],
+          "tail_local": [
+            15.92716,
+            -27.26409,
+            -0.394694
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_L_ToeBase",
+          "parent": "CC_Base_L_Foot",
+          "head_local": [
+            16.320005,
+            -5.02081,
+            7.670464
+          ],
+          "tail_local": [
+            16.238533,
+            -9.662363,
+            5.987674
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_L_PinkyToe1",
+          "parent": "CC_Base_L_ToeBase",
+          "head_local": [
+            21.169928,
+            -5.305165,
+            6.573884
+          ],
+          "tail_local": [
+            21.259844,
+            -8.679254,
+            2.969736
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_L_RingToe1",
+          "parent": "CC_Base_L_ToeBase",
+          "head_local": [
+            18.766914,
+            -7.132429,
+            6.685397
+          ],
+          "tail_local": [
+            19.163172,
+            -10.175313,
+            2.816769
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_L_MidToe1",
+          "parent": "CC_Base_L_ToeBase",
+          "head_local": [
+            16.255705,
+            -8.687927,
+            6.341031
+          ],
+          "tail_local": [
+            16.681154,
+            -12.228853,
+            2.925877
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_L_IndexToe1",
+          "parent": "CC_Base_L_ToeBase",
+          "head_local": [
+            13.456117,
+            -9.000013,
+            6.793984
+          ],
+          "tail_local": [
+            14.021924,
+            -12.442361,
+            3.299339
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_L_BigToe1",
+          "parent": "CC_Base_L_ToeBase",
+          "head_local": [
+            9.771517,
+            -8.384434,
+            6.538212
+          ],
+          "tail_local": [
+            10.120035,
+            -12.790962,
+            4.337421
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_L_CalfTwist01",
+          "parent": "CC_Base_L_Calf",
+          "head_local": [
+            15.953597,
+            -14.888868,
+            41.977303
+          ],
+          "tail_local": [
+            15.998862,
+            -0.938243,
+            32.480076
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_L_CalfTwist02",
+          "parent": "CC_Base_L_CalfTwist01",
+          "head_local": [
+            15.999313,
+            -0.936853,
+            32.482121
+          ],
+          "tail_local": [
+            16.044594,
+            13.013844,
+            22.984999
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_L_KneeShareBone",
+          "parent": "CC_Base_L_Calf",
+          "head_local": [
+            15.953597,
+            -14.888868,
+            41.977303
+          ],
+          "tail_local": [
+            17.42515,
+            -12.871313,
+            31.006855
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_L_ThighTwist01",
+          "parent": "CC_Base_L_Thigh",
+          "head_local": [
+            9.987411,
+            -0.32706,
+            62.154331
+          ],
+          "tail_local": [
+            12.969569,
+            -7.608583,
+            52.064934
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_L_ThighTwist02",
+          "parent": "CC_Base_L_ThighTwist01",
+          "head_local": [
+            12.970694,
+            -7.60838,
+            52.065121
+          ],
+          "tail_local": [
+            15.95422,
+            -14.889657,
+            41.975948
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_R_Thigh",
+          "parent": "CC_Base_Pelvis",
+          "head_local": [
+            -9.987406,
+            -0.327067,
+            62.154327
+          ],
+          "tail_local": [
+            -12.970923,
+            -7.608302,
+            52.066185
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_R_ThighTwist01",
+          "parent": "CC_Base_R_Thigh",
+          "head_local": [
+            -9.987411,
+            -0.327069,
+            62.154316
+          ],
+          "tail_local": [
+            -12.97053,
+            -7.607468,
+            52.066643
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_R_ThighTwist02",
+          "parent": "CC_Base_R_ThighTwist01",
+          "head_local": [
+            -12.970268,
+            -7.607518,
+            52.066601
+          ],
+          "tail_local": [
+            -15.953392,
+            -14.887913,
+            41.978928
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_R_Calf",
+          "parent": "CC_Base_R_Thigh",
+          "head_local": [
+            -15.953585,
+            -14.888862,
+            41.977322
+          ],
+          "tail_local": [
+            -15.983771,
+            -5.588496,
+            35.645748
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_R_Foot",
+          "parent": "CC_Base_R_Calf",
+          "head_local": [
+            -16.04497,
+            13.015167,
+            22.986988
+          ],
+          "tail_local": [
+            -16.319899,
+            -5.02079,
+            7.670477
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_R_ToeBase",
+          "parent": "CC_Base_R_Foot",
+          "head_local": [
+            -16.319998,
+            -5.020794,
+            7.670503
+          ],
+          "tail_local": [
+            -16.23963,
+            -9.595443,
+            6.011738
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_R_PinkyToe1",
+          "parent": "CC_Base_R_ToeBase",
+          "head_local": [
+            -21.10008,
+            -5.300973,
+            6.58949
+          ],
+          "tail_local": [
+            -21.189655,
+            -8.589877,
+            3.003342
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_R_BigToe1",
+          "parent": "CC_Base_R_ToeBase",
+          "head_local": [
+            -9.865671,
+            -8.33589,
+            6.554492
+          ],
+          "tail_local": [
+            -10.217526,
+            -12.655577,
+            4.340477
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_R_IndexToe1",
+          "parent": "CC_Base_R_ToeBase",
+          "head_local": [
+            -13.497215,
+            -8.942555,
+            6.806433
+          ],
+          "tail_local": [
+            -14.056366,
+            -12.298313,
+            3.32626
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_R_MidToe1",
+          "parent": "CC_Base_R_ToeBase",
+          "head_local": [
+            -16.256512,
+            -8.634942,
+            6.359915
+          ],
+          "tail_local": [
+            -16.6784,
+            -12.087498,
+            2.955911
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_R_RingToe1",
+          "parent": "CC_Base_R_ToeBase",
+          "head_local": [
+            -18.731617,
+            -7.101883,
+            6.699358
+          ],
+          "tail_local": [
+            -19.121243,
+            -10.060845,
+            2.855127
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_R_ToeBaseShareBone",
+          "parent": "CC_Base_R_Foot",
+          "head_local": [
+            -16.319727,
+            -5.021008,
+            7.670712
+          ],
+          "tail_local": [
+            -15.928747,
+            -27.264217,
+            -0.394871
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_R_KneeShareBone",
+          "parent": "CC_Base_R_Calf",
+          "head_local": [
+            -15.953589,
+            -14.888871,
+            41.977341
+          ],
+          "tail_local": [
+            -17.424822,
+            -12.871504,
+            31.006823
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_R_CalfTwist01",
+          "parent": "CC_Base_R_Calf",
+          "head_local": [
+            -15.953589,
+            -14.888871,
+            41.977341
+          ],
+          "tail_local": [
+            -15.999291,
+            -0.937021,
+            32.481926
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_R_CalfTwist02",
+          "parent": "CC_Base_R_CalfTwist01",
+          "head_local": [
+            -15.999305,
+            -0.936981,
+            32.481983
+          ],
+          "tail_local": [
+            -16.044594,
+            13.013601,
+            22.984703
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_Waist",
+          "parent": "CC_Base_Hip",
+          "head_local": [
+            -0.0,
+            -0.758292,
+            64.062202
+          ],
+          "tail_local": [
+            2e-06,
+            -0.857264,
+            64.56337
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_Spine01",
+          "parent": "CC_Base_Waist",
+          "head_local": [
+            -0.0,
+            -0.85726,
+            64.56337
+          ],
+          "tail_local": [
+            -0.0,
+            -1.044647,
+            65.823265
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_Spine02",
+          "parent": "CC_Base_Spine01",
+          "head_local": [
+            -0.0,
+            -1.044707,
+            65.823257
+          ],
+          "tail_local": [
+            2e-06,
+            -3.417649,
+            76.976181
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_NeckTwist01",
+          "parent": "CC_Base_Spine02",
+          "head_local": [
+            -0.0,
+            -1.576687,
+            68.324738
+          ],
+          "tail_local": [
+            -2e-06,
+            -1.296388,
+            79.088905
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_NeckTwist02",
+          "parent": "CC_Base_NeckTwist01",
+          "head_local": [
+            -0.0,
+            -1.296233,
+            79.088905
+          ],
+          "tail_local": [
+            8e-06,
+            -1.01613,
+            89.853127
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_Head",
+          "parent": "CC_Base_NeckTwist02",
+          "head_local": [
+            -1e-06,
+            -1.01578,
+            89.853119
+          ],
+          "tail_local": [
+            -1e-06,
+            -1.013192,
+            89.862778
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_FacialBone",
+          "parent": "CC_Base_Head",
+          "head_local": [
+            -1e-06,
+            -1.015773,
+            89.853127
+          ],
+          "tail_local": [
+            -0.000172,
+            -4.797082,
+            89.297279
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_JawRoot",
+          "parent": "CC_Base_FacialBone",
+          "head_local": [
+            -3.4e-05,
+            -2.2754,
+            90.336327
+          ],
+          "tail_local": [
+            -0.000269,
+            -2.040272,
+            88.736298
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_Tongue01",
+          "parent": "CC_Base_JawRoot",
+          "head_local": [
+            -8.4e-05,
+            -3.731183,
+            89.639381
+          ],
+          "tail_local": [
+            -0.00016,
+            -3.595412,
+            89.114105
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_Tongue02",
+          "parent": "CC_Base_Tongue01",
+          "head_local": [
+            -0.000101,
+            -4.256457,
+            89.503601
+          ],
+          "tail_local": [
+            -0.000202,
+            -3.955446,
+            88.807281
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_Tongue03",
+          "parent": "CC_Base_Tongue02",
+          "head_local": [
+            -0.000125,
+            -4.952777,
+            89.202583
+          ],
+          "tail_local": [
+            -0.000228,
+            -4.651596,
+            88.506332
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_Teeth02",
+          "parent": "CC_Base_JawRoot",
+          "head_local": [
+            0.000163,
+            -3.748203,
+            89.660629
+          ],
+          "tail_local": [
+            0.000139,
+            -3.983324,
+            91.260658
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_R_Eye",
+          "parent": "CC_Base_FacialBone",
+          "head_local": [
+            -1.560616,
+            -5.129585,
+            92.736824
+          ],
+          "tail_local": [
+            -1.560443,
+            -1.348269,
+            93.292633
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_L_Eye",
+          "parent": "CC_Base_FacialBone",
+          "head_local": [
+            1.560849,
+            -5.129661,
+            92.736778
+          ],
+          "tail_local": [
+            1.561022,
+            -1.348352,
+            93.292633
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_UpperJaw",
+          "parent": "CC_Base_FacialBone",
+          "head_local": [
+            -9.8e-05,
+            -4.322565,
+            90.714767
+          ],
+          "tail_local": [
+            -9.8e-05,
+            -4.31949,
+            90.693848
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_Teeth01",
+          "parent": "CC_Base_UpperJaw",
+          "head_local": [
+            4e-06,
+            -4.336719,
+            90.699059
+          ],
+          "tail_local": [
+            4e-06,
+            -4.339793,
+            90.719978
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_L_Clavicle",
+          "parent": "CC_Base_Spine02",
+          "head_local": [
+            12.13254,
+            -3.817649,
+            88.516815
+          ],
+          "tail_local": [
+            16.069195,
+            -2.500915,
+            88.705383
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_L_Upperarm",
+          "parent": "CC_Base_L_Clavicle",
+          "head_local": [
+            16.069221,
+            -2.500987,
+            88.705345
+          ],
+          "tail_local": [
+            21.230568,
+            0.51225,
+            79.678192
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_L_Forearm",
+          "parent": "CC_Base_L_Upperarm",
+          "head_local": [
+            26.391975,
+            3.525411,
+            70.6511
+          ],
+          "tail_local": [
+            26.436766,
+            0.880066,
+            68.491562
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_L_ForearmTwist01",
+          "parent": "CC_Base_L_Forearm",
+          "head_local": [
+            26.391977,
+            3.525406,
+            70.651108
+          ],
+          "tail_local": [
+            26.459166,
+            -0.442605,
+            67.411804
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_L_ForearmTwist02",
+          "parent": "CC_Base_L_ForearmTwist01",
+          "head_local": [
+            26.459135,
+            -0.442698,
+            67.411919
+          ],
+          "tail_local": [
+            26.526325,
+            -4.410676,
+            64.172577
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_L_ElbowShareBone",
+          "parent": "CC_Base_L_Forearm",
+          "head_local": [
+            26.391977,
+            3.525406,
+            70.651108
+          ],
+          "tail_local": [
+            28.067518,
+            4.851571,
+            67.98703
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_L_Hand",
+          "parent": "CC_Base_L_Forearm",
+          "head_local": [
+            26.52635,
+            -4.410615,
+            64.172516
+          ],
+          "tail_local": [
+            26.57114,
+            -7.055961,
+            62.012981
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_L_UpperarmTwist01",
+          "parent": "CC_Base_L_Upperarm",
+          "head_local": [
+            16.069197,
+            -2.500982,
+            88.705315
+          ],
+          "tail_local": [
+            21.230524,
+            0.512232,
+            79.678185
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_L_UpperarmTwist02",
+          "parent": "CC_Base_L_UpperarmTwist01",
+          "head_local": [
+            21.230526,
+            0.512321,
+            79.678215
+          ],
+          "tail_local": [
+            26.391851,
+            3.525571,
+            70.6511
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_R_Clavicle",
+          "parent": "CC_Base_Spine02",
+          "head_local": [
+            -12.132539,
+            -3.817651,
+            88.516808
+          ],
+          "tail_local": [
+            -16.069191,
+            -2.500929,
+            88.705391
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_R_Upperarm",
+          "parent": "CC_Base_R_Clavicle",
+          "head_local": [
+            -16.069214,
+            -2.500989,
+            88.705322
+          ],
+          "tail_local": [
+            -21.230547,
+            0.512159,
+            79.678131
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_R_UpperarmTwist01",
+          "parent": "CC_Base_R_Upperarm",
+          "head_local": [
+            -16.069183,
+            -2.500982,
+            88.705276
+          ],
+          "tail_local": [
+            -21.230484,
+            0.512134,
+            79.678139
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_R_UpperarmTwist02",
+          "parent": "CC_Base_R_UpperarmTwist01",
+          "head_local": [
+            -21.230484,
+            0.512147,
+            79.678146
+          ],
+          "tail_local": [
+            -26.391781,
+            3.525296,
+            70.651016
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_R_Forearm",
+          "parent": "CC_Base_R_Upperarm",
+          "head_local": [
+            -26.391975,
+            3.525414,
+            70.651093
+          ],
+          "tail_local": [
+            -26.436768,
+            0.880073,
+            68.491554
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_R_ForearmTwist01",
+          "parent": "CC_Base_R_Forearm",
+          "head_local": [
+            -26.391972,
+            3.525419,
+            70.6511
+          ],
+          "tail_local": [
+            -26.459158,
+            -0.442595,
+            67.411789
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_R_ForearmTwist02",
+          "parent": "CC_Base_R_ForearmTwist01",
+          "head_local": [
+            -26.459154,
+            -0.44265,
+            67.411858
+          ],
+          "tail_local": [
+            -26.526344,
+            -4.41063,
+            64.172508
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_R_ElbowShareBone",
+          "parent": "CC_Base_R_Forearm",
+          "head_local": [
+            -26.391972,
+            3.525419,
+            70.6511
+          ],
+          "tail_local": [
+            -28.067533,
+            4.851536,
+            67.987022
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_R_Hand",
+          "parent": "CC_Base_R_Forearm",
+          "head_local": [
+            -26.526342,
+            -4.410603,
+            64.172501
+          ],
+          "tail_local": [
+            -26.571135,
+            -7.055944,
+            62.012966
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_R_RibsTwist",
+          "parent": "CC_Base_Spine02",
+          "head_local": [
+            -0.892937,
+            -1.958265,
+            66.245216
+          ],
+          "tail_local": [
+            -0.892935,
+            -2.131036,
+            66.172127
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_R_Breast",
+          "parent": "CC_Base_R_RibsTwist",
+          "head_local": [
+            -0.892937,
+            -2.131027,
+            66.172104
+          ],
+          "tail_local": [
+            -0.892936,
+            -2.303799,
+            66.099014
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_L_RibsTwist",
+          "parent": "CC_Base_Spine02",
+          "head_local": [
+            0.893693,
+            -1.958486,
+            66.244545
+          ],
+          "tail_local": [
+            0.893694,
+            -2.131259,
+            66.171455
+          ],
+          "deform": true
+        },
+        {
+          "name": "CC_Base_L_Breast",
+          "parent": "CC_Base_L_RibsTwist",
+          "head_local": [
+            0.893693,
+            -2.131263,
+            66.171471
+          ],
+          "tail_local": [
+            0.893694,
+            -2.304036,
+            66.098381
+          ],
+          "deform": true
+        }
+      ]
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_146",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.018907,
+        0.039206,
+        0.043556
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          0.05137506499886513,
+          0.06653900444507599,
+          0.26823848485946655
+        ],
+        "max": [
+          0.07028163969516754,
+          0.10574527829885483,
+          0.3117949664592743
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_L_CalfTwist02",
+        "CC_Base_L_Foot"
+      ],
+      "vertices": 31,
+      "triangles": 50,
+      "polygons": 50,
+      "materials": [
+        "scratched_metal_30_28"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_L_Foot",
+        "CC_Base_L_CalfTwist02"
+      ],
+      "boundary_edges": 10,
+      "nonmanifold_edges": 10,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_130",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.063331,
+        0.099857,
+        0.06388
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          -0.02068951539695263,
+          -0.2595287263393402,
+          0.757783055305481
+        ],
+        "max": [
+          0.04264099523425102,
+          -0.15967123210430145,
+          0.8216629028320312
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_Spine02"
+      ],
+      "vertices": 18,
+      "triangles": 28,
+      "polygons": 28,
+      "materials": [
+        "scratched_metal_30_28"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_Spine02"
+      ],
+      "boundary_edges": 6,
+      "nonmanifold_edges": 6,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_138",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.023716,
+        0.066855,
+        0.064188
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          -0.12972450256347656,
+          -0.25681591033935547,
+          0.3991798758506775
+        ],
+        "max": [
+          -0.10600809752941132,
+          -0.18996138870716095,
+          0.46336764097213745
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_R_CalfTwist01",
+        "CC_Base_R_ThighTwist02"
+      ],
+      "vertices": 49,
+      "triangles": 81,
+      "polygons": 81,
+      "materials": [
+        "scratched_metal_30_28"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_R_ThighTwist02",
+        "CC_Base_R_CalfTwist01"
+      ],
+      "boundary_edges": 15,
+      "nonmanifold_edges": 15,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_115",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.031277,
+        0.064388,
+        0.064111
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          0.23081523180007935,
+          -0.07301576435565948,
+          0.5299914479255676
+        ],
+        "max": [
+          0.26209235191345215,
+          -0.00862802378833294,
+          0.5941022038459778
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_L_ForearmTwist01",
+        "CC_Base_L_ForearmTwist02",
+        "CC_Base_L_UpperarmTwist02"
+      ],
+      "vertices": 46,
+      "triangles": 64,
+      "polygons": 64,
+      "materials": [
+        "scratched_metal_30_28"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_L_ForearmTwist01",
+        "CC_Base_L_ForearmTwist02",
+        "CC_Base_L_UpperarmTwist01",
+        "CC_Base_L_UpperarmTwist02"
+      ],
+      "boundary_edges": 28,
+      "nonmanifold_edges": 28,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_123",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.01709,
+        0.06142,
+        0.069175
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          -0.25696417689323425,
+          -0.029580069705843925,
+          0.6807821393013
+        ],
+        "max": [
+          -0.2398739755153656,
+          0.03183978423476219,
+          0.7499569058418274
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_R_UpperarmTwist01",
+        "CC_Base_R_UpperarmTwist02",
+        "CC_Base_Spine02"
+      ],
+      "vertices": 14,
+      "triangles": 18,
+      "polygons": 18,
+      "materials": [
+        "scratched_metal_30_28"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_Spine02",
+        "CC_Base_R_Clavicle",
+        "CC_Base_R_UpperarmTwist01",
+        "CC_Base_R_UpperarmTwist02",
+        "CC_Base_R_ForearmTwist02"
+      ],
+      "boundary_edges": 8,
+      "nonmanifold_edges": 8,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_154",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.107078,
+        0.067662,
+        0.214413
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          -0.06088986620306969,
+          0.11181864887475967,
+          0.6388621926307678
+        ],
+        "max": [
+          0.04618774354457855,
+          0.17948028445243835,
+          0.8532754182815552
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_Spine02"
+      ],
+      "vertices": 14,
+      "triangles": 12,
+      "polygons": 12,
+      "materials": [
+        "green_metal_armor_30_1100"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_Spine02"
+      ],
+      "boundary_edges": 14,
+      "nonmanifold_edges": 14,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_107",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.044274,
+        0.122572,
+        0.048008
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          -0.08071882277727127,
+          -0.36530447006225586,
+          0.6108949184417725
+        ],
+        "max": [
+          -0.03644435480237007,
+          -0.2427324503660202,
+          0.6589027047157288
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_Spine02"
+      ],
+      "vertices": 130,
+      "triangles": 234,
+      "polygons": 234,
+      "materials": [
+        "gun_black_metal_30_05"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_Spine02"
+      ],
+      "boundary_edges": 24,
+      "nonmanifold_edges": 24,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_147",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.017097,
+        0.043291,
+        0.03923
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          -0.1405005306005478,
+          0.031693462282419205,
+          0.21229825913906097
+        ],
+        "max": [
+          -0.12340379506349564,
+          0.07498481869697571,
+          0.2515280842781067
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_R_CalfTwist02",
+        "CC_Base_R_Foot"
+      ],
+      "vertices": 31,
+      "triangles": 50,
+      "polygons": 50,
+      "materials": [
+        "scratched_metal_30_28"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_R_Foot",
+        "CC_Base_R_CalfTwist02"
+      ],
+      "boundary_edges": 10,
+      "nonmanifold_edges": 10,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_131",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.038404,
+        0.097243,
+        0.028259
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          -0.016645191237330437,
+          -0.14763113856315613,
+          0.8277886509895325
+        ],
+        "max": [
+          0.021758470684289932,
+          -0.05038769543170929,
+          0.8560478091239929
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_Spine02"
+      ],
+      "vertices": 12,
+      "triangles": 8,
+      "polygons": 8,
+      "materials": [
+        "green_metal_armor_30_99"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_Spine02"
+      ],
+      "boundary_edges": 12,
+      "nonmanifold_edges": 12,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_139",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.036068,
+        0.06223,
+        0.062519
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          0.10331867635250092,
+          -0.24633942544460297,
+          0.39432796835899353
+        ],
+        "max": [
+          0.13938696682453156,
+          -0.18410944938659668,
+          0.45684677362442017
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_L_CalfTwist01",
+        "CC_Base_L_ThighTwist02"
+      ],
+      "vertices": 49,
+      "triangles": 81,
+      "polygons": 81,
+      "materials": [
+        "scratched_metal_30_28"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_L_CalfTwist01",
+        "CC_Base_L_ThighTwist02"
+      ],
+      "boundary_edges": 15,
+      "nonmanifold_edges": 15,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_116",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.008239,
+        0.020003,
+        0.017654
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          0.23016875982284546,
+          -0.044410590082407,
+          0.5640197396278381
+        ],
+        "max": [
+          0.23840777575969696,
+          -0.02440781705081463,
+          0.5816741585731506
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_L_UpperarmTwist02"
+      ],
+      "vertices": 21,
+      "triangles": 30,
+      "polygons": 30,
+      "materials": [
+        "gun_black_metal_30_05"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_L_UpperarmTwist01",
+        "CC_Base_L_UpperarmTwist02"
+      ],
+      "boundary_edges": 10,
+      "nonmanifold_edges": 10,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_124",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.01125,
+        0.021463,
+        0.023071
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          -0.2458851933479309,
+          -0.020596781745553017,
+          0.7925155758857727
+        ],
+        "max": [
+          -0.23463498055934906,
+          0.0008666627109050751,
+          0.8155862092971802
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_R_UpperarmTwist01",
+        "CC_Base_Spine02"
+      ],
+      "vertices": 24,
+      "triangles": 40,
+      "polygons": 40,
+      "materials": [
+        "green_metal_armor_30_99"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_Spine02",
+        "CC_Base_R_Clavicle",
+        "CC_Base_R_UpperarmTwist01",
+        "CC_Base_R_UpperarmTwist02"
+      ],
+      "boundary_edges": 6,
+      "nonmanifold_edges": 6,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_155",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.372761,
+        0.068254,
+        0.066916
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          -0.18235476315021515,
+          -0.06214306503534317,
+          0.7171714901924133
+        ],
+        "max": [
+          0.1904061883687973,
+          0.006111301947385073,
+          0.7840874195098877
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_L_Clavicle",
+        "CC_Base_L_UpperarmTwist01",
+        "CC_Base_L_UpperarmTwist02",
+        "CC_Base_R_Clavicle",
+        "CC_Base_R_UpperarmTwist01",
+        "CC_Base_R_UpperarmTwist02",
+        "CC_Base_Spine02"
+      ],
+      "vertices": 32,
+      "triangles": 32,
+      "polygons": 32,
+      "materials": [
+        "scratched_metal_30_28"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_Spine02",
+        "CC_Base_L_Clavicle",
+        "CC_Base_L_UpperarmTwist01",
+        "CC_Base_L_UpperarmTwist02",
+        "CC_Base_R_Clavicle",
+        "CC_Base_R_UpperarmTwist01",
+        "CC_Base_R_UpperarmTwist02"
+      ],
+      "boundary_edges": 32,
+      "nonmanifold_edges": 32,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_108",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.05564,
+        0.262553,
+        0.119967
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          -0.0898708775639534,
+          -0.3660176992416382,
+          0.5468241572380066
+        ],
+        "max": [
+          -0.0342312753200531,
+          -0.10346509516239166,
+          0.666790783405304
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_Spine02"
+      ],
+      "vertices": 376,
+      "triangles": 720,
+      "polygons": 720,
+      "materials": [
+        "gun_black_metal_30_05"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_Spine01",
+        "CC_Base_Spine02",
+        "CC_Base_R_Clavicle",
+        "CC_Base_R_UpperarmTwist01"
+      ],
+      "boundary_edges": 34,
+      "nonmanifold_edges": 34,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_148",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.015263,
+        0.039982,
+        0.039376
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          -0.1362655609846115,
+          -0.03100650943815708,
+          0.2552696466445923
+        ],
+        "max": [
+          -0.12100279331207275,
+          0.008975115604698658,
+          0.2946452796459198
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_R_CalfTwist01",
+        "CC_Base_R_CalfTwist02",
+        "CC_Base_R_Foot"
+      ],
+      "vertices": 45,
+      "triangles": 77,
+      "polygons": 77,
+      "materials": [
+        "scratched_metal_30_28"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_R_Foot",
+        "CC_Base_R_CalfTwist01",
+        "CC_Base_R_CalfTwist02"
+      ],
+      "boundary_edges": 11,
+      "nonmanifold_edges": 11,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_132",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.015748,
+        0.04753,
+        0.05973
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          0.18342550098896027,
+          0.0036351478192955256,
+          0.43732181191444397
+        ],
+        "max": [
+          0.1991734504699707,
+          0.05116517096757889,
+          0.4970516860485077
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_Hip",
+        "CC_Base_L_ThighTwist01",
+        "CC_Base_L_ThighTwist02",
+        "CC_Base_Waist"
+      ],
+      "vertices": 25,
+      "triangles": 36,
+      "polygons": 36,
+      "materials": [
+        "gun_black_metal_30_05"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_Hip",
+        "CC_Base_L_ThighTwist01",
+        "CC_Base_L_ThighTwist02",
+        "CC_Base_Waist",
+        "CC_Base_Spine01"
+      ],
+      "boundary_edges": 12,
+      "nonmanifold_edges": 12,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_140",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.023857,
+        0.040152,
+        0.040817
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          0.10502137243747711,
+          -0.1797579824924469,
+          0.40123486518859863
+        ],
+        "max": [
+          0.1288781762123108,
+          -0.1396062970161438,
+          0.442051500082016
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_L_CalfTwist01",
+        "CC_Base_L_ThighTwist02"
+      ],
+      "vertices": 43,
+      "triangles": 68,
+      "polygons": 68,
+      "materials": [
+        "scratched_metal_30_28"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_L_CalfTwist01",
+        "CC_Base_L_ThighTwist02"
+      ],
+      "boundary_edges": 16,
+      "nonmanifold_edges": 16,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_117",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.043001,
+        0.032015,
+        0.048558
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          -0.2641177177429199,
+          -0.019105639308691025,
+          0.5186488032341003
+        ],
+        "max": [
+          -0.22111696004867554,
+          0.01290968805551529,
+          0.5672070384025574
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_R_ForearmTwist01",
+        "CC_Base_R_UpperarmTwist01",
+        "CC_Base_R_UpperarmTwist02"
+      ],
+      "vertices": 16,
+      "triangles": 26,
+      "polygons": 26,
+      "materials": [
+        "scratched_metal_30_28"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_R_UpperarmTwist01",
+        "CC_Base_R_UpperarmTwist02",
+        "CC_Base_R_ForearmTwist01"
+      ],
+      "boundary_edges": 4,
+      "nonmanifold_edges": 4,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_125",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.010192,
+        0.036469,
+        0.034864
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          -0.1643008142709732,
+          0.10733972489833832,
+          0.8771604895591736
+        ],
+        "max": [
+          -0.15410885214805603,
+          0.14380860328674316,
+          0.9120246767997742
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_Spine02"
+      ],
+      "vertices": 41,
+      "triangles": 72,
+      "polygons": 72,
+      "materials": [
+        "scratched_metal_30_28"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_Spine02",
+        "CC_Base_R_Clavicle"
+      ],
+      "boundary_edges": 8,
+      "nonmanifold_edges": 8,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_156",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.312962,
+        0.152357,
+        0.121239
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          -0.16334059834480286,
+          0.028696183115243912,
+          0.8192409873008728
+        ],
+        "max": [
+          0.14962127804756165,
+          0.18105332553386688,
+          0.9404799938201904
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_Spine02"
+      ],
+      "vertices": 188,
+      "triangles": 344,
+      "polygons": 344,
+      "materials": [
+        "green_painted_metal_30_26"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_Spine02",
+        "CC_Base_L_Clavicle",
+        "CC_Base_R_Clavicle"
+      ],
+      "boundary_edges": 32,
+      "nonmanifold_edges": 32,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_109",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.059558,
+        0.239933,
+        0.115372
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          0.0614173486828804,
+          -0.3331138789653778,
+          0.5550368428230286
+        ],
+        "max": [
+          0.1209753230214119,
+          -0.09318047761917114,
+          0.670409083366394
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_Spine02"
+      ],
+      "vertices": 382,
+      "triangles": 733,
+      "polygons": 733,
+      "materials": [
+        "gun_black_metal_30_05"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_Spine01",
+        "CC_Base_Spine02",
+        "CC_Base_L_Clavicle"
+      ],
+      "boundary_edges": 33,
+      "nonmanifold_edges": 36,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_133",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.011428,
+        0.045015,
+        0.037435
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          -0.191611185669899,
+          -0.010840780101716518,
+          0.47785741090774536
+        ],
+        "max": [
+          -0.18018274009227753,
+          0.03417379781603813,
+          0.5152927041053772
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_Hip",
+        "CC_Base_R_ThighTwist01",
+        "CC_Base_R_ThighTwist02",
+        "CC_Base_Waist"
+      ],
+      "vertices": 25,
+      "triangles": 36,
+      "polygons": 36,
+      "materials": [
+        "scratched_metal_30_28"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_Hip",
+        "CC_Base_R_ThighTwist01",
+        "CC_Base_R_ThighTwist02",
+        "CC_Base_Waist",
+        "CC_Base_Spine01",
+        "CC_Base_Spine02"
+      ],
+      "boundary_edges": 12,
+      "nonmanifold_edges": 12,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_141",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.018448,
+        0.039888,
+        0.039574
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          0.13611823320388794,
+          0.0002451030886732042,
+          0.28394463658332825
+        ],
+        "max": [
+          0.1545659452676773,
+          0.040132757276296616,
+          0.3235190212726593
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_L_CalfTwist01",
+        "CC_Base_L_CalfTwist02",
+        "CC_Base_L_Foot"
+      ],
+      "vertices": 45,
+      "triangles": 77,
+      "polygons": 77,
+      "materials": [
+        "scratched_metal_30_28"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_L_Foot",
+        "CC_Base_L_CalfTwist01",
+        "CC_Base_L_CalfTwist02"
+      ],
+      "boundary_edges": 11,
+      "nonmanifold_edges": 11,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_118",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.005868,
+        0.019994,
+        0.01824
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          -0.2051645964384079,
+          -0.05757636949419975,
+          0.5456453561782837
+        ],
+        "max": [
+          -0.19929660856723785,
+          -0.03758205473423004,
+          0.5638852119445801
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_R_UpperarmTwist02"
+      ],
+      "vertices": 21,
+      "triangles": 30,
+      "polygons": 30,
+      "materials": [
+        "green_metal_armor_30_99"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_R_UpperarmTwist01",
+        "CC_Base_R_UpperarmTwist02"
+      ],
+      "boundary_edges": 10,
+      "nonmanifold_edges": 10,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_157",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.062729,
+        0.218485,
+        0.176753
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          0.08795685321092606,
+          -0.1384446918964386,
+          0.6589898467063904
+        ],
+        "max": [
+          0.15068593621253967,
+          0.08004063367843628,
+          0.835742712020874
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_L_Clavicle",
+        "CC_Base_L_UpperarmTwist01",
+        "CC_Base_Spine02"
+      ],
+      "vertices": 93,
+      "triangles": 144,
+      "polygons": 144,
+      "materials": [
+        "gun_black_metal_30_05"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_Spine01",
+        "CC_Base_Spine02",
+        "CC_Base_L_Clavicle",
+        "CC_Base_L_UpperarmTwist01"
+      ],
+      "boundary_edges": 42,
+      "nonmanifold_edges": 42,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_126",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.010091,
+        0.033236,
+        0.031604
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          -0.11801113933324814,
+          0.11078620702028275,
+          0.8792638778686523
+        ],
+        "max": [
+          -0.10792014747858047,
+          0.14402170479297638,
+          0.910868227481842
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_Spine02"
+      ],
+      "vertices": 25,
+      "triangles": 40,
+      "polygons": 40,
+      "materials": [
+        "scratched_metal_30_28"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_Spine02"
+      ],
+      "boundary_edges": 8,
+      "nonmanifold_edges": 8,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_149",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.221908,
+        0.211855,
+        0.109351
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          -0.25199633836746216,
+          -0.2773679494857788,
+          -0.001304570585489273
+        ],
+        "max": [
+          -0.030088145285844803,
+          -0.06551263481378555,
+          0.10804621130228043
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_R_Foot",
+        "CC_Base_R_ToeBase"
+      ],
+      "vertices": 288,
+      "triangles": 567,
+      "polygons": 567,
+      "materials": [
+        "green_metal_armor_30_99"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_R_Foot",
+        "CC_Base_R_ToeBase"
+      ],
+      "boundary_edges": 17,
+      "nonmanifold_edges": 26,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_110",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.047381,
+        0.068071,
+        0.066001
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          0.2808668315410614,
+          -0.07200952619314194,
+          0.5426926016807556
+        ],
+        "max": [
+          0.32824739813804626,
+          -0.003938521258533001,
+          0.6086932420730591
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_L_ForearmTwist01",
+        "CC_Base_L_ForearmTwist02",
+        "CC_Base_L_UpperarmTwist01",
+        "CC_Base_L_UpperarmTwist02"
+      ],
+      "vertices": 84,
+      "triangles": 146,
+      "polygons": 146,
+      "materials": [
+        "scratched_metal_30_28"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_L_ForearmTwist01",
+        "CC_Base_L_ForearmTwist02",
+        "CC_Base_L_UpperarmTwist01",
+        "CC_Base_L_UpperarmTwist02"
+      ],
+      "boundary_edges": 20,
+      "nonmanifold_edges": 20,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_134",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.241244,
+        0.129114,
+        0.097317
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          -0.11643906682729721,
+          -0.05050196126103401,
+          0.43765631318092346
+        ],
+        "max": [
+          0.12480545043945312,
+          0.07861191034317017,
+          0.5349735021591187
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_Hip",
+        "CC_Base_L_ThighTwist01",
+        "CC_Base_L_ThighTwist02",
+        "CC_Base_R_ThighTwist01",
+        "CC_Base_R_ThighTwist02",
+        "CC_Base_Spine01",
+        "CC_Base_Spine02",
+        "CC_Base_Waist"
+      ],
+      "vertices": 244,
+      "triangles": 405,
+      "polygons": 405,
+      "materials": [
+        "gun_black_metal_30_05"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_Hip",
+        "CC_Base_L_ThighTwist01",
+        "CC_Base_L_ThighTwist02",
+        "CC_Base_R_ThighTwist01",
+        "CC_Base_R_ThighTwist02",
+        "CC_Base_Waist",
+        "CC_Base_Spine01",
+        "CC_Base_Spine02"
+      ],
+      "boundary_edges": 83,
+      "nonmanifold_edges": 83,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_142",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.014813,
+        0.039615,
+        0.034794
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          0.14825303852558136,
+          0.06680761277675629,
+          0.2550566792488098
+        ],
+        "max": [
+          0.1630658358335495,
+          0.10642308741807938,
+          0.2898506820201874
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_L_CalfTwist02",
+        "CC_Base_L_Foot"
+      ],
+      "vertices": 31,
+      "triangles": 50,
+      "polygons": 50,
+      "materials": [
+        "scratched_metal_30_28"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_L_Foot",
+        "CC_Base_L_CalfTwist02"
+      ],
+      "boundary_edges": 10,
+      "nonmanifold_edges": 10,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_119",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.029367,
+        0.060884,
+        0.070088
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          -0.2298373430967331,
+          -0.08314898610115051,
+          0.505447268486023
+        ],
+        "max": [
+          -0.20047013461589813,
+          -0.022265367209911346,
+          0.5755357146263123
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_R_ForearmTwist01",
+        "CC_Base_R_ForearmTwist02",
+        "CC_Base_R_UpperarmTwist02"
+      ],
+      "vertices": 46,
+      "triangles": 64,
+      "polygons": 64,
+      "materials": [
+        "scratched_metal_30_28"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_R_UpperarmTwist01",
+        "CC_Base_R_UpperarmTwist02",
+        "CC_Base_R_ForearmTwist01",
+        "CC_Base_R_ForearmTwist02"
+      ],
+      "boundary_edges": 28,
+      "nonmanifold_edges": 28,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_158",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.060323,
+        0.218884,
+        0.177222
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          -0.14787301421165466,
+          -0.15008427202701569,
+          0.6541509032249451
+        ],
+        "max": [
+          -0.08755014836788177,
+          0.06879953294992447,
+          0.8313727974891663
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_R_Clavicle",
+        "CC_Base_R_UpperarmTwist01",
+        "CC_Base_Spine02"
+      ],
+      "vertices": 105,
+      "triangles": 175,
+      "polygons": 175,
+      "materials": [
+        "gun_black_metal_30_05"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_Spine01",
+        "CC_Base_Spine02",
+        "CC_Base_R_Clavicle",
+        "CC_Base_R_UpperarmTwist01"
+      ],
+      "boundary_edges": 37,
+      "nonmanifold_edges": 37,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_127",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.010112,
+        0.033236,
+        0.031604
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          0.08964765071868896,
+          0.12199459224939346,
+          0.8840072154998779
+        ],
+        "max": [
+          0.0997600257396698,
+          0.15523016452789307,
+          0.9156113862991333
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_Spine02"
+      ],
+      "vertices": 25,
+      "triangles": 40,
+      "polygons": 40,
+      "materials": [
+        "scratched_metal_30_28"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_Spine02"
+      ],
+      "boundary_edges": 8,
+      "nonmanifold_edges": 8,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_150",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.221117,
+        0.241575,
+        0.107042
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          -0.009579658508300781,
+          -0.03348696976900101,
+          -0.023357544094324112
+        ],
+        "max": [
+          0.21153701841831207,
+          0.20808769762516022,
+          0.08368445932865143
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_L_Foot",
+        "CC_Base_L_ToeBase"
+      ],
+      "vertices": 289,
+      "triangles": 566,
+      "polygons": 566,
+      "materials": [
+        "green_metal_armor_30_99"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_L_Foot",
+        "CC_Base_L_ToeBase"
+      ],
+      "boundary_edges": 16,
+      "nonmanifold_edges": 27,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_111",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.043301,
+        0.030057,
+        0.051213
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          0.25337597727775574,
+          -0.0024875891394913197,
+          0.5397041440010071
+        ],
+        "max": [
+          0.296676903963089,
+          0.02756974659860134,
+          0.5909175872802734
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_L_ForearmTwist01",
+        "CC_Base_L_UpperarmTwist01",
+        "CC_Base_L_UpperarmTwist02"
+      ],
+      "vertices": 16,
+      "triangles": 26,
+      "polygons": 26,
+      "materials": [
+        "scratched_metal_30_28"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_L_ForearmTwist01",
+        "CC_Base_L_UpperarmTwist01",
+        "CC_Base_L_UpperarmTwist02"
+      ],
+      "boundary_edges": 4,
+      "nonmanifold_edges": 4,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_143",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.017516,
+        0.043546,
+        0.046947
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          -0.04629436507821083,
+          0.015366734936833382,
+          0.21552465856075287
+        ],
+        "max": [
+          -0.028778204694390297,
+          0.058912575244903564,
+          0.2624715566635132
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_R_CalfTwist02",
+        "CC_Base_R_Foot"
+      ],
+      "vertices": 31,
+      "triangles": 50,
+      "polygons": 50,
+      "materials": [
+        "scratched_metal_30_28"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_R_Foot",
+        "CC_Base_R_CalfTwist02"
+      ],
+      "boundary_edges": 10,
+      "nonmanifold_edges": 10,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_135",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.024162,
+        0.062159,
+        0.067409
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          -0.18879155814647675,
+          -0.2516513168811798,
+          0.3913452923297882
+        ],
+        "max": [
+          -0.16462932527065277,
+          -0.1894925981760025,
+          0.4587538540363312
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_R_CalfTwist01",
+        "CC_Base_R_ThighTwist02"
+      ],
+      "vertices": 49,
+      "triangles": 81,
+      "polygons": 81,
+      "materials": [
+        "scratched_metal_30_28"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_R_ThighTwist02",
+        "CC_Base_R_CalfTwist01"
+      ],
+      "boundary_edges": 15,
+      "nonmanifold_edges": 15,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_120",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.010341,
+        0.025239,
+        0.034631
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          -0.26168927550315857,
+          -0.04081355035305023,
+          0.5754417777061462
+        ],
+        "max": [
+          -0.2513486444950104,
+          -0.015574702061712742,
+          0.610072910785675
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_R_UpperarmTwist01",
+        "CC_Base_R_UpperarmTwist02"
+      ],
+      "vertices": 12,
+      "triangles": 16,
+      "polygons": 16,
+      "materials": [
+        "scratched_metal_30_28"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_Spine02",
+        "CC_Base_R_UpperarmTwist01",
+        "CC_Base_R_UpperarmTwist02",
+        "CC_Base_R_ForearmTwist01",
+        "CC_Base_R_ForearmTwist02"
+      ],
+      "boundary_edges": 6,
+      "nonmanifold_edges": 6,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_128",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.010092,
+        0.033236,
+        0.031604
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          0.13593626022338867,
+          0.12436336278915405,
+          0.885009765625
+        ],
+        "max": [
+          0.1460283249616623,
+          0.15759891271591187,
+          0.9166138768196106
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_Spine02"
+      ],
+      "vertices": 25,
+      "triangles": 40,
+      "polygons": 40,
+      "materials": [
+        "scratched_metal_30_28"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_Spine02"
+      ],
+      "boundary_edges": 8,
+      "nonmanifold_edges": 8,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_151",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.126346,
+        0.036653,
+        0.05271
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          -0.05204241722822189,
+          -0.10424472391605377,
+          0.4595063030719757
+        ],
+        "max": [
+          0.07430385053157806,
+          -0.06759137660264969,
+          0.5122160315513611
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_Hip",
+        "CC_Base_L_ThighTwist01",
+        "CC_Base_R_ThighTwist01",
+        "CC_Base_Spine01",
+        "CC_Base_Spine02",
+        "CC_Base_Waist"
+      ],
+      "vertices": 42,
+      "triangles": 59,
+      "polygons": 59,
+      "materials": [
+        "green_metal_armor_30_99"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_Hip",
+        "CC_Base_L_ThighTwist01",
+        "CC_Base_R_ThighTwist01",
+        "CC_Base_Waist",
+        "CC_Base_Spine01",
+        "CC_Base_Spine02"
+      ],
+      "boundary_edges": 25,
+      "nonmanifold_edges": 25,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_112",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.083852,
+        0.11176,
+        0.098524
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          0.28981807827949524,
+          -0.20410269498825073,
+          0.4058448374271393
+        ],
+        "max": [
+          0.3736698031425476,
+          -0.09234227985143661,
+          0.5043686628341675
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_L_ForearmTwist01",
+        "CC_Base_L_ForearmTwist02",
+        "CC_Base_L_Hand",
+        "CC_Base_L_UpperarmTwist02"
+      ],
+      "vertices": 181,
+      "triangles": 338,
+      "polygons": 338,
+      "materials": [
+        "scratched_metal_30_28"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_L_ForearmTwist01",
+        "CC_Base_L_ForearmTwist02",
+        "CC_Base_L_Hand",
+        "CC_Base_L_UpperarmTwist02"
+      ],
+      "boundary_edges": 26,
+      "nonmanifold_edges": 26,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_144",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.014242,
+        0.040053,
+        0.03976
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          -0.07668306678533554,
+          -0.03752163052558899,
+          0.2630669176578522
+        ],
+        "max": [
+          -0.062440622597932816,
+          0.002531119156628847,
+          0.3028269112110138
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_R_CalfTwist02",
+        "CC_Base_R_Foot"
+      ],
+      "vertices": 45,
+      "triangles": 77,
+      "polygons": 77,
+      "materials": [
+        "scratched_metal_30_28"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_R_Foot",
+        "CC_Base_R_CalfTwist01",
+        "CC_Base_R_CalfTwist02"
+      ],
+      "boundary_edges": 11,
+      "nonmanifold_edges": 11,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_129",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.058856,
+        0.055779,
+        0.047333
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          -0.01283598504960537,
+          -0.3161858916282654,
+          0.7094734311103821
+        ],
+        "max": [
+          0.0460205003619194,
+          -0.2604069113731384,
+          0.7568060159683228
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_Spine02"
+      ],
+      "vertices": 28,
+      "triangles": 44,
+      "polygons": 44,
+      "materials": [
+        "scratched_metal_30_28"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_Spine02"
+      ],
+      "boundary_edges": 10,
+      "nonmanifold_edges": 10,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_136",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.015138,
+        0.037931,
+        0.035592
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          -0.17609550058841705,
+          -0.18532247841358185,
+          0.38800910115242004
+        ],
+        "max": [
+          -0.1609571874141693,
+          -0.14739187061786652,
+          0.42360156774520874
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_R_CalfTwist01",
+        "CC_Base_R_ThighTwist02"
+      ],
+      "vertices": 35,
+      "triangles": 54,
+      "polygons": 54,
+      "materials": [
+        "scratched_metal_30_28"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_R_ThighTwist02",
+        "CC_Base_R_CalfTwist01"
+      ],
+      "boundary_edges": 14,
+      "nonmanifold_edges": 14,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_113",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.042496,
+        0.069177,
+        0.059347
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          -0.2942142188549042,
+          -0.08853515237569809,
+          0.5226998925209045
+        ],
+        "max": [
+          -0.25171801447868347,
+          -0.01935834251344204,
+          0.5820472240447998
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_R_ForearmTwist01",
+        "CC_Base_R_ForearmTwist02",
+        "CC_Base_R_UpperarmTwist01",
+        "CC_Base_R_UpperarmTwist02"
+      ],
+      "vertices": 84,
+      "triangles": 146,
+      "polygons": 146,
+      "materials": [
+        "scratched_metal_30_28"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_R_UpperarmTwist01",
+        "CC_Base_R_UpperarmTwist02",
+        "CC_Base_R_ForearmTwist01",
+        "CC_Base_R_ForearmTwist02"
+      ],
+      "boundary_edges": 20,
+      "nonmanifold_edges": 20,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_121",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.013822,
+        0.025263,
+        0.034875
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          0.2746643126010895,
+          -0.023563692346215248,
+          0.5992083549499512
+        ],
+        "max": [
+          0.2884865999221802,
+          0.0016993811586871743,
+          0.6340835690498352
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_L_UpperarmTwist01",
+        "CC_Base_L_UpperarmTwist02"
+      ],
+      "vertices": 12,
+      "triangles": 16,
+      "polygons": 16,
+      "materials": [
+        "green_metal_armor_30_99"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_Spine02",
+        "CC_Base_L_ForearmTwist01",
+        "CC_Base_L_ForearmTwist02",
+        "CC_Base_L_UpperarmTwist01",
+        "CC_Base_L_UpperarmTwist02"
+      ],
+      "boundary_edges": 6,
+      "nonmanifold_edges": 6,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_152",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.034569,
+        0.065574,
+        0.060203
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          0.15717123448848724,
+          -0.2476883977651596,
+          0.3760806620121002
+        ],
+        "max": [
+          0.19174014031887054,
+          -0.18211443722248077,
+          0.43628349900245667
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_L_CalfTwist01",
+        "CC_Base_L_ThighTwist02"
+      ],
+      "vertices": 49,
+      "triangles": 81,
+      "polygons": 81,
+      "materials": [
+        "scratched_metal_30_28"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_L_CalfTwist01",
+        "CC_Base_L_ThighTwist02"
+      ],
+      "boundary_edges": 15,
+      "nonmanifold_edges": 15,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_145",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.017553,
+        0.039904,
+        0.039069
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          0.0792408138513565,
+          0.00038360522012226284,
+          0.2997864782810211
+        ],
+        "max": [
+          0.09679379314184189,
+          0.04028770327568054,
+          0.33885517716407776
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_L_CalfTwist02",
+        "CC_Base_L_Foot"
+      ],
+      "vertices": 45,
+      "triangles": 77,
+      "polygons": 77,
+      "materials": [
+        "scratched_metal_30_28"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_L_Foot",
+        "CC_Base_L_CalfTwist01",
+        "CC_Base_L_CalfTwist02"
+      ],
+      "boundary_edges": 11,
+      "nonmanifold_edges": 11,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_137",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.0223,
+        0.038646,
+        0.03833
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          -0.12079710513353348,
+          -0.19191665947437286,
+          0.39810916781425476
+        ],
+        "max": [
+          -0.0984971895813942,
+          -0.15327061712741852,
+          0.43643882870674133
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_R_CalfTwist01",
+        "CC_Base_R_ThighTwist02"
+      ],
+      "vertices": 42,
+      "triangles": 68,
+      "polygons": 68,
+      "materials": [
+        "scratched_metal_30_28"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_R_ThighTwist02",
+        "CC_Base_R_CalfTwist01"
+      ],
+      "boundary_edges": 14,
+      "nonmanifold_edges": 14,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_114",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.076286,
+        0.07459,
+        0.108367
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          -0.3460133969783783,
+          -0.11913543939590454,
+          0.3412308394908905
+        ],
+        "max": [
+          -0.26972755789756775,
+          -0.04454536363482475,
+          0.44959768652915955
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_R_ForearmTwist01",
+        "CC_Base_R_ForearmTwist02",
+        "CC_Base_R_Hand",
+        "CC_Base_R_UpperarmTwist02"
+      ],
+      "vertices": 178,
+      "triangles": 331,
+      "polygons": 331,
+      "materials": [
+        "scratched_metal_30_28"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_R_UpperarmTwist02",
+        "CC_Base_R_ForearmTwist01",
+        "CC_Base_R_ForearmTwist02",
+        "CC_Base_R_Hand"
+      ],
+      "boundary_edges": 30,
+      "nonmanifold_edges": 31,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_122",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.021004,
+        0.061237,
+        0.065487
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          0.24680867791175842,
+          -0.012013942934572697,
+          0.7022482752799988
+        ],
+        "max": [
+          0.26781225204467773,
+          0.049223050475120544,
+          0.767734944820404
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_L_UpperarmTwist01",
+        "CC_Base_L_UpperarmTwist02",
+        "CC_Base_Spine02"
+      ],
+      "vertices": 14,
+      "triangles": 18,
+      "polygons": 18,
+      "materials": [
+        "scratched_metal_30_28"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_Spine02",
+        "CC_Base_L_Clavicle",
+        "CC_Base_L_ForearmTwist02",
+        "CC_Base_L_UpperarmTwist01",
+        "CC_Base_L_UpperarmTwist02"
+      ],
+      "boundary_edges": 8,
+      "nonmanifold_edges": 8,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_153",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.023094,
+        0.039514,
+        0.037832
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          0.16127753257751465,
+          -0.18134453892707825,
+          0.3776007890701294
+        ],
+        "max": [
+          0.18437136709690094,
+          -0.14183054864406586,
+          0.41543301939964294
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_L_CalfTwist01",
+        "CC_Base_L_ThighTwist02"
+      ],
+      "vertices": 44,
+      "triangles": 72,
+      "polygons": 72,
+      "materials": [
+        "scratched_metal_30_28"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_L_CalfTwist01",
+        "CC_Base_L_ThighTwist02"
+      ],
+      "boundary_edges": 14,
+      "nonmanifold_edges": 14,
+      "loose_vertices": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "mesh_rep_0_ori_repair_106",
+      "type": "MESH",
+      "parent": "Armature",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dimensions": [
+        0.675248,
+        0.516058,
+        0.856652
+      ],
+      "modifiers": [
+        {
+          "name": "Armature",
+          "type": "ARMATURE"
+        }
+      ],
+      "world_bounds": {
+        "min": [
+          -0.32056310772895813,
+          -0.3365781605243683,
+          0.056180182844400406
+        ],
+        "max": [
+          0.3546852469444275,
+          0.17948029935359955,
+          0.9128326773643494
+        ]
+      },
+      "shape_keys": [
+        "Basis",
+        "V_None"
+      ],
+      "weighted_groups": [
+        "CC_Base_Hip",
+        "CC_Base_L_CalfTwist01",
+        "CC_Base_L_CalfTwist02",
+        "CC_Base_L_Clavicle",
+        "CC_Base_L_Foot",
+        "CC_Base_L_ForearmTwist01",
+        "CC_Base_L_ForearmTwist02",
+        "CC_Base_L_Hand",
+        "CC_Base_L_ThighTwist01",
+        "CC_Base_L_ThighTwist02",
+        "CC_Base_L_ToeBase",
+        "CC_Base_L_UpperarmTwist01",
+        "CC_Base_L_UpperarmTwist02",
+        "CC_Base_R_CalfTwist01",
+        "CC_Base_R_CalfTwist02",
+        "CC_Base_R_Clavicle",
+        "CC_Base_R_Foot",
+        "CC_Base_R_ForearmTwist01",
+        "CC_Base_R_ForearmTwist02",
+        "CC_Base_R_Hand",
+        "CC_Base_R_ThighTwist01",
+        "CC_Base_R_ThighTwist02",
+        "CC_Base_R_ToeBase",
+        "CC_Base_R_UpperarmTwist01",
+        "CC_Base_R_UpperarmTwist02",
+        "CC_Base_Spine01",
+        "CC_Base_Spine02",
+        "CC_Base_Waist"
+      ],
+      "vertices": 4301,
+      "triangles": 7912,
+      "polygons": 7912,
+      "materials": [
+        "camo_metal_armor_30_98",
+        "Material.001"
+      ],
+      "uv_layers": [
+        "Channel0"
+      ],
+      "vertex_groups": [
+        "CC_Base_Hip",
+        "CC_Base_L_Foot",
+        "CC_Base_L_ToeBase",
+        "CC_Base_L_CalfTwist01",
+        "CC_Base_L_CalfTwist02",
+        "CC_Base_L_ThighTwist01",
+        "CC_Base_L_ThighTwist02",
+        "CC_Base_R_ThighTwist01",
+        "CC_Base_R_ThighTwist02",
+        "CC_Base_R_Foot",
+        "CC_Base_R_ToeBase",
+        "CC_Base_R_CalfTwist01",
+        "CC_Base_R_CalfTwist02",
+        "CC_Base_Waist",
+        "CC_Base_Spine01",
+        "CC_Base_Spine02",
+        "CC_Base_L_Clavicle",
+        "CC_Base_L_ForearmTwist01",
+        "CC_Base_L_ForearmTwist02",
+        "CC_Base_L_Hand",
+        "CC_Base_L_UpperarmTwist01",
+        "CC_Base_L_UpperarmTwist02",
+        "CC_Base_R_Clavicle",
+        "CC_Base_R_UpperarmTwist01",
+        "CC_Base_R_UpperarmTwist02",
+        "CC_Base_R_ForearmTwist01",
+        "CC_Base_R_ForearmTwist02",
+        "CC_Base_R_Hand"
+      ],
+      "boundary_edges": 784,
+      "nonmanifold_edges": 790,
+      "loose_vertices": 0,
+      "degenerate_faces": 2
+    }
+  ],
+  "object_count": 54,
+  "mesh_count": 53,
+  "triangles": 14650,
+  "vertices": 8141,
+  "actions": [
+    {
+      "name": "Armature|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "OBSlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.001|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.002|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.003|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.004|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.005|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.006|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.007|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.008|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.009|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.010|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.011|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.012|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.013|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.014|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.015|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.016|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.017|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.018|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.019|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.020|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.021|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.022|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.023|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.024|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.025|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.026|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.027|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.028|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.029|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.030|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.031|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.032|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.033|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.034|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.035|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.036|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.037|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.038|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.039|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.040|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.041|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.042|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.043|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.044|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.045|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.046|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.047|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.048|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.049|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.050|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.051|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key.052|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    },
+    {
+      "name": "Key|2666562703104_TempMotion",
+      "frames": [
+        1.0,
+        912.0
+      ],
+      "slots": [
+        "KESlot"
+      ],
+      "layers": 1
+    }
+  ],
+  "materials": [
+    {
+      "name": "camo_metal_armor_30_98",
+      "nodes": [
+        {
+          "name": "Principled BSDF",
+          "type": "BSDF_PRINCIPLED",
+          "image": null
+        },
+        {
+          "name": "Material Output",
+          "type": "OUTPUT_MATERIAL",
+          "image": null
+        },
+        {
+          "name": "Normal Map",
+          "type": "NORMAL_MAP",
+          "image": null
+        },
+        {
+          "name": "Image Texture",
+          "type": "TEX_IMAGE",
+          "image": "D:\\Temp folder Reallusion\\CharacterCreator4Temp\\FbxWorkingDirectory\\camo_metal_armor_30_98_Diffuse.jpg"
+        },
+        {
+          "name": "Image Texture.001",
+          "type": "TEX_IMAGE",
+          "image": "D:\\Temp folder Reallusion\\CharacterCreator4Temp\\FbxWorkingDirectory\\camo_metal_armor_30_98_Normal.jpg"
+        }
+      ]
+    },
+    {
+      "name": "Dots Stroke",
+      "nodes": [
+        {
+          "name": "Frame",
+          "type": "FRAME",
+          "image": null
+        },
+        {
+          "name": "Material Output",
+          "type": "OUTPUT_MATERIAL",
+          "image": null
+        },
+        {
+          "name": "Principled BSDF",
+          "type": "BSDF_PRINCIPLED",
+          "image": null
+        },
+        {
+          "name": "Material Output.001",
+          "type": "OUTPUT_MATERIAL",
+          "image": null
+        },
+        {
+          "name": "Diffuse BSDF",
+          "type": "BSDF_DIFFUSE",
+          "image": null
+        }
+      ]
+    },
+    {
+      "name": "green_metal_armor_30_1100",
+      "nodes": [
+        {
+          "name": "Principled BSDF",
+          "type": "BSDF_PRINCIPLED",
+          "image": null
+        },
+        {
+          "name": "Material Output",
+          "type": "OUTPUT_MATERIAL",
+          "image": null
+        },
+        {
+          "name": "Normal Map",
+          "type": "NORMAL_MAP",
+          "image": null
+        },
+        {
+          "name": "Image Texture",
+          "type": "TEX_IMAGE",
+          "image": "D:\\Temp folder Reallusion\\CharacterCreator4Temp\\FbxWorkingDirectory\\green_metal_armor_30_1100_Diffuse.jpg"
+        },
+        {
+          "name": "Image Texture.001",
+          "type": "TEX_IMAGE",
+          "image": "D:\\Temp folder Reallusion\\CharacterCreator4Temp\\FbxWorkingDirectory\\green_metal_armor_30_1100_Normal.jpg"
+        }
+      ]
+    },
+    {
+      "name": "green_metal_armor_30_99",
+      "nodes": [
+        {
+          "name": "Principled BSDF",
+          "type": "BSDF_PRINCIPLED",
+          "image": null
+        },
+        {
+          "name": "Material Output",
+          "type": "OUTPUT_MATERIAL",
+          "image": null
+        },
+        {
+          "name": "Normal Map",
+          "type": "NORMAL_MAP",
+          "image": null
+        },
+        {
+          "name": "Image Texture",
+          "type": "TEX_IMAGE",
+          "image": "D:\\Temp folder Reallusion\\CharacterCreator4Temp\\FbxWorkingDirectory\\green_metal_armor_30_99_Diffuse.jpg"
+        },
+        {
+          "name": "Image Texture.001",
+          "type": "TEX_IMAGE",
+          "image": "D:\\Temp folder Reallusion\\CharacterCreator4Temp\\FbxWorkingDirectory\\green_metal_armor_30_99_Normal.jpg"
+        }
+      ]
+    },
+    {
+      "name": "green_painted_metal_30_26",
+      "nodes": [
+        {
+          "name": "Principled BSDF",
+          "type": "BSDF_PRINCIPLED",
+          "image": null
+        },
+        {
+          "name": "Material Output",
+          "type": "OUTPUT_MATERIAL",
+          "image": null
+        },
+        {
+          "name": "Normal Map",
+          "type": "NORMAL_MAP",
+          "image": null
+        },
+        {
+          "name": "Image Texture",
+          "type": "TEX_IMAGE",
+          "image": "D:\\Temp folder Reallusion\\CharacterCreator4Temp\\FbxWorkingDirectory\\green_painted_metal_30_26_Diffuse.jpg"
+        },
+        {
+          "name": "Image Texture.001",
+          "type": "TEX_IMAGE",
+          "image": "D:\\Temp folder Reallusion\\CharacterCreator4Temp\\FbxWorkingDirectory\\green_painted_metal_30_26_Normal.jpg"
+        }
+      ]
+    },
+    {
+      "name": "gun_black_metal_30_05",
+      "nodes": [
+        {
+          "name": "Principled BSDF",
+          "type": "BSDF_PRINCIPLED",
+          "image": null
+        },
+        {
+          "name": "Material Output",
+          "type": "OUTPUT_MATERIAL",
+          "image": null
+        },
+        {
+          "name": "Normal Map",
+          "type": "NORMAL_MAP",
+          "image": null
+        },
+        {
+          "name": "Image Texture",
+          "type": "TEX_IMAGE",
+          "image": "D:\\Temp folder Reallusion\\CharacterCreator4Temp\\FbxWorkingDirectory\\gun_black_metal_30_05_Diffuse.jpg"
+        },
+        {
+          "name": "Image Texture.001",
+          "type": "TEX_IMAGE",
+          "image": "D:\\Temp folder Reallusion\\CharacterCreator4Temp\\FbxWorkingDirectory\\gun_black_metal_30_05_Normal.jpg"
+        }
+      ]
+    },
+    {
+      "name": "Material",
+      "nodes": [
+        {
+          "name": "Material Output",
+          "type": "OUTPUT_MATERIAL",
+          "image": null
+        },
+        {
+          "name": "Principled BSDF",
+          "type": "BSDF_PRINCIPLED",
+          "image": null
+        }
+      ]
+    },
+    {
+      "name": "Material.001",
+      "nodes": [
+        {
+          "name": "Principled BSDF",
+          "type": "BSDF_PRINCIPLED",
+          "image": null
+        },
+        {
+          "name": "Material Output",
+          "type": "OUTPUT_MATERIAL",
+          "image": null
+        },
+        {
+          "name": "Normal Map",
+          "type": "NORMAL_MAP",
+          "image": null
+        }
+      ]
+    },
+    {
+      "name": "scratched_metal_30_28",
+      "nodes": [
+        {
+          "name": "Principled BSDF",
+          "type": "BSDF_PRINCIPLED",
+          "image": null
+        },
+        {
+          "name": "Material Output",
+          "type": "OUTPUT_MATERIAL",
+          "image": null
+        },
+        {
+          "name": "Normal Map",
+          "type": "NORMAL_MAP",
+          "image": null
+        },
+        {
+          "name": "Image Texture",
+          "type": "TEX_IMAGE",
+          "image": "D:\\Temp folder Reallusion\\CharacterCreator4Temp\\FbxWorkingDirectory\\scratched_metal_30_28_Diffuse.jpg"
+        },
+        {
+          "name": "Image Texture.001",
+          "type": "TEX_IMAGE",
+          "image": "D:\\Temp folder Reallusion\\CharacterCreator4Temp\\FbxWorkingDirectory\\scratched_metal_30_28_Normal.jpg"
+        }
+      ]
+    }
+  ],
+  "images": [
+    {
+      "name": "camo_metal_armor_30_98_Diffuse",
+      "path": "D:\\Temp folder Reallusion\\CharacterCreator4Temp\\FbxWorkingDirectory\\camo_metal_armor_30_98_Diffuse.jpg",
+      "size": [
+        4096,
+        4096
+      ],
+      "packed": true
+    },
+    {
+      "name": "camo_metal_armor_30_98_Metallic",
+      "path": "D:\\Temp folder Reallusion\\CharacterCreator4Temp\\FbxWorkingDirectory\\camo_metal_armor_30_98_Metallic.jpg",
+      "size": [
+        4096,
+        4096
+      ],
+      "packed": true
+    },
+    {
+      "name": "camo_metal_armor_30_98_Normal",
+      "path": "D:\\Temp folder Reallusion\\CharacterCreator4Temp\\FbxWorkingDirectory\\camo_metal_armor_30_98_Normal.jpg",
+      "size": [
+        4096,
+        4096
+      ],
+      "packed": true
+    },
+    {
+      "name": "green_metal_armor_30_1100_Diffuse",
+      "path": "D:\\Temp folder Reallusion\\CharacterCreator4Temp\\FbxWorkingDirectory\\green_metal_armor_30_1100_Diffuse.jpg",
+      "size": [
+        4096,
+        4096
+      ],
+      "packed": true
+    },
+    {
+      "name": "green_metal_armor_30_1100_Metallic",
+      "path": "D:\\Temp folder Reallusion\\CharacterCreator4Temp\\FbxWorkingDirectory\\green_metal_armor_30_1100_Metallic.jpg",
+      "size": [
+        4096,
+        4096
+      ],
+      "packed": true
+    },
+    {
+      "name": "green_metal_armor_30_1100_Normal",
+      "path": "D:\\Temp folder Reallusion\\CharacterCreator4Temp\\FbxWorkingDirectory\\green_metal_armor_30_1100_Normal.jpg",
+      "size": [
+        4096,
+        4096
+      ],
+      "packed": true
+    },
+    {
+      "name": "green_metal_armor_30_99_Diffuse",
+      "path": "D:\\Temp folder Reallusion\\CharacterCreator4Temp\\FbxWorkingDirectory\\green_metal_armor_30_99_Diffuse.jpg",
+      "size": [
+        4096,
+        4096
+      ],
+      "packed": true
+    },
+    {
+      "name": "green_metal_armor_30_99_Metallic",
+      "path": "D:\\Temp folder Reallusion\\CharacterCreator4Temp\\FbxWorkingDirectory\\green_metal_armor_30_99_Metallic.jpg",
+      "size": [
+        4096,
+        4096
+      ],
+      "packed": true
+    },
+    {
+      "name": "green_metal_armor_30_99_Normal",
+      "path": "D:\\Temp folder Reallusion\\CharacterCreator4Temp\\FbxWorkingDirectory\\green_metal_armor_30_99_Normal.jpg",
+      "size": [
+        4096,
+        4096
+      ],
+      "packed": true
+    },
+    {
+      "name": "green_painted_metal_30_26_Diffuse",
+      "path": "D:\\Temp folder Reallusion\\CharacterCreator4Temp\\FbxWorkingDirectory\\green_painted_metal_30_26_Diffuse.jpg",
+      "size": [
+        4096,
+        4096
+      ],
+      "packed": true
+    },
+    {
+      "name": "green_painted_metal_30_26_Metallic",
+      "path": "D:\\Temp folder Reallusion\\CharacterCreator4Temp\\FbxWorkingDirectory\\green_painted_metal_30_26_Metallic.jpg",
+      "size": [
+        4096,
+        4096
+      ],
+      "packed": true
+    },
+    {
+      "name": "green_painted_metal_30_26_Normal",
+      "path": "D:\\Temp folder Reallusion\\CharacterCreator4Temp\\FbxWorkingDirectory\\green_painted_metal_30_26_Normal.jpg",
+      "size": [
+        4096,
+        4096
+      ],
+      "packed": true
+    },
+    {
+      "name": "gun_black_metal_30_05_Diffuse",
+      "path": "D:\\Temp folder Reallusion\\CharacterCreator4Temp\\FbxWorkingDirectory\\gun_black_metal_30_05_Diffuse.jpg",
+      "size": [
+        4096,
+        4096
+      ],
+      "packed": true
+    },
+    {
+      "name": "gun_black_metal_30_05_Metallic",
+      "path": "D:\\Temp folder Reallusion\\CharacterCreator4Temp\\FbxWorkingDirectory\\gun_black_metal_30_05_Metallic.jpg",
+      "size": [
+        4096,
+        4096
+      ],
+      "packed": true
+    },
+    {
+      "name": "gun_black_metal_30_05_Normal",
+      "path": "D:\\Temp folder Reallusion\\CharacterCreator4Temp\\FbxWorkingDirectory\\gun_black_metal_30_05_Normal.jpg",
+      "size": [
+        4096,
+        4096
+      ],
+      "packed": true
+    },
+    {
+      "name": "Render Result",
+      "path": "",
+      "size": [
+        0,
+        0
+      ],
+      "packed": false
+    },
+    {
+      "name": "scratched_metal_30_28_Diffuse",
+      "path": "D:\\Temp folder Reallusion\\CharacterCreator4Temp\\FbxWorkingDirectory\\scratched_metal_30_28_Diffuse.jpg",
+      "size": [
+        4096,
+        4096
+      ],
+      "packed": true
+    },
+    {
+      "name": "scratched_metal_30_28_Metallic",
+      "path": "D:\\Temp folder Reallusion\\CharacterCreator4Temp\\FbxWorkingDirectory\\scratched_metal_30_28_Metallic.jpg",
+      "size": [
+        4096,
+        4096
+      ],
+      "packed": true
+    },
+    {
+      "name": "scratched_metal_30_28_Normal",
+      "path": "D:\\Temp folder Reallusion\\CharacterCreator4Temp\\FbxWorkingDirectory\\scratched_metal_30_28_Normal.jpg",
+      "size": [
+        4096,
+        4096
+      ],
+      "packed": true
+    },
+    {
+      "name": "Viewer Node",
+      "path": "",
+      "size": [
+        256,
+        256
+      ],
+      "packed": false
+    }
+  ],
+  "world_bounds": {
+    "min": [
+      -0.3460133969783783,
+      -0.3660176992416382,
+      -0.023357544094324112
+    ],
+    "max": [
+      0.3736698031425476,
+      0.20808769762516022,
+      0.9404799938201904
+    ]
+  },
+  "scene_units": "METRIC",
+  "unit_scale": 1.0,
+  "fps": 60
+}
