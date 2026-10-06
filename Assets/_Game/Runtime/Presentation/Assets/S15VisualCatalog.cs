@@ -195,6 +195,9 @@ namespace Gravivore.Presentation.Assets
             {
                 if (component is Transform || component is MeshFilter || component is Renderer || component is LODGroup)
                     continue;
+                // Imported, in-place mechanical animation is presentation only.
+                if (component is Animator animator && !animator.applyRootMotion && animator.runtimeAnimatorController != null)
+                    continue;
                 if (legacyPart && (component is Collider || component is Light || component is UnityEngine.Camera))
                     continue;
                 throw new InvalidOperationException("Presentation prefab must contain only transforms, mesh renderers and LODs; remove scripts, physics, lights, cameras and playback components.");

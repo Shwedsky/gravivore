@@ -32,7 +32,7 @@ namespace Gravivore.Tests.EditMode
         {
             var evolution = AssetDatabase.LoadAssetAtPath<EvolutionDefinition>("Assets/_Game/Content/Definitions/S07_Evolution.asset").Catalog;
             Assert.That(evolution.TierOverrides,Has.Length.EqualTo(3));
-            foreach (var slot in evolution.TierOverrides) Assert.IsFalse(slot.HasPrefab);
+            foreach (var slot in evolution.TierOverrides) Assert.IsTrue(slot.HasPrefab);
             foreach (var prefab in evolution.TierPrefabs) Assert.DoesNotThrow(() => PresentationPrefabValidation.ValidateOrThrow(prefab));
             // Empty optional slots are a contract of a new definition, not of integrated Chapter01.
             var encounters = ScriptableObject.CreateInstance<ChapterVisualIntegrationDefinition>(); _owned.Add(encounters);

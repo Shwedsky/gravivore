@@ -57,7 +57,8 @@ namespace Gravivore.Tests.PlayMode
                 var form = view.GetTierForm(tier);
                 Assert.That(form.GetComponentsInChildren<Collider>(true), Is.Empty);
                 Assert.That(form.GetComponentsInChildren<MonoBehaviour>(true), Is.Empty);
-                Assert.IsFalse(form.GetComponentsInChildren<Component>(true).Any(c => c.GetType().FullName == "UnityEngine.Animator"));
+                var animator = form.GetComponentInChildren<Animator>();
+                Assert.IsNotNull(animator); Assert.IsFalse(animator.applyRootMotion);
                 foreach (var direction in new[] { Vector2.up, Vector2.down, Vector2.left, Vector2.right, Vector2.one.normalized })
                 {
                     input.Movement = direction;
@@ -68,19 +69,21 @@ namespace Gravivore.Tests.PlayMode
                     Assert.That(motion.ObservedVelocity.magnitude, Is.GreaterThan(.1f));
                     Assert.That(player.position, Is.EqualTo(authority));
                     Assert.That(player.rotation, Is.EqualTo(rotation));
-                    var hip = form.Find("02_TwoMechanicalLegs_Common/LeftLeg/HipPivot");
-                    var movingPose = hip.localRotation;
-                    Assert.That(Quaternion.Angle(movingPose, Quaternion.identity), Is.GreaterThan(1));
+                    var bridge = root.GetComponent<VisualSliceAnimationBridge>(); bridge.Tick();
+                    animator.Update(.12f);
+                    Assert.That(bridge.PlayerState, Is.EqualTo("Run"));
                     input.Movement = Vector2.zero; locomotion.Step(.04f); motion.Tick(.04f);
                     Assert.IsFalse(motion.IsWalking);
-                    Assert.That(hip.localRotation, Is.EqualTo(Quaternion.identity));
+                    bridge.Tick(); animator.Update(.12f);
+                    Assert.That(bridge.PlayerState, Is.EqualTo("Idle"));
                     Assert.That(player.position, Is.EqualTo(authority));
                 }
             }
-            var idleCore = view.GetTierForm(EvolutionTier.Tier2).Find("01_RobotBody_CommonIdentity/GravityCore_Common");
-            var before = idleCore.localScale;
-            motion.Tick(.2f);
-            Assert.That(idleCore.localScale, Is.Not.EqualTo(before));
+            var activeAnimator = view.GetTierForm(EvolutionTier.Tier2).GetComponentInChildren<Animator>();
+            activeAnimator.Play("Idle",0,0); activeAnimator.Update(0);
+            var torso = activeAnimator.GetComponentsInChildren<Transform>().Single(t => t.name == "TORSO");
+            var before = torso.localRotation; activeAnimator.Update(.5f);
+            Assert.That(Quaternion.Angle(before,torso.localRotation), Is.GreaterThan(.01f));
         }
 
         [UnityTest]
@@ -112,7 +115,7 @@ namespace Gravivore.Tests.PlayMode
                     beam = lash.LastPlayedObject.GetComponentInChildren<LineRenderer>(true);
                     Assert.IsTrue(lash.LastPlayedObject.activeSelf);
                     Assert.That(Vector3.Distance(beam.GetPosition(0), motion.PresentationSocket.position), Is.LessThan(.001f));
-                    var core = view.GetTierForm(tier).Find("01_RobotBody_CommonIdentity/GravityCore_Common");
+                    var core = view.GetTierForm(tier).Find("Presentation Sockets/Core");
                     Assert.That(Vector3.Distance(motion.PresentationSocket.position, core.position), Is.InRange(.1f,.14f));
                     Assert.That(Vector3.Dot(motion.PresentationSocket.forward, direction), Is.GreaterThan(.99f));
                     lash.Tick(.08f); lash.Tick(.12f);
@@ -177,7 +180,7 @@ namespace Gravivore.Tests.PlayMode
             enemy.enabled = true;
             var lash = root.GetComponentInChildren<GravityLashVfxPool>();
             var view = root.PlayerObject.GetComponent<PlayerEvolutionView>();
-            var core = view.GetTierForm(view.CurrentTier).Find("01_RobotBody_CommonIdentity/GravityCore_Common");
+            var core = view.GetTierForm(view.CurrentTier).Find("Presentation Sockets/Core");
             var scale = core.localScale;
             var hp = enemy.CurrentHitPoints;
             var cues = new List<GravityLashCue>(); lash.CuePlayed += (cue, _) => cues.Add(cue);

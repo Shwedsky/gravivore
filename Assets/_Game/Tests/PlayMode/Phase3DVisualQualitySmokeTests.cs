@@ -28,7 +28,7 @@ namespace Gravivore.Tests.PlayMode
             var root = _scene.Root;
             var world = root.WorldPresenter;
             Assert.That(root.VisualEnvironment.GetComponentsInChildren<Collider>(true), Is.Empty);
-            Assert.That(world.EnvironmentBlockerCount, Is.EqualTo(11));
+            Assert.That(world.EnvironmentBlockerCount, Is.EqualTo(11 + root.VisualEnvironment.SliceObstacleCount));
             Assert.That(world.GameplayRoot.lossyScale, Is.EqualTo(Vector3.one));
 
             foreach (var regionId in new[]
@@ -115,7 +115,7 @@ namespace Gravivore.Tests.PlayMode
             Assert.IsNotNull(visualRoot);
             var assembly = visualRoot.Find("Containment Gate Assembly");
             Assert.IsNotNull(assembly);
-            Assert.That(assembly.GetComponentsInChildren<Renderer>(true).Length, Is.EqualTo(8));
+            Assert.That(assembly.GetComponentsInChildren<Renderer>(true).Length, Is.EqualTo(1));
             Assert.That(assembly.GetComponentsInChildren<Collider>(true), Is.Empty);
             Assert.That(assembly.GetComponentsInChildren<Light>(true), Is.Empty);
             Assert.That(assembly.GetComponentsInChildren<Renderer>(true)

@@ -197,7 +197,8 @@ namespace Gravivore.Presentation.World
             var view = gateObject.GetComponent<WorldGateView>();
             // Gates stay readable when the covered prototype floor/dressing is hidden.
             view.Build(configuration.Size, _configuration.Bounds, color, CreateMaterial,
-                _environment != null ? _environment.Structures : VisualRoot);
+                _environment != null ? _environment.Structures : VisualRoot,
+                _environment != null && configuration.Id == _configuration.EliteGate.Id ? _environment.SliceGate : null);
             return view;
         }
 
@@ -257,6 +258,12 @@ namespace Gravivore.Presentation.World
 
             AddEnvironmentBlocker("Boss Arena Crane Tower", "boss-arena",
                 new Vector3(-5.15f, 1.5f, 2.8f), new Vector3(1.5f, 3f, 1.5f), hardBlockerLayer);
+            for (var i = 0; i < _environment.SliceObstacleCount; i++)
+            {
+                var obstacle = _environment.GetSliceObstacle(i);
+                AddEnvironmentBlocker(obstacle.Name, "elite-arena",
+                    _environment.GetRegion("elite-arena").Root.InverseTransformPoint(obstacle.Center), obstacle.Size, hardBlockerLayer);
+            }
         }
 
         private void AddEnvironmentBlocker(
@@ -358,7 +365,7 @@ namespace Gravivore.Presentation.World
         public bool IsLocked => _barrier != null && _barrier.activeSelf;
 
         public void Build(Vector3 size, WorldBounds bounds, Color color, Func<Color, Material> materialFactory,
-            Transform visualParent = null)
+            Transform visualParent = null, GameObject presentationGate = null)
         {
             var hardBlockerLayer = LayerMask.NameToLayer("HardBlocker");
             if (hardBlockerLayer < 0) throw new InvalidOperationException("HardBlocker layer is required for world gates.");
@@ -382,7 +389,13 @@ namespace Gravivore.Presentation.World
             _visualRoot.SetParent(visualParent != null ? visualParent : transform, false);
             _barrierVisual = Chapter01WorldPresenter.SeparateBoxVisual(_barrier, frameMaterial, _visualRoot);
             _barrierVisual.GetComponent<Renderer>().enabled = false;
-            BuildContainmentGateVisual(size, frameMaterial, energyMaterial);
+            if (presentationGate != null)
+            {
+                _barrierAssembly = Instantiate(presentationGate, _visualRoot, false);
+                _barrierAssembly.name = "Containment Gate Assembly";
+                _barrierAssembly.transform.SetPositionAndRotation(transform.position, transform.rotation);
+            }
+            else BuildContainmentGateVisual(size, frameMaterial, energyMaterial);
 
             var openingMinX = transform.position.x - size.x * 0.5f;
             var openingMaxX = transform.position.x + size.x * 0.5f;

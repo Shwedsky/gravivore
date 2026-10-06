@@ -249,6 +249,8 @@ namespace Gravivore.Presentation.Composition
             RepairHub = repairObject.GetComponent<RepairHubProductionPresenter>();
             RepairHub.Initialize(PlayerHealth, _playerSpawn, _playerRecoverySettings.Configuration, _phase6BProductionDefinition);
             InitializeS14Presentation();
+            if (_visualEnvironment != null && _visualEnvironment.SliceGate != null)
+                gameObject.AddComponent<Gravivore.Presentation.Player.VisualSliceAnimationBridge>().Initialize(this, _gravityLashVfx, _s15VisualCatalog);
             if (_evolutionDefinition.HasTierPrefabs)
             {
                 var motion = PlayerObject.AddComponent<Gravivore.Presentation.Player.MechMotionPresenter>();

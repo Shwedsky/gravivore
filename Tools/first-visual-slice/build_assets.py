@@ -10,6 +10,8 @@ OUT = ROOT / 'Assets/_Game/Content/VisualSlice'
 SOURCE = ROOT / 'art/first-visual-slice'
 for p in [OUT/'Models', OUT/'Textures', SOURCE]: p.mkdir(parents=True, exist_ok=True)
 bpy.ops.wm.read_factory_settings(use_empty=True)
+bpy.context.scene.unit_settings.system = 'METRIC'
+bpy.context.scene.unit_settings.scale_length = 1.0
 palette = [(.055,.071,.086),(.30,.39,.44),(.64,.74,.77),(.13,.18,.21),
            (.46,.29,.10),(.70,.028,.014),(1,.30,.025),(.015,.52,.67),(.025,.035,.043)]
 names = ['graphite','machined steel','pale armor','floor','hazard ochre','hostile red','elite amber','service cyan','recess']
@@ -164,6 +166,7 @@ def rig_and_export(name):
     bpy.ops.object.select_all(action='DESELECT');rig.select_set(True)
     for q in meshes:q.select_set(True)
     bpy.ops.export_scene.fbx(filepath=str(OUT/'Models'/(name+'.fbx')),use_selection=True,object_types={'MESH','ARMATURE'},
+        global_scale=1,apply_unit_scale=True,apply_scale_options='FBX_SCALE_UNITS',mesh_smooth_type='FACE',use_tspace=True,
         add_leaf_bones=False,axis_forward='-Z',axis_up='Y',bake_anim=True,bake_anim_use_all_actions=True,bake_anim_use_nla_strips=False,
         bake_anim_simplify_factor=0,path_mode='STRIP')
 
@@ -233,7 +236,9 @@ rig_and_export('Magnetar_V1')
 def export_static(name):
     mesh=skin_mesh(name)[0];active(mesh)
     bpy.ops.wm.save_as_mainfile(filepath=str(SOURCE/(name+'.blend')))
-    bpy.ops.export_scene.fbx(filepath=str(OUT/'Models'/(name+'.fbx')),use_selection=True,object_types={'MESH'},axis_forward='-Z',axis_up='Y',bake_anim=False,path_mode='STRIP')
+    bpy.ops.export_scene.fbx(filepath=str(OUT/'Models'/(name+'.fbx')),use_selection=True,object_types={'MESH'},
+        global_scale=1,apply_unit_scale=True,apply_scale_options='FBX_SCALE_UNITS',mesh_smooth_type='FACE',use_tspace=True,
+        axis_forward='-Z',axis_up='Y',bake_anim=False,path_mode='STRIP')
 
 reset()
 box('Recessed deck foundation',(0,0,-.035),(3.96,3.96,.10),8,bevel=.006)
