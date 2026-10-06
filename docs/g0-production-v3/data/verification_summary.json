@@ -1,0 +1,59 @@
+{
+  "status": "PASS",
+  "verified_code_checkpoint": "c450e7cadf7995071af086ba335162288623a5ce",
+  "unity": "6000.3.0f1",
+  "compile": "PASS",
+  "edit_mode": {
+    "result": "Passed",
+    "total": "392",
+    "passed": "392",
+    "failed": "0",
+    "skipped": "0",
+    "duration": "8,614323",
+    "ignored": []
+  },
+  "play_mode": {
+    "result": "Skipped:Ignored",
+    "total": "95",
+    "passed": "94",
+    "failed": "0",
+    "skipped": "1",
+    "duration": "28,5296087",
+    "ignored": [
+      {
+        "name": "Gravivore.Tests.PlayMode.VisualIntegrationSmokeTests.CaptureStructuralFoundationWhenRequested",
+        "reason": "Set GRAVIVORE_VISUAL_INTEGRATION_QA to export structural review captures."
+      }
+    ]
+  },
+  "project_validation": "PASS (includes VisualIntegrationValidator)",
+  "source_validation": "PASS",
+  "fbx_roundtrip": "PASS",
+  "unity_import_and_camera": "PASS",
+  "required_evidence_count": 12,
+  "android": {
+    "status": "PASS",
+    "path": "C:\\Users\\pamak\\Documents\\ChatGPT\\gravivore\\.codex-worktrees\\g0-production-v3\\Builds\\Android\\gravivore-dev-0.1.0+2.apk",
+    "bytes": 59573853,
+    "sha256": "8835e58b151943d831d65a5a86544f266bf46748312d26223c69ccc6bdd4760d",
+    "metadata": {
+      "flavor": "Dev",
+      "version": "0.1.0",
+      "versionCode": 2,
+      "applicationId": "com.gravivore.mobile.dev",
+      "buildTimestampUtc": "2026-10-06T17:51:01.7791154Z",
+      "gitCommitSha": "c450e7cadf7995071af086ba335162288623a5ce",
+      "unityVersion": "6000.3.0f1",
+      "developmentBuild": true,
+      "allowDebugging": true,
+      "targetArchitecture": "ARM64",
+      "apkFilename": "gravivore-dev-0.1.0+2.apk"
+    },
+    "manifest_verified": true,
+    "scope": "Existing runtime regression only; V3 art review is excluded from build scenes/canonical dependencies"
+  },
+  "source_sha256": "dd3a83630ff8e956325556c3b58e73639e7c6dfd4fc32f86f269db96bb506f83",
+  "fbx_sha256": "5c2c99ed5f683a22aae4fc4fca5992d4da8bd99f12aaea8502712b82eee77dbc",
+  "device_performance": "NOT MEASURED",
+  "live_integration": "NOT PERFORMED"
+}
