@@ -14,7 +14,7 @@ The reference board itself is currently held outside the repository in the activ
 
 `визуальные_цели_врагов_gravivore.png`
 
-When the current G-0 V2.1 branch is finished, copy that board into the repository as:
+Intended repository path when available:
 
 `docs/visual-production-v2/reference/ENEMY_VISUAL_TARGETS_APPROVED_V1.png`
 
@@ -144,7 +144,7 @@ Do not solve hierarchy only by scaling the same design.
 
 ## Gameplay-camera rule
 
-All production approval must include real or representative top-down / portrait gameplay-angle evidence.
+All production approval must be judged in the real playable runtime and portrait gameplay camera.
 
 At phone size:
 - Scout must read as fast/light;
@@ -152,20 +152,30 @@ At phone size:
 - Magnetar must read as elite immediately;
 - the three must remain distinguishable even with emissive intensity reduced.
 
-Beauty renders are supplementary only.
+Beauty renders and still boards are supplementary evidence only and are NOT a human acceptance gate.
 
-## Codex implementation rule
+## Codex implementation rule — superseded process
 
-When Codex starts Enemy Production V2:
-- use this document together with the approved visual target board;
-- use existing donor/intake provenance from PR #54/#55/#56 only where useful;
-- do not invent a new faction art direction;
-- do not reinterpret these three enemies into generic marketplace sci-fi;
-- do not integrate into Chapter01 until blockouts pass human art-direction review;
-- stop after Scout/Cutter/Magnetar blockout evidence for review before final texturing/rig polish.
+Owner process decision updated 2026-10-06:
+
+- DO NOT stop after enemy blockouts for human review;
+- DO NOT request approval of isolated renders, screenshots, model sheets, Blender views or evidence boards;
+- continue through minimum production-quality Scout/Cutter/Magnetar assets, runtime integration and first visual-slice environment production;
+- integrate the approved G-0 Production V3 into the live playable runtime;
+- create one visually replaced industrial combat spot/area with new floor/wall/barrier/gate/reactor/prop treatment;
+- preserve gameplay authority, encounter logic, collisions and Chapter01 progression unless a presentation-only adaptation is required;
+- validate the complete slice in the actual gameplay camera;
+- build an installable Android ARM64 DEV APK containing the integrated visual slice;
+- the NEXT HUMAN VISUAL ACCEPTANCE GATE IS THE APK RUNNING ON DEVICE.
+
+Use existing donor/intake provenance from PR #54/#55/#56 only where useful. Do not inherit their rejected or superseded G-0 art direction.
+
+Do not invent a new enemy faction art direction and do not reinterpret these three enemies into generic marketplace sci-fi.
 
 ## Owner decision
 
 The owner explicitly approved the generated Scout / Cutter / Magnetar concept sheet on 2026-10-06.
 
-This direction is therefore the visual target for the next enemy modeling pass.
+The owner subsequently changed the delivery process: visual corrections will be given only after reviewing a playable APK. Intermediate model/render approval is no longer required for this first visual slice.
+
+This direction is therefore the visual target for the next enemy modeling + integration pass, with APK-on-device as the next human gate.
