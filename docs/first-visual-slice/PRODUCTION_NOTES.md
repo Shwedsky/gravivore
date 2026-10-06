@@ -51,9 +51,12 @@ lights or transparent materials.
 ## Automated evidence
 
 `production_dependencies.json` verifies all five visual deliverables are reachable
-from Chapter01. Android preprocessing enforces that check. Detailed build packing
-must also contain the G-0/Scout/Cutter/Magnetar FBX sources and the new reactor/deck
-mesh sources; the resulting APK has a companion `.visual-slice.json` report.
+from Chapter01. Android preprocessing enforces that check. Postprocessing inspects
+the actual APK: exact serialized G-0/Scout/Cutter/Magnetar LOD0 mesh names must be
+in its shared asset data, and the environment root/reactor/decks in Chapter01's
+serialized scene data. A companion `.visual-slice.json` records the archive entries,
+source dependencies and APK SHA256. This also verifies incremental builds whose
+Unity report omits cached asset entries.
 
 Internal camera captures and automated smoke checks are engineering QA. They are
 not a human visual gate. The next owner gate is the installed DEV APK on device.
