@@ -44,7 +44,7 @@ def recalc(me):
 
 def clean_degenerate(me):
     bm=bmesh.new();bm.from_mesh(me)
-    bad=[f for f in bm.faces if f.calc_area()<1e-10]
+    bad=[f for f in bm.faces if f.calc_area()<1e-8]
     if bad:bmesh.ops.delete(bm,geom=bad,context='FACES_ONLY')
     loose=[v for v in bm.verts if not v.link_faces]
     if loose:bmesh.ops.delete(bm,geom=loose,context='VERTS')
@@ -236,6 +236,32 @@ clean_degenerate(mesh.data)
 
 # LOD simplification protects silhouette tips, feet contacts, core and joint seams.
 # Edges between rigid bone regions never share vertices, so no deform blending.
+def repair_lod_uv(me):
+    """Pull only colliding collapsed UV corners inward, retaining shared atlas."""
+    uv=me.uv_layers.active;repaired=set()
+    for attempt in range(8):
+        owner=np.full((512,512),-1,dtype=np.int32);bad=set()
+        for f in me.polygons:
+            p=np.array([uv.data[i].uv[:] for i in f.loop_indices])*512
+            if len(p)!=3:raise RuntimeError('LOD must be triangulated')
+            lo=np.maximum(np.floor(p.min(axis=0)).astype(int),0);hi=np.minimum(np.ceil(p.max(axis=0)).astype(int),511)
+            x0,y0=lo;x1,y1=hi
+            if x1<x0 or y1<y0:continue
+            xs,ys=np.meshgrid(np.arange(x0,x1+1)+.5,np.arange(y0,y1+1)+.5)
+            a,b,c=p;den=(b[1]-c[1])*(a[0]-c[0])+(c[0]-b[0])*(a[1]-c[1])
+            if abs(den)<1e-10:continue
+            u=((b[1]-c[1])*(xs-c[0])+(c[0]-b[0])*(ys-c[1]))/den
+            v=((c[1]-a[1])*(xs-c[0])+(a[0]-c[0])*(ys-c[1]))/den
+            mask=(u>1e-5)&(v>1e-5)&((1-u-v)>1e-5)
+            tile=owner[y0:y1+1,x0:x1+1];collision=mask&(tile>=0)
+            if np.any(collision):bad.add(f.index);bad.update(int(i) for i in np.unique(tile[collision]))
+            tile[mask]=f.index
+        if not bad:return len(repaired)
+        for index in bad:
+            f=me.polygons[index];c=sum((uv.data[i].uv for i in f.loop_indices),Vector((0,0)))/3
+            for i in f.loop_indices:uv.data[i].uv=c+(uv.data[i].uv-c)*.96
+        repaired.update(bad)
+    raise RuntimeError('LOD atlas corner repair did not converge')
 lods=[mesh]
 for level,ratio in [(1,.57),(2,.30)]:
     o=mesh.copy(); o.data=mesh.data.copy(); lodcol.objects.link(o); o.name='G0_LOD'+str(level)
@@ -247,6 +273,7 @@ for level,ratio in [(1,.57),(2,.30)]:
     activate(o); bpy.ops.object.modifier_apply(modifier=d.name)
     o.vertex_groups.remove(o.vertex_groups['LOD_PRESERVE_CORE_CONTACTS'])
     clean_degenerate(o.data)
+    o['uv_collapsed_triangle_repairs']=repair_lod_uv(o.data)
     lods.append(o)
 for o in lods:
     for g in list(o.vertex_groups):

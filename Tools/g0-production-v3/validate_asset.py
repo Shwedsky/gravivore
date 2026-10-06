@@ -66,6 +66,11 @@ for name in ['Idle','Run','Attack','Hit','Death']:
     anim[name]=dict(frames=len(foot),min_feet_z=min(min(f['L'],f['R']) for f in foot),feet=foot)
     check(name+'_stationary_root',all(Vector(p).length<1e-6 for p in root_positions))
     check(name+'_ground_clearance',anim[name]['min_feet_z']>-.025,anim[name]['min_feet_z'])
+    if name in ['Idle','Run']:
+        bpy.context.scene.frame_set(int(action.frame_range[0]));first=[b.matrix.copy() for b in rig.pose.bones]
+        bpy.context.scene.frame_set(int(action.frame_range[1]));last=[b.matrix.copy() for b in rig.pose.bones]
+        seam=max((a.translation-b.translation).length+a.to_quaternion().rotation_difference(b.to_quaternion()).angle for a,b in zip(first,last))
+        check(name+'_loop_seam',seam<.001,seam)
 rig.animation_data.action=bpy.data.actions['Idle'];bpy.context.scene.frame_set(1)
 report=dict(checks=checks,details=details,animations=anim,source_sha256=hashlib.sha256(source.read_bytes()).hexdigest())
 (DATA/'reopened_asset_validation.json').write_text(json.dumps(report,indent=2))
@@ -79,6 +84,15 @@ meshes=[o for o in bpy.context.scene.objects if o.type=='MESH'];arms=[o for o in
 roundtrip=dict(meshes=[dict(name=o.name,vertices=len(o.data.vertices),polygons=len(o.data.polygons),uv_layers=len(o.data.uv_layers)) for o in meshes],
               rigs=[dict(name=o.name,bones=[b.name for b in o.data.bones]) for o in arms],actions=[a.name for a in bpy.data.actions],fbx_sha256=hashlib.sha256(fbx.read_bytes()).hexdigest())
 roundtrip['pass']=len(meshes)==3 and len(arms)==1 and len(arms[0].data.bones)==18 and len(bpy.data.actions)==5
+roundtrip['pose_changes']={}
+arm=arms[0]
+for action in bpy.data.actions:
+    arm.animation_data.action=action
+    bpy.context.scene.frame_set(int(action.frame_range[0]));first=[b.matrix.copy() for b in arm.pose.bones]
+    bpy.context.scene.frame_set(int(action.frame_range[0]+(action.frame_range[1]-action.frame_range[0])*.45))
+    change=max((b.matrix.translation-first[i].translation).length+(b.matrix.to_quaternion().rotation_difference(first[i].to_quaternion())).angle for i,b in enumerate(arm.pose.bones))
+    roundtrip['pose_changes'][action.name]=change
+roundtrip['pass']=roundtrip['pass'] and all(v>.0001 for v in roundtrip['pose_changes'].values())
 (DATA/'fbx_roundtrip_validation.json').write_text(json.dumps(roundtrip,indent=2))
 print('REOPEN_CHECKS',json.dumps(checks));print('FBX_ROUNDTRIP',json.dumps(roundtrip))
 if not roundtrip['pass'] or not all(checks.values()):raise RuntimeError('Asset checks require repair; inspect validation JSON')
