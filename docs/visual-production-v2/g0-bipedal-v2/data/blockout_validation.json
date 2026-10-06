@@ -1,0 +1,2011 @@
+{
+  "status": "PASS",
+  "blender": "5.2.2 LTS",
+  "blend_sha256": "107c014ec4cad0aca1ee521bb6168f063ad916e3a5835f7b5474569574a210f5",
+  "blend_bytes": 16726992,
+  "hero_mesh_objects": 134,
+  "hero_total_objects": 151,
+  "hero_raw_triangles": 7051,
+  "hero_evaluated_triangles": 24705,
+  "donor_mesh_objects": 17,
+  "donor_triangles": 1499,
+  "custom_mesh_objects": 117,
+  "custom_raw_triangles": 5552,
+  "custom_evaluated_triangles": 23206,
+  "hero_materials": [
+    "G0 | ceramic titanium edge",
+    "G0 | copper service mark",
+    "G0 | cyan gravity cell",
+    "G0 | graphite mechanism",
+    "G0 | machined actuator",
+    "G0 | titanium shell"
+  ],
+  "bones": 16,
+  "bone_names": [
+    "G0_ROOT_METERS_Z_UP_FORWARD_MINUS_Y",
+    "PELVIS",
+    "TORSO",
+    "SENSOR",
+    "R_SHOULDER",
+    "R_ELBOW",
+    "R_TOOL",
+    "L_SHOULDER",
+    "L_ELBOW",
+    "L_TOOL",
+    "R_HIP",
+    "R_KNEE",
+    "R_ANKLE",
+    "L_HIP",
+    "L_KNEE",
+    "L_ANKLE"
+  ],
+  "world_bounds": {
+    "min": [
+      -1.0299999713897705,
+      -0.9614512920379639,
+      -5.960464477539063e-08
+    ],
+    "max": [
+      1.0325000286102295,
+      0.7925050854682922,
+      3.6050000190734863
+    ]
+  },
+  "hero_height_m": 3.605000078678131,
+  "boundary_edges": 285,
+  "degenerate_faces": 0,
+  "rig_pose_smoke_max_vertex_displacement_m": 0.15087012231435665,
+  "packed_reference_images": 12,
+  "reference_meshes": 53,
+  "whole_scene_objects": 215,
+  "checks": [
+    "Saved blend reopened",
+    "17 retained components / 1499 triangles",
+    "Finite geometry",
+    "Exactly one rigid bone weight per vertex",
+    "Knee pose moves geometry",
+    "No donor shape keys/actions",
+    "Attribution embedded",
+    "Reference hidden by default",
+    "All used images packed, max 1024"
+  ],
+  "objects": [
+    {
+      "name": "R tapered thigh shield",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 44,
+      "evaluated_triangles": 268,
+      "vertices": 24,
+      "uv_layers": [],
+      "materials": [
+        "G0 | titanium shell"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "R shin blade",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 44,
+      "evaluated_triangles": 268,
+      "vertices": 24,
+      "uv_layers": [],
+      "materials": [
+        "G0 | ceramic titanium edge"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "R knee prow",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 16,
+      "evaluated_triangles": 136,
+      "vertices": 10,
+      "uv_layers": [],
+      "materials": [
+        "G0 | titanium shell"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "R hock cover",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 44,
+      "evaluated_triangles": 268,
+      "vertices": 24,
+      "uv_layers": [],
+      "materials": [
+        "G0 | titanium shell"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "R toe -1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 44,
+      "evaluated_triangles": 220,
+      "vertices": 24,
+      "uv_layers": [],
+      "materials": [
+        "G0 | graphite mechanism"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "R toe cap -1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 28,
+      "evaluated_triangles": 188,
+      "vertices": 16,
+      "uv_layers": [],
+      "materials": [
+        "G0 | titanium shell"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "R toe 1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 44,
+      "evaluated_triangles": 220,
+      "vertices": 24,
+      "uv_layers": [],
+      "materials": [
+        "G0 | graphite mechanism"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "R toe cap 1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 28,
+      "evaluated_triangles": 188,
+      "vertices": 16,
+      "uv_layers": [],
+      "materials": [
+        "G0 | titanium shell"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "L tapered thigh shield",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 44,
+      "evaluated_triangles": 268,
+      "vertices": 24,
+      "uv_layers": [],
+      "materials": [
+        "G0 | titanium shell"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "L shin blade",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 44,
+      "evaluated_triangles": 268,
+      "vertices": 24,
+      "uv_layers": [],
+      "materials": [
+        "G0 | ceramic titanium edge"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "L knee prow",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 16,
+      "evaluated_triangles": 136,
+      "vertices": 10,
+      "uv_layers": [],
+      "materials": [
+        "G0 | titanium shell"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "L hock cover",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 44,
+      "evaluated_triangles": 268,
+      "vertices": 24,
+      "uv_layers": [],
+      "materials": [
+        "G0 | titanium shell"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "L toe -1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 44,
+      "evaluated_triangles": 220,
+      "vertices": 24,
+      "uv_layers": [],
+      "materials": [
+        "G0 | graphite mechanism"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "L toe cap -1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 28,
+      "evaluated_triangles": 188,
+      "vertices": 16,
+      "uv_layers": [],
+      "materials": [
+        "G0 | titanium shell"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "L toe 1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 44,
+      "evaluated_triangles": 220,
+      "vertices": 24,
+      "uv_layers": [],
+      "materials": [
+        "G0 | graphite mechanism"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "L toe cap 1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 28,
+      "evaluated_triangles": 188,
+      "vertices": 16,
+      "uv_layers": [],
+      "materials": [
+        "G0 | titanium shell"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "Hip swept fairing -1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 16,
+      "evaluated_triangles": 120,
+      "vertices": 10,
+      "uv_layers": [],
+      "materials": [
+        "G0 | titanium shell"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "Hip swept fairing 1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 16,
+      "evaluated_triangles": 120,
+      "vertices": 10,
+      "uv_layers": [],
+      "materials": [
+        "G0 | titanium shell"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "Pelvis ventral prow",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 44,
+      "evaluated_triangles": 324,
+      "vertices": 24,
+      "uv_layers": [],
+      "materials": [
+        "G0 | graphite mechanism"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "Torso internal load frame",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 60,
+      "evaluated_triangles": 396,
+      "vertices": 32,
+      "uv_layers": [],
+      "materials": [
+        "G0 | graphite mechanism"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "Chest swept carapace -1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 22,
+      "evaluated_triangles": 182,
+      "vertices": 13,
+      "uv_layers": [],
+      "materials": [
+        "G0 | titanium shell"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "Chest crown ridge -1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 14,
+      "evaluated_triangles": 110,
+      "vertices": 9,
+      "uv_layers": [],
+      "materials": [
+        "G0 | ceramic titanium edge"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "Ventral rib -1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 12,
+      "evaluated_triangles": 108,
+      "vertices": 8,
+      "uv_layers": [],
+      "materials": [
+        "G0 | titanium shell"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "Chest swept carapace 1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 22,
+      "evaluated_triangles": 182,
+      "vertices": 13,
+      "uv_layers": [],
+      "materials": [
+        "G0 | titanium shell"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "Chest crown ridge 1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 14,
+      "evaluated_triangles": 110,
+      "vertices": 9,
+      "uv_layers": [],
+      "materials": [
+        "G0 | ceramic titanium edge"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "Ventral rib 1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 12,
+      "evaluated_triangles": 108,
+      "vertices": 8,
+      "uv_layers": [],
+      "materials": [
+        "G0 | titanium shell"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "Recessed gravity cell black socket",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 20,
+      "evaluated_triangles": 164,
+      "vertices": 12,
+      "uv_layers": [],
+      "materials": [
+        "G0 | graphite mechanism"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "Integrated cyan diamond slit",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 20,
+      "evaluated_triangles": 164,
+      "vertices": 12,
+      "uv_layers": [],
+      "materials": [
+        "G0 | cyan gravity cell"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "Core containment keel",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 16,
+      "evaluated_triangles": 136,
+      "vertices": 10,
+      "uv_layers": [],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "Sensor swept wedge",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 44,
+      "evaluated_triangles": 228,
+      "vertices": 24,
+      "uv_layers": [],
+      "materials": [
+        "G0 | titanium shell"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "Sensor front graphite aperture",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 20,
+      "evaluated_triangles": 132,
+      "vertices": 12,
+      "uv_layers": [],
+      "materials": [
+        "G0 | graphite mechanism"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "R swept shoulder vane",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 18,
+      "evaluated_triangles": 166,
+      "vertices": 11,
+      "uv_layers": [],
+      "materials": [
+        "G0 | ceramic titanium edge"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "R upperarm dorsal shell",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 18,
+      "evaluated_triangles": 146,
+      "vertices": 11,
+      "uv_layers": [],
+      "materials": [
+        "G0 | titanium shell"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "R gravity gauntlet",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 44,
+      "evaluated_triangles": 278,
+      "vertices": 24,
+      "uv_layers": [],
+      "materials": [
+        "G0 | titanium shell"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "Lash emitter split blade -1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 60,
+      "evaluated_triangles": 216,
+      "vertices": 32,
+      "uv_layers": [],
+      "materials": [
+        "G0 | ceramic titanium edge"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "Lash emitter split blade 1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 60,
+      "evaluated_triangles": 216,
+      "vertices": 32,
+      "uv_layers": [],
+      "materials": [
+        "G0 | ceramic titanium edge"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "L swept shoulder vane",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 18,
+      "evaluated_triangles": 166,
+      "vertices": 11,
+      "uv_layers": [],
+      "materials": [
+        "G0 | ceramic titanium edge"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "L upperarm dorsal shell",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 18,
+      "evaluated_triangles": 146,
+      "vertices": 11,
+      "uv_layers": [],
+      "materials": [
+        "G0 | titanium shell"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "L gravity gauntlet",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 44,
+      "evaluated_triangles": 278,
+      "vertices": 24,
+      "uv_layers": [],
+      "materials": [
+        "G0 | titanium shell"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "Capture jaw -1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 44,
+      "evaluated_triangles": 204,
+      "vertices": 24,
+      "uv_layers": [],
+      "materials": [
+        "G0 | ceramic titanium edge"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "Capture jaw 1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 44,
+      "evaluated_triangles": 214,
+      "vertices": 24,
+      "uv_layers": [],
+      "materials": [
+        "G0 | ceramic titanium edge"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "Capture cyan inset",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 12,
+      "evaluated_triangles": 108,
+      "vertices": 8,
+      "uv_layers": [],
+      "materials": [
+        "G0 | cyan gravity cell"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "Rear spinal containment",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 44,
+      "evaluated_triangles": 268,
+      "vertices": 24,
+      "uv_layers": [],
+      "materials": [
+        "G0 | titanium shell"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "Rear swept containment fin -1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 16,
+      "evaluated_triangles": 120,
+      "vertices": 10,
+      "uv_layers": [],
+      "materials": [
+        "G0 | titanium shell"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "Rear swept containment fin 1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 16,
+      "evaluated_triangles": 120,
+      "vertices": 10,
+      "uv_layers": [],
+      "materials": [
+        "G0 | titanium shell"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "R hip spindle",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 76,
+      "evaluated_triangles": 236,
+      "vertices": 40,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | graphite mechanism"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "R hip endcap -1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 76,
+      "evaluated_triangles": 236,
+      "vertices": 40,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "R hip endcap 1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 76,
+      "evaluated_triangles": 236,
+      "vertices": 40,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "R knee spindle",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 76,
+      "evaluated_triangles": 236,
+      "vertices": 40,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | graphite mechanism"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "R knee endcap -1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 76,
+      "evaluated_triangles": 236,
+      "vertices": 40,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "R knee endcap 1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 76,
+      "evaluated_triangles": 236,
+      "vertices": 40,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "R hock spindle",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 76,
+      "evaluated_triangles": 236,
+      "vertices": 40,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | graphite mechanism"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "R hock endcap -1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 76,
+      "evaluated_triangles": 236,
+      "vertices": 40,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "R hock endcap 1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 76,
+      "evaluated_triangles": 236,
+      "vertices": 40,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "R thigh load rail",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 44,
+      "evaluated_triangles": 140,
+      "vertices": 24,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | graphite mechanism"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "R shin rail -1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 44,
+      "evaluated_triangles": 140,
+      "vertices": 24,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "R shin rail 1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 44,
+      "evaluated_triangles": 140,
+      "vertices": 24,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "R ankle shaft",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 44,
+      "evaluated_triangles": 140,
+      "vertices": 24,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | graphite mechanism"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "R foot load bridge",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 44,
+      "evaluated_triangles": 140,
+      "vertices": 24,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "R foot rocker spindle",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 76,
+      "evaluated_triangles": 236,
+      "vertices": 40,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | graphite mechanism"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "R foot rocker endcap -1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 76,
+      "evaluated_triangles": 236,
+      "vertices": 40,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "R foot rocker endcap 1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 76,
+      "evaluated_triangles": 236,
+      "vertices": 40,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "R rear thigh actuator",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 44,
+      "evaluated_triangles": 140,
+      "vertices": 24,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "R foot cross tie",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 28,
+      "evaluated_triangles": 220,
+      "vertices": 16,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "L hip spindle",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 76,
+      "evaluated_triangles": 236,
+      "vertices": 40,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | graphite mechanism"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "L hip endcap -1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 76,
+      "evaluated_triangles": 236,
+      "vertices": 40,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "L hip endcap 1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 76,
+      "evaluated_triangles": 236,
+      "vertices": 40,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "L knee spindle",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 76,
+      "evaluated_triangles": 236,
+      "vertices": 40,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | graphite mechanism"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "L knee endcap -1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 76,
+      "evaluated_triangles": 236,
+      "vertices": 40,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "L knee endcap 1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 76,
+      "evaluated_triangles": 236,
+      "vertices": 40,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "L hock spindle",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 76,
+      "evaluated_triangles": 236,
+      "vertices": 40,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | graphite mechanism"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "L hock endcap -1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 76,
+      "evaluated_triangles": 236,
+      "vertices": 40,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "L hock endcap 1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 76,
+      "evaluated_triangles": 236,
+      "vertices": 40,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "L thigh load rail",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 44,
+      "evaluated_triangles": 140,
+      "vertices": 24,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | graphite mechanism"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "L shin rail -1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 44,
+      "evaluated_triangles": 140,
+      "vertices": 24,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "L shin rail 1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 44,
+      "evaluated_triangles": 140,
+      "vertices": 24,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "L ankle shaft",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 44,
+      "evaluated_triangles": 140,
+      "vertices": 24,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | graphite mechanism"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "L foot load bridge",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 44,
+      "evaluated_triangles": 140,
+      "vertices": 24,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "L foot rocker spindle",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 76,
+      "evaluated_triangles": 236,
+      "vertices": 40,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | graphite mechanism"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "L foot rocker endcap -1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 76,
+      "evaluated_triangles": 236,
+      "vertices": 40,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "L foot rocker endcap 1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 76,
+      "evaluated_triangles": 236,
+      "vertices": 40,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "L rear thigh actuator",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 44,
+      "evaluated_triangles": 140,
+      "vertices": 24,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "L foot cross tie",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 28,
+      "evaluated_triangles": 220,
+      "vertices": 16,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "Central spinal axis",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 60,
+      "evaluated_triangles": 188,
+      "vertices": 32,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | graphite mechanism"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "Waist actuator -1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 44,
+      "evaluated_triangles": 140,
+      "vertices": 24,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "Waist actuator 1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 44,
+      "evaluated_triangles": 140,
+      "vertices": 24,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "Sensor neck carriage",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 44,
+      "evaluated_triangles": 140,
+      "vertices": 24,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "Sensor cyan horizontal slit",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 28,
+      "evaluated_triangles": 220,
+      "vertices": 16,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | cyan gravity cell"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "R shoulder spindle",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 76,
+      "evaluated_triangles": 236,
+      "vertices": 40,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | graphite mechanism"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "R shoulder endcap -1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 76,
+      "evaluated_triangles": 236,
+      "vertices": 40,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "R shoulder endcap 1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 76,
+      "evaluated_triangles": 236,
+      "vertices": 40,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "R elbow spindle",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 76,
+      "evaluated_triangles": 236,
+      "vertices": 40,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | graphite mechanism"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "R elbow endcap -1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 76,
+      "evaluated_triangles": 236,
+      "vertices": 40,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "R elbow endcap 1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 76,
+      "evaluated_triangles": 236,
+      "vertices": 40,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "R humeral load bar",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 44,
+      "evaluated_triangles": 140,
+      "vertices": 24,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | graphite mechanism"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "R upperarm exposed piston",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 44,
+      "evaluated_triangles": 140,
+      "vertices": 24,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "R forearm spine",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 44,
+      "evaluated_triangles": 140,
+      "vertices": 24,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "Lash cyan rail -1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 28,
+      "evaluated_triangles": 220,
+      "vertices": 16,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | cyan gravity cell"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "Lash cyan rail 1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 28,
+      "evaluated_triangles": 220,
+      "vertices": 16,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | cyan gravity cell"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "Lash recessed power spine",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 44,
+      "evaluated_triangles": 140,
+      "vertices": 24,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | graphite mechanism"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "R shoulder service seam",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 28,
+      "evaluated_triangles": 220,
+      "vertices": 16,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | copper service mark"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "L shoulder spindle",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 76,
+      "evaluated_triangles": 236,
+      "vertices": 40,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | graphite mechanism"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "L shoulder endcap -1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 76,
+      "evaluated_triangles": 236,
+      "vertices": 40,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "L shoulder endcap 1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 76,
+      "evaluated_triangles": 236,
+      "vertices": 40,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "L elbow spindle",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 76,
+      "evaluated_triangles": 236,
+      "vertices": 40,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | graphite mechanism"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "L elbow endcap -1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 76,
+      "evaluated_triangles": 236,
+      "vertices": 40,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "L elbow endcap 1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 76,
+      "evaluated_triangles": 236,
+      "vertices": 40,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "L humeral load bar",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 44,
+      "evaluated_triangles": 140,
+      "vertices": 24,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | graphite mechanism"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "L upperarm exposed piston",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 44,
+      "evaluated_triangles": 140,
+      "vertices": 24,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "L forearm spine",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 44,
+      "evaluated_triangles": 140,
+      "vertices": 24,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "L shoulder service seam",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 28,
+      "evaluated_triangles": 220,
+      "vertices": 16,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | copper service mark"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "Rear fin crest rail -1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 28,
+      "evaluated_triangles": 220,
+      "vertices": 16,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | ceramic titanium edge"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "Rear fin cyan slit -1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 28,
+      "evaluated_triangles": 220,
+      "vertices": 16,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | cyan gravity cell"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "Rear containment brace -1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 44,
+      "evaluated_triangles": 140,
+      "vertices": 24,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | graphite mechanism"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "Rear fin crest rail 1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 28,
+      "evaluated_triangles": 220,
+      "vertices": 16,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | ceramic titanium edge"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "Rear fin cyan slit 1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 28,
+      "evaluated_triangles": 220,
+      "vertices": 16,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | cyan gravity cell"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "Rear containment brace 1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 44,
+      "evaluated_triangles": 140,
+      "vertices": 24,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | graphite mechanism"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "RETAINED_PELVIS_134",
+      "authorship": "Adapted Catfish Mech by Jungle Jim / CC BY 4.0",
+      "raw_triangles": 405,
+      "evaluated_triangles": 405,
+      "vertices": 244,
+      "uv_layers": [
+        "Channel0"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 83,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "RETAINED_R_KNEE_135",
+      "authorship": "Adapted Catfish Mech by Jungle Jim / CC BY 4.0",
+      "raw_triangles": 81,
+      "evaluated_triangles": 81,
+      "vertices": 49,
+      "uv_layers": [
+        "Channel0"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 15,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "RETAINED_R_KNEE_136",
+      "authorship": "Adapted Catfish Mech by Jungle Jim / CC BY 4.0",
+      "raw_triangles": 54,
+      "evaluated_triangles": 54,
+      "vertices": 35,
+      "uv_layers": [
+        "Channel0"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 14,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "RETAINED_R_KNEE_137",
+      "authorship": "Adapted Catfish Mech by Jungle Jim / CC BY 4.0",
+      "raw_triangles": 68,
+      "evaluated_triangles": 68,
+      "vertices": 42,
+      "uv_layers": [
+        "Channel0"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 14,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "RETAINED_R_KNEE_138",
+      "authorship": "Adapted Catfish Mech by Jungle Jim / CC BY 4.0",
+      "raw_triangles": 81,
+      "evaluated_triangles": 81,
+      "vertices": 49,
+      "uv_layers": [
+        "Channel0"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 15,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "RETAINED_R_ANKLE_143",
+      "authorship": "Adapted Catfish Mech by Jungle Jim / CC BY 4.0",
+      "raw_triangles": 50,
+      "evaluated_triangles": 50,
+      "vertices": 31,
+      "uv_layers": [
+        "Channel0"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 10,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "RETAINED_R_ANKLE_144",
+      "authorship": "Adapted Catfish Mech by Jungle Jim / CC BY 4.0",
+      "raw_triangles": 77,
+      "evaluated_triangles": 77,
+      "vertices": 45,
+      "uv_layers": [
+        "Channel0"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 11,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "RETAINED_R_ANKLE_147",
+      "authorship": "Adapted Catfish Mech by Jungle Jim / CC BY 4.0",
+      "raw_triangles": 50,
+      "evaluated_triangles": 50,
+      "vertices": 31,
+      "uv_layers": [
+        "Channel0"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 10,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "RETAINED_R_ANKLE_148",
+      "authorship": "Adapted Catfish Mech by Jungle Jim / CC BY 4.0",
+      "raw_triangles": 77,
+      "evaluated_triangles": 77,
+      "vertices": 45,
+      "uv_layers": [
+        "Channel0"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 11,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "RETAINED_L_KNEE_139",
+      "authorship": "Adapted Catfish Mech by Jungle Jim / CC BY 4.0",
+      "raw_triangles": 81,
+      "evaluated_triangles": 81,
+      "vertices": 49,
+      "uv_layers": [
+        "Channel0"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 15,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "RETAINED_L_KNEE_140",
+      "authorship": "Adapted Catfish Mech by Jungle Jim / CC BY 4.0",
+      "raw_triangles": 68,
+      "evaluated_triangles": 68,
+      "vertices": 43,
+      "uv_layers": [
+        "Channel0"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 16,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "RETAINED_L_KNEE_152",
+      "authorship": "Adapted Catfish Mech by Jungle Jim / CC BY 4.0",
+      "raw_triangles": 81,
+      "evaluated_triangles": 81,
+      "vertices": 49,
+      "uv_layers": [
+        "Channel0"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 15,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "RETAINED_L_KNEE_153",
+      "authorship": "Adapted Catfish Mech by Jungle Jim / CC BY 4.0",
+      "raw_triangles": 72,
+      "evaluated_triangles": 72,
+      "vertices": 44,
+      "uv_layers": [
+        "Channel0"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 14,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "RETAINED_L_ANKLE_141",
+      "authorship": "Adapted Catfish Mech by Jungle Jim / CC BY 4.0",
+      "raw_triangles": 77,
+      "evaluated_triangles": 77,
+      "vertices": 45,
+      "uv_layers": [
+        "Channel0"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 11,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "RETAINED_L_ANKLE_142",
+      "authorship": "Adapted Catfish Mech by Jungle Jim / CC BY 4.0",
+      "raw_triangles": 50,
+      "evaluated_triangles": 50,
+      "vertices": 31,
+      "uv_layers": [
+        "Channel0"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 10,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "RETAINED_L_ANKLE_145",
+      "authorship": "Adapted Catfish Mech by Jungle Jim / CC BY 4.0",
+      "raw_triangles": 77,
+      "evaluated_triangles": 77,
+      "vertices": 45,
+      "uv_layers": [
+        "Channel0"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 11,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "RETAINED_L_ANKLE_146",
+      "authorship": "Adapted Catfish Mech by Jungle Jim / CC BY 4.0",
+      "raw_triangles": 50,
+      "evaluated_triangles": 50,
+      "vertices": 31,
+      "uv_layers": [
+        "Channel0"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 10,
+      "degenerate_faces": 0
+    }
+  ],
+  "gameplay_projection": {
+    "resolution": [
+      900,
+      1600
+    ],
+    "root_scale": 0.5,
+    "presentation_height_m": 1.8025000393390656,
+    "bbox_pixels": [
+      396,
+      719,
+      504,
+      872
+    ],
+    "width_pixels": 108,
+    "height_pixels": 153,
+    "inside_frustum": true
+  }
+}

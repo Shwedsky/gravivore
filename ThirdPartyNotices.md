@@ -69,6 +69,21 @@ Expanded original-source research, licenses and rejection/acquisition reasons ar
 - Exact source-to-event mapping and archive checksums: docs/PLAYER_FEEL_COMBAT_PRESENTATION.md.
 - No ripped game sounds or purchased dependency; unchanged encounter/progression placeholders are project-generated S14 cues.
 
+## G-0 Bipedal Blockout V2 — Catfish donor mechanisms and comparison
+
+- Asset: **Catfish Mech low-poly (animated)**.
+- Author: **Jungle Jim** (jungle_jim), https://sketchfab.com/jungle_jim.
+- Source: https://sketchfab.com/3d-models/catfish-mech-low-poly-animated-ad9bc16464744935b1ac9b7768a17474.
+- License: **Creative Commons Attribution 4.0 International (CC BY 4.0)**, https://creativecommons.org/licenses/by/4.0/.
+- Verified: 2026-10-06 against the original public API, archived in docs/visual-production-v2/g0-bipedal-v2/data/catfish_official_metadata.json. Direct page fetch returned 403; source/license verification did not rely on a third-party mirror.
+- User-provided ZIP SHA256: 3c20dd24a1611d8391c4d430d8f920dc67969d641cbb93811514cb627ccf98c6.
+- Source FBX entry: source/Mech long legs Army CC export.fbx.
+- Adapted components: mesh_rep_0_ori_repair_134 (pelvis), 135–148 plus 152–153 (paired knee/ankle mechanisms); 17 objects / 1499 source triangles. They are transformed, regrouped and assigned project materials inside art/visual-production-v2/g0/G0_Bipedal_Blockout_V2.blend. All outer leg shells, feet and upper-body geometry are original project blockout geometry.
+- Comparison evidence also displays the original donor silhouette and source materials, rest pose, equal-height normalization; source textures may be downsampled/packed solely for portable comparison. No original full donor is bound to gameplay.
+- Attribution required: yes. Preserve this title/author/source/license and modification notice with adapted geometry and donor comparison renders; no author endorsement is implied.
+- Raw archive, extracted source and imported animation remain local ignored inspection inputs. The final authoring file must include an internal attribution text block. Exact per-object mapping and adaptation metrics accompany the review.
+- V2.1 revision (2026-10-06): the same 17 adapted mechanisms continue in `art/visual-production-v2/g0/G0_Bipedal_Blockout_V21.blend` and static review export `Assets/_Game/ArtReview/G0V21/Models/G0_Bipedal_V21_Review.fbx`. V2.1 shortens/reframes the legs and widens pelvis/limb mechanisms; original V2 attribution text remains embedded. Review-only Unity import, no donor animation or production binding. Preserve this credit with both source and export.
+
 ## Import template (future additions)
 
 When importing any external asset, append:
