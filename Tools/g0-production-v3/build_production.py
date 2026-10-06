@@ -11,6 +11,7 @@ SOURCE = ROOT / 'art/visual-production-v2/g0/G0_Bipedal_Blockout_V21.blend'
 ART = ROOT / 'art/g0-production-v3'
 UNITY = ROOT / 'Assets/_Game/ArtReview/G0ProductionV3'
 DATA = ROOT / 'docs/g0-production-v3/data'
+ATLAS_SIZE=2048
 for p in [ART, UNITY/'Models', UNITY/'Textures', DATA]: p.mkdir(parents=True, exist_ok=True)
 bpy.ops.wm.open_mainfile(filepath=str(SOURCE))
 scene=bpy.context.scene
@@ -41,6 +42,14 @@ refinements=[]
 def recalc(me):
     bm=bmesh.new(); bm.from_mesh(me); bmesh.ops.recalc_face_normals(bm,faces=bm.faces); bm.to_mesh(me); bm.free()
 
+def clean_degenerate(me):
+    bm=bmesh.new();bm.from_mesh(me)
+    bad=[f for f in bm.faces if f.calc_area()<1e-10]
+    if bad:bmesh.ops.delete(bm,geom=bad,context='FACES_ONLY')
+    loose=[v for v in bm.verts if not v.link_faces]
+    if loose:bmesh.ops.delete(bm,geom=loose,context='VERTS')
+    bmesh.ops.recalc_face_normals(bm,faces=bm.faces);bm.to_mesh(me);bm.free()
+
 def activate(o):
     bpy.ops.object.select_all(action='DESELECT'); o.select_set(True); bpy.context.view_layer.objects.active=o
 
@@ -59,10 +68,16 @@ for o in objects:
     # Replace single-point fan ridges by a short, supported ridge. This changes
     # surface construction inside the same perimeter, rather than proportions.
     if any(s in name for s in ['Chest swept carapace','swept shoulder vane','upperarm dorsal shell','Chest crown ridge']):
-        bm=bmesh.new(); bm.from_mesh(o.data)
-        bm.verts.ensure_lookup_table(); apex=bm.verts[-1]
-        bmesh.ops.bevel(bm,geom=[apex],offset=.034 if 'Chest swept' in name else .019,segments=2,affect='VERTICES')
-        bmesh.ops.recalc_face_normals(bm,faces=bm.faces); bm.to_mesh(o.data); bm.free()
+        # Rebuild just the front fan into a planar ridge landing surrounded by
+        # broad quad patches. Vertex-only beveling creates pinched star normals.
+        original=[v.co.copy() for v in o.data.vertices]; n=(len(original)-1)//2; apex=original[-1]
+        ring=[Vector((apex.x+(v.x-apex.x)*.24,apex.y,apex.z+(v.z-apex.z)*.24)) for v in original[:n]]
+        vs=original[:-1]+ring
+        fs=[tuple(range(n,2*n)),tuple(range(2*n,3*n))]
+        fs += [(i,(i+1)%n,2*n+(i+1)%n,2*n+i) for i in range(n)]
+        fs += [(i,i+n,(i+1)%n+n,(i+1)%n) for i in range(n)]
+        o.data.clear_geometry();o.data.from_pydata(vs,[],fs);o.data.update();recalc(o.data)
+        o.vertex_groups.clear();g=o.vertex_groups.new(name=group);g.add(list(range(len(o.data.vertices))),1,'REPLACE')
         refinements.append({'part':name,'operation':'supported ridge, perimeter preserved'})
     # Bearing end plates now have an inset retainer with a dark central hub.
     if 'endcap' in name:
@@ -86,6 +101,8 @@ for o in objects:
     if 'cyan' in name: bevel.width=.0015
     bevel.segments=1; bevel.affect='EDGES'; bevel.limit_method='ANGLE'; bevel.angle_limit=math.radians(28)
     bevel.harden_normals=True
+    for f in o.data.polygons: f.use_smooth=True
+    o.data.set_sharp_from_angle(angle=math.radians(38))
     norm=o.modifiers.new('Area weighted mechanical normals','WEIGHTED_NORMAL'); norm.keep_sharp=True; norm.weight=40
     activate(o)
     for m in list(o.modifiers): bpy.ops.object.modifier_apply(modifier=m.name)
@@ -96,6 +113,8 @@ def piece(name,verts,faces,mat,bone):
     o=bpy.data.objects.new(name,me); edit.objects.link(o); me.materials.append(mat)
     g=o.vertex_groups.new(name=bone); g.add(list(range(len(me.vertices))),1,'REPLACE')
     o['authorship']='GRAVIVORE original V3 mechanical construction'; o['rigid_bone']=bone
+    for f in me.polygons: f.use_smooth=True
+    me.set_sharp_from_angle(angle=math.radians(38))
     bevel=o.modifiers.new('Manufacturing edge','BEVEL'); bevel.width=.004; bevel.segments=1
     activate(o); bpy.ops.object.modifier_apply(modifier=bevel.name)
     objects.append(o); return o
@@ -154,16 +173,17 @@ bpy.context.view_layer.objects.active=objects[0]; bpy.ops.object.join()
 mesh=bpy.context.object; mesh.name='G0_LOD0'; mesh.data.name='G0_V3_LOD0_UV_SKIN'
 for c in list(mesh.users_collection): c.objects.unlink(mesh)
 lodcol.objects.link(mesh)
+clean_degenerate(mesh.data)
 activate(mesh)
 for layer in list(mesh.data.uv_layers): mesh.data.uv_layers.remove(layer)
 mesh.data.uv_layers.new(name='UV0_1024_UNIQUE')
 bpy.ops.object.mode_set(mode='EDIT'); bpy.ops.mesh.select_all(action='SELECT')
-bpy.ops.uv.smart_project(angle_limit=math.radians(68),island_margin=.006,area_weight=.5,scale_to_bounds=True)
+bpy.ops.uv.smart_project(angle_limit=math.radians(68),island_margin=.0015,area_weight=.8,scale_to_bounds=True)
 bpy.ops.object.mode_set(mode='OBJECT')
 mesh.data.uv_layers.active.name='UV0_1024_UNIQUE'
 
 def bake(name,mode):
-    image=bpy.data.images.new(name,width=1024,height=1024,alpha=True)
+    image=bpy.data.images.new(name,width=ATLAS_SIZE,height=ATLAS_SIZE,alpha=True)
     image.colorspace_settings.name='sRGB' if mode in ['base','emission'] else 'Non-Color'
     for m in mesh.data.materials:
         m.use_nodes=True; nodes=m.node_tree.nodes; links=m.node_tree.links; nodes.clear()
@@ -185,16 +205,16 @@ def bake(name,mode):
         elif mode=='emission': emit.inputs[0].default_value=palette['cyan'] if role=='cyan' else (0,0,0,1)
         elif mode=='metal': emit.inputs[0].default_value=(metal[role],)*3+(1,)
         elif mode=='smooth': emit.inputs[0].default_value=(smooth[role],)*3+(1,)
-    scene.render.engine='CYCLES'; scene.cycles.samples=8; scene.render.bake.margin=8
+    scene.render.engine='CYCLES'; scene.cycles.samples=8; scene.render.bake.margin=3
     activate(mesh); bpy.ops.object.bake(type='EMIT')
     return image
 
 base=bake('G0_V3_BaseColor','base'); emission=bake('G0_V3_Emission','emission')
 metal=bake('G0_V3_Metal','metal'); smooth=bake('G0_V3_Smooth','smooth')
 import numpy as np
-mp=np.empty(1024*1024*4,dtype=np.float32); sp=np.empty_like(mp)
+mp=np.empty(ATLAS_SIZE*ATLAS_SIZE*4,dtype=np.float32); sp=np.empty_like(mp)
 metal.pixels.foreach_get(mp); smooth.pixels.foreach_get(sp); mp[3::4]=sp[0::4]
-packed=bpy.data.images.new('G0_V3_MetallicSmoothness',width=1024,height=1024,alpha=True); packed.colorspace_settings.name='Non-Color'; packed.pixels.foreach_set(mp)
+packed=bpy.data.images.new('G0_V3_MetallicSmoothness',width=ATLAS_SIZE,height=ATLAS_SIZE,alpha=True); packed.colorspace_settings.name='Non-Color'; packed.pixels.foreach_set(mp)
 for im in [base,emission,packed]:
     im.filepath_raw=str(UNITY/'Textures'/(im.name+'.png')); im.file_format='PNG'; im.save(); im.pack()
 
@@ -212,6 +232,7 @@ for f in mesh.data.polygons: f.material_index=0
 # Explicit triangles make export, counts and UV interpolation reproducible.
 tri=mesh.modifiers.new('Production triangulation','TRIANGULATE'); tri.keep_custom_normals=True
 activate(mesh); bpy.ops.object.modifier_apply(modifier=tri.name)
+clean_degenerate(mesh.data)
 
 # LOD simplification protects silhouette tips, feet contacts, core and joint seams.
 # Edges between rigid bone regions never share vertices, so no deform blending.
@@ -225,6 +246,7 @@ for level,ratio in [(1,.57),(2,.30)]:
     d.vertex_group=protect.name; d.vertex_group_factor=1; d.invert_vertex_group=True
     activate(o); bpy.ops.object.modifier_apply(modifier=d.name)
     o.vertex_groups.remove(o.vertex_groups['LOD_PRESERVE_CORE_CONTACTS'])
+    clean_degenerate(o.data)
     lods.append(o)
 for o in lods:
     for g in list(o.vertex_groups):
@@ -246,6 +268,23 @@ clips=[('Idle',1,61,True),('Run',1,25,True),('Attack',1,25,False),('Hit',1,16,Fa
 for a in list(bpy.data.actions): bpy.data.actions.remove(a)
 rig.animation_data_clear()
 for pb in rig.pose.bones: pb.rotation_mode='XYZ'
+def plant(label,target_y,target_z,pelvis_drop=0):
+    """Bake a two-link sagittal solve into FK hinges; no runtime IK dependency."""
+    h=rig.data.bones[label+'_HIP'].head_local.copy(); h.z+=pelvis_drop
+    k=rig.data.bones[label+'_KNEE'].head_local; a=rig.data.bones[label+'_ANKLE'].head_local
+    h0=rig.data.bones[label+'_HIP'].head_local
+    v1=k-h0;v2=a-k
+    l1=math.hypot(v1.y,v1.z);l2=math.hypot(v2.y,v2.z)
+    dy=target_y-h.y;dz=target_z-h.z;d=min(math.hypot(dy,dz),l1+l2-.001)
+    direction=math.atan2(dy,-dz)
+    upper=direction-math.acos(max(-1,min(1,(l1*l1+d*d-l2*l2)/(2*l1*d))))
+    ky=h.y+l1*math.sin(upper);kz=h.z-l1*math.cos(upper)
+    lower=math.atan2(target_y-ky,-(target_z-kz))
+    hip=upper-math.atan2(v1.y,-v1.z)
+    knee=lower-math.atan2(v2.y,-v2.z)-hip
+    rig.pose.bones[label+'_HIP'].rotation_euler.x=hip
+    rig.pose.bones[label+'_KNEE'].rotation_euler.x=knee
+    rig.pose.bones[label+'_ANKLE'].rotation_euler.x=-hip-knee
 def pose(frame,name):
     t=(frame-1)/30
     for b in rig.pose.bones: b.rotation_euler=(0,0,0); b.location=(0,0,0); b.scale=(1,1,1)
@@ -256,12 +295,13 @@ def pose(frame,name):
         rot('R_TOOL',q*1.4); rot('L_TOOL',-q*1.0)
     elif name=='Run':
         q=(frame-1)/24*2*math.pi; sway=math.sin(q)
-        rot('TORSO',-6,0,sway*2); rot('PELVIS',0,0,-sway*1.8)
-        rig.pose.bones['PELVIS'].location.y=-.026*(1-math.cos(q*2))
+        rot('TORSO',-6,0,sway*2)
+        drop=-.040*(1-math.cos(q*2))
+        rig.pose.bones['PELVIS'].location.y=drop
         for label,phase in [('L',q),('R',q+math.pi)]:
-            swing=math.sin(phase); lift=max(0,math.cos(phase))
-            hip=23*swing-5; knee=6+31*lift
-            rot(label+'_HIP',hip); rot(label+'_KNEE',-knee); rot(label+'_ANKLE',knee-hip)
+            swing=math.sin(phase); lift=max(0,math.sin(phase))
+            ankle=rig.data.bones[label+'_ANKLE'].head_local
+            plant(label,ankle.y+.27*math.cos(phase),ankle.z+.16*lift**1.5,drop)
             rot(label+'_SHOULDER',-swing*13); rot(label+'_ELBOW',-8-5*lift)
         rot('SENSOR',6)
     elif name=='Attack':
@@ -280,9 +320,10 @@ def pose(frame,name):
     elif name=='Death':
         u=(frame-1)/45; kneel=min(u/.47,1); kneel=kneel*kneel*(3-2*kneel)
         fall=max(0,(u-.30)/.70); fall=fall*fall*(3-2*fall)
-        rig.pose.bones['PELVIS'].location.y=-.53*kneel
-        rot('L_HIP',-kneel*28); rot('R_HIP',-kneel*31); rot('L_KNEE',kneel*55); rot('R_KNEE',kneel*58)
-        rot('L_ANKLE',-kneel*27); rot('R_ANKLE',-kneel*27)
+        drop=-.62*kneel;rig.pose.bones['PELVIS'].location.y=drop
+        for label in ['L','R']:
+            ankle=rig.data.bones[label+'_ANKLE'].head_local
+            plant(label,ankle.y,ankle.z,drop)
         rot('TORSO',-fall*66,fall*13,fall*8); rot('SENSOR',fall*22)
         rot('R_SHOULDER',fall*36); rot('L_SHOULDER',fall*26); rot('R_ELBOW',-fall*22); rot('L_ELBOW',-fall*17)
     for b in rig.pose.bones:
@@ -302,7 +343,7 @@ prod.name='G0_V3_PRODUCTION_EXPORT'
 scene.name='G0_PRODUCTION_V3'; scene['review_gate']='Production asset / isolated review only; human approval before Chapter01 integration'
 scene['source_sha256']=source_hash; scene['presentation_scale']='accepted 1.10x applied only in Unity review'
 note=bpy.data.texts.new('READ_ME_G0_PRODUCTION_V3')
-note.write('Derived from accepted V2.1 source at main 467b43b. Z up, -Y forward, source meters, no Unity fit baked.\nOne skinned renderer/material per LOD; rigid one-bone weights, 18-bone game hierarchy. Five in-place visual clips at 30fps.\n1024 unique UV atlas: base color, metallic RGB/smoothness alpha, emission. No donor textures. LOD1/2 share atlas/skeleton.\nCatfish low-identity pelvis/knee/ankle provenance: Jungle Jim / CC BY 4.0; see preserved READ_ME_G0_V2_AND_ATTRIBUTION and ThirdPartyNotices.\nNo gameplay authority or live prefab replacement.\n')
+note.write('Derived from accepted V2.1 source at main 467b43b. Z up, -Y forward, source meters, no Unity fit baked.\nOne skinned renderer/material per LOD; rigid one-bone weights, 18-bone game hierarchy. Five in-place visual clips at 30fps.\n2048 unique UV atlas, Android cap 1024: base color, metallic RGB/smoothness alpha, emission. No donor textures. LOD1/2 share atlas/skeleton.\nCatfish low-identity pelvis/knee/ankle provenance: Jungle Jim / CC BY 4.0; see preserved READ_ME_G0_V2_AND_ATTRIBUTION and ThirdPartyNotices.\nNo gameplay authority or live prefab replacement.\n')
 activate(mesh)
 output=ART/'G0_Production_V3.blend'
 bpy.ops.wm.save_as_mainfile(filepath=str(output),compress=True)
@@ -314,7 +355,7 @@ for o in lods:
 report=dict(source=str(SOURCE.relative_to(ROOT)),source_sha256=source_hash,output=str(output.relative_to(ROOT)),baseline=baseline,lods=lod_reports,
             bones=[dict(name=b.name,parent=b.parent.name if b.parent else None,head=list(b.head_local)) for b in rig.data.bones],
             clips=[dict(name=n,start=s,end=e,fps=30,loop=l,in_place=True) for n,s,e,l in clips],refinements=refinements,
-            renderer_count_per_lod=1,material_count_per_lod=1,texture_resolution=1024,source_mesh_count=142,forward='Blender -Y; Unity orientation validated on import',presentation_fit=0.45854827761650085)
+            renderer_count_per_lod=1,material_count_per_lod=1,texture_resolution=ATLAS_SIZE,android_texture_cap=1024,source_mesh_count=142,forward='Blender -Y; Unity orientation validated on import',presentation_fit=0.45854827761650085)
 (DATA/'production_metrics.json').write_text(json.dumps(report,indent=2),encoding='utf-8')
 
 # Export exactly the production rig and LODs, no hidden source or reference.
