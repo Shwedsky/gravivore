@@ -9,6 +9,16 @@ namespace Gravivore.Tests.EditMode
 {
     public sealed class FirstVisualSliceAssetTests
     {
+        [Test] public void LiveAtlasEmissionSurvivesUrpMaterialValidation()
+        {
+            foreach (var name in new[] { "Slice_IndustrialAtlas", "G0_V3_Tier0", "G0_V3_Tier1", "G0_V3_Tier2" })
+            {
+                var material = AssetDatabase.LoadAssetAtPath<Material>(FirstVisualSliceBuilder.Root + "/Materials/" + name + ".mat");
+                Assert.IsNotNull(material.GetTexture("_EmissionMap"), name);
+                Assert.IsTrue((material.globalIlluminationFlags & MaterialGlobalIlluminationFlags.AnyEmissive) != 0, name);
+                Assert.IsTrue(material.IsKeywordEnabled("_EMISSION"), name);
+            }
+        }
         [Test] public void AllFiveVisualDeliverablesAreReachableFromProductionScene()
         {
             Assert.DoesNotThrow(FirstVisualSliceDependencies.ValidateOrThrow);
@@ -76,6 +86,21 @@ namespace Gravivore.Tests.EditMode
             Assert.That(prefab.GetComponentsInChildren<SkinnedMeshRenderer>().Length, Is.EqualTo(3));
             Assert.Contains(G0ProductionV3Review.Model, AssetDatabase.GetDependencies(AssetDatabase.GetAssetPath(prefab), true));
             Assert.IsFalse(model.GetComponent<Animator>().applyRootMotion);
+        }
+        [Test] public void AuthoredDeckRemainsHorizontalAndUsesOnlyThePaletteUvChannel()
+        {
+            var obj = Object.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>(FirstVisualSliceBuilder.Prefab("Deck_Module")));
+            try
+            {
+                var renderer = obj.GetComponentInChildren<Renderer>();
+                Assert.That(renderer.bounds.size.x, Is.InRange(3.8f,4.1f));
+                Assert.That(renderer.bounds.size.z, Is.InRange(3.8f,4.1f));
+                Assert.That(renderer.bounds.size.y, Is.LessThan(.2f));
+                var mesh = obj.GetComponentInChildren<MeshFilter>().sharedMesh;
+                Assert.That(mesh.uv2, Is.Empty, "Default primitive UVs must not displace the industrial palette from UV0.");
+                Assert.IsFalse(mesh.uv.Any(v => v.x >= .545f && v.x < .875f), "Deck must not sample hostile/cyan emission strips.");
+            }
+            finally { Object.DestroyImmediate(obj); }
         }
     }
 }

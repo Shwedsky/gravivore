@@ -80,9 +80,10 @@ namespace Gravivore.Tests.PlayMode
                 }
             }
             var activeAnimator = view.GetTierForm(EvolutionTier.Tier2).GetComponentInChildren<Animator>();
+            activeAnimator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
             activeAnimator.Play("Idle",0,0); activeAnimator.Update(0);
             var torso = activeAnimator.GetComponentsInChildren<Transform>().Single(t => t.name == "TORSO");
-            var before = torso.localRotation; activeAnimator.Update(.5f);
+            var before = torso.localRotation; activeAnimator.Play("Idle",0,.45f); activeAnimator.Update(0);
             Assert.That(Quaternion.Angle(before,torso.localRotation), Is.GreaterThan(.01f));
         }
 

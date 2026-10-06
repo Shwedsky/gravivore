@@ -20,6 +20,9 @@ spot (-18,55), existing elite gate (0,60), and Magnetar arena (0,69). A 16x24m
 containment area, narrow southern approach, and western service apron form one
 connected runtime section. This is authored directly into Chapter01, with no
 new scene, debug entry requirement or change to spot/encounter coordinates.
+The neighboring boss-approach deck has a local prefab variant whose southern
+edge starts at z=76; its former oversized surface cannot cover the new arena
+floor. Existing boss-approach machinery and gameplay remain in place.
 
 The kit replaces local dressing with chamfered service decks and recessed grates,
 braced bulkheads, armored barriers, hydraulic gate leaves, an amber containment

@@ -97,6 +97,8 @@ def blade(name,side,bone):
 def skin_mesh(name,rig=None,lod=False):
     # UV coordinates address a broad palette strip, reused intentionally across parts.
     for o in parts:
+        # Built-in primitives carry default UVs; replace them so Unity's UV0 is the atlas.
+        for layer in list(o.data.uv_layers): o.data.uv_layers.remove(layer)
         uv=o.data.uv_layers.new(name='IndustrialPalette')
         idx=mats.index(o.data.materials[0]);u=(idx*28+14)/N
         for f in o.data.polygons:
@@ -257,7 +259,7 @@ for x in (-1.70,0,1.70):
     rod('Visible structural brace '+str(x),(x,-.42,.10),(x+.18,-.43,2.38),.083,0)
     box('Brace seat '+str(x),(x,-.35,.27),(.30,.52,.42),1)
 rod('Wall service pipe',(-1.95,-.34,1.78),(1.95,-.34,1.78),.085,0)
-box('Restrained service light',(0,-.49,1.93),(.76,.034,.05),7,.0 if False else 'BODY')
+box('Restrained service light',(0,-.49,1.93),(.76,.034,.05),7)
 export_static('Bulkhead_Module')
 
 reset()

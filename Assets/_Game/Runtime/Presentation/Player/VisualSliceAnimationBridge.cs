@@ -89,6 +89,7 @@ namespace Gravivore.Presentation.Player
         { Binding = authority.GetComponent<CharacterVisualBinding>(), Position = authority.position };
         private void Lash(GravityLashCue cue, Vector3 position)
         {
+            if (cue == GravityLashCue.Cancelled) { _playerAttackUntil = 0; return; }
             if (cue != GravityLashCue.Windup) return;
             _playerAttackUntil = Time.time + .65f;
             _player.State = 0; _player.Pose(Attack);

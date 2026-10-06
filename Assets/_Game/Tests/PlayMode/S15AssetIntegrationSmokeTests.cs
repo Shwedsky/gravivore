@@ -17,9 +17,9 @@ namespace Gravivore.Tests.PlayMode
 
             var playerVisual = scene.Root.PlayerObject.transform.Find("Player Visual Root/S15 Visual [player-techno-organism]");
             if (playerVisual == null)
-                playerVisual = scene.Root.PlayerObject.transform.Find("Player Visual Root/G0_Tier0_ArtSpike");
+                playerVisual = scene.Root.PlayerObject.transform.Find("Player Visual Root/G0_V3_Live_Tier0");
             Assert.IsNotNull(playerVisual);
-            Assert.That(playerVisual.GetComponentsInChildren<MeshRenderer>(true), Has.Length.GreaterThanOrEqualTo(3));
+            Assert.That(playerVisual.GetComponentsInChildren<Renderer>(true), Has.Length.GreaterThanOrEqualTo(3));
             // Prototype landmarks remain available beneath their inactive visual anchors.
             Assert.IsNotNull(scene.Root.VisualEnvironment.GetRegion("relay-yard").Landmark.Find("Landmark relay-yard/S15 Visual [relay-yard]"));
             Assert.IsNotNull(scene.Root.VisualEnvironment.GetRegion("hauler-graveyard").Landmark.Find("Landmark hauler-graveyard/S15 Visual [hauler-graveyard]"));

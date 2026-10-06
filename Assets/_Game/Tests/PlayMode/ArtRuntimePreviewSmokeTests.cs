@@ -39,7 +39,7 @@ namespace Gravivore.Tests.PlayMode
                 Assert.That(scene.Root.EvolutionPresenter.CurrentTier, Is.EqualTo((EvolutionTier)tier));
                 for (var i = 0; i < 3; i++)
                 {
-                    var form = visual.Find($"G0_Tier{i}_ArtSpike");
+                    var form = visual.Find($"G0_V3_Live_Tier{i}");
                     Assert.IsNotNull(form);
                     Assert.That(form.gameObject.activeSelf, Is.EqualTo(i == tier));
                     Assert.That(form.localScale, Is.EqualTo(Vector3.one));
@@ -65,8 +65,8 @@ namespace Gravivore.Tests.PlayMode
                 Assert.That(enemy.MaximumHitPoints, Is.EqualTo(42));
                 Assert.That(form.GetComponentsInChildren<Collider>(true), Is.Empty);
                 Assert.That(form.GetComponentsInChildren<MonoBehaviour>(true), Is.Empty);
-                Assert.That(form.GetComponentsInChildren<Renderer>().Length, Is.EqualTo(13));
-                Assert.IsTrue(form.GetComponentsInChildren<Renderer>().Any(r => r.sharedMaterial.name == "Gravivore_ProxyArmor_PBR"));
+                Assert.That(form.GetComponentsInChildren<Renderer>().Length, Is.EqualTo(3));
+                Assert.IsTrue(form.GetComponentsInChildren<Renderer>().All(r => r.sharedMaterial.name == "Slice_IndustrialAtlas"));
             }
             var killed = cutters[0];
             var result = killed.ApplyDamage(new DamageRequest(10000, DamageType.Gravity));
@@ -92,7 +92,7 @@ namespace Gravivore.Tests.PlayMode
             Assert.That(camera.fieldOfView, Is.EqualTo(46));
             var cutters = Cutters(scene);
             Assert.That(cutters.Length, Is.EqualTo(4));
-            var forms = new[] { player.transform.Find("Player Visual Root/G0_Tier2_ArtSpike") }
+            var forms = new[] { player.transform.Find("Player Visual Root/G0_V3_Live_Tier2") }
                 .Concat(cutters.Select(CutterForm)).ToArray();
             var planes = GeometryUtility.CalculateFrustumPlanes(camera);
             foreach (var form in forms)
@@ -114,7 +114,7 @@ namespace Gravivore.Tests.PlayMode
             Assert.IsTrue(scene.Root.Progression.TryGrant(new EnemyDeathEvent(
                 new EnemyLifeId(Guid.NewGuid()), "scout-drone", Vector3.zero)));
         private static Transform CutterForm(OrdinaryEnemyController enemy) =>
-            enemy.transform.Find("Enemy Art Root/S15 Visual [cutter-unit]/Cutter_ArtSpike");
+            enemy.transform.Find("Enemy Art Root/S15 Visual [cutter-unit]/Cutter_V1");
         private static OrdinaryEnemyController[] Cutters(CanonicalSceneTestScope scene) =>
             scene.Root.GetComponentsInChildren<OrdinaryEnemyController>()
                 .Where(e => e.IsAlive && CutterForm(e) != null && CutterForm(e).gameObject.activeInHierarchy).ToArray();
@@ -123,7 +123,7 @@ namespace Gravivore.Tests.PlayMode
         private sealed class Snapshot
         {
             public string scene = "Chapter01_ScrapExclusion";
-            public string scope = "Visible active Tier2 + four real population Cutters; excludes environment, HUD, VFX and other enemies.";
+            public string scope = "LOD0 upper bound for active Tier2 + four real population Cutters; excludes environment, HUD, VFX and other enemies.";
             public int cutterInstances, renderers, materialSlots, uniqueMaterials, uniqueTextures, realtimeLights, shadowLights, shadowCastingRenderers;
             public long triangles, androidAstc6x6TextureBytesIncludingMips;
             public string fps = "Not measured on device";
@@ -136,8 +136,16 @@ namespace Gravivore.Tests.PlayMode
             var textures = new HashSet<Texture>();
             foreach (var form in forms)
             {
+                var lowerLodRenderers = new HashSet<Renderer>();
+                foreach (var group in form.GetComponentsInChildren<LODGroup>())
+                {
+                    var lods = group.GetLODs();
+                    for (var level = 1; level < lods.Length; level++)
+                        foreach (var renderer in lods[level].renderers) lowerLodRenderers.Add(renderer);
+                }
                 foreach (var renderer in form.GetComponentsInChildren<Renderer>())
                 {
+                    if (lowerLodRenderers.Contains(renderer)) continue;
                     snapshot.renderers++;
                     snapshot.materialSlots += renderer.sharedMaterials.Length;
                     if (renderer.shadowCastingMode != ShadowCastingMode.Off) snapshot.shadowCastingRenderers++;
@@ -150,10 +158,13 @@ namespace Gravivore.Tests.PlayMode
                             if (texture != null) textures.Add(texture);
                         }
                     }
+                    var skin = renderer as SkinnedMeshRenderer;
+                    var filter = renderer.GetComponent<MeshFilter>();
+                    var mesh = skin != null ? skin.sharedMesh : filter != null ? filter.sharedMesh : null;
+                    if (mesh != null)
+                        for (var sub = 0; sub < mesh.subMeshCount; sub++)
+                            snapshot.triangles += mesh.GetIndexCount(sub) / 3;
                 }
-                foreach (var filter in form.GetComponentsInChildren<MeshFilter>())
-                    for (var sub = 0; sub < filter.sharedMesh.subMeshCount; sub++)
-                        snapshot.triangles += filter.sharedMesh.GetIndexCount(sub) / 3;
             }
             snapshot.uniqueMaterials = materials.Count;
             snapshot.uniqueTextures = textures.Count;
@@ -174,7 +185,7 @@ namespace Gravivore.Tests.PlayMode
                 if (light.shadows != LightShadows.None) snapshot.shadowLights++;
             }
             // Whole-form art may change within the established mobile budgets.
-            Assert.That(snapshot.renderers, Is.LessThanOrEqualTo(92)); // <=40 player + four 13-renderer Cutters.
+            Assert.That(snapshot.renderers, Is.LessThanOrEqualTo(92));
             Assert.That(snapshot.materialSlots, Is.LessThanOrEqualTo(180));
             Assert.That(snapshot.triangles, Is.InRange(1L, 50000L));
             Directory.CreateDirectory("docs/art-spike");

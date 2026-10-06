@@ -38,6 +38,7 @@ namespace Gravivore.Editor.VisualIntegration
             Bind(definition.FindProperty("_elite"), Prefab("Magnetar_V1"), Vector3.one);
             definition.ApplyModifiedPropertiesWithoutUndo();
             MakeEnvironment();
+            MakeBossApproachBoundary();
             var scene = EditorSceneManager.OpenScene(ScenePath);
             var composition = scene.GetRootGameObjects().SelectMany(o => o.GetComponentsInChildren<S01SceneCompositionRoot>(true)).Single();
             var env = composition.VisualEnvironment;
@@ -45,6 +46,13 @@ namespace Gravivore.Editor.VisualIntegration
             if (prior != null) UnityEngine.Object.DestroyImmediate(prior.gameObject);
             var dressing = (GameObject)PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(Prefab("Environment_Slice")), env.Floor);
             dressing.name = "First Visual Slice Industrial Containment";
+            // The former corridor decks are thicker than the new floor finish.
+            // Retire only panels inside this rebuilt section so they cannot cover it.
+            var routes = env.Floor.Find("Phase3C Routes");
+            if (routes != null)
+                foreach (var panel in routes.Cast<Transform>().ToArray())
+                    if (panel.localPosition.z >= 36f && panel.localPosition.z <= 76f)
+                        UnityEngine.Object.DestroyImmediate(panel.gameObject);
             var serialized = new SerializedObject(env);
             serialized.FindProperty("_sliceGate").objectReferenceValue = AssetDatabase.LoadAssetAtPath<GameObject>(Prefab("Containment_Gate"));
             // Retire the three previous local dressing recipes; everything else retains its existing authoring.
@@ -54,6 +62,8 @@ namespace Gravivore.Editor.VisualIntegration
                 var anchor = (Transform)entries.GetArrayElementAtIndex(i).FindPropertyRelative("_anchor").objectReferenceValue;
                 if (anchor != null && new[] { "cutting-floor", "elite-approach", "elite-arena" }.Contains(anchor.parent.name))
                     entries.DeleteArrayElementAtIndex(i);
+                else if (anchor != null && anchor.parent.name == "boss-approach")
+                    Bind(entries.GetArrayElementAtIndex(i).FindPropertyRelative("_model"), Prefab("BossApproach_SliceBoundary"), Vector3.one);
             }
             var blockers = serialized.FindProperty("_sliceObstacles"); blockers.arraySize = Obstacles.Count;
             for (var i = 0; i < Obstacles.Count; i++)
@@ -74,6 +84,18 @@ namespace Gravivore.Editor.VisualIntegration
             Debug.Log("FIRST_VISUAL_SLICE_INTEGRATED: G0 V3 / Scout V1 / Cutter V1 / Magnetar V1 / Chapter01 containment area");
         }
         public static string Prefab(string name) => Root + "/Prefabs/" + name + ".prefab";
+        private static void MakeBossApproachBoundary()
+        {
+            var source = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Game/Phase3D/Prefabs/Environment/BossApproach_Phase3D.prefab");
+            var obj = (GameObject)PrefabUtility.InstantiatePrefab(source);
+            var deck = obj.transform.Find("Deck");
+            var halfLength = deck.GetComponent<Renderer>().bounds.extents.z;
+            var scale = deck.localScale; scale.z *= .5f; deck.localScale = scale;
+            deck.localPosition += Vector3.forward * halfLength * .5f;
+            PrefabUtility.RecordPrefabInstancePropertyModifications(deck);
+            PrefabUtility.SaveAsPrefabAsset(obj, Prefab("BossApproach_SliceBoundary"));
+            UnityEngine.Object.DestroyImmediate(obj);
+        }
         private static Material AtlasMaterial()
         {
             var path = Root + "/Materials/Slice_IndustrialAtlas.mat";
@@ -91,7 +113,9 @@ namespace Gravivore.Editor.VisualIntegration
             mat.SetColor("_BaseColor", Color.white); mat.SetColor("_EmissionColor", Color.white * 1.15f);
             mat.SetFloat("_Metallic", .55f); mat.SetFloat("_Smoothness", .32f); mat.SetFloat("_SmoothnessTextureChannel", 0);
             mat.EnableKeyword("_EMISSION"); mat.EnableKeyword("_METALLICSPECGLOSSMAP"); mat.enableInstancing = true;
-            mat.globalIlluminationFlags = MaterialGlobalIlluminationFlags.None;
+            // URP material validation uses AnyEmissive to retain the emission keyword.
+            // BakedEmissive does not add a realtime light to this unbaked slice.
+            mat.globalIlluminationFlags = MaterialGlobalIlluminationFlags.BakedEmissive;
             EditorUtility.SetDirty(mat); return mat;
         }
         private static void Import(string name, bool animated)
@@ -150,7 +174,9 @@ namespace Gravivore.Editor.VisualIntegration
         private static void MakeStatic(string name, Material material)
         {
             Import(name, false);
-            var obj = UnityEngine.Object.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>(Root + "/Models/" + name + ".fbx")); obj.name = name;
+            // Keep FBX's axis conversion on a child. Authored placement rotates the identity wrapper.
+            var obj = new GameObject(name);
+            UnityEngine.Object.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>(Root + "/Models/" + name + ".fbx"),obj.transform,false);
             foreach (var r in obj.GetComponentsInChildren<Renderer>()) r.sharedMaterials = new[] { material };
             PrefabUtility.SaveAsPrefabAsset(obj, Prefab(name)); UnityEngine.Object.DestroyImmediate(obj);
         }
@@ -173,7 +199,7 @@ namespace Gravivore.Editor.VisualIntegration
                     var material = AssetDatabase.LoadAssetAtPath<Material>(path);
                     if (material == null) { material = new Material(source); AssetDatabase.CreateAsset(material, path); }
                     material.SetColor("_EmissionColor", source.GetColor("_EmissionColor") * (1 + tier * .12f));
-                    material.EnableKeyword("_EMISSION"); material.globalIlluminationFlags = MaterialGlobalIlluminationFlags.None;
+                    material.EnableKeyword("_EMISSION"); material.globalIlluminationFlags = MaterialGlobalIlluminationFlags.BakedEmissive;
                     EditorUtility.SetDirty(material);
                     foreach (var r in model.GetComponentsInChildren<SkinnedMeshRenderer>()) r.sharedMaterial = material;
                 }
@@ -225,10 +251,10 @@ namespace Gravivore.Editor.VisualIntegration
             foreach (var x in new[] { -22, -18 }) foreach (var z in new[] { 50, 54, 58 })
                 Place(root.transform, "Deck_Module", new Vector3(x, .01f, z));
             foreach (var x in new[] { -14, -10 }) Place(root.transform, "Deck_Module", new Vector3(x, .01f, 54));
-            for (var z = 50; z <= 58; z += 4) Place(root.transform, "Bulkhead_Module", new Vector3(-24, 0, z), -90);
-            Obstacle("Strong service apron wall", new Vector3(-24, 1.3f, 54), new Vector3(.5f, 2.6f, 12));
-            Place(root.transform, "Coolant_Pump", new Vector3(-22.3f, 0, 51));
-            Obstacle("Strong service pump", new Vector3(-22.3f, .9f, 51), new Vector3(1.4f, 1.8f, 1.8f));
+            for (var z = 54; z <= 58; z += 4) Place(root.transform, "Bulkhead_Module", new Vector3(-24, 0, z), -90);
+            Obstacle("Strong service apron wall", new Vector3(-24, 1.3f, 56), new Vector3(.5f, 2.6f, 8));
+            Place(root.transform, "Coolant_Pump", new Vector3(-22.3f, 0, 54));
+            Obstacle("Strong service pump", new Vector3(-22.3f, .9f, 54), new Vector3(1.4f, 1.8f, 1.8f));
             Place(root.transform, "Maintenance_Station", new Vector3(-22.3f, 0, 57));
             Obstacle("Strong service maintenance", new Vector3(-22.3f, 1, 57), new Vector3(1.4f, 2, 1.5f));
             foreach (var side in new[] { -1, 1 })

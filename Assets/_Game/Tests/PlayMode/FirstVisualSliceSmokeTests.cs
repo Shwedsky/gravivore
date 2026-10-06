@@ -32,6 +32,12 @@ namespace Gravivore.Tests.PlayMode
             Assert.That(root.EnemyPopulation.GetSpot(1).GetLiveEnemy(0).GetComponent<CharacterVisualBinding>().ActiveModel.name, Is.EqualTo("Cutter_V1"));
             Assert.That(root.MagnetarGuard.GetComponent<CharacterVisualBinding>().ActiveModel.name, Is.EqualTo("Magnetar_V1"));
             Assert.IsNotNull(root.VisualEnvironment.Floor.Find("First Visual Slice Industrial Containment"));
+            var oldRoutes = root.VisualEnvironment.Floor.Find("Phase3C Routes");
+            foreach (Transform panel in oldRoutes)
+                Assert.IsTrue(panel.localPosition.z < 36f || panel.localPosition.z > 76f,
+                    "Old corridor surface must not cover the rebuilt floor: " + panel.name);
+            var neighboringDeck = root.VisualEnvironment.GetRegion("boss-approach").Root.GetComponentsInChildren<Renderer>().Single(r => r.name == "Deck");
+            Assert.That(neighboringDeck.bounds.min.z, Is.GreaterThanOrEqualTo(75.99f), "Boss approach floor must start at the arena boundary.");
             Assert.IsEmpty(root.VisualEnvironment.GetComponentsInChildren<Collider>(true));
             Assert.That(root.PlayerObject.GetComponent<CharacterController>().radius, Is.EqualTo(.42f));
             Assert.That(root.PlayerObject.GetComponent<CharacterController>().height, Is.EqualTo(1.4f));
@@ -77,6 +83,10 @@ namespace Gravivore.Tests.PlayMode
                 camera.targetTexture = target; camera.Render(); RenderTexture.active = target;
                 texture.ReadPixels(new Rect(0,0,540,960),0,0); texture.Apply();
                 Directory.CreateDirectory("docs/first-visual-slice/internal");
+                File.WriteAllLines("docs/first-visual-slice/internal/arena_surface_bounds.txt",
+                    root.GetComponentsInChildren<Renderer>().Where(r => r.enabled && r.bounds.min.x <= 0 && r.bounds.max.x >= 0 &&
+                        r.bounds.min.z <= 66 && r.bounds.max.z >= 66 && r.bounds.max.y < 1)
+                        .Select(r => r.name + " | " + r.bounds + " | " + r.sharedMaterial.name));
                 File.WriteAllBytes("docs/first-visual-slice/internal/live_elite_area.png", texture.EncodeToPNG());
                 Assert.That(root.PlayerHealth.IsAlive, Is.True);
                 Assert.IsTrue(root.MagnetarGuard.IsAlive);
