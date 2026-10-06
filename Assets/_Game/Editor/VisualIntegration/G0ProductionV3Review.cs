@@ -210,17 +210,23 @@ namespace Gravivore.Editor.VisualIntegration
             if(bakePose)
             {
                 group.enabled=false;foreach(var skin in skins)skin.enabled=false;
-                var source=skins[lodIndex];posedMesh=new Mesh();source.BakeMesh(posedMesh,false);
+                var source=skins[lodIndex];posedMesh=new Mesh();
+                // Unity 6's editor skin bake also incorporates the ancestor fit
+                // in the bone matrices. Bake at source scale, then restore the
+                // single accepted presentation transform for the camera.
+                var fit=hero.transform.localScale;
+                try {hero.transform.localScale=Vector3.one;hero.GetComponent<Animator>().Update(0);source.BakeMesh(posedMesh,false);}
+                finally {hero.transform.localScale=fit;}
                 posed=new GameObject("TEMP imported clip pose",typeof(MeshFilter),typeof(MeshRenderer));
                 posed.transform.SetParent(source.transform,false);posed.GetComponent<MeshFilter>().sharedMesh=posedMesh;
                 posed.GetComponent<MeshRenderer>().sharedMaterials=source.sharedMaterials;
                 if(name=="06_gameplay_camera.png")
                 {
                     var points=posedMesh.vertices.Select(v=>posed.transform.TransformPoint(v)).ToArray();
-                    var height=points.Max(v=>v.y)-points.Min(v=>v.y);
+                    var assetHeight=points.Max(v=>v.y)-points.Min(v=>v.y);
                     var ground=points.Min(v=>v.y);
-                    if(Mathf.Abs(height-1.54f)>.002f||Mathf.Abs(ground)>.002f)throw new InvalidOperationException("Captured rest scale/ground mismatch: height="+height+" ground="+ground);
-                    Debug.Log("G0_V3_CAMERA_REST_SCALE_PASS height="+height+" ground="+ground);
+                    if(Mathf.Abs(assetHeight-1.54f)>.002f||Mathf.Abs(ground)>.002f)throw new InvalidOperationException("Captured rest scale/ground mismatch: height="+assetHeight+" ground="+ground);
+                    Debug.Log("G0_V3_CAMERA_REST_SCALE_PASS height="+assetHeight+" ground="+ground);
                 }
             }
             try {camera.targetTexture=target;camera.aspect=(float)width/height;for(var i=0;i<3;i++)camera.Render();RenderTexture.active=target;
