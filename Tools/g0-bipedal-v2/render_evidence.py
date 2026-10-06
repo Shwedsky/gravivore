@@ -68,7 +68,7 @@ def label(name,body,x,y,size):
 labels=[label('LEFT_ORIGINAL','ORIGINAL CATFISH',-1.25,2.05,.13),
         label('RIGHT_CUSTOM','G-0  /  BIPEDAL V2',1.25,2.05,.13),
         label('COMPARISON_CREDIT','Catfish: Jungle Jim / CC BY 4.0   |   equal height, rest pose   |   G-0: custom shells + 17 adapted mechanisms',0,-2.12,.069)]
-capture('07_G0_Bipedal_vs_Catfish_donor.png',(0,-10,4.7),(0,0,1.9),4.8,(1800,1400),
+capture('07_G0_Bipedal_vs_Catfish_donor.png',(0,-10,4.7),(0,0,1.9),6.6,(1800,1400),
         'LEFT original Catfish REST silhouette/materials, RIGHT new G-0, equal height; both yaw -10 degrees; no geometry change to reference')
 (OUT.parent/'data/render_manifest.json').write_text(json.dumps(manifest,indent=2),encoding='utf-8')
 print('SEVEN_BLENDER_RENDERS_COMPLETE')

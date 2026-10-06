@@ -1,17 +1,17 @@
 {
   "status": "PASS",
   "blender": "5.2.2 LTS",
-  "blend_sha256": "13075e0300fb9f9cf7fde12fe90cd869655dadf05ee2ec98ab26aaaeaccff6db",
-  "blend_bytes": 16722461,
-  "hero_mesh_objects": 126,
-  "hero_total_objects": 143,
-  "hero_raw_triangles": 6507,
-  "hero_evaluated_triangles": 23009,
+  "blend_sha256": "107c014ec4cad0aca1ee521bb6168f063ad916e3a5835f7b5474569574a210f5",
+  "blend_bytes": 16726992,
+  "hero_mesh_objects": 134,
+  "hero_total_objects": 151,
+  "hero_raw_triangles": 7051,
+  "hero_evaluated_triangles": 24705,
   "donor_mesh_objects": 17,
   "donor_triangles": 1499,
-  "custom_mesh_objects": 109,
-  "custom_raw_triangles": 5008,
-  "custom_evaluated_triangles": 21510,
+  "custom_mesh_objects": 117,
+  "custom_raw_triangles": 5552,
+  "custom_evaluated_triangles": 23206,
   "hero_materials": [
     "G0 | ceramic titanium edge",
     "G0 | copper service mark",
@@ -57,7 +57,7 @@
   "rig_pose_smoke_max_vertex_displacement_m": 0.15087012231435665,
   "packed_reference_images": 12,
   "reference_meshes": 53,
-  "whole_scene_objects": 207,
+  "whole_scene_objects": 215,
   "checks": [
     "Saved blend reopened",
     "17 retained components / 1499 triangles",
@@ -851,6 +851,66 @@
       "degenerate_faces": 0
     },
     {
+      "name": "R foot load bridge",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 44,
+      "evaluated_triangles": 140,
+      "vertices": 24,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "R foot rocker spindle",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 76,
+      "evaluated_triangles": 236,
+      "vertices": 40,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | graphite mechanism"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "R foot rocker endcap -1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 76,
+      "evaluated_triangles": 236,
+      "vertices": 40,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "R foot rocker endcap 1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 76,
+      "evaluated_triangles": 236,
+      "vertices": 40,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
       "name": "R rear thigh actuator",
       "authorship": "GRAVIVORE original blockout geometry",
       "raw_triangles": 44,
@@ -1071,6 +1131,66 @@
       ],
       "materials": [
         "G0 | graphite mechanism"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "L foot load bridge",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 44,
+      "evaluated_triangles": 140,
+      "vertices": 24,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "L foot rocker spindle",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 76,
+      "evaluated_triangles": 236,
+      "vertices": 40,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | graphite mechanism"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "L foot rocker endcap -1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 76,
+      "evaluated_triangles": 236,
+      "vertices": 40,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | machined actuator"
+      ],
+      "boundary_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "L foot rocker endcap 1",
+      "authorship": "GRAVIVORE original blockout geometry",
+      "raw_triangles": 76,
+      "evaluated_triangles": 236,
+      "vertices": 40,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        "G0 | machined actuator"
       ],
       "boundary_edges": 0,
       "degenerate_faces": 0
@@ -1870,5 +1990,22 @@
       "boundary_edges": 10,
       "degenerate_faces": 0
     }
-  ]
+  ],
+  "gameplay_projection": {
+    "resolution": [
+      900,
+      1600
+    ],
+    "root_scale": 0.5,
+    "presentation_height_m": 1.8025000393390656,
+    "bbox_pixels": [
+      396,
+      719,
+      504,
+      872
+    ],
+    "width_pixels": 108,
+    "height_pixels": 153,
+    "inside_frustum": true
+  }
 }

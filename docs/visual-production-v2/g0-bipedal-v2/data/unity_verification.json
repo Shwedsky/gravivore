@@ -1,0 +1,53 @@
+{
+  "status": "PASS",
+  "unity": "6000.3.0f1",
+  "compile": "Completed; no C# compiler errors",
+  "project_validator": {
+    "entrypoint": "Gravivore.Editor.ProjectValidator.ValidateOrThrow",
+    "exit": 0
+  },
+  "tests": {
+    "EditMode": {
+      "result": "Passed",
+      "total": 386,
+      "passed": 386,
+      "failed": 0,
+      "skipped": 0,
+      "sha256": "f6d547937c195fb4fa4b67515dbea3be0051735958375ae877aa920fb4926388"
+    },
+    "PlayMode": {
+      "result": "Skipped:Ignored",
+      "total": 93,
+      "passed": 92,
+      "failed": 0,
+      "skipped": 1,
+      "sha256": "d424ba465519896d94ea613cecacd1d35894353c0ece49d7901d9286c8cf6204"
+    }
+  },
+  "playmode_skip": "Optional structural capture export requires GRAVIVORE_VISUAL_INTEGRATION_QA",
+  "android": {
+    "status": "PASS",
+    "exit": 0,
+    "manifest_verification": "PASS via aapt",
+    "apk_path": "C:\\Users\\pamak\\Documents\\ChatGPT\\gravivore\\.codex-worktrees\\g0-bipedal-blockout-v2\\Builds\\Android\\gravivore-dev-0.1.0+2.apk",
+    "bytes": 59221713,
+    "sha256": "7dfd52f2b8847d3c31ce5dd6eb78142b5e0518155deac198d29e83784c58cc64",
+    "metadata": {
+      "flavor": "Dev",
+      "version": "0.1.0",
+      "versionCode": 2,
+      "applicationId": "com.gravivore.mobile.dev",
+      "buildTimestampUtc": "2026-10-06T14:58:59.6855124Z",
+      "gitCommitSha": "ef90e1ea5b67b8132211e835878f7bf16c2a1faa",
+      "unityVersion": "6000.3.0f1",
+      "developmentBuild": true,
+      "allowDebugging": true,
+      "targetArchitecture": "ARM64",
+      "apkFilename": "gravivore-dev-0.1.0+2.apk"
+    }
+  },
+  "runtime_scope": "Assets, Packages and ProjectSettings exactly match origin/main after generated serialization cleanup",
+  "runtime_base_sha": "40b682d3570d08c427999d42514501bb6c1c2dfd",
+  "g0_v2_in_apk": false,
+  "device_test": "Not run; this is a regression build, not an integrated G-0 preview"
+}

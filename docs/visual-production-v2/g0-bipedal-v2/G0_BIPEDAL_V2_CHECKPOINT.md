@@ -29,4 +29,14 @@ Replace the rejected spider art direction with a narrow, athletic, visibly mecha
 
 ## Scope of validation
 
-This is an art-only blockout gate. Blender import, mesh metrics, render evidence and file reopening are required. No runtime spec is being completed. Unity compile/tests/project validation/APK status will be stated explicitly in the final review.
+This is an art-only blockout gate. Blender import, mesh metrics, render evidence and file reopening are required. No runtime spec is being completed. Unity compile/tests/project validation/APK status is recorded in the final review.
+
+## Completed checkpoints
+
+- Initial checkpoint: fa72478bc7c5794f694b43029d450b942f299a4e, pushed; new [Draft PR #57](https://github.com/Shwedsky/gravivore/pull/57) opened immediately.
+- Donor inspection and pre-modeling design decision: 60c7843, committed and pushed.
+- Editable modeling and rigid skeleton checkpoint: ef90e1e, committed and pushed.
+- Final seven-view evidence/review and verification: complete; final commit/push follows this update.
+- Final model: 134 editable mesh objects, 24705 evaluated triangles, 16-bone original mechanical rig; 17 retained donor mechanisms / 1499 triangles.
+- Visual verdict B, human approval pending. Scope ends here; no runtime integration, old-work overwrite or merge.
+- Unity compile/project validation passed; EditMode 386 passed; PlayMode 92 passed, 1 optional capture skipped. ARM64 dev APK 0.1.0+2 built and manifest-verified. Generated runtime serialization changes were restored; runtime source matches the main baseline.

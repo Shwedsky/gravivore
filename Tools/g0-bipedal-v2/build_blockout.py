@@ -155,6 +155,8 @@ for s,label in [(-1,'R'),(1,'L')]:
         off=s*.1*side
         beam(label+f' shin rail {side}',(knee[0]+off,knee[1],knee[2]-.05),(hock[0]+off,hock[1],hock[2]+.04),.055,steel,pk)
     beam(label+' ankle shaft',hock,ankle,.08,dark,pa)
+    beam(label+' foot load bridge',ankle,(s*.43,-.025,.18),.065,steel,pa)
+    axle(label+' foot rocker',(s*.43,-.025,.22),.082,.20,pa)
     beam(label+' rear thigh actuator',(s*.32,.16,2.07),(s*.42,.01,1.55),.045,steel,ph)
     loft(label+' tapered thigh shield',[(1.61,s*.39,-.19,.19,.18),(1.91,s*.34,-.12,.32,.27),(2.14,s*.30,-.03,.26,.24)],armor,ph)
     # Long narrow shin blade leaves the posterior twin rails visible in side/back.

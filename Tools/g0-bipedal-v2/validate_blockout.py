@@ -5,6 +5,7 @@ Outputs measured geometry metrics. This validates an art artifact, not locomotio
 import bpy, bmesh, json, math, hashlib
 from pathlib import Path
 from mathutils import Vector
+from bpy_extras.object_utils import world_to_camera_view
 ROOT=Path(__file__).resolve().parents[2]
 FILE=ROOT/'art/visual-production-v2/g0/G0_Bipedal_Blockout_V2.blend'
 DATA=ROOT/'docs/visual-production-v2/g0-bipedal-v2/data'
@@ -72,5 +73,21 @@ report={'status':'PASS','blender':bpy.app.version_string,'blend_sha256':hashlib.
         'whole_scene_objects':len(scene.objects),'checks':['Saved blend reopened','17 retained components / 1499 triangles',
         'Finite geometry','Exactly one rigid bone weight per vertex','Knee pose moves geometry','No donor shape keys/actions',
         'Attribution embedded','Reference hidden by default','All used images packed, max 1024'], 'objects':rows}
+root=bpy.data.objects['G0_ROOT_METERS_Z_UP_FORWARD_MINUS_Y']
+root.scale=(.5,)*3; root.location.z=-.0325; root.rotation_euler.z=math.pi
+scene.render.resolution_x=900; scene.render.resolution_y=1600
+bpy.context.view_layer.update(); deps=bpy.context.evaluated_depsgraph_get()
+cam=bpy.data.objects['CAM_05_GAMEPLAY']; projected=[]
+for o in meshes:
+    ev=o.evaluated_get(deps); me=ev.to_mesh()
+    projected.extend(world_to_camera_view(scene,cam,o.matrix_world@v.co) for v in me.vertices)
+    ev.to_mesh_clear()
+px=[p.x*900 for p in projected]; py=[(1-p.y)*1600 for p in projected]
+report['gameplay_projection']={'resolution':[900,1600],'root_scale':.5,
+    'presentation_height_m':report['hero_height_m']*.5,
+    'bbox_pixels':[math.floor(min(px)),math.floor(min(py)),math.ceil(max(px)),math.ceil(max(py))],
+    'width_pixels':math.ceil(max(px))-math.floor(min(px)), 'height_pixels':math.ceil(max(py))-math.floor(min(py)),
+    'inside_frustum':all(0<=p.x<=1 and 0<=p.y<=1 and p.z>0 for p in projected)}
+assert report['gameplay_projection']['inside_frustum']
 (DATA/'blockout_validation.json').write_text(json.dumps(report,indent=2),encoding='utf-8')
 print('G0_VALIDATION_PASS',json.dumps({k:v for k,v in report.items() if k not in ['objects','bone_names','checks']}))

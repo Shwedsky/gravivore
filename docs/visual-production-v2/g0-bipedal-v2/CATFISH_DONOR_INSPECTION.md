@@ -20,7 +20,7 @@ The original listing was retrieved through search. Direct page rendering returne
 ## Measured source
 
 - Objects: **54**: 53 meshes and one `Armature`.
-- Mesh triangles: **14650**; imported vertices: **8141**. Official listing/API also reports 14650 triangles and 8127 vertices; import splitting explains why Blender vertex count differs.
+- Mesh triangles: **14650**; imported vertices: **8141**. Official listing/API also reports 14650 triangles and 8127 vertices. The vertex difference is consistent with import splitting; its exact cause was not independently proven.
 - Seven assigned materials: `camo_metal_armor_30_98`, `green_metal_armor_30_1100`, `green_metal_armor_30_99`, `green_painted_metal_30_26`, `gun_black_metal_30_05`, `scratched_metal_30_28`, `Material.001`.
 - 24 provided diffuse/normal/metallic/AO/roughness JPEG maps, largely 4096 square. FBX carries 18 image references with stale author-machine `D:/Temp folder Reallusion/...` paths and embedded data. The inspection/preview remaps used diffuse/normal nodes to actual archive textures by matching basename stems, including `.jpg`/`.jpeg` differences. Stale unused packed references emit save warnings; source import itself works.
 - All **53** meshes have UV layer(s). UVs are inherited authoring data, not repacked/polished here.

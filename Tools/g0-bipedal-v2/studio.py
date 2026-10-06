@@ -35,7 +35,7 @@ def setup_studio():
         ('Rear_rim', (2,4,6), 1500, 3, (.65,.9,1))]:
         d = bpy.data.lights.new(name, 'AREA'); d.energy=power; d.shape='DISK'; d.size=size; d.color=col
         o = bpy.data.objects.new(name,d); scene.collection.objects.link(o); o.location=loc; aim(o,(0,0,1.8))
-    bpy.ops.mesh.primitive_plane_add(size=200)
+    bpy.ops.mesh.primitive_plane_add(size=2000)
     ground=bpy.context.object; ground.name='Studio_floor'
     ground.data.materials.append(material('Studio_graphite', (.055,.069,.085),.12,.5))
     ground.location.z=-.02

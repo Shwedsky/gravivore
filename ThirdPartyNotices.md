@@ -69,8 +69,6 @@ Expanded original-source research, licenses and rejection/acquisition reasons ar
 - Exact source-to-event mapping and archive checksums: docs/PLAYER_FEEL_COMBAT_PRESENTATION.md.
 - No ripped game sounds or purchased dependency; unchanged encounter/progression placeholders are project-generated S14 cues.
 
-## Import template (future additions)
-
 ## G-0 Bipedal Blockout V2 — Catfish donor mechanisms and comparison
 
 - Asset: **Catfish Mech low-poly (animated)**.
@@ -84,6 +82,8 @@ Expanded original-source research, licenses and rejection/acquisition reasons ar
 - Comparison evidence also displays the original donor silhouette and source materials, rest pose, equal-height normalization; source textures may be downsampled/packed solely for portable comparison. No original full donor is bound to gameplay.
 - Attribution required: yes. Preserve this title/author/source/license and modification notice with adapted geometry and donor comparison renders; no author endorsement is implied.
 - Raw archive, extracted source and imported animation remain local ignored inspection inputs. The final authoring file must include an internal attribution text block. Exact per-object mapping and adaptation metrics accompany the review.
+
+## Import template (future additions)
 
 When importing any external asset, append:
 
