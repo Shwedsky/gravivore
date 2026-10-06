@@ -41,6 +41,9 @@ for record in records:
         nested_out.mkdir(exist_ok=True)
         if nested.suffix.lower() == '.zip':
             with zipfile.ZipFile(nested) as source:
+                bad = source.testzip()
+                if bad:
+                    raise ValueError(f'Corrupt nested ZIP member: {bad}')
                 names = source.namelist()
                 for name in names:
                     if not (nested_out / name).resolve().is_relative_to(nested_out.resolve()):

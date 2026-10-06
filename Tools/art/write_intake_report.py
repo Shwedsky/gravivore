@@ -139,6 +139,8 @@ text = '''# Compact first-slice environment donor subset
 Quaternius Standard, CC0. Inspect all 189 actual FBX models; approve only the following sixteen unique structural/component donors. Grade B donor subset; no whole-pack approval or final-art approval. Normals, trim texture relinking, meter scale/grid and pivots still need preparation for eventual Unity handoff.
 
 The inspected free pack is much simpler than the approved concept machinery. Flat trim-driven panels are topology donors, not finished layered floors/walls. Add custom seam/edge/medium forms where needed. Neutral clay evidence makes this limitation visible.
+
+All 189 modules have separate silhouette/topology/rig/animation/material/mobile/fit/donor grades in `data/environment_grades.json`. A B donor grade does not approve a weak stock piece as finished scenery.
 '''
 for role,names in selections.items():
     text += '\n## '+role.replace('_',' ').title()+'\n\n'
@@ -163,6 +165,26 @@ The subset remains local in the ignored extraction workspace. No third-party FBX
 '''
 write('ENVIRONMENT_FIRST_SLICE_SUBSET.md',text)
 (DATA/'environment_subset.json').write_text(json.dumps(subset,indent=2),encoding='utf-8')
+selected_names={r['module'] for r in subset}
+environment_grades=[]
+for r in environment:
+    name=Path(r['path']).stem
+    selected=name in selected_names
+    category=Path(r['path']).parent.name
+    topology=sum(m['topology']['zero_area_faces']+m['topology']['non_manifold_edges'] for m in r['meshes'])
+    shape='B' if selected and name not in ('Platform_Metal2','Prop_Barrel_Large') else 'C'
+    if category in ('Aliens','Decals') or name.startswith(('ShortWall_','Door_','Prop_Crate','Prop_Chest')):
+        shape='Reject'
+    environment_grades.append(dict(module=name,source=r['path'],grades=dict(
+        silhouette=shape,topology='C' if topology else 'B',
+        rig='B' if selected and r['armatures'] else 'Reject',
+        animation_usefulness='B' if selected and r['actions'] else 'Reject',
+        material_structure='C' if len(r['materials'])>2 else 'B',
+        mobile_suitability='C' if r['triangles']>6000 else 'A',
+        gravivore_fit='B' if selected else 'Reject',donor_value='B' if selected else 'C'),
+        decision='selected structural/component donor; final art unapproved' if selected else 'excluded from first-slice subset',
+        basis='Neutral source clay review and measured audit. Material grade concerns slot/trim structure; final shader appearance is unverified.'))
+(DATA/'environment_grades.json').write_text(json.dumps(environment_grades,indent=2),encoding='utf-8')
 
 body='''# Mobile material preparation
 
@@ -216,6 +238,11 @@ manifest='''# First-slice asset manifest — measured local intake
 
 Source archive hashes, imported measurements, candidate grades and limitations: `modeling/SOURCE_INSPECTION_RESULTS.md`. No runtime prefab, scene or gameplay asset is changed. Next gate: G-0 Blockout V1 art-direction review; stop there before production texturing/rigging/enemy completion or Unity integration.
 '''
+if (DATA/'g0_blockout.json').exists():
+    model=json.loads((DATA/'g0_blockout.json').read_text(encoding='utf-8'))
+    old='- G0-T0: custom-first; zero donor parts for Blockout V1. Modeling follows the committed source-inspection gate. Outer identity, four supports, core cavity, weapons and rear mass are custom.'
+    new=f"- G0-T0: **Blockout V1 READY FOR ART-DIRECTION REVIEW, grade B**. `{model['source']}`: {model['triangles']:,} triangles, {model['mesh_objects']} meshes / {model['total_objects']} model objects, four material swatches, zero donor parts. Source gate committed before modeling. Outer identity, four supports, core cavity, weapons and rear mass are custom. Seven PNGs and strict limitations: `modeling/G0_BLOCKOUT_V1_REVIEW.md`. No production/Unity approval."
+    manifest=manifest.replace(old,new)
 (OUT.parent/'FIRST_SLICE_ASSET_MANIFEST.md').write_text(manifest,encoding='utf-8')
 
 # Keep individual environment tile scratch images local; retain readable contact sheets.

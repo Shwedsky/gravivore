@@ -18,7 +18,10 @@ def sheet(name, records, columns=3, tile=360):
     for index, record in enumerate(records):
         x, y = index%columns*tile, index//columns*height+60
         key = record.get('id') if name in ('Scout','Cutter','Magnetar') else Path(record['path']).stem
-        image = Image.open(IMAGES/(key+'_threequarter.png')).convert('RGB')
+        image_path = IMAGES/(key+'_threequarter.png')
+        if not image_path.exists():
+            image_path = ROOT/'.asset-intake-tmp/environment-tiles'/(key+'_threequarter.png')
+        image = Image.open(image_path).convert('RGB')
         image.thumbnail((tile, tile))
         canvas.paste(image, (x+(tile-image.width)//2,y))
         draw.text((x+8,y+tile+5), key, font=SMALL, fill='white')

@@ -81,7 +81,7 @@ Sketchfab provenance/CC Attribution follows PR #55's exact title/author/URL matc
 - Provenance: [Stalenhag Environment Project: Spider Mech](https://sketchfab.com/3d-models/stalenhag-environment-project-spider-mech-ec5914b53b6a4cde8de4820050bc46c5) by Enrico Labarile; CC Attribution per #55.
 - Meshes: 4; base triangles: 103,396; evaluated triangles: 103,396.
 - Rig: none supplied. Actions: none supplied.
-- Materials: not converted; see COLLADA limit. UV: not converted; see source UV inputs.
+- Materials: source COLLADA declares `Spider_Cables_GRP_39SG2`, `Spider_Spider_ALT_BlueprintSG3`, `Spider_Spider_ALT_BlueprintSG5`, `Spider_Spider_ALT_BlueprintSG7`; these are recorded from XML, not converted into Blender shaders. UV: four source TEXCOORD inputs; not converted by the static inspection adapter.
 - Grades (silhouette / topology / rig / animation / materials / mobile / GRAVIVORE fit / donor): C / B / Reject / Reject / B / Reject / Reject / Reject.
 - Review: Reject production reuse. Creator explicitly credits Simon Stalenhag designs; uploader CC BY record does not establish rights to the underlying design. Static COLLADA XML import preserves geometry/scene transforms only; source has four UV inputs, no controllers/animation, but this inspection adapter does not transfer UVs/materials.
 - Supplied external bitmaps: 39; sizes: (512, 512), (2048, 2048). Packed/embedded maps are additionally recorded in Blender audit.

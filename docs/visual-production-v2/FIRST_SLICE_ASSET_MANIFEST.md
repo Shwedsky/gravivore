@@ -2,7 +2,7 @@
 
 2026-10-06. Supersedes PR #55's unavailable-source gate for these thirteen actual archives. Reference art/design: PR #53; provenance: PR #54/#55 plus official rechecks recorded in modeling results. No whole donor body is approved unchanged.
 
-- G0-T0: custom-first; zero donor parts for Blockout V1. Modeling follows the committed source-inspection gate. Outer identity, four supports, core cavity, weapons and rear mass are custom.
+- G0-T0: **Blockout V1 READY FOR ART-DIRECTION REVIEW, grade B**. `art/visual-production-v2/g0/G0_Blockout_V1.blend`: 15,080 triangles, 87 meshes / 107 model objects, four material swatches, zero donor parts. Source gate committed before modeling. Outer identity, four supports, core cavity, weapons and rear mass are custom. Seven PNGs and strict limitations: `modeling/G0_BLOCKOUT_V1_REVIEW.md`. No production/Unity approval.
 - EN-SCOUT: Hasan Spider Robot, B preferred donor; actual `.blend`, rig and clips inspected. Custom shell/core/weapon, topology repair and retargeted motion required.
 - EN-CUTTER: Mirandanimator Scorpion Robot, B preferred chassis donor; eight static rigid objects inspected. Tail/front replacement, optimization, rig and animation required.
 - EN-MAG: custom torso/armor/core; restricted Vaportrash `crab_legs` and Preview_Tempest `Cylinder001` generic mechanism pool only. Stalenhag reuse rejected.

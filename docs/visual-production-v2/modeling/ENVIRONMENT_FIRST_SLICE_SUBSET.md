@@ -4,6 +4,8 @@ Quaternius Standard, CC0. Inspect all 189 actual FBX models; approve only the fo
 
 The inspected free pack is much simpler than the approved concept machinery. Flat trim-driven panels are topology donors, not finished layered floors/walls. Add custom seam/edge/medium forms where needed. Neutral clay evidence makes this limitation visible.
 
+All 189 modules have separate silhouette/topology/rig/animation/material/mobile/fit/donor grades in `data/environment_grades.json`. A B donor grade does not approve a weak stock piece as finished scenery.
+
 ## Floors
 
 - `Platform_Metal2` — 24 triangles, 1 material(s); UVMap. Exact source: `.asset-intake-tmp/environment/Modular SciFi MegaKit[Standard]/Modular SciFi MegaKit[Standard]/FBX/Platforms/Platform_Metal2.fbx`.

@@ -90,6 +90,8 @@ def import_dae(path):
             obj.matrix_world = Matrix.Rotation(math.pi/2, 4, 'X') @ obj.matrix_world
     return dict(method='static XML geometry/scene import; UV/material/skin not converted',
                 source_geometry_count=len(geometries),
+                source_materials=[dict(id=m.get('id'),name=m.get('name')) for m in tree.findall('.//c:library_materials/c:material',ns)],
+                source_images=[dict(id=i.get('id'),path=i.findtext('c:init_from',default='',namespaces=ns)) for i in tree.findall('.//c:library_images/c:image',ns)],
                 source_controller_count=len(tree.findall('.//c:controller', ns)),
                 source_animation_count=len(tree.findall('.//c:library_animations/c:animation', ns)),
                 source_uv_inputs=len(tree.findall('.//c:input[@semantic="TEXCOORD"]', ns)))
