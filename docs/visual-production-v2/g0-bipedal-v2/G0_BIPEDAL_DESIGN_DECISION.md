@@ -21,7 +21,7 @@ Do not adopt the 71-bone imported humanoid/facial skeleton or unsplit 912-frame 
 
 ## Review priorities and limits
 
-Model at approximately 3.7–4.0 authoring meters tall, Z up / -Y forward, grounded at Z=0. This is an authoring choice, not a change to Unity root scale. Judge front, side, back, three-quarter, perspective gameplay angle, black silhouette and equal-height donor comparison.
+Model at approximately 3.6 authoring meters tall, Z up / -Y forward, grounded at Z=0. This is an authoring choice, not a change to Unity root scale. Judge front, side, back, three-quarter, perspective gameplay angle, black silhouette and equal-height donor comparison.
 
 Gameplay evidence uses the existing S20 portrait perspective (camera offset 0,14.8,-11.2, target height 0.9, vertical FOV 46) with the authored front toward the camera. A closer supplementary presentation in the same image may be used only if clearly labeled; report the actual full-camera pixel footprint. Do not infer 60 FPS or gameplay usability from studio renders.
 
