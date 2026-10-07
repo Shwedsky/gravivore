@@ -85,10 +85,9 @@ namespace Gravivore.Presentation.UI
             _layerGroup.blocksRaycasts=false; _layerGroup.interactable=false;
             _compactMap=root.MapIntegration.MapPresenter.CompactSurface.parent as RectTransform;
             var enemies = root.EnemyPopulation.GetComponentsInChildren<OrdinaryEnemyController>(true);
-            _actors = new Actor[enemies.Length+2]; _order = new int[_actors.Length];
+            _actors = new Actor[enemies.Length+1]; _order = new int[_actors.Length];
             for (var i=0;i<enemies.Length;i++) _actors[i] = new Actor { Enemy=enemies[i],Root=enemies[i].transform };
             _actors[enemies.Length] = new Actor { Root=root.MagnetarGuard.transform,Strong=true };
-            _actors[enemies.Length+1] = new Actor { Root=root.CustodianBoss.transform,Strong=true };
             _plates = new Plate[settings.VisibleBars];
             for(var i=0;i<_plates.Length;i++) _plates[i]=CreatePlate(i);
             _floating = new Floating[settings.DamageTextCapacity+settings.RewardTextCapacity];
@@ -161,15 +160,15 @@ namespace Gravivore.Presentation.UI
             for(var i=0;i<_actors.Length;i++)
             {
                 var actor=_actors[i];
-                var alive=actor.Enemy!=null ? actor.Enemy.IsAlive : i==_actors.Length-2 ? _root.MagnetarGuard.CanBeTargeted : _root.CustodianBoss.CanBeTargeted;
+                var alive=actor.Enemy!=null ? actor.Enemy.IsAlive : _root.MagnetarGuard.CanBeTargeted;
                 if(!alive) continue;
                 if(actor.Enemy!=null && !actor.Life.Equals(actor.Enemy.LifeId)) BindLife(actor);
-                if(actor.Enemy==null) actor.Reward=_root.Chapter1Encounters.PreviewReward(i==_actors.Length-2?RepeatableEncounterKind.Magnetar:RepeatableEncounterKind.Custodian);
+                if(actor.Enemy==null) actor.Reward=_root.Chapter1Encounters.PreviewReward(RepeatableEncounterKind.Magnetar);
                 var distance=(actor.Root.position-player).sqrMagnitude;
-                var selected=ReferenceEquals(target,actor.Enemy!=null?(ITargetable)actor.Enemy:i==_actors.Length-2?_root.MagnetarGuard:_root.CustodianBoss);
+                var selected=ReferenceEquals(target,actor.Enemy!=null?(ITargetable)actor.Enemy:_root.MagnetarGuard);
                 var recent=Time.unscaledTime<actor.RecentUntil;
                 if(distance>_settings.RelevanceRange*_settings.RelevanceRange && !recent && !selected) continue;
-                actor.Anchor=actor.Root.position+Vector3.up*(actor.Enemy!=null?actor.Enemy.TargetPoint.localPosition.y+1.05f:i==_actors.Length-2?2.1f:2.5f);
+                actor.Anchor=actor.Root.position+Vector3.up*(actor.Enemy!=null?actor.Enemy.TargetPoint.localPosition.y+1.05f:2.1f);
                 if(!OnScreen(actor.Anchor,out _)) continue;
                 actor.Score=distance-(selected?10000:recent?1000:actor.Strong?100:0);
                 var j=count; while(j>0 && _actors[_order[j-1]].Score>actor.Score) { _order[j]=_order[j-1]; j--; }

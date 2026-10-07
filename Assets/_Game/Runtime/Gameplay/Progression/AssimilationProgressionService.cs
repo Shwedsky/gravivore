@@ -35,6 +35,7 @@ namespace Gravivore.Gameplay.Progression
         public event Action<ProgressionDirtyEvent> Dirty;
 
         public ProgressionState State { get; }
+        public ProgressionConfiguration Configuration => _configuration;
         public bool TryPreview(string enemyId, float multiplier, out CoreReward reward) =>
             _configuration.TryGetReward(enemyId, multiplier, out reward);
 

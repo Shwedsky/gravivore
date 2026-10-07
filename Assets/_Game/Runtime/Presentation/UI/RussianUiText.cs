@@ -7,7 +7,7 @@ namespace Gravivore.Presentation.UI
     {
         public const string CyrillicValidationSample = "ПРОЧНОСТЬ МАНЁВРЕННОСТЬ";
         public const string Durability = "ПРОЧНОСТЬ";
-        public const string BossName = "ХРАНИТЕЛЬ М-0";
+        public const string BossName = "КУСТОДИАН М-0";
         public const string Paused = "ПАУЗА";
         public const string GameMenu = "МЕНЮ";
         public const string Characteristics = "ХАРАКТЕРИСТИКИ";
@@ -18,7 +18,7 @@ namespace Gravivore.Presentation.UI
         public const string WelcomeBack = "С ВОЗВРАЩЕНИЕМ";
         public const string Claim = "ЗАБРАТЬ";
         public const string ChapterComplete = "ГЛАВА ЗАВЕРШЕНА";
-        public const string BossDefeated = "Хранитель М-0 уничтожен";
+        public const string BossDefeated = "Кустодиан М-0 уничтожен";
         public const string ContinueExploring = "ПРОДОЛЖИТЬ ИГРУ";
         public const string PrimarySequenceComplete = "ОСНОВНАЯ ЦЕПОЧКА ЗАВЕРШЕНА";
 
@@ -30,13 +30,13 @@ namespace Gravivore.Presentation.UI
                 case PlayerStatType.Hull: return "Корпус";
                 case PlayerStatType.Armor: return "Броня";
                 case PlayerStatType.Flux: return "Поток";
-                case PlayerStatType.Mobility: return "Манёвренность";
+                case PlayerStatType.Mobility: return "Мобильность";
                 default: return "Характеристика";
             }
         }
 
         public static string StatIncreased(PlayerStatType stat, int level) =>
-            $"{StatName(stat)}: уровень {level}";
+            $"{StatName(stat).ToUpperInvariant()} ↑ {level}";
 
         public static string StatsDetails(bool expanded) =>
             $"ХАРАКТЕРИСТИКИ: {(expanded ? "ПОДРОБНО" : "КРАТКО")}";

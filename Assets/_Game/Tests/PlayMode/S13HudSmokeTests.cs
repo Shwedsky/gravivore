@@ -94,14 +94,23 @@ namespace Gravivore.Tests.PlayMode
             boss.Damage(250f);
             Assert.That(presenter.FillRect.anchorMax.x, Is.EqualTo(0.5f).Within(0.001f));
             StringAssert.Contains(RussianUiText.BossName, presenter.DisplayText);
+            boss.SetCurrent(20f);
+            Assert.That(presenter.FillAmount,Is.EqualTo(.02f).Within(.001f));
             boss.SetCurrent(1200f);
             Assert.That(presenter.FillRect.anchorMax.x, Is.EqualTo(1f).Within(0.001f));
             boss.SetCurrent(-100f);
             Assert.That(presenter.FillRect.anchorMax.x, Is.Zero.Within(0.001f));
             boss.Reset();
             Assert.IsFalse(presenter.IsVisible);
+            Assert.That(presenter.FillAmount,Is.EqualTo(1f));
             boss.Start();
             completion.TryRecordDefeat("custodian-m0", Vector3.zero);
+            Assert.IsFalse(presenter.IsVisible);
+            // A permanent first clear cannot suppress the live HUD on subsequent encounters.
+            boss.Reset(); boss.Start();
+            Assert.IsTrue(presenter.IsVisible);
+            Assert.That(presenter.FillAmount,Is.EqualTo(1f));
+            boss.Damage(1000f);
             Assert.IsFalse(presenter.IsVisible);
 
             UnityEngine.Object.Destroy(root);

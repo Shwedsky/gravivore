@@ -40,6 +40,8 @@ namespace Gravivore.Presentation.World
             public Vector3 Size => _size;
         }
         [SerializeField] private GameObject _sliceGate;
+        [SerializeField] private bool _fullChapterProduction;
+        public bool FullChapterProduction => _fullChapterProduction;
         [SerializeField] private SliceObstacle[] _sliceObstacles = Array.Empty<SliceObstacle>();
         public GameObject SliceGate => _sliceGate;
         public int SliceObstacleCount => _sliceObstacles.Length;

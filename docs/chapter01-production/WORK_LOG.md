@@ -11,3 +11,5 @@ full-chapter reachability, full Unity regressions and a verified ARM64 DEV APK.
 The only next human review gate is installation and play of the complete APK.
 Intermediate art is verified internally. This checkpoint records scope only;
 it does not claim that production work or validation is complete.
+
+Draft PR: https://github.com/Shwedsky/gravivore/pull/62.

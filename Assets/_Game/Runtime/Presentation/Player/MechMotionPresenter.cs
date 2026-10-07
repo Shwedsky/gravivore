@@ -55,6 +55,7 @@ namespace Gravivore.Presentation.Player
         private float _phase, _time, _attackRemaining;
         private GravityLashCue _attackPhase;
         private int _stepIndex;
+        public int FootstepCueCount { get; private set; }
         private float _nextStepAudioTime;
         private Gravivore.Gameplay.Player.PlayerLocomotion _locomotion;
         private Gravivore.Gameplay.Combat.GravityAttackController _attack;
@@ -162,7 +163,7 @@ namespace Gravivore.Presentation.Player
                     if (_time >= _nextStepAudioTime)
                     {
                         _nextStepAudioTime = _time + _settings.StepMinimumInterval;
-                        try { _audio.Play(S14AudioCue.Step); }
+                        try { _audio.Play(S14AudioCue.Step); FootstepCueCount++; }
                         catch (Exception exception) { Debug.LogException(exception); }
                     }
                 }

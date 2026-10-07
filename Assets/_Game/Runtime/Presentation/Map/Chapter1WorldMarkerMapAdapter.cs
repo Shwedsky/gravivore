@@ -42,7 +42,7 @@ namespace Gravivore.Presentation.Map
         {
             get
             {
-                if (_bossGate.HasValue && _player.position.z >= _bossGate.Value.Position.z) return "Арена Хранителя";
+                if (_bossGate.HasValue && _player.position.z >= _bossGate.Value.Position.z) return "Арена Кустодиана";
                 if (_eliteGate.HasValue && _player.position.z >= _eliteGate.Value.Position.z) return "Контур Магнетара";
                 var best = float.MaxValue; var name = "Сектор";
                 for (var i = 0; i < _ordinaryCount; i++)
@@ -63,7 +63,7 @@ namespace Gravivore.Presentation.Map
                 var gateLocked = isEliteGate ? !_world.EliteGateUnlocked : !_world.BossGateUnlocked;
                 return new MapMarkerSnapshot(gate.Id, MapMarkerKind.Gate, gate.Position,
                     gateLocked ? MapAvailabilityState.Inactive : MapAvailabilityState.Available,
-                    isEliteGate ? "Шлюз элиты" : "Шлюз Хранителя", progressionLocked: gateLocked);
+                    isEliteGate ? "Шлюз элиты" : "Шлюз Кустодиана", progressionLocked: gateLocked);
             }
             if (index == 0) return new MapMarkerSnapshot("player", MapMarkerKind.Player, _player.position,
                 MapAvailabilityState.Available, "Игрок", headingDegrees: _player.eulerAngles.y);
@@ -89,7 +89,7 @@ namespace Gravivore.Presentation.Map
             var reward = state.RewardEntitlement == EncounterRewardEntitlement.FallbackRepeat
                 ? MapRewardState.CappedFallback : MapRewardState.Full;
             return new MapMarkerSnapshot(state.Id, elite ? MapMarkerKind.Elite : MapMarkerKind.Boss,
-                state.Position, availability, elite ? "Магнетар" : "Хранитель", progressionLocked: locked,
+                state.Position, availability, elite ? "Магнетар" : "Кустодиан", progressionLocked: locked,
                 remainingSeconds: (float)state.CooldownRemaining.TotalSeconds, rewardState: reward,
                 firstClearCompleted: state.ProgressionFirstClearCompleted,
                 rewardEntitlement: state.RewardEntitlement, premiumRewardsRemaining: state.PremiumRewardsRemaining,

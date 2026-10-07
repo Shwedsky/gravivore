@@ -94,7 +94,7 @@ namespace Gravivore.Presentation.Player
         }
         private S01SceneCompositionRoot _root;
         private GravityLashVfxPool _lash;
-        private Actor _player, _elite;
+        private Actor _player, _elite, _boss;
         private Actor[] _actors;
         private OrdinaryEnemyController[] _enemies;
         private Corpse[] _corpses;
@@ -112,16 +112,18 @@ namespace Gravivore.Presentation.Player
         {
             _root = root; _lash = lash;
             _player = Make(root.PlayerObject.transform); _elite = Make(root.MagnetarGuard.transform);
+            _boss = Make(root.CustodianBoss.transform);
             _enemies = root.EnemyPopulation.GetComponentsInChildren<OrdinaryEnemyController>(true);
             _actors = new Actor[_enemies.Length];
             for (var i = 0; i < _actors.Length; i++) _actors[i] = Make(_enemies[i].transform);
             _corpseRoot = new GameObject("Visual Slice Pooled Shutdowns").transform;
             _corpseRoot.SetParent(transform, false);
             // Death meshes outlive immediate authoritative recycle, without delaying rewards or respawns.
-            _corpses = new Corpse[8];
+            var ids = new[] { "scout-drone", "cutter-unit", "warden", "arc-drone", "carrier" };
+            _corpses = new Corpse[ids.Length * 2];
             for (var i = 0; i < _corpses.Length; i++)
             {
-                var id = i < 4 ? "scout-drone" : "cutter-unit";
+                var id = ids[i / 2];
                 catalog.TryGetEnemy(id, out var recipe);
                 if (recipe?.PresentationPrefab == null) continue;
                 var obj = Instantiate(recipe.PresentationPrefab, _corpseRoot, false);
@@ -135,6 +137,7 @@ namespace Gravivore.Presentation.Player
             root.EnemyPopulation.EnemyDied += EnemyDied;
             root.MagnetarGuard.TelegraphStarted += EliteAttack; root.MagnetarGuard.Damaged += EliteDamaged;
             root.MagnetarGuard.Activated += EliteActivated;
+            root.CustodianBoss.EncounterReset += BossReset;
         }
         private static Actor Make(Transform authority) => new Actor
         { Binding = authority.GetComponent<CharacterVisualBinding>(), Position = authority.position };
@@ -150,6 +153,7 @@ namespace Gravivore.Presentation.Player
         private void EliteAttack(EliteShockwaveTelegraphEvent value) { _eliteAttackUntil = Time.time + value.Duration; _elite.State = 0; }
         private void EliteDamaged(DamageResult value) { if (!value.WasLethal) _eliteHitUntil = Time.time + .28f; }
         private void EliteActivated(MagnetarGuardActivatedEvent value) { _elite.State = 0; _elite.Pose(Idle); }
+        private void BossReset(BossEncounterResetEvent value) { _boss.State = 0; _boss.ReactionUntil = 0; _boss.Pose(Idle); }
         private void EnemyDied(EnemyDeathEvent value)
         {
             for (var i = 0; i < _corpses.Length; i++)
@@ -209,6 +213,13 @@ namespace Gravivore.Presentation.Player
             }
             _elite.Pose(_root.MagnetarGuard.State == MagnetarGuardState.Dead ? Death : Time.time < _eliteHitUntil ? Hit :
                 Time.time < _eliteAttackUntil ? Attack : Idle);
+            var boss = _root.CustodianBoss;
+            if (boss.CurrentHitPoints < _boss.Hp) _boss.ReactionUntil = Time.time + .23f;
+            var bossState = boss.State == CustodianBossState.Dead ? Death :
+                Time.time < _boss.ReactionUntil ? Hit :
+                boss.State == CustodianBossState.Telegraphing || boss.State == CustodianBossState.ExecutingAttack ? Attack :
+                (boss.transform.position - _boss.Position).sqrMagnitude > .000001f ? Run : Idle;
+            _boss.Pose(bossState); _boss.Hp=boss.CurrentHitPoints; _boss.Position=boss.transform.position;
             ActiveShutdownCount = 0;
             for (var i = 0; i < _corpses.Length; i++)
             {
@@ -223,6 +234,7 @@ namespace Gravivore.Presentation.Player
             if (_root == null) return;
             if (_root.PlayerHealth != null) { _root.PlayerHealth.Damaged -= PlayerDamaged; _root.PlayerHealth.Died -= PlayerDied; }
             if (_root.EnemyPopulation != null) _root.EnemyPopulation.EnemyDied -= EnemyDied;
+            if (_root.CustodianBoss != null) _root.CustodianBoss.EncounterReset -= BossReset;
             if (_root.MagnetarGuard != null)
             {
                 _root.MagnetarGuard.TelegraphStarted -= EliteAttack; _root.MagnetarGuard.Damaged -= EliteDamaged;

@@ -35,6 +35,10 @@ namespace Gravivore.Gameplay.Player
 
         public float MoveSpeed => DerivedStats.MoveSpeed;
 
+        /// <summary>Read-only preview includes the same equipment and caps as live calculations.</summary>
+        public PlayerDerivedStats PreviewLevel(PlayerStatType stat, int level) =>
+            PlayerStatsCalculator.Calculate(_configuration, _baseLevels.WithLevel(stat, level), _modifiers);
+
         public int GetMaximumLevel(PlayerStatType stat)
         {
             return _configuration.GetCurve(stat).MaximumLevel;
