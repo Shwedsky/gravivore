@@ -44,7 +44,8 @@ namespace Gravivore.Tests.EditMode
                         Gravivore.Editor.VisualIntegration.FirstVisualSliceBuilder.Prefab(id == "cutter-unit" ? "Cutter_V1" : "Scout_V1")));
                 else
                 {
-                    Assert.That(AssetDatabase.GetAssetPath(recipe.PresentationPrefab), Does.StartWith("Assets/_Game/Phase3D/Prefabs/Enemies/"),id);
+                    var model=id=="warden"?"Warden_V1":id=="arc-drone"?"ArcDrone_V1":"Carrier_V1";
+                    Assert.That(AssetDatabase.GetAssetPath(recipe.PresentationPrefab), Is.EqualTo(Gravivore.Editor.VisualIntegration.Chapter01ProductionBuilder.Prefab(model)),id);
                     Assert.DoesNotThrow(() => PresentationPrefabValidation.ValidateOrThrow(recipe.PresentationPrefab));
                 }
                 for (var i = 0; i < recipe.PartCount; i++)
@@ -52,7 +53,7 @@ namespace Gravivore.Tests.EditMode
                         Does.StartWith(Gravivore.Editor.S15AssetConfigurator.ModelRoot));
             }
             foreach (var id in new[] { "relay-yard", "cutting-floor", "shield-dump", "capacitor-field", "hauler-graveyard" })
-                Assert.That(catalog.GetLandmark(id).PresentationPrefab, Is.Null, id);
+                Assert.That(AssetDatabase.GetAssetPath(catalog.GetLandmark(id).PresentationPrefab), Is.EqualTo(Gravivore.Editor.VisualIntegration.Chapter01ProductionBuilder.Prefab("Service_Markings")), id);
             foreach (var name in new[] { "S09_MagnetarGuard", "S09_CustodianM0", "S08_Chapter01World" })
                 Assert.IsFalse(AssetDatabase.GetDependencies("Assets/_Game/Content/Definitions/" + name + ".asset", true)
                     .Any(p => p.StartsWith("Assets/_Game/ArtSpike/")));

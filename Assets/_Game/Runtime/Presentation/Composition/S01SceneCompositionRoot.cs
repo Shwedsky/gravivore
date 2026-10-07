@@ -443,6 +443,7 @@ namespace Gravivore.Presentation.Composition
             statsObject.transform.SetParent(transform, false);
             PlayerStatsHud = statsObject.GetComponent<PlayerStatsHudPresenter>();
             PlayerStatsHud.Initialize(PlayerStats, _hudRoot, false);
+            PlayerStatsHud.ConfigureAudio(AudioPresenter);
 
             var bossHealthObject = new GameObject("Boss Health HUD", typeof(BossHealthHudPresenter));
             bossHealthObject.transform.SetParent(transform, false);
@@ -462,6 +463,9 @@ namespace Gravivore.Presentation.Composition
                 EquipmentCatalog,
                 AudioPresenter,
                 _hapticSettings);
+
+            PauseMenu.ConfigureCharacteristics(Progression, _worldDefinition.Configuration.EliteRequirement,
+                Quests, WorldUnlocks.State);
 
             var offlineObject = new GameObject("Offline Reward Panel", typeof(OfflineRewardPanelPresenter));
             offlineObject.transform.SetParent(transform, false);

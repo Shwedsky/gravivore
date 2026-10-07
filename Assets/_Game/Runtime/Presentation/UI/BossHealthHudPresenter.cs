@@ -16,9 +16,10 @@ namespace Gravivore.Presentation.UI
         private RectTransform _panel;
         private HealthBarView _healthBar;
         private Text _label;
+        private Text _value;
 
         public bool IsVisible => _panel != null && _panel.gameObject.activeSelf;
-        public string DisplayText => _label != null ? _label.text : string.Empty;
+        public string DisplayText => _label != null ? _label.text + "  " + _value.text : string.Empty;
         public float FillAmount => _healthBar != null ? _healthBar.NormalizedValue : 0f;
         public RectTransform FillRect => _healthBar?.FillRect;
 
@@ -36,26 +37,29 @@ namespace Gravivore.Presentation.UI
             _panel = HudUiFactory.CreatePanel(
                 hudRoot,
                 "Boss Health",
-                new Vector2(0.18f, 0.79f),
+                new Vector2(0.18f, 0.775f),
                 new Vector2(0.82f, 0.85f),
                 HudUiFactory.PanelColor);
             _healthBar = HealthBarView.Create(
                 _panel,
                 "Boss Health Track",
                 "Boss Health Fill",
-                new Vector2(0.03f, 0.15f),
-                new Vector2(0.97f, 0.62f),
+                new Vector2(0.04f, 0.36f),
+                new Vector2(0.96f, 0.58f),
                 new Color(0.12f, 0.14f, 0.15f, 1f),
                 HudUiFactory.WarningColor);
             _label = HudUiFactory.CreateText(
                 _panel,
                 "Boss Health Label",
-                new Vector2(0f, 0.55f),
+                new Vector2(0f, 0.60f),
                 Vector2.one,
                 RussianUiText.BossName,
                 24,
                 TextAnchor.MiddleCenter,
                 Color.white);
+            _value = HudUiFactory.CreateText(_panel, "Boss HP Values", new Vector2(0f, 0.02f),
+                new Vector2(1f, 0.34f), string.Empty, 23, TextAnchor.MiddleCenter, Color.white);
+            ApplyState();
             _panel.gameObject.SetActive(false);
 
             _boss.EncounterStarted += HandleEncounterStarted;
@@ -69,7 +73,8 @@ namespace Gravivore.Presentation.UI
         {
             if (_boss == null) return;
             var maximum = _boss.MaximumHitPoints;
-            _label.text = $"{RussianUiText.BossName}  {Mathf.Max(0f, _boss.CurrentHitPoints):0} / {Mathf.Max(0f, maximum):0}";
+            _label.text = RussianUiText.BossName;
+            _value.text = $"{Mathf.Max(0f, _boss.CurrentHitPoints):0} / {Mathf.Max(0f, maximum):0}";
             _healthBar.SetNormalizedValue(
                 maximum > 0f ? _boss.CurrentHitPoints / maximum : 0f);
         }
@@ -89,13 +94,20 @@ namespace Gravivore.Presentation.UI
 
         private void HandleEncounterStarted(BossEncounterStartedEvent _)
         {
-            if (_completion.IsDefeated) return;
             ApplyState();
             _panel.gameObject.SetActive(true);
         }
 
-        private void HandleDamaged(DamageResult _) => ApplyState();
-        private void HandleEncounterReset(BossEncounterResetEvent _) => _panel.gameObject.SetActive(false);
+        private void HandleDamaged(DamageResult _)
+        {
+            ApplyState();
+            if (_boss.CurrentHitPoints <= 0f) _panel.gameObject.SetActive(false);
+        }
+        private void HandleEncounterReset(BossEncounterResetEvent _)
+        {
+            ApplyState();
+            _panel.gameObject.SetActive(false);
+        }
         private void HandleDefeated(BossDefeatedEvent _) => _panel.gameObject.SetActive(false);
         private void HandlePlayerDied(PlayerDeathEvent _) => _panel.gameObject.SetActive(false);
         private void OnDestroy() => Shutdown();

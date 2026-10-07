@@ -21,6 +21,20 @@ namespace Gravivore.Presentation.UI
         private Button _hapticsButton;
         private S14AudioPresenter _audio;
         private PresentationHapticSettings _hapticSettings;
+        public CharacteristicsPresenter Characteristics { get; private set; }
+
+        public void ConfigureCharacteristics(Gravivore.Gameplay.Progression.AssimilationProgressionService progression,
+            Gravivore.Gameplay.World.EliteGateRequirement requirement, Gravivore.Gameplay.Quests.QuestService quests,
+            Gravivore.Gameplay.World.WorldUnlockState world)
+        {
+            Characteristics = gameObject.AddComponent<CharacteristicsPresenter>();
+            Characteristics.Initialize(_root, _stats, progression, requirement, quests, world, null);
+            var title = _root.Find("Game Menu/Characteristics Title");
+            if (title != null) title.gameObject.SetActive(false);
+            var panel = (RectTransform)_root.Find("Game Menu");
+            HudUiFactory.CreateButton(panel, "Open Characteristics", new Vector2(.08f,.82f),new Vector2(.92f,.89f),
+                RussianUiText.Characteristics, Characteristics.Open);
+        }
 
         public bool IsPaused => _root != null && _root.gameObject.activeSelf;
         public RectTransform PauseButtonRect { get; private set; }
@@ -83,6 +97,7 @@ namespace Gravivore.Presentation.UI
 
         public void Resume()
         {
+            if (Characteristics != null && Characteristics.IsVisible) Characteristics.Close();
             if (_root != null) _root.gameObject.SetActive(false);
             _modal?.Close(this);
         }

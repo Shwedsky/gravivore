@@ -12,6 +12,8 @@ namespace Gravivore.Presentation.UI
         private PlayerStatsState _stats;
         private Text _feedbackText;
         private float _feedbackRemaining;
+        private Gravivore.Presentation.Feedback.S14AudioPresenter _audio;
+        public void ConfigureAudio(Gravivore.Presentation.Feedback.S14AudioPresenter audio) => _audio=audio;
 
         public string DisplayText => string.Empty;
         public string RecentChangeText => _feedbackText != null ? _feedbackText.text : string.Empty;
@@ -26,8 +28,8 @@ namespace Gravivore.Presentation.UI
             _feedbackText = HudUiFactory.CreateText(
                 hudRoot,
                 "Stat Change Feedback",
-                new Vector2(0.26f, 0.74f),
-                new Vector2(0.74f, 0.8f),
+                new Vector2(0.26f, 0.66f),
+                new Vector2(0.74f, 0.71f),
                 string.Empty,
                 28,
                 TextAnchor.MiddleCenter,
@@ -67,6 +69,7 @@ namespace Gravivore.Presentation.UI
             _feedbackText.text = RussianUiText.StatIncreased(change.Stat, change.CurrentLevel);
             _feedbackText.gameObject.SetActive(true);
             _feedbackRemaining = FeedbackDuration;
+            _audio?.Play(Gravivore.Presentation.Feedback.S14AudioCue.Assimilation);
         }
 
         private void OnDestroy() => Shutdown();

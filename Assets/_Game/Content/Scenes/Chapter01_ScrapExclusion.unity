@@ -273,7 +273,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &124775005
 Transform:
   m_ObjectHideFlags: 0
@@ -913,6 +913,7 @@ Transform:
   - {fileID: 698507966}
   - {fileID: 812719581}
   - {fileID: 193979392}
+  - {fileID: 1000221180}
   m_Father: {fileID: 707714297}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &366652768
@@ -1290,7 +1291,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &477906010
 Transform:
   m_ObjectHideFlags: 0
@@ -1622,7 +1623,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &665963835
 Transform:
   m_ObjectHideFlags: 0
@@ -1745,7 +1746,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &698507966
 Transform:
   m_ObjectHideFlags: 0
@@ -1848,6 +1849,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Gravivore.Presentation::Gravivore.Presentation.World.ChapterVisualEnvironment
   _sliceGate: {fileID: 1865220902120705957, guid: 03fb94bcc36bb9c4184757cc604022ac, type: 3}
+  _fullChapterProduction: 1
   _sliceObstacles:
   - _name: Slice Strong service apron wall
     _center: {x: -24, y: 1.3, z: 56}
@@ -1912,6 +1914,642 @@ MonoBehaviour:
   - _name: Slice Freight stack 74
     _center: {x: 6, y: 1.25, z: 74}
     _size: {x: 1.9, y: 2.5, z: 2}
+  - _name: Chapter01 relay-yard Relay_Mast 0
+    _center: {x: -30.4, y: 2.5999997, z: 25.99987}
+    _size: {x: 1.7893028, y: 5.1999993, z: 1.7919998}
+  - _name: Chapter01 relay-yard Relay_Mast 1
+    _center: {x: -21.6, y: 2.5999997, z: 25.99987}
+    _size: {x: 1.7893028, y: 5.1999993, z: 1.7919998}
+  - _name: Chapter01 relay-yard Relay_Junction 2
+    _center: {x: -30.4, y: 0.9175599, z: 13.999829}
+    _size: {x: 1.8084984, y: 1.8351201, z: 1.7084904}
+  - _name: Chapter01 relay-yard Relay_Junction 3
+    _center: {x: -21.60017, y: 0.9175599, z: 14}
+    _size: {x: 1.7084923, y: 1.8351201, z: 1.8084984}
+  - _name: Chapter01 relay-yard Relay_Junction 4
+    _center: {x: -31.00017, y: 0.9175599, z: 29}
+    _size: {x: 1.7084923, y: 1.8351201, z: 1.8084984}
+  - _name: Chapter01 relay-yard Conduit_Rack 5
+    _center: {x: -30.5, y: 0.83149993, z: 20}
+    _size: {x: 0.5, y: 1.6529999, z: 3.7999992}
+  - _name: Chapter01 relay-yard Structural_Support 6
+    _center: {x: -30.124872, y: 1.4464998, z: 15.999929}
+    _size: {x: 1.0446358, y: 2.8929996, z: 0.8958893}
+  - _name: Chapter01 relay-yard Maintenance_Station 7
+    _center: {x: -30.36109, y: 0.9817875, z: 13.065026}
+    _size: {x: 1.2686005, y: 1.9635751, z: 1.2190628}
+  - _name: Chapter01 relay-yard Conduit_Rack 8
+    _center: {x: -21.5, y: 0.83149993, z: 20}
+    _size: {x: 0.5, y: 1.6529999, z: 3.7999992}
+  - _name: Chapter01 relay-yard Structural_Support 9
+    _center: {x: -21.72487, y: 1.4464998, z: 15.999929}
+    _size: {x: 1.0446358, y: 2.8929996, z: 0.8958893}
+  - _name: Chapter01 relay-yard Maintenance_Station 10
+    _center: {x: -21.63891, y: 0.9817875, z: 12.934974}
+    _size: {x: 1.2686005, y: 1.9635751, z: 1.2190628}
+  - _name: Chapter01 cutting-floor Coolant_Pump 11
+    _center: {x: -10, y: 0.92499995, z: 33.999813}
+    _size: {x: 1.2370739, y: 1.8500001, z: 1.7864304}
+  - _name: Chapter01 cutting-floor Freight_Container 12
+    _center: {x: 10, y: 0.6949999, z: 34}
+    _size: {x: 1.44664, y: 1.3100001, z: 1.7799988}
+  - _name: Chapter01 cutting-floor Conduit_Rack 13
+    _center: {x: -10, y: 0.83149993, z: 43}
+    _size: {x: 0.5, y: 1.6529999, z: 3.800003}
+  - _name: Chapter01 cutting-floor Maintenance_Station 14
+    _center: {x: 10.065026, y: 0.9817875, z: 43.96109}
+    _size: {x: 1.2190628, y: 1.9635751, z: 1.2686005}
+  - _name: Chapter01 cutting-floor Barrier_Module 15
+    _center: {x: -12.000075, y: 0.62499994, z: 37}
+    _size: {x: 0.7359581, y: 1.25, z: 3.7789536}
+  - _name: Chapter01 cutting-floor Barrier_Module 16
+    _center: {x: 11.999925, y: 0.62499994, z: 37}
+    _size: {x: 0.7359581, y: 1.25, z: 3.7789536}
+  - _name: Chapter01 cutting-floor Conduit_Rack 17
+    _center: {x: -4.5, y: 0.83149993, z: 36}
+    _size: {x: 0.50000095, y: 1.6529999, z: 3.800003}
+  - _name: Chapter01 cutting-floor Structural_Support 18
+    _center: {x: -4.124871, y: 1.4464998, z: 31.999928}
+    _size: {x: 1.044635, y: 2.8929996, z: 0.8958893}
+  - _name: Chapter01 cutting-floor Maintenance_Station 19
+    _center: {x: -4.3610897, y: 0.9817875, z: 29.065025}
+    _size: {x: 1.2685988, y: 1.9635751, z: 1.2190628}
+  - _name: Chapter01 cutting-floor Conduit_Rack 20
+    _center: {x: 4.5, y: 0.83149993, z: 36}
+    _size: {x: 0.50000095, y: 1.6529999, z: 3.800003}
+  - _name: Chapter01 cutting-floor Structural_Support 21
+    _center: {x: 4.275129, y: 1.4464998, z: 31.999928}
+    _size: {x: 1.0446348, y: 2.8929996, z: 0.8958893}
+  - _name: Chapter01 cutting-floor Maintenance_Station 22
+    _center: {x: 4.3610897, y: 0.9817875, z: 28.934975}
+    _size: {x: 1.2685986, y: 1.9635751, z: 1.2190628}
+  - _name: Chapter01 shield-dump Shield_Shell 23
+    _center: {x: 30.5, y: 1.0951697, z: 25.999828}
+    _size: {x: 2.7835236, y: 2.1903396, z: 2.468399}
+  - _name: Chapter01 shield-dump Shield_Stack 24
+    _center: {x: 21.5, y: 0.74999994, z: 25.938898}
+    _size: {x: 2.21035, y: 1.5000001, z: 2.3457947}
+  - _name: Chapter01 shield-dump Shield_Stack 25
+    _center: {x: 30.5, y: 0.74999994, z: 13.938898}
+    _size: {x: 2.21035, y: 1.5000001, z: 2.3457966}
+  - _name: Chapter01 shield-dump Shield_Stack 26
+    _center: {x: 21.438898, y: 0.74999994, z: 14}
+    _size: {x: 2.3457947, y: 1.5000001, z: 2.210352}
+  - _name: Chapter01 shield-dump Shield_Shell 27
+    _center: {x: 32.99983, y: 1.0951697, z: 21}
+    _size: {x: 2.468399, y: 2.1903396, z: 2.7835236}
+  - _name: Chapter01 shield-dump Conduit_Rack 28
+    _center: {x: 21.5, y: 0.83149993, z: 20}
+    _size: {x: 0.5, y: 1.6529999, z: 3.7999992}
+  - _name: Chapter01 shield-dump Structural_Support 29
+    _center: {x: 21.875128, y: 1.4464998, z: 15.999929}
+    _size: {x: 1.0446358, y: 2.8929996, z: 0.8958893}
+  - _name: Chapter01 shield-dump Maintenance_Station 30
+    _center: {x: 21.63891, y: 0.9817875, z: 13.065026}
+    _size: {x: 1.2686005, y: 1.9635751, z: 1.2190628}
+  - _name: Chapter01 shield-dump Conduit_Rack 31
+    _center: {x: 30.5, y: 0.83149993, z: 20}
+    _size: {x: 0.5, y: 1.6529999, z: 3.7999992}
+  - _name: Chapter01 shield-dump Structural_Support 32
+    _center: {x: 30.27513, y: 1.4464998, z: 15.999929}
+    _size: {x: 1.0446358, y: 2.8929996, z: 0.8958893}
+  - _name: Chapter01 shield-dump Maintenance_Station 33
+    _center: {x: 30.36109, y: 0.9817875, z: 12.934974}
+    _size: {x: 1.2686005, y: 1.9635751, z: 1.2190628}
+  - _name: Chapter01 capacitor-field Transformer 34
+    _center: {x: -24.5, y: 1.4464997, z: -6.0001574}
+    _size: {x: 2.584999, y: 2.8929996, z: 2.2497406}
+  - _name: Chapter01 capacitor-field Capacitor_Bank 35
+    _center: {x: -24.5, y: 1.2674999, z: -18.000195}
+    _size: {x: 2.5933685, y: 2.5350003, z: 3.0350876}
+  - _name: Chapter01 capacitor-field Capacitor_Bank 36
+    _center: {x: -15.5, y: 1.2674999, z: -18.000195}
+    _size: {x: 2.5933695, y: 2.5350003, z: 3.0350876}
+  - _name: Chapter01 capacitor-field Capacitor_Bank 37
+    _center: {x: -27, y: 1.2674999, z: -13.000195}
+    _size: {x: 2.5933685, y: 2.5350003, z: 3.0350876}
+  - _name: Chapter01 capacitor-field Transformer 38
+    _center: {x: -15.5, y: 1.4464997, z: -6.0001574}
+    _size: {x: 2.584999, y: 2.8929996, z: 2.2497406}
+  - _name: Chapter01 capacitor-field Conduit_Rack 39
+    _center: {x: -24.5, y: 0.83149993, z: -12}
+    _size: {x: 0.5, y: 1.6529999, z: 3.8000011}
+  - _name: Chapter01 capacitor-field Structural_Support 40
+    _center: {x: -24.124872, y: 1.4464998, z: -16.00007}
+    _size: {x: 1.0446358, y: 2.8929996, z: 0.8958893}
+  - _name: Chapter01 capacitor-field Maintenance_Station 41
+    _center: {x: -24.36109, y: 0.9817875, z: -18.934975}
+    _size: {x: 1.2686005, y: 1.9635751, z: 1.2190628}
+  - _name: Chapter01 capacitor-field Conduit_Rack 42
+    _center: {x: -15.5, y: 0.83149993, z: -12}
+    _size: {x: 0.5, y: 1.6529999, z: 3.8000011}
+  - _name: Chapter01 capacitor-field Structural_Support 43
+    _center: {x: -15.724871, y: 1.4464998, z: -16.00007}
+    _size: {x: 1.0446358, y: 2.8929996, z: 0.8958893}
+  - _name: Chapter01 capacitor-field Maintenance_Station 44
+    _center: {x: -15.638911, y: 0.9817875, z: -19.065025}
+    _size: {x: 1.2685986, y: 1.9635751, z: 1.2190628}
+  - _name: Chapter01 hauler-graveyard Hauler_Wreck 45
+    _center: {x: 25.1, y: 1.285, z: -6.200184}
+    _size: {x: 3.3829765, y: 2.5300004, z: 4.2869167}
+  - _name: Chapter01 hauler-graveyard Hauler_Wreck 46
+    _center: {x: 15.2, y: 1.285, z: -17.700184}
+    _size: {x: 3.3829746, y: 2.5300004, z: 4.286916}
+  - _name: Chapter01 hauler-graveyard Hauler_Wreck 47
+    _center: {x: 28.999895, y: 1.285, z: -18.00015}
+    _size: {x: 5.2300453, y: 2.5300004, z: 5.452031}
+  - _name: Chapter01 hauler-graveyard Loading_Crane 48
+    _center: {x: 15.499832, y: 1.9981462, z: -6.4418955}
+    _size: {x: 2.3887215, y: 3.9962926, z: 2.869154}
+  - _name: Chapter01 hauler-graveyard Loading_Crane 49
+    _center: {x: 31.500168, y: 1.9981462, z: -11.758104}
+    _size: {x: 2.3887177, y: 3.9962926, z: 2.869154}
+  - _name: Chapter01 hauler-graveyard Conduit_Rack 50
+    _center: {x: 15.5, y: 0.83149993, z: -12}
+    _size: {x: 0.5, y: 1.6529999, z: 3.8000011}
+  - _name: Chapter01 hauler-graveyard Structural_Support 51
+    _center: {x: 15.87513, y: 1.4464998, z: -16.00007}
+    _size: {x: 1.0446358, y: 2.8929996, z: 0.8958893}
+  - _name: Chapter01 hauler-graveyard Maintenance_Station 52
+    _center: {x: 15.638911, y: 0.9817875, z: -18.934975}
+    _size: {x: 1.2685986, y: 1.9635751, z: 1.2190628}
+  - _name: Chapter01 hauler-graveyard Conduit_Rack 53
+    _center: {x: 24.5, y: 0.83149993, z: -12}
+    _size: {x: 0.5, y: 1.6529999, z: 3.8000011}
+  - _name: Chapter01 hauler-graveyard Structural_Support 54
+    _center: {x: 24.27513, y: 1.4464998, z: -16.00007}
+    _size: {x: 1.0446358, y: 2.8929996, z: 0.8958893}
+  - _name: Chapter01 hauler-graveyard Maintenance_Station 55
+    _center: {x: 24.36109, y: 0.9817875, z: -19.065025}
+    _size: {x: 1.2686005, y: 1.9635751, z: 1.2190628}
+  - _name: Chapter01 Service corridors arch post 56
+    _center: {x: -3.4, y: 1.65, z: -24}
+    _size: {x: 1.06, y: 3.3, z: 1.12}
+  - _name: Chapter01 Service corridors arch post 57
+    _center: {x: 3.4, y: 1.65, z: -24}
+    _size: {x: 1.06, y: 3.3, z: 1.12}
+  - _name: Chapter01 Service corridors arch truss 58
+    _center: {x: 0, y: 4, z: -24}
+    _size: {x: 6, y: 0.4, z: 0.55}
+  - _name: Chapter01 Service corridors arch post 59
+    _center: {x: -3.4, y: 1.65, z: 0}
+    _size: {x: 1.06, y: 3.3, z: 1.12}
+  - _name: Chapter01 Service corridors arch post 60
+    _center: {x: 3.4, y: 1.65, z: 0}
+    _size: {x: 1.06, y: 3.3, z: 1.12}
+  - _name: Chapter01 Service corridors arch truss 61
+    _center: {x: 0, y: 4, z: 0}
+    _size: {x: 6, y: 0.4, z: 0.55}
+  - _name: Chapter01 Service corridors arch post 62
+    _center: {x: -3.4, y: 1.65, z: 24}
+    _size: {x: 1.06, y: 3.3, z: 1.12}
+  - _name: Chapter01 Service corridors arch post 63
+    _center: {x: 3.4, y: 1.65, z: 24}
+    _size: {x: 1.06, y: 3.3, z: 1.12}
+  - _name: Chapter01 Service corridors arch truss 64
+    _center: {x: 0, y: 4, z: 24}
+    _size: {x: 6, y: 0.4, z: 0.55}
+  - _name: Chapter01 Service corridors arch post 65
+    _center: {x: -3.4, y: 1.65, z: 84}
+    _size: {x: 1.06, y: 3.3, z: 1.12}
+  - _name: Chapter01 Service corridors arch post 66
+    _center: {x: 3.4, y: 1.65, z: 84}
+    _size: {x: 1.06, y: 3.3, z: 1.12}
+  - _name: Chapter01 Service corridors arch truss 67
+    _center: {x: 0, y: 4, z: 84}
+    _size: {x: 6, y: 0.4, z: 0.55}
+  - _name: Chapter01 Service corridors Conduit_Rack 68
+    _center: {x: -4.9, y: 0.83149993, z: -32}
+    _size: {x: 0.50000095, y: 1.6529999, z: 3.800003}
+  - _name: Chapter01 Service corridors Conduit_Rack 69
+    _center: {x: 4.9, y: 0.83149993, z: -32}
+    _size: {x: 0.50000095, y: 1.6529999, z: 3.800003}
+  - _name: Chapter01 Service corridors Conduit_Rack 70
+    _center: {x: -4.9, y: 0.83149993, z: -24}
+    _size: {x: 0.50000095, y: 1.6529999, z: 3.7999992}
+  - _name: Chapter01 Service corridors Conduit_Rack 71
+    _center: {x: 4.9, y: 0.83149993, z: -24}
+    _size: {x: 0.50000095, y: 1.6529999, z: 3.7999992}
+  - _name: Chapter01 Service corridors Conduit_Rack 72
+    _center: {x: -4.9, y: 0.83149993, z: -16}
+    _size: {x: 0.50000095, y: 1.6529999, z: 3.8000002}
+  - _name: Chapter01 Service corridors Conduit_Rack 73
+    _center: {x: 4.9, y: 0.83149993, z: -16}
+    _size: {x: 0.50000095, y: 1.6529999, z: 3.8000002}
+  - _name: Chapter01 Service corridors Conduit_Rack 74
+    _center: {x: -4.9, y: 0.83149993, z: -8}
+    _size: {x: 0.50000095, y: 1.6529999, z: 3.8000011}
+  - _name: Chapter01 Service corridors Conduit_Rack 75
+    _center: {x: 4.9, y: 0.83149993, z: -8}
+    _size: {x: 0.50000095, y: 1.6529999, z: 3.8000011}
+  - _name: Chapter01 Service corridors Conduit_Rack 76
+    _center: {x: -4.9, y: 0.83149993, z: 0}
+    _size: {x: 0.50000095, y: 1.6529999, z: 3.8000004}
+  - _name: Chapter01 Service corridors Conduit_Rack 77
+    _center: {x: 4.9, y: 0.83149993, z: 0}
+    _size: {x: 0.50000095, y: 1.6529999, z: 3.8000004}
+  - _name: Chapter01 Service corridors Conduit_Rack 78
+    _center: {x: -4.9, y: 0.83149993, z: 8}
+    _size: {x: 0.50000095, y: 1.6529999, z: 3.8000011}
+  - _name: Chapter01 Service corridors Conduit_Rack 79
+    _center: {x: 4.9, y: 0.83149993, z: 8}
+    _size: {x: 0.50000095, y: 1.6529999, z: 3.8000011}
+  - _name: Chapter01 Service corridors Conduit_Rack 80
+    _center: {x: -4.9, y: 0.83149993, z: 16}
+    _size: {x: 0.50000095, y: 1.6529999, z: 3.7999992}
+  - _name: Chapter01 Service corridors Conduit_Rack 81
+    _center: {x: 4.9, y: 0.83149993, z: 16}
+    _size: {x: 0.50000095, y: 1.6529999, z: 3.7999992}
+  - _name: Chapter01 Service corridors Conduit_Rack 82
+    _center: {x: -4.9, y: 0.83149993, z: 24}
+    _size: {x: 0.50000095, y: 1.6529999, z: 3.7999992}
+  - _name: Chapter01 Service corridors Conduit_Rack 83
+    _center: {x: 4.9, y: 0.83149993, z: 24}
+    _size: {x: 0.50000095, y: 1.6529999, z: 3.7999992}
+  - _name: Chapter01 Service corridors Conduit_Rack 84
+    _center: {x: -4.9, y: 0.83149993, z: 32}
+    _size: {x: 0.50000095, y: 1.6529999, z: 3.800003}
+  - _name: Chapter01 Service corridors Conduit_Rack 85
+    _center: {x: 4.9, y: 0.83149993, z: 32}
+    _size: {x: 0.50000095, y: 1.6529999, z: 3.800003}
+  - _name: Chapter01 Service corridors Structural_Support 86
+    _center: {x: -4.824871, y: 1.4464998, z: -28.00007}
+    _size: {x: 1.0446358, y: 2.8929996, z: 0.8958893}
+  - _name: Chapter01 Service corridors Maintenance_Station 87
+    _center: {x: -5.5610895, y: 0.9817875, z: -26.434975}
+    _size: {x: 1.2685986, y: 1.9635751, z: 1.2190628}
+  - _name: Chapter01 Service corridors Structural_Support 88
+    _center: {x: -4.824871, y: 1.4464998, z: -20.00007}
+    _size: {x: 1.0446358, y: 2.8929996, z: 0.8958893}
+  - _name: Chapter01 Service corridors Maintenance_Station 89
+    _center: {x: -5.5610895, y: 0.9817875, z: -18.434975}
+    _size: {x: 1.2685986, y: 1.9635751, z: 1.2190628}
+  - _name: Chapter01 Service corridors Structural_Support 90
+    _center: {x: -4.824871, y: 1.4464998, z: -4.00007}
+    _size: {x: 1.0446358, y: 2.8929996, z: 0.8958883}
+  - _name: Chapter01 Service corridors Maintenance_Station 91
+    _center: {x: -5.5610895, y: 0.9817875, z: -2.4349742}
+    _size: {x: 1.2685986, y: 1.9635751, z: 1.2190629}
+  - _name: Chapter01 Service corridors Structural_Support 92
+    _center: {x: -4.824871, y: 1.4464998, z: 3.9999304}
+    _size: {x: 1.0446358, y: 2.8929996, z: 0.8958883}
+  - _name: Chapter01 Service corridors Maintenance_Station 93
+    _center: {x: -5.5610895, y: 0.9817875, z: 5.565026}
+    _size: {x: 1.2685986, y: 1.9635751, z: 1.2190628}
+  - _name: Chapter01 Service corridors Structural_Support 94
+    _center: {x: -4.824871, y: 1.4464998, z: 11.99993}
+    _size: {x: 1.0446358, y: 2.8929996, z: 0.8958893}
+  - _name: Chapter01 Service corridors Maintenance_Station 95
+    _center: {x: -5.5610895, y: 0.9817875, z: 13.565026}
+    _size: {x: 1.2685986, y: 1.9635751, z: 1.2190628}
+  - _name: Chapter01 Service corridors Structural_Support 96
+    _center: {x: -4.824871, y: 1.4464998, z: 27.99993}
+    _size: {x: 1.0446358, y: 2.8929996, z: 0.8958893}
+  - _name: Chapter01 Service corridors Maintenance_Station 97
+    _center: {x: -5.5610895, y: 0.9817875, z: 29.565025}
+    _size: {x: 1.2685986, y: 1.9635751, z: 1.2190628}
+  - _name: Chapter01 Service corridors Structural_Support 98
+    _center: {x: -4.824871, y: 1.4464998, z: 33.99993}
+    _size: {x: 1.0446358, y: 2.8929996, z: 0.8958893}
+  - _name: Chapter01 Service corridors Maintenance_Station 99
+    _center: {x: -5.5610895, y: 0.9817875, z: 35.565025}
+    _size: {x: 1.2685986, y: 1.9635751, z: 1.2190628}
+  - _name: Chapter01 Service corridors Structural_Support 100
+    _center: {x: 4.975129, y: 1.4464998, z: -28.00007}
+    _size: {x: 1.0446358, y: 2.8929996, z: 0.8958893}
+  - _name: Chapter01 Service corridors Maintenance_Station 101
+    _center: {x: 5.5610895, y: 0.9817875, z: -26.565025}
+    _size: {x: 1.2685986, y: 1.9635751, z: 1.2190628}
+  - _name: Chapter01 Service corridors Structural_Support 102
+    _center: {x: 4.975129, y: 1.4464998, z: -20.00007}
+    _size: {x: 1.0446358, y: 2.8929996, z: 0.8958893}
+  - _name: Chapter01 Service corridors Maintenance_Station 103
+    _center: {x: 5.5610895, y: 0.9817875, z: -18.565025}
+    _size: {x: 1.2685986, y: 1.9635751, z: 1.2190628}
+  - _name: Chapter01 Service corridors Structural_Support 104
+    _center: {x: 4.975129, y: 1.4464998, z: -4.00007}
+    _size: {x: 1.0446358, y: 2.8929996, z: 0.8958883}
+  - _name: Chapter01 Service corridors Maintenance_Station 105
+    _center: {x: 5.5610895, y: 0.9817875, z: -2.5650258}
+    _size: {x: 1.2685986, y: 1.9635751, z: 1.2190629}
+  - _name: Chapter01 Service corridors Structural_Support 106
+    _center: {x: 4.975129, y: 1.4464998, z: 3.9999304}
+    _size: {x: 1.0446358, y: 2.8929996, z: 0.8958883}
+  - _name: Chapter01 Service corridors Maintenance_Station 107
+    _center: {x: 5.5610895, y: 0.9817875, z: 5.434974}
+    _size: {x: 1.2685986, y: 1.9635751, z: 1.2190628}
+  - _name: Chapter01 Service corridors Structural_Support 108
+    _center: {x: 4.975129, y: 1.4464998, z: 11.99993}
+    _size: {x: 1.0446358, y: 2.8929996, z: 0.8958893}
+  - _name: Chapter01 Service corridors Maintenance_Station 109
+    _center: {x: 5.5610895, y: 0.9817875, z: 13.434974}
+    _size: {x: 1.2685986, y: 1.9635751, z: 1.2190628}
+  - _name: Chapter01 Service corridors Structural_Support 110
+    _center: {x: 4.975129, y: 1.4464998, z: 27.99993}
+    _size: {x: 1.0446358, y: 2.8929996, z: 0.8958893}
+  - _name: Chapter01 Service corridors Maintenance_Station 111
+    _center: {x: 5.5610895, y: 0.9817875, z: 29.434975}
+    _size: {x: 1.2685986, y: 1.9635751, z: 1.2190628}
+  - _name: Chapter01 Service corridors Structural_Support 112
+    _center: {x: 4.975129, y: 1.4464998, z: 33.99993}
+    _size: {x: 1.0446358, y: 2.8929996, z: 0.8958893}
+  - _name: Chapter01 Service corridors Maintenance_Station 113
+    _center: {x: 5.5610895, y: 0.9817875, z: 35.434975}
+    _size: {x: 1.2685986, y: 1.9635751, z: 1.2190628}
+  - _name: Chapter01 Service corridors Maintenance_Station 114
+    _center: {x: -11.961089, y: 0.9817875, z: -29.934975}
+    _size: {x: 1.2685986, y: 1.9635751, z: 1.2190628}
+  - _name: Chapter01 Service corridors Maintenance_Station 115
+    _center: {x: -11.961089, y: 0.9817875, z: -21.934975}
+    _size: {x: 1.2685986, y: 1.9635751, z: 1.2190628}
+  - _name: Chapter01 Service corridors Maintenance_Station 116
+    _center: {x: -11.961089, y: 0.9817875, z: 0.065025926}
+    _size: {x: 1.2685986, y: 1.9635751, z: 1.219063}
+  - _name: Chapter01 Service corridors Maintenance_Station 117
+    _center: {x: -11.961089, y: 0.9817875, z: 12.065026}
+    _size: {x: 1.2685986, y: 1.9635751, z: 1.2190628}
+  - _name: Chapter01 Service corridors Maintenance_Station 118
+    _center: {x: -11.961089, y: 0.9817875, z: 32.065025}
+    _size: {x: 1.2685986, y: 1.9635751, z: 1.2190628}
+  - _name: Chapter01 Service corridors Maintenance_Station 119
+    _center: {x: -11.961089, y: 0.9817875, z: 44.065025}
+    _size: {x: 1.2685986, y: 1.9635751, z: 1.2190628}
+  - _name: Chapter01 Service corridors Maintenance_Station 120
+    _center: {x: -11.961089, y: 0.9817875, z: 84.065025}
+    _size: {x: 1.2685986, y: 1.9635751, z: 1.2190704}
+  - _name: Chapter01 Service corridors Maintenance_Station 121
+    _center: {x: 11.961089, y: 0.9817875, z: -30.065025}
+    _size: {x: 1.2685986, y: 1.9635751, z: 1.2190628}
+  - _name: Chapter01 Service corridors Maintenance_Station 122
+    _center: {x: 11.961089, y: 0.9817875, z: -22.065025}
+    _size: {x: 1.2685986, y: 1.9635751, z: 1.2190628}
+  - _name: Chapter01 Service corridors Maintenance_Station 123
+    _center: {x: 11.961089, y: 0.9817875, z: -0.065025926}
+    _size: {x: 1.2685986, y: 1.9635751, z: 1.219063}
+  - _name: Chapter01 Service corridors Maintenance_Station 124
+    _center: {x: 11.961089, y: 0.9817875, z: 11.934974}
+    _size: {x: 1.2685986, y: 1.9635751, z: 1.2190628}
+  - _name: Chapter01 Service corridors Maintenance_Station 125
+    _center: {x: 11.961089, y: 0.9817875, z: 31.934975}
+    _size: {x: 1.2685986, y: 1.9635751, z: 1.2190628}
+  - _name: Chapter01 Service corridors Maintenance_Station 126
+    _center: {x: 11.961089, y: 0.9817875, z: 43.934975}
+    _size: {x: 1.2685986, y: 1.9635751, z: 1.2190628}
+  - _name: Chapter01 Service corridors Maintenance_Station 127
+    _center: {x: 11.961089, y: 0.9817875, z: 83.934975}
+    _size: {x: 1.2685986, y: 1.9635751, z: 1.2190704}
+  - _name: Chapter01 Service corridors Bulkhead_Module 128
+    _center: {x: -35.3075, y: 1.2999998, z: -32}
+    _size: {x: 0.8349991, y: 2.5999997, z: 7.92}
+  - _name: Chapter01 Service corridors Structural_Support 129
+    _center: {x: -35.42487, y: 1.4464998, z: -32.00007}
+    _size: {x: 1.044632, y: 2.8929996, z: 0.8958893}
+  - _name: Chapter01 Service corridors Bulkhead_Module 130
+    _center: {x: -35.3075, y: 1.2999998, z: -24}
+    _size: {x: 0.8349991, y: 2.5999997, z: 7.920002}
+  - _name: Chapter01 Service corridors Bulkhead_Module 131
+    _center: {x: -35.3075, y: 1.2999998, z: -16}
+    _size: {x: 0.8349991, y: 2.5999997, z: 7.920002}
+  - _name: Chapter01 Service corridors Structural_Support 132
+    _center: {x: -35.42487, y: 1.4464998, z: -16.00007}
+    _size: {x: 1.044632, y: 2.8929996, z: 0.8958893}
+  - _name: Chapter01 Service corridors Bulkhead_Module 133
+    _center: {x: -35.3075, y: 1.2999998, z: -8}
+    _size: {x: 0.8349991, y: 2.5999997, z: 7.920002}
+  - _name: Chapter01 Service corridors Bulkhead_Module 134
+    _center: {x: -35.3075, y: 1.2999998, z: 0}
+    _size: {x: 0.8349991, y: 2.5999997, z: 7.920001}
+  - _name: Chapter01 Service corridors Structural_Support 135
+    _center: {x: -35.42487, y: 1.4464998, z: -0.00006991625}
+    _size: {x: 1.044632, y: 2.8929996, z: 0.8958884}
+  - _name: Chapter01 Service corridors Bulkhead_Module 136
+    _center: {x: -35.3075, y: 1.2999998, z: 8}
+    _size: {x: 0.8349991, y: 2.5999997, z: 7.920002}
+  - _name: Chapter01 Service corridors Bulkhead_Module 137
+    _center: {x: -35.3075, y: 1.2999998, z: 16}
+    _size: {x: 0.8349991, y: 2.5999997, z: 7.920002}
+  - _name: Chapter01 Service corridors Structural_Support 138
+    _center: {x: -35.42487, y: 1.4464998, z: 15.999929}
+    _size: {x: 1.044632, y: 2.8929996, z: 0.8958893}
+  - _name: Chapter01 Service corridors Bulkhead_Module 139
+    _center: {x: -35.3075, y: 1.2999998, z: 24}
+    _size: {x: 0.8349991, y: 2.5999997, z: 7.920002}
+  - _name: Chapter01 Service corridors Bulkhead_Module 140
+    _center: {x: -35.3075, y: 1.2999998, z: 32}
+    _size: {x: 0.8349991, y: 2.5999997, z: 7.919998}
+  - _name: Chapter01 Service corridors Structural_Support 141
+    _center: {x: -35.42487, y: 1.4464998, z: 31.999928}
+    _size: {x: 1.044632, y: 2.8929996, z: 0.8958893}
+  - _name: Chapter01 Service corridors Bulkhead_Module 142
+    _center: {x: -35.3075, y: 1.2999998, z: 40}
+    _size: {x: 0.8349991, y: 2.5999997, z: 7.919998}
+  - _name: Chapter01 Service corridors Bulkhead_Module 143
+    _center: {x: -35.3075, y: 1.2999998, z: 48}
+    _size: {x: 0.8349991, y: 2.5999997, z: 7.919998}
+  - _name: Chapter01 Service corridors Structural_Support 144
+    _center: {x: -35.42487, y: 1.4464998, z: 47.99993}
+    _size: {x: 1.044632, y: 2.8929996, z: 0.8958893}
+  - _name: Chapter01 Service corridors Bulkhead_Module 145
+    _center: {x: -35.3075, y: 1.2999998, z: 56}
+    _size: {x: 0.8349991, y: 2.5999997, z: 7.919998}
+  - _name: Chapter01 Service corridors Bulkhead_Module 146
+    _center: {x: -35.3075, y: 1.2999998, z: 64}
+    _size: {x: 0.8349991, y: 2.5999997, z: 7.919998}
+  - _name: Chapter01 Service corridors Structural_Support 147
+    _center: {x: -35.42487, y: 1.4464998, z: 63.99993}
+    _size: {x: 1.044632, y: 2.8929996, z: 0.8958893}
+  - _name: Chapter01 Service corridors Bulkhead_Module 148
+    _center: {x: -35.3075, y: 1.2999998, z: 72}
+    _size: {x: 0.8349991, y: 2.5999997, z: 7.919998}
+  - _name: Chapter01 Service corridors Bulkhead_Module 149
+    _center: {x: -35.3075, y: 1.2999998, z: 80}
+    _size: {x: 0.8349991, y: 2.5999997, z: 7.919998}
+  - _name: Chapter01 Service corridors Structural_Support 150
+    _center: {x: -35.42487, y: 1.4464998, z: 79.99993}
+    _size: {x: 1.044632, y: 2.8929996, z: 0.8958893}
+  - _name: Chapter01 Service corridors Bulkhead_Module 151
+    _center: {x: -35.3075, y: 1.2999998, z: 88}
+    _size: {x: 0.8349991, y: 2.5999997, z: 7.919998}
+  - _name: Chapter01 Service corridors Bulkhead_Module 152
+    _center: {x: -35.3075, y: 1.2999998, z: 96}
+    _size: {x: 0.8349991, y: 2.5999997, z: 7.919998}
+  - _name: Chapter01 Service corridors Structural_Support 153
+    _center: {x: -35.42487, y: 1.4464998, z: 95.99993}
+    _size: {x: 1.044632, y: 2.8929996, z: 0.8958893}
+  - _name: Chapter01 Service corridors Bulkhead_Module 154
+    _center: {x: 35.3075, y: 1.2999998, z: -32}
+    _size: {x: 0.8349991, y: 2.5999997, z: 7.92}
+  - _name: Chapter01 Service corridors Structural_Support 155
+    _center: {x: 35.57513, y: 1.4464998, z: -32.00007}
+    _size: {x: 1.044632, y: 2.8929996, z: 0.8958893}
+  - _name: Chapter01 Service corridors Bulkhead_Module 156
+    _center: {x: 35.3075, y: 1.2999998, z: -24}
+    _size: {x: 0.8349991, y: 2.5999997, z: 7.920002}
+  - _name: Chapter01 Service corridors Bulkhead_Module 157
+    _center: {x: 35.3075, y: 1.2999998, z: -16}
+    _size: {x: 0.8349991, y: 2.5999997, z: 7.920002}
+  - _name: Chapter01 Service corridors Structural_Support 158
+    _center: {x: 35.57513, y: 1.4464998, z: -16.00007}
+    _size: {x: 1.044632, y: 2.8929996, z: 0.8958893}
+  - _name: Chapter01 Service corridors Bulkhead_Module 159
+    _center: {x: 35.3075, y: 1.2999998, z: -8}
+    _size: {x: 0.8349991, y: 2.5999997, z: 7.920002}
+  - _name: Chapter01 Service corridors Bulkhead_Module 160
+    _center: {x: 35.3075, y: 1.2999998, z: 0}
+    _size: {x: 0.8349991, y: 2.5999997, z: 7.920001}
+  - _name: Chapter01 Service corridors Structural_Support 161
+    _center: {x: 35.57513, y: 1.4464998, z: -0.00006991625}
+    _size: {x: 1.044632, y: 2.8929996, z: 0.8958884}
+  - _name: Chapter01 Service corridors Bulkhead_Module 162
+    _center: {x: 35.3075, y: 1.2999998, z: 8}
+    _size: {x: 0.8349991, y: 2.5999997, z: 7.920002}
+  - _name: Chapter01 Service corridors Bulkhead_Module 163
+    _center: {x: 35.3075, y: 1.2999998, z: 16}
+    _size: {x: 0.8349991, y: 2.5999997, z: 7.920002}
+  - _name: Chapter01 Service corridors Structural_Support 164
+    _center: {x: 35.57513, y: 1.4464998, z: 15.999929}
+    _size: {x: 1.044632, y: 2.8929996, z: 0.8958893}
+  - _name: Chapter01 Service corridors Bulkhead_Module 165
+    _center: {x: 35.3075, y: 1.2999998, z: 24}
+    _size: {x: 0.8349991, y: 2.5999997, z: 7.920002}
+  - _name: Chapter01 Service corridors Bulkhead_Module 166
+    _center: {x: 35.3075, y: 1.2999998, z: 32}
+    _size: {x: 0.8349991, y: 2.5999997, z: 7.919998}
+  - _name: Chapter01 Service corridors Structural_Support 167
+    _center: {x: 35.57513, y: 1.4464998, z: 31.999928}
+    _size: {x: 1.044632, y: 2.8929996, z: 0.8958893}
+  - _name: Chapter01 Service corridors Bulkhead_Module 168
+    _center: {x: 35.3075, y: 1.2999998, z: 40}
+    _size: {x: 0.8349991, y: 2.5999997, z: 7.919998}
+  - _name: Chapter01 Service corridors Bulkhead_Module 169
+    _center: {x: 35.3075, y: 1.2999998, z: 48}
+    _size: {x: 0.8349991, y: 2.5999997, z: 7.919998}
+  - _name: Chapter01 Service corridors Structural_Support 170
+    _center: {x: 35.57513, y: 1.4464998, z: 47.99993}
+    _size: {x: 1.044632, y: 2.8929996, z: 0.8958893}
+  - _name: Chapter01 Service corridors Bulkhead_Module 171
+    _center: {x: 35.3075, y: 1.2999998, z: 56}
+    _size: {x: 0.8349991, y: 2.5999997, z: 7.919998}
+  - _name: Chapter01 Service corridors Bulkhead_Module 172
+    _center: {x: 35.3075, y: 1.2999998, z: 64}
+    _size: {x: 0.8349991, y: 2.5999997, z: 7.919998}
+  - _name: Chapter01 Service corridors Structural_Support 173
+    _center: {x: 35.57513, y: 1.4464998, z: 63.99993}
+    _size: {x: 1.044632, y: 2.8929996, z: 0.8958893}
+  - _name: Chapter01 Service corridors Bulkhead_Module 174
+    _center: {x: 35.3075, y: 1.2999998, z: 72}
+    _size: {x: 0.8349991, y: 2.5999997, z: 7.919998}
+  - _name: Chapter01 Service corridors Bulkhead_Module 175
+    _center: {x: 35.3075, y: 1.2999998, z: 80}
+    _size: {x: 0.8349991, y: 2.5999997, z: 7.919998}
+  - _name: Chapter01 Service corridors Structural_Support 176
+    _center: {x: 35.57513, y: 1.4464998, z: 79.99993}
+    _size: {x: 1.044632, y: 2.8929996, z: 0.8958893}
+  - _name: Chapter01 Service corridors Bulkhead_Module 177
+    _center: {x: 35.3075, y: 1.2999998, z: 88}
+    _size: {x: 0.8349991, y: 2.5999997, z: 7.919998}
+  - _name: Chapter01 Service corridors Bulkhead_Module 178
+    _center: {x: 35.3075, y: 1.2999998, z: 96}
+    _size: {x: 0.8349991, y: 2.5999997, z: 7.919998}
+  - _name: Chapter01 Service corridors Structural_Support 179
+    _center: {x: 35.57513, y: 1.4464998, z: 95.99993}
+    _size: {x: 1.044632, y: 2.8929996, z: 0.8958893}
+  - _name: Chapter01 Service corridors Bulkhead_Module 180
+    _center: {x: -32, y: 1.2999998, z: -39.6925}
+    _size: {x: 7.919998, y: 2.5999997, z: 0.8349991}
+  - _name: Chapter01 Service corridors Bulkhead_Module 181
+    _center: {x: -24, y: 1.2999998, z: -39.6925}
+    _size: {x: 7.919998, y: 2.5999997, z: 0.8349991}
+  - _name: Chapter01 Service corridors Bulkhead_Module 182
+    _center: {x: -16, y: 1.2999998, z: -39.6925}
+    _size: {x: 7.919999, y: 2.5999997, z: 0.8349991}
+  - _name: Chapter01 Service corridors Bulkhead_Module 183
+    _center: {x: -8, y: 1.2999998, z: -39.6925}
+    _size: {x: 7.92, y: 2.5999997, z: 0.8349991}
+  - _name: Chapter01 Service corridors Bulkhead_Module 184
+    _center: {x: 0, y: 1.2999998, z: -39.6925}
+    _size: {x: 7.92, y: 2.5999997, z: 0.8349991}
+  - _name: Chapter01 Service corridors Bulkhead_Module 185
+    _center: {x: 8, y: 1.2999998, z: -39.6925}
+    _size: {x: 7.92, y: 2.5999997, z: 0.8349991}
+  - _name: Chapter01 Service corridors Bulkhead_Module 186
+    _center: {x: 16, y: 1.2999998, z: -39.6925}
+    _size: {x: 7.919998, y: 2.5999997, z: 0.8349991}
+  - _name: Chapter01 Service corridors Bulkhead_Module 187
+    _center: {x: 24, y: 1.2999998, z: -39.6925}
+    _size: {x: 7.919998, y: 2.5999997, z: 0.8349991}
+  - _name: Chapter01 Service corridors Bulkhead_Module 188
+    _center: {x: 32, y: 1.2999998, z: -39.6925}
+    _size: {x: 7.919998, y: 2.5999997, z: 0.8349991}
+  - _name: Chapter01 Custodian containment complex Containment_Buttress 189
+    _center: {x: -6.2, y: 1.8936597, z: 81.99986}
+    _size: {x: 1.8218384, y: 3.7873197, z: 2.6713257}
+  - _name: Chapter01 Custodian containment complex Containment_Buttress 190
+    _center: {x: -6.2, y: 1.8936597, z: 87.99986}
+    _size: {x: 1.8218384, y: 3.7873197, z: 2.6713257}
+  - _name: Chapter01 Custodian containment complex Containment_Buttress 191
+    _center: {x: -6.2, y: 1.8936597, z: 93.99986}
+    _size: {x: 1.8218384, y: 3.7873197, z: 2.6713257}
+  - _name: Chapter01 Custodian containment complex Containment_Buttress 192
+    _center: {x: -6.2, y: 1.8936597, z: 98.99986}
+    _size: {x: 1.8218384, y: 3.7873197, z: 2.6713257}
+  - _name: Chapter01 Custodian containment complex Primary_Containment 193
+    _center: {x: -8.2, y: 2.0201194, z: 93.99986}
+    _size: {x: 3.7999997, y: 4.0402393, z: 3.021103}
+  - _name: Chapter01 Custodian containment complex Bulkhead_Module 194
+    _center: {x: -4.6, y: 1.8199996, z: 79.8075}
+    _size: {x: 3.5640001, y: 3.6399994, z: 0.8350067}
+  - _name: Chapter01 Custodian containment complex Structural_Support 195
+    _center: {x: -2.884871, y: 2.1697497, z: 79.99993}
+    _size: {x: 1.0446353, y: 4.3394995, z: 0.8958893}
+  - _name: Chapter01 Custodian containment complex Containment_Buttress 196
+    _center: {x: 6.2, y: 1.8936597, z: 81.99986}
+    _size: {x: 1.8218384, y: 3.7873197, z: 2.6713257}
+  - _name: Chapter01 Custodian containment complex Containment_Buttress 197
+    _center: {x: 6.2, y: 1.8936597, z: 87.99986}
+    _size: {x: 1.8218384, y: 3.7873197, z: 2.6713257}
+  - _name: Chapter01 Custodian containment complex Containment_Buttress 198
+    _center: {x: 6.2, y: 1.8936597, z: 93.99986}
+    _size: {x: 1.8218384, y: 3.7873197, z: 2.6713257}
+  - _name: Chapter01 Custodian containment complex Containment_Buttress 199
+    _center: {x: 6.2, y: 1.8936597, z: 98.99986}
+    _size: {x: 1.8218384, y: 3.7873197, z: 2.6713257}
+  - _name: Chapter01 Custodian containment complex Primary_Containment 200
+    _center: {x: 8.2, y: 2.0201194, z: 93.99986}
+    _size: {x: 3.7999992, y: 4.0402393, z: 3.021103}
+  - _name: Chapter01 Custodian containment complex Bulkhead_Module 201
+    _center: {x: 4.6, y: 1.8199996, z: 79.8075}
+    _size: {x: 3.5640001, y: 3.6399994, z: 0.8350067}
+  - _name: Chapter01 Custodian containment complex Structural_Support 202
+    _center: {x: 3.035129, y: 2.1697497, z: 79.99993}
+    _size: {x: 1.0446353, y: 4.3394995, z: 0.8958893}
+  - _name: Chapter01 Custodian containment complex Bulkhead_Module 203
+    _center: {x: -32, y: 1.9499997, z: 99.8075}
+    _size: {x: 7.919998, y: 3.8999996, z: 0.8350067}
+  - _name: Chapter01 Custodian containment complex Bulkhead_Module 204
+    _center: {x: -24, y: 1.9499997, z: 99.8075}
+    _size: {x: 7.919998, y: 3.8999996, z: 0.8350067}
+  - _name: Chapter01 Custodian containment complex Bulkhead_Module 205
+    _center: {x: -16, y: 1.9499997, z: 99.8075}
+    _size: {x: 7.919999, y: 3.8999996, z: 0.8350067}
+  - _name: Chapter01 Custodian containment complex Bulkhead_Module 206
+    _center: {x: -8, y: 1.9499997, z: 99.8075}
+    _size: {x: 7.92, y: 3.8999996, z: 0.8350067}
+  - _name: Chapter01 Custodian containment complex Bulkhead_Module 207
+    _center: {x: 0, y: 1.9499997, z: 99.8075}
+    _size: {x: 7.92, y: 3.8999996, z: 0.8350067}
+  - _name: Chapter01 Custodian containment complex Bulkhead_Module 208
+    _center: {x: 8, y: 1.9499997, z: 99.8075}
+    _size: {x: 7.92, y: 3.8999996, z: 0.8350067}
+  - _name: Chapter01 Custodian containment complex Bulkhead_Module 209
+    _center: {x: 16, y: 1.9499997, z: 99.8075}
+    _size: {x: 7.919998, y: 3.8999996, z: 0.8350067}
+  - _name: Chapter01 Custodian containment complex Bulkhead_Module 210
+    _center: {x: 24, y: 1.9499997, z: 99.8075}
+    _size: {x: 7.919998, y: 3.8999996, z: 0.8350067}
+  - _name: Chapter01 Custodian containment complex Bulkhead_Module 211
+    _center: {x: 32, y: 1.9499997, z: 99.8075}
+    _size: {x: 7.919998, y: 3.8999996, z: 0.8350067}
   _definition: {fileID: 11400000, guid: 32bf88e9256235d4892c007e7e8381ff, type: 2}
   _fallbackRoot: {fileID: 103115172}
   _floor: {fileID: 320185727}
@@ -1968,43 +2606,7 @@ MonoBehaviour:
     _enemyId: custodian-m0
     _root: {fileID: 1779855007}
     _landmark: {fileID: 0}
-  _dressing:
-  - _anchor: {fileID: 1139304085}
-    _model:
-      _prefab: {fileID: 100000, guid: 62b5c9d3e6f84a109b2c3d4e5f607002, type: 3}
-      _localPosition: {x: 0, y: -0.05, z: 3.5}
-      _localEulerAngles: {x: 0, y: 0, z: 0}
-      _localScale: {x: 1, y: 1, z: 1}
-  - _anchor: {fileID: 973069427}
-    _model:
-      _prefab: {fileID: 100000, guid: 62b5c9d3e6f84a109b2c3d4e5f607004, type: 3}
-      _localPosition: {x: 0, y: -0.05, z: 3.5}
-      _localEulerAngles: {x: 0, y: 0, z: 0}
-      _localScale: {x: 1, y: 1, z: 1}
-  - _anchor: {fileID: 124775005}
-    _model:
-      _prefab: {fileID: 100000, guid: 62b5c9d3e6f84a109b2c3d4e5f607005, type: 3}
-      _localPosition: {x: 0, y: -0.05, z: 4.5}
-      _localEulerAngles: {x: 0, y: 0, z: 0}
-      _localScale: {x: 1, y: 1, z: 1}
-  - _anchor: {fileID: 773733049}
-    _model:
-      _prefab: {fileID: 100000, guid: 62b5c9d3e6f84a109b2c3d4e5f607006, type: 3}
-      _localPosition: {x: 0, y: -0.05, z: 3.5}
-      _localEulerAngles: {x: 0, y: 0, z: 0}
-      _localScale: {x: 1, y: 1, z: 1}
-  - _anchor: {fileID: 665963835}
-    _model:
-      _prefab: {fileID: 3802019472803933344, guid: 00950d1fc381f6b4b872bfee5113b809, type: 3}
-      _localPosition: {x: 0, y: 0, z: 0}
-      _localEulerAngles: {x: 0, y: 0, z: 0}
-      _localScale: {x: 1, y: 1, z: 1}
-  - _anchor: {fileID: 1212396661}
-    _model:
-      _prefab: {fileID: 100000, guid: 62b5c9d3e6f84a109b2c3d4e5f60700a, type: 3}
-      _localPosition: {x: 0, y: 0, z: 0}
-      _localEulerAngles: {x: 0, y: 0, z: 0}
-      _localScale: {x: 1, y: 1, z: 1}
+  _dressing: []
 --- !u!4 &707714297
 Transform:
   m_ObjectHideFlags: 0
@@ -2224,7 +2826,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &773733049
 Transform:
   m_ObjectHideFlags: 0
@@ -2345,7 +2947,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &812719581
 Transform:
   m_ObjectHideFlags: 0
@@ -2914,7 +3516,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &973069427
 Transform:
   m_ObjectHideFlags: 0
@@ -3110,6 +3712,68 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 999010870}
   m_Mesh: {fileID: 8921303840536707514, guid: 99d7a96b5facde3459f8fd27faca9499, type: 3}
+--- !u!1001 &1000221179
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 320185727}
+    m_Modifications:
+    - target: {fileID: 8911515096496356318, guid: 7a32aa8dfd6909849a17d5de800cb1fd, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8911515096496356318, guid: 7a32aa8dfd6909849a17d5de800cb1fd, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8911515096496356318, guid: 7a32aa8dfd6909849a17d5de800cb1fd, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8911515096496356318, guid: 7a32aa8dfd6909849a17d5de800cb1fd, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8911515096496356318, guid: 7a32aa8dfd6909849a17d5de800cb1fd, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8911515096496356318, guid: 7a32aa8dfd6909849a17d5de800cb1fd, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8911515096496356318, guid: 7a32aa8dfd6909849a17d5de800cb1fd, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8911515096496356318, guid: 7a32aa8dfd6909849a17d5de800cb1fd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8911515096496356318, guid: 7a32aa8dfd6909849a17d5de800cb1fd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8911515096496356318, guid: 7a32aa8dfd6909849a17d5de800cb1fd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9211055622715845972, guid: 7a32aa8dfd6909849a17d5de800cb1fd, type: 3}
+      propertyPath: m_Name
+      value: Chapter 01 Full Production
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 7a32aa8dfd6909849a17d5de800cb1fd, type: 3}
+--- !u!4 &1000221180 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8911515096496356318, guid: 7a32aa8dfd6909849a17d5de800cb1fd, type: 3}
+  m_PrefabInstance: {fileID: 1000221179}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1046879323
 GameObject:
   m_ObjectHideFlags: 0
@@ -3532,7 +4196,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1139304085
 Transform:
   m_ObjectHideFlags: 0
@@ -3684,7 +4348,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1212396661
 Transform:
   m_ObjectHideFlags: 0
@@ -4147,7 +4811,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1400605223
 Transform:
   m_ObjectHideFlags: 0
@@ -4410,7 +5074,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1554792540
 Transform:
   m_ObjectHideFlags: 0
@@ -5504,7 +6168,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2074857902
 Transform:
   m_ObjectHideFlags: 0

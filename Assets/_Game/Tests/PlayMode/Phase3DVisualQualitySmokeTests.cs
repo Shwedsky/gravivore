@@ -28,7 +28,7 @@ namespace Gravivore.Tests.PlayMode
             var root = _scene.Root;
             var world = root.WorldPresenter;
             Assert.That(root.VisualEnvironment.GetComponentsInChildren<Collider>(true), Is.Empty);
-            Assert.That(world.EnvironmentBlockerCount, Is.EqualTo(11 + root.VisualEnvironment.SliceObstacleCount));
+            Assert.That(world.EnvironmentBlockerCount, Is.EqualTo(4 + root.VisualEnvironment.SliceObstacleCount));
             Assert.That(world.GameplayRoot.lossyScale, Is.EqualTo(Vector3.one));
 
             foreach (var regionId in new[]
@@ -89,15 +89,15 @@ namespace Gravivore.Tests.PlayMode
 
             var basin = new Vector3(0f, 0f, -30f);
             var zones = spawnOrigins;
-            foreach (var zone in zones)
-                foreach (var blocker in blockers)
-                    AssertSegmentClearXZ(blocker, basin, zone, "radial traversal");
-            for (var i = 0; i < zones.Length; i++)
-            {
-                var next = zones[(i + 1) % zones.Length];
-                foreach (var blocker in blockers)
-                    AssertSegmentClearXZ(blocker, zones[i], next, "outer-loop traversal");
-            }
+            // Authored machinery introduces service turns. Connectivity with swept capsule
+            // clearance replaces the prototype's requirement for empty straight diagonals.
+            Physics.SyncTransforms();
+            var lockedRoutes = new Chapter01ProductionSmokeTests.RouteGrid(root,basin);
+            foreach(var zone in zones)Assert.IsTrue(lockedRoutes.Reaches(zone),"basin and outer-loop connectivity "+zone);
+            world.EliteGate.SetLocked(false);world.BossGate.SetLocked(false);Physics.SyncTransforms();
+            var unlockedRoutes = new Chapter01ProductionSmokeTests.RouteGrid(root,basin);
+            Assert.IsTrue(unlockedRoutes.Reaches(root.MagnetarGuard.transform.position));
+            Assert.IsTrue(unlockedRoutes.Reaches(root.CustodianBoss.transform.position));
             foreach (var blocker in blockers)
                 AssertSegmentClearXZ(blocker, new Vector3(0f, 0f, 60f), new Vector3(0f, 0f, 94f),
                     "elite/boss traversal");
@@ -141,7 +141,7 @@ namespace Gravivore.Tests.PlayMode
             var presenters = root.GetComponentsInChildren<Phase3DMechanicalMotionPresenter>(true);
             Assert.That(presenters, Has.Length.EqualTo(1));
             var presenter = presenters[0];
-            Assert.That(presenter.ChannelCount, Is.GreaterThanOrEqualTo(8));
+            Assert.That(presenter.ChannelCount, Is.EqualTo(4),"Retained repair hub channels; retired prototype scenery no longer runs motion channels.");
 
             var elitePosition = root.MagnetarGuard.transform.position;
             var bossPosition = root.CustodianBoss.transform.position;
@@ -168,6 +168,7 @@ namespace Gravivore.Tests.PlayMode
         private static void AssertPointOutsideXZ(Collider blocker, Vector3 point, string context)
         {
             var bounds = blocker.bounds;
+            if(bounds.min.y>1.4f)return; // Raised service trusses clear the controller.
             var inside = point.x >= bounds.min.x && point.x <= bounds.max.x &&
                          point.z >= bounds.min.z && point.z <= bounds.max.z;
             Assert.IsFalse(inside, blocker.name + " overlaps " + context + " at " + point + ".");
@@ -176,6 +177,7 @@ namespace Gravivore.Tests.PlayMode
         private static void AssertSegmentClearXZ(Collider blocker, Vector3 from, Vector3 to, string context)
         {
             var bounds = blocker.bounds;
+            if(bounds.min.y>1.4f)return;
             var min = new Vector2(bounds.min.x, bounds.min.z);
             var max = new Vector2(bounds.max.x, bounds.max.z);
             var a = new Vector2(from.x, from.z);

@@ -21,7 +21,7 @@ namespace Gravivore.Tests.PlayMode
     public sealed class Phase3CIntegrationSmokeTests
     {
         private CanonicalSceneTestScope _scene;
-        private static readonly string[] Names = { "Scout_V1", "Cutter_V1", "Warden_Phase3D", "ArcDrone_Phase3D", "Carrier_Phase3D" };
+        private static readonly string[] Names = { "Scout_V1", "Cutter_V1", "Warden_V1", "ArcDrone_V1", "Carrier_V1" };
         private static readonly PresentationSocket[] Roles = { PresentationSocket.Core, PresentationSocket.Sensor,
             PresentationSocket.AttackOrigin,PresentationSocket.HitCenter,PresentationSocket.GroundContact,
             PresentationSocket.VfxTop,PresentationSocket.VfxRear,PresentationSocket.TelegraphOrigin };
@@ -106,7 +106,7 @@ namespace Gravivore.Tests.PlayMode
             pool.Return(enemy); Assert.IsNull(binding.ActiveModel); Assert.IsNull(binding.Sockets);
             var reused = pool.Acquire(Config("carrier"),_scene.Root.PlayerObject.transform,_scene.Root.PlayerHealth,Vector3.one,pool.Return);
             Assert.AreSame(enemy,reused); Assert.That(reused.LifeId,Is.Not.EqualTo(life));
-            Assert.That(binding.ActiveModel.name,Is.EqualTo("Carrier_Phase3D"));
+            Assert.That(binding.ActiveModel.name,Is.EqualTo("Carrier_V1"));
             Assert.AreSame(reused.TargetPoint,binding.GetSocketOr(PresentationSocket.Sensor,reused.TargetPoint));
             Assert.IsFalse(oldSensor.gameObject.activeInHierarchy);
             Assert.That(binding.VisualRoot.localPosition,Is.EqualTo(Vector3.zero));

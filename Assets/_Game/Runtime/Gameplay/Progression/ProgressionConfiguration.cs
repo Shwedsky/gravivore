@@ -6,6 +6,7 @@ namespace Gravivore.Gameplay.Progression
     public sealed class ProgressionConfiguration
     {
         private readonly Dictionary<string, CoreReward> _rewards;
+        private readonly CoreReward[] _routes;
 
         public ProgressionConfiguration(
             ProgressionThresholdCurve thresholdCurve,
@@ -18,10 +19,12 @@ namespace Gravivore.Gameplay.Progression
             }
 
             ThresholdCurve = thresholdCurve;
+            _routes = new CoreReward[rewards.Count];
             _rewards = new Dictionary<string, CoreReward>(rewards.Count, StringComparer.Ordinal);
             for (var i = 0; i < rewards.Count; i++)
             {
                 var reward = rewards[i];
+                _routes[i] = reward;
                 if (!_rewards.TryAdd(reward.EnemyId, reward))
                 {
                     throw new ArgumentException($"Duplicate enemy reward route: {reward.EnemyId}.", nameof(rewards));
@@ -32,6 +35,7 @@ namespace Gravivore.Gameplay.Progression
         public ProgressionThresholdCurve ThresholdCurve { get; }
 
         public int RewardCount => _rewards.Count;
+        public CoreReward GetReward(int index) => _routes[index];
 
         public bool TryGetReward(string enemyId, out CoreReward reward)
         {

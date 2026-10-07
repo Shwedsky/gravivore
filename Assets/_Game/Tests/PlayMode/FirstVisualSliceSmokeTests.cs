@@ -36,12 +36,12 @@ namespace Gravivore.Tests.PlayMode
             foreach (Transform panel in oldRoutes)
                 Assert.IsTrue(panel.localPosition.z < 36f || panel.localPosition.z > 76f,
                     "Old corridor surface must not cover the rebuilt floor: " + panel.name);
-            var neighboringDeck = root.VisualEnvironment.GetRegion("boss-approach").Root.GetComponentsInChildren<Renderer>().Single(r => r.name == "Deck");
-            Assert.That(neighboringDeck.bounds.min.z, Is.GreaterThanOrEqualTo(75.99f), "Boss approach floor must start at the arena boundary.");
+            Assert.IsTrue(root.VisualEnvironment.FullChapterProduction);
+            Assert.IsNotNull(root.VisualEnvironment.Floor.Find("Chapter 01 Full Production/Facility deck segmentation"));
             Assert.IsEmpty(root.VisualEnvironment.GetComponentsInChildren<Collider>(true));
             Assert.That(root.PlayerObject.GetComponent<CharacterController>().radius, Is.EqualTo(.42f));
             Assert.That(root.PlayerObject.GetComponent<CharacterController>().height, Is.EqualTo(1.4f));
-            Assert.That(root.WorldPresenter.EnvironmentBlockerCount, Is.EqualTo(11 + root.VisualEnvironment.SliceObstacleCount));
+            Assert.That(root.WorldPresenter.EnvironmentBlockerCount, Is.EqualTo(4 + root.VisualEnvironment.SliceObstacleCount));
             // The main approach, strong-spot and elite centres remain reachable when the normal gate unlocks.
             root.WorldPresenter.EliteGate.SetLocked(false); Physics.SyncTransforms();
             for (var z = 37; z < 79; z++)

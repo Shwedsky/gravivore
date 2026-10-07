@@ -198,7 +198,8 @@ namespace Gravivore.Presentation.World
             // Gates stay readable when the covered prototype floor/dressing is hidden.
             view.Build(configuration.Size, _configuration.Bounds, color, CreateMaterial,
                 _environment != null ? _environment.Structures : VisualRoot,
-                _environment != null && configuration.Id == _configuration.EliteGate.Id ? _environment.SliceGate : null);
+                _environment != null && (_environment.FullChapterProduction || configuration.Id == _configuration.EliteGate.Id) ? _environment.SliceGate : null,
+                _environment != null && _environment.FullChapterProduction);
             return view;
         }
 
@@ -216,7 +217,8 @@ namespace Gravivore.Presentation.World
             blocker.transform.position = position;
             blocker.transform.localScale = size;
             blocker.GetComponent<Renderer>().sharedMaterial = material;
-            SeparateBoxVisual(blocker, material, _environment != null ? _environment.Structures : VisualRoot);
+            var proxyVisual = SeparateBoxVisual(blocker, material, _environment != null ? _environment.Structures : VisualRoot);
+            if (_environment != null && _environment.FullChapterProduction) proxyVisual.GetComponent<Renderer>().enabled=false;
             return blocker.GetComponent<Collider>();
         }
 
@@ -236,6 +238,8 @@ namespace Gravivore.Presentation.World
             AddEnvironmentBlocker("Repair Hub Right Service Frame", "repair-hub",
                 new Vector3(3.8f, 1.2f, 1f), new Vector3(1.2f, 2.4f, 3.2f), hardBlockerLayer);
 
+            if (!_environment.FullChapterProduction)
+            {
             AddEnvironmentBlocker("Shield Dump Left Emitter Carcass", "shield-dump",
                 new Vector3(-3.2f, .8f, 4.5f), new Vector3(1.2f, 1.6f, 1f), hardBlockerLayer);
             AddEnvironmentBlocker("Shield Dump Right Emitter Carcass", "shield-dump",
@@ -250,13 +254,14 @@ namespace Gravivore.Presentation.World
                 new Vector3(-3.1f, .75f, 4.8f), new Vector3(2.2f, 1.4f, 1.3f), hardBlockerLayer);
             AddEnvironmentBlocker("Hauler Graveyard Right Chassis", "hauler-graveyard",
                 new Vector3(3f, .75f, 4.15f), new Vector3(2.3f, 1.4f, 1.4f), hardBlockerLayer);
+            }
 
             AddEnvironmentBlocker("Elite Arena Left Containment", "elite-arena",
                 new Vector3(-4.6f, .7f, .35f), new Vector3(1.4f, 1.4f, 3f), hardBlockerLayer);
             AddEnvironmentBlocker("Elite Arena Right Containment", "elite-arena",
                 new Vector3(4.6f, .7f, -.2f), new Vector3(1.4f, 1.4f, 3f), hardBlockerLayer);
 
-            AddEnvironmentBlocker("Boss Arena Crane Tower", "boss-arena",
+            if (!_environment.FullChapterProduction) AddEnvironmentBlocker("Boss Arena Crane Tower", "boss-arena",
                 new Vector3(-5.15f, 1.5f, 2.8f), new Vector3(1.5f, 3f, 1.5f), hardBlockerLayer);
             for (var i = 0; i < _environment.SliceObstacleCount; i++)
             {
@@ -361,12 +366,14 @@ namespace Gravivore.Presentation.World
         private GameObject _barrierVisual;
         private GameObject _barrierAssembly;
         private Transform _visualRoot;
+        private bool _productionStructures;
         public Collider BlockingCollider { get; private set; }
         public bool IsLocked => _barrier != null && _barrier.activeSelf;
 
         public void Build(Vector3 size, WorldBounds bounds, Color color, Func<Color, Material> materialFactory,
-            Transform visualParent = null, GameObject presentationGate = null)
+            Transform visualParent = null, GameObject presentationGate = null, bool productionStructures = false)
         {
+            _productionStructures=productionStructures;
             var hardBlockerLayer = LayerMask.NameToLayer("HardBlocker");
             if (hardBlockerLayer < 0) throw new InvalidOperationException("HardBlocker layer is required for world gates.");
             if (materialFactory == null) throw new ArgumentNullException(nameof(materialFactory));
@@ -486,7 +493,8 @@ namespace Gravivore.Presentation.World
             flank.transform.localPosition = new Vector3(centerX, gateSize.y * 0.5f, 0f);
             flank.transform.localScale = new Vector3(width, gateSize.y, gateSize.z);
             flank.GetComponent<Renderer>().sharedMaterial = material;
-            Chapter01WorldPresenter.SeparateBoxVisual(flank, material, _visualRoot);
+            var proxyVisual=Chapter01WorldPresenter.SeparateBoxVisual(flank, material, _visualRoot);
+            if(_productionStructures) proxyVisual.GetComponent<Renderer>().enabled=false;
         }
     }
 }
