@@ -70,6 +70,8 @@ namespace Gravivore.Presentation.Map
             switch (status)
             {
                 case WorldMarkerStatus.Available: return MapAvailabilityState.Available;
+                case WorldMarkerStatus.Active: return MapAvailabilityState.Active;
+                case WorldMarkerStatus.Ready: return MapAvailabilityState.Ready;
                 case WorldMarkerStatus.Respawning: return MapAvailabilityState.Cooldown;
                 case WorldMarkerStatus.Defeated: return MapAvailabilityState.Defeated;
                 case WorldMarkerStatus.Locked: return MapAvailabilityState.Inactive;

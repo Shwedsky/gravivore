@@ -30,6 +30,8 @@ namespace Gravivore.Gameplay.Enemies
         private readonly SpawnPopulationState _population;
         private readonly RespawnSchedule _respawnSchedule;
         private readonly AdaptiveRespawnState _adaptiveRespawn;
+        private readonly WaveRespawnState _wave;
+        private readonly float _safeReturnRadiusSquared;
         private readonly List<LiveEntry> _liveEnemies;
         private readonly bool[] _occupiedAnchors;
         private readonly float[] _anchorDistances;
@@ -55,6 +57,12 @@ namespace Gravivore.Gameplay.Enemies
             _population = new SpawnPopulationState(configuration.Population);
             _respawnSchedule = new RespawnSchedule(configuration.Population.DesiredPopulation);
             _adaptiveRespawn = new AdaptiveRespawnState(configuration.AdaptiveRespawn);
+            _wave = configuration.WaveCooldownSeconds > 0f ? new WaveRespawnState(configuration.WaveCooldownSeconds) : null;
+            var footprintRadius = 0f;
+            foreach (var anchor in configuration.AnchorOffsets)
+                footprintRadius = Mathf.Max(footprintRadius, new Vector2(anchor.x, anchor.z).magnitude);
+            var safeRadius = footprintRadius + Mathf.Max(configuration.MinimumPlayerDistance, configuration.Enemy.Behavior.AggroReleaseRadius);
+            _safeReturnRadiusSquared = safeRadius * safeRadius;
             _liveEnemies = new List<LiveEntry>(configuration.Population.DesiredPopulation);
             _occupiedAnchors = new bool[configuration.AnchorOffsets.Length];
             _anchorDistances = new float[configuration.AnchorOffsets.Length];
@@ -82,7 +90,7 @@ namespace Gravivore.Gameplay.Enemies
                 _population.RegisterRecycle();
                 _globalCapacity.Release();
                 _pool.Return(entry.Enemy);
-                _respawnSchedule.Schedule(_elapsedTime);
+                if (_wave == null) _respawnSchedule.Schedule(_elapsedTime);
             }
             _liveEnemies.Clear();
         }
@@ -95,11 +103,37 @@ namespace Gravivore.Gameplay.Enemies
         public Vector3 Position => _configuration.WorldOrigin;
         public float RewardMultiplier => _configuration.RewardMultiplier;
         public string EnemyId => _configuration.Enemy.Id;
+        public Vector2 WaveFootprintSize
+        {
+            get
+            {
+                var size = Vector2.zero;
+                foreach (var anchor in _configuration.AnchorOffsets)
+                { size.x = Mathf.Max(size.x, Mathf.Abs(anchor.x)); size.y = Mathf.Max(size.y, Mathf.Abs(anchor.z)); }
+                return (size + Vector2.one * _configuration.Enemy.Behavior.AggroRadius) * 2f;
+            }
+        }
         public int RespawnPenaltySteps => _adaptiveRespawn.PenaltySteps;
         public float AdditionalRespawnDelay => _adaptiveRespawn.AdditionalDelay;
         // A ready timer may still be blocked by player distance or the global cap.
-        public float SecondsUntilNextRespawn => _respawnSchedule.Count > 0
+        public float SecondsUntilNextRespawn => _wave != null ? _wave.RemainingSeconds : _respawnSchedule.Count > 0
             ? Mathf.Max(0f, _respawnSchedule.EarliestReadyTime - _elapsedTime) : 0f;
+        public bool IsInCombat
+        {
+            get
+            {
+                for (var i = 0; i < _liveEnemies.Count; i++)
+                    if (_liveEnemies[i].Enemy.BrainState != OrdinaryEnemyBrainState.Idle) return true;
+                return false;
+            }
+        }
+        public bool PlayerOutsideReturnArea
+        {
+            get { var offset = _player.position - Position; offset.y = 0f; return offset.sqrMagnitude > _safeReturnRadiusSquared; }
+        }
+        public SpawnSpotAvailability Availability => _wave != null ? _wave.Read(IsInCombat) :
+            SecondsUntilNextRespawn > 0f ? SpawnSpotAvailability.Cooldown :
+            IsInCombat ? SpawnSpotAvailability.Active : SpawnSpotAvailability.Available;
 
         public event Action<EnemyDeathEvent> EnemyDied;
 
@@ -118,6 +152,18 @@ namespace Gravivore.Gameplay.Enemies
             }
 
             _elapsedTime += deltaTime;
+            if (_wave != null)
+            {
+                _wave.Tick(deltaTime);
+                if (!_active) return;
+                if (_wave.HasMissingMembers && !_wave.CanRestore(PlayerOutsideReturnArea, IsInCombat,
+                    _globalCapacity.MaximumLiveCount - _globalCapacity.LiveCount >= PendingRespawns && _pool.AvailableCount >= PendingRespawns)) return;
+                // Admission is for the whole missing group, never one timer per dead enemy.
+                while (_population.NeedsSpawn)
+                    if (!TrySpawnOne()) return;
+                _wave.CompleteRestore();
+                return;
+            }
             _adaptiveRespawn.AdvanceTo(_elapsedTime);
             while (_active && _population.NeedsSpawn && _respawnSchedule.HasReady(_elapsedTime))
             {
@@ -226,13 +272,17 @@ namespace Gravivore.Gameplay.Enemies
             _population.RegisterRecycle();
             _globalCapacity.Release();
             _pool.Return(enemy);
-            var delay = _configuration.RespawnDelay.Sample(_random.NextUnit()) + _adaptiveRespawn.AdditionalDelay;
-            _respawnSchedule.Schedule(_elapsedTime + delay);
+            if (_wave == null)
+            {
+                var delay = _configuration.RespawnDelay.Sample(_random.NextUnit()) + _adaptiveRespawn.AdditionalDelay;
+                _respawnSchedule.Schedule(_elapsedTime + delay);
+            }
         }
 
         private void HandleEnemyDied(EnemyDeathEvent death)
         {
-            _adaptiveRespawn.RegisterKill(_elapsedTime);
+            if (_wave != null) _wave.RegisterKill();
+            else _adaptiveRespawn.RegisterKill(_elapsedTime);
             SafeEventDispatch.Publish(EnemyDied, new EnemyDeathEvent(death.LifeId, death.EnemyId,
                 death.Position, _configuration.RewardMultiplier));
         }

@@ -15,7 +15,8 @@ namespace Gravivore.Gameplay.Enemies
             float minimumRespawnDelay,
             float maximumRespawnDelay,
             AdaptiveRespawnPolicy adaptiveRespawn = default,
-            float rewardMultiplier = 1f)
+            float rewardMultiplier = 1f,
+            float waveCooldownSeconds = 0f)
         {
             if (string.IsNullOrWhiteSpace(id))
             {
@@ -52,6 +53,10 @@ namespace Gravivore.Gameplay.Enemies
             if (float.IsNaN(rewardMultiplier) || float.IsInfinity(rewardMultiplier) || rewardMultiplier <= 0f)
                 throw new ArgumentOutOfRangeException(nameof(rewardMultiplier));
             RewardMultiplier = rewardMultiplier;
+            if (waveCooldownSeconds != 0f && (float.IsNaN(waveCooldownSeconds) || float.IsInfinity(waveCooldownSeconds) ||
+                waveCooldownSeconds < WaveRespawnState.MinimumCooldownSeconds))
+                throw new ArgumentOutOfRangeException(nameof(waveCooldownSeconds));
+            WaveCooldownSeconds = waveCooldownSeconds;
         }
 
         public string Id { get; }
@@ -69,6 +74,7 @@ namespace Gravivore.Gameplay.Enemies
         public RespawnDelayPolicy RespawnDelay { get; }
         public AdaptiveRespawnPolicy AdaptiveRespawn { get; }
         public float RewardMultiplier { get; }
+        public float WaveCooldownSeconds { get; }
 
         public Vector3 GetAnchorWorldPosition(int index)
         {
@@ -91,6 +97,7 @@ namespace Gravivore.Gameplay.Enemies
         [SerializeField, Range(SpawnPopulationPolicy.MinimumAllowedPopulation,
             SpawnPopulationPolicy.MaximumAllowedPopulation)]
         private int _desiredPopulation = 4;
+        [SerializeField, Min(120f)] private float _waveCooldownSeconds = 120f;
         [SerializeField, Min(0f)] private float _minimumPlayerDistance = 3f;
         [SerializeField, Min(0f)] private float _minimumRespawnDelay = 8f;
         [SerializeField, Min(0f)] private float _maximumRespawnDelay = 14f;
@@ -119,7 +126,8 @@ namespace Gravivore.Gameplay.Enemies
                 _minimumRespawnDelay,
                 _maximumRespawnDelay,
                 new AdaptiveRespawnPolicy(_killsPerPenaltyStep, _respawnDelayPerPenaltyStep,
-                    _maximumRespawnPenaltySteps, _respawnPenaltyIdleGrace, _respawnPenaltyRecoveryInterval));
+                    _maximumRespawnPenaltySteps, _respawnPenaltyIdleGrace, _respawnPenaltyRecoveryInterval),
+                waveCooldownSeconds: _waveCooldownSeconds);
         }
 
         public void ValidateOrThrow()

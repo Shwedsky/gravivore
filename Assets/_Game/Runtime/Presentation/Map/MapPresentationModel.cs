@@ -21,7 +21,8 @@ namespace Gravivore.Presentation.Map
         Active,
         Cooldown,
         Inactive,
-        Defeated
+        Defeated,
+        Ready
     }
 
     public enum MapRewardState

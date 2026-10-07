@@ -73,7 +73,7 @@ namespace Gravivore.Presentation.Map
                 var strong = index > _ordinaryCount;
                 var position = strong ? _authority.ReadStrongOrdinary(index - _ordinaryCount - 1).Position : spot.Position;
                 return new MapMarkerSnapshot(spot.Id, strong ? MapMarkerKind.StrongOrdinary : MapMarkerKind.Ordinary,
-                    position, spot.LiveCount > 0 || strong && !spot.IsActive ? MapAvailabilityState.Available : MapAvailabilityState.Cooldown,
+                    position, MapSpotAvailability(spot.Availability),
                     strong ? "Усиленная зона" : RussianUiText.SpotName(spot.Id), remainingSeconds: spot.SecondsUntilNextRespawn);
             }
             if (index == BaseCount - 1) return new MapMarkerSnapshot("repair-hub", MapMarkerKind.RepairHub,
@@ -94,6 +94,17 @@ namespace Gravivore.Presentation.Map
                 firstClearCompleted: state.ProgressionFirstClearCompleted,
                 rewardEntitlement: state.RewardEntitlement, premiumRewardsRemaining: state.PremiumRewardsRemaining,
                 rewardWindowRemainingSeconds: (float)state.RewardWindowRemaining.TotalSeconds);
+        }
+        public static MapAvailabilityState MapSpotAvailability(SpawnSpotAvailability state)
+        {
+            switch (state)
+            {
+                case SpawnSpotAvailability.Active: return MapAvailabilityState.Active;
+                case SpawnSpotAvailability.Cooldown: return MapAvailabilityState.Cooldown;
+                case SpawnSpotAvailability.Ready: return MapAvailabilityState.Ready;
+                case SpawnSpotAvailability.Locked: return MapAvailabilityState.Inactive;
+                default: return MapAvailabilityState.Available;
+            }
         }
     }
 }
