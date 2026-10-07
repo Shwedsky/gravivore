@@ -217,14 +217,64 @@ namespace Gravivore.Tests.PlayMode
             }
             finally { if(Directory.Exists(directory)) Directory.Delete(directory,true); }
         }
+        [UnityTest] public IEnumerator InternalMobileCaptureShowsCompactCombatFeedbackInAcceptedSlice()
+        {
+            yield return Load(); var root=_scene.Root;
+            var body=root.PlayerObject.GetComponent<CharacterController>(); body.enabled=false;
+            root.PlayerObject.transform.position=new Vector3(0,0,64); body.enabled=true;
+            root.WorldPresenter.EliteGate.SetLocked(false); root.WorldUnlocks.PrepareEliteEncounterForDevelopment(); root.Chapter1Encounters.Tick();
+            var enemy=root.EnemyPopulation.GetSpot(0).GetLiveEnemy(0);
+            var enemyBody=enemy.GetComponent<CharacterController>(); enemyBody.enabled=false;
+            enemy.transform.position=new Vector3(1.2f,0,66.2f); enemyBody.enabled=true; enemy.enabled=true;
+            var attack=root.PlayerObject.GetComponent<GravityAttackController>();
+            var settings=(GravityAttackSettings)typeof(GravityAttackController).GetField("_settings",BindingFlags.NonPublic|BindingFlags.Instance).GetValue(attack);
+            var lash=root.GetComponentInChildren<GravityLashVfxPool>();
+            attack.Initialize(root.PlayerObject.transform,root.PlayerStats,settings,new TestSensor(enemy),new TestPull(),lash);
+            attack.ResetTransientState(); attack.Tick(.01f);
+            root.PlayerObject.GetComponent<MechMotionPresenter>().Tick(.3f);
+            UnityEngine.Camera.main.GetComponent<Gravivore.Presentation.Camera.PortraitFollowCamera>().SnapToTarget();
+            Canvas.ForceUpdateCanvases(); root.CombatReadability.Tick(.08f);
+            yield return null;
+            var camera=UnityEngine.Camera.main; var canvas=root.GetComponentInChildren<Canvas>();
+            var mode=canvas.renderMode; var priorCamera=canvas.worldCamera; var priorTarget=camera.targetTexture; var priorActive=RenderTexture.active;
+            var render=new RenderTexture(540,960,24); var texture=new Texture2D(540,960,TextureFormat.RGB24,false);
+            try
+            {
+                canvas.renderMode=RenderMode.ScreenSpaceCamera; canvas.worldCamera=camera; canvas.planeDistance=1;
+                camera.targetTexture=render; Canvas.ForceUpdateCanvases(); root.CombatReadability.Tick(0); camera.Render(); RenderTexture.active=render;
+                texture.ReadPixels(new Rect(0,0,540,960),0,0); texture.Apply();
+                Directory.CreateDirectory("docs/post-device-combat-readability/internal");
+                File.WriteAllBytes("docs/post-device-combat-readability/internal/combat.png",texture.EncodeToPNG());
+                Assert.That(root.CombatReadability.VisiblePlateCount,Is.GreaterThan(0));
+                var overlay=canvas.transform.Find("Enemy Combat Overlay");
+                Assert.That(overlay.GetSiblingIndex(),Is.Zero,"HUD controls must draw over combat annotations.");
+                foreach(var text in overlay.GetComponentsInChildren<UnityEngine.UI.Text>())
+                {
+                    if(text.name!="HP" && text.name!="Reward Preview") continue;
+                    Assert.That(text.preferredHeight,Is.LessThanOrEqualTo(text.rectTransform.rect.height+.1f),text.name+" must fit every line.");
+                    Assert.That(text.cachedTextGenerator.vertexCount,Is.GreaterThan(4),text.name+" must actually render glyphs.");
+                }
+                var group=overlay.GetComponent<CanvasGroup>(); Assert.IsFalse(group.blocksRaycasts);
+                root.PauseMenu.Open(); root.CombatReadability.Tick(0);
+                Assert.That(group.alpha,Is.Zero,"Combat labels must hide behind modal menus.");
+                root.PauseMenu.Resume(); root.CombatReadability.Tick(0); Assert.That(group.alpha,Is.EqualTo(1));
+            }
+            finally
+            {
+                RenderTexture.active=priorActive; camera.targetTexture=priorTarget; canvas.renderMode=mode; canvas.worldCamera=priorCamera;
+                render.Release(); UnityEngine.Object.Destroy(render); UnityEngine.Object.Destroy(texture);
+            }
+        }
         private sealed class TestPull : IPullDestinationResolver { public Vector3 Resolve(Vector3 a,Vector3 b,float c) => a; }
         private sealed class TestLash : IGravityLashVfx { public void Play(Vector3 a,Vector3 b) {} }
         private sealed class TestSensor : ITargetSensor
         {
-            private readonly ReadabilityTestTarget _target;
-            public TestSensor(ReadabilityTestTarget target) => _target = target;
+            private readonly MonoBehaviour _owner;
+            private readonly ITargetable _target;
+            private readonly IDamageable _damage;
+            public TestSensor(MonoBehaviour target) { _owner=target; _target=(ITargetable)target; _damage=(IDamageable)target; }
             public IReadOnlyList<TargetCandidate<CombatTarget>> Collect(Transform source,CombatFaction faction,TargetingParameters settings) =>
-                new[] { new TargetCandidate<CombatTarget>(new CombatTarget(_target,_target,_target,null),2,1,_target.Alive) };
+                new[] { new TargetCandidate<CombatTarget>(new CombatTarget(_owner,_target,_damage,null),2,1,_target.CanBeTargeted) };
             public bool HasLineOfSight(Vector3 a,Vector3 b) => true;
         }
     }

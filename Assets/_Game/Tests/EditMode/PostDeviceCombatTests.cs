@@ -1,5 +1,6 @@
 using Gravivore.Gameplay.Enemies;
 using Gravivore.Gameplay.Progression;
+using Gravivore.Gameplay.Player;
 using Gravivore.Presentation.Combat;
 using Gravivore.Presentation.Development;
 using Gravivore.Presentation.World;
@@ -25,6 +26,12 @@ namespace Gravivore.Tests.EditMode
                 progression.Configuration.TryGetReward(id,strong.RewardMultiplier,out var scaled);
                 Assert.That(scaled.StatExperience,Is.EqualTo(unit.StatExperience*strong.RewardMultiplier));
                 Assert.That(scaled.AssimilationScore,Is.EqualTo(System.Math.Round(unit.AssimilationScore*(double)strong.RewardMultiplier,System.MidpointRounding.AwayFromZero)));
+                var configuration=AssetDatabase.LoadAssetAtPath<PlayerStatsDefinition>("Assets/_Game/Content/Definitions/S02_PlayerStats.asset").Configuration;
+                using var service=new AssimilationProgressionService(new PlayerStatsState(configuration,configuration.StartingLevels),new ProgressionState(),progression.Configuration);
+                CoreRewardGrantedEvent granted=default; service.RewardGranted+=value=>granted=value;
+                Assert.IsTrue(service.TryGrant(new EnemyDeathEvent(new EnemyLifeId(System.Guid.NewGuid()),id,Vector3.zero,strong.RewardMultiplier)));
+                Assert.That(granted.GrantedExperience,Is.EqualTo(scaled.StatExperience));
+                Assert.That(granted.GrantedAssimilationScore,Is.EqualTo(scaled.AssimilationScore));
             }
         }
         [Test] public void HitchWindowIsFixedSizeAndThresholdCooldownSuppressRepeatedStalls()

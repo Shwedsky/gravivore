@@ -9,7 +9,7 @@ namespace Gravivore.Presentation.Combat
         [SerializeField, Range(1,8)] private int _visibleBars = 6;
         [SerializeField, Range(4,16)] private int _damageTextCapacity = 10;
         [SerializeField, Range(2,8)] private int _rewardTextCapacity = 4;
-        [SerializeField] private Vector2 _plateSize = new Vector2(240,78);
+        [SerializeField] private Vector2 _plateSize = new Vector2(270,98);
         [SerializeField, Min(.1f)] private float _relevanceRange = 7f, _recentDamageSeconds = 2.5f;
         [SerializeField, Min(.1f)] private float _damageLifetime = .75f, _rewardLifetime = 1.1f, _textTravel = .6f;
         [SerializeField, Min(.1f)] private float _runCycleDistance = 1.8f, _locomotionBlendSeconds = .09f;

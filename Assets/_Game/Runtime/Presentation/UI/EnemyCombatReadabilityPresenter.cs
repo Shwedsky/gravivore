@@ -55,6 +55,9 @@ namespace Gravivore.Presentation.UI
         private PostDevicePresentationDefinition _settings;
         private UnityEngine.Camera _camera;
         private RectTransform _layer;
+        private CanvasGroup _layerGroup;
+        private RectTransform _compactMap;
+        private readonly Vector3[] _mapCorners = new Vector3[4];
         private Actor[] _actors;
         private int[] _order;
         private Plate[] _plates;
@@ -77,6 +80,10 @@ namespace Gravivore.Presentation.UI
             _attack = root.PlayerObject.GetComponent<GravityAttackController>();
             _layer = new GameObject("Enemy Combat Overlay",typeof(RectTransform)).GetComponent<RectTransform>();
             _layer.SetParent(parent,false); HudUiFactory.SetRect(_layer,Vector2.zero,Vector2.one);
+            _layer.SetAsFirstSibling();
+            _layerGroup = _layer.gameObject.AddComponent<CanvasGroup>();
+            _layerGroup.blocksRaycasts=false; _layerGroup.interactable=false;
+            _compactMap=root.MapIntegration.MapPresenter.CompactSurface.parent as RectTransform;
             var enemies = root.EnemyPopulation.GetComponentsInChildren<OrdinaryEnemyController>(true);
             _actors = new Actor[enemies.Length+2]; _order = new int[_actors.Length];
             for (var i=0;i<enemies.Length;i++) _actors[i] = new Actor { Enemy=enemies[i],Root=enemies[i].transform };
@@ -96,16 +103,16 @@ namespace Gravivore.Presentation.UI
             var rect=HudUiFactory.CreatePanel(_layer,"Enemy Plate "+i,Vector2.one*.5f,Vector2.one*.5f,HudUiFactory.PanelColor);
             rect.sizeDelta=_settings.PlateSize; var group=rect.gameObject.AddComponent<CanvasGroup>(); group.blocksRaycasts=false; group.interactable=false;
             var edge=HudUiFactory.CreatePanel(rect,"Hostile Identity",Vector2.zero,new Vector2(.012f,1),Hostile).GetComponent<Image>();
-            var bar=HealthBarView.Create(rect,"HP Track","HP Fill",new Vector2(.05f,.62f),new Vector2(.95f,.75f),new Color(.13f,.08f,.09f,1),Hostile);
-            var hp=HudUiFactory.CreateText(rect,"HP",new Vector2(.05f,.75f),new Vector2(.95f,1),"",21,TextAnchor.MiddleCenter,Color.white);
-            var reward=HudUiFactory.CreateText(rect,"Reward Preview",new Vector2(.04f,.02f),new Vector2(.96f,.60f),"",23,TextAnchor.MiddleCenter,Player);
+            var bar=HealthBarView.Create(rect,"HP Track","HP Fill",new Vector2(.05f,.58f),new Vector2(.95f,.70f),new Color(.13f,.08f,.09f,1),Hostile);
+            var hp=HudUiFactory.CreateText(rect,"HP",new Vector2(.05f,.70f),new Vector2(.95f,1),"",22,TextAnchor.MiddleCenter,Color.white);
+            var reward=HudUiFactory.CreateText(rect,"Reward Preview",new Vector2(.04f,.03f),new Vector2(.96f,.57f),"",21,TextAnchor.MiddleCenter,Player);
             rect.gameObject.SetActive(false);
             return new Plate { Rect=rect,Group=group,Bar=bar,Health=hp,Reward=reward,Edge=edge,Fill=bar.FillRect.GetComponent<Image>() };
         }
         private Floating CreateFloating(int i)
         {
             var text=HudUiFactory.CreateText(_layer,"Pooled Combat Text "+i,Vector2.one*.5f,Vector2.one*.5f,"",29,TextAnchor.MiddleCenter,Color.white);
-            text.rectTransform.sizeDelta=new Vector2(380,66); text.fontStyle=FontStyle.Bold;
+            text.rectTransform.sizeDelta=new Vector2(380,84); text.fontStyle=FontStyle.Bold;
             var outline=text.gameObject.AddComponent<Outline>(); outline.effectColor=new Color(.01f,.02f,.025f,.95f); outline.effectDistance=new Vector2(1,-1);
             var group=text.gameObject.AddComponent<CanvasGroup>(); group.blocksRaycasts=false; group.interactable=false;
             text.gameObject.SetActive(false); return new Floating { Rect=text.rectTransform,Text=text,Group=group };
@@ -142,12 +149,14 @@ namespace Gravivore.Presentation.UI
         {
             var index=reward ? _settings.DamageTextCapacity+_rewardCursor++%_settings.RewardTextCapacity : _damageCursor++%_settings.DamageTextCapacity;
             var slot=_floating[index]; slot.Origin=origin; slot.Age=0; slot.Lifetime=reward?_settings.RewardLifetime:_settings.DamageLifetime;
+            slot.Text.fontSize=reward?24:29;
             slot.Active=true; slot.Text.text=text; slot.Text.color=color; slot.Group.alpha=1; slot.Rect.gameObject.SetActive(true);
         }
         private void LateUpdate() => Tick(Time.unscaledDeltaTime);
         public void Tick(float dt)
         {
             if(_root==null) return;
+            _layerGroup.alpha=(_root.PauseMenu.IsPaused || _root.OfflineRewardPanel.IsVisible || _root.MapIntegration.MapPresenter.IsExpanded)?0:1;
             var target=_attack.ValidCurrentTarget; var player=_root.PlayerObject.transform.position; var count=0;
             for(var i=0;i<_actors.Length;i++)
             {
@@ -170,6 +179,7 @@ namespace Gravivore.Presentation.UI
             for(var i=0;i<count && VisiblePlateCount<_plates.Length;i++)
             {
                 var actor=_actors[_order[i]]; OnScreen(actor.Anchor,out var point);
+                point=KeepPlateClearOfMap(point);
                 var overlaps=false;
                 for(var j=0;j<VisiblePlateCount;j++)
                 {
@@ -198,6 +208,17 @@ namespace Gravivore.Presentation.UI
             var viewport=_camera.WorldToViewportPoint(world);
             point=new Vector2((viewport.x-.5f)*_layer.rect.width,(viewport.y-.5f)*_layer.rect.height);
             return viewport.z>0 && viewport.x>.06f && viewport.x<.94f && viewport.y>.14f && viewport.y<.84f;
+        }
+        private Vector2 KeepPlateClearOfMap(Vector2 point)
+        {
+            if(_compactMap==null || !_compactMap.gameObject.activeInHierarchy) return point;
+            _compactMap.GetWorldCorners(_mapCorners);
+            var low=_layer.InverseTransformPoint(_mapCorners[0]);
+            var high=_layer.InverseTransformPoint(_mapCorners[2]);
+            var half=_settings.PlateSize*.5f;
+            if(point.x+half.x>low.x && point.x-half.x<high.x && point.y+half.y>low.y && point.y-half.y<high.y)
+                point.x=Mathf.Max(-_layer.rect.width*.5f+half.x+8,low.x-half.x-8);
+            return point;
         }
         private void BindLife(Actor actor)
         {
