@@ -45,3 +45,11 @@ short visible gaps backed by pre-existing gate/perimeter collision. Wall modules
 now cover those flanks and the complete north boundary; a sampled wall-coverage
 regression passes alongside all actual controller routes. The final APK is rebuilt
 from the boundary-complete checkpoint rather than delivering the earlier artifact.
+
+Final build source: `1c4f25b16f00cc5d4dcaabe4a4bf4c45265d3ffc`.
+Final ARM64 DEV build exited 0; v39 has 76,816,250 bytes and SHA256
+`a51895b3245866c8aa6203d1444be8dbf6d5fb1d92743bd9af6db0f0887113c5`.
+Final manifest, signature/update certificate, 23 chapter entries, accepted art/audio,
+compiled UI and named serialized step/gait settings passed direct APK verification.
+Complete delivery, limitations, assumptions and 33-check coverage are documented;
+the next human action is the entire Chapter 01 APK device playthrough.
