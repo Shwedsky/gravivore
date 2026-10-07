@@ -30,7 +30,10 @@ namespace Gravivore.Editor.VisualIntegration
             using(var archive=ZipFile.OpenRead(report.summary.outputPath))
             foreach(var entry in archive.Entries)
             {
-                if(!entry.FullName.StartsWith("assets/bin/Data/sharedassets",StringComparison.Ordinal) || !entry.FullName.EndsWith(".assets",StringComparison.Ordinal)) continue;
+                // Android splits serialized archives and writes streamed AudioClip
+                // metadata into GUID-named files. Inspect both, excluding raw streams
+                // and IL2CPP metadata where class names would be false positives.
+                if(!IsSerializedArchive(entry.FullName)) continue;
                 using var stream=entry.Open(); using var memory=new MemoryStream(); stream.CopyTo(memory); var bytes=memory.ToArray();
                 for(var i=0;i<Names.Length;i++) if(found[i]==null && Contains(bytes,Names[i])) found[i]=Names[i]+" => "+entry.FullName;
             }
@@ -43,6 +46,18 @@ namespace Gravivore.Editor.VisualIntegration
             File.WriteAllText(Path.ChangeExtension(report.summary.outputPath,".post-device.json"),json);
             Directory.CreateDirectory("docs/post-device-combat-readability"); File.WriteAllText("docs/post-device-combat-readability/apk_packed_dependencies.json",json);
             Debug.Log("POST_DEVICE_APK_CONTENT_VERIFIED: "+string.Join(", ",found));
+        }
+        private static bool IsSerializedArchive(string path)
+        {
+            const string prefix="assets/bin/Data/";
+            if(!path.StartsWith(prefix,StringComparison.Ordinal)) return false;
+            var name=path.Substring(prefix.Length);
+            if(name.StartsWith("sharedassets",StringComparison.Ordinal))
+                return name.EndsWith(".assets",StringComparison.Ordinal) || name.Contains(".assets.split");
+            if(name.Length!=32) return false;
+            foreach(var character in name)
+                if(!((character>='0' && character<='9') || (character>='a' && character<='f'))) return false;
+            return true;
         }
         private static bool Contains(byte[] bytes,string name)
         {
