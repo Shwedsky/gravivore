@@ -40,12 +40,16 @@ namespace Gravivore.Presentation.Feedback
 
         [Header("Mech presentation only")]
         [SerializeField, Min(0.1f)] private float _mechStride = 1.15f;
+        [SerializeField, Min(1f)] private float _combatFacingDegreesPerSecond = 540f;
+        public float CombatFacingDegreesPerSecond => _combatFacingDegreesPerSecond;
         [SerializeField] private float _mechHipDegrees = 27f;
         [SerializeField] private float _mechKneeDegrees = 42f;
         [SerializeField] private float _mechFootLift = 0.09f;
         [SerializeField] private float _mechIdleDegrees = 0.6f;
         [SerializeField, Min(0.1f)] private float _stepMinimumInterval = 0.28f;
         [SerializeField] private AudioClip _stepClip;
+        [SerializeField, Range(0,1)] private float _stepVolume = .24f;
+        public float StepVolume => _stepVolume;
         [SerializeField] private AudioClip _releaseClip;
         [SerializeField] private AudioClip _playerHitClip;
         [SerializeField] private AudioClip _playerDeathClip;

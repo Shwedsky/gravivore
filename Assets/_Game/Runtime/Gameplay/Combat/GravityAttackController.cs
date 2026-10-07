@@ -23,6 +23,10 @@ namespace Gravivore.Gameplay.Combat
         private bool _isInitialized;
 
         public bool HasCurrentTarget => _hasCurrentTarget;
+        // Read-only presentation access; selection and validity remain owned here.
+        public ITargetable ValidCurrentTarget => _hasCurrentTarget && IsCurrentTargetValid()
+            ? _currentTarget.Targetable : null;
+        public event Action<PlayerAttackResolvedEvent> AttackResolved;
 
         public void ResetTransientState()
         {
@@ -182,6 +186,8 @@ namespace Gravivore.Gameplay.Combat
             var damageResult = _currentTarget.Damageable.ApplyDamage(new DamageRequest(
                 _playerStats.DerivedStats.BaseDamage,
                 DamageType.Gravity));
+            Gravivore.Core.Events.SafeEventDispatch.Publish(AttackResolved,
+                new PlayerAttackResolvedEvent(targetPoint, damageResult));
             if (damageResult.AppliedDamage > 0f)
             {
                 _combatActivity?.RecordDamageDealt(damageResult.AppliedDamage);

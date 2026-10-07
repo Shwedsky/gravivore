@@ -11,6 +11,7 @@ using UnityEngine;
 namespace Gravivore.Presentation.Player
 {
     /// <summary>Observes movement/health/attack events. Never writes gameplay transforms or timing.</summary>
+    [DefaultExecutionOrder(200)]
     public sealed class VisualSliceAnimationBridge : MonoBehaviour
     {
         private static readonly int Idle = Animator.StringToHash("Idle"), Run = Animator.StringToHash("Run"),
@@ -24,11 +25,25 @@ namespace Gravivore.Presentation.Player
             public float ReactionUntil, Hp, Cooldown;
             public EnemyLifeId Life;
             public Vector3 Position;
+            public float RunSeconds = .8f;
+            public Quaternion AnimatorRestRotation;
+            public FootContact[] Feet;
             public void Refresh()
             {
                 if (Model == Binding.ActiveModel) return;
                 Model = Binding.ActiveModel;
                 Animator = Model != null ? Model.GetComponentInChildren<Animator>(true) : null;
+                if (Animator != null)
+                {
+                    Animator.applyRootMotion = false;
+                    AnimatorRestRotation = Animator.transform.localRotation;
+                    foreach (var clip in Animator.runtimeAnimatorController.animationClips)
+                        if (clip.name == "Run") RunSeconds = clip.length;
+                    var bones=Animator.GetComponentsInChildren<Transform>(true);
+                    Transform Bone(string name) { foreach(var bone in bones) if(bone.name==name) return bone; return null; }
+                    Feet = new[] { new FootContact(Bone("L_HIP"),Bone("L_KNEE"),Bone("L_ANKLE")),
+                        new FootContact(Bone("R_HIP"),Bone("R_KNEE"),Bone("R_ANKLE")) };
+                }
                 State = 0;
             }
             public void Pose(int state)
@@ -37,6 +52,37 @@ namespace Gravivore.Presentation.Player
                 if (Animator == null || !Animator.gameObject.activeInHierarchy || State == state) return;
                 Animator.CrossFadeInFixedTime(state, .065f, 0, 0);
                 State = state;
+            }
+        }
+        private sealed class FootContact
+        {
+            private readonly Transform _hip,_knee,_ankle;
+            private bool _planted;
+            private Vector3 _anchor;
+            public FootContact(Transform hip,Transform knee,Transform ankle) { _hip=hip; _knee=knee; _ankle=ankle; }
+            public float Apply(float phase,float maximum,bool running)
+            {
+                if(_ankle==null || _hip==null || _knee==null) return 0;
+                var stance=running && Mathf.Sin(phase*Mathf.PI*2)<=0;
+                if(!stance) { _planted=false; return 0; }
+                if(!_planted) { _anchor=_ankle.position; _planted=true; }
+                var offset=_anchor-_ankle.position; offset.y=0;
+                var envelope=Mathf.Clamp01(-Mathf.Sin(phase*Mathf.PI*2)*3);
+                offset=Vector3.ClampMagnitude(offset,maximum)*envelope;
+                var a=_hip.position; var b=_knee.position; var c=_ankle.position;
+                var target=c+offset; var l1=Vector3.Distance(a,b); var l2=Vector3.Distance(b,c);
+                if(l1<.001f || l2<.001f) return 0;
+                var distance=Mathf.Clamp(Vector3.Distance(a,target),Mathf.Abs(l1-l2)+.001f,l1+l2-.001f);
+                var direction=(target-a).normalized; target=a+direction*distance;
+                var pole=Vector3.ProjectOnPlane(b-a,direction).normalized;
+                if(pole.sqrMagnitude<.01f) return 0;
+                var along=(l1*l1-l2*l2+distance*distance)/(2*distance);
+                var kneeTarget=a+direction*along+pole*Mathf.Sqrt(Mathf.Max(0,l1*l1-along*along));
+                var ankleRotation=_ankle.rotation;
+                _hip.rotation=Quaternion.FromToRotation(b-a,kneeTarget-a)*_hip.rotation;
+                _knee.rotation=Quaternion.FromToRotation(_ankle.position-_knee.position,target-_knee.position)*_knee.rotation;
+                _ankle.rotation=ankleRotation;
+                return offset.magnitude;
             }
         }
         private sealed class Corpse
@@ -56,6 +102,11 @@ namespace Gravivore.Presentation.Player
         private float _playerDeathUntil, _playerAttackUntil, _playerHitUntil, _eliteAttackUntil, _eliteHitUntil;
         public string PlayerState { get; private set; }
         public int ActiveShutdownCount { get; private set; }
+        private Gravivore.Presentation.Combat.PostDevicePresentationDefinition _locomotionSettings;
+        private float _visualSpeed;
+        public float PlayerRunPlaybackRate { get; private set; } = 1;
+        public float MaximumFootContactOffset { get; private set; }
+        public void ConfigureLocomotion(Gravivore.Presentation.Combat.PostDevicePresentationDefinition settings) => _locomotionSettings=settings;
 
         public void Initialize(S01SceneCompositionRoot root, GravityLashVfxPool lash, S15VisualCatalog catalog)
         {
@@ -114,14 +165,31 @@ namespace Gravivore.Presentation.Player
             }
         }
         private void LateUpdate() => Tick();
-        public void Tick()
+        public void Tick() => Tick(Time.deltaTime);
+        public void Tick(float deltaTime)
         {
             if (_root == null) return;
             var position = _root.PlayerObject.transform.position;
-            var moving = (position - _player.Position).sqrMagnitude > .000001f;
+            var delta=position-_player.Position; delta.y=0;
+            if(delta.sqrMagnitude>4) delta=Vector3.zero;
+            var moving = delta.sqrMagnitude > .000001f;
             var state = Time.time < _playerDeathUntil ? Death : Time.time < _playerHitUntil ? Hit :
                 Time.time < _playerAttackUntil ? Attack : moving ? Run : Idle;
             _player.Pose(state); _player.Position = position;
+            if(_locomotionSettings!=null && _player.Animator!=null)
+            {
+                var dt=Mathf.Max(.0001f,deltaTime);
+                var velocity=delta/dt;
+                _visualSpeed=Mathf.MoveTowards(_visualSpeed,velocity.magnitude, _root.PlayerStats.MoveSpeed*dt/_locomotionSettings.LocomotionBlendSeconds);
+                PlayerRunPlaybackRate=state==Run ? Mathf.Clamp(_visualSpeed*_player.RunSeconds/_locomotionSettings.RunCycleDistance,.25f,3f) : 1;
+                _player.Animator.speed=PlayerRunPlaybackRate;
+                var lean=state==Run?_player.Model.InverseTransformDirection(velocity)/Mathf.Max(1,_root.PlayerStats.MoveSpeed):Vector3.zero;
+                _player.Animator.transform.localRotation=Quaternion.Euler(Mathf.Clamp(lean.z*2,-2,2),0,Mathf.Clamp(-lean.x*2,-2,2))*_player.AnimatorRestRotation;
+                var animation=_player.Animator.GetCurrentAnimatorStateInfo(0);
+                MaximumFootContactOffset=0;
+                for(var i=0;i<_player.Feet.Length;i++) MaximumFootContactOffset=Mathf.Max(MaximumFootContactOffset,
+                    _player.Feet[i].Apply(animation.normalizedTime+i*.5f,_locomotionSettings.FootContactCorrection,state==Run && animation.shortNameHash==Run));
+            }
             PlayerState = state == Death ? "Death" : state == Hit ? "Hit" : state == Attack ? "Attack" : state == Run ? "Run" : "Idle";
             for (var i = 0; i < _actors.Length; i++)
             {

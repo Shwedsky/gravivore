@@ -57,6 +57,7 @@ namespace Gravivore.Presentation.Feedback
 
         public void Initialize(S14PresentationDefinition definition, int sourceCount = 4)
         {
+            if (_sources != null) throw new InvalidOperationException("Audio presentation already initialized.");
             _definition = definition != null ? definition : throw new ArgumentNullException(nameof(definition));
             _definition.ValidateOrThrow();
             if (sourceCount < 1) throw new ArgumentOutOfRangeException(nameof(sourceCount));
@@ -86,7 +87,7 @@ namespace Gravivore.Presentation.Feedback
             source.volume = Volume;
             // One bounded voice per source. Footsteps never overlap a combat voice.
             source.clip = clip;
-            source.volume = Volume * (cue == S14AudioCue.Step ? .17f :
+            source.volume = Volume * (cue == S14AudioCue.Step ? _definition.StepVolume :
                 cue == S14AudioCue.Telegraph ? .65f : .45f);
             source.Play();
             PlayedCount++;

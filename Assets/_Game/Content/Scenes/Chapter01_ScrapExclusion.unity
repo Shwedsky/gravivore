@@ -165,6 +165,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _deviceCorrection: {fileID: 11400000, guid: 56d9618bc42771747a72dbf7f73faae8, type: 2}
+  _postDevicePresentation: {fileID: 11400000, guid: 2abf7635b44c3eb48a0d152e1ff641a2, type: 2}
   _movementSettings: {fileID: 11400000, guid: 815f13c7187f42a5a564a1c0e4c11762, type: 2}
   _playerStatsDefinition: {fileID: 11400000, guid: af6ee0888c924cf7aa88b7c0eea46136, type: 2}
   _playerRecoverySettings: {fileID: 11400000, guid: 7fa8e3ff161742df82143efbd1742e90, type: 2}
@@ -499,6 +500,68 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 190029042}
   m_Mesh: {fileID: 8758740866474069627, guid: a72b3b1578fc614498db8b9bc07a949a, type: 3}
+--- !u!1001 &193979391
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 320185727}
+    m_Modifications:
+    - target: {fileID: 6728934890655257149, guid: 3ad58a1de1250f54480dd0bfdded4c34, type: 3}
+      propertyPath: m_Name
+      value: First Visual Slice Industrial Containment
+      objectReference: {fileID: 0}
+    - target: {fileID: 7442921469417764684, guid: 3ad58a1de1250f54480dd0bfdded4c34, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7442921469417764684, guid: 3ad58a1de1250f54480dd0bfdded4c34, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7442921469417764684, guid: 3ad58a1de1250f54480dd0bfdded4c34, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7442921469417764684, guid: 3ad58a1de1250f54480dd0bfdded4c34, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7442921469417764684, guid: 3ad58a1de1250f54480dd0bfdded4c34, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7442921469417764684, guid: 3ad58a1de1250f54480dd0bfdded4c34, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7442921469417764684, guid: 3ad58a1de1250f54480dd0bfdded4c34, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7442921469417764684, guid: 3ad58a1de1250f54480dd0bfdded4c34, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7442921469417764684, guid: 3ad58a1de1250f54480dd0bfdded4c34, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7442921469417764684, guid: 3ad58a1de1250f54480dd0bfdded4c34, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3ad58a1de1250f54480dd0bfdded4c34, type: 3}
+--- !u!4 &193979392 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7442921469417764684, guid: 3ad58a1de1250f54480dd0bfdded4c34, type: 3}
+  m_PrefabInstance: {fileID: 193979391}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &197047362
 GameObject:
   m_ObjectHideFlags: 0
@@ -849,7 +912,7 @@ Transform:
   m_Children:
   - {fileID: 698507966}
   - {fileID: 812719581}
-  - {fileID: 1515940213}
+  - {fileID: 193979392}
   m_Father: {fileID: 707714297}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &366652768
@@ -1813,9 +1876,12 @@ MonoBehaviour:
   - _name: Slice Conduit rack -1 72
     _center: {x: -7.2, y: 0.85, z: 72}
     _size: {x: 0.6, y: 1.8, z: 3.8}
-  - _name: Slice Containment bulkhead 1
-    _center: {x: 8, y: 1.3, z: 64}
-    _size: {x: 0.5, y: 2.6, z: 24}
+  - _name: Slice Containment bulkhead 1 south
+    _center: {x: 8, y: 1.3, z: 57}
+    _size: {x: 0.5, y: 2.6, z: 10}
+  - _name: Slice Containment bulkhead 1 north
+    _center: {x: 8, y: 1.3, z: 71}
+    _size: {x: 0.5, y: 2.6, z: 10}
   - _name: Slice Approach barrier 1 40
     _center: {x: 5, y: 0.6, z: 40}
     _size: {x: 0.74, y: 1.3, z: 3.8}
@@ -1828,9 +1894,6 @@ MonoBehaviour:
   - _name: Slice Conduit rack 1 56
     _center: {x: 7.2, y: 0.85, z: 56}
     _size: {x: 0.6, y: 1.8, z: 3.8}
-  - _name: Slice Conduit rack 1 64
-    _center: {x: 7.2, y: 0.85, z: 64}
-    _size: {x: 0.6, y: 1.8, z: 3.8}
   - _name: Slice Conduit rack 1 72
     _center: {x: 7.2, y: 0.85, z: 72}
     _size: {x: 0.6, y: 1.8, z: 3.8}
@@ -1841,7 +1904,7 @@ MonoBehaviour:
     _center: {x: -6.1, y: 0.85, z: 65}
     _size: {x: 1.3, y: 1.8, z: 1.8}
   - _name: Slice Maintenance station
-    _center: {x: 6.1, y: 1, z: 65}
+    _center: {x: 6.1, y: 1, z: 66}
     _size: {x: 1.5, y: 2, z: 1.5}
   - _name: Slice Freight stack 55
     _center: {x: 6, y: 1.25, z: 55}
@@ -4242,68 +4305,6 @@ Transform:
   - {fileID: 232930019}
   m_Father: {fileID: 707714297}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &1515940212
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 320185727}
-    m_Modifications:
-    - target: {fileID: 6728934890655257149, guid: 3ad58a1de1250f54480dd0bfdded4c34, type: 3}
-      propertyPath: m_Name
-      value: First Visual Slice Industrial Containment
-      objectReference: {fileID: 0}
-    - target: {fileID: 7442921469417764684, guid: 3ad58a1de1250f54480dd0bfdded4c34, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7442921469417764684, guid: 3ad58a1de1250f54480dd0bfdded4c34, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7442921469417764684, guid: 3ad58a1de1250f54480dd0bfdded4c34, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7442921469417764684, guid: 3ad58a1de1250f54480dd0bfdded4c34, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7442921469417764684, guid: 3ad58a1de1250f54480dd0bfdded4c34, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7442921469417764684, guid: 3ad58a1de1250f54480dd0bfdded4c34, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7442921469417764684, guid: 3ad58a1de1250f54480dd0bfdded4c34, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7442921469417764684, guid: 3ad58a1de1250f54480dd0bfdded4c34, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7442921469417764684, guid: 3ad58a1de1250f54480dd0bfdded4c34, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7442921469417764684, guid: 3ad58a1de1250f54480dd0bfdded4c34, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 3ad58a1de1250f54480dd0bfdded4c34, type: 3}
---- !u!4 &1515940213 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7442921469417764684, guid: 3ad58a1de1250f54480dd0bfdded4c34, type: 3}
-  m_PrefabInstance: {fileID: 1515940212}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1525618531
 GameObject:
   m_ObjectHideFlags: 0
