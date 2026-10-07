@@ -72,9 +72,12 @@ namespace Gravivore.Presentation.Map
                 var spot = _population.GetSpot(index - 1);
                 var strong = index > _ordinaryCount;
                 var position = strong ? _authority.ReadStrongOrdinary(index - _ordinaryCount - 1).Position : spot.Position;
+                var lockedSpot = _bossGate.HasValue && position.z >= _bossGate.Value.Position.z && !_world.BossGateUnlocked ||
+                    _eliteGate.HasValue && position.z >= _eliteGate.Value.Position.z && !_world.EliteGateUnlocked;
                 return new MapMarkerSnapshot(spot.Id, strong ? MapMarkerKind.StrongOrdinary : MapMarkerKind.Ordinary,
-                    position, MapSpotAvailability(spot.Availability),
-                    strong ? "Усиленная зона" : RussianUiText.SpotName(spot.Id), remainingSeconds: spot.SecondsUntilNextRespawn);
+                    position, lockedSpot ? MapAvailabilityState.Inactive : MapSpotAvailability(spot.Availability),
+                    strong ? "Усиленный узел" : RussianUiText.SpotName(spot.Id), progressionLocked: lockedSpot,
+                    remainingSeconds: spot.SecondsUntilNextRespawn);
             }
             if (index == BaseCount - 1) return new MapMarkerSnapshot("repair-hub", MapMarkerKind.RepairHub,
                 _repairPosition, MapAvailabilityState.Available, "Ремонтный узел");

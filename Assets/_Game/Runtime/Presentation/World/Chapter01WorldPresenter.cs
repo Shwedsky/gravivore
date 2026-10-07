@@ -59,6 +59,7 @@ namespace Gravivore.Presentation.World
         public Vector3 GetZoneCenter(int index) => _configuration.GetZone(index).Center;
 
         public WorldBounds Bounds => _configuration.Bounds;
+        public Chapter01WorldConfiguration Configuration => _configuration;
 
         public int PerimeterColliderCount => _perimeterColliders?.Length ?? 0;
         public int EnvironmentBlockerCount => _environmentBlockers.Count;

@@ -46,9 +46,16 @@ namespace Gravivore.Presentation.Assets
             Reset();
             if (!_visuals.TryGetValue(enemyId, out _activeVisual))
             {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+                var visualStarted = Time.realtimeSinceStartupAsDouble;
+                var managedBefore = UnityEngine.Profiling.Profiler.GetMonoUsedSizeLong();
+#endif
                 _activeVisual = S15VisualFactory.Build(_root, recipe, _catalog);
                 _visuals.Add(enemyId, _activeVisual);
                 _sockets.Add(enemyId, new PresentationSocketSet(ModelRoot(_activeVisual, recipe)));
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+                Gravivore.Presentation.Development.ColdStartDiagnostics.RecordEnemyVisual(enemyId, visualStarted, managedBefore);
+#endif
             }
             _activeVisual.SetActive(true);
             _activeId = enemyId;

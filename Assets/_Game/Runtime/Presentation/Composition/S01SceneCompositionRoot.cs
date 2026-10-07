@@ -82,6 +82,7 @@ namespace Gravivore.Presentation.Composition
         private PresentationHapticSettings _hapticSettings;
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
         private DevelopmentTelemetryObserver _developmentTelemetry;
+        private ColdStartDiagnostics _coldStart;
 #endif
 
         public GameObject PlayerObject { get; private set; }
@@ -172,6 +173,9 @@ namespace Gravivore.Presentation.Composition
                 return;
             }
 
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            _coldStart=ColdStartDiagnostics.Begin(transform);_coldStart.Attach(this);_coldStart.MarkPhase("validation/environment");
+#endif
             if (_movementSettings == null || _playerStatsDefinition == null || _playerRecoverySettings == null ||
                 _equipmentCatalogDefinition == null ||
                 _gravityAttackSettings == null ||
@@ -198,6 +202,7 @@ namespace Gravivore.Presentation.Composition
             _s15VisualCatalog.ValidateOrThrow();
             _visualEnvironment?.Initialize();
             InitializeMonetization();
+            StartupPhase("profile/deserialization");
 
             var statsConfiguration = _playerStatsDefinition.Configuration;
             var progressionConfiguration = _progressionDefinition.Configuration;
@@ -215,6 +220,7 @@ namespace Gravivore.Presentation.Composition
             PlayerStats = _profileSession.State.PlayerStats;
             Inventory = _profileSession.State.Inventory;
             Equipment = new EquipmentService(PlayerStats, EquipmentCatalog, Inventory);
+            StartupPhase("HUD/player/materials");
             CreateHud(out var uiTouchExclusion, out var topTouchExclusion, out var joystickView);
             _movementInput = CreateMovementInput(uiTouchExclusion, joystickView);
             var locomotion = CreatePlayer();
@@ -228,6 +234,7 @@ namespace Gravivore.Presentation.Composition
             InitializePlayerHealth();
             InitializeGravityAttack();
             CreateLight();
+            StartupPhase("enemy pool/visuals");
             InitializeEnemyPopulation();
             Progression = new AssimilationProgressionService(
                 PlayerStats,
@@ -235,6 +242,7 @@ namespace Gravivore.Presentation.Composition
                 progressionConfiguration,
                 EnemyPopulation);
             InitializeEncounterActors(worldConfiguration, bossConfiguration);
+            StartupPhase("world/blockers/gates");
             InitializeQuests(questCatalog, worldConfiguration);
             InitializeWorld(worldConfiguration);
             Chapter1Encounters.Attach(MagnetarGuard, CustodianBoss, Quests);
@@ -245,13 +253,16 @@ namespace Gravivore.Presentation.Composition
             WorldMarkers = new WorldMarkerReadModel(PlayerObject.transform, EnemyPopulation,
                 MagnetarGuard, CustodianBoss, WorldUnlocks.State);
             InitializeEvolution();
+            StartupPhase("combat VFX/audio/repair");
             Phase6BCombat = gameObject.AddComponent<Phase6BCombatProductionBridge>();
             Phase6BCombat.Initialize(this, _gravityLashVfx, _phase6BProductionDefinition);
             var repairObject = new GameObject("Repair Hub Presentation", typeof(RepairHubProductionPresenter));
             repairObject.transform.SetParent(transform, false);
             RepairHub = repairObject.GetComponent<RepairHubProductionPresenter>();
-            RepairHub.Initialize(PlayerHealth, _playerSpawn, _playerRecoverySettings.Configuration, _phase6BProductionDefinition);
+            RepairHub.Initialize(PlayerHealth, _playerSpawn, _playerRecoverySettings.Configuration, _phase6BProductionDefinition,
+                _materialPalette.LitMaterial, _materialPalette.UnlitMaterial);
             InitializeS14Presentation();
+            StartupPhase("animation/presentation");
             if (_deviceCorrection != null)
             {
                 _gravityLashVfx.EnablePresentationVariants();
@@ -278,6 +289,7 @@ namespace Gravivore.Presentation.Composition
                 _profileSession.State.Offline,
                 _saveOfflineDefinition.Configuration.AutosaveDelaySeconds);
             InitializeS13Hud(uiTouchExclusion, topTouchExclusion);
+            StartupPhase("map/UI generation");
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
             InitializeDevelopmentTools(uiTouchExclusion, topTouchExclusion, worldConfiguration, bossConfiguration);
 #endif
@@ -295,6 +307,14 @@ namespace Gravivore.Presentation.Composition
 #endif
             }
             _isComposed = true;
+            StartupPhase("interactive/first-combat");
+        }
+        [System.Diagnostics.Conditional("UNITY_EDITOR"),System.Diagnostics.Conditional("DEVELOPMENT_BUILD")]
+        private void StartupPhase(string phase)
+        {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            _coldStart?.MarkPhase(phase);
+#endif
         }
 
         private void InitializeMonetization()
@@ -879,7 +899,11 @@ namespace Gravivore.Presentation.Composition
             {
                 var source = ordinary[StrongSpots[i].Region == StrongOrdinaryRegion.Elite ? 3 : 4];
                 configurations[ordinary.Length + i] = StrongSpots[i].CreateSpawnConfiguration(source);
-                _strongActivationRadii[i] = source.Enemy.Behavior.AggroReleaseRadius + source.MinimumPlayerDistance;
+                var anchorRadius = 0f;
+                foreach (var anchor in source.AnchorOffsets)
+                    anchorRadius = Mathf.Max(anchorRadius, new Vector2(anchor.x, anchor.z).magnitude);
+                // Keep an admission band beyond the safe-return footprint, before proximity culling.
+                _strongActivationRadii[i] = source.Enemy.Behavior.AggroReleaseRadius + source.MinimumPlayerDistance + anchorRadius;
             }
             for (var i = 0; i < _spawnSpotDefinitions.Length; i++)
             {
