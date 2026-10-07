@@ -91,7 +91,7 @@ namespace Gravivore.Tests.PlayMode
             Assert.IsNotNull(map); map.RefreshNow();
             Assert.That(map.CachedMarkerCount, Is.EqualTo(root.MapMarkers.Count));
             Assert.IsNotEmpty(map.CurrentZoneText);
-            Assert.IsNotNull(map.CompactSurface.parent.Find("TacticalCornerH0"));
+            Assert.IsNotNull(map.CompactSurface.parent.Find("OctagonalBorder"));
             Assert.That(root.MapMarkers.GetMarker(root.MapMarkers.Count-1).Kind, Is.EqualTo(MapMarkerKind.Gate));
             var anchor = map.GetMarkerAnchor("player",false);
             // The established local crop clamps at chapter boundaries, including spawn.

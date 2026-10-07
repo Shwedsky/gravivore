@@ -142,7 +142,9 @@ namespace Gravivore.Presentation.Development
             if(_finished)return;MarkPhase("finished");_report.observedSeconds=Time.realtimeSinceStartupAsDouble-_started;
             if(_root!=null)CaptureCounts(_report.observedSeconds);
             Write(reason);_finished=true;_main.Dispose();_render.Dispose();_gc.Dispose();enabled=false;
+#if DEVELOPMENT_BUILD && !UNITY_EDITOR
             Debug.Log("[ColdStart] Bounded evidence: "+_path+"; worst ms="+_report.worstFrameMilliseconds);
+#endif
         }
         private void OnApplicationPause(bool paused)
         { _paused=paused;_previous=Time.realtimeSinceStartupAsDouble; if(paused&&!_finished)Write("application paused"); }

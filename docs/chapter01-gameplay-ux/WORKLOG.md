@@ -27,8 +27,10 @@ The 120-second rule applies to all ordinary actors, including strong ordinary pa
 
 Safe distance derives from the furthest anchor plus the enemy's existing aggro release radius (or minimum spawn distance, whichever is larger). Map topology depicts the open movement floor with actual solid blockers; zone shading describes authored encounter engagement footprints, not additional movement restrictions.
 
-## Verification in progress
+## Source verification
 
-Focused EditMode: 5/5. Focused Chapter gameplay UX PlayMode: 6/6, including real 90-second Editor observation with first combat/farming and reload. Full compile, ProjectValidator, full EditMode, full PlayMode and ARM64 DEV APK verification follow.
+Final source: Unity compile and ProjectValidator exit 0. Full EditMode: 436/436 passed. Full PlayMode: 120 passed, zero failed, one optional structural-capture test skipped (requires GRAVIVORE_VISUAL_INTEGRATION_QA). Includes the real 90-second Editor observation with first combat/farming and reload. The initial full regression failures were resolved, including a real right-edge map label overflow and stale assertions for the replaced wave/frame contract. Android ARM64 DEV APK verification follows.
+
+Cold-start conclusion and bounded device evidence collection are recorded in COLD_START_INVESTIGATION.md. The sustained device issue was not reproduced in Editor; no speculative warmup or claim of a confirmed device fix.
 
 Next milestone: CHAPTER 01 CONCEPT FIDELITY V2, after the APK device gate.

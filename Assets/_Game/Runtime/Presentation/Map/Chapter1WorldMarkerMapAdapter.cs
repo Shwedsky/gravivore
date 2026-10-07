@@ -76,7 +76,7 @@ namespace Gravivore.Presentation.Map
                     _eliteGate.HasValue && position.z >= _eliteGate.Value.Position.z && !_world.EliteGateUnlocked;
                 return new MapMarkerSnapshot(spot.Id, strong ? MapMarkerKind.StrongOrdinary : MapMarkerKind.Ordinary,
                     position, lockedSpot ? MapAvailabilityState.Inactive : MapSpotAvailability(spot.Availability),
-                    strong ? "Усиленный узел" : RussianUiText.SpotName(spot.Id), progressionLocked: lockedSpot,
+                    strong ? "Усиленная зона" : RussianUiText.SpotName(spot.Id), progressionLocked: lockedSpot,
                     remainingSeconds: spot.SecondsUntilNextRespawn);
             }
             if (index == BaseCount - 1) return new MapMarkerSnapshot("repair-hub", MapMarkerKind.RepairHub,

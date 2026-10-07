@@ -131,6 +131,7 @@ namespace Gravivore.Gameplay.Enemies
         {
             get { var offset = _player.position - Position; offset.y = 0f; return offset.sqrMagnitude > _safeReturnRadiusSquared; }
         }
+        public float SafeReturnRadius => Mathf.Sqrt(_safeReturnRadiusSquared);
         public SpawnSpotAvailability Availability => _wave != null ? _wave.Read(IsInCombat) :
             SecondsUntilNextRespawn > 0f ? SpawnSpotAvailability.Cooldown :
             IsInCombat ? SpawnSpotAvailability.Active : SpawnSpotAvailability.Available;

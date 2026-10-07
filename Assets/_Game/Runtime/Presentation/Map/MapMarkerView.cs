@@ -91,7 +91,7 @@ namespace Gravivore.Presentation.Map
                 labelRect.anchorMin = labelRect.anchorMax = new Vector2(1f, 0.62f);
                 labelRect.pivot = new Vector2(0f, 0.5f);
                 labelRect.anchoredPosition = new Vector2(4f, 0f);
-                MapUiFactory.SetSize(labelRect, 180f, 25f);
+                MapUiFactory.SetSize(labelRect, 170f, 25f);
 
             }
             {
@@ -153,19 +153,19 @@ namespace Gravivore.Presentation.Map
 
             if (_expanded)
             {
-                PositionOverviewText(_label, 0f);
-                PositionOverviewText(_timer, -24f);
+                PositionOverviewText(_label, 0f, normalizedPosition.x);
+                PositionOverviewText(_timer, -24f, normalizedPosition.x);
                 _label.text = snapshot.DisplayName;
                 _label.gameObject.SetActive(snapshot.Kind != MapMarkerKind.Player);
             }
             UpdateRoundedTimer(snapshot);
         }
 
-        private static void PositionOverviewText(Text text, float offset)
+        private static void PositionOverviewText(Text text, float offset, float mapX)
         {
             var rect = text.rectTransform;
             rect.anchorMin = rect.anchorMax = new Vector2(.5f, 0f);
-            rect.pivot = new Vector2(.5f, 1f);
+            rect.pivot = new Vector2(mapX < .2f ? 0f : mapX > .8f ? 1f : .5f, 1f);
             rect.anchoredPosition = new Vector2(0f, offset);
             text.alignment = TextAnchor.MiddleCenter;
         }
