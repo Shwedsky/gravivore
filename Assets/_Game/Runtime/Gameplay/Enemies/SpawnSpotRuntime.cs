@@ -93,6 +93,8 @@ namespace Gravivore.Gameplay.Enemies
 
         public int PendingRespawns => _population.PendingRespawns;
         public Vector3 Position => _configuration.WorldOrigin;
+        public float RewardMultiplier => _configuration.RewardMultiplier;
+        public string EnemyId => _configuration.Enemy.Id;
         public int RespawnPenaltySteps => _adaptiveRespawn.PenaltySteps;
         public float AdditionalRespawnDelay => _adaptiveRespawn.AdditionalDelay;
         // A ready timer may still be blocked by player distance or the global cap.

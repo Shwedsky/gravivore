@@ -21,6 +21,8 @@ namespace Gravivore.Tests.EditMode
             var context = SaveOfflineTests.CreateContext();
             var session = Start(repository, context);
             var transaction = CreateTransaction(session, context);
+            var feedbackCount=0;
+            transaction.RewardApplied+=_=>feedbackCount++;
             repository.ResetFault(checkpoint);
             Assert.That(transaction.PrepareAndCommit(RepeatableEncounterKind.Magnetar, true,
                 new CoreReward("magnetar-guard", PlayerStatType.Power, 2f, 10)), Is.False);
@@ -30,6 +32,7 @@ namespace Gravivore.Tests.EditMode
             Assert.That(transaction.RecoverPending(), Is.True);
             Assert.That(session.State.Progression.TotalAssimilationScore, Is.EqualTo(10));
             Assert.That(Start(repository, context).State.Progression.TotalAssimilationScore, Is.EqualTo(10));
+            Assert.That(feedbackCount,Is.EqualTo(1),"Applied reward feedback must not replay during checkpoint retries.");
         }
 
         [TestCase(2)]

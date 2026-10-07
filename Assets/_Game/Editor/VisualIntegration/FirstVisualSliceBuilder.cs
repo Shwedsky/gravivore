@@ -118,7 +118,7 @@ namespace Gravivore.Editor.VisualIntegration
             data.ApplyModifiedPropertiesWithoutUndo(); asset.ValidateOrThrow();
             var bank = new SerializedObject(AssetDatabase.LoadAssetAtPath<UnityEngine.Object>("Assets/_Game/Content/Presentation/Phase6B/Audio/Phase6B_AudioBank.asset"));
             var entries = bank.FindProperty("_entries");
-            var volumes = new[] { .30f,.28f,.48f,.60f,.56f,.39f,.48f,.51f,.63f,.72f,.78f,.82f,.80f,.42f,.60f,.64f };
+            var volumes = new[] { .30f,.28f,.27f,.48f,.37f,.39f,.48f,.51f,.63f,.72f,.78f,.82f,.80f,.42f,.60f,.64f };
             for (var i = 0; i < entries.arraySize; i++)
             {
                 var entry = entries.GetArrayElementAtIndex(i); var cue = entry.FindPropertyRelative("_cue").enumValueIndex;
@@ -344,8 +344,24 @@ namespace Gravivore.Editor.VisualIntegration
             Obstacle("Strong service maintenance", new Vector3(-22.3f, 1, 57), new Vector3(1.4f, 2, 1.5f));
             foreach (var side in new[] { -1, 1 })
             {
-                for (var z = side < 0 ? 58 : 54; z <= 74; z += 4) Place(root.transform, "Bulkhead_Module", new Vector3(side * 8f, 0, z), side * 90);
-                Obstacle("Containment bulkhead " + side, new Vector3(side * 8f, 1.3f, side < 0 ? 66 : 64), new Vector3(.5f, 2.6f, side < 0 ? 20 : 24));
+                for (var z = side < 0 ? 58 : 54; z <= 74; z += 4)
+                {
+                    // Framed four-metre service portal aligned with strong-elite-b (18,64).
+                    var portalEdge = side > 0 && (z == 62 || z == 66);
+                    Place(root.transform, "Bulkhead_Module", new Vector3(side * 8f, 0,
+                        portalEdge ? (z == 62 ? 61 : 67) : z), side * 90,
+                        portalEdge ? new Vector3(.5f, 1, 1) : Vector3.one);
+                }
+                if (side < 0) Obstacle("Containment bulkhead -1", new Vector3(-8, 1.3f, 66), new Vector3(.5f, 2.6f, 20));
+                else
+                {
+                    Obstacle("Containment bulkhead 1 south", new Vector3(8, 1.3f, 57), new Vector3(.5f, 2.6f, 10));
+                    Obstacle("Containment bulkhead 1 north", new Vector3(8, 1.3f, 71), new Vector3(.5f, 2.6f, 10));
+                    Place(root.transform, "Conduit_Rack", new Vector3(8, 2.65f, 64), 90);
+                    foreach (var x in new[] { 10, 14, 18 })
+                        Place(root.transform, "Deck_Module", new Vector3(x, .01f, 64));
+                    Place(root.transform, "Deck_ServiceMarkings", new Vector3(12, .074f, 64), 90);
+                }
                 for (var z = 40; z <= 48; z += 4)
                 {
                     Place(root.transform, "Barrier_Module", new Vector3(side * 5f, 0, z), 90);
@@ -357,6 +373,7 @@ namespace Gravivore.Editor.VisualIntegration
                 Place(root.transform, "Bulkhead_Module", new Vector3(side * 4.65f, 0, 60), 0, new Vector3(.9f, 1, 1));
                 for (var z = side < 0 ? 64 : 56; z <= 72; z += 8)
                 {
+                    if (side > 0 && z == 64) continue; // Header replaces the rack across the service portal.
                     Place(root.transform, "Conduit_Rack", new Vector3(side * 7.2f, 0, z), 90);
                     Obstacle("Conduit rack " + side + " " + z, new Vector3(side * 7.2f, .85f, z), new Vector3(.6f, 1.8f, 3.8f));
                 }
@@ -365,8 +382,8 @@ namespace Gravivore.Editor.VisualIntegration
             Obstacle("Hero reactor", new Vector3(-5.3f, 1.7f, 73), new Vector3(2.5f, 3.5f, 2.5f));
             Place(root.transform, "Coolant_Pump", new Vector3(-6.1f, 0, 65));
             Obstacle("Coolant pump", new Vector3(-6.1f, .85f, 65), new Vector3(1.3f, 1.8f, 1.8f));
-            Place(root.transform, "Maintenance_Station", new Vector3(6.1f, 0, 65), -30);
-            Obstacle("Maintenance station", new Vector3(6.1f, 1, 65), new Vector3(1.5f, 2, 1.5f));
+            Place(root.transform, "Maintenance_Station", new Vector3(6.1f, 0, 66), -30);
+            Obstacle("Maintenance station", new Vector3(6.1f, 1, 66), new Vector3(1.5f, 2, 1.5f));
             foreach (var z in new[] { 55, 74 })
             {
                 Place(root.transform, "Freight_Container", new Vector3(6, 0, z), 15);

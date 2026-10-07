@@ -1,0 +1,165 @@
+Sanitized failure excerpt. Full original attempt log remains in local Builds/Logs.
+
+[Licensing::Module] Trying to connect to existing licensing client channel...
+Built from '6000.3/staging' branch; Version is '6000.3.0f1 (d1870ce95baf) revision 13731596'; Using compiler version '194234433'; Build Type 'Release'
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-pamak" at "2026-10-07T11:59:36.5746977Z"
+OS: 'Windows 11  (10.0.26200) 64bit Professional' Language: 'ru' Physical Memory: 13234 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1
+Date: 2026-10-07T11:59:36Z
+[Licensing::Client] Code 10 while verifying Licensing Client signature (process Id: 19808, path: "C:/Program Files/Unity Hub/UnityLicensingClient_V1/Unity.Licensing.Client.exe")
+[Licensing::Module] LicensingClient has failed validation; ignoring
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.18.3+d7ffd15
+[local licensing identifier redacted]
+[local licensing identifier redacted]
+[local licensing identifier redacted]
+[local licensing identifier redacted]
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-pamak" (connect: 0.00s, validation: 0.00s, handshake: 0.13s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-pamak-notifications" at "2026-10-07T11:59:36.7046165Z"
+[local licensing identifier redacted]
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: 5774129981942-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+[Licensing::Client] Successfully updated license, isAsync: True, time: 0.00
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] Licensing Background thread has ended after 0.15s
+
+COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Unity.exe
+-batchmode
+-quit
+-projectPath
+C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\post-device-combat-readability-v1
+-buildTarget
+Android
+[intervening routine/repeated log lines omitted]
+Gravivore.Editor.Build.AndroidBuild:Build (Gravivore.Editor.Build.AndroidBuildFlavor) (at Assets/_Game/Editor/Build/AndroidBuild.cs:83)
+Gravivore.Editor.Build.AndroidBuild:BuildDev () (at Assets/_Game/Editor/Build/AndroidBuild.cs:57)
+
+(Filename: /home/bokken/build/output/unity/unity/PlatformDependent/AndroidPlayer/Editor/Managed/Android/Gradle.cs Line: 136)
+
+ERROR: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\post-device-combat-readability-v1\Library\Bee\Android\Prj\IL2CPP\Gradle\launcher\build\intermediates\dex\debug\mergeProjectDexDebug\0\classes.dex: D8: java.io.IOException: ═хфюёЄрЄюўэю ьхёЄр эр фшёъх
+com.android.builder.dexing.DexArchiveMergerException: Error while merging dex archives:
+	at com.android.builder.dexing.D8DexArchiveMerger.getMergingExceptionToRethrow(D8DexArchiveMerger.java:230)
+	at com.android.builder.dexing.D8DexArchiveMerger.mergeDexArchives(D8DexArchiveMerger.java:218)
+	at com.android.build.gradle.internal.tasks.DexMergingWorkAction.merge(DexMergingTask.kt:919)
+	at com.android.build.gradle.internal.tasks.DexMergingWorkAction.run(DexMergingTask.kt:870)
+	at com.android.build.gradle.internal.profile.ProfileAwareWorkAction.execute(ProfileAwareWorkAction.kt:74)
+	at org.gradle.workers.internal.DefaultWorkerServer.execute(DefaultWorkerServer.java:63)
+	at org.gradle.workers.internal.NoIsolationWorkerFactory$1$1.create(NoIsolationWorkerFactory.java:66)
+	at org.gradle.workers.internal.NoIsolationWorkerFactory$1$1.create(NoIsolationWorkerFactory.java:62)
+	at org.gradle.internal.classloader.ClassLoaderUtils.executeInClassloader(ClassLoaderUtils.java:100)
+	at org.gradle.workers.internal.NoIsolationWorkerFactory$1.lambda$execute$0(NoIsolationWorkerFactory.java:62)
+[intervening routine/repeated log lines omitted]
+		at com.android.tools.r8.dex.k.a(R8_8.10.21_059a5f5d0bc42db5aada8bbbd6a8cf4a42a64383686c7191f2ae98ca115e2ce9:546)
+		... 44 more
+	Caused by: [CIRCULAR REFERENCE: java.io.IOException: ═хфюёЄрЄюўэю ьхёЄр эр фшёъх]
+
+
+FAILURE: Build completed with 2 failures.
+
+1: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':unityLibrary:mergeDebugNativeLibs'.
+> A failure occurred while executing com.android.build.gradle.internal.tasks.MergeNativeLibsTask$MergeNativeLibsTaskWorkAction
+   > ═хфюёЄрЄюўэю ьхёЄр эр фшёъх
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+[intervening routine/repeated log lines omitted]
+LOCALAPPDATA = C:\Users\pamak\AppData\Local
+USERPROFILE = C:\Users\pamak
+
+
+stderr[
+ERROR: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\post-device-combat-readability-v1\Library\Bee\Android\Prj\IL2CPP\Gradle\launcher\build\intermediates\dex\debug\mergeProjectDexDebug\0\classes.dex: D8: java.io.IOException: ═хфюёЄрЄюўэю ьхёЄр эр фшёъх
+com.android.builder.dexing.DexArchiveMergerException: Error while merging dex archives:
+	at com.android.builder.dexing.D8DexArchiveMerger.getMergingExceptionToRethrow(D8DexArchiveMerger.java:230)
+	at com.android.builder.dexing.D8DexArchiveMerger.mergeDexArchives(D8DexArchiveMerger.java:218)
+	at com.android.build.gradle.internal.tasks.DexMergingWorkAction.merge(DexMergingTask.kt:919)
+	at com.android.build.gradle.internal.tasks.DexMergingWorkAction.run(DexMergingTask.kt:870)
+	at com.android.build.gradle.internal.profile.ProfileAwareWorkAction.execute(ProfileAwareWorkAction.kt:74)
+	at org.gradle.workers.internal.DefaultWorkerServer.execute(DefaultWorkerServer.java:63)
+	at org.gradle.workers.internal.NoIsolationWorkerFactory$1$1.create(NoIsolationWorkerFactory.java:66)
+	at org.gradle.workers.internal.NoIsolationWorkerFactory$1$1.create(NoIsolationWorkerFactory.java:62)
+	at org.gradle.internal.classloader.ClassLoaderUtils.executeInClassloader(ClassLoaderUtils.java:100)
+	at org.gradle.workers.internal.NoIsolationWorkerFactory$1.lambda$execute$0(NoIsolationWorkerFactory.java:62)
+[intervening routine/repeated log lines omitted]
+		at com.android.tools.r8.dex.k.a(R8_8.10.21_059a5f5d0bc42db5aada8bbbd6a8cf4a42a64383686c7191f2ae98ca115e2ce9:546)
+		... 44 more
+	Caused by: [CIRCULAR REFERENCE: java.io.IOException: ═хфюёЄрЄюўэю ьхёЄр эр фшёъх]
+
+
+FAILURE: Build completed with 2 failures.
+
+1: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':unityLibrary:mergeDebugNativeLibs'.
+> A failure occurred while executing com.android.build.gradle.internal.tasks.MergeNativeLibsTask$MergeNativeLibsTaskWorkAction
+   > ═хфюёЄрЄюўэю ьхёЄр эр фшёъх
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+[intervening routine/repeated log lines omitted]
+Asset with guid '00000000000000004000000000000000' and path 'ProjectSettings/ProjectSettings.asset' is up to date, but does not have a valid artifact id assigned to it in the GuidPersistentManager
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+Gravivore.Editor.Build.AndroidBuild:Build (Gravivore.Editor.Build.AndroidBuildFlavor) (at Assets/_Game/Editor/Build/AndroidBuild.cs:113)
+Gravivore.Editor.Build.AndroidBuild:BuildDev () (at Assets/_Game/Editor/Build/AndroidBuild.cs:57)
+
+[Assets/_Game/Editor/Build/AndroidBuild.cs line 113]
+
+Start importing ProjectSettings/ProjectSettings.asset using Guid(00000000000000004000000000000000) (LibraryAssetImporter) -> (artifact id: 'a7d6eddb368c7372d0266ccad77d6bde') in 0.0041655 seconds
+Refreshing native plugins compatible for Editor in 0.41 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=50ebdde991d83bf4187df61870a92e90): Total: 6.952 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+	Summary:
+		Imports: total=1 (actual=1411, local cache=18446744073709550206, cache server=0)
+		Asset DB Process Time: managed=91 ms, native=6857 ms
+		Asset DB Callback time: managed=0 ms, native=2 ms
+		Scripting: domain reloads=0, domain reload time=0 ms, compile time=0 ms, other=0 ms
+		Project Asset Count: scripts=823, non-scripts=1770
+		Asset File Changes: new=0, changed=1, moved=0, deleted=0
+		Scan Filter Count: 1
+	InvokeCustomDependenciesCallbacks: 0.001ms
+	InvokePackagesCallback: 0.001ms
+	ApplyChangesToAssetFolders: 0.064ms
+	Scan: 291.733ms
+	OnSourceAssetsModified: 0.059ms
+	CategorizeAssetsWithTransientArtifact: 0.007ms
+	ProcessAssetsWithTransientArtifactChanges: 0.052ms
+	CategorizeAssets: 19.894ms
+	ImportOutOfDateAssets: 6634.576ms (0.014ms without children)
+		ImportManagerImport: 6633.032ms (394.544ms without children)
+			ImportInProcess: 6232.600ms
+			UpdateCategorizedAssets: 5.887ms
+		ReloadNativeAssets: 0.036ms
+		UnloadImportedAssets: 0.424ms
+		ReloadImportedAssets: 0.218ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.478ms
+		InitializingProgressBar: 0.000ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.001ms
+		OnDemandSchedulerStart: 0.373ms
+	PostProcessAllAssets: 2.128ms
+	Hotreload: 1.096ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.148ms
+	UnloadStreamsBegin: 0.003ms
+	PersistCurrentRevisions: 0.191ms
+	UnloadStreamsEnd: 0.002ms
+	Untracked: 2.535ms
+
+InvalidOperationException: Android Dev build failed: Failed (3 errors).
+  at Gravivore.Editor.Build.AndroidBuild.Build (Gravivore.Editor.Build.AndroidBuildFlavor flavor) [0x000ed] in C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\post-device-combat-readability-v1\Assets\_Game\Editor\Build\AndroidBuild.cs:92
+  at Gravivore.Editor.Build.AndroidBuild.BuildDev () [0x00000] in C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\post-device-combat-readability-v1\Assets\_Game\Editor\Build\AndroidBuild.cs:57
+
+(Filename: Assets/_Game/Editor/Build/AndroidBuild.cs Line: 92)
+
+executeMethod method Gravivore.Editor.Build.AndroidBuild.BuildDev threw exception.
+Exiting without the bug reporter. Application will terminate with return code 1

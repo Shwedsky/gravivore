@@ -14,6 +14,7 @@ namespace Gravivore.Gameplay.Player
         private float _fixedMoveSpeed;
         private float _rotationDegreesPerSecond;
         private bool _isInitialized;
+        public bool HasMovementIntent => _isInitialized && _movementInput.Movement.sqrMagnitude > Mathf.Epsilon;
 
         public void Initialize(
             IMovementInput movementInput,

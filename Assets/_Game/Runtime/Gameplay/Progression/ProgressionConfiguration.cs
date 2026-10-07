@@ -43,5 +43,13 @@ namespace Gravivore.Gameplay.Progression
 
             return _rewards.TryGetValue(enemyId, out reward);
         }
+        public bool TryGetReward(string enemyId, float multiplier, out CoreReward reward)
+        {
+            if (!TryGetReward(enemyId, out reward)) return false;
+            if (multiplier != 1f)
+                reward = new CoreReward(reward.EnemyId, reward.Stat, reward.StatExperience * multiplier,
+                    checked((long)Math.Round(reward.AssimilationScore * (double)multiplier, MidpointRounding.AwayFromZero)));
+            return true;
+        }
     }
 }

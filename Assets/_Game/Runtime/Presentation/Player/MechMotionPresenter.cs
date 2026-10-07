@@ -10,6 +10,7 @@ namespace Gravivore.Presentation.Player
 {
     /// <summary>Cached, replaceable visual rig. Never writes the CharacterController root.</summary>
     [DisallowMultipleComponent]
+    [DefaultExecutionOrder(100)]
     public sealed class MechMotionPresenter : MonoBehaviour
     {
         private sealed class Joint
@@ -55,6 +56,12 @@ namespace Gravivore.Presentation.Player
         private GravityLashCue _attackPhase;
         private int _stepIndex;
         private float _nextStepAudioTime;
+        private Gravivore.Gameplay.Player.PlayerLocomotion _locomotion;
+        private Gravivore.Gameplay.Combat.GravityAttackController _attack;
+        private Quaternion _stationaryFacing;
+        private bool _wasMoving;
+        private float _strideDistance;
+        public void ConfigureStride(float distance) => _strideDistance = Mathf.Max(.1f,distance);
         private static readonly int BaseColorId = Shader.PropertyToID("_BaseColor");
         private static readonly int ColorId = Shader.PropertyToID("_Color");
 
@@ -68,6 +75,10 @@ namespace Gravivore.Presentation.Player
         {
             _authority = authority; _view = view; _socket = socket; _settings = settings;
             _lash = lash; _audio = audio; _previousPosition = authority.position;
+            _locomotion = authority.GetComponent<Gravivore.Gameplay.Player.PlayerLocomotion>();
+            _attack = authority.GetComponent<Gravivore.Gameplay.Combat.GravityAttackController>();
+            _stationaryFacing = authority.rotation;
+            _strideDistance = settings.MechStride;
             _socketRestPosition = socket.localPosition; _socketRestRotation = socket.localRotation;
             _rigs = new Rig[3];
             for (var t = 0; t < _rigs.Length; t++)
@@ -115,10 +126,16 @@ namespace Gravivore.Presentation.Player
         private void OnAttackCue(GravityLashCue cue, Vector3 destination)
         {
             _aim = destination;
+            if (cue != GravityLashCue.Cancelled && (_locomotion == null || !_locomotion.HasMovementIntent) &&
+                (_attack == null || _attack.ValidCurrentTarget == null))
+            {
+                var direction=destination-_authority.position; direction.y=0;
+                if(direction.sqrMagnitude>.0001f) _stationaryFacing=Quaternion.LookRotation(direction);
+            }
             _attackPhase = cue;
             _attackRemaining = cue == GravityLashCue.Cancelled ? 0f : cue == GravityLashCue.Windup ? _settings.LashWindupDuration :
                 cue == GravityLashCue.Beam ? _settings.LashBeamDuration : _settings.LashImpactDuration;
-            ApplyPose();
+            ApplyPose(0f);
         }
 
         private void LateUpdate() => Tick(Time.deltaTime);
@@ -137,7 +154,7 @@ namespace Gravivore.Presentation.Player
             _attackRemaining = Mathf.Max(0, _attackRemaining - dt);
             if (IsWalking)
             {
-                _phase += delta.magnitude / _settings.MechStride * Mathf.PI * 2;
+                _phase += delta.magnitude / _strideDistance * Mathf.PI * 2;
                 var stepIndex = Mathf.FloorToInt(_phase / Mathf.PI);
                 if (stepIndex != _stepIndex)
                 {
@@ -151,17 +168,33 @@ namespace Gravivore.Presentation.Player
                 }
             }
             else _phase = 0;
-            ApplyPose();
+            ApplyPose(dt);
         }
 
-        private void ApplyPose()
+        private void ApplyPose(float dt)
         {
             var rig = _rigs[(int)_view.CurrentTier];
             var attacking = _attackRemaining > 0;
             var aim = _aim - _authority.position; aim.y = 0;
+            var moving = _locomotion != null ? _locomotion.HasMovementIntent : IsWalking;
+            if (moving || _wasMoving) _stationaryFacing = _authority.rotation;
+            _wasMoving = moving;
+            var target = _attack != null ? _attack.ValidCurrentTarget : null;
+            if (!moving && target != null)
+            {
+                var targetDirection = target.TargetPoint.position - _authority.position; targetDirection.y = 0;
+                if (targetDirection.sqrMagnitude > .0001f)
+                    _stationaryFacing = Quaternion.RotateTowards(_stationaryFacing, Quaternion.LookRotation(targetDirection),
+                        _settings.CombatFacingDegreesPerSecond * dt);
+            }
             if (attacking && aim.sqrMagnitude > 0.0001f)
-                rig.Form.rotation = Quaternion.LookRotation(aim) * rig.FormRestRotation;
-            else rig.Form.localRotation = rig.FormRestRotation;
+            {
+                // Moving attacks retain their established temporary aim. At rest the live
+                // selected target owns the complete cycle, including cooldown and recovery.
+                if (moving) rig.Form.rotation = Quaternion.LookRotation(aim) * rig.FormRestRotation;
+                else rig.Form.rotation = _stationaryFacing * rig.FormRestRotation;
+            }
+            else rig.Form.rotation = (moving ? _authority.rotation : _stationaryFacing) * rig.FormRestRotation;
             if (!rig.HasProceduralJoints)
             {
                 if (rig.Sockets.TryGet(Gravivore.Presentation.Assets.PresentationSocket.AttackOrigin, out var origin))

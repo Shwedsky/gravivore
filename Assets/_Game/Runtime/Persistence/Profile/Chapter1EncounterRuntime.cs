@@ -28,6 +28,9 @@ namespace Gravivore.Persistence.Profile
 
         public RepeatableRewardTransactionCoordinator Transactions { get; }
         public RepeatableEncounterService Encounters => Transactions.Encounters;
+        public CoreReward PreviewReward(RepeatableEncounterKind kind) => _ladder.Build(kind,
+            Encounters.Read(kind, kind == RepeatableEncounterKind.Magnetar
+                ? _session.State.World.EliteDefeated : _session.State.Boss.IsDefeated).RewardEntitlement);
         public bool CanEngage => _session.State.World.BossGateUnlocked &&
             _session.State.Repeatable.PendingReward == null &&
             Encounters.Read(RepeatableEncounterKind.Custodian, _session.State.Boss.IsDefeated).Available;

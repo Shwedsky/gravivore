@@ -35,6 +35,8 @@ namespace Gravivore.Gameplay.Progression
         public event Action<ProgressionDirtyEvent> Dirty;
 
         public ProgressionState State { get; }
+        public bool TryPreview(string enemyId, float multiplier, out CoreReward reward) =>
+            _configuration.TryGetReward(enemyId, multiplier, out reward);
 
         public bool TryGrant(in EnemyDeathEvent death)
         {
@@ -49,16 +51,10 @@ namespace Gravivore.Gameplay.Progression
                 return false;
             }
 
-            if (!_configuration.TryGetReward(death.EnemyId, out var reward))
+            if (!_configuration.TryGetReward(death.EnemyId, death.RewardMultiplier, out var reward))
             {
                 return false;
             }
-
-            if (death.RewardMultiplier != 1f)
-                reward = new CoreReward(reward.EnemyId, reward.Stat,
-                    reward.StatExperience * death.RewardMultiplier,
-                    checked((long)Math.Round(reward.AssimilationScore * (double)death.RewardMultiplier,
-                        MidpointRounding.AwayFromZero)));
 
             var previousLevel = _playerStats.BaseLevels.GetLevel(reward.Stat);
             var maximumLevel = _playerStats.GetMaximumLevel(reward.Stat);

@@ -29,6 +29,9 @@ namespace Gravivore.Persistence.Profile
         }
 
         public RepeatableEncounterService Encounters => _encounters;
+        // Published only after the authoritative mutation and phase transition; retries
+        // of an Applied transaction cannot replay cosmetic rewards.
+        public event Action<PendingEncounterReward> RewardApplied;
 
         public bool PrepareAndCommit(
             RepeatableEncounterKind encounterKind,
@@ -68,6 +71,7 @@ namespace Gravivore.Persistence.Profile
 
                 _rewardApplier.Apply(pending.Reward);
                 pending.MarkApplied();
+                Gravivore.Core.Events.SafeEventDispatch.Publish(RewardApplied, pending);
                 _completeFirstClear?.Invoke(pending);
                 if (!_session.FlushNow())
                 {

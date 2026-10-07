@@ -1,0 +1,96 @@
+Sanitized failure excerpt. Full original attempt log remains in local Builds/Logs.
+
+[Licensing::Module] Trying to connect to existing licensing client channel...
+Built from '6000.3/staging' branch; Version is '6000.3.0f1 (d1870ce95baf) revision 13731596'; Using compiler version '194234433'; Build Type 'Release'
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-pamak" at "2026-10-07T12:06:43.3633692Z"
+OS: 'Windows 11  (10.0.26200) 64bit Professional' Language: 'ru' Physical Memory: 13234 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1
+Date: 2026-10-07T12:06:43Z
+[Licensing::Client] Code 10 while verifying Licensing Client signature (process Id: 19808, path: "C:/Program Files/Unity Hub/UnityLicensingClient_V1/Unity.Licensing.Client.exe")
+[Licensing::Module] LicensingClient has failed validation; ignoring
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.18.3+d7ffd15
+[local licensing identifier redacted]
+[local licensing identifier redacted]
+[local licensing identifier redacted]
+[local licensing identifier redacted]
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-pamak" (connect: 0.00s, validation: 0.00s, handshake: 0.05s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-pamak-notifications" at "2026-10-07T12:06:43.4111207Z"
+[local licensing identifier redacted]
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: 5774129981942-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+[Licensing::Client] Successfully updated license, isAsync: True, time: 0.00
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] Licensing Background thread has ended after 0.06s
+
+COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Unity.exe
+-batchmode
+-quit
+-projectPath
+C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\post-device-combat-readability-v1
+-buildTarget
+Android
+[intervening routine/repeated log lines omitted]
+Gravivore.Editor.Build.AndroidBuild:Build (Gravivore.Editor.Build.AndroidBuildFlavor) (at Assets/_Game/Editor/Build/AndroidBuild.cs:83)
+Gravivore.Editor.Build.AndroidBuild:BuildDev () (at Assets/_Game/Editor/Build/AndroidBuild.cs:57)
+
+(Filename: Assets/_Game/Editor/VisualIntegration/FirstVisualSliceDependencies.cs Line: 83)
+
+BuildFailedException: APK omitted post-device content: PostDevicePresentation
+  at Gravivore.Editor.VisualIntegration.PostDeviceCombatDependencies.OnPostprocessBuild (UnityEditor.Build.Reporting.BuildReport report) [0x0024c] in C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\post-device-combat-readability-v1\Assets\_Game\Editor\VisualIntegration\PostDeviceCombatDependencies.cs:46
+  at UnityEditor.Build.BuildPipelineInterfaces+<>c__DisplayClass21_0.<OnBuildPostProcess>b__1 (UnityEditor.Build.IPostprocessBuildWithReport bpp) [0x00000] in <0e78d59907e9464abb64cd241282731e>:0
+  at UnityEditor.Build.BuildPipelineInterfaces.InvokeCallbackInterfacesPair[T1,T2] (System.Collections.Generic.List`1[T] oneInterfaces, System.Action`1[T] invocationOne, System.Collections.Generic.List`1[T] twoInterfaces, System.Action`1[T] invocationTwo, System.Boolean exitOnFailure) [0x000ff] in <0e78d59907e9464abb64cd241282731e>:0
+UnityEngine.DebugLogHandler:Internal_LogException_Injected(Exception, IntPtr)
+UnityEngine.DebugLogHandler:Internal_LogException(Exception, Object)
+UnityEngine.DebugLogHandler:LogException(Exception, Object)
+UnityEngine.Logger:LogException(Exception, Object)
+UnityEngine.Debug:LogException(Exception)
+UnityEditor.Build.BuildPipelineInterfaces:InvokeCallbackInterfacesPair(List`1, Action`1, List`1, Action`1, Boolean)
+UnityEditor.Build.BuildPipelineInterfaces:OnBuildPostProcess(BuildReport)
+UnityEditor.BuildPipeline:BuildPlayerInternalNoCheck_Injected(String[], ManagedSpanWrapper&, ManagedSpanWrapper&, BuildTargetGroup, BuildTarget, Int32, BuildOptions, String[], Boolean)
+UnityEditor.BuildPipeline:BuildPlayerInternalNoCheck(String[], String, String, BuildTargetGroup, BuildTarget, Int32, BuildOptions, String[], Boolean)
+UnityEditor.BuildPipeline:BuildPlayerInternal(String[], String, String, BuildTargetGroup, BuildTarget, Int32, BuildOptions, String[])
+UnityEditor.BuildPipeline:BuildPlayer(String[], String, String, BuildTargetGroup, BuildTarget, Int32, BuildOptions, String[])
+UnityEditor.BuildPipeline:BuildPlayer(BuildPlayerOptions)
+Gravivore.Editor.Build.AndroidBuild:Build(AndroidBuildFlavor) (at Assets\_Game\Editor\Build\AndroidBuild.cs:83)
+Gravivore.Editor.Build.AndroidBuild:BuildDev() (at Assets\_Game\Editor\Build\AndroidBuild.cs:57)
+
+(Filename: Assets/_Game/Editor/VisualIntegration/PostDeviceCombatDependencies.cs Line: 46)
+
+DisplayProgressNotification: Build Failed
+Error building Player: BuildFailedException: APK omitted post-device content: PostDevicePresentation
+Unloading 1 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 2473 unused Assets / (5.8 MB). Loaded Objects now: 4329.
+Memory consumption went from 170.8 MB to 165.0 MB.
+Total: 12.873800 ms (FindLiveObjects: 0.359300 ms CreateObjectMapping: 0.167400 ms MarkObjects: 8.936600 ms  DeleteObjects: 3.409500 ms)
+
+Build Finished, Result: Failure.
+##utp:{"type":"PlayerBuildInfo","version":2,"phase":"Immediate","time":1791374842022,"processId":24680,"steps":[{"description":"Preprocess Player","duration":273},{"description":"Back up scenes","duration":72},{"description":"Prepare For Build","duration":2676},{"description":"ProducePlayerScriptAssemblies","duration":2192},{"description":"Verify Build setup","duration":597},{"description":"Prepare assets for target platform","duration":8},{"description":"Prepare splash screen","duration":1},{"description":"Run script only build","duration":94},{"description":"Postprocess built player","duration":20367}],"duration":26280}
+Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            0.607 ms
+	Integration:            279.428 ms
+	Integration of assets:  0.002 ms
+	Thread Wait Time:       0.014 ms
+	Total Operation Time:   280.051 ms
+Unloading 0 unused Assets / (0 B). Loaded Objects now: 4328.
+Memory consumption went from 159.5 MB to 159.5 MB.
+Total: 8.200600 ms (FindLiveObjects: 0.246900 ms CreateObjectMapping: 0.089500 ms MarkObjects: 7.853600 ms  DeleteObjects: 0.009700 ms)
+
+Start importing ProjectSettings/ProjectSettings.asset using Guid(00000000000000004000000000000000) (LibraryAssetImporter) -> (artifact id: 'a7d6eddb368c7372d0266ccad77d6bde') in 0.0033117 seconds
+Refreshing native plugins compatible for Editor in 0.23 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=8bcbbc42ec0c4ae41bde1e54ba729204): Total: 0.031 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+InvalidOperationException: Android Dev build failed: Failed (2 errors).
+  at Gravivore.Editor.Build.AndroidBuild.Build (Gravivore.Editor.Build.AndroidBuildFlavor flavor) [0x000ed] in C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\post-device-combat-readability-v1\Assets\_Game\Editor\Build\AndroidBuild.cs:92
+  at Gravivore.Editor.Build.AndroidBuild.BuildDev () [0x00000] in C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\post-device-combat-readability-v1\Assets\_Game\Editor\Build\AndroidBuild.cs:57
+
+(Filename: Assets/_Game/Editor/Build/AndroidBuild.cs Line: 92)
+
+executeMethod method Gravivore.Editor.Build.AndroidBuild.BuildDev threw exception.
+Exiting without the bug reporter. Application will terminate with return code 1

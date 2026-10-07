@@ -1,0 +1,541 @@
+[Licensing::Module] Trying to connect to existing licensing client channel...
+Built from '6000.3/staging' branch; Version is '6000.3.0f1 (d1870ce95baf) revision 13731596'; Using compiler version '194234433'; Build Type 'Release'
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-pamak" at "2026-10-07T11:23:11.1610966Z"
+OS: 'Windows 11  (10.0.26200) 64bit Professional' Language: 'ru' Physical Memory: 13234 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1
+Date: 2026-10-07T11:23:11Z
+[Licensing::Client] Code 10 while verifying Licensing Client signature (process Id: 19808, path: "C:/Program Files/Unity Hub/UnityLicensingClient_V1/Unity.Licensing.Client.exe")
+[Licensing::Module] LicensingClient has failed validation; ignoring
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.18.3+d7ffd15
+[local licensing identifier redacted]
+[local licensing identifier redacted]
+[local licensing identifier redacted]
+[local licensing identifier redacted]
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-pamak" (connect: 0.00s, validation: 0.00s, handshake: 0.06s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-pamak-notifications" at "2026-10-07T11:23:11.2227935Z"
+[local licensing identifier redacted]
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: 5774129981942-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+[Licensing::Client] Successfully updated license, isAsync: True, time: 0.00
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] Licensing Background thread has ended after 0.07s
+
+COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Unity.exe
+-batchmode
+-projectPath
+C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\post-device-combat-readability-v1
+-logFile
+C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\post-device-combat-readability-v1\docs\post-device-combat-readability\verification\Integrate.log
+-quit
+-executeMethod
+Gravivore.Editor.VisualIntegration.PostDeviceCombatBuilder.Apply
+Successfully changed project path to: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\post-device-combat-readability-v1
+C:/Users/pamak/Documents/ChatGPT/gravivore/.codex-worktrees/post-device-combat-readability-v1
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-gfx=262144"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+Player connection [5840]  Target information:
+
+[local editor network discovery redacted]
+
+[local editor network discovery redacted]
+
+[local editor network discovery redacted]
+
+Player connection [5840] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [5840] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+[Package Manager] Connected to IPC stream "Upm-4184" after 0.4 seconds.
+[Licensing::Client] Successfully resolved entitlement details
+Library Redirect Path: Library/
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+Refreshing native plugins compatible for Editor in 0.11 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 6000.3.0f1 (d1870ce95baf)
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/6000.3.0f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/Users/pamak/Documents/ChatGPT/gravivore/.codex-worktrees/post-device-combat-readability-v1/Assets
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: AMD Radeon(TM) Graphics (ID=0x1638)
+    Vendor:   ATI
+    VRAM:     6617 MB
+    Driver:   31.0.21921.1000
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/6000.3.0f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/6000.3.0f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/6000.3.0f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56184
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+ImportWorker Server TCP listen port: 0
+AcceleratorClientConnectionCallback - disconnected - :0
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.3.0f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+[Licensing::Client] Successfully resolved entitlement details
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.3.0f1/Editor/Data/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll
+Registered in 0.005757 seconds.
+- Loaded All Assemblies, in  0.468 seconds
+Native extension for Android target not found
+Android Extension - Scanning For ADB Devices 2258 ms
+Native extension for WindowsStandalone target not found
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  2.761 seconds
+Domain Reload Profiling: 3224ms
+	BeginReloadAssembly (154ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (0ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (7ms)
+	RebuildCommonClasses (40ms)
+	RebuildNativeTypeToScriptingClass (13ms)
+	initialDomainReloadingComplete (59ms)
+	LoadAllAssembliesAndSetupDomain (196ms)
+		LoadAssemblies (135ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (192ms)
+			TypeCache.Refresh (191ms)
+				TypeCache.ScanAssembly (173ms)
+			BuildScriptInfoCaches (0ms)
+			ResolveRequiredComponents (0ms)
+	FinalizeReload (2762ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (2718ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (2356ms)
+			SetLoadedEditorAssemblies (4ms)
+			BeforeProcessingInitializeOnLoad (97ms)
+			ProcessInitializeOnLoadAttributes (170ms)
+			ProcessInitializeOnLoadMethodAttributes (91ms)
+			AfterProcessingInitializeOnLoad (0ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (0ms)
+[Licensing::Client] Successfully resolved entitlement details
+Application.AssetDatabase Initial Refresh Start
+Package Manager log level set to [2]
+[Package Manager] Restoring resolved packages state from cache
+[Licensing::Client] Successfully resolved entitlement details
+[Package Manager] Registered 23 packages:
+  Packages from [https://packages.unity.com]:
+    com.unity.ide.visualstudio@2.0.22 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\post-device-combat-readability-v1\Library\PackageCache\com.unity.ide.visualstudio@8140e851d83e)
+    com.unity.searcher@4.9.4 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\post-device-combat-readability-v1\Library\PackageCache\com.unity.searcher@d45a78918735)
+    com.unity.burst@1.8.25 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\post-device-combat-readability-v1\Library\PackageCache\com.unity.burst@1df634d836b8)
+    com.unity.mathematics@1.3.3 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\post-device-combat-readability-v1\Library\PackageCache\com.unity.mathematics@19a9377c4ffa)
+    com.unity.collections@2.6.2 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\post-device-combat-readability-v1\Library\PackageCache\com.unity.collections@aea9d3bd5e19)
+    com.unity.nuget.mono-cecil@1.11.6 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\post-device-combat-readability-v1\Library\PackageCache\com.unity.nuget.mono-cecil@ecb9724e46ff)
+    com.unity.test-framework.performance@3.2.0 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\post-device-combat-readability-v1\Library\PackageCache\com.unity.test-framework.performance@0840f58e4562)
+  Built-in packages:
+    com.unity.render-pipelines.universal@17.3.0 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\post-device-combat-readability-v1\Library\PackageCache\com.unity.render-pipelines.universal@d9aadd996b24)
+    com.unity.test-framework@1.6.0 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\post-device-combat-readability-v1\Library\PackageCache\com.unity.test-framework@0b7a23ab2e1d)
+    com.unity.ugui@2.0.0 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\post-device-combat-readability-v1\Library\PackageCache\com.unity.ugui@4ee0fac0c6e4)
+    com.unity.modules.animation@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.animation)
+    com.unity.modules.audio@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.audio)
+    com.unity.modules.imageconversion@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.imageconversion)
+    com.unity.modules.particlesystem@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.particlesystem)
+    com.unity.modules.ui@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.ui)
+    com.unity.modules.imgui@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.imgui)
+    com.unity.ext.nunit@2.0.5 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\post-device-combat-readability-v1\Library\PackageCache\com.unity.ext.nunit@d8c07649098d)
+    com.unity.modules.jsonserialize@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.jsonserialize)
+    com.unity.render-pipelines.core@17.3.0 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\post-device-combat-readability-v1\Library\PackageCache\com.unity.render-pipelines.core@33b0f6d355dd)
+    com.unity.shadergraph@17.3.0 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\post-device-combat-readability-v1\Library\PackageCache\com.unity.shadergraph@bd2576295577)
+    com.unity.render-pipelines.universal-config@17.0.3 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\post-device-combat-readability-v1\Library\PackageCache\com.unity.render-pipelines.universal-config@8dc1aab4af1d)
+    com.unity.modules.physics@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.physics)
+    com.unity.modules.terrain@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.terrain)
+[Subsystems] No new subsystems found in resolved package list.
+[Package Manager] Done registering packages in 0.01 seconds
+[ScriptCompilation] Requested script compilation because: Assetdatabase observed changes in script compilation related files
+Starting: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Tools\BuildPipeline\bee_backend.exe --ipc --defer-dag-verification --dagfile="Library/Bee/1900b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
+WorkingDir: C:/Users/pamak/Documents/ChatGPT/gravivore/.codex-worktrees/post-device-combat-readability-v1
+DisplayProgressbar: Compiling Scripts
+ExitCode: 0 Duration: 3s493ms
+[512/648    0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+[624/648    1s] Csc Library/Bee/artifacts/1900b0aE.dag/Gravivore.Presentation.dll (+2 others)
+[625/648    0s] ILPostProcess Library/Bee/artifacts/1900b0aE.dag/post-processed/Gravivore.Presentation.dll (+pdb)
+Processing assembly Library/Bee/artifacts/1900b0aE.dag/Gravivore.Presentation.dll, with 137 defines and 245 references
+
+processors: Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[626/648    0s] CopyFiles Library/ScriptAssemblies/Gravivore.Presentation.pdb
+[627/648    0s] Csc Library/Bee/artifacts/1900b0aE.dag/Gravivore.Editor.dll (+2 others)
+Assets\_Game\Editor\Build\AndroidBuild.cs(121,13): warning CS0618: 'PlayerSettings.SetApplicationIdentifier(BuildTargetGroup, string)' is obsolete: 'Use SetApplicationIdentifier(NamedBuildTarget buildTarget, string identifier) instead'
+
+Assets\_Game\Editor\Build\AndroidBuild.cs(131,13): warning CS0618: 'PlayerSettings.SetScriptingBackend(BuildTargetGroup, ScriptingImplementation)' is obsolete: 'Use SetScriptingBackend(NamedBuildTarget buildTarget, ScriptingImplementation backend) instead'
+
+Assets\_Game\Editor\Build\AndroidBuild.cs(282,17): warning CS0618: 'PlayerSettings.GetApplicationIdentifier(BuildTargetGroup)' is obsolete: 'Use GetApplicationIdentifier(NamedBuildTarget buildTarget) instead'
+
+Assets\_Game\Editor\Build\AndroidBuild.cs(292,13): warning CS0618: 'PlayerSettings.SetApplicationIdentifier(BuildTargetGroup, string)' is obsolete: 'Use SetApplicationIdentifier(NamedBuildTarget buildTarget, string identifier) instead'
+
+Assets\_Game\Editor\Build\AndroidBuild.cs(302,13): warning CS0618: 'PlayerSettings.SetApplicationIdentifier(BuildTargetGroup, string)' is obsolete: 'Use SetApplicationIdentifier(NamedBuildTarget buildTarget, string identifier) instead'
+
+Assets\_Game\Editor\Build\AndroidBuild.cs(314,28): warning CS0618: 'PlayerSettings.GetApplicationIdentifier(BuildTargetGroup)' is obsolete: 'Use GetApplicationIdentifier(NamedBuildTarget buildTarget) instead'
+
+Assets\_Game\Editor\VisualIntegration\ArtIntakeTool.cs(82,37): warning CS0618: 'ShaderUtil.GetPropertyCount(Shader)' is obsolete: 'Use Shader.GetPropertyCount instead.'
+
+Assets\_Game\Editor\VisualIntegration\ArtIntakeTool.cs(84,25): warning CS0618: 'ShaderUtil.GetPropertyType(Shader, int)' is obsolete: 'Use Shader.GetPropertyType instead.'
+
+Assets\_Game\Editor\VisualIntegration\ArtIntakeTool.cs(84,66): warning CS0618: 'ShaderUtil.ShaderPropertyType' is obsolete: 'Use UnityEngine.Rendering.ShaderPropertyType instead.'
+
+Assets\_Game\Editor\VisualIntegration\ArtIntakeTool.cs(84,66): warning CS0618: 'ShaderUtil.ShaderPropertyType.TexEnv' is obsolete: 'Use UnityEngine.Rendering.ShaderPropertyType.Texture instead.'
+
+Assets\_Game\Editor\VisualIntegration\ArtIntakeTool.cs(85,36): warning CS0618: 'ShaderUtil.GetPropertyName(Shader, int)' is obsolete: 'Use Shader.GetPropertyName instead.'
+
+Assets\_Game\Editor\VisualIntegration\Phase3CIntegrationBuilder.cs(132,13): warning CS0618: 'RenderSettings.customReflection' is obsolete: 'RenderSettings.customReflection has been deprecated in favor of RenderSettings.customReflectionTexture.'
+
+Assets\_Game\Editor\Validation\ProjectValidator.cs(991,17): warning CS0618: 'PlayerSettings.GetScriptingBackend(BuildTargetGroup)' is obsolete: 'Use GetScriptingBackend(NamedBuildTarget buildTarget) instead'
+
+Assets\_Game\Editor\Validation\ProjectValidator.cs(996,29): warning CS0618: 'PlayerSettings.GetApplicationIdentifier(BuildTargetGroup)' is obsolete: 'Use GetApplicationIdentifier(NamedBuildTarget buildTarget) instead'
+[628/648    0s] Csc Library/Bee/artifacts/1900b0aE.dag/Gravivore.PlayModeTests.dll (+2 others)
+[629/648    0s] CopyFiles Library/ScriptAssemblies/Gravivore.Presentation.dll
+[630/648    0s] ILPostProcess Library/Bee/artifacts/1900b0aE.dag/post-processed/Gravivore.PlayModeTests.dll (+pdb)
+Processing assembly Library/Bee/artifacts/1900b0aE.dag/Gravivore.PlayModeTests.dll, with 137 defines and 241 references
+
+processors: Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[631/648    0s] CopyFiles Library/ScriptAssemblies/Gravivore.PlayModeTests.pdb
+[632/648    0s] Csc Library/Bee/artifacts/1900b0aE.dag/Gravivore.ArtSpike.Editor.dll (+2 others)
+[634/648    0s] CopyFiles Library/ScriptAssemblies/Gravivore.PlayModeTests.dll
+[635/648    0s] Csc Library/Bee/artifacts/1900b0aE.dag/Gravivore.EditModeTests.dll (+2 others)
+Assets\_Game\Tests\EditMode\AndroidBuildTests.cs(30,21): warning CS0618: 'PlayerSettings.GetApplicationIdentifier(BuildTargetGroup)' is obsolete: 'Use GetApplicationIdentifier(NamedBuildTarget buildTarget) instead'
+
+Assets\_Game\Tests\EditMode\AndroidBuildTests.cs(35,21): warning CS0618: 'PlayerSettings.GetApplicationIdentifier(BuildTargetGroup)' is obsolete: 'Use GetApplicationIdentifier(NamedBuildTarget buildTarget) instead'
+
+Assets\_Game\Tests\EditMode\AndroidBuildTests.cs(40,21): warning CS0618: 'PlayerSettings.GetApplicationIdentifier(BuildTargetGroup)' is obsolete: 'Use GetApplicationIdentifier(NamedBuildTarget buildTarget) instead'
+
+Assets\_Game\Tests\EditMode\AndroidBuildTests.cs(46,21): warning CS0618: 'PlayerSettings.GetApplicationIdentifier(BuildTargetGroup)' is obsolete: 'Use GetApplicationIdentifier(NamedBuildTarget buildTarget) instead'
+
+Assets\_Game\Tests\EditMode\AndroidBuildTests.cs(55,17): warning CS0618: 'PlayerSettings.GetApplicationIdentifier(BuildTargetGroup)' is obsolete: 'Use GetApplicationIdentifier(NamedBuildTarget buildTarget) instead'
+
+Assets\_Game\Tests\EditMode\AndroidBuildTests.cs(135,61): warning CS0618: 'PlayerSettings.GetScriptingBackend(BuildTargetGroup)' is obsolete: 'Use GetScriptingBackend(NamedBuildTarget buildTarget) instead'
+[636/648    0s] ILPostProcess Library/Bee/artifacts/1900b0aE.dag/post-processed/Gravivore.Editor.dll (+pdb)
+Processing assembly Library/Bee/artifacts/1900b0aE.dag/Gravivore.Editor.dll, with 135 defines and 282 references
+
+processors: Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[637/648    0s] ILPostProcess Library/Bee/artifacts/1900b0aE.dag/post-processed/Gravivore.ArtSpike.EditModeTests.dll (+pdb)
+Processing assembly Library/Bee/artifacts/1900b0aE.dag/Gravivore.ArtSpike.EditModeTests.dll, with 135 defines and 273 references
+
+processors: Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[638/648    0s] ILPostProcess Library/Bee/artifacts/1900b0aE.dag/post-processed/Gravivore.ArtSpike.Editor.dll (+pdb)
+Processing assembly Library/Bee/artifacts/1900b0aE.dag/Gravivore.ArtSpike.Editor.dll, with 135 defines and 281 references
+
+processors: Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[641/648    0s] CopyFiles Library/ScriptAssemblies/Gravivore.Editor.pdb
+[642/648    0s] CopyFiles Library/ScriptAssemblies/Gravivore.ArtSpike.Editor.pdb
+[643/648    0s] CopyFiles Library/ScriptAssemblies/Gravivore.ArtSpike.Editor.dll
+[644/648    0s] ILPostProcess Library/Bee/artifacts/1900b0aE.dag/post-processed/Gravivore.EditModeTests.dll (+pdb)
+Processing assembly Library/Bee/artifacts/1900b0aE.dag/Gravivore.EditModeTests.dll, with 135 defines and 278 references
+
+processors: Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[645/648    0s] CopyFiles Library/ScriptAssemblies/Gravivore.EditModeTests.pdb
+[646/648    0s] CopyFiles Library/ScriptAssemblies/Gravivore.Editor.dll
+[647/648    0s] CopyFiles Library/ScriptAssemblies/Gravivore.EditModeTests.dll
+*** Tundra build success (3.46 seconds), 22 items updated, 648 evaluated
+Assets\_Game\Editor\Build\AndroidBuild.cs(121,13): warning CS0618: 'PlayerSettings.SetApplicationIdentifier(BuildTargetGroup, string)' is obsolete: 'Use SetApplicationIdentifier(NamedBuildTarget buildTarget, string identifier) instead'
+Assets\_Game\Editor\Build\AndroidBuild.cs(131,13): warning CS0618: 'PlayerSettings.SetScriptingBackend(BuildTargetGroup, ScriptingImplementation)' is obsolete: 'Use SetScriptingBackend(NamedBuildTarget buildTarget, ScriptingImplementation backend) instead'
+Assets\_Game\Editor\Build\AndroidBuild.cs(282,17): warning CS0618: 'PlayerSettings.GetApplicationIdentifier(BuildTargetGroup)' is obsolete: 'Use GetApplicationIdentifier(NamedBuildTarget buildTarget) instead'
+Assets\_Game\Editor\Build\AndroidBuild.cs(292,13): warning CS0618: 'PlayerSettings.SetApplicationIdentifier(BuildTargetGroup, string)' is obsolete: 'Use SetApplicationIdentifier(NamedBuildTarget buildTarget, string identifier) instead'
+Assets\_Game\Editor\Build\AndroidBuild.cs(302,13): warning CS0618: 'PlayerSettings.SetApplicationIdentifier(BuildTargetGroup, string)' is obsolete: 'Use SetApplicationIdentifier(NamedBuildTarget buildTarget, string identifier) instead'
+Assets\_Game\Editor\Build\AndroidBuild.cs(314,28): warning CS0618: 'PlayerSettings.GetApplicationIdentifier(BuildTargetGroup)' is obsolete: 'Use GetApplicationIdentifier(NamedBuildTarget buildTarget) instead'
+Assets\_Game\Editor\VisualIntegration\ArtIntakeTool.cs(82,37): warning CS0618: 'ShaderUtil.GetPropertyCount(Shader)' is obsolete: 'Use Shader.GetPropertyCount instead.'
+Assets\_Game\Editor\VisualIntegration\ArtIntakeTool.cs(84,25): warning CS0618: 'ShaderUtil.GetPropertyType(Shader, int)' is obsolete: 'Use Shader.GetPropertyType instead.'
+Assets\_Game\Editor\VisualIntegration\ArtIntakeTool.cs(84,66): warning CS0618: 'ShaderUtil.ShaderPropertyType' is obsolete: 'Use UnityEngine.Rendering.ShaderPropertyType instead.'
+Assets\_Game\Editor\VisualIntegration\ArtIntakeTool.cs(84,66): warning CS0618: 'ShaderUtil.ShaderPropertyType.TexEnv' is obsolete: 'Use UnityEngine.Rendering.ShaderPropertyType.Texture instead.'
+Assets\_Game\Editor\VisualIntegration\ArtIntakeTool.cs(85,36): warning CS0618: 'ShaderUtil.GetPropertyName(Shader, int)' is obsolete: 'Use Shader.GetPropertyName instead.'
+Assets\_Game\Editor\VisualIntegration\Phase3CIntegrationBuilder.cs(132,13): warning CS0618: 'RenderSettings.customReflection' is obsolete: 'RenderSettings.customReflection has been deprecated in favor of RenderSettings.customReflectionTexture.'
+Assets\_Game\Editor\Validation\ProjectValidator.cs(991,17): warning CS0618: 'PlayerSettings.GetScriptingBackend(BuildTargetGroup)' is obsolete: 'Use GetScriptingBackend(NamedBuildTarget buildTarget) instead'
+Assets\_Game\Editor\Validation\ProjectValidator.cs(996,29): warning CS0618: 'PlayerSettings.GetApplicationIdentifier(BuildTargetGroup)' is obsolete: 'Use GetApplicationIdentifier(NamedBuildTarget buildTarget) instead'
+Assets\_Game\Tests\EditMode\AndroidBuildTests.cs(30,21): warning CS0618: 'PlayerSettings.GetApplicationIdentifier(BuildTargetGroup)' is obsolete: 'Use GetApplicationIdentifier(NamedBuildTarget buildTarget) instead'
+Assets\_Game\Tests\EditMode\AndroidBuildTests.cs(35,21): warning CS0618: 'PlayerSettings.GetApplicationIdentifier(BuildTargetGroup)' is obsolete: 'Use GetApplicationIdentifier(NamedBuildTarget buildTarget) instead'
+Assets\_Game\Tests\EditMode\AndroidBuildTests.cs(40,21): warning CS0618: 'PlayerSettings.GetApplicationIdentifier(BuildTargetGroup)' is obsolete: 'Use GetApplicationIdentifier(NamedBuildTarget buildTarget) instead'
+Assets\_Game\Tests\EditMode\AndroidBuildTests.cs(46,21): warning CS0618: 'PlayerSettings.GetApplicationIdentifier(BuildTargetGroup)' is obsolete: 'Use GetApplicationIdentifier(NamedBuildTarget buildTarget) instead'
+Assets\_Game\Tests\EditMode\AndroidBuildTests.cs(55,17): warning CS0618: 'PlayerSettings.GetApplicationIdentifier(BuildTargetGroup)' is obsolete: 'Use GetApplicationIdentifier(NamedBuildTarget buildTarget) instead'
+Assets\_Game\Tests\EditMode\AndroidBuildTests.cs(135,61): warning CS0618: 'PlayerSettings.GetScriptingBackend(BuildTargetGroup)' is obsolete: 'Use GetScriptingBackend(NamedBuildTarget buildTarget) instead'
+AssetDatabase: script compilation time: 3.959324s
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  1.942 seconds
+Refreshing native plugins compatible for Editor in 0.24 ms, found 0 plugins.
+Native extension for Android target not found
+Native extension for WindowsStandalone target not found
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  3.039 seconds
+Domain Reload Profiling: 4973ms
+	BeginReloadAssembly (336ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (13ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (156ms)
+	RebuildCommonClasses (42ms)
+	RebuildNativeTypeToScriptingClass (12ms)
+	initialDomainReloadingComplete (38ms)
+	LoadAllAssembliesAndSetupDomain (1505ms)
+		LoadAssemblies (1486ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (137ms)
+			TypeCache.Refresh (98ms)
+				TypeCache.ScanAssembly (89ms)
+			BuildScriptInfoCaches (26ms)
+			ResolveRequiredComponents (9ms)
+	FinalizeReload (3040ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (2836ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (40ms)
+			SetLoadedEditorAssemblies (5ms)
+			BeforeProcessingInitializeOnLoad (192ms)
+			ProcessInitializeOnLoadAttributes (2420ms)
+			ProcessInitializeOnLoadMethodAttributes (168ms)
+			AfterProcessingInitializeOnLoad (10ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (11ms)
+Start importing ProjectSettings/GraphicsSettings.asset using Guid(00000000000000006100000000000000) (LibraryAssetImporter) -> (artifact id: '0538c2ae2eeeffd5c1918b6cbfceaac4') in 0.0137993 seconds
+Start importing ProjectSettings/ProjectSettings.asset using Guid(00000000000000004000000000000000) (LibraryAssetImporter) -> (artifact id: '031b1f9575d5eceaee9365da8cacbf2d') in 0.0096253 seconds
+Refreshing native plugins compatible for Editor in 0.28 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=998fc4095d24e084d8ea30fe5bc45ed9): Total: 9.662 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
+	Summary:
+		Imports: total=2 (actual=2, local cache=0, cache server=0)
+		Asset DB Process Time: managed=9 ms, native=3452 ms
+		Asset DB Callback time: managed=227 ms, native=18 ms
+		Scripting: domain reloads=1, domain reload time=1943 ms, compile time=3961 ms, other=49 ms
+		Project Asset Count: scripts=822, non-scripts=1768
+		Asset File Changes: new=0, changed=4, moved=0, deleted=0
+		Scan Filter Count: 1
+	InvokeCustomDependenciesCallbacks: 0.002ms
+	InvokePackagesCallback: 16.257ms
+	ApplyChangesToAssetFolders: 0.842ms
+	Scan: 131.649ms
+	OnSourceAssetsModified: 1.109ms
+	CategorizeAssetsWithTransientArtifact: 19.590ms
+	ProcessAssetsWithTransientArtifactChanges: 47.814ms
+	CategorizeAssets: 47.044ms
+	ImportOutOfDateAssets: 3073.262ms (-917.270ms without children)
+		ImportManagerImport: 25.816ms (1.668ms without children)
+			ImportInProcess: 24.078ms
+			UpdateCategorizedAssets: 0.070ms
+		CompileScripts: 3961.260ms
+		ReloadNativeAssets: 0.085ms
+		UnloadImportedAssets: 1.468ms
+		ReloadImportedAssets: 0.001ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.997ms
+		InitializingProgressBar: 0.002ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.002ms
+		OnDemandSchedulerStart: 0.902ms
+	PostProcessAllAssets: 285.298ms
+	Hotreload: 1.887ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.271ms
+	UnloadStreamsBegin: 2.298ms
+	PersistCurrentRevisions: 0.228ms
+	UnloadStreamsEnd: 0.003ms
+	GenerateScriptTypeHashes: 8.227ms
+	Untracked: 6034.512ms
+
+Application.AssetDatabase Initial Refresh End
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.01 seconds
+Scanning for USB devices : 6.875ms
+Initializing Unity extensions:
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+[MODES] Loading mode Default (0) for mode-current-id-GRAVIVORE
+GetVirtualKey: Could not map char: z (122) to any virtual key
+GetVirtualKey: Could not map char: y (121) to any virtual key
+GetVirtualKey: Could not map char: x (120) to any virtual key
+GetVirtualKey: Could not map char: c (99) to any virtual key
+GetVirtualKey: Could not map char: v (118) to any virtual key
+GetVirtualKey: Could not map char: V (86) to any virtual key
+GetVirtualKey: Could not map char: d (100) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: a (97) to any virtual key
+GetVirtualKey: Could not map char: d (100) to any virtual key
+GetVirtualKey: Could not map char: c (99) to any virtual key
+GetVirtualKey: Could not map char: r (114) to any virtual key
+GetVirtualKey: Could not map char: i (105) to any virtual key
+GetVirtualKey: Could not map char: l (108) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: k (107) to any virtual key
+GetVirtualKey: Could not map char: p (112) to any virtual key
+GetVirtualKey: Could not map char: p (112) to any virtual key
+GetVirtualKey: Could not map char: p (112) to any virtual key
+GetVirtualKey: Could not map char: c (99) to any virtual key
+GetVirtualKey: Could not map char: r (114) to any virtual key
+GetVirtualKey: Could not map char: P (80) to any virtual key
+GetVirtualKey: Could not map char: n (110) to any virtual key
+GetVirtualKey: Could not map char: n (110) to any virtual key
+GetVirtualKey: Could not map char: g (103) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: a (97) to any virtual key
+GetVirtualKey: Could not map char: a (97) to any virtual key
+GetVirtualKey: Could not map char: n (110) to any virtual key
+GetVirtualKey: Could not map char: o (111) to any virtual key
+GetVirtualKey: Could not map char: s (115) to any virtual key
+GetVirtualKey: Could not map char: s (115) to any virtual key
+GetVirtualKey: Could not map char: b (98) to any virtual key
+GetVirtualKey: Could not map char: b (98) to any virtual key
+GetVirtualKey: Could not map char: c (99) to any virtual key
+GetVirtualKey: Could not map char: u (117) to any virtual key
+Curl error 35: Cert verify failed. Certificate could not be verified (either omitted or unsupported). UnityTls error code: 7
+Unloading 19 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 3495 unused Assets / (2.9 MB). Loaded Objects now: 4275.
+Memory consumption went from 160.9 MB to 158.0 MB.
+Total: 11.948400 ms (FindLiveObjects: 0.464900 ms CreateObjectMapping: 0.471300 ms MarkObjects: 8.282000 ms  DeleteObjects: 2.728400 ms)
+
+Curl error 35: Cert verify failed. Certificate could not be verified (either omitted or unsupported). UnityTls error code: 7
+GetVirtualKey: Could not map char: z (122) to any virtual key
+GetVirtualKey: Could not map char: y (121) to any virtual key
+GetVirtualKey: Could not map char: x (120) to any virtual key
+GetVirtualKey: Could not map char: c (99) to any virtual key
+GetVirtualKey: Could not map char: v (118) to any virtual key
+GetVirtualKey: Could not map char: V (86) to any virtual key
+GetVirtualKey: Could not map char: d (100) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: a (97) to any virtual key
+GetVirtualKey: Could not map char: d (100) to any virtual key
+GetVirtualKey: Could not map char: c (99) to any virtual key
+GetVirtualKey: Could not map char: r (114) to any virtual key
+GetVirtualKey: Could not map char: i (105) to any virtual key
+GetVirtualKey: Could not map char: l (108) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: k (107) to any virtual key
+GetVirtualKey: Could not map char: p (112) to any virtual key
+GetVirtualKey: Could not map char: p (112) to any virtual key
+GetVirtualKey: Could not map char: p (112) to any virtual key
+GetVirtualKey: Could not map char: c (99) to any virtual key
+GetVirtualKey: Could not map char: r (114) to any virtual key
+GetVirtualKey: Could not map char: P (80) to any virtual key
+GetVirtualKey: Could not map char: n (110) to any virtual key
+GetVirtualKey: Could not map char: n (110) to any virtual key
+GetVirtualKey: Could not map char: g (103) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: a (97) to any virtual key
+GetVirtualKey: Could not map char: a (97) to any virtual key
+GetVirtualKey: Could not map char: n (110) to any virtual key
+GetVirtualKey: Could not map char: o (111) to any virtual key
+GetVirtualKey: Could not map char: s (115) to any virtual key
+GetVirtualKey: Could not map char: s (115) to any virtual key
+GetVirtualKey: Could not map char: b (98) to any virtual key
+GetVirtualKey: Could not map char: b (98) to any virtual key
+GetVirtualKey: Could not map char: c (99) to any virtual key
+GetVirtualKey: Could not map char: u (117) to any virtual key
+Loaded scene 'Library/Unused/d6f7d71e50b4cc54db413b5bcf813b04'
+	Deserialize:            2.515 ms
+	Integration:            11.321 ms
+	Integration of assets:  0.002 ms
+	Thread Wait Time:       0.027 ms
+	Total Operation Time:   13.864 ms
+Asset Pipeline Refresh (id=0053edfa0dd28764195e1731dd02eed0): Total: 0.058 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Opening scene 'Assets/_Game/Content/Scenes/Chapter01_ScrapExclusion.unity'
+Unloading 145 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Assets/_Game/Content/Scenes/Chapter01_ScrapExclusion.unity'
+	Deserialize:            58.743 ms
+	Integration:            183.366 ms
+	Integration of assets:  26.917 ms
+	Thread Wait Time:       0.057 ms
+	Total Operation Time:   269.083 ms
+Unloading 7 unused Assets / (48.1 KB). Loaded Objects now: 7501.
+Memory consumption went from 164.6 MB to 164.5 MB.
+Total: 8.577000 ms (FindLiveObjects: 0.526200 ms CreateObjectMapping: 0.477500 ms MarkObjects: 7.425300 ms  DeleteObjects: 0.146900 ms)
+
+Start importing Assets/_Game/Content/Scenes/Chapter01_ScrapExclusion.unity using Guid(10000000000000000000000000000002) (DefaultImporter) -> (artifact id: 'f287a2d233dcfe987dce4390b6ca3177') in 0.002478 seconds
+Refreshing native plugins compatible for Editor in 0.21 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=5fb2a03cb2456c743b6d203b67282395): Total: 0.034 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+POST_DEVICE_PRESENTATION_INTEGRATED
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Gravivore.Editor.VisualIntegration.PostDeviceCombatBuilder:Apply () (at Assets/_Game/Editor/VisualIntegration/PostDeviceCombatBuilder.cs:49)
+
+(Filename: Assets/_Game/Editor/VisualIntegration/PostDeviceCombatBuilder.cs Line: 49)
+
+Batchmode quit successfully invoked - shutting down!
+Killing ADB server in 0,0535273 seconds.
+[Physics::Module] Cleanup current backend.
+[Physics::Module] Id: 0xf2b8ea05
+Input System module state changed to: ShutdownInProgress.
+Input System polling thread exited.
+Input System module state changed to: Shutdown.
+[Licensing::IpcConnector] LicenseClient-pamak-notifications channel disconnected successfully.
+[Licensing::IpcConnector] LicenseClient-pamak channel disconnected successfully.
+AcceleratorClientConnectionCallback - disconnected - :0
+Cleanup mono
+Exiting batchmode successfully now!
+Exiting without the bug reporter. Application will terminate with return code 0

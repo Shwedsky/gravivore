@@ -49,6 +49,7 @@ namespace Gravivore.Tests.PlayMode
             var motion = player.GetComponent<MechMotionPresenter>();
             var view = player.GetComponent<PlayerEvolutionView>();
             var locomotion = player.GetComponent<PlayerLocomotion>();
+            var bridge = root.GetComponent<VisualSliceAnimationBridge>();
             var input = new TestInput();
             locomotion.Initialize(input, Camera.main.transform, root.PlayerStats, 720f);
             foreach (var tier in new[] { EvolutionTier.Tier0, EvolutionTier.Tier1, EvolutionTier.Tier2 })
@@ -67,7 +68,7 @@ namespace Gravivore.Tests.PlayMode
                     Vector2.one.normalized, -Vector2.one.normalized, new Vector2(-1,1).normalized, new Vector2(1,-1).normalized })
                 {
                     input.Movement = direction;
-                    for (var step = 0; step < 18; step++) { locomotion.Step(.04f); motion.Tick(.04f); }
+                    for (var step = 0; step < 18; step++) { locomotion.Step(.04f); motion.Tick(.04f); bridge.Tick(.04f); }
                     Assert.That(Vector3.Angle(visibleForward.forward, motion.ObservedVelocity), Is.LessThan(8f), "Visible front must follow sustained movement: " + direction);
                     locomotion.Step(.04f);
                     var authority = player.position; var rotation = player.rotation;
@@ -76,12 +77,12 @@ namespace Gravivore.Tests.PlayMode
                     Assert.That(motion.ObservedVelocity.magnitude, Is.GreaterThan(.1f));
                     Assert.That(player.position, Is.EqualTo(authority));
                     Assert.That(player.rotation, Is.EqualTo(rotation));
-                    var bridge = root.GetComponent<VisualSliceAnimationBridge>(); bridge.Tick();
+                    bridge.Tick(.04f);
                     animator.Update(.12f);
                     Assert.That(bridge.PlayerState, Is.EqualTo("Run"));
                     input.Movement = Vector2.zero; locomotion.Step(.04f); motion.Tick(.04f);
                     Assert.IsFalse(motion.IsWalking);
-                    bridge.Tick(); animator.Update(.12f);
+                    bridge.Tick(.04f); animator.Update(.12f);
                     Assert.That(bridge.PlayerState, Is.EqualTo("Idle"));
                     Assert.That(player.position, Is.EqualTo(authority));
                 }

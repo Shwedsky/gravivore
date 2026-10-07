@@ -37,6 +37,8 @@ namespace Gravivore.Presentation.Composition
     public sealed class S01SceneCompositionRoot : MonoBehaviour
     {
         [SerializeField] private DeviceCorrectionDefinition _deviceCorrection;
+        [SerializeField] private PostDevicePresentationDefinition _postDevicePresentation;
+        public EnemyCombatReadabilityPresenter CombatReadability { get; private set; }
         private static readonly Vector2 HudReferenceResolution = new Vector2(1080f, 1920f);
 
         [SerializeField] private PlayerMovementSettings _movementSettings;
@@ -281,6 +283,17 @@ namespace Gravivore.Presentation.Composition
 #endif
             MapIntegration = gameObject.AddComponent<Chapter01MapProductionIntegration>();
             MapIntegration.Initialize(this);
+            if (_postDevicePresentation != null)
+            {
+                CombatReadability = gameObject.AddComponent<EnemyCombatReadabilityPresenter>();
+                CombatReadability.Initialize(this, _postDevicePresentation, (RectTransform)_hudRoot.parent,
+                    cameraTransform.GetComponent<UnityEngine.Camera>());
+                GetComponent<Gravivore.Presentation.Player.VisualSliceAnimationBridge>()?.ConfigureLocomotion(_postDevicePresentation);
+                PlayerObject.GetComponent<Gravivore.Presentation.Player.MechMotionPresenter>()?.ConfigureStride(_postDevicePresentation.RunCycleDistance);
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+                gameObject.AddComponent<PresentationHitchDiagnostics>().Initialize(this, _postDevicePresentation);
+#endif
+            }
             _isComposed = true;
         }
 
