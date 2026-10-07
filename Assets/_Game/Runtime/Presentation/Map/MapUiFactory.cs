@@ -6,11 +6,11 @@ namespace Gravivore.Presentation.Map
 {
     internal static class MapUiFactory
     {
-        public static readonly Color SurfaceColor = new Color(0.025f, 0.045f, 0.055f, 0.94f);
+        public static readonly Color SurfaceColor = new Color(0.013f, 0.030f, 0.045f, 0.97f);
         public static readonly Color SurfaceColorExpanded = new Color(0.018f, 0.033f, 0.043f, 0.985f);
-        public static readonly Color GridColor = new Color(0.25f, 0.46f, 0.50f, 0.20f);
+        public static readonly Color GridColor = new Color(.28f, .41f, .49f, .28f);
         public static readonly Color PlayerColor = new Color(0.25f, 0.88f, 0.88f, 1f);
-        public static readonly Color OrdinaryColor = new Color(0.72f, 0.77f, 0.78f, 1f);
+        public static readonly Color OrdinaryColor = new Color(0.84f, 0.49f, 0.37f, 1f);
         public static readonly Color EliteColor = new Color(0.88f, 0.67f, 0.30f, 1f);
         public static readonly Color BossColor = new Color(0.94f, 0.38f, 0.25f, 1f);
         public static readonly Color SystemColor = new Color(0.35f, 0.78f, 0.72f, 1f);
@@ -117,17 +117,34 @@ namespace Gravivore.Presentation.Map
                 line.sizeDelta = new Vector2(0f, 1f);
             }
         }
+        public static void TacticalFrame(RectTransform panel)
+        {
+            var color = new Color(.39f,.57f,.64f,.8f);
+            for (var i = 0; i < 4; i++)
+            {
+                var anchor = new Vector2(i % 2, i / 2);
+                var h = CreateImage(panel, "TacticalCornerH" + i, color).rectTransform;
+                var v = CreateImage(panel, "TacticalCornerV" + i, color).rectTransform;
+                PointAnchor(h, anchor); PointAnchor(v, anchor);
+                h.pivot = v.pivot = anchor;
+                SetSize(h, 22, 2); SetSize(v, 2, 22);
+            }
+            var rail = CreateImage(panel, "AmberStatusRail", EliteColor).rectTransform;
+            rail.anchorMin = new Vector2(.08f,.985f); rail.anchorMax = new Vector2(.31f,.985f);
+            rail.sizeDelta = new Vector2(0,2);
+        }
 
         public static Color ColorFor(MapMarkerKind kind)
         {
             switch (kind)
             {
                 case MapMarkerKind.Player: return PlayerColor;
-                case MapMarkerKind.Ordinary:
-                case MapMarkerKind.StrongOrdinary: return OrdinaryColor;
+                case MapMarkerKind.Ordinary: return OrdinaryColor;
+                case MapMarkerKind.StrongOrdinary: return new Color(.86f,.62f,.30f,1);
                 case MapMarkerKind.Elite: return EliteColor;
                 case MapMarkerKind.Boss: return BossColor;
                 case MapMarkerKind.RepairHub: return SystemColor;
+                case MapMarkerKind.Gate: return SystemColor;
                 default: return OrdinaryColor;
             }
         }

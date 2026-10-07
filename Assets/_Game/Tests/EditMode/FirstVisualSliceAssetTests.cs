@@ -90,6 +90,7 @@ namespace Gravivore.Tests.EditMode
             if (tier > 0)
             {
                 var armor = (SkinnedMeshRenderer)lods[0].renderers[1];
+                Assert.That(armor.sharedMaterial.name,Is.EqualTo("Slice_IndustrialAtlas"), "Armor UVs must keep their authored palette.");
                 Assert.That(armor.sharedMesh.triangles.Length, Is.GreaterThan(600));
                 Assert.IsTrue(armor.bones.All(b => b != null && b.IsChildOf(model)));
                 Assert.IsFalse(armor.bones.Any(b => b.IsChildOf(armor.transform.parent)), "Armor must use the live base rig.");

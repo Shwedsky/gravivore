@@ -20,7 +20,10 @@ namespace Gravivore.Editor.VisualIntegration
             FirstVisualSliceBuilder.Root + "/Models/Scout_V1.fbx",
             FirstVisualSliceBuilder.Root + "/Models/Cutter_V1.fbx",
             FirstVisualSliceBuilder.Root + "/Models/Magnetar_V1.fbx",
-            FirstVisualSliceBuilder.Prefab("Environment_Slice")
+            FirstVisualSliceBuilder.Prefab("Environment_Slice"),
+            FirstVisualSliceBuilder.Root + "/Models/G0_Tier1Armor.fbx",
+            FirstVisualSliceBuilder.Root + "/Models/G0_Tier2Armor.fbx",
+            FirstVisualSliceBuilder.Root + "/DeviceCorrection.asset"
         };
         [Serializable] private sealed class Evidence
         {
@@ -35,8 +38,8 @@ namespace Gravivore.Editor.VisualIntegration
                 if (!dependencies.Contains(path)) throw new BuildFailedException("Visual slice missing from Chapter01 production dependencies: " + path);
             var env = AssetDatabase.LoadAssetAtPath<GameObject>(FirstVisualSliceBuilder.Prefab("Environment_Slice"));
             if (env.GetComponentsInChildren<Collider>(true).Length != 0) throw new BuildFailedException("Environment art contains collision authority.");
-            Directory.CreateDirectory("docs/first-visual-slice");
-            File.WriteAllText("docs/first-visual-slice/production_dependencies.json", JsonUtility.ToJson(new Evidence
+            Directory.CreateDirectory("docs/device-correction");
+            File.WriteAllText("docs/device-correction/production_dependencies.json", JsonUtility.ToJson(new Evidence
             { scene = FirstVisualSliceBuilder.ScenePath, required = Required, dependencies = dependencies, validated = true }, true));
             Debug.Log("FIRST_VISUAL_SLICE_DEPENDENCIES_PASS: " + string.Join(", ", Required));
         }
@@ -44,25 +47,26 @@ namespace Gravivore.Editor.VisualIntegration
         public void OnPostprocessBuild(BuildReport report)
         {
             var packed = report.packedAssets.SelectMany(a => a.contents).Select(c => c.sourceAssetPath).Distinct().ToArray();
-            var models = Required.Take(4).Concat(new[] { FirstVisualSliceBuilder.Root + "/Models/Hero_Reactor.fbx", FirstVisualSliceBuilder.Root + "/Models/Deck_Module.fbx" }).ToArray();
+            var models = Required.Take(4).Concat(Required.Skip(5).Take(2)).Concat(new[] { FirstVisualSliceBuilder.Root + "/Models/Hero_Reactor.fbx", FirstVisualSliceBuilder.Root + "/Models/Deck_Module.fbx" }).ToArray();
             var dependencies = AssetDatabase.GetDependencies(FirstVisualSliceBuilder.ScenePath, true);
             foreach (var path in models)
                 if (!dependencies.Contains(path)) throw new BuildFailedException("Production scene omitted required visual model: " + path);
             // Incremental script-only reports omit cached asset entries. Inspect the APK itself:
             // exact serialized mesh names must be in sharedassets1, and the authored kit in level1.
             var names = new[] { "G0_LOD0", "Scout_V1_LOD0", "Cutter_V1_LOD0", "Magnetar_V1_LOD0",
+                "G0_Tier1Armor_LOD0", "G0_Tier2Armor_LOD0", "Containment_Exploration", "Containment_CombatLayer", "DeviceCorrection",
                 "First Visual Slice Industrial Containment", "Hero_Reactor", "Deck_Module" };
             var found = new string[names.Length];
             using (var archive = ZipFile.OpenRead(report.summary.outputPath))
                 foreach (var entry in archive.Entries)
                 {
-                    var meshes = entry.FullName.StartsWith("assets/bin/Data/sharedassets1.assets", StringComparison.Ordinal);
+                    var meshes = entry.FullName.StartsWith("assets/bin/Data/sharedassets", StringComparison.Ordinal) && entry.FullName.Contains(".assets");
                     var scene = entry.FullName.StartsWith("assets/bin/Data/level1", StringComparison.Ordinal);
                     if (!meshes && !scene) continue;
                     using var stream = entry.Open(); using var memory = new MemoryStream();
                     stream.CopyTo(memory); var bytes = memory.ToArray();
                     for (var i = 0; i < names.Length; i++)
-                        if (found[i] == null && (i < 4 ? meshes : scene) && ContainsSerializedString(bytes, names[i]))
+                        if (found[i] == null && (i < 9 ? meshes : scene) && ContainsSerializedString(bytes, names[i]))
                             found[i] = names[i] + " => " + entry.FullName;
                 }
             for (var i = 0; i < names.Length; i++)
@@ -74,7 +78,7 @@ namespace Gravivore.Editor.VisualIntegration
                 modelSources = models, packedReportPaths = packed, packedReportComplete = models.All(packed.Contains),
                 serializedRequired = names, serializedArchiveEntries = found, apkSha256 = hash, validated = true };
             File.WriteAllText(Path.ChangeExtension(report.summary.outputPath, ".visual-slice.json"), JsonUtility.ToJson(evidence, true));
-            File.WriteAllText("docs/first-visual-slice/apk_packed_dependencies.json", JsonUtility.ToJson(evidence, true));
+            File.WriteAllText("docs/device-correction/apk_packed_dependencies.json", JsonUtility.ToJson(evidence, true));
             Debug.Log("FIRST_VISUAL_SLICE_APK_PACKING_PASS: " + string.Join(", ", found));
         }
         private static bool ContainsSerializedString(byte[] bytes, string value)

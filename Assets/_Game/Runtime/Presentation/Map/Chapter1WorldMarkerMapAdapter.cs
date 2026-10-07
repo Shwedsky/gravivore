@@ -18,10 +18,12 @@ namespace Gravivore.Presentation.Map
         private readonly Chapter1WorldMarkerAuthority _authority;
         private readonly int _ordinaryCount;
         private readonly Vector3 _repairPosition;
+        private readonly WorldGateConfiguration? _eliteGate, _bossGate;
 
         public Chapter1WorldMarkerMapAdapter(Transform player, EnemyPopulationController population,
             MagnetarGuardController elite, CustodianBossController boss, WorldUnlockState world,
-            Chapter1WorldMarkerAuthority authority, int ordinaryCount, Vector3 repairPosition)
+            Chapter1WorldMarkerAuthority authority, int ordinaryCount, Vector3 repairPosition,
+            WorldGateConfiguration? eliteGate = null, WorldGateConfiguration? bossGate = null)
         {
             _player = player != null ? player : throw new ArgumentNullException(nameof(player));
             _population = population != null ? population : throw new ArgumentNullException(nameof(population));
@@ -31,12 +33,23 @@ namespace Gravivore.Presentation.Map
             _authority = authority ?? throw new ArgumentNullException(nameof(authority));
             _ordinaryCount = ordinaryCount;
             _repairPosition = repairPosition;
+            _eliteGate = eliteGate; _bossGate = bossGate;
         }
 
-        public int Count => _population.SpotCount + 4;
+        private int BaseCount => _population.SpotCount + 4;
+        public int Count => BaseCount + (_eliteGate.HasValue && _bossGate.HasValue ? 2 : 0);
         public MapMarkerSnapshot GetMarker(int index)
         {
             if (index < 0 || index >= Count) throw new ArgumentOutOfRangeException(nameof(index));
+            if (index >= BaseCount)
+            {
+                var isEliteGate = index == BaseCount;
+                var gate = isEliteGate ? _eliteGate.Value : _bossGate.Value;
+                var gateLocked = isEliteGate ? !_world.EliteGateUnlocked : !_world.BossGateUnlocked;
+                return new MapMarkerSnapshot(gate.Id, MapMarkerKind.Gate, gate.Position,
+                    gateLocked ? MapAvailabilityState.Inactive : MapAvailabilityState.Available,
+                    isEliteGate ? "Шлюз элиты" : "Шлюз Хранителя", progressionLocked: gateLocked);
+            }
             if (index == 0) return new MapMarkerSnapshot("player", MapMarkerKind.Player, _player.position,
                 MapAvailabilityState.Available, "Игрок", headingDegrees: _player.eulerAngles.y);
             if (index <= _population.SpotCount)
@@ -48,7 +61,7 @@ namespace Gravivore.Presentation.Map
                     position, spot.LiveCount > 0 || strong && !spot.IsActive ? MapAvailabilityState.Available : MapAvailabilityState.Cooldown,
                     strong ? "Усиленная зона" : RussianUiText.SpotName(spot.Id), remainingSeconds: spot.SecondsUntilNextRespawn);
             }
-            if (index == Count - 1) return new MapMarkerSnapshot("repair-hub", MapMarkerKind.RepairHub,
+            if (index == BaseCount - 1) return new MapMarkerSnapshot("repair-hub", MapMarkerKind.RepairHub,
                 _repairPosition, MapAvailabilityState.Available, "Ремонтный узел");
             var elite = index == _population.SpotCount + 1;
             var state = elite ? _authority.ReadMagnetar(_elite.transform.position, _world.EliteDefeated)

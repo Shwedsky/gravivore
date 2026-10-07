@@ -86,7 +86,8 @@ namespace Gravivore.Presentation.Feedback
             source.volume = Volume;
             // One bounded voice per source. Footsteps never overlap a combat voice.
             source.clip = clip;
-            source.volume = Volume * (cue == S14AudioCue.Step ? 0.22f : 0.65f);
+            source.volume = Volume * (cue == S14AudioCue.Step ? .17f :
+                cue == S14AudioCue.Telegraph ? .65f : .45f);
             source.Play();
             PlayedCount++;
         }

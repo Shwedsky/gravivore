@@ -11,7 +11,8 @@ namespace Gravivore.Presentation.Map
         StrongOrdinary,
         Elite,
         Boss,
-        RepairHub
+        RepairHub,
+        Gate
     }
 
     public enum MapAvailabilityState

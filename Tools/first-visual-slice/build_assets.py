@@ -12,9 +12,9 @@ for p in [OUT/'Models', OUT/'Textures', SOURCE]: p.mkdir(parents=True, exist_ok=
 bpy.ops.wm.read_factory_settings(use_empty=True)
 bpy.context.scene.unit_settings.system = 'METRIC'
 bpy.context.scene.unit_settings.scale_length = 1.0
-palette = [(.055,.071,.086),(.30,.39,.44),(.64,.74,.77),(.13,.18,.21),
-           (.46,.29,.10),(.70,.028,.014),(1,.30,.025),(.015,.52,.67),(.025,.035,.043)]
-names = ['graphite','machined steel','pale armor','floor','hazard ochre','hostile red','elite amber','service cyan','recess']
+palette = [(.045,.061,.081),(.30,.40,.50),(.65,.76,.80),(.085,.12,.16),
+           (.78,.48,.10),(.67,.027,.014),(1,.36,.035),(.025,.46,.63),(.022,.031,.041),(.34,.065,.034)]
+names = ['graphite','machined steel','pale armor','floor','hazard yellow','hostile red','elite amber','service cyan','recess','rust coating']
 mats=[]
 for i,c in enumerate(palette):
     m=bpy.data.materials.new(names[i]); m.diffuse_color=(*c,1); mats.append(m)
@@ -25,7 +25,7 @@ for label in ['BaseColor','Emission','MetallicSmoothness']:
     px=[]
     for y in range(N):
         for x in range(N):
-            i=min(8,x//28); c=palette[i]
+            i=9 if x>=249 else min(8,x//28); c=palette[i]
             if label=='BaseColor':
                 grain=1+.025*math.sin(y*.13)*math.sin(x*.31)
                 v=tuple(max(0,min(1,q*grain)) for q in c)+(1,)
@@ -100,11 +100,11 @@ def skin_mesh(name,rig=None,lod=False):
         # Built-in primitives carry default UVs; replace them so Unity's UV0 is the atlas.
         for layer in list(o.data.uv_layers): o.data.uv_layers.remove(layer)
         uv=o.data.uv_layers.new(name='IndustrialPalette')
-        idx=mats.index(o.data.materials[0]);u=(idx*28+14)/N
+        idx=mats.index(o.data.materials[0]);u=.985 if idx==9 else (idx*28+14)/N
         for f in o.data.polygons:
             for loop in f.loop_indices:
                 p=o.data.vertices[o.data.loops[loop].vertex_index].co
-                uv.data[loop].uv=(u+.022*math.sin(p.x*2.7),.12+.75*(.5+.5*math.sin(p.z*1.3+p.y*.7)))
+                uv.data[loop].uv=(u+(.004 if idx==9 else .016 if idx==8 else .022)*math.sin(p.x*2.7),.12+.75*(.5+.5*math.sin(p.z*1.3+p.y*.7)))
         o.data.materials.clear();o.data.materials.append(atlas)
     bpy.ops.object.select_all(action='DESELECT')
     for o in parts:o.select_set(True)
@@ -264,6 +264,8 @@ export_static('Bulkhead_Module')
 
 reset()
 shell('Reactor octagonal foundation',(0,0,.25),2.5,2.5,.5,0)
+for x in (-.82,-.41,0,.41,.82):
+    box('Reactor hazard landing '+str(x),(x,-1.10,.51),(.23,.19,.018),4,angle=.42,bevel=.004)
 rod('Containment vessel',(0,0,.45),(0,0,3.3),.59,0,vertices=20)
 rod('Industrial energy column',(0,0,.75),(0,0,2.83),.38,6,vertices=16)
 for z in (.64,1.27,2.25,3.03):ring('Containment steel hoop '+str(z),(0,0,z),.72,.10,1)
@@ -281,11 +283,11 @@ for y in (-.83,0,.83):
     rod('Capacitor pressure vessel '+str(y),(0,y,.30),(0,y,1.46),.34,1,vertices=16)
     ring('Capacitor insulated collar '+str(y),(0,y,1.22),.35,.055,0)
     box('Amber status window '+str(y),(0,y-.345,1.0),(.14,.02,.12),6)
-shell('Armored power canopy',(0,0,1.51),1.22,2.9,.20,2)
+shell('Armored power canopy',(0,0,1.51),1.22,2.9,.20,9)
 export_static('Power_Bank')
 
 reset()
-shell('Freight protective housing',(0,0,.64),1.45,1.65,1.2,1)
+shell('Freight protective housing',(0,0,.64),1.45,1.65,1.2,9)
 for x in (-.51,.51):box('Freight clamp '+str(x),(x,0,.70),(.13,1.78,1.3),0)
 box('Industrial freight ID plate',(0,-.84,.87),(.55,.023,.22),4)
 for i in range(3):box('Freight chevron '+str(i),(-.18+i*.18,-.857,.87),(.064,.02,.16),8,angle=-.40)

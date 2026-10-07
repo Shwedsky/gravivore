@@ -32,6 +32,7 @@ namespace Gravivore.Editor.VisualIntegration
             foreach (var name in new[] { "Deck_Module", "Bulkhead_Module", "Hero_Reactor", "Power_Bank", "Freight_Container", "Coolant_Pump",
                 "Conduit_Rack", "Maintenance_Station", "Structural_Support", "Barrier_Module", "Containment_Gate" }) MakeStatic(name, material);
             IntegrateG0();
+            var correction = MusicAndMix();
             var catalog = new SerializedObject(AssetDatabase.LoadAssetAtPath<S15VisualCatalog>("Assets/_Game/Content/Definitions/S15_VisualCatalog.asset"));
             Recipe(catalog.FindProperty("_enemies").GetArrayElementAtIndex(0), "Scout_V1");
             Recipe(catalog.FindProperty("_enemies").GetArrayElementAtIndex(1), "Cutter_V1");
@@ -44,6 +45,9 @@ namespace Gravivore.Editor.VisualIntegration
             var scene = EditorSceneManager.OpenScene(ScenePath);
             var composition = scene.GetRootGameObjects().SelectMany(o => o.GetComponentsInChildren<S01SceneCompositionRoot>(true)).Single();
             var env = composition.VisualEnvironment;
+            var rootSettings = new SerializedObject(composition);
+            rootSettings.FindProperty("_deviceCorrection").objectReferenceValue = correction;
+            rootSettings.ApplyModifiedPropertiesWithoutUndo();
             var prior = env.Floor.Find("First Visual Slice Industrial Containment");
             if (prior != null) UnityEngine.Object.DestroyImmediate(prior.gameObject);
             var dressing = (GameObject)PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(Prefab("Environment_Slice")), env.Floor);
@@ -75,9 +79,9 @@ namespace Gravivore.Editor.VisualIntegration
             }
             serialized.ApplyModifiedPropertiesWithoutUndo();
             RenderSettings.ambientMode = AmbientMode.Flat;
-            RenderSettings.ambientLight = new Color(.37f, .43f, .49f);
+            RenderSettings.ambientLight = new Color(.34f, .41f, .49f);
             var probe = new SphericalHarmonicsL2(); probe.AddAmbientLight(RenderSettings.ambientLight); RenderSettings.ambientProbe = probe;
-            env.KeyLight.color = new Color(.83f, .91f, 1f); env.KeyLight.intensity = 1.65f;
+            env.KeyLight.color = new Color(.91f, .94f, 1f); env.KeyLight.intensity = 1.65f;
             env.KeyLight.transform.rotation = Quaternion.Euler(48, -32, 0);
             env.KeyLight.shadows = LightShadows.Soft; env.KeyLight.shadowStrength = .72f;
             EditorSceneManager.MarkSceneDirty(scene); EditorSceneManager.SaveScene(scene);
@@ -86,6 +90,33 @@ namespace Gravivore.Editor.VisualIntegration
             Debug.Log("FIRST_VISUAL_SLICE_INTEGRATED: G0 V3 / Scout V1 / Cutter V1 / Magnetar V1 / Chapter01 containment area");
         }
         public static string Prefab(string name) => Root + "/Prefabs/" + name + ".prefab";
+        private static Gravivore.Presentation.AudioVfx.DeviceCorrectionDefinition MusicAndMix()
+        {
+            foreach (var name in new[] { "Containment_Exploration", "Containment_CombatLayer" })
+            {
+                var importer = (AudioImporter)AssetImporter.GetAtPath(Root + "/Audio/" + name + ".wav");
+                var settings = importer.defaultSampleSettings; settings.loadType = AudioClipLoadType.Streaming;
+                settings.compressionFormat = AudioCompressionFormat.Vorbis; settings.quality = .65f;
+                settings.sampleRateSetting = AudioSampleRateSetting.PreserveSampleRate;
+                importer.defaultSampleSettings = settings; importer.forceToMono = false; importer.SaveAndReimport();
+            }
+            var path = Root + "/DeviceCorrection.asset";
+            var asset = AssetDatabase.LoadAssetAtPath<Gravivore.Presentation.AudioVfx.DeviceCorrectionDefinition>(path);
+            if (asset == null) { asset = ScriptableObject.CreateInstance<Gravivore.Presentation.AudioVfx.DeviceCorrectionDefinition>(); AssetDatabase.CreateAsset(asset,path); }
+            var data = new SerializedObject(asset);
+            data.FindProperty("_exploration").objectReferenceValue = AssetDatabase.LoadAssetAtPath<AudioClip>(Root + "/Audio/Containment_Exploration.wav");
+            data.FindProperty("_combatLayer").objectReferenceValue = AssetDatabase.LoadAssetAtPath<AudioClip>(Root + "/Audio/Containment_CombatLayer.wav");
+            data.ApplyModifiedPropertiesWithoutUndo(); asset.ValidateOrThrow();
+            var bank = new SerializedObject(AssetDatabase.LoadAssetAtPath<UnityEngine.Object>("Assets/_Game/Content/Presentation/Phase6B/Audio/Phase6B_AudioBank.asset"));
+            var entries = bank.FindProperty("_entries");
+            var volumes = new[] { .30f,.28f,.48f,.60f,.56f,.39f,.48f,.51f,.63f,.72f,.78f,.82f,.80f,.42f,.60f,.64f };
+            for (var i = 0; i < entries.arraySize; i++)
+            {
+                var entry = entries.GetArrayElementAtIndex(i); var cue = entry.FindPropertyRelative("_cue").enumValueIndex;
+                if (cue < volumes.Length) entry.FindPropertyRelative("_volume").floatValue = volumes[cue];
+            }
+            bank.ApplyModifiedPropertiesWithoutUndo(); return asset;
+        }
         private static void MakeBossApproachBoundary()
         {
             var source = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Game/Phase3D/Prefabs/Environment/BossApproach_Phase3D.prefab");
@@ -211,7 +242,8 @@ namespace Gravivore.Editor.VisualIntegration
                     material.SetColor("_EmissionColor", source.GetColor("_EmissionColor") * (1 + tier * .12f));
                     material.EnableKeyword("_EMISSION"); material.globalIlluminationFlags = MaterialGlobalIlluminationFlags.BakedEmissive;
                     EditorUtility.SetDirty(material);
-                    foreach (var r in model.GetComponentsInChildren<SkinnedMeshRenderer>()) r.sharedMaterial = material;
+                    foreach (var r in model.GetComponentsInChildren<SkinnedMeshRenderer>())
+                        if (r.name.StartsWith("G0_LOD", StringComparison.Ordinal)) r.sharedMaterial = material;
                 }
                 Sockets(wrapper.transform, 1.12f * G0TierVisualMultipliers[tier]);
                 var name = "G0_V3_Live_Tier" + tier;
