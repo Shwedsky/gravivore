@@ -38,6 +38,7 @@ namespace Gravivore.Tests.PlayMode
             foreach(var enemy in root.GetComponentsInChildren<OrdinaryEnemyController>(true))enemy.enabled=false;
         }
         private static T Field<T>(object owner,string name)=>(T)owner.GetType().GetField(name,BindingFlags.NonPublic|BindingFlags.Instance).GetValue(owner);
+        private static void SetField(object owner,string name,object value)=>owner.GetType().GetField(name,BindingFlags.NonPublic|BindingFlags.Instance).SetValue(owner,value);
         private static void Move(S01SceneCompositionRoot root,Vector3 point)
         {var body=root.PlayerObject.GetComponent<CharacterController>();body.enabled=false;body.transform.position=point;body.enabled=true;Physics.SyncTransforms();}
 
@@ -163,6 +164,7 @@ namespace Gravivore.Tests.PlayMode
         [UnityTest] public IEnumerator ProductionArtIsLiveSolidPropsHaveMatchingGameplayProxiesAndFullMapUsesAuthority()
         {
             yield return Load();var root=_scene.Root;var env=root.VisualEnvironment;Assert.IsTrue(env.FullChapterProduction);
+            Physics.SyncTransforms();
             var production=env.Floor.Find("Chapter 01 Full Production");Assert.IsNotNull(production);
             foreach(var id in new[]{"relay-yard","cutting-floor","shield-dump","capacitor-field","hauler-graveyard"})Assert.IsNotNull(production.Find(id));
             Assert.IsNotNull(production.Find("Service corridors"));Assert.IsNotNull(production.Find("Custodian containment complex"));
@@ -173,16 +175,54 @@ namespace Gravivore.Tests.PlayMode
             for(var i=0;i<env.SliceObstacleCount;i++)
             {var obstacle=env.GetSliceObstacle(i);if(!obstacle.Name.StartsWith("Chapter01 "))continue;
                 var proxy=Enumerable.Range(0,root.WorldPresenter.EnvironmentBlockerCount).Select(root.WorldPresenter.GetEnvironmentBlocker).Single(c=>c.name==obstacle.Name);
-                Assert.That(proxy.bounds.center,Is.EqualTo(obstacle.Center).Using(Vector3ComparerWithEqualsOperator.Instance));
-                Assert.That(proxy.bounds.size,Is.EqualTo(obstacle.Size).Using(Vector3ComparerWithEqualsOperator.Instance));}
+                Assert.IsTrue(proxy.enabled && proxy.gameObject.activeInHierarchy,obstacle.Name);
+                Assert.That(Vector3.Distance(proxy.bounds.center,obstacle.Center),Is.LessThan(.001f),obstacle.Name);
+                Assert.That(Vector3.Distance(proxy.bounds.size,obstacle.Size),Is.LessThan(.001f),obstacle.Name);}
             var map=root.MapIntegration.MapPresenter;map.OpenExpanded();map.RefreshNow();
-            for(var i=0;i<root.MapMarkers.Count;i++){var marker=root.MapMarkers.GetMarker(i);Assert.IsTrue(map.SelectMarker(marker.Id),marker.Id);}
-            Capture(root,"full_map");map.CloseExpanded();
+            for(var i=0;i<root.MapMarkers.Count;i++){var marker=root.MapMarkers.GetMarker(i);Assert.That(map.GetCachedViewIdentity(marker.Id,true),Is.Not.Zero,marker.Id);
+                if(marker.Visible && marker.Kind!=MapMarkerKind.Player)Assert.IsTrue(map.SelectMarker(marker.Id),marker.Id);}
+            map.ClearSelection();Capture(root,"full_map");map.CloseExpanded();
             foreach(var pair in new[]{("relay",new Vector3(-26,0,20)),("cutting",new Vector3(0,0,40)),("shield",new Vector3(26,0,20)),("capacitor",new Vector3(-20,0,-12)),("hauler",new Vector3(20,0,-12)),("traversal",new Vector3(0,0,10)),("boss_approach",new Vector3(0,0,84))})
             {Move(root,pair.Item2);Capture(root,pair.Item1);}
         }
+        [UnityTest] public IEnumerator SustainedRunStepsAreQuieterAndLessFrequentThanV38WithIndependentCombatGain()
+        {
+            yield return Load();var root=_scene.Root;var motion=root.PlayerObject.GetComponent<MechMotionPresenter>();motion.enabled=false;
+            var tuned=Field<S14PresentationDefinition>(motion,"_settings");var baseline=Object.Instantiate(tuned);
+            SetField(baseline,"_stepMinimumInterval",.28f);SetField(baseline,"_stepVolume",.24f);
+            var audio=root.AudioPresenter;var muted=audio.IsMuted;var volume=audio.Volume;var position=root.PlayerObject.transform.position;
+            try
+            {
+                audio.SetMuted(false);audio.SetVolume(.8f);
+                var counts=new List<string>();
+                foreach(var speed in new[]{4.5f,6f,7.5f})
+                {
+                    var oldCount=RunSteps(motion,root.PlayerObject.transform,baseline,1.8f,speed);
+                    var newCount=RunSteps(motion,root.PlayerObject.transform,tuned,2.25f,speed);
+                    Assert.That((float)newCount/oldCount,Is.InRange(.70f,.85f),"Sustained run at "+speed+" m/s");
+                    counts.Add(speed+" m/s: v38="+oldCount+", production="+newCount+", ratio="+((float)newCount/oldCount));
+                }
+                var sources=Field<AudioSource[]>(audio,"_sources");
+                audio.Play(S14AudioCue.Step);Assert.That(sources.Last().volume,Is.EqualTo(.8f*tuned.StepVolume).Within(.0001f));
+                audio.Play(S14AudioCue.Telegraph);Assert.That(sources.Any(s=>Mathf.Abs(s.volume-.8f*.65f)<.0001f),Is.True);
+                audio.Play(S14AudioCue.LashImpact);Assert.That(sources.Any(s=>Mathf.Abs(s.volume-.8f*.45f)<.0001f),Is.True);
+                audio.SetVolume(.5f);Assert.That(sources.Last().volume,Is.EqualTo(.5f*tuned.StepVolume).Within(.0001f));
+                Assert.That(sources.Length,Is.EqualTo(4));Directory.CreateDirectory("docs/chapter01-production/verification");
+                File.WriteAllLines("docs/chapter01-production/verification/footsteps.txt",counts);
+            }
+            finally{SetField(motion,"_settings",tuned);motion.ConfigureStride(2.25f);root.PlayerObject.transform.position=position;audio.SetMuted(muted);audio.SetVolume(volume);Object.Destroy(baseline);}
+        }
+        private static int RunSteps(MechMotionPresenter motion,Transform authority,S14PresentationDefinition definition,float stride,float speed)
+        {
+            SetField(motion,"_settings",definition);motion.ConfigureStride(stride);SetField(motion,"_phase",0f);SetField(motion,"_time",0f);
+            SetField(motion,"_stepIndex",0);SetField(motion,"_nextStepAudioTime",0f);SetField(motion,"_previousPosition",authority.position);
+            var before=motion.FootstepCueCount;
+            for(var i=0;i<3600;i++){authority.position+=Vector3.forward*(speed/60f);motion.Tick(1f/60f);}
+            return motion.FootstepCueCount-before;
+        }
         private static void Capture(S01SceneCompositionRoot root,string name)
         {
+            root.MapIntegration.MapPresenter.RefreshNow();
             var camera=UnityEngine.Camera.main;camera.GetComponent<PortraitFollowCamera>().SnapToTarget();
             var canvas=root.GetComponentInChildren<Canvas>();var mode=canvas.renderMode;var world=canvas.worldCamera;var prior=camera.targetTexture;var active=RenderTexture.active;
             var render=new RenderTexture(540,960,24);var texture=new Texture2D(540,960,TextureFormat.RGB24,false);

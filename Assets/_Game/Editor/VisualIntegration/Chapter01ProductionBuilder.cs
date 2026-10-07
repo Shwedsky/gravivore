@@ -47,8 +47,8 @@ namespace Gravivore.Editor.VisualIntegration
             var floor=new GameObject("Facility deck segmentation").transform; floor.SetParent(chapter.transform,false);
             for(var x=-32;x<=32;x+=8) for(var z=-36;z<=100;z+=8) Place(floor,"Facility_Deck",new Vector3(x,.005f,z),false);
             var relay=Group(chapter,"relay-yard",new Vector3(-26,0,20));
-            Place(relay,"Relay_Mast",new Vector3(-32,0,26)); Place(relay,"Relay_Mast",new Vector3(-22,0,28));
-            Place(relay,"Relay_Junction",new Vector3(-32,0,13)); Place(relay,"Relay_Junction",new Vector3(-20,0,14),true,90);
+            Place(relay,"Relay_Mast",new Vector3(-30.4f,0,26)); Place(relay,"Relay_Mast",new Vector3(-21.6f,0,26));
+            Place(relay,"Relay_Junction",new Vector3(-30.4f,0,14)); Place(relay,"Relay_Junction",new Vector3(-21.6f,0,14),true,90);
             Place(relay,"Relay_Junction",new Vector3(-31,0,29),true,90);
             Dress(relay,new Vector3(-26,0,20),"cyan signal routing",new[] {"Relay_Mast","Relay_Junction"});
             var cutting=Group(chapter,"cutting-floor",new Vector3(0,0,40));
@@ -61,25 +61,30 @@ namespace Gravivore.Editor.VisualIntegration
             Place(cutting,"Barrier_Module",new Vector3(12,0,37),true,90,true);
             Dress(cutting,new Vector3(0,0,36),"orange processing line",new[] {"Coolant_Pump","Freight_Container"});
             var shield=Group(chapter,"shield-dump",new Vector3(26,0,20));
-            Place(shield,"Shield_Shell",new Vector3(32,0,27)); Place(shield,"Shield_Stack",new Vector3(21,0,28));
-            Place(shield,"Shield_Stack",new Vector3(32,0,14)); Place(shield,"Shield_Stack",new Vector3(20,0,14),true,90);
+            Place(shield,"Shield_Shell",new Vector3(30.5f,0,26)); Place(shield,"Shield_Stack",new Vector3(21.5f,0,26));
+            Place(shield,"Shield_Stack",new Vector3(30.5f,0,14)); Place(shield,"Shield_Stack",new Vector3(21.5f,0,14),true,90);
             Place(shield,"Shield_Shell",new Vector3(33,0,21),true,90);
             Dress(shield,new Vector3(26,0,20),"green defensive salvage",new[] {"Shield_Stack","Shield_Shell"});
             var capacitors=Group(chapter,"capacitor-field",new Vector3(-20,0,-12));
-            Place(capacitors,"Transformer",new Vector3(-28,0,-7)); Place(capacitors,"Capacitor_Bank",new Vector3(-27,0,-18));
-            Place(capacitors,"Capacitor_Bank",new Vector3(-14,0,-18)); Place(capacitors,"Capacitor_Bank",new Vector3(-27,0,-13));
-            Place(capacitors,"Transformer",new Vector3(-14,0,-7));
+            Place(capacitors,"Transformer",new Vector3(-24.5f,0,-6)); Place(capacitors,"Capacitor_Bank",new Vector3(-24.5f,0,-18));
+            Place(capacitors,"Capacitor_Bank",new Vector3(-15.5f,0,-18)); Place(capacitors,"Capacitor_Bank",new Vector3(-27,0,-13));
+            Place(capacitors,"Transformer",new Vector3(-15.5f,0,-6));
             Dress(capacitors,new Vector3(-20,0,-12),"amber stored energy",new[] {"Capacitor_Bank","Transformer"});
             var haulers=Group(chapter,"hauler-graveyard",new Vector3(20,0,-12));
-            Place(haulers,"Hauler_Wreck",new Vector3(29,0,-7),true,-18); Place(haulers,"Hauler_Wreck",new Vector3(14,0,-19),true,16);
-            Place(haulers,"Hauler_Wreck",new Vector3(29,0,-18),true,35); Place(haulers,"Loading_Crane",new Vector3(14,0,-5),true,90);
-            Place(haulers,"Loading_Crane",new Vector3(33,0,-12),true,-90);
+            Place(haulers,"Hauler_Wreck",new Vector3(25.1f,0,-6.2f)); Place(haulers,"Hauler_Wreck",new Vector3(15.2f,0,-17.7f));
+            Place(haulers,"Hauler_Wreck",new Vector3(29,0,-18),true,35); Place(haulers,"Loading_Crane",new Vector3(15.5f,0,-6.2f),true,90);
+            Place(haulers,"Loading_Crane",new Vector3(31.5f,0,-12),true,-90);
             Dress(haulers,new Vector3(20,0,-12),"muted violet freight salvage",new[] {"Hauler_Wreck","Loading_Crane"});
             var traversal=Group(chapter,"Service corridors",Vector3.zero);
             foreach(var z in new[] {-28,-20,-12,-4,4,12,20,28}) Place(traversal,"Service_Markings",new Vector3(0,.055f,z),false);
             foreach(var z in new[] {-24,0,24,84}) Place(traversal,"Service_Arch",new Vector3(0,0,z));
-            foreach(var z in new[] {-24,-8,8,24}) foreach(var x in new[] {-8,8})
+            foreach(var z in new[] {-32,-24,-16,-8,0,8,16,24,32}) foreach(var x in new[] {-4.9f,4.9f})
                 Place(traversal,"Conduit_Rack",new Vector3(x,0,z),true,90,true);
+            foreach(var side in new[]{-1,1}) foreach(var z in new[]{-28,-20,-4,4,12,28,34})
+            {
+                Place(traversal,"Structural_Support",new Vector3(side*4.9f,0,z),true,0,true);
+                Place(traversal,"Maintenance_Station",new Vector3(side*5.6f,0,z+1.5f),true,side*90,true);
+            }
             foreach(var side in new[] {-1,1}) foreach(var z in new[] {-30,-22,0,12,32,44,84})
                 Place(traversal,"Maintenance_Station",new Vector3(side*12,0,z),true,side*90,true);
             foreach(var x in new[] {-16,-8,8,16})
@@ -90,7 +95,7 @@ namespace Gravivore.Editor.VisualIntegration
             foreach(var side in new[] {-1,1}) foreach(var z in new[] {-32,-24,-16,-8,0,8,16,24,32,40,48,56,64,72,84,92})
             {
                 Place(traversal,"Bulkhead_Module",new Vector3(side*35.5f,0,z),true,side*90,true,new Vector3(2,1,1));
-                if(z%16==0) Place(traversal,"Structural_Support",new Vector3(side*34.8f,0,z),true,0,true);
+                if(z%16==0) Place(traversal,"Structural_Support",new Vector3(side*35.5f,0,z),true,0,true);
             }
             foreach(var x in new[] {-32,-24,-16,-8,0,8,16,24,32})
                 Place(traversal,"Bulkhead_Module",new Vector3(x,0,-39.5f),true,0,true,new Vector3(2,1,1));
@@ -100,8 +105,8 @@ namespace Gravivore.Editor.VisualIntegration
             var boss=Group(chapter,"Custodian containment complex",new Vector3(0,0,94));
             foreach(var side in new[] {-1,1})
             {
-                foreach(var z in new[] {82,88,94,99}) Place(boss,"Containment_Buttress",new Vector3(side*7.5f,0,z));
-                Place(boss,"Primary_Containment",new Vector3(side*11,0,94));
+                foreach(var z in new[] {82,88,94,99}) Place(boss,"Containment_Buttress",new Vector3(side*6.2f,0,z));
+                Place(boss,"Primary_Containment",new Vector3(side*8.2f,0,94));
                 Place(boss,"Conduit_Rack",new Vector3(side*7.5f,2.0f,85),false,90,true,new Vector3(1.3f,1,1));
                 Place(boss,"Bulkhead_Module",new Vector3(side*4.6f,0,80),true,0,true,new Vector3(.9f,1.4f,1));
                 Place(boss,"Structural_Support",new Vector3(side*2.96f,0,80),true,0,true,new Vector3(1,1.5f,1));
@@ -148,12 +153,15 @@ namespace Gravivore.Editor.VisualIntegration
         { var root=new GameObject(name).transform;root.SetParent(parent.transform,false);root.position=center;return root; }
         private static void Dress(Transform root,Vector3 center,string identity,string[] heroes)
         {
+            // Match the approved four-metre deck language inside every combat apron.
+            foreach(var x in new[]{-2,2}) foreach(var z in new[]{-6,-2,2,6})
+                Place(root,"Deck_Module",center+new Vector3(x,.028f,z),false,0,true);
             Place(root,"Service_Markings",center+Vector3.up*.055f,false);
             foreach(var side in new[] {-1,1})
             {
-                Place(root,"Conduit_Rack",center+new Vector3(side*7,0,3),true,90,true);
-                Place(root,"Structural_Support",center+new Vector3(side*7,0,-5),true,0,true);
-                Place(root,"Maintenance_Station",center+new Vector3(side*6,0,-7),true,side*90,true);
+                Place(root,"Conduit_Rack",center+new Vector3(side*4.5f,0,0),true,90,true);
+                Place(root,"Structural_Support",center+new Vector3(side*4.2f,0,-4),true,0,true);
+                Place(root,"Maintenance_Station",center+new Vector3(side*4.4f,0,-7),true,side*90,true);
             }
             Manifest.Add(root.name+": "+identity+"; landmarks "+string.Join(", ",heroes)+"; foreground/midscale/vertical machinery and floor segmentation");
             // Five independently inspectable packages are included in the full chapter prefab.

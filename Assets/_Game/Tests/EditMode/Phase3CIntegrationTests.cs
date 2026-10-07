@@ -13,9 +13,9 @@ namespace Gravivore.Tests.EditMode
     {
         [TestCase("scout-drone", "Scout_V1")]
         [TestCase("cutter-unit", "Cutter_V1")]
-        [TestCase("arc-drone", "ArcDrone_Phase3D")]
-        [TestCase("warden", "Warden_Phase3D")]
-        [TestCase("carrier", "Carrier_Phase3D")]
+        [TestCase("arc-drone", "ArcDrone_V1")]
+        [TestCase("warden", "Warden_V1")]
+        [TestCase("carrier", "Carrier_V1")]
         public void CanonicalOrdinaryBindingsRetainFallbackDataAndSafeMeshes(string id, string model)
         {
             var catalog = AssetDatabase.LoadAssetAtPath<S15VisualCatalog>(S15AssetConfigurator.CatalogPath);
@@ -37,7 +37,7 @@ namespace Gravivore.Tests.EditMode
             }
             var definition = AssetDatabase.LoadAssetAtPath<ChapterVisualIntegrationDefinition>(VisualIntegrationFoundationBuilder.DefinitionPath);
             Assert.That(definition.Elite.Prefab.name, Is.EqualTo("Magnetar_V1"));
-            Assert.That(definition.Boss.Prefab.name, Is.EqualTo("CustodianM0_Phase3D"));
+            Assert.That(definition.Boss.Prefab.name, Is.EqualTo("Custodian_V1"));
             Assert.That(definition.RepairHub.Prefab.name, Is.EqualTo("RepairHub_Phase3D"));
         }
     }

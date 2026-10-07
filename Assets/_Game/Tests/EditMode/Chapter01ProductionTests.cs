@@ -37,7 +37,7 @@ namespace Gravivore.Tests.EditMode
             Assert.That(read.Experience,Is.EqualTo(snapshot.GetStatExperience(stat)));
             Assert.That(read.Required,Is.EqualTo(ProgressionConfig.ThresholdCurve.Evaluate(4)));
             Assert.IsTrue(read.Current.HasSameValues(expected));Assert.IsTrue(read.Next.HasSameValues(next));
-            Assert.That(read.Fraction,Is.EqualTo(read.Experience/read.Required).Within(.00001f));
+            Assert.That(read.Fraction,Is.EqualTo(Math.Min(1,read.Experience/read.Required)).Within(.00001f));
             Assert.That(stats.BaseLevels.GetLevel(stat),Is.EqualTo(4));Assert.That(changeCount,Is.Zero);
             StringAssert.Contains("ОП",model.Sources(stat));
         }

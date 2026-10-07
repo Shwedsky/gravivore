@@ -44,6 +44,7 @@ namespace Gravivore.Presentation.Feedback
     public sealed class S14AudioPresenter : MonoBehaviour
     {
         private AudioSource[] _sources;
+        private float[] _sourceGains;
         private S14PresentationDefinition _definition;
         private int _cursor;
         private bool _isMuted;
@@ -64,6 +65,7 @@ namespace Gravivore.Presentation.Feedback
             _isMuted = PresentationAudioSettings.IsMuted;
             _volume = PresentationAudioSettings.Volume;
             _sources = new AudioSource[sourceCount];
+            _sourceGains = new float[sourceCount];
             for (var i = 0; i < sourceCount; i++)
             {
                 var sourceObject = new GameObject($"Pooled Audio Source {i}", typeof(AudioSource));
@@ -82,13 +84,14 @@ namespace Gravivore.Presentation.Feedback
             if (IsMuted || Volume <= 0f) return;
             var clip = Resolve(cue);
             var voiceCount = Mathf.Max(1, _sources.Length - 1);
-            var source = cue == S14AudioCue.Step ? _sources[_sources.Length - 1] : _sources[_cursor];
+            var index = cue == S14AudioCue.Step ? _sources.Length - 1 : _cursor;
+            var source = _sources[index];
             if (cue != S14AudioCue.Step) _cursor = (_cursor + 1) % voiceCount;
-            source.volume = Volume;
             // One bounded voice per source. Footsteps never overlap a combat voice.
             source.clip = clip;
-            source.volume = Volume * (cue == S14AudioCue.Step ? _definition.StepVolume :
-                cue == S14AudioCue.Telegraph ? .65f : .45f);
+            _sourceGains[index] = cue == S14AudioCue.Step ? _definition.StepVolume :
+                cue == S14AudioCue.Telegraph ? .65f : .45f;
+            source.volume = Volume * _sourceGains[index];
             source.Play();
             PlayedCount++;
         }
@@ -104,7 +107,7 @@ namespace Gravivore.Presentation.Feedback
         {
             _volume = Mathf.Clamp01(volume);
             PresentationAudioSettings.SetVolume(_volume);
-            for (var i = 0; i < _sources.Length; i++) _sources[i].volume = _volume;
+            for (var i = 0; i < _sources.Length; i++) _sources[i].volume = _volume * _sourceGains[i];
         }
 
         private void StopAll()
