@@ -50,6 +50,7 @@ namespace Gravivore.Tests.EditMode
             Assert.That(model.AssimilationRequirement,Is.EqualTo(world.EliteRequirement.MinimumAssimilationScore));
             Assert.IsFalse(model.AdmissionGranted);StringAssert.Contains("цели 0/5",model.AssimilationText);
             state.TryUnlockEliteGate();StringAssert.Contains("ДОПУСК ПОЛУЧЕН",model.AssimilationText);
+            StringAssert.Contains("60 / 60",model.AssimilationText);StringAssert.Contains("100",model.AssimilationExplanation);
             StringAssert.DoesNotContain("До допуска",model.AssimilationText);
         }
         [TestCase("relay-yard")] [TestCase("cutting-floor")] [TestCase("shield-dump")] [TestCase("capacitor-field")] [TestCase("hauler-graveyard")]

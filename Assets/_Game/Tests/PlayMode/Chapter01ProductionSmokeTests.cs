@@ -133,7 +133,7 @@ namespace Gravivore.Tests.PlayMode
         private static void Walk(CharacterController body,Vector3 point,string label)
         {for(var i=0;i<40;i++){var delta=point-body.transform.position;delta.y=0;if(delta.magnitude<.08f)return;body.Move(Vector3.ClampMagnitude(delta,.16f));Physics.SyncTransforms();}
             Assert.Fail(label+" controller blocked at "+body.transform.position+" towards "+point);}
-        private sealed class RouteGrid
+        internal sealed class RouteGrid
         {
             private const float Spacing=.5f;private readonly int _width,_height;private readonly Vector3 _origin;private readonly int[] _parents;private readonly int _start;
             public RouteGrid(S01SceneCompositionRoot root,Vector3 start)
@@ -224,6 +224,7 @@ namespace Gravivore.Tests.PlayMode
         {
             root.MapIntegration.MapPresenter.RefreshNow();
             var camera=UnityEngine.Camera.main;camera.GetComponent<PortraitFollowCamera>().SnapToTarget();
+            root.CombatReadability.Tick(.016f);
             var canvas=root.GetComponentInChildren<Canvas>();var mode=canvas.renderMode;var world=canvas.worldCamera;var prior=camera.targetTexture;var active=RenderTexture.active;
             var render=new RenderTexture(540,960,24);var texture=new Texture2D(540,960,TextureFormat.RGB24,false);
             try{canvas.renderMode=RenderMode.ScreenSpaceCamera;canvas.worldCamera=camera;canvas.planeDistance=1;camera.targetTexture=render;Canvas.ForceUpdateCanvases();camera.Render();RenderTexture.active=render;

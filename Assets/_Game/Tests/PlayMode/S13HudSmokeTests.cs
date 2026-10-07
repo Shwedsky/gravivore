@@ -60,7 +60,7 @@ namespace Gravivore.Tests.PlayMode
             Assert.That(health.MaximumHitPoints, Is.GreaterThan(initialMaximum));
             Assert.IsFalse(statsHud.HasPersistentStatsPanel);
             Assert.That(statsHud.DisplayText, Is.Empty);
-            Assert.That(statsHud.RecentChangeText, Is.EqualTo("Корпус: уровень 2"));
+            Assert.That(statsHud.RecentChangeText, Is.EqualTo("КОРПУС ↑ 2"));
 
             health.ApplyDamage(new DamageRequest(10000f, DamageType.Physical));
             Assert.That(healthHud.FillAmount, Is.EqualTo(1f).Within(0.001f));

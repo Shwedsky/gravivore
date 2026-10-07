@@ -76,6 +76,8 @@ namespace Gravivore.Editor.VisualIntegration
             Place(haulers,"Loading_Crane",new Vector3(31.5f,0,-12),true,-90);
             Dress(haulers,new Vector3(20,0,-12),"muted violet freight salvage",new[] {"Hauler_Wreck","Loading_Crane"});
             var traversal=Group(chapter,"Service corridors",Vector3.zero);
+            foreach(var x in new[]{-2,2}) for(var z=-34;z<=30;z+=4)
+                Place(traversal,"Deck_Module",new Vector3(x,.028f,z),false,0,true);
             foreach(var z in new[] {-28,-20,-12,-4,4,12,20,28}) Place(traversal,"Service_Markings",new Vector3(0,.055f,z),false);
             foreach(var z in new[] {-24,0,24,84}) Place(traversal,"Service_Arch",new Vector3(0,0,z));
             foreach(var z in new[] {-32,-24,-16,-8,0,8,16,24,32}) foreach(var x in new[] {-4.9f,4.9f})
@@ -245,6 +247,8 @@ namespace Gravivore.Editor.VisualIntegration
             var sockets=new GameObject("Presentation Sockets").transform;sockets.SetParent(obj.transform,false);
             foreach(var socket in new[]{"AttackOrigin","HitCenter","HealthAnchor","DeathOrigin"})
             {var point=new GameObject(socket).transform;point.SetParent(sockets,false);point.localPosition=new Vector3(0,name=="Custodian_V1"?1.5f:.8f,socket=="AttackOrigin"?.4f:0);}
+            if(name=="Custodian_V1") foreach(var origin in new[]{"ConeAttackOrigin","LineAttackOrigin","CircleAttackOrigin"})
+                new GameObject(origin).transform.SetParent(obj.transform,false);
             Save(obj,name);
         }
     }

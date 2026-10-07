@@ -18,7 +18,7 @@ namespace Gravivore.Presentation.UI
         private QuestService _quests;
         private Row[] _rows;
         private RectTransform _panel, _detail;
-        private Text _assimilation, _detailText;
+        private Text _assimilation, _assimilationExplanation, _detailText;
         private Action _closed;
         private PlayerStatType _selected;
         public CharacteristicsReadModel Model { get; private set; }
@@ -63,7 +63,7 @@ namespace Gravivore.Presentation.UI
                 _rows[i]=row;
             }
             _assimilation=HudUiFactory.CreateText(_panel,"Assimilation Gate Progress",new Vector2(.06f,.15f),new Vector2(.94f,.245f),"",26,TextAnchor.MiddleLeft,new Color(1,.72f,.3f,1));
-            HudUiFactory.CreateText(_panel,"Assimilation Explanation",new Vector2(.06f,.065f),new Vector2(.94f,.15f),CharacteristicsReadModel.AssimilationDescription,22,TextAnchor.MiddleLeft,new Color(.68f,.77f,.81f,1));
+            _assimilationExplanation=HudUiFactory.CreateText(_panel,"Assimilation Explanation",new Vector2(.06f,.065f),new Vector2(.94f,.15f),"",22,TextAnchor.MiddleLeft,new Color(.68f,.77f,.81f,1));
             HudUiFactory.CreateButton(_panel,"Back To Menu",new Vector2(.60f,.01f),new Vector2(.94f,.06f),"НАЗАД",Close);
             _detail=HudUiFactory.CreatePanel(_panel,"Characteristic Detail",new Vector2(.02f,.07f),new Vector2(.98f,.92f),new Color(.018f,.032f,.043f,1),true);
             _detailText=HudUiFactory.CreateText(_detail,"Detail Text",new Vector2(.08f,.18f),new Vector2(.92f,.94f),"",29,TextAnchor.UpperLeft,Color.white);
@@ -83,12 +83,13 @@ namespace Gravivore.Presentation.UI
             {
                 var value=Model.Read(row.Stat);
                 row.Title.text=$"{RussianUiText.StatName(row.Stat).ToUpperInvariant()}   •   Уровень {value.Level}";
-                row.Progress.text=value.IsMaximum?"ПРЕДЕЛ":$"{value.Experience:0.##} / {value.Required:0.##} ОП";
+                row.Progress.text=value.IsMaximum?"ПРЕДЕЛ":$"{CharacteristicsReadModel.FormatNumber(value.Experience)} / {CharacteristicsReadModel.FormatNumber(value.Required)} ОП";
                 row.Bar.SetNormalizedValue(value.Fraction);
                 row.Effect.text=CharacteristicsReadModel.Effect(row.Stat,value.Current) +
-                    (value.IsMaximum?"":$" → {CharacteristicsReadModel.Value(row.Stat,value.Next):0.##}");
+                    (value.IsMaximum?"":$" → {CharacteristicsReadModel.FormatNumber(CharacteristicsReadModel.Value(row.Stat,value.Next))}");
             }
             _assimilation.text=Model.AssimilationText;
+            _assimilationExplanation.text=Model.AssimilationExplanation;
             if(_detail.gameObject.activeSelf) ApplyDetail();
         }
         private void ApplyDetail()
@@ -96,7 +97,7 @@ namespace Gravivore.Presentation.UI
             var value=Model.Read(_selected);
             _detailText.text=$"{RussianUiText.StatName(_selected).ToUpperInvariant()}\n\n{CharacteristicsReadModel.Description(_selected)}\n\n"+
                 $"Уровень: {value.Level}\n{CharacteristicsReadModel.Effect(_selected,value.Current)}\n"+
-                (value.IsMaximum?"Достигнут предел уровня.":$"До уровня {value.Level+1}: {value.Experience:0.##} / {value.Required:0.##} ОП\nСледующий уровень — {CharacteristicsReadModel.Effect(_selected,value.Next)}")+
+                (value.IsMaximum?"Достигнут предел уровня.":$"До уровня {value.Level+1}: {CharacteristicsReadModel.FormatNumber(value.Experience)} / {CharacteristicsReadModel.FormatNumber(value.Required)} ОП\nСледующий уровень — {CharacteristicsReadModel.Effect(_selected,value.Next)}")+
                 "\n\n"+Model.Sources(_selected);
         }
         private void Derived(PlayerDerivedStatsChange _) => Refresh();

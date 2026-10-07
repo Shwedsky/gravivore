@@ -52,8 +52,9 @@ namespace Gravivore.Presentation.UI
             get { var count = 0; for(var i=0;i<_requirement.RequiredObjectiveCount;i++)
                 if(_quests.IsObjectiveCompleted(_requirement.GetRequiredObjectiveId(i))) count++; return count; }
         }
-        public string AssimilationText => $"АССИМИЛЯЦИЯ   {Math.Min(AssimilationScore, AssimilationRequirement)} / {AssimilationRequirement}\n" +
+        public string AssimilationText => $"АССИМИЛЯЦИЯ   {(AdmissionGranted ? AssimilationRequirement : Math.Min(AssimilationScore, AssimilationRequirement))} / {AssimilationRequirement}\n" +
             (AdmissionGranted ? "ДОПУСК ПОЛУЧЕН" : $"До допуска к {_admissionName} • цели {CompletedObjectives}/{_requirement.RequiredObjectiveCount}");
+        public string AssimilationExplanation => $"Общий счёт: {AssimilationScore}. " + AssimilationDescription;
         public const string AssimilationDescription = "Общий прогресс поглощения технологий. Нужен для допуска к усиленным зонам и ключевым противникам. ОП повышают отдельные характеристики; ассимиляция учитывает общий прогресс.";
         public static string Description(PlayerStatType stat)
         {
@@ -81,7 +82,7 @@ namespace Gravivore.Presentation.UI
         }
         public static string Effect(PlayerStatType stat, in PlayerDerivedStats values)
         {
-            var value = Value(stat, values).ToString("0.##", CultureInfo.InvariantCulture);
+            var value = FormatNumber(Value(stat, values));
             switch(stat)
             {
                 case PlayerStatType.Power: return "Урон: " + value;
@@ -92,6 +93,7 @@ namespace Gravivore.Presentation.UI
                 default: throw new ArgumentOutOfRangeException(nameof(stat));
             }
         }
+        public static string FormatNumber(float value)=>value.ToString("0.##",CultureInfo.GetCultureInfo("ru-RU"));
         public string Sources(PlayerStatType stat)
         {
             var text = new StringBuilder("Источники ОП:\n");
@@ -100,7 +102,7 @@ namespace Gravivore.Presentation.UI
             {
                 var reward = config.GetReward(i); if(reward.Stat != stat) continue;
                 text.Append(EnemyName(reward.EnemyId)).Append(": +")
-                    .Append(reward.StatExperience.ToString("0.##",CultureInfo.InvariantCulture)).Append(" ОП\n");
+                    .Append(FormatNumber(reward.StatExperience)).Append(" ОП\n");
             }
             text.Append("Усиленные точки дают награду по своему множителю. Награда показана над противником.");
             return text.ToString();
