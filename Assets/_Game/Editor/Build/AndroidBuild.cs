@@ -85,7 +85,7 @@ namespace Gravivore.Editor.Build
                     scenes = BuildScenes,
                     locationPathName = outputPath,
                     target = BuildTarget.Android,
-                    options = options
+                    options = options | BuildOptions.DetailedBuildReport
                 });
                 if (report.summary.result != BuildResult.Succeeded)
                 {

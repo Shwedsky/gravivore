@@ -21,7 +21,7 @@ namespace Gravivore.Tests.PlayMode
     public sealed class Phase3CIntegrationSmokeTests
     {
         private CanonicalSceneTestScope _scene;
-        private static readonly string[] Names = { "ScoutDrone_Phase3D", "Cutter_ArtSpike", "Warden_Phase3D", "ArcDrone_Phase3D", "Carrier_Phase3D" };
+        private static readonly string[] Names = { "Scout_V1", "Cutter_V1", "Warden_Phase3D", "ArcDrone_Phase3D", "Carrier_Phase3D" };
         private static readonly PresentationSocket[] Roles = { PresentationSocket.Core, PresentationSocket.Sensor,
             PresentationSocket.AttackOrigin,PresentationSocket.HitCenter,PresentationSocket.GroundContact,
             PresentationSocket.VfxTop,PresentationSocket.VfxRear,PresentationSocket.TelegraphOrigin };

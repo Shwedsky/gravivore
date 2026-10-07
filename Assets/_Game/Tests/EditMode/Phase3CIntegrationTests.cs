@@ -11,8 +11,8 @@ namespace Gravivore.Tests.EditMode
 {
     public sealed class Phase3CIntegrationTests
     {
-        [TestCase("scout-drone", "ScoutDrone_Phase3D")]
-        [TestCase("cutter-unit", "Cutter_ArtSpike")]
+        [TestCase("scout-drone", "Scout_V1")]
+        [TestCase("cutter-unit", "Cutter_V1")]
         [TestCase("arc-drone", "ArcDrone_Phase3D")]
         [TestCase("warden", "Warden_Phase3D")]
         [TestCase("carrier", "Carrier_Phase3D")]
@@ -36,7 +36,7 @@ namespace Gravivore.Tests.EditMode
                 Assert.That(report.missingMeshes + report.missingMaterials + report.brokenTextureReferences, Is.Zero, path);
             }
             var definition = AssetDatabase.LoadAssetAtPath<ChapterVisualIntegrationDefinition>(VisualIntegrationFoundationBuilder.DefinitionPath);
-            Assert.That(definition.Elite.Prefab.name, Is.EqualTo("MagnetarGuard_Phase3D"));
+            Assert.That(definition.Elite.Prefab.name, Is.EqualTo("Magnetar_V1"));
             Assert.That(definition.Boss.Prefab.name, Is.EqualTo("CustodianM0_Phase3D"));
             Assert.That(definition.RepairHub.Prefab.name, Is.EqualTo("RepairHub_Phase3D"));
         }

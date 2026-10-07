@@ -10,10 +10,11 @@ namespace Gravivore.Tests.EditMode
     public sealed class G0ProductionV3AssetTests
     {
         [Test]
-        public void ProductionDependenciesExcludeAllV3ReviewAssets()
+        public void ProductionDependenciesIncludeApprovedV3ModelAndExcludeReviewScene()
         {
             var deps=AssetDatabase.GetDependencies("Assets/_Game/Content/Scenes/Chapter01_ScrapExclusion.unity",true);
-            Assert.IsFalse(deps.Any(p=>p.StartsWith(G0ProductionV3Review.Root)));
+            Assert.Contains(G0ProductionV3Review.Model, deps);
+            Assert.IsFalse(deps.Contains(G0ProductionV3Review.ScenePath));
             Assert.IsFalse(EditorBuildSettings.scenes.Any(s=>s.path==G0ProductionV3Review.ScenePath));
         }
 

@@ -32,6 +32,7 @@ namespace Gravivore.Presentation.Combat
             public EnemyLifeId Life;
             public bool Active;
             public Phase6BVfxInstance Effect;
+            public int Variant;
         }
 
         private Sequence[] _sequences;
@@ -44,6 +45,12 @@ namespace Gravivore.Presentation.Combat
         private float _impactDuration;
         private int _reuseCursor;
         private bool _isInitialized;
+        private bool _variantsEnabled;
+        private int _variantCounter;
+        public int LastAttackVariant { get; private set; }
+        public ITargetable CurrentPresentationTarget { get; private set; }
+        public void EnablePresentationVariants() => _variantsEnabled = true;
+        private int NextVariant() => _variantsEnabled ? _variantCounter++ % 3 : 0;
         private Action<GravityLashCue, Vector3>[] _cueObservers = Array.Empty<Action<GravityLashCue, Vector3>>();
 
         public event Action<GravityLashCue, Vector3> CuePlayed
@@ -123,6 +130,7 @@ namespace Gravivore.Presentation.Combat
 
             CancelCharge();
             var sequence = FindAvailable();
+            sequence.Variant = NextVariant(); LastAttackVariant = sequence.Variant;
             sequence.Active = true;
             sequence.Phase = GravityLashCue.Windup;
             sequence.Remaining = remainingUntilCommit;
@@ -133,7 +141,7 @@ namespace Gravivore.Presentation.Combat
             PublishCue(GravityLashCue.Windup, destination);
             var resolvedOrigin = ResolveOrigin(origin);
             _audio.TryPlay(Phase6BAudioCue.GravityLashCharge, resolvedOrigin);
-            _vfx.TryPlay(Phase6BVfxCue.PlayerCharge, resolvedOrigin, destination, remainingUntilCommit);
+            _vfx.TryPlay(Phase6BVfxCue.PlayerCharge, resolvedOrigin, destination, remainingUntilCommit, sequence.Variant);
             sequence.Effect = _vfx.LastPlayedInstance;
             LastPlayedObject = sequence.Effect.gameObject;
         }
@@ -164,6 +172,7 @@ namespace Gravivore.Presentation.Combat
             var sequence = _charging ?? FindAvailable();
             if (_charging == null)
             {
+                sequence.Variant = NextVariant();
                 sequence.Active = true;
                 ActiveCount++;
             }
@@ -172,12 +181,13 @@ namespace Gravivore.Presentation.Combat
             SetTarget(sequence, destination, presentationTarget);
             sequence.Phase = GravityLashCue.Beam;
             sequence.Remaining = _beamDuration;
+            LastAttackVariant = sequence.Variant; CurrentPresentationTarget = presentationTarget;
 
             PublishCue(GravityLashCue.Beam, destination);
             var resolvedOrigin = ResolveOrigin(origin);
             _audio.TryPlay(Phase6BAudioCue.GravityLashRelease, resolvedOrigin);
-            _vfx.TryPlay(Phase6BVfxCue.PlayerReleaseFlash, resolvedOrigin, destination);
-            _vfx.TryPlay(Phase6BVfxCue.GravityLashTravel, resolvedOrigin, destination, _beamDuration);
+            _vfx.TryPlay(Phase6BVfxCue.PlayerReleaseFlash, resolvedOrigin, destination, -1, sequence.Variant);
+            _vfx.TryPlay(Phase6BVfxCue.GravityLashTravel, resolvedOrigin, destination, _beamDuration, sequence.Variant);
             sequence.Effect = _vfx.LastPlayedInstance;
             LastPlayedObject = sequence.Effect.gameObject;
         }
@@ -231,7 +241,7 @@ namespace Gravivore.Presentation.Combat
                     sequence.Phase = GravityLashCue.Impact;
                     sequence.Remaining = _impactDuration;
                     _audio.TryPlay(Phase6BAudioCue.GravityLashImpact, sequence.Destination);
-                    _vfx.TryPlay(Phase6BVfxCue.PlayerImpact, sequence.Destination, sequence.Destination);
+                    _vfx.TryPlay(Phase6BVfxCue.PlayerImpact, sequence.Destination, sequence.Destination, -1, sequence.Variant);
                     sequence.Effect = _vfx.LastPlayedInstance;
                     PublishCue(GravityLashCue.Impact, sequence.Destination);
                     continue;

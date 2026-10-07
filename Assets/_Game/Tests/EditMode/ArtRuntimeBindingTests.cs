@@ -33,14 +33,15 @@ namespace Gravivore.Tests.EditMode
         }
 
         [Test]
-        public void IntegratedFamiliesRetainAcceptedCutterS15FallbackPartsAndArtFreeGameplayDefinitions()
+        public void IntegratedFamiliesUseNewScoutCutterAndRetainArtFreeGameplayDefinitions()
         {
             var catalog = AssetDatabase.LoadAssetAtPath<S15VisualCatalog>(Gravivore.Editor.S15AssetConfigurator.CatalogPath);
             foreach (var id in new[] { "scout-drone", "cutter-unit", "warden", "arc-drone", "carrier" })
             {
                 Assert.IsTrue(catalog.TryGetEnemy(id, out var recipe));
-                if (id == "cutter-unit")
-                    Assert.That(AssetDatabase.GetAssetPath(recipe.PresentationPrefab), Is.EqualTo(Art + "Enemies/Cutter_ArtSpike.prefab"));
+                if (id == "cutter-unit" || id == "scout-drone")
+                    Assert.That(AssetDatabase.GetAssetPath(recipe.PresentationPrefab), Is.EqualTo(
+                        Gravivore.Editor.VisualIntegration.FirstVisualSliceBuilder.Prefab(id == "cutter-unit" ? "Cutter_V1" : "Scout_V1")));
                 else
                 {
                     Assert.That(AssetDatabase.GetAssetPath(recipe.PresentationPrefab), Does.StartWith("Assets/_Game/Phase3D/Prefabs/Enemies/"),id);

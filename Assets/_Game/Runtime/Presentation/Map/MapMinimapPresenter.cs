@@ -31,6 +31,8 @@ namespace Gravivore.Presentation.Map
         private RectTransform _expandedSurface;
         private RectTransform _detailsPanel;
         private Text _detailsText;
+        private Text _zoneText;
+        public string CurrentZoneText => _zoneText != null ? _zoneText.text : string.Empty;
         private bool _uiBuilt;
         private bool _expanded;
         private int _refreshStamp;
@@ -83,10 +85,17 @@ namespace Gravivore.Presentation.Map
             FindPlayer(out var playerPosition);
             var count = _source.Count;
             var selectedFound = false;
+            var zoneDistance = float.MaxValue;
+            var zoneName = "СЕКТОР";
 
             for (var i = 0; i < count; i++)
             {
                 var marker = _source.GetMarker(i);
+                if (marker.Kind == MapMarkerKind.Ordinary || marker.Kind == MapMarkerKind.StrongOrdinary)
+                {
+                    var distance = (marker.WorldPosition - playerPosition).sqrMagnitude;
+                    if (distance < zoneDistance) { zoneDistance = distance; zoneName = marker.DisplayName; }
+                }
                 if (string.IsNullOrEmpty(marker.Id))
                     throw new InvalidOperationException("Map marker source returned an empty marker id.");
 
@@ -116,6 +125,8 @@ namespace Gravivore.Presentation.Map
             }
 
             if (_selectedId != null && !selectedFound) ClearSelection();
+            if (_source is IMapZoneLabelSource zoneSource) zoneName = zoneSource.CurrentZoneName;
+            if (_zoneText != null && _zoneText.text != zoneName) _zoneText.text = zoneName;
         }
 
         public void OpenExpanded()
@@ -199,7 +210,7 @@ namespace Gravivore.Presentation.Map
 
         private void BuildCompact(RectTransform root)
         {
-            var compactPanel = MapUiFactory.CreatePanel(root, "CompactMinimap", MapUiFactory.SurfaceColor, true);
+            var compactPanel = MapUiFactory.CreatePanel(root, "CompactMinimap", new Color(.025f,.045f,.058f,.98f), true);
             compactPanel.anchorMin = new Vector2(0.70f, 0.765f);
             compactPanel.anchorMax = new Vector2(0.97f, 0.765f);
             compactPanel.pivot = Vector2.one;
@@ -207,21 +218,28 @@ namespace Gravivore.Presentation.Map
             compactPanel.offsetMax = Vector2.zero;
             var compactFitter = compactPanel.gameObject.AddComponent<AspectRatioFitter>();
             compactFitter.aspectMode = AspectRatioFitter.AspectMode.WidthControlsHeight;
-            compactFitter.aspectRatio = 1f;
+            compactFitter.aspectRatio = .90f;
             var button = MapUiFactory.AddButton(compactPanel);
             button.onClick.AddListener(OpenExpanded);
 
             _compactSurface = MapUiFactory.CreatePanel(compactPanel, "CompactMapSurface", MapUiFactory.SurfaceColor);
-            _compactSurface.anchorMin = new Vector2(0.055f, 0.055f);
-            _compactSurface.anchorMax = new Vector2(0.945f, 0.945f);
+            _compactSurface.anchorMin = new Vector2(.07f, .14f);
+            _compactSurface.anchorMax = new Vector2(.93f, .914f);
             _compactSurface.offsetMin = Vector2.zero;
             _compactSurface.offsetMax = Vector2.zero;
             _compactSurface.gameObject.AddComponent<RectMask2D>();
-            MapUiFactory.CreateGrid(_compactSurface, 4, 4);
+            MapUiFactory.CreateGrid(_compactSurface, 3, 3);
+            MapUiFactory.TacticalFrame(compactPanel);
+            _zoneText = MapUiFactory.CreateText(compactPanel, "CurrentZone", "СЕКТОР", 18, TextAnchor.MiddleLeft);
+            _zoneText.color = new Color(.72f,.82f,.86f,1);
+            _zoneText.rectTransform.anchorMin = new Vector2(.08f,.02f);
+            _zoneText.rectTransform.anchorMax = new Vector2(.94f,.12f);
+            _zoneText.rectTransform.offsetMin = _zoneText.rectTransform.offsetMax = Vector2.zero;
+            _zoneText.resizeTextForBestFit = true; _zoneText.resizeTextMinSize = 12; _zoneText.resizeTextMaxSize = 18;
 
             var north = MapUiFactory.CreateText(compactPanel, "North", "С", 15, TextAnchor.UpperCenter);
             north.color = new Color(0.72f, 0.86f, 0.87f, 0.86f);
-            north.rectTransform.anchorMin = new Vector2(0.42f, 0.88f);
+            north.rectTransform.anchorMin = new Vector2(0.42f, 0.918f);
             north.rectTransform.anchorMax = new Vector2(0.58f, 0.99f);
             north.rectTransform.offsetMin = Vector2.zero;
             north.rectTransform.offsetMax = Vector2.zero;
@@ -257,6 +275,7 @@ namespace Gravivore.Presentation.Map
 
             _expandedSurface = MapUiFactory.CreatePanel(fitRoot, "ChapterMapSurface", MapUiFactory.SurfaceColorExpanded);
             MapUiFactory.Stretch(_expandedSurface);
+            MapUiFactory.TacticalFrame(_expandedSurface);
             var fitter = _expandedSurface.gameObject.AddComponent<AspectRatioFitter>();
             fitter.aspectMode = AspectRatioFitter.AspectMode.FitInParent;
             fitter.aspectRatio = _projection.ChapterBounds.Width / _projection.ChapterBounds.Depth;

@@ -9,7 +9,8 @@ namespace Gravivore.Presentation.Map
         BracketedNode,
         Diamond,
         BossCore,
-        RepairCross
+        RepairCross,
+        Gate
     }
 
     public readonly struct MapMarkerVisualState
@@ -88,6 +89,7 @@ namespace Gravivore.Presentation.Map
                 case MapMarkerKind.Elite: return MapMarkerGlyph.Diamond;
                 case MapMarkerKind.Boss: return MapMarkerGlyph.BossCore;
                 case MapMarkerKind.RepairHub: return MapMarkerGlyph.RepairCross;
+                case MapMarkerKind.Gate: return MapMarkerGlyph.Gate;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(kind), kind, "Unsupported map marker kind.");
             }

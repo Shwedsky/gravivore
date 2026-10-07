@@ -51,7 +51,7 @@ namespace Gravivore.Tests.PlayMode
             Assert.That(environment.GetComponentsInChildren<Collider>(true),Is.Empty);
             Assert.That(environment.GetComponentsInChildren<MonoBehaviour>(true),Has.Length.EqualTo(1));
             Assert.That(environment.GetComponentsInChildren<Light>(true),Has.Length.EqualTo(1));
-            Assert.That(environment.KeyLight.shadows,Is.EqualTo(LightShadows.None));
+            Assert.That(environment.KeyLight.shadows,Is.EqualTo(LightShadows.Soft));
             var hub = environment.GetRegion("repair-hub").Root;
             Assert.That(hub.Find("PlayerDockPoint").position,Is.EqualTo(root.PlayerObject.transform.position));
             Assert.That(hub.GetComponentsInChildren<MonoBehaviour>(true),Is.Empty);

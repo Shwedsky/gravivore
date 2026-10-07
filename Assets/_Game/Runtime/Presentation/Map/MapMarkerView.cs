@@ -140,6 +140,8 @@ namespace Gravivore.Presentation.Map
             MapUiFactory.PointAnchor(Root, normalizedPosition);
             var visual = MapMarkerVisualResolver.Resolve(snapshot, _expanded);
             VisualState = visual;
+            _glyphRoot.localScale = Vector3.one * (_expanded ? .9f : snapshot.Kind == MapMarkerKind.Player ? .95f :
+                snapshot.Kind == MapMarkerKind.Boss ? 1f : snapshot.Kind == MapMarkerKind.Elite ? .95f : .85f);
             ConfigureGlyph(visual.Glyph);
             ApplyColorsAndState(snapshot, visual);
             if (snapshot.Kind == MapMarkerKind.Player)
@@ -180,6 +182,12 @@ namespace Gravivore.Presentation.Map
 
             switch (glyph)
             {
+                case MapMarkerGlyph.Gate:
+                    ConfigureBar(_primary.rectTransform, new Vector2(-7,0), 3, 17, 0);
+                    ConfigureBar(_secondary.rectTransform, new Vector2(7,0), 3, 17, 0);
+                    ConfigureBar(_accentLeft.rectTransform, new Vector2(0,7), 14, 2, 0);
+                    _primary.gameObject.SetActive(true); _secondary.gameObject.SetActive(true); _accentLeft.gameObject.SetActive(true);
+                    break;
                 case MapMarkerGlyph.Chevron:
                     ConfigureBar(_primary.rectTransform, new Vector2(-4f, 0f), 4f, 18f, 34f);
                     ConfigureBar(_secondary.rectTransform, new Vector2(4f, 0f), 4f, 18f, -34f);
@@ -233,6 +241,7 @@ namespace Gravivore.Presentation.Map
             _cutout.color = _surfaceColor;
             _cutout.gameObject.SetActive(!visual.Filled &&
                                          visual.Glyph != MapMarkerGlyph.Chevron &&
+                                         visual.Glyph != MapMarkerGlyph.Gate &&
                                          visual.Glyph != MapMarkerGlyph.RepairCross);
 
             _lockBar.gameObject.SetActive(visual.LockOverlay);

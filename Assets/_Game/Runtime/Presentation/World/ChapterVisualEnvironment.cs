@@ -30,6 +30,20 @@ namespace Gravivore.Presentation.World
     [DisallowMultipleComponent]
     public sealed class ChapterVisualEnvironment : MonoBehaviour
     {
+        [Serializable]
+        public sealed class SliceObstacle
+        {
+            [SerializeField] private string _name;
+            [SerializeField] private Vector3 _center, _size;
+            public string Name => _name;
+            public Vector3 Center => _center;
+            public Vector3 Size => _size;
+        }
+        [SerializeField] private GameObject _sliceGate;
+        [SerializeField] private SliceObstacle[] _sliceObstacles = Array.Empty<SliceObstacle>();
+        public GameObject SliceGate => _sliceGate;
+        public int SliceObstacleCount => _sliceObstacles.Length;
+        public SliceObstacle GetSliceObstacle(int index) => _sliceObstacles[index];
         [SerializeField] private ChapterVisualIntegrationDefinition _definition;
         [SerializeField] private Transform _fallbackRoot;
         [SerializeField] private Transform _floor, _structures, _props, _pipes, _machinery, _lighting, _debris;
@@ -78,6 +92,10 @@ namespace Gravivore.Presentation.World
         {
             if (_definition == null) throw new InvalidOperationException("Chapter visual definition is required.");
             _definition.ValidateOrThrow();
+            if (_sliceGate != null) PresentationPrefabValidation.ValidateOrThrow(_sliceGate);
+            foreach (var obstacle in _sliceObstacles)
+                if (string.IsNullOrWhiteSpace(obstacle.Name) || obstacle.Size.x <= 0 || obstacle.Size.y <= 0 || obstacle.Size.z <= 0)
+                    throw new InvalidOperationException("Slice obstacle requires a name and positive authored dimensions.");
             foreach (var root in new[] { _fallbackRoot, _floor, _structures, _props, _pipes, _machinery, _lighting, _debris })
                 if (root == null || !root.IsChildOf(transform))
                     throw new InvalidOperationException("Environment categories must stay inside the visual layer.");

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.IO;
+using System.Linq;
 using System.Text;
 using Gravivore.Gameplay.Combat;
 using Gravivore.Gameplay.Progression;
@@ -45,12 +46,12 @@ namespace Gravivore.Tests.PlayMode
             foreach (var tier in new[] { EvolutionTier.Tier0, EvolutionTier.Tier1, EvolutionTier.Tier2 })
             {
                 view.Apply(new EvolutionVisualState(tier, root.EvolutionPresenter.CurrentDominantStat));
-                var form = visual.Find($"G0_Tier{(int)tier}_ArtSpike");
+                var form = visual.Find($"G0_V3_Live_Tier{(int)tier}");
                 Assert.IsTrue(form.gameObject.activeInHierarchy);
-                Assert.IsNotNull(form.Find("01_RobotBody_CommonIdentity/SensorHead"));
-                Assert.IsNotNull(form.Find("01_RobotBody_CommonIdentity/Torso"));
-                Assert.That(form.Find("02_TwoMechanicalLegs_Common").childCount, Is.EqualTo(2));
-                Assert.That(form.Find("03_ArticulatedGravityArms_Common").childCount, Is.EqualTo(2));
+                var bones = form.GetComponentsInChildren<Transform>().Select(t => t.name).ToArray();
+                foreach (var bone in new[] { "TORSO", "SENSOR", "L_HIP", "R_HIP", "L_SHOULDER", "R_SHOULDER" })
+                    Assert.Contains(bone,bones);
+                Assert.IsFalse(form.GetComponentInChildren<Animator>().applyRootMotion);
                 Assert.That(view.GetActiveTierModuleCount(), Is.EqualTo(1));
                 CapturePreviewIfRequested(tier, false);
                 CapturePreviewIfRequested(tier, true);

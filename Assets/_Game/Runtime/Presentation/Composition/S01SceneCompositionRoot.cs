@@ -36,6 +36,7 @@ namespace Gravivore.Presentation.Composition
     [DisallowMultipleComponent]
     public sealed class S01SceneCompositionRoot : MonoBehaviour
     {
+        [SerializeField] private DeviceCorrectionDefinition _deviceCorrection;
         private static readonly Vector2 HudReferenceResolution = new Vector2(1080f, 1920f);
 
         [SerializeField] private PlayerMovementSettings _movementSettings;
@@ -238,7 +239,7 @@ namespace Gravivore.Presentation.Composition
             MarkerAuthority = new Chapter1WorldMarkerAuthority(Chapter1Encounters.Encounters, StrongSpots);
             MapMarkers = new Chapter1WorldMarkerMapAdapter(PlayerObject.transform, EnemyPopulation,
                 MagnetarGuard, CustodianBoss, WorldUnlocks.State, MarkerAuthority,
-                _spawnSpotDefinitions.Length, _playerSpawn);
+                _spawnSpotDefinitions.Length, _playerSpawn, worldConfiguration.EliteGate, worldConfiguration.BossGate);
             WorldMarkers = new WorldMarkerReadModel(PlayerObject.transform, EnemyPopulation,
                 MagnetarGuard, CustodianBoss, WorldUnlocks.State);
             InitializeEvolution();
@@ -249,6 +250,14 @@ namespace Gravivore.Presentation.Composition
             RepairHub = repairObject.GetComponent<RepairHubProductionPresenter>();
             RepairHub.Initialize(PlayerHealth, _playerSpawn, _playerRecoverySettings.Configuration, _phase6BProductionDefinition);
             InitializeS14Presentation();
+            if (_deviceCorrection != null)
+            {
+                _gravityLashVfx.EnablePresentationVariants();
+                gameObject.AddComponent<IndustrialMusicPresenter>().Initialize(this, _gravityLashVfx, _deviceCorrection);
+                gameObject.AddComponent<Gravivore.Presentation.Combat.VisualSliceCombatMotion>().Initialize(this,_gravityLashVfx,_deviceCorrection);
+            }
+            if (_visualEnvironment != null && _visualEnvironment.SliceGate != null)
+                gameObject.AddComponent<Gravivore.Presentation.Player.VisualSliceAnimationBridge>().Initialize(this, _gravityLashVfx, _s15VisualCatalog);
             if (_evolutionDefinition.HasTierPrefabs)
             {
                 var motion = PlayerObject.AddComponent<Gravivore.Presentation.Player.MechMotionPresenter>();
