@@ -17,6 +17,8 @@ namespace Gravivore.Editor.VisualIntegration
     {
         public const string Root = "Assets/_Game/Content/VisualSlice";
         public const string ScenePath = "Assets/_Game/Content/Scenes/Chapter01_ScrapExclusion.unity";
+        // Device-reviewed visual sizes relative to APK v1; gameplay bodies are unchanged.
+        public static readonly float[] G0TierVisualMultipliers = { 1.15f, 1.22f, 1.30f };
         private static readonly string[] States = { "Idle", "Run", "Attack", "Hit", "Death" };
         private static readonly List<(string name, Vector3 center, Vector3 size)> Obstacles = new List<(string, Vector3, Vector3)>();
 
@@ -187,11 +189,19 @@ namespace Gravivore.Editor.VisualIntegration
             {
                 var wrapper = new GameObject("G0_V3_Live_Tier" + tier);
                 var model = (GameObject)PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(G0ProductionV3Review.Prefab), wrapper.transform);
-                model.transform.localScale = Vector3.one * G0ProductionV3Review.PresentationFit;
+                model.transform.localScale = Vector3.one * G0ProductionV3Review.PresentationFit * G0TierVisualMultipliers[tier];
+                // Source -Y imports as Unity -Z (verified chest-center probe in V2.1).
+                // Keep the form and sockets +Z; correct only the imported presentation child.
+                model.transform.localRotation = Quaternion.Euler(0, 180, 0);
+                var forward = new GameObject("Visible Front (-Z imported)").transform;
+                forward.SetParent(model.transform, false);
+                forward.localPosition = new Vector3(0, 2.8f, -.30f);
+                forward.localRotation = Quaternion.Euler(0, 180, 0);
                 model.GetComponent<Animator>().applyRootMotion = false;
                 model.GetComponent<Animator>().cullingMode = AnimatorCullingMode.CullUpdateTransforms;
                 foreach (var r in model.GetComponentsInChildren<SkinnedMeshRenderer>()) r.updateWhenOffscreen = false;
-                // Keep the approved mesh/fit. Tier evolution retains distinct bindings and restrained energy intensity.
+                if (tier > 0) AddEvolutionArmor(model, tier);
+                // Live material copies leave the approved isolated source untouched.
                 // Live material copies leave the approved isolated source untouched.
                 {
                     var source = model.GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial;
@@ -203,12 +213,41 @@ namespace Gravivore.Editor.VisualIntegration
                     EditorUtility.SetDirty(material);
                     foreach (var r in model.GetComponentsInChildren<SkinnedMeshRenderer>()) r.sharedMaterial = material;
                 }
-                Sockets(wrapper.transform, 1.12f);
+                Sockets(wrapper.transform, 1.12f * G0TierVisualMultipliers[tier]);
                 var name = "G0_V3_Live_Tier" + tier;
                 PrefabUtility.SaveAsPrefabAsset(wrapper, Prefab(name)); UnityEngine.Object.DestroyImmediate(wrapper);
                 Bind(definition.FindProperty("_tierOverrides").GetArrayElementAtIndex(tier), Prefab(name), Vector3.one);
             }
             definition.ApplyModifiedPropertiesWithoutUndo();
+        }
+        private static void AddEvolutionArmor(GameObject model, int tier)
+        {
+            var path = Root + "/Models/G0_Tier" + tier + "Armor.fbx";
+            var importer = (ModelImporter)AssetImporter.GetAtPath(path);
+            importer.materialImportMode = ModelImporterMaterialImportMode.None;
+            importer.animationType = ModelImporterAnimationType.Generic; importer.importAnimation = false;
+            importer.importCameras = false; importer.importLights = false;
+            importer.globalScale = 1; importer.useFileScale = true; importer.bakeAxisConversion = true;
+            importer.optimizeGameObjects = false; importer.maxBonesPerVertex = 1;
+            importer.SaveAndReimport();
+            var originalBones = model.GetComponentsInChildren<SkinnedMeshRenderer>()[0].bones.ToDictionary(b => b.name);
+            var armor = UnityEngine.Object.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>(path), model.transform, false);
+            armor.name = "Tier " + tier + " Articulated Production Armor";
+            var skins = armor.GetComponentsInChildren<SkinnedMeshRenderer>().OrderBy(s => s.name).ToArray();
+            foreach (var skin in skins)
+            {
+                skin.bones = skin.bones.Select(b => originalBones[b.name]).ToArray();
+                skin.rootBone = originalBones["ROOT"];
+                skin.sharedMaterial = AssetDatabase.LoadAssetAtPath<Material>(Root + "/Materials/Slice_IndustrialAtlas.mat");
+                skin.updateWhenOffscreen = false;
+            }
+            // Imported duplicate skeleton is unnecessary after remapping all rigid weights.
+            foreach (Transform child in armor.transform.Cast<Transform>().ToArray())
+                if (child.GetComponentsInChildren<SkinnedMeshRenderer>().Length == 0)
+                    UnityEngine.Object.DestroyImmediate(child.gameObject);
+            var lod = model.GetComponent<LODGroup>(); var levels = lod.GetLODs();
+            for (var i = 0; i < levels.Length; i++) levels[i].renderers = levels[i].renderers.Concat(new Renderer[] { skins[i] }).ToArray();
+            lod.SetLODs(levels); lod.RecalculateBounds();
         }
         private static void Sockets(Transform root, float height)
         {

@@ -78,12 +78,23 @@ namespace Gravivore.Tests.EditMode
             finally { Object.DestroyImmediate(obj); }
         }
         [TestCase(0)] [TestCase(1)] [TestCase(2)]
-        public void AllProgressionTiersRetainApprovedG0GeometryAndFrozenPresentationFit(int tier)
+        public void DeviceReviewedTiersGrowWithArticulatedProductionArmor(int tier)
         {
             var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(FirstVisualSliceBuilder.Prefab("G0_V3_Live_Tier" + tier));
             var model = prefab.transform.GetChild(0);
-            Assert.That(model.localScale, Is.EqualTo(Vector3.one * G0ProductionV3Review.PresentationFit));
-            Assert.That(prefab.GetComponentsInChildren<SkinnedMeshRenderer>().Length, Is.EqualTo(3));
+            Assert.That(model.localScale, Is.EqualTo(Vector3.one * G0ProductionV3Review.PresentationFit * FirstVisualSliceBuilder.G0TierVisualMultipliers[tier]));
+            Assert.That(prefab.GetComponentsInChildren<SkinnedMeshRenderer>().Length, Is.EqualTo(tier == 0 ? 3 : 6));
+            Assert.That(Vector3.Dot(model.Find("Visible Front (-Z imported)").forward, Vector3.forward), Is.GreaterThan(.99f));
+            var lods = model.GetComponent<LODGroup>().GetLODs();
+            Assert.That(lods[0].renderers.Length, Is.EqualTo(tier == 0 ? 1 : 2));
+            if (tier > 0)
+            {
+                var armor = (SkinnedMeshRenderer)lods[0].renderers[1];
+                Assert.That(armor.sharedMesh.triangles.Length, Is.GreaterThan(600));
+                Assert.IsTrue(armor.bones.All(b => b != null && b.IsChildOf(model)));
+                Assert.IsFalse(armor.bones.Any(b => b.IsChildOf(armor.transform.parent)), "Armor must use the live base rig.");
+                Assert.That(((SkinnedMeshRenderer)lods[2].renderers[1]).sharedMesh.triangles.Length, Is.LessThan(armor.sharedMesh.triangles.Length));
+            }
             Assert.Contains(G0ProductionV3Review.Model, AssetDatabase.GetDependencies(AssetDatabase.GetAssetPath(prefab), true));
             Assert.IsFalse(model.GetComponent<Animator>().applyRootMotion);
         }

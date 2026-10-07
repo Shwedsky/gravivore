@@ -59,9 +59,16 @@ namespace Gravivore.Tests.PlayMode
                 Assert.That(form.GetComponentsInChildren<MonoBehaviour>(true), Is.Empty);
                 var animator = form.GetComponentInChildren<Animator>();
                 Assert.IsNotNull(animator); Assert.IsFalse(animator.applyRootMotion);
-                foreach (var direction in new[] { Vector2.up, Vector2.down, Vector2.left, Vector2.right, Vector2.one.normalized })
+                var body = player.GetComponent<CharacterController>();
+                Assert.That(body.radius, Is.EqualTo(.42f)); Assert.That(body.height, Is.EqualTo(1.4f));
+                Assert.That(body.center, Is.EqualTo(new Vector3(0,.7f,0)));
+                var visibleForward = form.GetComponentsInChildren<Transform>().Single(t => t.name == "Visible Front (-Z imported)");
+                foreach (var direction in new[] { Vector2.up, Vector2.down, Vector2.left, Vector2.right,
+                    Vector2.one.normalized, -Vector2.one.normalized, new Vector2(-1,1).normalized, new Vector2(1,-1).normalized })
                 {
                     input.Movement = direction;
+                    for (var step = 0; step < 18; step++) { locomotion.Step(.04f); motion.Tick(.04f); }
+                    Assert.That(Vector3.Angle(visibleForward.forward, motion.ObservedVelocity), Is.LessThan(8f), "Visible front must follow sustained movement: " + direction);
                     locomotion.Step(.04f);
                     var authority = player.position; var rotation = player.rotation;
                     motion.Tick(.04f);
@@ -117,7 +124,9 @@ namespace Gravivore.Tests.PlayMode
                     Assert.IsTrue(lash.LastPlayedObject.activeSelf);
                     Assert.That(Vector3.Distance(beam.GetPosition(0), motion.PresentationSocket.position), Is.LessThan(.001f));
                     var core = view.GetTierForm(tier).Find("Presentation Sockets/Core");
-                    Assert.That(Vector3.Distance(motion.PresentationSocket.position, core.position), Is.InRange(.1f,.14f));
+                    Assert.That(Vector3.Distance(motion.PresentationSocket.position, core.position), Is.InRange(.1f,.18f));
+                    var front = view.GetTierForm(tier).GetComponentsInChildren<Transform>().Single(t => t.name == "Visible Front (-Z imported)");
+                    Assert.That(Vector3.Angle(front.forward, direction), Is.LessThan(1f));
                     Assert.That(Vector3.Dot(motion.PresentationSocket.forward, direction), Is.GreaterThan(.99f));
                     lash.Tick(.08f); lash.Tick(.12f);
                     Assert.That(cues, Is.EqualTo(new[] { GravityLashCue.Windup, GravityLashCue.Beam, GravityLashCue.Impact }));
