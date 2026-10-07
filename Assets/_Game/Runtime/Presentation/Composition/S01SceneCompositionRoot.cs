@@ -251,7 +251,11 @@ namespace Gravivore.Presentation.Composition
             RepairHub.Initialize(PlayerHealth, _playerSpawn, _playerRecoverySettings.Configuration, _phase6BProductionDefinition);
             InitializeS14Presentation();
             if (_deviceCorrection != null)
+            {
+                _gravityLashVfx.EnablePresentationVariants();
                 gameObject.AddComponent<IndustrialMusicPresenter>().Initialize(this, _gravityLashVfx, _deviceCorrection);
+                gameObject.AddComponent<Gravivore.Presentation.Combat.VisualSliceCombatMotion>().Initialize(this,_gravityLashVfx,_deviceCorrection);
+            }
             if (_visualEnvironment != null && _visualEnvironment.SliceGate != null)
                 gameObject.AddComponent<Gravivore.Presentation.Player.VisualSliceAnimationBridge>().Initialize(this, _gravityLashVfx, _s15VisualCatalog);
             if (_evolutionDefinition.HasTierPrefabs)

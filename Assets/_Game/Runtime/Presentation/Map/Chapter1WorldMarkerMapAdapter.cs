@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Gravivore.Presentation.Map
 {
     /// <summary>Projects gameplay read state into map snapshots; never owns timers or rewards.</summary>
-    public sealed class Chapter1WorldMarkerMapAdapter : IMapMarkerSource
+    public sealed class Chapter1WorldMarkerMapAdapter : IMapMarkerSource, IMapZoneLabelSource
     {
         private readonly Transform _player;
         private readonly EnemyPopulationController _population;
@@ -38,6 +38,21 @@ namespace Gravivore.Presentation.Map
 
         private int BaseCount => _population.SpotCount + 4;
         public int Count => BaseCount + (_eliteGate.HasValue && _bossGate.HasValue ? 2 : 0);
+        public string CurrentZoneName
+        {
+            get
+            {
+                if (_bossGate.HasValue && _player.position.z >= _bossGate.Value.Position.z) return "Арена Хранителя";
+                if (_eliteGate.HasValue && _player.position.z >= _eliteGate.Value.Position.z) return "Контур Магнетара";
+                var best = float.MaxValue; var name = "Сектор";
+                for (var i = 0; i < _ordinaryCount; i++)
+                {
+                    var spot = _population.GetSpot(i); var distance = (spot.Position-_player.position).sqrMagnitude;
+                    if (distance < best) { best = distance; name = RussianUiText.SpotName(spot.Id); }
+                }
+                return name;
+            }
+        }
         public MapMarkerSnapshot GetMarker(int index)
         {
             if (index < 0 || index >= Count) throw new ArgumentOutOfRangeException(nameof(index));

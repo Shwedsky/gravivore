@@ -47,14 +47,16 @@ namespace Gravivore.Tests.PlayMode
             Assert.That(root.SaveSchemaVersion, Is.EqualTo(2));
             Assert.That(root.EnemyPopulation.SpotCount, Is.EqualTo(9));
             Assert.That(root.StrongSpots.Count, Is.EqualTo(4));
-            Assert.That(root.MapMarkers.Count, Is.EqualTo(13));
+            Assert.That(root.MapMarkers.Count, Is.EqualTo(15));
+            Assert.That(root.MapMarkers.GetMarker(13).Kind,Is.EqualTo(MapMarkerKind.Gate));
+            Assert.That(root.MapMarkers.GetMarker(14).Kind,Is.EqualTo(MapMarkerKind.Gate));
             var map = root.MapIntegration.MapPresenter;
             Assert.That(map.CompactSurface.gameObject.activeInHierarchy, Is.True);
             Capture(root, "01_chapter_minimap.png");
             root.PlayerObject.transform.rotation = Quaternion.Euler(0f, 90f, 0f);
             Assert.That(root.MapMarkers.GetMarker(0).HeadingDegrees, Is.EqualTo(90f).Within(.001f));
             map.OpenExpanded(); map.RefreshNow();
-            Assert.That(map.CachedMarkerCount, Is.EqualTo(13));
+            Assert.That(map.CachedMarkerCount, Is.EqualTo(15));
             Assert.That(map.SelectMarker("strong-elite-a"), Is.True);
             Capture(root, "02_expanded_map.png");
             map.CloseExpanded();

@@ -27,7 +27,7 @@ $sliceSignature=& $sliceJava -jar $sliceSigner verify --verbose $sliceApk
 if($LASTEXITCODE -ne 0){throw 'APK signature verification failed.'}
 $sliceMetadata=Get-Content -LiteralPath ([System.IO.Path]::ChangeExtension($sliceApk,'.build.json')) -Raw | ConvertFrom-Json
 $slicePacking=Get-Content -LiteralPath ([System.IO.Path]::ChangeExtension($sliceApk,'.visual-slice.json')) -Raw | ConvertFrom-Json
-if(-not $slicePacking.validated -or $slicePacking.required.Count -ne 8 -or $slicePacking.modelSources.Count -ne 8 -or $slicePacking.serializedArchiveEntries.Count -ne 12){throw 'Production correction packing evidence is incomplete.'}
+if(-not $slicePacking.validated -or $slicePacking.required.Count -ne 9 -or $slicePacking.modelSources.Count -ne 9 -or $slicePacking.serializedArchiveEntries.Count -ne 14){throw 'Production correction packing evidence is incomplete.'}
 $sliceFile=Get-Item -LiteralPath $sliceApk
 $sliceHash=(Get-FileHash -LiteralPath $sliceApk -Algorithm SHA256).Hash.ToLowerInvariant()
 if($slicePacking.apkSha256 -ne $sliceHash){throw 'Packing evidence does not match this APK.'}

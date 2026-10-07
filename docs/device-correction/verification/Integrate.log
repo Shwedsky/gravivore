@@ -1,0 +1,783 @@
+[Licensing::Module] Trying to connect to existing licensing client channel...
+Built from '6000.3/staging' branch; Version is '6000.3.0f1 (d1870ce95baf) revision 13731596'; Using compiler version '194234433'; Build Type 'Release'
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-pamak" at "2026-10-07T07:22:29.4269353Z"
+OS: 'Windows 11  (10.0.26200) 64bit Professional' Language: 'ru' Physical Memory: 13234 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1
+Date: 2026-10-07T07:22:29Z
+[Licensing::Client] Code 10 while verifying Licensing Client signature (process Id: 19808, path: "C:/Program Files/Unity Hub/UnityLicensingClient_V1/Unity.Licensing.Client.exe")
+[Licensing::Module] LicensingClient has failed validation; ignoring
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.18.3+d7ffd15
+  Session Id:              25589b2151fa47dcad6a05d211f3af88
+  Correlation Id:          7c459fd213b30416cfc1ac241770b025
+  External correlation Id: 1909311070338276011
+[redacted licensing identifier]
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-pamak" (connect: 0.00s, validation: 0.00s, handshake: 0.06s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-pamak-notifications" at "2026-10-07T07:22:29.4857437Z"
+[redacted licensing identifier]
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: 5774129981942-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+[Licensing::Client] Successfully updated license, isAsync: True, time: 0.00
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] Licensing Background thread has ended after 0.07s
+
+COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Unity.exe
+-batchmode
+-projectPath
+C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\first-visual-slice-apk-v1
+-logFile
+C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\first-visual-slice-apk-v1\docs\device-correction\verification\Integrate.log
+-quit
+-executeMethod
+Gravivore.Editor.VisualIntegration.FirstVisualSliceBuilder.Build
+Successfully changed project path to: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\first-visual-slice-apk-v1
+C:/Users/pamak/Documents/ChatGPT/gravivore/.codex-worktrees/first-visual-slice-apk-v1
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-gfx=262144"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+Player connection [22636]  Target information:
+
+Player connection [22636]  * "[IP] 192.168.1.49 [Port] 55504 [Flags] 2 [Guid] 1036162893 [EditorId] 1036162893 [Version] 1048832 [Id] WindowsEditor(7,DESKTOP-FT9PDRO) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor"
+
+Player connection [22636]  * "[IP] 172.30.224.1 [Port] 55504 [Flags] 2 [Guid] 1036162893 [EditorId] 1036162893 [Version] 1048832 [Id] WindowsEditor(7,DESKTOP-FT9PDRO) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor"
+
+Player connection [22636]  * "[IP] 198.18.0.1 [Port] 55504 [Flags] 2 [Guid] 1036162893 [EditorId] 1036162893 [Version] 1048832 [Id] WindowsEditor(7,DESKTOP-FT9PDRO) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor"
+
+Player connection [22636] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [22636] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+[Package Manager] Connected to IPC stream "Upm-9748" after 0.5 seconds.
+[Licensing::Client] Successfully resolved entitlement details
+Library Redirect Path: Library/
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+Artifact Garbage Collection - Removed 2 unused hashed content files
+[Licensing::Client] Successfully resolved entitlement details
+Refreshing native plugins compatible for Editor in 0.15 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 6000.3.0f1 (d1870ce95baf)
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/6000.3.0f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/Users/pamak/Documents/ChatGPT/gravivore/.codex-worktrees/first-visual-slice-apk-v1/Assets
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: AMD Radeon(TM) Graphics (ID=0x1638)
+    Vendor:   ATI
+    VRAM:     6617 MB
+    Driver:   31.0.21921.1000
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/6000.3.0f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/6000.3.0f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/6000.3.0f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56748
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+ImportWorker Server TCP listen port: 0
+AcceleratorClientConnectionCallback - disconnected - :0
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.3.0f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.3.0f1/Editor/Data/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll
+Registered in 0.005051 seconds.
+- Loaded All Assemblies, in  0.504 seconds
+Native extension for Android target not found
+Android Extension - Scanning For ADB Devices 2334 ms
+Native extension for WindowsStandalone target not found
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  2.795 seconds
+Domain Reload Profiling: 3292ms
+	BeginReloadAssembly (165ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (0ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (12ms)
+	RebuildCommonClasses (52ms)
+	RebuildNativeTypeToScriptingClass (12ms)
+	initialDomainReloadingComplete (65ms)
+	LoadAllAssembliesAndSetupDomain (202ms)
+		LoadAssemblies (149ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (198ms)
+			TypeCache.Refresh (196ms)
+				TypeCache.ScanAssembly (179ms)
+			BuildScriptInfoCaches (0ms)
+			ResolveRequiredComponents (1ms)
+	FinalizeReload (2795ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (2756ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (2440ms)
+			SetLoadedEditorAssemblies (4ms)
+			BeforeProcessingInitializeOnLoad (86ms)
+			ProcessInitializeOnLoadAttributes (149ms)
+			ProcessInitializeOnLoadMethodAttributes (77ms)
+			AfterProcessingInitializeOnLoad (0ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (0ms)
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Client] Successfully resolved entitlement details
+Application.AssetDatabase Initial Refresh Start
+Package Manager log level set to [2]
+[Package Manager] Restoring resolved packages state from cache
+[Licensing::Client] Successfully resolved entitlement details
+[Package Manager] Registered 23 packages:
+  Packages from [https://packages.unity.com]:
+    com.unity.ide.visualstudio@2.0.22 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\first-visual-slice-apk-v1\Library\PackageCache\com.unity.ide.visualstudio@8140e851d83e)
+    com.unity.searcher@4.9.4 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\first-visual-slice-apk-v1\Library\PackageCache\com.unity.searcher@d45a78918735)
+    com.unity.burst@1.8.25 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\first-visual-slice-apk-v1\Library\PackageCache\com.unity.burst@1df634d836b8)
+    com.unity.mathematics@1.3.3 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\first-visual-slice-apk-v1\Library\PackageCache\com.unity.mathematics@19a9377c4ffa)
+    com.unity.collections@2.6.2 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\first-visual-slice-apk-v1\Library\PackageCache\com.unity.collections@aea9d3bd5e19)
+    com.unity.nuget.mono-cecil@1.11.6 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\first-visual-slice-apk-v1\Library\PackageCache\com.unity.nuget.mono-cecil@ecb9724e46ff)
+    com.unity.test-framework.performance@3.2.0 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\first-visual-slice-apk-v1\Library\PackageCache\com.unity.test-framework.performance@0840f58e4562)
+  Built-in packages:
+    com.unity.render-pipelines.universal@17.3.0 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\first-visual-slice-apk-v1\Library\PackageCache\com.unity.render-pipelines.universal@d9aadd996b24)
+    com.unity.test-framework@1.6.0 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\first-visual-slice-apk-v1\Library\PackageCache\com.unity.test-framework@0b7a23ab2e1d)
+    com.unity.ugui@2.0.0 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\first-visual-slice-apk-v1\Library\PackageCache\com.unity.ugui@4ee0fac0c6e4)
+    com.unity.modules.animation@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.animation)
+    com.unity.modules.audio@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.audio)
+    com.unity.modules.imageconversion@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.imageconversion)
+    com.unity.modules.particlesystem@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.particlesystem)
+    com.unity.modules.ui@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.ui)
+    com.unity.modules.imgui@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.imgui)
+    com.unity.ext.nunit@2.0.5 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\first-visual-slice-apk-v1\Library\PackageCache\com.unity.ext.nunit@d8c07649098d)
+    com.unity.modules.jsonserialize@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.jsonserialize)
+    com.unity.render-pipelines.core@17.3.0 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\first-visual-slice-apk-v1\Library\PackageCache\com.unity.render-pipelines.core@33b0f6d355dd)
+    com.unity.shadergraph@17.3.0 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\first-visual-slice-apk-v1\Library\PackageCache\com.unity.shadergraph@bd2576295577)
+    com.unity.render-pipelines.universal-config@17.0.3 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\first-visual-slice-apk-v1\Library\PackageCache\com.unity.render-pipelines.universal-config@8dc1aab4af1d)
+    com.unity.modules.physics@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.physics)
+    com.unity.modules.terrain@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.terrain)
+[Subsystems] No new subsystems found in resolved package list.
+[Package Manager] Done registering packages in 0.01 seconds
+[ScriptCompilation] Requested script compilation because: Assetdatabase observed changes in script compilation related files
+Starting: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Tools\BuildPipeline\bee_backend.exe --ipc --defer-dag-verification --dagfile="Library/Bee/1300b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
+WorkingDir: C:/Users/pamak/Documents/ChatGPT/gravivore/.codex-worktrees/first-visual-slice-apk-v1
+DisplayProgressbar: Compiling Scripts
+ExitCode: 0 Duration: 3s41ms
+[513/648    0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+[628/648    1s] Csc Library/Bee/artifacts/1300b0aE.dag/Gravivore.Editor.dll (+2 others)
+Assets\_Game\Editor\Build\AndroidBuild.cs(121,13): warning CS0618: 'PlayerSettings.SetApplicationIdentifier(BuildTargetGroup, string)' is obsolete: 'Use SetApplicationIdentifier(NamedBuildTarget buildTarget, string identifier) instead'
+
+Assets\_Game\Editor\Build\AndroidBuild.cs(131,13): warning CS0618: 'PlayerSettings.SetScriptingBackend(BuildTargetGroup, ScriptingImplementation)' is obsolete: 'Use SetScriptingBackend(NamedBuildTarget buildTarget, ScriptingImplementation backend) instead'
+
+Assets\_Game\Editor\VisualIntegration\ArtIntakeTool.cs(82,37): warning CS0618: 'ShaderUtil.GetPropertyCount(Shader)' is obsolete: 'Use Shader.GetPropertyCount instead.'
+
+Assets\_Game\Editor\VisualIntegration\ArtIntakeTool.cs(84,25): warning CS0618: 'ShaderUtil.GetPropertyType(Shader, int)' is obsolete: 'Use Shader.GetPropertyType instead.'
+
+Assets\_Game\Editor\VisualIntegration\ArtIntakeTool.cs(84,66): warning CS0618: 'ShaderUtil.ShaderPropertyType' is obsolete: 'Use UnityEngine.Rendering.ShaderPropertyType instead.'
+
+Assets\_Game\Editor\VisualIntegration\ArtIntakeTool.cs(84,66): warning CS0618: 'ShaderUtil.ShaderPropertyType.TexEnv' is obsolete: 'Use UnityEngine.Rendering.ShaderPropertyType.Texture instead.'
+
+Assets\_Game\Editor\VisualIntegration\ArtIntakeTool.cs(85,36): warning CS0618: 'ShaderUtil.GetPropertyName(Shader, int)' is obsolete: 'Use Shader.GetPropertyName instead.'
+
+Assets\_Game\Editor\Build\AndroidBuild.cs(282,17): warning CS0618: 'PlayerSettings.GetApplicationIdentifier(BuildTargetGroup)' is obsolete: 'Use GetApplicationIdentifier(NamedBuildTarget buildTarget) instead'
+
+Assets\_Game\Editor\Build\AndroidBuild.cs(292,13): warning CS0618: 'PlayerSettings.SetApplicationIdentifier(BuildTargetGroup, string)' is obsolete: 'Use SetApplicationIdentifier(NamedBuildTarget buildTarget, string identifier) instead'
+
+Assets\_Game\Editor\Build\AndroidBuild.cs(302,13): warning CS0618: 'PlayerSettings.SetApplicationIdentifier(BuildTargetGroup, string)' is obsolete: 'Use SetApplicationIdentifier(NamedBuildTarget buildTarget, string identifier) instead'
+
+Assets\_Game\Editor\Build\AndroidBuild.cs(314,28): warning CS0618: 'PlayerSettings.GetApplicationIdentifier(BuildTargetGroup)' is obsolete: 'Use GetApplicationIdentifier(NamedBuildTarget buildTarget) instead'
+
+Assets\_Game\Editor\VisualIntegration\Phase3CIntegrationBuilder.cs(132,13): warning CS0618: 'RenderSettings.customReflection' is obsolete: 'RenderSettings.customReflection has been deprecated in favor of RenderSettings.customReflectionTexture.'
+
+Assets\_Game\Editor\Validation\ProjectValidator.cs(991,17): warning CS0618: 'PlayerSettings.GetScriptingBackend(BuildTargetGroup)' is obsolete: 'Use GetScriptingBackend(NamedBuildTarget buildTarget) instead'
+
+Assets\_Game\Editor\Validation\ProjectValidator.cs(996,29): warning CS0618: 'PlayerSettings.GetApplicationIdentifier(BuildTargetGroup)' is obsolete: 'Use GetApplicationIdentifier(NamedBuildTarget buildTarget) instead'
+[631/648    1s] Csc Library/Bee/artifacts/1300b0aE.dag/Gravivore.PlayModeTests.dll (+2 others)
+[632/648    0s] ILPostProcess Library/Bee/artifacts/1300b0aE.dag/post-processed/Gravivore.PlayModeTests.dll (+pdb)
+Processing assembly Library/Bee/artifacts/1300b0aE.dag/Gravivore.PlayModeTests.dll, with 147 defines and 238 references
+
+processors: Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[633/648    0s] CopyFiles Library/ScriptAssemblies/Gravivore.PlayModeTests.pdb
+[634/648    0s] CopyFiles Library/ScriptAssemblies/Gravivore.PlayModeTests.dll
+[635/648    0s] Csc Library/Bee/artifacts/1300b0aE.dag/Gravivore.EditModeTests.dll (+2 others)
+Assets\_Game\Tests\EditMode\AndroidBuildTests.cs(30,21): warning CS0618: 'PlayerSettings.GetApplicationIdentifier(BuildTargetGroup)' is obsolete: 'Use GetApplicationIdentifier(NamedBuildTarget buildTarget) instead'
+
+Assets\_Game\Tests\EditMode\AndroidBuildTests.cs(35,21): warning CS0618: 'PlayerSettings.GetApplicationIdentifier(BuildTargetGroup)' is obsolete: 'Use GetApplicationIdentifier(NamedBuildTarget buildTarget) instead'
+
+Assets\_Game\Tests\EditMode\AndroidBuildTests.cs(40,21): warning CS0618: 'PlayerSettings.GetApplicationIdentifier(BuildTargetGroup)' is obsolete: 'Use GetApplicationIdentifier(NamedBuildTarget buildTarget) instead'
+
+Assets\_Game\Tests\EditMode\AndroidBuildTests.cs(46,21): warning CS0618: 'PlayerSettings.GetApplicationIdentifier(BuildTargetGroup)' is obsolete: 'Use GetApplicationIdentifier(NamedBuildTarget buildTarget) instead'
+
+Assets\_Game\Tests\EditMode\AndroidBuildTests.cs(55,17): warning CS0618: 'PlayerSettings.GetApplicationIdentifier(BuildTargetGroup)' is obsolete: 'Use GetApplicationIdentifier(NamedBuildTarget buildTarget) instead'
+
+Assets\_Game\Tests\EditMode\AndroidBuildTests.cs(135,61): warning CS0618: 'PlayerSettings.GetScriptingBackend(BuildTargetGroup)' is obsolete: 'Use GetScriptingBackend(NamedBuildTarget buildTarget) instead'
+[636/648    0s] ILPostProcess Library/Bee/artifacts/1300b0aE.dag/post-processed/Gravivore.ArtSpike.Editor.dll (+pdb)
+Processing assembly Library/Bee/artifacts/1300b0aE.dag/Gravivore.ArtSpike.Editor.dll, with 145 defines and 281 references
+
+processors: Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[637/648    0s] ILPostProcess Library/Bee/artifacts/1300b0aE.dag/post-processed/Gravivore.Editor.dll (+pdb)
+Processing assembly Library/Bee/artifacts/1300b0aE.dag/Gravivore.Editor.dll, with 145 defines and 282 references
+
+processors: Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[638/648    0s] ILPostProcess Library/Bee/artifacts/1300b0aE.dag/post-processed/Gravivore.ArtSpike.EditModeTests.dll (+pdb)
+Processing assembly Library/Bee/artifacts/1300b0aE.dag/Gravivore.ArtSpike.EditModeTests.dll, with 145 defines and 273 references
+
+processors: Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[640/648    0s] CopyFiles Library/ScriptAssemblies/Gravivore.Editor.pdb
+[644/648    0s] ILPostProcess Library/Bee/artifacts/1300b0aE.dag/post-processed/Gravivore.EditModeTests.dll (+pdb)
+Processing assembly Library/Bee/artifacts/1300b0aE.dag/Gravivore.EditModeTests.dll, with 145 defines and 278 references
+
+processors: Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[645/648    0s] CopyFiles Library/ScriptAssemblies/Gravivore.EditModeTests.pdb
+[646/648    0s] CopyFiles Library/ScriptAssemblies/Gravivore.Editor.dll
+[647/648    0s] CopyFiles Library/ScriptAssemblies/Gravivore.EditModeTests.dll
+*** Tundra build success (3.01 seconds), 15 items updated, 648 evaluated
+Assets\_Game\Editor\Build\AndroidBuild.cs(121,13): warning CS0618: 'PlayerSettings.SetApplicationIdentifier(BuildTargetGroup, string)' is obsolete: 'Use SetApplicationIdentifier(NamedBuildTarget buildTarget, string identifier) instead'
+Assets\_Game\Editor\Build\AndroidBuild.cs(131,13): warning CS0618: 'PlayerSettings.SetScriptingBackend(BuildTargetGroup, ScriptingImplementation)' is obsolete: 'Use SetScriptingBackend(NamedBuildTarget buildTarget, ScriptingImplementation backend) instead'
+Assets\_Game\Editor\VisualIntegration\ArtIntakeTool.cs(82,37): warning CS0618: 'ShaderUtil.GetPropertyCount(Shader)' is obsolete: 'Use Shader.GetPropertyCount instead.'
+Assets\_Game\Editor\VisualIntegration\ArtIntakeTool.cs(84,25): warning CS0618: 'ShaderUtil.GetPropertyType(Shader, int)' is obsolete: 'Use Shader.GetPropertyType instead.'
+Assets\_Game\Editor\VisualIntegration\ArtIntakeTool.cs(84,66): warning CS0618: 'ShaderUtil.ShaderPropertyType' is obsolete: 'Use UnityEngine.Rendering.ShaderPropertyType instead.'
+Assets\_Game\Editor\VisualIntegration\ArtIntakeTool.cs(84,66): warning CS0618: 'ShaderUtil.ShaderPropertyType.TexEnv' is obsolete: 'Use UnityEngine.Rendering.ShaderPropertyType.Texture instead.'
+Assets\_Game\Editor\VisualIntegration\ArtIntakeTool.cs(85,36): warning CS0618: 'ShaderUtil.GetPropertyName(Shader, int)' is obsolete: 'Use Shader.GetPropertyName instead.'
+Assets\_Game\Editor\Build\AndroidBuild.cs(282,17): warning CS0618: 'PlayerSettings.GetApplicationIdentifier(BuildTargetGroup)' is obsolete: 'Use GetApplicationIdentifier(NamedBuildTarget buildTarget) instead'
+Assets\_Game\Editor\Build\AndroidBuild.cs(292,13): warning CS0618: 'PlayerSettings.SetApplicationIdentifier(BuildTargetGroup, string)' is obsolete: 'Use SetApplicationIdentifier(NamedBuildTarget buildTarget, string identifier) instead'
+Assets\_Game\Editor\Build\AndroidBuild.cs(302,13): warning CS0618: 'PlayerSettings.SetApplicationIdentifier(BuildTargetGroup, string)' is obsolete: 'Use SetApplicationIdentifier(NamedBuildTarget buildTarget, string identifier) instead'
+Assets\_Game\Editor\Build\AndroidBuild.cs(314,28): warning CS0618: 'PlayerSettings.GetApplicationIdentifier(BuildTargetGroup)' is obsolete: 'Use GetApplicationIdentifier(NamedBuildTarget buildTarget) instead'
+Assets\_Game\Editor\VisualIntegration\Phase3CIntegrationBuilder.cs(132,13): warning CS0618: 'RenderSettings.customReflection' is obsolete: 'RenderSettings.customReflection has been deprecated in favor of RenderSettings.customReflectionTexture.'
+Assets\_Game\Editor\Validation\ProjectValidator.cs(991,17): warning CS0618: 'PlayerSettings.GetScriptingBackend(BuildTargetGroup)' is obsolete: 'Use GetScriptingBackend(NamedBuildTarget buildTarget) instead'
+Assets\_Game\Editor\Validation\ProjectValidator.cs(996,29): warning CS0618: 'PlayerSettings.GetApplicationIdentifier(BuildTargetGroup)' is obsolete: 'Use GetApplicationIdentifier(NamedBuildTarget buildTarget) instead'
+Assets\_Game\Tests\EditMode\AndroidBuildTests.cs(30,21): warning CS0618: 'PlayerSettings.GetApplicationIdentifier(BuildTargetGroup)' is obsolete: 'Use GetApplicationIdentifier(NamedBuildTarget buildTarget) instead'
+Assets\_Game\Tests\EditMode\AndroidBuildTests.cs(35,21): warning CS0618: 'PlayerSettings.GetApplicationIdentifier(BuildTargetGroup)' is obsolete: 'Use GetApplicationIdentifier(NamedBuildTarget buildTarget) instead'
+Assets\_Game\Tests\EditMode\AndroidBuildTests.cs(40,21): warning CS0618: 'PlayerSettings.GetApplicationIdentifier(BuildTargetGroup)' is obsolete: 'Use GetApplicationIdentifier(NamedBuildTarget buildTarget) instead'
+Assets\_Game\Tests\EditMode\AndroidBuildTests.cs(46,21): warning CS0618: 'PlayerSettings.GetApplicationIdentifier(BuildTargetGroup)' is obsolete: 'Use GetApplicationIdentifier(NamedBuildTarget buildTarget) instead'
+Assets\_Game\Tests\EditMode\AndroidBuildTests.cs(55,17): warning CS0618: 'PlayerSettings.GetApplicationIdentifier(BuildTargetGroup)' is obsolete: 'Use GetApplicationIdentifier(NamedBuildTarget buildTarget) instead'
+Assets\_Game\Tests\EditMode\AndroidBuildTests.cs(135,61): warning CS0618: 'PlayerSettings.GetScriptingBackend(BuildTargetGroup)' is obsolete: 'Use GetScriptingBackend(NamedBuildTarget buildTarget) instead'
+AssetDatabase: script compilation time: 3.475612s
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  1.550 seconds
+Refreshing native plugins compatible for Editor in 0.33 ms, found 0 plugins.
+Native extension for Android target not found
+Native extension for WindowsStandalone target not found
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  2.719 seconds
+Domain Reload Profiling: 4260ms
+	BeginReloadAssembly (314ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (12ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (150ms)
+	RebuildCommonClasses (40ms)
+	RebuildNativeTypeToScriptingClass (12ms)
+	initialDomainReloadingComplete (38ms)
+	LoadAllAssembliesAndSetupDomain (1137ms)
+		LoadAssemblies (1112ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (133ms)
+			TypeCache.Refresh (94ms)
+				TypeCache.ScanAssembly (85ms)
+			BuildScriptInfoCaches (27ms)
+			ResolveRequiredComponents (9ms)
+	FinalizeReload (2719ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (2542ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (39ms)
+			SetLoadedEditorAssemblies (5ms)
+			BeforeProcessingInitializeOnLoad (184ms)
+			ProcessInitializeOnLoadAttributes (2148ms)
+			ProcessInitializeOnLoadMethodAttributes (155ms)
+			AfterProcessingInitializeOnLoad (10ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (12ms)
+Start importing ProjectSettings/GraphicsSettings.asset using Guid(00000000000000006100000000000000) (LibraryAssetImporter) -> (artifact id: '02575624a38dfac63619ef4e5a89e5cc') in 0.01589 seconds
+Start importing ProjectSettings/ProjectSettings.asset using Guid(00000000000000004000000000000000) (LibraryAssetImporter) -> (artifact id: '1a03b0a6cdca26bdb19609f2257bc3a4') in 0.0036987 seconds
+Refreshing native plugins compatible for Editor in 0.29 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=6d4c6340675cb5d428920f146f32f04c): Total: 8.462 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
+	Summary:
+		Imports: total=2 (actual=2, local cache=0, cache server=0)
+		Asset DB Process Time: managed=3 ms, native=3091 ms
+		Asset DB Callback time: managed=272 ms, native=19 ms
+		Scripting: domain reloads=1, domain reload time=1550 ms, compile time=3477 ms, other=46 ms
+		Project Asset Count: scripts=823, non-scripts=1767
+		Asset File Changes: new=0, changed=5, moved=0, deleted=0
+		Scan Filter Count: 1
+	InvokeCustomDependenciesCallbacks: 0.003ms
+	InvokePackagesCallback: 16.090ms
+	ApplyChangesToAssetFolders: 0.658ms
+	Scan: 106.404ms
+	OnSourceAssetsModified: 0.987ms
+	CategorizeAssetsWithTransientArtifact: 21.804ms
+	ProcessAssetsWithTransientArtifactChanges: 45.545ms
+	CategorizeAssets: 38.739ms
+	ImportOutOfDateAssets: 2747.663ms (-754.142ms without children)
+		ImportManagerImport: 21.598ms (1.486ms without children)
+			ImportInProcess: 20.054ms
+			UpdateCategorizedAssets: 0.058ms
+		CompileScripts: 3477.193ms
+		ReloadNativeAssets: 0.078ms
+		UnloadImportedAssets: 1.115ms
+		ReloadImportedAssets: 0.000ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.921ms
+		InitializingProgressBar: 0.001ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.001ms
+		OnDemandSchedulerStart: 0.898ms
+	PostProcessAllAssets: 333.128ms
+	Hotreload: 1.439ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.322ms
+	UnloadStreamsBegin: 2.165ms
+	PersistCurrentRevisions: 0.215ms
+	UnloadStreamsEnd: 0.003ms
+	GenerateScriptTypeHashes: 2.341ms
+	Untracked: 5146.370ms
+
+Application.AssetDatabase Initial Refresh End
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.01 seconds
+Scanning for USB devices : 7.613ms
+Initializing Unity extensions:
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+[MODES] Loading mode Default (0) for mode-current-id-GRAVIVORE
+GetVirtualKey: Could not map char: z (122) to any virtual key
+GetVirtualKey: Could not map char: y (121) to any virtual key
+GetVirtualKey: Could not map char: x (120) to any virtual key
+GetVirtualKey: Could not map char: c (99) to any virtual key
+GetVirtualKey: Could not map char: v (118) to any virtual key
+GetVirtualKey: Could not map char: V (86) to any virtual key
+GetVirtualKey: Could not map char: d (100) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: a (97) to any virtual key
+GetVirtualKey: Could not map char: d (100) to any virtual key
+GetVirtualKey: Could not map char: c (99) to any virtual key
+GetVirtualKey: Could not map char: r (114) to any virtual key
+GetVirtualKey: Could not map char: i (105) to any virtual key
+GetVirtualKey: Could not map char: l (108) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: k (107) to any virtual key
+GetVirtualKey: Could not map char: p (112) to any virtual key
+GetVirtualKey: Could not map char: p (112) to any virtual key
+GetVirtualKey: Could not map char: p (112) to any virtual key
+GetVirtualKey: Could not map char: c (99) to any virtual key
+GetVirtualKey: Could not map char: r (114) to any virtual key
+GetVirtualKey: Could not map char: P (80) to any virtual key
+GetVirtualKey: Could not map char: n (110) to any virtual key
+GetVirtualKey: Could not map char: n (110) to any virtual key
+GetVirtualKey: Could not map char: g (103) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: a (97) to any virtual key
+GetVirtualKey: Could not map char: a (97) to any virtual key
+GetVirtualKey: Could not map char: n (110) to any virtual key
+GetVirtualKey: Could not map char: o (111) to any virtual key
+GetVirtualKey: Could not map char: s (115) to any virtual key
+GetVirtualKey: Could not map char: s (115) to any virtual key
+GetVirtualKey: Could not map char: b (98) to any virtual key
+GetVirtualKey: Could not map char: b (98) to any virtual key
+GetVirtualKey: Could not map char: c (99) to any virtual key
+GetVirtualKey: Could not map char: u (117) to any virtual key
+Unloading 19 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 3488 unused Assets / (4.3 MB). Loaded Objects now: 4269.
+Memory consumption went from 158.9 MB to 154.6 MB.
+Total: 8.989500 ms (FindLiveObjects: 0.349100 ms CreateObjectMapping: 0.184400 ms MarkObjects: 7.014400 ms  DeleteObjects: 1.440100 ms)
+
+GetVirtualKey: Could not map char: z (122) to any virtual key
+GetVirtualKey: Could not map char: y (121) to any virtual key
+GetVirtualKey: Could not map char: x (120) to any virtual key
+GetVirtualKey: Could not map char: c (99) to any virtual key
+GetVirtualKey: Could not map char: v (118) to any virtual key
+GetVirtualKey: Could not map char: V (86) to any virtual key
+GetVirtualKey: Could not map char: d (100) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: a (97) to any virtual key
+GetVirtualKey: Could not map char: d (100) to any virtual key
+GetVirtualKey: Could not map char: c (99) to any virtual key
+GetVirtualKey: Could not map char: r (114) to any virtual key
+GetVirtualKey: Could not map char: i (105) to any virtual key
+GetVirtualKey: Could not map char: l (108) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: k (107) to any virtual key
+GetVirtualKey: Could not map char: p (112) to any virtual key
+GetVirtualKey: Could not map char: p (112) to any virtual key
+GetVirtualKey: Could not map char: p (112) to any virtual key
+GetVirtualKey: Could not map char: c (99) to any virtual key
+GetVirtualKey: Could not map char: r (114) to any virtual key
+GetVirtualKey: Could not map char: P (80) to any virtual key
+GetVirtualKey: Could not map char: n (110) to any virtual key
+GetVirtualKey: Could not map char: n (110) to any virtual key
+GetVirtualKey: Could not map char: g (103) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: a (97) to any virtual key
+GetVirtualKey: Could not map char: a (97) to any virtual key
+GetVirtualKey: Could not map char: n (110) to any virtual key
+GetVirtualKey: Could not map char: o (111) to any virtual key
+GetVirtualKey: Could not map char: s (115) to any virtual key
+GetVirtualKey: Could not map char: s (115) to any virtual key
+GetVirtualKey: Could not map char: b (98) to any virtual key
+GetVirtualKey: Could not map char: b (98) to any virtual key
+GetVirtualKey: Could not map char: c (99) to any virtual key
+GetVirtualKey: Could not map char: u (117) to any virtual key
+Curl error 35: Cert verify failed. Certificate could not be verified (either omitted or unsupported). UnityTls error code: 7
+Asset Pipeline Refresh (id=16d4ee979495fab4fb2bab4bc80d6328): Total: 0.048 seconds - Initiated by RefreshV2(NoUpdateAssetOptions)
+Start importing Assets/_Game/Content/VisualSlice/Textures/Slice_BaseColor.png using Guid(aaf6ce31ca2bf7742b21a6030e8e99e1) (TextureImporter) -> (artifact id: 'd9e36500e35ddce41e6a57c43b506117') in 0.0305214 seconds
+Refreshing native plugins compatible for Editor in 0.25 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=1b8c8792b13e2a64f9a8b25dd0932193): Total: 0.050 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/_Game/Content/VisualSlice/Textures/Slice_Emission.png using Guid(b8866055bf99c2341bd9181fc5aab025) (TextureImporter) -> (artifact id: 'e517ec5a9a42da779d3a9812c8aee99e') in 0.0157177 seconds
+Refreshing native plugins compatible for Editor in 0.28 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=059ac304145e1c0418187815f5c5dc32): Total: 0.032 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/_Game/Content/VisualSlice/Textures/Slice_MetallicSmoothness.png using Guid(46741a286e98f034aaf89ad291bc1da5) (TextureImporter) -> (artifact id: '751889267b5bccc84e6aaf86056297c9') in 0.0223301 seconds
+Refreshing native plugins compatible for Editor in 0.27 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=9e6a368f7abd18c49a855bd8327eaf40): Total: 0.038 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/_Game/Content/VisualSlice/Models/Scout_V1.fbx using Guid(5f04be08b48689f4ba180cfae64b1b17) (FBXImporter) -> (artifact id: 'c38f0b07bf7f837b89b2ef1250f486c9') in 0.0887957 seconds
+Refreshing native plugins compatible for Editor in 0.31 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=805665133582cf24bb4d226714f353c8): Total: 0.115 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/_Game/Content/VisualSlice/Models/Scout_V1.fbx using Guid(5f04be08b48689f4ba180cfae64b1b17) (FBXImporter) -> (artifact id: 'c38f0b07bf7f837b89b2ef1250f486c9') in 0.0679441 seconds
+Refreshing native plugins compatible for Editor in 0.24 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=4e4c4619682e3d541a4e68dd80f7bcad): Total: 0.086 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/_Game/Content/VisualSlice/Materials/Slice_IndustrialAtlas.mat using Guid(d20fff92df9c6d94089c00c627e0c6bb) (NativeFormatImporter) -> (artifact id: 'cdc4371d2d5fb8255b8ad01c55b86fa4') in 0.0024672 seconds
+Start importing Assets/_Game/Content/VisualSlice/Scout_V1.controller using Guid(5200a5618f610be4caa1f99fc96a7dc4) (NativeFormatImporter) -> (artifact id: 'f96facd6ecf1d8be4a756151dc2ddded') in 0.0026831 seconds
+Refreshing native plugins compatible for Editor in 0.22 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=539f979e10aeed04bb88edb9b0044176): Total: 0.036 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Asset Pipeline Refresh (id=a1a3bfb0be6331e4cb4722ce70225f6d): Total: 0.013 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/_Game/Content/VisualSlice/Models/Cutter_V1.fbx using Guid(00a171b37de993f4da51e622c8af8a3d) (FBXImporter) -> (artifact id: '266f7825cc4af31567a479c0be8e0fa9') in 0.0697057 seconds
+Refreshing native plugins compatible for Editor in 0.25 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=bea78a226295045468a805d40f8699f3): Total: 0.090 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/_Game/Content/VisualSlice/Models/Cutter_V1.fbx using Guid(00a171b37de993f4da51e622c8af8a3d) (FBXImporter) -> (artifact id: '266f7825cc4af31567a479c0be8e0fa9') in 0.0674899 seconds
+Refreshing native plugins compatible for Editor in 0.25 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=979e786dad1b03041a39559b9a7297c0): Total: 0.087 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/_Game/Content/VisualSlice/Cutter_V1.controller using Guid(e87583251637d4d45a831a0164e7c033) (NativeFormatImporter) -> (artifact id: '7ef9a0e8295c63c761cf05f80ea66697') in 0.0030182 seconds
+Refreshing native plugins compatible for Editor in 0.25 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=5fb5185e4d6bc8b4f894b265f49e4ebf): Total: 0.033 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Asset Pipeline Refresh (id=db0d5650eb1eb9146bac7adea74d1b6a): Total: 0.017 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/_Game/Content/VisualSlice/Models/Magnetar_V1.fbx using Guid(0ba279308be290f4c9fb9196caffac3a) (FBXImporter) -> (artifact id: '62737c5fa9b3a02a182114b8f386e4bc') in 0.1122363 seconds
+Refreshing native plugins compatible for Editor in 0.35 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=f0b5ceb01e80a7d4e9e4149a9e2c5bbe): Total: 0.145 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/_Game/Content/VisualSlice/Models/Magnetar_V1.fbx using Guid(0ba279308be290f4c9fb9196caffac3a) (FBXImporter) -> (artifact id: '62737c5fa9b3a02a182114b8f386e4bc') in 0.0934375 seconds
+Refreshing native plugins compatible for Editor in 0.26 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=8e1b036ad615cbc4aba054e7a2b5267e): Total: 0.116 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/_Game/Content/VisualSlice/Magnetar_V1.controller using Guid(fc44cdfd21f836e44a76de07a29b3212) (NativeFormatImporter) -> (artifact id: '7573ecc4e782f12a03340319ff538bc6') in 0.002677 seconds
+Refreshing native plugins compatible for Editor in 0.24 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=a4b94eda1c7bc734093c23bd68e840ff): Total: 0.031 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Asset Pipeline Refresh (id=f452ed24c3e21ca48abfe9f4fbe7541a): Total: 0.014 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/_Game/Content/VisualSlice/Models/Deck_Module.fbx using Guid(3f12b5ed95db8f74d88e136681575d28) (FBXImporter) -> (artifact id: 'dfe45743ddd7d29a95658b72aeccbb1d') in 0.0181507 seconds
+Refreshing native plugins compatible for Editor in 0.26 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=7d8b3856881a1ec4aac134a511e2e11b): Total: 0.035 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Asset Pipeline Refresh (id=1c555fd66e9c0804cbcd49e06c0eb326): Total: 0.014 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/_Game/Content/VisualSlice/Models/Bulkhead_Module.fbx using Guid(80a63cb6d7b93bb418215060049441c9) (FBXImporter) -> (artifact id: '6c5b49431a7b1af1031acbf3fa648886') in 0.0181444 seconds
+Refreshing native plugins compatible for Editor in 0.23 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=edad5826d03ffb3438ac3a4a2b194457): Total: 0.035 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Asset Pipeline Refresh (id=0061151815cbc904899e8fa78e3301b3): Total: 0.011 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/_Game/Content/VisualSlice/Models/Hero_Reactor.fbx using Guid(9a758a5e775333d49a824774a604cab3) (FBXImporter) -> (artifact id: 'c4680380f8a5ae3b55ec12e829559ed4') in 0.0231958 seconds
+Refreshing native plugins compatible for Editor in 0.26 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=38bbcb93a1a52624cbf73a2eaf63a2fe): Total: 0.040 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Asset Pipeline Refresh (id=71f39b1b4a738b04c8aec8ff5a8bba29): Total: 0.010 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/_Game/Content/VisualSlice/Models/Power_Bank.fbx using Guid(564632e0d1b00d841ab140718d80c249) (FBXImporter) -> (artifact id: 'a00e66f4e8965d24e59d8305d15ff19e') in 0.0194746 seconds
+Refreshing native plugins compatible for Editor in 0.24 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=8ae5304d86284f7419ad524c79f255d0): Total: 0.036 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Asset Pipeline Refresh (id=f8886cce385c5c34db5730fc9fd36eef): Total: 0.015 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/_Game/Content/VisualSlice/Models/Freight_Container.fbx using Guid(b2cd1f2bd0729374b8138f23f77d200d) (FBXImporter) -> (artifact id: '8279d8acf9feac37382129a7a930a05f') in 0.0165144 seconds
+Refreshing native plugins compatible for Editor in 0.25 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=a46d39309e3452c47afd8c6cf11c81d2): Total: 0.032 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Asset Pipeline Refresh (id=e39863f24579de240ace36cf318c2437): Total: 0.011 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/_Game/Content/VisualSlice/Models/Coolant_Pump.fbx using Guid(cdbc1623d739a3248b0b37310ad24ac7) (FBXImporter) -> (artifact id: 'b34280920b20ee0bae0df43787309aef') in 0.0200739 seconds
+Refreshing native plugins compatible for Editor in 0.26 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=c50ed1bee40189f4eade70b2168f0740): Total: 0.037 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Asset Pipeline Refresh (id=6925588ca22f54242bfc77ff647ce931): Total: 0.019 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/_Game/Content/VisualSlice/Models/Conduit_Rack.fbx using Guid(26613aca2306ca44b90223aad0b12864) (FBXImporter) -> (artifact id: '9e6010e352a708237ea58fb9c7cd608e') in 0.0202745 seconds
+Refreshing native plugins compatible for Editor in 0.26 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=00a9ef7d15d324343bd512d72ee8faf1): Total: 0.037 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Asset Pipeline Refresh (id=aa7c29e0041205f429f854543a17776f): Total: 0.010 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/_Game/Content/VisualSlice/Models/Maintenance_Station.fbx using Guid(ffbb33d3a82def6409982eee859b1ca8) (FBXImporter) -> (artifact id: 'b7dc72fc560fd5040a2a62a796bad8cb') in 0.0172553 seconds
+Refreshing native plugins compatible for Editor in 0.23 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=06ae733437a48dc458edc8782f4844a4): Total: 0.034 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Asset Pipeline Refresh (id=df049960f19e5804cbb91b77d964b9a2): Total: 0.033 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/_Game/Content/VisualSlice/Models/Structural_Support.fbx using Guid(c18f3d9e585be2445bf42cbbe3b7ee53) (FBXImporter) -> (artifact id: '5e9c4faaba5cfc1254a89d7b5a4d30e8') in 0.017322 seconds
+Refreshing native plugins compatible for Editor in 0.23 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=d0f624c512e03154eb884f18e35dde42): Total: 0.034 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Asset Pipeline Refresh (id=db8b3053775e93b49bb5902ead789cf3): Total: 0.015 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/_Game/Content/VisualSlice/Models/Barrier_Module.fbx using Guid(04c757ec162534d4195c2006f76a69d1) (FBXImporter) -> (artifact id: '12189ef64c2f2f9f17bafb321aef31d8') in 0.0187394 seconds
+Refreshing native plugins compatible for Editor in 0.26 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=2f93f5cc7f31f7f4f8e603be2798f75a): Total: 0.036 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Asset Pipeline Refresh (id=9d7ae7a5e83ec45459bc62b11458ad5e): Total: 0.015 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/_Game/Content/VisualSlice/Models/Containment_Gate.fbx using Guid(e76d2809543d04746bbab8d46b4e1c1e) (FBXImporter) -> (artifact id: '44d7a491da7b42063902d11f812a318f') in 0.0188254 seconds
+Refreshing native plugins compatible for Editor in 0.30 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=4a2683f5596a8e949af263a59112ed6c): Total: 0.037 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Asset Pipeline Refresh (id=3358c44539ff8bb449b7edccf99b6e57): Total: 0.011 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/_Game/Content/VisualSlice/Models/Deck_ServiceMarkings.fbx using Guid(fe3782985099bde44bf62befa80ed772) (FBXImporter) -> (artifact id: 'c9df2167d6c843dcd30d18a43de6c419') in 0.0170283 seconds
+Refreshing native plugins compatible for Editor in 0.25 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=84c34437d6f145443b29b65156d0e122): Total: 0.034 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Asset Pipeline Refresh (id=70df1169a7a3b514da01fadadfda4454): Total: 0.011 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Asset Pipeline Refresh (id=0020682e6962e0d4888c038aabe885f1): Total: 0.014 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+ModelImporter.maxBonesPerVertex is ignored unless ModelImporter.skinWeights is set to ModelImporterSkinWeights.Custom.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+UnityEditor.ModelImporter:set_maxBonesPerVertex (int)
+Gravivore.Editor.VisualIntegration.FirstVisualSliceBuilder:AddEvolutionArmor (UnityEngine.GameObject,int) (at Assets/_Game/Editor/VisualIntegration/FirstVisualSliceBuilder.cs:271)
+Gravivore.Editor.VisualIntegration.FirstVisualSliceBuilder:IntegrateG0 () (at Assets/_Game/Editor/VisualIntegration/FirstVisualSliceBuilder.cs:243)
+Gravivore.Editor.VisualIntegration.FirstVisualSliceBuilder:Build () (at Assets/_Game/Editor/VisualIntegration/FirstVisualSliceBuilder.cs:34)
+
+(Filename: Assets/_Game/Editor/VisualIntegration/FirstVisualSliceBuilder.cs Line: 271)
+
+Start importing Assets/_Game/Content/VisualSlice/Models/G0_Tier1Armor.fbx using Guid(e7144d16463a5ae4984a6ddfe4dbf8b0) (FBXImporter) -> (artifact id: '23274e09f71575cc5ca181452525a814') in 0.0319387 seconds
+Refreshing native plugins compatible for Editor in 0.26 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=31fb8521cf4ab2040a47c2956f3bee84): Total: 0.051 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/_Game/Content/VisualSlice/Prefabs/G0_V3_Live_Tier1.prefab using Guid(61943e4c22095cd4293066af8e7a3c06) (PrefabImporter) -> (artifact id: 'ead3d928ae455c7ecb0374124e2e16fd') in 0.0053124 seconds
+Refreshing native plugins compatible for Editor in 0.26 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=c35730194ec55774aa390588bf0b4497): Total: 0.046 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+ModelImporter.maxBonesPerVertex is ignored unless ModelImporter.skinWeights is set to ModelImporterSkinWeights.Custom.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+UnityEditor.ModelImporter:set_maxBonesPerVertex (int)
+Gravivore.Editor.VisualIntegration.FirstVisualSliceBuilder:AddEvolutionArmor (UnityEngine.GameObject,int) (at Assets/_Game/Editor/VisualIntegration/FirstVisualSliceBuilder.cs:271)
+Gravivore.Editor.VisualIntegration.FirstVisualSliceBuilder:IntegrateG0 () (at Assets/_Game/Editor/VisualIntegration/FirstVisualSliceBuilder.cs:243)
+Gravivore.Editor.VisualIntegration.FirstVisualSliceBuilder:Build () (at Assets/_Game/Editor/VisualIntegration/FirstVisualSliceBuilder.cs:34)
+
+(Filename: Assets/_Game/Editor/VisualIntegration/FirstVisualSliceBuilder.cs Line: 271)
+
+Start importing Assets/_Game/Content/VisualSlice/Models/G0_Tier2Armor.fbx using Guid(fad62b17f58798c42bdc20c692f241bc) (FBXImporter) -> (artifact id: '941cd9a18033859cc745370d37a730b6') in 0.0348231 seconds
+Refreshing native plugins compatible for Editor in 0.24 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=9ef4449ca868e9941a32e3476e7c1ba7): Total: 0.053 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/_Game/Content/VisualSlice/Prefabs/G0_V3_Live_Tier2.prefab using Guid(523415ac76f142740bb25070a1effcc0) (PrefabImporter) -> (artifact id: '53fbffb15490b34319a6cabb91695a4a') in 0.0051803 seconds
+Refreshing native plugins compatible for Editor in 0.25 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=d21ccf77c69325245a4e4c88d07c8acc): Total: 0.044 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/_Game/Content/VisualSlice/Audio/Containment_Exploration.wav using Guid(3ad228200a6e62a4b944c164c3d4b969) (AudioImporter) -> (artifact id: '3c95090de49f7cd7aaf9ce532a11ba92') in 0.5379528 seconds
+Refreshing native plugins compatible for Editor in 0.25 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=d75c127f86eda314bb890e6d49ca6cf4): Total: 0.553 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+	Summary:
+		Imports: total=1 (actual=1, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=551 ms
+		Asset DB Callback time: managed=0 ms, native=0 ms
+		Scripting: domain reloads=0, domain reload time=0 ms, compile time=0 ms, other=0 ms
+		Project Asset Count: scripts=823, non-scripts=1767
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 6
+	InvokeCustomDependenciesCallbacks: 0.000ms
+	InvokePackagesCallback: 0.001ms
+	ApplyChangesToAssetFolders: 0.048ms
+	Scan: 9.095ms
+	OnSourceAssetsModified: 0.001ms
+	CategorizeAssetsWithTransientArtifact: 0.005ms
+	ProcessAssetsWithTransientArtifactChanges: 0.035ms
+	CategorizeAssets: 0.879ms
+	ImportOutOfDateAssets: 539.870ms (-0.139ms without children)
+		ImportManagerImport: 538.942ms (0.613ms without children)
+			ImportInProcess: 538.304ms
+			UpdateCategorizedAssets: 0.025ms
+		ReloadNativeAssets: 0.053ms
+		UnloadImportedAssets: 0.219ms
+		ReloadImportedAssets: 0.305ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.222ms
+		InitializingProgressBar: 0.005ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.001ms
+		OnDemandSchedulerStart: 0.262ms
+	PostProcessAllAssets: 0.830ms
+	Hotreload: 0.523ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.081ms
+	UnloadStreamsBegin: 0.023ms
+	PersistCurrentRevisions: 0.070ms
+	UnloadStreamsEnd: 0.001ms
+	Untracked: 1.316ms
+
+Start importing Assets/_Game/Content/VisualSlice/Audio/Containment_CombatLayer.wav using Guid(324b5214a569b4a4eb17a7c30b203a21) (AudioImporter) -> (artifact id: '8614dad25d8c891fc88ca0697f02a528') in 0.5390952 seconds
+Refreshing native plugins compatible for Editor in 0.29 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=edfa57b5e9c1112458881b5eef7863d7): Total: 0.554 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+	Summary:
+		Imports: total=1 (actual=1, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=552 ms
+		Asset DB Callback time: managed=0 ms, native=0 ms
+		Scripting: domain reloads=0, domain reload time=0 ms, compile time=0 ms, other=0 ms
+		Project Asset Count: scripts=823, non-scripts=1767
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 6
+	InvokeCustomDependenciesCallbacks: 0.000ms
+	InvokePackagesCallback: 0.000ms
+	ApplyChangesToAssetFolders: 0.056ms
+	Scan: 8.873ms
+	OnSourceAssetsModified: 0.001ms
+	CategorizeAssetsWithTransientArtifact: 0.005ms
+	ProcessAssetsWithTransientArtifactChanges: 0.034ms
+	CategorizeAssets: 0.840ms
+	ImportOutOfDateAssets: 540.864ms (-0.106ms without children)
+		ImportManagerImport: 539.965ms (0.517ms without children)
+			ImportInProcess: 539.427ms
+			UpdateCategorizedAssets: 0.021ms
+		ReloadNativeAssets: 0.051ms
+		UnloadImportedAssets: 0.182ms
+		ReloadImportedAssets: 0.268ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.219ms
+		InitializingProgressBar: 0.005ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.000ms
+		OnDemandSchedulerStart: 0.281ms
+	PostProcessAllAssets: 0.866ms
+	Hotreload: 0.581ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.094ms
+	UnloadStreamsBegin: 0.024ms
+	PersistCurrentRevisions: 0.067ms
+	UnloadStreamsEnd: 0.001ms
+	Untracked: 1.317ms
+
+Start importing Assets/_Game/Content/VisualSlice/Prefabs/Environment_Slice.prefab using Guid(3ad58a1de1250f54480dd0bfdded4c34) (PrefabImporter) -> (artifact id: '92d2928f5d84a7b158193df4317e4006') in 0.0131491 seconds
+Refreshing native plugins compatible for Editor in 0.23 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=5b617d4e110dfa34d8fbd727f9bfc7fd): Total: 0.058 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Asset Pipeline Refresh (id=9bc0d19ad7cad8840bd7a91df2d928aa): Total: 0.010 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Opening scene 'Assets/_Game/Content/Scenes/Chapter01_ScrapExclusion.unity'
+Curl error 35: Cert verify failed. Certificate could not be verified (either omitted or unsupported). UnityTls error code: 7
+Unloading 83 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Assets/_Game/Content/Scenes/Chapter01_ScrapExclusion.unity'
+	Deserialize:            32.081 ms
+	Integration:            253.917 ms
+	Integration of assets:  2.213 ms
+	Thread Wait Time:       0.017 ms
+	Total Operation Time:   288.228 ms
+Unloading 370 unused Assets / (120.2 KB). Loaded Objects now: 7635.
+Memory consumption went from 166.8 MB to 166.7 MB.
+Total: 8.151400 ms (FindLiveObjects: 0.427200 ms CreateObjectMapping: 0.167500 ms MarkObjects: 7.204400 ms  DeleteObjects: 0.351500 ms)
+
+Start importing Assets/_Game/Content/VisualSlice/Materials/G0_V3_Tier0.mat using Guid(e4b3da027f50c2541a2668442442984b) (NativeFormatImporter) -> (artifact id: 'c477216621479aab5e6c559e94186291') in 0.0036571 seconds
+Start importing Assets/_Game/Content/VisualSlice/Materials/G0_V3_Tier1.mat using Guid(27c827dbb6132da4fbbc421b871871be) (NativeFormatImporter) -> (artifact id: '6073a4ff2adb6df5201ad02bbfc25d7b') in 0.0026392 seconds
+Start importing Assets/_Game/Content/VisualSlice/Materials/G0_V3_Tier2.mat using Guid(a822f21125db891409f26effb542c1c9) (NativeFormatImporter) -> (artifact id: '22eea4db0485dc4f11863ae0b33e8595') in 0.0021581 seconds
+Start importing Assets/_Game/Content/VisualSlice/Materials/DeviceMotionStreak.mat using Guid(6c7450c5ce16b9946899f1be555dce1f) (NativeFormatImporter) -> (artifact id: 'bf7363cd4a411298619328fe0bc0e21a') in 0.0019143 seconds
+Refreshing native plugins compatible for Editor in 0.23 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=c318a02c80d3223489eb3cf49c130548): Total: 0.031 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/_Game/Content/Scenes/Chapter01_ScrapExclusion.unity using Guid(10000000000000000000000000000002) (DefaultImporter) -> (artifact id: 'a59e238311a018de75d5f76b1192f883') in 0.0012334 seconds
+Refreshing native plugins compatible for Editor in 0.20 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=4c16d02084195454c8210968019590b6): Total: 0.032 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Asset Pipeline Refresh (id=180490d57f27b194a820e6462162cfb1): Total: 0.019 seconds - Initiated by RefreshV2(NoUpdateAssetOptions)
+FIRST_VISUAL_SLICE_DEPENDENCIES_PASS: Assets/_Game/ArtReview/G0ProductionV3/Models/G0_Production_V3.fbx, Assets/_Game/Content/VisualSlice/Models/Scout_V1.fbx, Assets/_Game/Content/VisualSlice/Models/Cutter_V1.fbx, Assets/_Game/Content/VisualSlice/Models/Magnetar_V1.fbx, Assets/_Game/Content/VisualSlice/Prefabs/Environment_Slice.prefab, Assets/_Game/Content/VisualSlice/Models/G0_Tier1Armor.fbx, Assets/_Game/Content/VisualSlice/Models/G0_Tier2Armor.fbx, Assets/_Game/Content/VisualSlice/DeviceCorrection.asset, Assets/_Game/Content/VisualSlice/Models/Deck_ServiceMarkings.fbx
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Gravivore.Editor.VisualIntegration.FirstVisualSliceDependencies:ValidateOrThrow () (at Assets/_Game/Editor/VisualIntegration/FirstVisualSliceDependencies.cs:45)
+Gravivore.Editor.VisualIntegration.FirstVisualSliceBuilder:Build () (at Assets/_Game/Editor/VisualIntegration/FirstVisualSliceBuilder.cs:89)
+
+(Filename: Assets/_Game/Editor/VisualIntegration/FirstVisualSliceDependencies.cs Line: 45)
+
+FIRST_VISUAL_SLICE_INTEGRATED: G0 V3 / Scout V1 / Cutter V1 / Magnetar V1 / Chapter01 containment area
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Gravivore.Editor.VisualIntegration.FirstVisualSliceBuilder:Build () (at Assets/_Game/Editor/VisualIntegration/FirstVisualSliceBuilder.cs:90)
+
+(Filename: Assets/_Game/Editor/VisualIntegration/FirstVisualSliceBuilder.cs Line: 90)
+
+Batchmode quit successfully invoked - shutting down!
+Killing ADB server in 0,048859 seconds.
+[Physics::Module] Cleanup current backend.
+[Physics::Module] Id: 0xf2b8ea05
+Input System module state changed to: ShutdownInProgress.
+Input System polling thread exited.
+Input System module state changed to: Shutdown.
+[Licensing::IpcConnector] LicenseClient-pamak-notifications channel disconnected successfully.
+[Licensing::IpcConnector] LicenseClient-pamak channel disconnected successfully.
+AcceleratorClientConnectionCallback - disconnected - :0
+Cleanup mono
+Exiting batchmode successfully now!
+Exiting without the bug reporter. Application will terminate with return code 0

@@ -100,7 +100,8 @@ namespace Gravivore.Tests.PlayMode
                     form.name + " must be visible in the settled portrait camera audit.");
             var vfx = scene.Root.GetComponentInChildren<GravityLashVfxPool>();
             var socket = player.transform.Find("Player Visual Root/Gravity Lash Presentation Origin");
-            Assert.That(socket.position.y - player.transform.position.y, Is.InRange(1f, 1.2f));
+            player.GetComponent<Gravivore.Presentation.Player.MechMotionPresenter>().Tick(.016f);
+            Assert.That(socket.position.y - player.transform.position.y, Is.InRange(1.4f, 1.55f));
             vfx.Play(player.transform.position, cutters[0].TargetPoint.position);
             var beam = vfx.LastPlayedObject.GetComponentInChildren<LineRenderer>(true);
             Assert.That(beam.GetPosition(0), Is.EqualTo(socket.position));

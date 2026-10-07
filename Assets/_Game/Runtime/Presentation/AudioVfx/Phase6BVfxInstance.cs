@@ -5,6 +5,14 @@ namespace Gravivore.Presentation.AudioVfx {
 [SerializeField,Min(.005f)] float _sparkSize=.07f; [SerializeField,Min(.1f)] float _sparkSpeed=2.3f;
 [SerializeField] Material _warningFillMaterial; [SerializeField,Range(.05f,.3f)] float _warningFillAlpha=.18f;
 Phase6BWarningFill _warningFill;
+int _playerVariant;
+[SerializeField,Min(1)] float _pulseWidthMultiplier=2.1f, _arcWidthMultiplier=1.35f;
+[SerializeField,Min(.01f)] float _arcBend=.30f;
+public int PlayerVariant=>_playerVariant;
+public void ConfigurePlayerVariant(int variant)
+{
+    _playerVariant = !IsWarning && _cue<=Phase6BVfxCue.PlayerImpact ? Mathf.Clamp(variant,0,2) : 0;
+}
 bool IsWarning => _cue==Phase6BVfxCue.HostileTelegraphBase || _cue==Phase6BVfxCue.BossConeTelegraph || _cue==Phase6BVfxCue.BossLineTelegraph || _cue==Phase6BVfxCue.BossCircleTelegraph;
 public Phase6BVfxShape Shape => _shape;
 float _authoredRange = -1f, _authoredHalfAngle = -1f, _authoredLineWidth;
@@ -33,7 +41,22 @@ void ConfigureLine(float n){var c=_color;c.a*=IsWarning?(0.9f+0.1f*Mathf.Cos(n*M
     _line.SetPosition(0,_origin-side);_line.SetPosition(1,_origin+side);
     _line.SetPosition(2,end+side);_line.SetPosition(3,end-side);return;
 }
-if(_shape==Phase6BVfxShape.Beam||_shape==Phase6BVfxShape.Line){_line.loop=false;_line.positionCount=2;_line.SetPosition(0,_origin);_line.SetPosition(1,(_destination-_origin).sqrMagnitude>.0001f?_destination:_origin+transform.forward*_range);return;}if(_shape==Phase6BVfxShape.Cone){ConfigureCone(20);return;}ConfigureRing(_shape==Phase6BVfxShape.Scanner?Mathf.Lerp(.2f,PresentedRange,n):PresentedRange,32);}
+if(_shape==Phase6BVfxShape.Beam||_shape==Phase6BVfxShape.Line){
+    _line.loop=false;
+    var end=(_destination-_origin).sqrMagnitude>.0001f?_destination:_origin+transform.forward*_range;
+    if(_cue==Phase6BVfxCue.GravityLashTravel && _playerVariant==1){
+        _line.positionCount=2;_line.widthMultiplier=_width*_pulseWidthMultiplier;
+        _line.startColor=new Color(.7f,.95f,1,c.a);_line.endColor=new Color(.4f,.85f,1,c.a);
+        _line.SetPosition(0,Vector3.Lerp(_origin,end,Mathf.Max(0,n-.28f)));
+        _line.SetPosition(1,Vector3.Lerp(_origin,end,Mathf.Clamp01(n+.32f)));return;
+    }
+    if(_cue==Phase6BVfxCue.GravityLashTravel && _playerVariant==2){
+        _line.positionCount=7;_line.widthMultiplier=_width*_arcWidthMultiplier;
+        var side=Vector3.Cross((end-_origin).normalized,Vector3.up);
+        for(var i=0;i<7;i++){var u=i/6f;_line.SetPosition(i,Vector3.Lerp(_origin,end,u)+side*Mathf.Sin(u*Mathf.PI)*_arcBend*(1-n));}return;
+    }
+    _line.positionCount=2;_line.SetPosition(0,_origin);_line.SetPosition(1,end);return;
+}if(_shape==Phase6BVfxShape.Cone){ConfigureCone(20);return;}ConfigureRing(_shape==Phase6BVfxShape.Scanner?Mathf.Lerp(.2f,PresentedRange,n):PresentedRange,32);}
 void ConfigureWarningFill(){if(_warningFill==null)return;if(_line.positionCount<3){_warningFill.Stop();return;}var center=_shape==Phase6BVfxShape.Line?_origin+transform.forward*PresentedRange*.5f:_origin;_warningFill.Configure(_line,center);}
 void OnDestroy()=>_warningFill?.Dispose();
 void ConfigureRing(float radius,int segments){_line.loop=true;_line.positionCount=segments;for(var i=0;i<segments;i++){var a=i*Mathf.PI*2/segments;_line.SetPosition(i,_origin+new Vector3(Mathf.Cos(a)*radius,.03f,Mathf.Sin(a)*radius));}}

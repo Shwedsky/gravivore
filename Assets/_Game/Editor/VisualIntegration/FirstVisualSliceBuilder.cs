@@ -30,7 +30,7 @@ namespace Gravivore.Editor.VisualIntegration
             var material = AtlasMaterial();
             foreach (var name in new[] { "Scout_V1", "Cutter_V1", "Magnetar_V1" }) MakeActor(name, material);
             foreach (var name in new[] { "Deck_Module", "Bulkhead_Module", "Hero_Reactor", "Power_Bank", "Freight_Container", "Coolant_Pump",
-                "Conduit_Rack", "Maintenance_Station", "Structural_Support", "Barrier_Module", "Containment_Gate" }) MakeStatic(name, material);
+                "Conduit_Rack", "Maintenance_Station", "Structural_Support", "Barrier_Module", "Containment_Gate", "Deck_ServiceMarkings" }) MakeStatic(name, material);
             IntegrateG0();
             var correction = MusicAndMix();
             var catalog = new SerializedObject(AssetDatabase.LoadAssetAtPath<S15VisualCatalog>("Assets/_Game/Content/Definitions/S15_VisualCatalog.asset"));
@@ -106,6 +106,15 @@ namespace Gravivore.Editor.VisualIntegration
             var data = new SerializedObject(asset);
             data.FindProperty("_exploration").objectReferenceValue = AssetDatabase.LoadAssetAtPath<AudioClip>(Root + "/Audio/Containment_Exploration.wav");
             data.FindProperty("_combatLayer").objectReferenceValue = AssetDatabase.LoadAssetAtPath<AudioClip>(Root + "/Audio/Containment_CombatLayer.wav");
+            var materialPath = Root + "/Materials/DeviceMotionStreak.mat";
+            var streak = AssetDatabase.LoadAssetAtPath<Material>(materialPath);
+            if (streak == null)
+            {
+                streak = new Material(AssetDatabase.LoadAssetAtPath<Material>("Assets/_Game/Content/Presentation/Phase6B/VFX/Materials/M_Phase6B_PlayerStreak.mat"));
+                AssetDatabase.CreateAsset(streak,materialPath);
+            }
+            streak.SetColor("_BaseColor",Color.white); streak.SetColor("_Color",Color.white);
+            EditorUtility.SetDirty(streak); data.FindProperty("_motionStreakMaterial").objectReferenceValue = streak;
             data.ApplyModifiedPropertiesWithoutUndo(); asset.ValidateOrThrow();
             var bank = new SerializedObject(AssetDatabase.LoadAssetAtPath<UnityEngine.Object>("Assets/_Game/Content/Presentation/Phase6B/Audio/Phase6B_AudioBank.asset"));
             var entries = bank.FindProperty("_entries");
@@ -233,7 +242,6 @@ namespace Gravivore.Editor.VisualIntegration
                 foreach (var r in model.GetComponentsInChildren<SkinnedMeshRenderer>()) r.updateWhenOffscreen = false;
                 if (tier > 0) AddEvolutionArmor(model, tier);
                 // Live material copies leave the approved isolated source untouched.
-                // Live material copies leave the approved isolated source untouched.
                 {
                     var source = model.GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial;
                     var path = Root + "/Materials/G0_V3_Tier" + tier + ".mat";
@@ -265,6 +273,10 @@ namespace Gravivore.Editor.VisualIntegration
             var originalBones = model.GetComponentsInChildren<SkinnedMeshRenderer>()[0].bones.ToDictionary(b => b.name);
             var armor = UnityEngine.Object.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>(path), model.transform, false);
             armor.name = "Tier " + tier + " Articulated Production Armor";
+            // The base mech's three LOD levels also own the armor renderers.
+            // FBX auto-generated LOD groups must not register those renderers again.
+            foreach (var importedLod in armor.GetComponentsInChildren<LODGroup>(true))
+                UnityEngine.Object.DestroyImmediate(importedLod);
             var skins = armor.GetComponentsInChildren<SkinnedMeshRenderer>().OrderBy(s => s.name).ToArray();
             foreach (var skin in skins)
             {
@@ -322,6 +334,8 @@ namespace Gravivore.Editor.VisualIntegration
             foreach (var x in new[] { -22, -18 }) foreach (var z in new[] { 50, 54, 58 })
                 Place(root.transform, "Deck_Module", new Vector3(x, .01f, z));
             foreach (var x in new[] { -14, -10 }) Place(root.transform, "Deck_Module", new Vector3(x, .01f, 54));
+            // Opaque painted service strips break up the broad floor without adding props or collision.
+            foreach (var z in new[] { 40,48,56,68 }) Place(root.transform,"Deck_ServiceMarkings",new Vector3(0,.074f,z));
             for (var z = 54; z <= 58; z += 4) Place(root.transform, "Bulkhead_Module", new Vector3(-24, 0, z), -90);
             Obstacle("Strong service apron wall", new Vector3(-24, 1.3f, 56), new Vector3(.5f, 2.6f, 8));
             Place(root.transform, "Coolant_Pump", new Vector3(-22.3f, 0, 54));

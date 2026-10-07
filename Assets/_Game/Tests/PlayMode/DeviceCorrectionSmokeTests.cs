@@ -27,6 +27,50 @@ namespace Gravivore.Tests.PlayMode
             _scene.Root.PlayerObject.GetComponent<GravityAttackController>().enabled = false;
             _scene.Root.MagnetarGuard.enabled = false; _scene.Root.CustodianBoss.enabled = false;
         }
+        [UnityTest] public IEnumerator PullPresentationIsShortBoundedAndNeverMovesAuthorityOrSensors()
+        {
+            yield return Load(); var root = _scene.Root;
+            var enemy = root.EnemyPopulation.GetSpot(0).GetLiveEnemy(0);
+            var motion = root.GetComponent<VisualSliceCombatMotion>();
+            var lash = root.GetComponentInChildren<GravityLashVfxPool>(); motion.enabled = false;
+            motion.Tick(0);
+            var targetOffset = enemy.TargetPoint.position-enemy.transform.position;
+            var destination = enemy.transform.position+Vector3.forward*.8f;
+            lash.Play(root.PlayerObject.transform.position,enemy.TargetPoint.position,enemy);
+            Assert.IsTrue(enemy.TryDisplace(destination,default));
+            var authority = enemy.transform.position;
+            var hp = enemy.CurrentHitPoints; motion.Tick(.01f);
+            Assert.That(motion.ActivePullCount,Is.GreaterThan(0));
+            Assert.That(motion.MaximumActivePullOffset,Is.InRange(.01f,1.35f));
+            Assert.That(enemy.transform.position,Is.EqualTo(authority));
+            Assert.That(Vector3.Distance(enemy.TargetPoint.position-authority,targetOffset),Is.LessThan(.001f));
+            motion.Tick(.2f);
+            Assert.That(motion.ActivePullCount,Is.Zero);
+            Assert.That(motion.MaximumActivePullOffset,Is.Zero);
+            Assert.That(enemy.transform.position,Is.EqualTo(authority)); Assert.That(enemy.CurrentHitPoints,Is.EqualTo(hp));
+        }
+        [UnityTest] public IEnumerator ThreePlayerVariantsReusePoolsAndNeverReplaceDangerZoneGeometry()
+        {
+            yield return Load(); var root = _scene.Root;
+            var lash = root.GetComponentInChildren<GravityLashVfxPool>();
+            var count = lash.Phase6BCreatedVfxCount;
+            var variants = new System.Collections.Generic.HashSet<int>();
+            var pointCounts = new System.Collections.Generic.HashSet<int>();
+            for (var i = 0; i < 6; i++)
+            {
+                lash.Play(root.PlayerObject.transform.position,root.PlayerObject.transform.position+Vector3.forward*3);
+                variants.Add(lash.LastAttackVariant);
+                var effect = lash.LastPlayedObject.GetComponent<Phase6BVfxInstance>();
+                Assert.That(effect.PlayerVariant,Is.EqualTo(lash.LastAttackVariant));
+                pointCounts.Add(effect.GetComponentInChildren<LineRenderer>().positionCount);
+                lash.Tick(.5f); lash.Tick(.5f);
+            }
+            Assert.That(variants,Is.EquivalentTo(new[] { 0,1,2 })); Assert.That(pointCounts.Count,Is.EqualTo(2));
+            Assert.That(lash.Phase6BCreatedVfxCount,Is.EqualTo(count));
+            var warning = lash.Vfx.GetComponentsInChildren<Phase6BVfxInstance>(true).First(f => f.Cue==Phase6BVfxCue.BossConeTelegraph);
+            warning.ConfigurePlayerVariant(2); Assert.That(warning.PlayerVariant,Is.Zero);
+            Assert.That(warning.Shape,Is.EqualTo(Phase6BVfxShape.Cone));
+        }
         [UnityTest] public IEnumerator OriginalMusicFadesCombatAndRespectsMute_TacticalMapRetainsAuthority()
         {
             yield return Load(); var root = _scene.Root;
@@ -61,6 +105,8 @@ namespace Gravivore.Tests.PlayMode
             root.PlayerObject.transform.SetPositionAndRotation(new Vector3(0,0,66),Quaternion.Euler(0,180,0)); body.enabled = true;
             root.MagnetarGuard.ActivateEncounter();
             camera.GetComponent<Gravivore.Presentation.Camera.PortraitFollowCamera>().SnapToTarget();
+            var map = root.GetComponentInChildren<MapMinimapPresenter>(true); map.RefreshNow();
+            Assert.That(map.CurrentZoneText,Is.EqualTo("Контур Магнетара"));
             var view = root.PlayerObject.GetComponent<PlayerEvolutionView>();
             Directory.CreateDirectory("docs/device-correction/internal");
             foreach (var tier in new[] { EvolutionTier.Tier0,EvolutionTier.Tier1,EvolutionTier.Tier2 })

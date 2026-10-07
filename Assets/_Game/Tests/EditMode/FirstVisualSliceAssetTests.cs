@@ -86,6 +86,8 @@ namespace Gravivore.Tests.EditMode
             Assert.That(prefab.GetComponentsInChildren<SkinnedMeshRenderer>().Length, Is.EqualTo(tier == 0 ? 3 : 6));
             Assert.That(Vector3.Dot(model.Find("Visible Front (-Z imported)").forward, Vector3.forward), Is.GreaterThan(.99f));
             var lods = model.GetComponent<LODGroup>().GetLODs();
+            Assert.That(prefab.GetComponentsInChildren<LODGroup>(true).Length,Is.EqualTo(1),
+                "Base mech and armor must share one LOD group.");
             Assert.That(lods[0].renderers.Length, Is.EqualTo(tier == 0 ? 1 : 2));
             if (tier > 0)
             {

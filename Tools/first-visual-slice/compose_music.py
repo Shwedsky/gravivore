@@ -34,7 +34,9 @@ def stereo(center, detail):
 bed = .075*tone(36.7)+.045*tone(55,.7)+.035*tone(73.4,1.2)
 bed += (.026+.020*np.sin(2*np.pi*u-1))*tone(110,.4)
 bed += (.025+.020*np.sin(2*np.pi*u*2+1.2))*tone(146.8,1.3)
-bed += .017*tone(220)*(.4+.6*(.5+.5*np.sin(2*np.pi*u*3)))
+bed += .030*tone(220)*(.55+.45*(.5+.5*np.sin(2*np.pi*u*3)))
+bed += .022*tone(293.6,1)*(.60+.40*(.5+.5*np.sin(2*np.pi*u*2+.7)))
+bed += .014*tone(440,.8)*(.5+.5*np.sin(2*np.pi*u))
 wind = air(45,850)*(.011+.007*np.sin(2*np.pi*u*2))
 # Slow, distant metal resonances. Eight-to-eighteen second swells, no drum grid.
 detail = .010*tone(293.6)*(.5+.5*np.sin(2*np.pi*u*4))**5
@@ -42,6 +44,7 @@ detail += .008*tone(440,1.1)*(.5+.5*np.sin(2*np.pi*u*5+.8))**8
 explore = stereo(bed+wind,detail)
 combat = .064*tone(55,.7)+.048*tone(82.4,1.2)
 combat += .026*tone(164.8)*(.65+.35*np.sin(2*np.pi*u*12))
+combat += .026*tone(247.2,.5)*(.75+.25*np.sin(2*np.pi*u*6))
 combat += .021*tone(110,.4)*(.5+.5*np.sin(2*np.pi*u*18))**3
 combat += .008*air(100,1800)*(.5+.5*np.sin(2*np.pi*u*9))**6
 combat = stereo(combat,.011*tone(329.6)*(.5+.5*np.sin(2*np.pi*u*6))**4)

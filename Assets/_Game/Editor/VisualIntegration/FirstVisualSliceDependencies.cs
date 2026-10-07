@@ -23,7 +23,8 @@ namespace Gravivore.Editor.VisualIntegration
             FirstVisualSliceBuilder.Prefab("Environment_Slice"),
             FirstVisualSliceBuilder.Root + "/Models/G0_Tier1Armor.fbx",
             FirstVisualSliceBuilder.Root + "/Models/G0_Tier2Armor.fbx",
-            FirstVisualSliceBuilder.Root + "/DeviceCorrection.asset"
+            FirstVisualSliceBuilder.Root + "/DeviceCorrection.asset",
+            FirstVisualSliceBuilder.Root + "/Models/Deck_ServiceMarkings.fbx"
         };
         [Serializable] private sealed class Evidence
         {
@@ -47,15 +48,15 @@ namespace Gravivore.Editor.VisualIntegration
         public void OnPostprocessBuild(BuildReport report)
         {
             var packed = report.packedAssets.SelectMany(a => a.contents).Select(c => c.sourceAssetPath).Distinct().ToArray();
-            var models = Required.Take(4).Concat(Required.Skip(5).Take(2)).Concat(new[] { FirstVisualSliceBuilder.Root + "/Models/Hero_Reactor.fbx", FirstVisualSliceBuilder.Root + "/Models/Deck_Module.fbx" }).ToArray();
+            var models = Required.Take(4).Concat(Required.Skip(5).Take(2)).Concat(Required.Skip(8)).Concat(new[] { FirstVisualSliceBuilder.Root + "/Models/Hero_Reactor.fbx", FirstVisualSliceBuilder.Root + "/Models/Deck_Module.fbx" }).ToArray();
             var dependencies = AssetDatabase.GetDependencies(FirstVisualSliceBuilder.ScenePath, true);
             foreach (var path in models)
                 if (!dependencies.Contains(path)) throw new BuildFailedException("Production scene omitted required visual model: " + path);
             // Incremental script-only reports omit cached asset entries. Inspect the APK itself:
             // exact serialized mesh names must be in sharedassets1, and the authored kit in level1.
             var names = new[] { "G0_LOD0", "Scout_V1_LOD0", "Cutter_V1_LOD0", "Magnetar_V1_LOD0",
-                "G0_Tier1Armor_LOD0", "G0_Tier2Armor_LOD0", "Containment_Exploration", "Containment_CombatLayer", "DeviceCorrection",
-                "First Visual Slice Industrial Containment", "Hero_Reactor", "Deck_Module" };
+                "G0_Tier1Armor_LOD0", "G0_Tier2Armor_LOD0", "Containment_Exploration", "Containment_CombatLayer", "DeviceCorrection", "DeviceMotionStreak",
+                "First Visual Slice Industrial Containment", "Hero_Reactor", "Deck_Module", "Deck_ServiceMarkings" };
             var found = new string[names.Length];
             using (var archive = ZipFile.OpenRead(report.summary.outputPath))
                 foreach (var entry in archive.Entries)
@@ -66,7 +67,7 @@ namespace Gravivore.Editor.VisualIntegration
                     using var stream = entry.Open(); using var memory = new MemoryStream();
                     stream.CopyTo(memory); var bytes = memory.ToArray();
                     for (var i = 0; i < names.Length; i++)
-                        if (found[i] == null && (i < 9 ? meshes : scene) && ContainsSerializedString(bytes, names[i]))
+                        if (found[i] == null && (i < 10 ? meshes : scene) && ContainsSerializedString(bytes, names[i]))
                             found[i] = names[i] + " => " + entry.FullName;
                 }
             for (var i = 0; i < names.Length; i++)

@@ -109,6 +109,10 @@ namespace Gravivore.Presentation.Map
         int Count { get; }
         MapMarkerSnapshot GetMarker(int index);
     }
+    public interface IMapZoneLabelSource
+    {
+        string CurrentZoneName { get; }
+    }
 
     public interface IMapPoiSelectionSink
     {

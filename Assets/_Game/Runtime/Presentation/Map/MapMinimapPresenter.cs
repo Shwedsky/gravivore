@@ -125,6 +125,7 @@ namespace Gravivore.Presentation.Map
             }
 
             if (_selectedId != null && !selectedFound) ClearSelection();
+            if (_source is IMapZoneLabelSource zoneSource) zoneName = zoneSource.CurrentZoneName;
             if (_zoneText != null && _zoneText.text != zoneName) _zoneText.text = zoneName;
         }
 

@@ -135,7 +135,9 @@ namespace Gravivore.Tests.PlayMode
             var compactFitter = compactPanel.GetComponent<AspectRatioFitter>();
             Assert.NotNull(compactFitter);
             Assert.That(compactFitter.aspectMode, Is.EqualTo(AspectRatioFitter.AspectMode.WidthControlsHeight));
-            Assert.That(compactFitter.aspectRatio, Is.EqualTo(1f).Within(0.0001f));
+            Assert.That(compactFitter.aspectRatio, Is.EqualTo(.90f).Within(0.0001f));
+            Assert.That(presenter.CompactSurface.rect.width/presenter.CompactSurface.rect.height,
+                Is.EqualTo(1f).Within(.001f), "Zone footer must not stretch the established square projection.");
 
             var fitter = presenter.ExpandedSurface.GetComponent<AspectRatioFitter>();
             Assert.NotNull(fitter);
