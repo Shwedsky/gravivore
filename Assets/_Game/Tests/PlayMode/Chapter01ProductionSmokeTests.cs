@@ -168,6 +168,16 @@ namespace Gravivore.Tests.PlayMode
             var production=env.Floor.Find("Chapter 01 Full Production");Assert.IsNotNull(production);
             foreach(var id in new[]{"relay-yard","cutting-floor","shield-dump","capacitor-field","hauler-graveyard"})Assert.IsNotNull(production.Find(id));
             Assert.IsNotNull(production.Find("Service corridors"));Assert.IsNotNull(production.Find("Custodian containment complex"));
+            var walls=env.Floor.GetComponentsInChildren<Renderer>().Where(r=>r.name.StartsWith("Bulkhead_Module",StringComparison.Ordinal)).ToArray();
+            bool Covered(Vector3 p)=>walls.Any(r=>{var bounds=r.bounds;bounds.Expand(.12f);return bounds.Contains(p);});
+            foreach(var side in new[]{-1,1})
+            {
+                foreach(var z in new[]{60,80})for(var x=3.5f;x<=35.5f;x+=.5f)
+                    Assert.IsTrue(Covered(new Vector3(side*x,1.3f,z)),"Opaque gate flank visual at "+side*x+", "+z);
+                for(var z=-35.5f;z<=99.5f;z+=.5f)
+                    Assert.IsTrue(Covered(new Vector3(side*35.5f,1.3f,z)),"Opaque perimeter visual at "+side+", "+z);
+            }
+            for(var x=-35.5f;x<=35.5f;x+=.5f)Assert.IsTrue(Covered(new Vector3(x,1.3f,100)),"North perimeter visual at "+x);
             foreach(var enemy in root.EnemyPopulation.GetComponentsInChildren<OrdinaryEnemyController>(true))
             {var binding=enemy.GetComponent<CharacterVisualBinding>();if(binding.ActiveModel==null)continue;
                 Assert.IsNotNull(binding.ActiveModel.GetComponentInChildren<Animator>(),enemy.LifeId.ToString());}

@@ -94,14 +94,14 @@ namespace Gravivore.Editor.VisualIntegration
                 Place(traversal,"Service_Markings",new Vector3(x,.055f,20),false,90);
                 Place(traversal,"Service_Markings",new Vector3(x,.055f,-12),false,90);
             }
-            foreach(var side in new[] {-1,1}) foreach(var z in new[] {-32,-24,-16,-8,0,8,16,24,32,40,48,56,64,72,84,92})
+            foreach(var side in new[] {-1,1}) foreach(var z in new[] {-32,-24,-16,-8,0,8,16,24,32,40,48,56,64,72,80,88,96})
             {
                 Place(traversal,"Bulkhead_Module",new Vector3(side*35.5f,0,z),true,side*90,true,new Vector3(2,1,1));
                 if(z%16==0) Place(traversal,"Structural_Support",new Vector3(side*35.5f,0,z),true,0,true);
             }
             foreach(var x in new[] {-32,-24,-16,-8,0,8,16,24,32})
                 Place(traversal,"Bulkhead_Module",new Vector3(x,0,-39.5f),true,0,true,new Vector3(2,1,1));
-            foreach(var side in new[]{-1,1}) foreach(var z in new[]{60,80}) for(var x=10;x<=34;x+=4)
+            foreach(var side in new[]{-1,1}) foreach(var z in new[]{60,80}) for(var x=6;x<=34;x+=4)
                 Place(traversal,"Bulkhead_Module",new Vector3(side*x,0,z),false,0,true);
             Manifest.Add("Service corridors: continuous deck, directional service paint, raised cable arches, boundary bulkheads and maintenance infrastructure");
             var boss=Group(chapter,"Custodian containment complex",new Vector3(0,0,94));
@@ -114,7 +114,7 @@ namespace Gravivore.Editor.VisualIntegration
                 Place(boss,"Structural_Support",new Vector3(side*2.96f,0,80),true,0,true,new Vector3(1,1.5f,1));
             }
             foreach(var z in new[] {78,86,94}) Place(boss,"Service_Markings",new Vector3(0,.055f,z),false);
-            foreach(var x in new[] {-12,-8,-4,0,4,8,12}) Place(boss,"Bulkhead_Module",new Vector3(x,0,100),true,0,true,new Vector3(1,1.5f,1));
+            for(var x=-32;x<=32;x+=8) Place(boss,"Bulkhead_Module",new Vector3(x,0,100),true,0,true,new Vector3(2,1.5f,1));
             // Raised service headers clear all controller routes, charge geometry and camera.
             Place(boss,"Conduit_Rack",new Vector3(0,3.55f,80),false,0,true,new Vector3(1.5f,1,.35f));
             Manifest.Add("Custodian complex: reinforced approach and open five-metre arena, primary pressure vessels outside combat circle");

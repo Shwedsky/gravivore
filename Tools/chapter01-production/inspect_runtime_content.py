@@ -25,12 +25,14 @@ def object_fields(data, name):
     while (offset := data.find(needle, offset)) >= 0:
         pos = (offset + len(needle) + 3) & ~3
         offset += len(needle)
+        # The player format strips m_EditorClassIdentifier; editor archives may retain it.
+        yield pos
         if pos + 4 > len(data):
             continue
         count = struct.unpack_from('<i', data, pos)[0]
         if not 0 <= count <= 1024 or pos + 4 + count > len(data):
             continue
-        # m_EditorClassIdentifier follows m_Name (empty in some player builds).
+        # Editor-format m_EditorClassIdentifier follows m_Name.
         yield (pos + 4 + count + 3) & ~3
 
 types = ['CharacteristicsPresenter', 'CharacteristicsReadModel', 'BossHealthHudPresenter',

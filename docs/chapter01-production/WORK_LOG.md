@@ -36,3 +36,12 @@ The first full EditMode run exposed obsolete Phase3D binding expectations and a
 new fixture expecting an unclamped XP fraction. Those assertions now require the
 new production bindings, retain art/gameplay isolation checks and match the UI's
 bounded bar semantics. Full suites and APK validation remain pending at this point.
+
+Full suites subsequently passed: 431 EditMode and 114 PlayMode, zero failures;
+one baseline opt-in structural capture is skipped. The first ARM64 DEV build and
+signature/content verification passed, including serialized gain .168, minimum
+step interval .36 and cycle distance 2.25. Final boundary review then identified
+short visible gaps backed by pre-existing gate/perimeter collision. Wall modules
+now cover those flanks and the complete north boundary; a sampled wall-coverage
+regression passes alongside all actual controller routes. The final APK is rebuilt
+from the boundary-complete checkpoint rather than delivering the earlier artifact.
