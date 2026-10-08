@@ -34,6 +34,7 @@ namespace Gravivore.Editor
 
             GraphicsSettings.defaultRenderPipeline = pipelineAsset;
             QualitySettings.renderPipeline = pipelineAsset;
+            Rendering.RenderingBuildAudit.EnsureRuntimeUiShaders();
             AssetDatabase.SaveAssets();
         }
 

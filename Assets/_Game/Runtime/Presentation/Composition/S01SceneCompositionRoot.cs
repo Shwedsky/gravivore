@@ -321,6 +321,9 @@ namespace Gravivore.Presentation.Composition
 #endif
             }
             _isComposed = true;
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            gameObject.AddComponent<RenderingBootDiagnostics>().Initialize(transform, cameraTransform.GetComponent<UnityEngine.Camera>());
+#endif
             StartupPhase("interactive/first-combat");
         }
         [System.Diagnostics.Conditional("UNITY_EDITOR"),System.Diagnostics.Conditional("DEVELOPMENT_BUILD")]

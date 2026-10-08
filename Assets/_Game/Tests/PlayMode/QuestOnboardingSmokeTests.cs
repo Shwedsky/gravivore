@@ -50,6 +50,7 @@ namespace Gravivore.Tests.PlayMode
             yield return null;
 
             var composition = FindCompositionRoot();
+            CanonicalSceneTestScope.ExpectRenderingBootLogs(composition);
             Assert.That(composition, Is.SameAs(configured));
             Assert.IsNotNull(composition.Quests);
             Assert.IsNotNull(composition.WorldUnlocks);

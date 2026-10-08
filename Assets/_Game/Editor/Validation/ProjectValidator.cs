@@ -137,6 +137,7 @@ namespace Gravivore.Editor
 
             ValidateEditorBuildSettings();
             ValidateUrpConfiguration();
+            Rendering.RenderingBuildAudit.ValidateOrThrow();
             ValidatePresentationMaterials();
             ValidateAndroidPlayerSettings();
             ValidateVersion();
