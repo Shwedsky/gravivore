@@ -7,8 +7,15 @@ namespace Gravivore.Persistence
     {
         public string[] OwnedItemIds;
         public EquippedItemSaveDto[] EquippedItems;
+        public ItemRankSaveDto[] ItemRanks;
     }
 
+    [Serializable]
+    public sealed class ItemRankSaveDto
+    {
+        public string ItemId;
+        public int Rank;
+    }
     [Serializable]
     public sealed class EquippedItemSaveDto
     {

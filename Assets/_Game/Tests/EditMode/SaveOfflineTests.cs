@@ -186,7 +186,7 @@ namespace Gravivore.Tests.EditMode
 
             Assert.Throws<NotSupportedException>(() => pipeline.MigrateToCurrent("{\"schemaVersion\":2}", defaults));
             Assert.Throws<ArgumentException>(() => pipeline.MigrateToCurrent("{\"schemaVersion\":-1}", defaults));
-            var missing = new SaveMigrationPipeline(3, serializer, new ISaveMigration[] { new SaveMigrationV0ToV1() });
+            var missing = new SaveMigrationPipeline(4, serializer, new ISaveMigration[] { new SaveMigrationV0ToV1() });
             Assert.Throws<NotSupportedException>(() => missing.MigrateToCurrent("{\"schemaVersion\":0}", defaults));
             var invalidResult = new SaveMigrationPipeline(
                 1,

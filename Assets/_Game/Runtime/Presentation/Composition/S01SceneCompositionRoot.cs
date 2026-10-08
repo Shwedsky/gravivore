@@ -256,6 +256,8 @@ namespace Gravivore.Presentation.Composition
             StartupPhase("combat VFX/audio/repair");
             Phase6BCombat = gameObject.AddComponent<Phase6BCombatProductionBridge>();
             Phase6BCombat.Initialize(this, _gravityLashVfx, _phase6BProductionDefinition);
+            if (_visualEnvironment?.Definition.HostileTravel != null)
+                gameObject.AddComponent<AttackCausalityPresenter>().Initialize(this, _visualEnvironment.Definition.HostileCharge, _visualEnvironment.Definition.HostileTravel, _visualEnvironment.Definition.HostileImpact);
             var repairObject = new GameObject("Repair Hub Presentation", typeof(RepairHubProductionPresenter));
             repairObject.transform.SetParent(transform, false);
             RepairHub = repairObject.GetComponent<RepairHubProductionPresenter>();
@@ -296,6 +298,11 @@ namespace Gravivore.Presentation.Composition
                 _profileSession.State.Offline,
                 _saveOfflineDefinition.Configuration.AutosaveDelaySeconds);
             InitializeS13Hud(uiTouchExclusion, topTouchExclusion);
+            if (_visualEnvironment?.Definition.WeaponPrefab != null)
+            {
+                PlayerObject.AddComponent<Gravivore.Presentation.Player.WeaponEquipmentPresenter>().Initialize(Equipment, PlayerObject.GetComponent<PlayerEvolutionView>(), _gravityLashVfx, _visualEnvironment.Definition.WeaponPrefab);
+                gameObject.AddComponent<WeaponEquipmentPanel>().Initialize(PauseMenu.ModalRect, _hudRoot, Equipment);
+            }
             StartupPhase("map/UI generation");
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
             InitializeDevelopmentTools(uiTouchExclusion, topTouchExclusion, worldConfiguration, bossConfiguration);
@@ -314,6 +321,9 @@ namespace Gravivore.Presentation.Composition
 #endif
             }
             _isComposed = true;
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            gameObject.AddComponent<RenderingBootDiagnostics>().Initialize(transform, cameraTransform.GetComponent<UnityEngine.Camera>());
+#endif
             StartupPhase("interactive/first-combat");
         }
         [System.Diagnostics.Conditional("UNITY_EDITOR"),System.Diagnostics.Conditional("DEVELOPMENT_BUILD")]
@@ -717,7 +727,7 @@ namespace Gravivore.Presentation.Composition
             if (!ProgressionUnit(progressionId: _spawnSpotDefinitions[3].CreateRuntimeConfiguration().Enemy.Id, out var eliteUnit) ||
                 !ProgressionUnit(progressionId: _spawnSpotDefinitions[4].CreateRuntimeConfiguration().Enemy.Id, out var bossUnit))
                 throw new InvalidOperationException("Encounter ordinary reward comparison units are required.");
-            Chapter1Encounters = new Chapter1EncounterRuntime(_profileSession, _progressionDefinition.Configuration, eliteUnit, bossUnit);
+            Chapter1Encounters = new Chapter1EncounterRuntime(_profileSession, _progressionDefinition.Configuration, eliteUnit, bossUnit, Equipment);
             var bossObject = CreateEncounterObject(
                 "Custodian M-0",
                 typeof(CustodianBossController),

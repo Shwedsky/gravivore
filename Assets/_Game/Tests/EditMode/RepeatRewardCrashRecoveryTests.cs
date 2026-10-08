@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using Gravivore.Core.Time;
 using Gravivore.Gameplay.Encounters;
+using Gravivore.Gameplay.Equipment;
 using Gravivore.Gameplay.Offline;
 using Gravivore.Gameplay.Player;
 using Gravivore.Gameplay.Progression;
@@ -12,6 +13,33 @@ namespace Gravivore.Tests.EditMode
 {
     public sealed class RepeatRewardCrashRecoveryTests
     {
+        [TestCase(1,false)] [TestCase(2,false)] [TestCase(3,false)]
+        [TestCase(2,true)] [TestCase(3,true)]
+        public void WeaponCopyAndRankRecoverExactlyOnceAcrossEveryRewardCheckpoint(int checkpoint,bool crash)
+        {
+            var original=SaveOfflineTests.CreateContext();
+            var catalog=new EquipmentCatalog(new[]{new EquipmentItem(Chapter01Weapon.ItemId,"M-0",EquipmentSlot.Weapon,new EquipmentFlatModifier(12,0,0,0,0),5,4)});
+            var context=new ProfileRestoreContext(original.PlayerStats,original.Progression,catalog,original.Quests,original.EliteGateId,original.BossGateId,original.EliteEnemyId,original.BossId);
+            var repository=new FaultRepository();var session=Start(repository,context);
+            // Test a later copy, where an accidental retry would silently raise rank twice.
+            var equipment=new EquipmentService(session.State.PlayerStats,catalog,session.State.Inventory);
+            equipment.GrantRankedCopy(Chapter01Weapon.ItemId);equipment.Equip(Chapter01Weapon.ItemId,EquipmentSlot.Weapon);Assert.IsTrue(session.FlushNow());
+            RepeatableRewardTransactionCoordinator Transaction(ProfileSession value)
+            {
+                var service=new EquipmentService(value.State.PlayerStats,catalog,value.State.Inventory);
+                return new RepeatableRewardTransactionCoordinator(value,new AuthoredRewardApplier(value.State.PlayerStats,value.State.Progression,context.Progression),
+                    applyLoot:pending=>{if(pending.EncounterKind==RepeatableEncounterKind.Custodian)service.GrantRankedCopy(Chapter01Weapon.ItemId);});
+            }
+            var transaction=Transaction(session);repository.ResetFault(checkpoint);
+            Assert.IsFalse(transaction.PrepareAndCommit(RepeatableEncounterKind.Custodian,true,new CoreReward("custodian-m0",PlayerStatType.Hull,2,10)));
+            repository.ResetFault(0);if(crash){session=Start(repository,context);transaction=Transaction(session);}
+            Assert.IsTrue(transaction.RecoverPending());Assert.IsTrue(transaction.RecoverPending());
+            Assert.That(session.State.Inventory.GetRank(Chapter01Weapon.ItemId),Is.EqualTo(2));
+            var final=Start(repository,context);Assert.That(final.State.Inventory.GetRank(Chapter01Weapon.ItemId),Is.EqualTo(2));
+            Assert.That(final.State.Repeatable.PendingReward,Is.Null);
+            Assert.Throws<InvalidOperationException>(()=>transaction.PrepareAndCommit(RepeatableEncounterKind.Custodian,true,new CoreReward("custodian-m0",PlayerStatType.Hull,2,10)));
+            Assert.That(session.State.Inventory.GetRank(Chapter01Weapon.ItemId),Is.EqualTo(2));
+        }
         [TestCase(1)]
         [TestCase(2)]
         [TestCase(3)]

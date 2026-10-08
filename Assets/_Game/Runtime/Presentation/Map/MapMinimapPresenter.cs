@@ -401,7 +401,7 @@ namespace Gravivore.Presentation.Map
         }
 
         private static bool SameSelectedPresentationState(MapMarkerSnapshot a, MapMarkerSnapshot b) =>
-            a.Id == b.Id &&
+            a.LiveEnemyCount == b.LiveEnemyCount && a.Id == b.Id &&
             a.DisplayName == b.DisplayName &&
             a.Availability == b.Availability &&
             a.ProgressionLocked == b.ProgressionLocked &&
@@ -413,6 +413,7 @@ namespace Gravivore.Presentation.Map
         {
             var state = marker.ProgressionLocked ? "ЗАБЛОКИРОВАНО" : AvailabilityText(marker.Availability);
             var text = $"{marker.DisplayName}  ·  {state}";
+            if (marker.LiveEnemyCount > 0) text += "  ·  ×" + marker.LiveEnemyCount;
             if (marker.Availability == MapAvailabilityState.Cooldown && marker.RemainingSeconds > 0f)
                 text += $"\nДоступно через {MapTimerFormatter.FormatExact(marker.RemainingSeconds)}";
             if (marker.RewardState == MapRewardState.Full)

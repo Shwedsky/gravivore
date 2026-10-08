@@ -19,6 +19,7 @@ namespace Gravivore.Gameplay.Encounters
         [SerializeField, Min(0.1f)] private float _telegraphDuration = 1f;
         [SerializeField, Min(0.1f)] private float _recoveryDuration = 1.4f;
 
+        [SerializeField] private EncounterBasicAttackSettings _basicAttack = new EncounterBasicAttackSettings();
         public string Id => _id;
 
         public MagnetarGuardConfiguration Configuration => new MagnetarGuardConfiguration(
@@ -34,7 +35,7 @@ namespace Gravivore.Gameplay.Encounters
             _attackRange,
             _shockwaveRadius,
             _telegraphDuration,
-            _recoveryDuration);
+            _recoveryDuration, _basicAttack.Configuration);
 
         public void ValidateOrThrow() => _ = Configuration;
     }

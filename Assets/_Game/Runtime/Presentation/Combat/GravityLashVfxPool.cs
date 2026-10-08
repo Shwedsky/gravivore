@@ -40,6 +40,9 @@ namespace Gravivore.Presentation.Combat
         private Phase6BAudioPlayer _audio;
         private Phase6BVfxPool _vfx;
         private Transform _presentationOrigin;
+        private Transform _equipmentOrigin;
+        public void SetEquipmentOrigin(Transform origin) => _equipmentOrigin = origin;
+        public Transform EquipmentOrigin => _equipmentOrigin;
         private float _beamDuration;
         private float _windupDuration;
         private float _impactDuration;
@@ -305,7 +308,7 @@ namespace Gravivore.Presentation.Combat
         }
 
         private Vector3 ResolveOrigin(Vector3 fallback) =>
-            _presentationOrigin != null ? _presentationOrigin.position : fallback;
+            _equipmentOrigin != null && _equipmentOrigin.gameObject.activeInHierarchy ? _equipmentOrigin.position : _presentationOrigin != null ? _presentationOrigin.position : fallback;
 
         private static void ResetSequence(Sequence sequence)
         {

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using Gravivore.Gameplay.Combat;
 using Gravivore.Gameplay.Encounters;
 using Gravivore.Gameplay.Enemies;
@@ -44,7 +45,7 @@ namespace Gravivore.Tests.PlayMode
         {
             yield return Load();
             var root = _scene.Root;
-            Assert.That(root.SaveSchemaVersion, Is.EqualTo(2));
+            Assert.That(root.SaveSchemaVersion, Is.EqualTo(3));
             Assert.That(root.EnemyPopulation.SpotCount, Is.EqualTo(9));
             Assert.That(root.StrongSpots.Count, Is.EqualTo(4));
             Assert.That(root.MapMarkers.Count, Is.EqualTo(15));
@@ -179,7 +180,8 @@ namespace Gravivore.Tests.PlayMode
                 Assert.That(root.EncounterTelegraphs.BossTelegraphVisible, Is.False);
                 var instance = bridge.Vfx.GetComponentsInChildren<Phase6BVfxInstance>(true).Single(x => x.Cue == expected[i]);
                 Assert.That(instance.IsPlaying, Is.True);
-                Assert.That(instance.PresentedRange, Is.EqualTo(i == 0 ? 4f : i == 1 ? 6f : 7f));
+                var configuration=(CustodianBossConfiguration)typeof(CustodianBossController).GetField("_configuration",BindingFlags.NonPublic|BindingFlags.Instance).GetValue(boss);
+                Assert.That(instance.PresentedRange, Is.EqualTo(configuration.GetAttack((BossAttackType)i).Range));
                 var hp = root.PlayerHealth.CurrentHitPoints;
                 boss.Tick(.25f);
                 Assert.That(root.PlayerHealth.CurrentHitPoints, Is.EqualTo(hp), "Warning presentation cannot commit damage.");
@@ -188,8 +190,12 @@ namespace Gravivore.Tests.PlayMode
                 Assert.That(geometry.GetPosition(0).y, Is.GreaterThan(.3f), "Cosmetic warnings must clear the authored visual deck.");
                 yield return null; // Render an actual engine frame before capturing newly enabled geometry.
                 Capture(root, evidence[i]);
+                // This presentation test inspects all three warnings; prevent new V3 combat
+                // pressure from killing the fixture while advancing through the commit/recovery.
+                root.PlayerHealth.SetDevelopmentGodMode(true);
                 boss.Tick(2f); boss.Tick(0f); boss.Tick(2f);
                 if (i < 2) boss.Tick(0f);
+                root.PlayerHealth.SetDevelopmentGodMode(false);
             }
             boss.ResetEncounter();
             foreach (var instance in root.Phase6BCombat.Vfx.GetComponentsInChildren<Phase6BVfxInstance>(true))

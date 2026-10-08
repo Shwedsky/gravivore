@@ -14,6 +14,8 @@ namespace Gravivore.Gameplay.Equipment
         [SerializeField] private float _attackInterval;
         [SerializeField] private float _moveSpeed;
 
+        [SerializeField, Range(1,5)] private int _maximumRank = 1;
+        [SerializeField, Min(0)] private float _damagePerRank;
         public string Id => _id;
         public EquipmentSlot Slot => _slot;
 
@@ -27,7 +29,7 @@ namespace Gravivore.Gameplay.Equipment
                     _armorValue,
                     _attackInterval,
                     _moveSpeed);
-                return new EquipmentItem(_id, _displayName, _slot, modifier);
+                return new EquipmentItem(_id, _displayName, _slot, modifier, _maximumRank, _damagePerRank);
             }
         }
 

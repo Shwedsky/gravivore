@@ -30,6 +30,12 @@ namespace Gravivore.Gameplay.Encounters
         private Vector3 _telegraphDirection;
         private bool _initialized;
         private float _outsideArenaSeconds;
+        private EncounterBasicAttackCadence _basic;
+        public event Action<EncounterBasicAttackEvent> BasicAttackStarted;
+        public event Action<EncounterBasicAttackEvent> BasicAttackResolved;
+        public float OutsideCombatLeashSeconds => _outsideArenaSeconds;
+        public float InitialAggroRadius => _configuration.InitialAggroRadius;
+        public float CombatLeashRadius => _configuration.CombatLeashRadius;
 
         public event Action<BossTelegraphEvent> TelegraphStarted;
         public event Action<BossAttackResolvedEvent> AttackResolved;
@@ -86,6 +92,7 @@ namespace Gravivore.Gameplay.Encounters
             ConfigureBody();
             _health.Reset(configuration.MaximumHitPoints);
             _stateMachine = new CustodianBossStateMachine(configuration);
+            _basic = new EncounterBasicAttackCadence(configuration.BasicAttack);
             SetPosition(configuration.StartPosition);
             _playerHealth.Died += HandlePlayerDied;
             _initialized = true;
@@ -134,6 +141,7 @@ namespace Gravivore.Gameplay.Encounters
             _telegraphOrigin = default;
             _telegraphDirection = default;
             _outsideArenaSeconds = 0f;
+            _basic?.Reset();
             SetPosition(_configuration.StartPosition);
             _sensingCollider.enabled = true;
             SafeEventDispatch.Publish(EncounterReset,
@@ -145,13 +153,14 @@ namespace Gravivore.Gameplay.Encounters
         {
             if (!_initialized) throw new InvalidOperationException("Custodian boss must be initialized before ticking.");
             if (State == CustodianBossState.Dead) return;
-            var playerInsideArena = BossAttackGeometry.IsInsideCircle(
+            var playerInsideAggro = BossAttackGeometry.IsInsideCircle(
                 _configuration.ArenaCenter,
                 _player.position,
-                _configuration.ArenaRadius);
+                _configuration.InitialAggroRadius);
+            var playerInsideLeash = BossAttackGeometry.IsInsideCircle(_configuration.ArenaCenter, _player.position, _configuration.CombatLeashRadius);
             if (State == CustodianBossState.Dormant)
             {
-                if (!_encounterAccess.CanEngage || !playerInsideArena || !_playerHealth.IsAlive) return;
+                if (!_encounterAccess.CanEngage || !playerInsideAggro || !_playerHealth.IsAlive) return;
                 _stateMachine.Engage();
                 SafeEventDispatch.Publish(
                     EncounterStarted,
@@ -163,7 +172,7 @@ namespace Gravivore.Gameplay.Encounters
                 return;
             }
 
-            if (!playerInsideArena)
+            if (!playerInsideLeash)
             {
                 _outsideArenaSeconds += deltaTime;
                 if (_outsideArenaSeconds >= _configuration.ArenaExitResetGraceSeconds)
@@ -186,6 +195,29 @@ namespace Gravivore.Gameplay.Encounters
                     new BossPhaseChangedEvent(_configuration.Id, true));
             }
 
+            var offset = _player.position - transform.position; offset.y = 0;
+            var betweenSpecials = State == CustodianBossState.Recovery || State == CustodianBossState.Engaging;
+            if (betweenSpecials && _configuration.PursuitSpeed > 0 && offset.magnitude > _configuration.CollisionRadius * 2)
+            {
+                var requested = transform.position + offset.normalized * (_configuration.PursuitSpeed * deltaTime);
+                var bounds = _configuration.WorldBounds;
+                requested.x = Mathf.Clamp(requested.x, bounds.MinX + _configuration.CollisionRadius, bounds.MaxX - _configuration.CollisionRadius);
+                requested.z = Mathf.Clamp(requested.z, bounds.MinZ + _configuration.CollisionRadius, bounds.MaxZ - _configuration.CollisionRadius);
+                var safe = _chargeResolver.Resolve(transform.position, requested, _configuration.CollisionRadius);
+                _body.Move(safe - transform.position);
+                transform.rotation = Quaternion.LookRotation(offset.normalized, Vector3.up);
+            }
+            _basic.Tick(deltaTime, offset.magnitude, betweenSpecials && _playerHealth.IsAlive);
+            var basicSource = _targetPoint.position;
+            var basicTarget = _player.position + Vector3.up;
+            if (_basic.Began) SafeEventDispatch.Publish(BasicAttackStarted,
+                new EncounterBasicAttackEvent(basicSource, basicTarget, _configuration.BasicAttack.Windup));
+            if (_basic.Resolved)
+            {
+                var hit = _basic.Hit;
+                if (hit) _playerHealth.ApplyDamage(new DamageRequest(_configuration.BasicAttack.Damage, DamageType.Physical));
+                SafeEventDispatch.Publish(BasicAttackResolved, new EncounterBasicAttackEvent(basicSource, basicTarget, 0, hit));
+            }
             if (decision.TelegraphBegan) BeginTelegraph(decision.Attack);
             if (decision.ResolveAttack) ResolveAttack(decision.Attack);
         }
@@ -198,6 +230,7 @@ namespace Gravivore.Gameplay.Encounters
             _telegraphOrigin = default;
             _telegraphDirection = default;
             _outsideArenaSeconds = 0f;
+            _basic?.Reset();
             _stateMachine.CompleteReset();
             SafeEventDispatch.Publish(
                 EncounterReset,
@@ -214,6 +247,7 @@ namespace Gravivore.Gameplay.Encounters
             _telegraphOrigin = default;
             _telegraphDirection = default;
             _outsideArenaSeconds = 0f;
+            _basic?.Reset();
             SetPosition(_configuration.StartPosition);
             _sensingCollider.enabled = true;
             SafeEventDispatch.Publish(

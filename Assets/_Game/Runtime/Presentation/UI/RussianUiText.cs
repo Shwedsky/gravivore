@@ -52,6 +52,7 @@ namespace Gravivore.Presentation.UI
                 case Gravivore.Gameplay.Equipment.EquipmentSlot.Core: return "Ядро";
                 case Gravivore.Gameplay.Equipment.EquipmentSlot.Chassis: return "Корпус";
                 case Gravivore.Gameplay.Equipment.EquipmentSlot.Module: return "Модуль";
+                case Gravivore.Gameplay.Equipment.EquipmentSlot.Weapon: return "Оружие";
                 default: return "Ячейка";
             }
         }

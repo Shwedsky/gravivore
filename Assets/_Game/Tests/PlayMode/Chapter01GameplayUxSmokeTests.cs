@@ -36,10 +36,11 @@ namespace Gravivore.Tests.PlayMode
             Assert.That(root.Progression.State.TotalAssimilationScore,Is.EqualTo(granted));
             spot.Tick(18);spot.GetLiveEnemy(0).ApplyDamage(new DamageRequest(100000,DamageType.Gravity));
             Assert.That(spot.SecondsUntilNextRespawn,Is.EqualTo(102));
-            var marker=root.MapMarkers.GetMarker(1);Assert.That(marker.Availability,Is.EqualTo(MapAvailabilityState.Cooldown));
+            var marker=root.MapMarkers.GetMarker(1);Assert.That(marker.Availability,Is.EqualTo(MapAvailabilityState.Active));
+            Assert.That(marker.LiveEnemyCount,Is.EqualTo(2));
             Assert.That(marker.RemainingSeconds,Is.EqualTo(spot.SecondsUntilNextRespawn));
             var map=root.MapIntegration.MapPresenter;map.RefreshNow();
-            Assert.That(map.ExpandedSurface.Find("Marker_"+spot.Id+"/Timer").GetComponent<Text>().text,Is.EqualTo("01:42"));
+            Assert.That(map.ExpandedSurface.Find("Marker_"+spot.Id+"/Timer").GetComponent<Text>().text,Is.EqualTo("×2"));
             map.OpenExpanded();Capture(root,"map-cooldown");map.CloseExpanded();
             Move(root,spot.Position);spot.Tick(101f);Assert.That(spot.LiveCount,Is.EqualTo(2));spot.Tick(1f);
             Assert.That(spot.Availability,Is.EqualTo(SpawnSpotAvailability.Ready));Assert.That(spot.LiveCount,Is.EqualTo(2));

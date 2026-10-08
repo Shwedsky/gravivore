@@ -14,6 +14,12 @@ namespace Gravivore.Presentation.World
         public PresentationModelBinding Elite => _elite;
         public PresentationModelBinding Boss => _boss;
         public PresentationModelBinding RepairHub => _repairHub;
+        [SerializeField] private GameObject _weaponPrefab;
+        public GameObject WeaponPrefab => _weaponPrefab;
+        [SerializeField] private Gravivore.Presentation.AudioVfx.Phase6BVfxInstance _hostileCharge, _hostileTravel, _hostileImpact;
+        public Gravivore.Presentation.AudioVfx.Phase6BVfxInstance HostileCharge => _hostileCharge;
+        public Gravivore.Presentation.AudioVfx.Phase6BVfxInstance HostileTravel => _hostileTravel;
+        public Gravivore.Presentation.AudioVfx.Phase6BVfxInstance HostileImpact => _hostileImpact;
         public ConceptFidelityDefinition Fidelity => _fidelity;
 
         public void ValidateOrThrow()

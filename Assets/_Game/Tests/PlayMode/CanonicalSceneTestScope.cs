@@ -1,11 +1,13 @@
 using System;
 using System.Collections;
 using System.IO;
+using System.Text.RegularExpressions;
 using Gravivore.Core.Time;
 using Gravivore.Presentation.Composition;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.TestTools;
 
 namespace Gravivore.Tests.PlayMode
 {
@@ -19,6 +21,16 @@ namespace Gravivore.Tests.PlayMode
 
         public S01SceneCompositionRoot Root { get; private set; }
         public void AdvanceTime(TimeSpan duration) => _time.UtcNow += duration;
+
+        public static void ExpectRenderingBootLogs(S01SceneCompositionRoot root)
+        {
+            var diagnostic = root.GetComponent<Gravivore.Presentation.Development.RenderingBootDiagnostics>();
+            Assert.IsNotNull(diagnostic);
+            Assert.IsTrue(diagnostic.HasLogged);
+            LogAssert.Expect(LogType.Log, new Regex("^RENDER_BOOT pipeline="));
+            for (var i = 0; i < diagnostic.MaterialCount; i++)
+                LogAssert.Expect(LogType.Log, new Regex("^RENDER_BOOT material=.*; supported=True;"));
+        }
 
         public IEnumerator Load(Action<S01SceneCompositionRoot> configure = null)
         {

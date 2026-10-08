@@ -13,12 +13,12 @@ namespace Gravivore.Tests.EditMode
     public sealed class EquipmentTests
     {
         [Test]
-        public void Catalog_RequiresUniqueIdsAndSupportsExactlyThreeSlotKinds()
+        public void Catalog_RequiresUniqueIdsAndSupportsFourSlotKinds()
         {
             var catalog = CreateCatalog();
 
             Assert.That(catalog.Count, Is.EqualTo(6));
-            Assert.That(Enum.GetValues(typeof(EquipmentSlot)).Length, Is.EqualTo(3));
+            Assert.That(Enum.GetValues(typeof(EquipmentSlot)).Length, Is.EqualTo(4));
             Assert.Throws<ArgumentException>(() => new EquipmentCatalog(new[]
             {
                 Item("same", EquipmentSlot.Core, damage: 1f),

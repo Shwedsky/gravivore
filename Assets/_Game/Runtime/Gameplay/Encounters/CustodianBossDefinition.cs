@@ -32,6 +32,11 @@ namespace Gravivore.Gameplay.Encounters
         [SerializeField, Min(0.1f)] private float _lineWidth = 1.8f;
         [SerializeField, Min(0.1f)] private float _chargeDistance = 5f;
 
+        [Header("V3 combat pressure")]
+        [SerializeField] private EncounterBasicAttackSettings _basicAttack = new EncounterBasicAttackSettings();
+        [SerializeField, Min(.1f)] private float _initialAggroRadius = 8f;
+        [SerializeField, Min(.1f)] private float _combatLeashRadius = 21f;
+        [SerializeField, Min(.1f)] private float _pursuitSpeed = 3.2f;
         public string Id => _id;
 
         public CustodianBossConfiguration CreateConfiguration(Chapter01WorldConfiguration world)
@@ -58,7 +63,7 @@ namespace Gravivore.Gameplay.Encounters
                 _lowHealthCadenceMultiplier,
                 attacks,
                 new[] { BossAttackType.CirclePulse, BossAttackType.ConeSweep, BossAttackType.LineCharge },
-                _arenaExitResetGraceSeconds);
+                _arenaExitResetGraceSeconds, _basicAttack.Configuration, _initialAggroRadius, _combatLeashRadius, _pursuitSpeed);
         }
 
         public void ValidateOrThrow(Chapter01WorldConfiguration world) => _ = CreateConfiguration(world);

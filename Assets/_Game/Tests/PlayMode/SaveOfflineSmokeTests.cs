@@ -26,6 +26,7 @@ namespace Gravivore.Tests.PlayMode
             var time = new FakeTimeProvider(new DateTime(2031, 4, 5, 12, 0, 0, DateTimeKind.Utc));
             S01SceneCompositionRoot first = null;
             yield return LoadCanonical(directory, time, value => first = value);
+            CanonicalSceneTestScope.ExpectRenderingBootLogs(first);
 
             var profileId = first.ProfileId;
             var baseDamageBeforeEquipment = first.PlayerStats.DerivedStats.BaseDamage;
@@ -75,6 +76,7 @@ namespace Gravivore.Tests.PlayMode
 
             S01SceneCompositionRoot restored = null;
             yield return LoadCanonical(directory, time, value => restored = value);
+            CanonicalSceneTestScope.ExpectRenderingBootLogs(restored);
 
             Assert.That(restored.ProfileId, Is.EqualTo(profileId));
             Assert.That(restored.PlayerStats.BaseLevels, Is.EqualTo(levels));

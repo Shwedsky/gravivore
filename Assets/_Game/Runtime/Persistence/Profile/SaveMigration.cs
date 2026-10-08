@@ -72,6 +72,8 @@ namespace Gravivore.Persistence.Profile
                 Register(migrations[i] ?? throw new ArgumentException("Migration entries cannot be null.", nameof(migrations)));
             }
 
+            if (_currentVersion >= 3 && !_migrations.ContainsKey(2)) Register(new SaveMigrationV2ToV3());
+
             // Sequential migrations introduced by the persistence assembly are registered here so
             // presentation/composition callers do not need to change whenever the schema advances.
             if (_currentVersion >= 2 && !_migrations.ContainsKey(1))
@@ -124,6 +126,20 @@ namespace Gravivore.Persistence.Profile
             {
                 throw new ArgumentException("Migrations must be unique sequential steps.", nameof(migration));
             }
+        }
+    }
+
+    public sealed class SaveMigrationV2ToV3 : ISaveMigration
+    {
+        public int FromVersion => 2;
+        public int ToVersion => 3;
+        public SaveRootDto Migrate(string sourceJson, ISaveSerializer serializer, SaveRootDto defaults)
+        {
+            var save = serializer.Deserialize<SaveRootDto>(sourceJson);
+            save.schemaVersion = ToVersion;
+            // Existing progression is retained; no historical weapon is invented.
+            if (save.inventory != null) save.inventory.ItemRanks = Array.Empty<ItemRankSaveDto>();
+            return save;
         }
     }
 

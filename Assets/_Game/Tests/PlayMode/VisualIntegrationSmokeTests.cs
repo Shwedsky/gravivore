@@ -79,6 +79,8 @@ namespace Gravivore.Tests.PlayMode
             var model = GameObject.CreatePrimitive(PrimitiveType.Cube); Object.Destroy(model.GetComponent<Collider>());
             Object.DontDestroyOnLoad(model);
             model.name = "Injected pure candidate"; _owned.Add(model); yield return null;
+            // The equipped-weapon presentation contract adds a right tool mount to candidate art.
+            new GameObject("R_TOOL").transform.SetParent(model.transform,false);
             var container = new GameObject("Presentation Sockets").transform; container.SetParent(model.transform,false);
             var origin = new GameObject("AttackOrigin").transform; origin.SetParent(container,false); origin.localPosition = new Vector3(0,1,.7f);
             var binding = new PresentationModelBinding(); Set(binding,"_prefab",model);

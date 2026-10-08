@@ -4,6 +4,7 @@ namespace Gravivore.Gameplay.Equipment
     {
         Core = 0,
         Chassis = 1,
-        Module = 2
+        Module = 2,
+        Weapon = 3
     }
 }

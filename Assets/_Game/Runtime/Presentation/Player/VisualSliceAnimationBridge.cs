@@ -101,7 +101,7 @@ namespace Gravivore.Presentation.Player
         private Corpse[] _corpses;
         private Transform _corpseRoot;
         private float _playerDeathUntil, _playerAttackUntil, _playerHitUntil, _eliteAttackUntil, _eliteHitUntil;
-        private float _bossReleaseUntil, _bossWindupDuration=1;
+        private float _bossReleaseUntil, _bossBasicWindupUntil, _bossWindupDuration=1;
         private BossAttackType _bossAttack;
         public string PlayerState { get; private set; }
         public int ActiveShutdownCount { get; private set; }
@@ -143,6 +143,9 @@ namespace Gravivore.Presentation.Player
             root.CustodianBoss.EncounterReset += BossReset;
             root.CustodianBoss.TelegraphStarted += BossWindup;
             root.CustodianBoss.AttackResolved += BossRelease;
+            root.CustodianBoss.BasicAttackStarted += BossBasicWindup;
+            root.CustodianBoss.BasicAttackResolved += BossBasicRelease;
+            root.MagnetarGuard.BasicAttackStarted += EliteBasic;
         }
         private static Actor Make(Transform authority) => new Actor
         { Binding = authority.GetComponent<CharacterVisualBinding>(), Position = authority.position };
@@ -156,10 +159,13 @@ namespace Gravivore.Presentation.Player
         private void PlayerDamaged(DamageResult result) { if (!result.WasLethal) _playerHitUntil = Time.time + .28f; }
         private void PlayerDied(PlayerDeathEvent value) { _playerDeathUntil = Time.time + .85f; _player.State = 0; _player.Pose(Death); }
         private void EliteAttack(EliteShockwaveTelegraphEvent value) { _eliteAttackUntil = Time.time + value.Duration; _elite.State = 0; }
+        private void EliteBasic(EncounterBasicAttackEvent value) { _eliteAttackUntil=Time.time+value.Duration+.25f;_elite.State=0; }
+        private void BossBasicWindup(EncounterBasicAttackEvent value) { _bossBasicWindupUntil=Time.time+value.Duration;_boss.State=0; }
+        private void BossBasicRelease(EncounterBasicAttackEvent value) { _bossBasicWindupUntil=0;_bossReleaseUntil=Time.time+.35f;_bossAttack=BossAttackType.LineCharge;_boss.State=0; }
         private void EliteDamaged(DamageResult value) { if (!value.WasLethal) _eliteHitUntil = Time.time + .28f; }
         private void EliteActivated(MagnetarGuardActivatedEvent value) { _elite.State = 0; _elite.Pose(Idle); }
         private void BossReset(BossEncounterResetEvent value)
-        { _boss.State = 0; _boss.ReactionUntil = 0; _bossReleaseUntil=0; _boss.Pose(Idle); if(_boss.Animator!=null)_boss.Animator.speed=1; }
+        { _boss.State = 0; _boss.ReactionUntil = 0; _bossReleaseUntil=0; _bossBasicWindupUntil=0;_boss.Pose(Idle); if(_boss.Animator!=null)_boss.Animator.speed=1; }
         private void BossWindup(BossTelegraphEvent value)
         { _bossAttack=value.Attack;_bossWindupDuration=Mathf.Max(.01f,value.Duration);_bossReleaseUntil=0;_boss.State=0; }
         private void BossRelease(BossAttackResolvedEvent value)
@@ -233,6 +239,7 @@ namespace Gravivore.Presentation.Player
                 pose==CustodianPresentationPose.Windup?(authoredBoss?Windup:Attack):
                 pose==CustodianPresentationPose.Special?(authoredBoss?Special:Attack):
                 pose==CustodianPresentationPose.Release?(authoredBoss?Release:Attack):pose==CustodianPresentationPose.Run?Run:Idle;
+            if(Time.time<_bossBasicWindupUntil && bossState!=Death && bossState!=Hit)bossState=authoredBoss?Windup:Attack;
             _boss.Pose(bossState); _boss.Hp=boss.CurrentHitPoints; _boss.Position=boss.transform.position;
             if(_boss.Animator!=null)_boss.Animator.speed=authoredBoss&&pose==CustodianPresentationPose.Windup?1/_bossWindupDuration:1;
             ActiveShutdownCount = 0;
@@ -254,11 +261,14 @@ namespace Gravivore.Presentation.Player
             {
                 _root.CustodianBoss.TelegraphStarted -= BossWindup;
                 _root.CustodianBoss.AttackResolved -= BossRelease;
+                _root.CustodianBoss.BasicAttackStarted -= BossBasicWindup;
+                _root.CustodianBoss.BasicAttackResolved -= BossBasicRelease;
             }
             if (_root.MagnetarGuard != null)
             {
                 _root.MagnetarGuard.TelegraphStarted -= EliteAttack; _root.MagnetarGuard.Damaged -= EliteDamaged;
                 _root.MagnetarGuard.Activated -= EliteActivated;
+                _root.MagnetarGuard.BasicAttackStarted -= EliteBasic;
             }
         }
     }

@@ -234,11 +234,14 @@ namespace Gravivore.Presentation.World
 
             // Conservative interior proxies: large enough to stop walking through solid machinery,
             // inset enough to keep canonical path centre-lines and encounter centres clear.
+            if (!_environment.FullChapterProduction)
+            {
             AddEnvironmentBlocker("Repair Hub Left Service Frame", "repair-hub",
                 new Vector3(-3.8f, 1.2f, 1f), new Vector3(1.2f, 2.4f, 3.2f), hardBlockerLayer);
             AddEnvironmentBlocker("Repair Hub Right Service Frame", "repair-hub",
                 new Vector3(3.8f, 1.2f, 1f), new Vector3(1.2f, 2.4f, 3.2f), hardBlockerLayer);
 
+            }
             if (!_environment.FullChapterProduction)
             {
             AddEnvironmentBlocker("Shield Dump Left Emitter Carcass", "shield-dump",

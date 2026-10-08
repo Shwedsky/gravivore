@@ -22,6 +22,9 @@ namespace Gravivore.Gameplay.Encounters
         private bool _hasActiveShockwave;
         private bool _encounterActive;
         private bool _initialized;
+        private EncounterBasicAttackCadence _basic;
+        public event Action<EncounterBasicAttackEvent> BasicAttackStarted;
+        public event Action<EncounterBasicAttackEvent> BasicAttackResolved;
 
         public event Action<MagnetarGuardActivatedEvent> Activated;
         public event Action<DamageResult> Damaged;
@@ -62,6 +65,7 @@ namespace Gravivore.Gameplay.Encounters
             ConfigureBody();
             _health.Reset(configuration.MaximumHitPoints);
             _brain.Configure(configuration);
+            _basic = new EncounterBasicAttackCadence(configuration.BasicAttack);
             _body.enabled = false;
             transform.position = configuration.SpawnPosition;
             transform.rotation = Quaternion.identity;
@@ -75,6 +79,7 @@ namespace Gravivore.Gameplay.Encounters
             if (_encounterActive || !_health.IsAlive) return false;
             _encounterActive = true;
             _brain.Reset();
+            _basic?.Reset();
             _body.enabled = true;
             _sensingCollider.enabled = true;
             SafeEventDispatch.Publish(Activated, new MagnetarGuardActivatedEvent(_configuration.Id));
@@ -94,6 +99,7 @@ namespace Gravivore.Gameplay.Encounters
             transform.rotation = Quaternion.identity;
             _health.Reset(_configuration.MaximumHitPoints);
             _brain.Reset();
+            _basic?.Reset();
             return true;
         }
 
@@ -132,6 +138,19 @@ namespace Gravivore.Gameplay.Encounters
                 var direction = offset.normalized;
                 _body.Move(direction * (_configuration.MoveSpeed * deltaTime));
                 transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
+            }
+
+            _basic.Tick(deltaTime, offset.magnitude, _playerDamageable.IsAlive &&
+                (State == MagnetarGuardState.Approach || State == MagnetarGuardState.Recovery));
+            var source = _targetPoint.position;
+            var target = _player.position + Vector3.up;
+            if (_basic.Began) SafeEventDispatch.Publish(BasicAttackStarted,
+                new EncounterBasicAttackEvent(source, target, _configuration.BasicAttack.Windup));
+            if (_basic.Resolved)
+            {
+                var hit = _basic.Hit;
+                if (hit) _playerDamageable.ApplyDamage(new DamageRequest(_configuration.BasicAttack.Damage, DamageType.Physical));
+                SafeEventDispatch.Publish(BasicAttackResolved, new EncounterBasicAttackEvent(source, target, 0, hit));
             }
 
             if (decision.TelegraphBegan)
