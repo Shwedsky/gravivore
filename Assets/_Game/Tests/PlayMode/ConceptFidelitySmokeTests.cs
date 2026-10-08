@@ -42,7 +42,13 @@ namespace Gravivore.Tests.PlayMode
             Assert.That(triangles[0],Is.LessThan(25000));Assert.That(triangles[1],Is.LessThan(triangles[0]));Assert.That(triangles[2],Is.LessThan(triangles[1]));
             Assert.That(model.GetComponentsInChildren<Collider>().Length,Is.Zero);
             var authorityPosition=boss.transform.position;var radius=boss.CollisionRadius;var hp=boss.CurrentHitPoints;
-            foreach(var state in new[]{"Windup","Release","Special","Hit","Death"}){animator.Play(state,0,.55f);animator.Update(0);}
+            var bones=model.GetComponentsInChildren<Transform>(true);
+            var core=bones.Single(b=>b.name=="CORE");var shutter=bones.Single(b=>b.name=="L_SHUTTER");
+            Sample(animator,"Idle",.55f);var idleScale=core.localScale;var idleRotation=shutter.localRotation;
+            Sample(animator,"Windup",.55f);
+            Assert.That(Quaternion.Angle(shutter.localRotation,idleRotation),Is.GreaterThan(5),"Imported windup must move the shell.");
+            foreach(var state in new[]{"Release","Special","Hit","Death"})Sample(animator,state,.55f);
+            Assert.That(core.localScale.magnitude,Is.LessThan(idleScale.magnitude*.65f),"Imported shutdown must extinguish the internal core.");
             Assert.That(boss.transform.position,Is.EqualTo(authorityPosition));Assert.That(boss.CollisionRadius,Is.EqualTo(radius));Assert.That(boss.CurrentHitPoints,Is.EqualTo(hp));
         }
         [UnityTest] public IEnumerator AuthoredRepairAndAmbientPoolsStayBoundedAndNeverHealByPresentation()
@@ -83,8 +89,13 @@ namespace Gravivore.Tests.PlayMode
             root.MagnetarGuard.ApplyDamage(new DamageRequest(100000,DamageType.Gravity));
             Move(root,new Vector3(0,0,89.5f));root.CustodianBoss.Tick(0);yield return null;
             var bossAnimator=root.CustodianBoss.GetComponent<CharacterVisualBinding>().ActiveModel.GetComponentInChildren<Animator>();
+            // Freeze the observer only for explicit pose captures; otherwise its
+            // authoritative state restores windup while the capture is being sampled.
+            root.GetComponentInChildren<Gravivore.Presentation.Player.VisualSliceAnimationBridge>().enabled=false;
+            bossAnimator.cullingMode=AnimatorCullingMode.AlwaysAnimate;
+            foreach(var skin in bossAnimator.GetComponentsInChildren<SkinnedMeshRenderer>())skin.updateWhenOffscreen=true;
             foreach(var pair in new[]{("12_custodian_idle","Idle"),("13_custodian_windup","Windup"),("14_custodian_release","Release"),("15_custodian_special","Special"),("16_custodian_shutdown","Death")})
-            {bossAnimator.Play(pair.Item2,0,.55f);bossAnimator.Update(0);Capture(root,pair.Item1);}
+            {Sample(bossAnimator,pair.Item2,.55f);yield return null;yield return null;Capture(root,pair.Item1);}
             Assert.That(root.GetComponentsInChildren<Renderer>(true).Length,Is.EqualTo(renderers));
             Assert.That(root.GetComponentsInChildren<Transform>(true).Length,Is.EqualTo(transforms));
             Directory.CreateDirectory("docs/concept-fidelity-v2/verification");
@@ -93,6 +104,13 @@ namespace Gravivore.Tests.PlayMode
                 realtimeLights=root.GetComponentsInChildren<Light>(true).Length,heroRouteRenderers=route.GetComponentsInChildren<Renderer>(true).Length},true));
         }
         [Serializable] private sealed class Inventory{public int transforms,renderers,sharedMaterials,realtimeLights,heroRouteRenderers;}
+        private static void Sample(Animator animator,string state,float normalizedTime)
+        {
+            // Batch-mode has no continuously rendered Game view. Explicit pose review
+            // must evaluate imported curves even when normal visibility culling pauses them.
+            var prior=animator.cullingMode;animator.cullingMode=AnimatorCullingMode.AlwaysAnimate;
+            animator.Play(Animator.StringToHash(state),0,normalizedTime);animator.Update(.0001f);animator.cullingMode=prior;
+        }
         private sealed class RouteInput : IMovementInput{public Vector2 Movement{get;set;}}
         private static int MaterialCount(Component owner)=>owner.GetComponentsInChildren<Renderer>(true)
             .SelectMany(r=>r.sharedMaterials).Where(m=>m!=null).Distinct().Count();
