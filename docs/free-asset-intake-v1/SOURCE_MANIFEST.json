@@ -1,0 +1,730 @@
+{
+  "schemaVersion": 1,
+  "intakeRoot": "ExternalAssetIntake/FreeAssetIntakeV1",
+  "licenseClasses": [
+    "UNITY_ASSET_STORE_EULA",
+    "CC0",
+    "CC_BY_4_0",
+    "CUSTOM_FREE_COMMERCIAL",
+    "UNKNOWN_REQUIRES_REVIEW"
+  ],
+  "productionPolicy": "UNKNOWN_REQUIRES_REVIEW must never enter production. Expected license and file presence are not inspection or production approval.",
+  "fallbackFolders": [
+    "ExternalAssetIntake/FreeAssetIntakeV1/98_unclassified",
+    "ExternalAssetIntake/FreeAssetIntakeV1/99_failed_or_replacements"
+  ],
+  "sources": [
+    {
+      "id": "reference-concept-board",
+      "displayName": "GRAVIVORE authoritative concept board",
+      "category": "00_reference",
+      "expectedLocalFolder": "ExternalAssetIntake/FreeAssetIntakeV1/00_reference/01_gravivore_concept_board",
+      "sourceUrl": null,
+      "publisher": "Owner",
+      "sourcePlatform": "OWNER_REFERENCE",
+      "expectedLicense": "UNKNOWN_REQUIRES_REVIEW",
+      "attributionRequired": null,
+      "intendedRoles": [
+        "visual_authority"
+      ],
+      "priority": 1,
+      "downloadStatus": "AWAITING_OWNER_DOWNLOAD",
+      "inspectionStatus": "NOT_INSPECTED",
+      "notes": "Owner supplies PNG/JPG/JPEG; filename may vary. G-0 remains the approved BIPEDAL mech. This reference does not override its silhouette."
+    },
+    {
+      "id": "env-creepycat-starter",
+      "displayName": "3D Scifi Kit Starter Kit",
+      "category": "01_environment",
+      "expectedLocalFolder": "ExternalAssetIntake/FreeAssetIntakeV1/01_environment/01_creepycat_scifi_starter",
+      "sourceUrl": "https://assetstore.unity.com/packages/3d/environments/3d-scifi-kit-starter-kit-92152",
+      "publisher": "Creepy Cat",
+      "sourcePlatform": "UNITY_ASSET_STORE",
+      "expectedLicense": "UNITY_ASSET_STORE_EULA",
+      "attributionRequired": false,
+      "intendedRoles": [
+        "environment_modules"
+      ],
+      "priority": 1,
+      "downloadStatus": "AWAITING_OWNER_DOWNLOAD",
+      "inspectionStatus": "NOT_INSPECTED",
+      "notes": "Original downloaded package only."
+    },
+    {
+      "id": "env-sickhead-construction",
+      "displayName": "Sci-Fi Construction Kit (Modular)",
+      "category": "01_environment",
+      "expectedLocalFolder": "ExternalAssetIntake/FreeAssetIntakeV1/01_environment/02_sickhead_scifi_construction",
+      "sourceUrl": "https://assetstore.unity.com/packages/3d/environments/sci-fi/sci-fi-construction-kit-modular-159280",
+      "publisher": "Sickhead Games",
+      "sourcePlatform": "UNITY_ASSET_STORE",
+      "expectedLicense": "UNITY_ASSET_STORE_EULA",
+      "attributionRequired": false,
+      "intendedRoles": [
+        "environment_modules",
+        "industrial_props"
+      ],
+      "priority": 1,
+      "downloadStatus": "AWAITING_OWNER_DOWNLOAD",
+      "inspectionStatus": "NOT_INSPECTED",
+      "notes": "Original downloaded package only."
+    },
+    {
+      "id": "env-karboosx-modular",
+      "displayName": "Sci-Fi Styled Modular Pack",
+      "category": "01_environment",
+      "expectedLocalFolder": "ExternalAssetIntake/FreeAssetIntakeV1/01_environment/03_karboosx_scifi_styled_modular",
+      "sourceUrl": "https://marketplace.unity.com/packages/3d/environments/sci-fi/sci-fi-styled-modular-pack-82913",
+      "publisher": "karboosx",
+      "sourcePlatform": "UNITY_ASSET_STORE",
+      "expectedLicense": "UNITY_ASSET_STORE_EULA",
+      "attributionRequired": false,
+      "intendedRoles": [
+        "environment_modules"
+      ],
+      "priority": 2,
+      "downloadStatus": "AWAITING_OWNER_DOWNLOAD",
+      "inspectionStatus": "NOT_INSPECTED",
+      "notes": "Original downloaded package only."
+    },
+    {
+      "id": "env-dmitrii-industrial",
+      "displayName": "RPG/FPS Game Assets for PC/Mobile (Industrial Set v2.0)",
+      "category": "01_environment",
+      "expectedLocalFolder": "ExternalAssetIntake/FreeAssetIntakeV1/01_environment/04_dmitrii_industrial_set_v2",
+      "sourceUrl": "https://assetstore.unity.com/packages/3d/environments/industrial/rpg-fps-game-assets-for-pc-mobile-industrial-set-v2-0-86679",
+      "publisher": "Dmitrii Kutsenko",
+      "sourcePlatform": "UNITY_ASSET_STORE",
+      "expectedLicense": "UNITY_ASSET_STORE_EULA",
+      "attributionRequired": false,
+      "intendedRoles": [
+        "industrial_props"
+      ],
+      "priority": 1,
+      "downloadStatus": "AWAITING_OWNER_DOWNLOAD",
+      "inspectionStatus": "NOT_INSPECTED",
+      "notes": "Select the FREE v2.0 listing, not another paid set."
+    },
+    {
+      "id": "env-quaternius-megakit",
+      "displayName": "Modular Sci-Fi Megakit (Standard/free subset)",
+      "category": "01_environment",
+      "expectedLocalFolder": "ExternalAssetIntake/FreeAssetIntakeV1/01_environment/05_quaternius_modular_scifi_megakit",
+      "sourceUrl": "https://quaternius.com/packs/modularscifimegakit.html",
+      "publisher": "Quaternius",
+      "sourcePlatform": "QUATERNIUS",
+      "expectedLicense": "CC0",
+      "attributionRequired": false,
+      "intendedRoles": [
+        "environment_modules"
+      ],
+      "priority": 1,
+      "downloadStatus": "AWAITING_OWNER_DOWNLOAD",
+      "inspectionStatus": "NOT_INSPECTED",
+      "notes": "Download the free Standard subset only; paid tiers are outside scope."
+    },
+    {
+      "id": "env-quaternius-essentials",
+      "displayName": "Sci-Fi Essentials Kit (Standard/free subset)",
+      "category": "01_environment",
+      "expectedLocalFolder": "ExternalAssetIntake/FreeAssetIntakeV1/01_environment/06_quaternius_scifi_essentials",
+      "sourceUrl": "https://quaternius.com/packs/scifiessentialskit.html",
+      "publisher": "Quaternius",
+      "sourcePlatform": "QUATERNIUS",
+      "expectedLicense": "CC0",
+      "attributionRequired": false,
+      "intendedRoles": [
+        "industrial_props",
+        "enemy_parts",
+        "weapon_parts"
+      ],
+      "priority": 1,
+      "downloadStatus": "AWAITING_OWNER_DOWNLOAD",
+      "inspectionStatus": "NOT_INSPECTED",
+      "notes": "Download the free Standard subset only."
+    },
+    {
+      "id": "env-molten-maps",
+      "displayName": "Molten Maps - SciFi Assets Pack",
+      "category": "01_environment",
+      "expectedLocalFolder": "ExternalAssetIntake/FreeAssetIntakeV1/01_environment/07_molten_maps_scifi",
+      "sourceUrl": "https://moltenmaps.itch.io/molten-maps-scifi-pack",
+      "publisher": "Moltenbolt",
+      "sourcePlatform": "ITCH_IO",
+      "expectedLicense": "CC0",
+      "attributionRequired": false,
+      "intendedRoles": [
+        "industrial_props",
+        "environment_modules"
+      ],
+      "priority": 2,
+      "downloadStatus": "AWAITING_OWNER_DOWNLOAD",
+      "inspectionStatus": "NOT_INSPECTED",
+      "notes": "Use the free download."
+    },
+    {
+      "id": "env-kenney-station",
+      "displayName": "Space Station Kit",
+      "category": "01_environment",
+      "expectedLocalFolder": "ExternalAssetIntake/FreeAssetIntakeV1/01_environment/08_kenney_space_station",
+      "sourceUrl": "https://kenney.nl/assets/space-station-kit",
+      "publisher": "Kenney",
+      "sourcePlatform": "KENNEY",
+      "expectedLicense": "CC0",
+      "attributionRequired": false,
+      "intendedRoles": [
+        "environment_modules"
+      ],
+      "priority": 2,
+      "downloadStatus": "AWAITING_OWNER_DOWNLOAD",
+      "inspectionStatus": "NOT_INSPECTED",
+      "notes": "Original downloaded archive only."
+    },
+    {
+      "id": "env-kenney-space",
+      "displayName": "Modular Space Kit",
+      "category": "01_environment",
+      "expectedLocalFolder": "ExternalAssetIntake/FreeAssetIntakeV1/01_environment/09_kenney_modular_space",
+      "sourceUrl": "https://kenney.nl/assets/modular-space-kit",
+      "publisher": "Kenney",
+      "sourcePlatform": "KENNEY",
+      "expectedLicense": "CC0",
+      "attributionRequired": false,
+      "intendedRoles": [
+        "environment_modules"
+      ],
+      "priority": 2,
+      "downloadStatus": "AWAITING_OWNER_DOWNLOAD",
+      "inspectionStatus": "NOT_INSPECTED",
+      "notes": "Original downloaded archive only."
+    },
+    {
+      "id": "env-seed-hunter",
+      "displayName": "Seed Hunter",
+      "category": "01_environment",
+      "expectedLocalFolder": "ExternalAssetIntake/FreeAssetIntakeV1/01_environment/10_seed_hunter",
+      "sourceUrl": "https://assetstore.unity.com/packages/3d/environments/seed-hunter-143414",
+      "publisher": "POLYGONAUTIC",
+      "sourcePlatform": "UNITY_ASSET_STORE",
+      "expectedLicense": "UNITY_ASSET_STORE_EULA",
+      "attributionRequired": false,
+      "intendedRoles": [
+        "environment_modules",
+        "industrial_props"
+      ],
+      "priority": 3,
+      "downloadStatus": "AWAITING_OWNER_DOWNLOAD",
+      "inspectionStatus": "NOT_INSPECTED",
+      "notes": "Download only; compatibility and normalization are V2 tasks."
+    },
+    {
+      "id": "pipes-techlab",
+      "displayName": "TechLab: Modular Scifi Pipes",
+      "category": "02_pipes_services",
+      "expectedLocalFolder": "ExternalAssetIntake/FreeAssetIntakeV1/02_pipes_services/01_techlab_modular_scifi_pipes",
+      "sourceUrl": "https://sketchfab.com/3d-models/techlab-modular-scifi-pipes-a481a1af0598431da712a10d11b24321",
+      "publisher": "TooManyDemons",
+      "sourcePlatform": "SKETCHFAB",
+      "expectedLicense": "CC_BY_4_0",
+      "attributionRequired": true,
+      "intendedRoles": [
+        "pipes",
+        "service_modules"
+      ],
+      "priority": 1,
+      "downloadStatus": "AWAITING_OWNER_DOWNLOAD",
+      "inspectionStatus": "NOT_INSPECTED",
+      "notes": "Listing states CC Attribution; confirm the exact license/version with downloaded evidence in V2."
+    },
+    {
+      "id": "pipes-armored",
+      "displayName": "Sci-Fi Pipes Armored",
+      "category": "02_pipes_services",
+      "expectedLocalFolder": "ExternalAssetIntake/FreeAssetIntakeV1/02_pipes_services/02_scifi_pipes_armored",
+      "sourceUrl": "https://sketchfab.com/3d-models/sci-fi-pipes-armored-99ad1e9fd3a349e68011e47a010195ed",
+      "publisher": "Random_CGI",
+      "sourcePlatform": "SKETCHFAB",
+      "expectedLicense": "UNKNOWN_REQUIRES_REVIEW",
+      "attributionRequired": null,
+      "intendedRoles": [
+        "pipes",
+        "service_modules"
+      ],
+      "priority": 2,
+      "downloadStatus": "AWAITING_OWNER_DOWNLOAD",
+      "inspectionStatus": "NOT_INSPECTED",
+      "notes": "Exact page identified; license could not be confirmed. UNKNOWN_REQUIRES_REVIEW prevents future production use."
+    },
+    {
+      "id": "mechs-quaternius",
+      "displayName": "Animated Mech Pack",
+      "category": "03_mechs_enemies",
+      "expectedLocalFolder": "ExternalAssetIntake/FreeAssetIntakeV1/03_mechs_enemies/01_quaternius_animated_mechs",
+      "sourceUrl": "https://quaternius.com/packs/animatedmech.html",
+      "publisher": "Quaternius",
+      "sourcePlatform": "QUATERNIUS",
+      "expectedLicense": "CC0",
+      "attributionRequired": false,
+      "intendedRoles": [
+        "enemy_parts",
+        "animation_candidates"
+      ],
+      "priority": 2,
+      "downloadStatus": "AWAITING_OWNER_DOWNLOAD",
+      "inspectionStatus": "NOT_INSPECTED",
+      "notes": "Future candidates only; no G-0 replacement is authorized."
+    },
+    {
+      "id": "mechs-combat-drone",
+      "displayName": "Low poly combat drone",
+      "category": "03_mechs_enemies",
+      "expectedLocalFolder": "ExternalAssetIntake/FreeAssetIntakeV1/03_mechs_enemies/02_low_poly_combat_drone",
+      "sourceUrl": "https://assetstore.unity.com/packages/3d/characters/robots/low-poly-combat-drone-82234",
+      "publisher": "VoodooPlay",
+      "sourcePlatform": "UNITY_ASSET_STORE",
+      "expectedLicense": "UNITY_ASSET_STORE_EULA",
+      "attributionRequired": false,
+      "intendedRoles": [
+        "scout_candidate"
+      ],
+      "priority": 1,
+      "downloadStatus": "AWAITING_OWNER_DOWNLOAD",
+      "inspectionStatus": "NOT_INSPECTED",
+      "notes": "Prefer this free Unity listing; licenses differ by distribution platform."
+    },
+    {
+      "id": "mechs-medium-striker",
+      "displayName": "Medium Mech Striker",
+      "category": "03_mechs_enemies",
+      "expectedLocalFolder": "ExternalAssetIntake/FreeAssetIntakeV1/03_mechs_enemies/03_medium_mech_striker",
+      "sourceUrl": "https://sketchfab.com/3d-models/medium-mech-striker-27ba717c173a40b7841d2f2c6a89d823",
+      "publisher": "MSGDI",
+      "sourcePlatform": "SKETCHFAB",
+      "expectedLicense": "CC_BY_4_0",
+      "attributionRequired": true,
+      "intendedRoles": [
+        "enemy_parts",
+        "animation_candidates"
+      ],
+      "priority": 2,
+      "downloadStatus": "AWAITING_OWNER_DOWNLOAD",
+      "inspectionStatus": "NOT_INSPECTED",
+      "notes": "Mapped to Sketchfab CC Attribution download. Record alternate platform if owner downloads elsewhere; honor listing restrictions. No production selection."
+    },
+    {
+      "id": "weapons-quaternius",
+      "displayName": "Modular Sci-Fi Guns",
+      "category": "04_weapons_machinery",
+      "expectedLocalFolder": "ExternalAssetIntake/FreeAssetIntakeV1/04_weapons_machinery/01_quaternius_scifi_modular_guns",
+      "sourceUrl": "https://quaternius.com/packs/scifimodularguns.html",
+      "publisher": "Quaternius",
+      "sourcePlatform": "QUATERNIUS",
+      "expectedLicense": "CC0",
+      "attributionRequired": false,
+      "intendedRoles": [
+        "weapon_parts"
+      ],
+      "priority": 1,
+      "downloadStatus": "AWAITING_OWNER_DOWNLOAD",
+      "inspectionStatus": "NOT_INSPECTED",
+      "notes": "Original downloaded archive only."
+    },
+    {
+      "id": "weapons-warzone",
+      "displayName": "WarZone Sci-Fi Turret pack",
+      "category": "04_weapons_machinery",
+      "expectedLocalFolder": "ExternalAssetIntake/FreeAssetIntakeV1/04_weapons_machinery/02_warzone_scifi_turret",
+      "sourceUrl": "https://marketplace.unity.com/packages/3d/environments/warzone-sci-fi-turret-pack-57540",
+      "publisher": "VDGames",
+      "sourcePlatform": "UNITY_ASSET_STORE",
+      "expectedLicense": "UNITY_ASSET_STORE_EULA",
+      "attributionRequired": false,
+      "intendedRoles": [
+        "turret_parts"
+      ],
+      "priority": 2,
+      "downloadStatus": "AWAITING_OWNER_DOWNLOAD",
+      "inspectionStatus": "NOT_INSPECTED",
+      "notes": "Original downloaded package only."
+    },
+    {
+      "id": "weapons-tower-defence",
+      "displayName": "Tower Defence Sci-Fi Turret (FREE)",
+      "category": "04_weapons_machinery",
+      "expectedLocalFolder": "ExternalAssetIntake/FreeAssetIntakeV1/04_weapons_machinery/03_tower_defence_scifi_turret",
+      "sourceUrl": "https://assetstore.unity.com/packages/3d/environments/sci-fi/tower-defence-sci-fi-turret-free-246331",
+      "publisher": "Firadzo Assets",
+      "sourcePlatform": "UNITY_ASSET_STORE",
+      "expectedLicense": "UNITY_ASSET_STORE_EULA",
+      "attributionRequired": false,
+      "intendedRoles": [
+        "turret_parts"
+      ],
+      "priority": 2,
+      "downloadStatus": "AWAITING_OWNER_DOWNLOAD",
+      "inspectionStatus": "NOT_INSPECTED",
+      "notes": "Select the FREE listing."
+    },
+    {
+      "id": "weapons-rts-assets",
+      "displayName": "RTS Sci-Fi Game Assets (free source to confirm)",
+      "category": "04_weapons_machinery",
+      "expectedLocalFolder": "ExternalAssetIntake/FreeAssetIntakeV1/04_weapons_machinery/04_rts_scifi_game_assets",
+      "sourceUrl": null,
+      "publisher": "OWNER_TO_CONFIRM",
+      "sourcePlatform": "OWNER_TO_CONFIRM",
+      "expectedLicense": "UNKNOWN_REQUIRES_REVIEW",
+      "attributionRequired": null,
+      "intendedRoles": [
+        "machinery_parts",
+        "turret_parts"
+      ],
+      "priority": 3,
+      "downloadStatus": "AWAITING_OWNER_DOWNLOAD",
+      "inspectionStatus": "NOT_INSPECTED",
+      "notes": "No exact free URL was supplied. Similarly named Unity v3 listing (124168) is paid as checked on 2026-10-08. Do not purchase it or substitute it silently; report missing/unavailable and capture the owner's exact free source in V2."
+    },
+    {
+      "id": "vfx-impact",
+      "displayName": "VFX - Impact and Hit - Light Version",
+      "category": "05_vfx",
+      "expectedLocalFolder": "ExternalAssetIntake/FreeAssetIntakeV1/05_vfx/01_impact_hit_light",
+      "sourceUrl": "https://assetstore.unity.com/packages/vfx/particles/vfx-impact-and-hit-light-version-335800",
+      "publisher": "Cartoon VFX by Wallcoeur",
+      "sourcePlatform": "UNITY_ASSET_STORE",
+      "expectedLicense": "UNITY_ASSET_STORE_EULA",
+      "attributionRequired": false,
+      "intendedRoles": [
+        "impact_vfx"
+      ],
+      "priority": 1,
+      "downloadStatus": "AWAITING_OWNER_DOWNLOAD",
+      "inspectionStatus": "NOT_INSPECTED",
+      "notes": "Light/free version only."
+    },
+    {
+      "id": "vfx-black-hole",
+      "displayName": "[Free Asset] Black Hole Effect (listing candidate)",
+      "category": "05_vfx",
+      "expectedLocalFolder": "ExternalAssetIntake/FreeAssetIntakeV1/05_vfx/02_black_hole",
+      "sourceUrl": "https://assetstore.unity.com/packages/vfx/free-asset-black-hole-effect-356686",
+      "publisher": "SOLODREAM CREATION",
+      "sourcePlatform": "UNITY_ASSET_STORE",
+      "expectedLicense": "UNITY_ASSET_STORE_EULA",
+      "attributionRequired": false,
+      "intendedRoles": [
+        "gravity_vfx"
+      ],
+      "priority": 1,
+      "downloadStatus": "AWAITING_OWNER_DOWNLOAD",
+      "inspectionStatus": "NOT_INSPECTED",
+      "notes": "Task supplied a generic name; this matching free listing is a provisional mapping, not final art selection. Record exact owner download in V2."
+    },
+    {
+      "id": "vfx-magic",
+      "displayName": "Magic Effects FREE",
+      "category": "05_vfx",
+      "expectedLocalFolder": "ExternalAssetIntake/FreeAssetIntakeV1/05_vfx/03_magic_effects_free",
+      "sourceUrl": "https://assetstore.unity.com/packages/vfx/particles/spells/magic-effects-free-247933",
+      "publisher": "Hovl Studio",
+      "sourcePlatform": "UNITY_ASSET_STORE",
+      "expectedLicense": "UNITY_ASSET_STORE_EULA",
+      "attributionRequired": false,
+      "intendedRoles": [
+        "energy_vfx"
+      ],
+      "priority": 2,
+      "downloadStatus": "AWAITING_OWNER_DOWNLOAD",
+      "inspectionStatus": "NOT_INSPECTED",
+      "notes": "Original downloaded package only."
+    },
+    {
+      "id": "vfx-fire",
+      "displayName": "Free Fire VFX - URP",
+      "category": "05_vfx",
+      "expectedLocalFolder": "ExternalAssetIntake/FreeAssetIntakeV1/05_vfx/04_fire_vfx_urp",
+      "sourceUrl": "https://assetstore.unity.com/packages/vfx/particles/fire-explosions/free-fire-vfx-urp-266226",
+      "publisher": "Vefects",
+      "sourcePlatform": "UNITY_ASSET_STORE",
+      "expectedLicense": "UNITY_ASSET_STORE_EULA",
+      "attributionRequired": false,
+      "intendedRoles": [
+        "fire_vfx"
+      ],
+      "priority": 2,
+      "downloadStatus": "AWAITING_OWNER_DOWNLOAD",
+      "inspectionStatus": "NOT_INSPECTED",
+      "notes": "Original downloaded package only."
+    },
+    {
+      "id": "vfx-fog",
+      "displayName": "Fog Particles",
+      "category": "05_vfx",
+      "expectedLocalFolder": "ExternalAssetIntake/FreeAssetIntakeV1/05_vfx/05_fog_particles",
+      "sourceUrl": "https://assetstore.unity.com/packages/vfx/particles/fog-particles-351840",
+      "publisher": "Game Seed Assets",
+      "sourcePlatform": "UNITY_ASSET_STORE",
+      "expectedLicense": "UNITY_ASSET_STORE_EULA",
+      "attributionRequired": false,
+      "intendedRoles": [
+        "atmosphere_vfx"
+      ],
+      "priority": 2,
+      "downloadStatus": "AWAITING_OWNER_DOWNLOAD",
+      "inspectionStatus": "NOT_INSPECTED",
+      "notes": "Original downloaded package only."
+    },
+    {
+      "id": "ui-tiago",
+      "displayName": "FREE SCI-FI GUI BEGINNER GAME ASSET PACK",
+      "category": "06_ui",
+      "expectedLocalFolder": "ExternalAssetIntake/FreeAssetIntakeV1/06_ui/01_tiago_free_scifi_gui",
+      "sourceUrl": "https://thiff.itch.io/free-ui-sci-fi",
+      "publisher": "Tiago Patrício",
+      "sourcePlatform": "ITCH_IO",
+      "expectedLicense": "CUSTOM_FREE_COMMERCIAL",
+      "attributionRequired": false,
+      "intendedRoles": [
+        "ui_parts"
+      ],
+      "priority": 2,
+      "downloadStatus": "AWAITING_OWNER_DOWNLOAD",
+      "inspectionStatus": "NOT_INSPECTED",
+      "notes": "Listing permits personal/commercial use without attribution. Confirm bundled fonts/icons and their separate terms in V2."
+    },
+    {
+      "id": "ui-kenney",
+      "displayName": "UI Pack - Sci-Fi",
+      "category": "06_ui",
+      "expectedLocalFolder": "ExternalAssetIntake/FreeAssetIntakeV1/06_ui/02_kenney_scifi_ui",
+      "sourceUrl": "https://kenney.nl/assets/ui-pack-sci-fi",
+      "publisher": "Kenney",
+      "sourcePlatform": "KENNEY",
+      "expectedLicense": "CC0",
+      "attributionRequired": false,
+      "intendedRoles": [
+        "ui_parts"
+      ],
+      "priority": 1,
+      "downloadStatus": "AWAITING_OWNER_DOWNLOAD",
+      "inspectionStatus": "NOT_INSPECTED",
+      "notes": "Original downloaded archive only."
+    },
+    {
+      "id": "ui-exe",
+      "displayName": "EXE - Mini SciFi UI Pack (Free)",
+      "category": "06_ui",
+      "expectedLocalFolder": "ExternalAssetIntake/FreeAssetIntakeV1/06_ui/03_exe_mini_scifi_ui",
+      "sourceUrl": "https://cjlaserna.itch.io/exe",
+      "publisher": "cjlaserna",
+      "sourcePlatform": "ITCH_IO",
+      "expectedLicense": "CC_BY_4_0",
+      "attributionRequired": true,
+      "intendedRoles": [
+        "ui_parts"
+      ],
+      "priority": 2,
+      "downloadStatus": "AWAITING_OWNER_DOWNLOAD",
+      "inspectionStatus": "NOT_INSPECTED",
+      "notes": "Listing specifies CC BY 4.0. Preserve attribution information and review bundled font terms in V2."
+    },
+    {
+      "id": "meshy-scout-sentinel-drone",
+      "displayName": "Scout sentinel drone",
+      "category": "07_meshy",
+      "expectedLocalFolder": "ExternalAssetIntake/FreeAssetIntakeV1/07_meshy/01_scout_sentinel_drone",
+      "sourceUrl": "https://www.meshy.ai/",
+      "publisher": "OWNER_TO_CONFIRM",
+      "sourcePlatform": "MESHY",
+      "expectedLicense": "UNKNOWN_REQUIRES_REVIEW",
+      "attributionRequired": null,
+      "intendedRoles": [
+        "scout_candidate"
+      ],
+      "priority": 1,
+      "downloadStatus": "AWAITING_OWNER_DOWNLOAD",
+      "inspectionStatus": "NOT_INSPECTED",
+      "notes": "Owner-specified candidate; exact model/task URL, creator, account plan and download-time terms were not supplied. Generic platform URL only. Record provenance in V2; UNKNOWN_REQUIRES_REVIEW prevents production use."
+    },
+    {
+      "id": "meshy-scout-armored-hover-drone",
+      "displayName": "Scout armored hover drone",
+      "category": "07_meshy",
+      "expectedLocalFolder": "ExternalAssetIntake/FreeAssetIntakeV1/07_meshy/02_scout_armored_hover_drone",
+      "sourceUrl": "https://www.meshy.ai/",
+      "publisher": "OWNER_TO_CONFIRM",
+      "sourcePlatform": "MESHY",
+      "expectedLicense": "UNKNOWN_REQUIRES_REVIEW",
+      "attributionRequired": null,
+      "intendedRoles": [
+        "scout_candidate"
+      ],
+      "priority": 1,
+      "downloadStatus": "AWAITING_OWNER_DOWNLOAD",
+      "inspectionStatus": "NOT_INSPECTED",
+      "notes": "Owner-specified candidate; exact model/task URL, creator, account plan and download-time terms were not supplied. Generic platform URL only. Record provenance in V2; UNKNOWN_REQUIRES_REVIEW prevents production use."
+    },
+    {
+      "id": "meshy-cutter-quadruped-combat-drone",
+      "displayName": "Cutter quadruped combat drone",
+      "category": "07_meshy",
+      "expectedLocalFolder": "ExternalAssetIntake/FreeAssetIntakeV1/07_meshy/03_cutter_quadruped_combat_drone",
+      "sourceUrl": "https://www.meshy.ai/",
+      "publisher": "OWNER_TO_CONFIRM",
+      "sourcePlatform": "MESHY",
+      "expectedLicense": "UNKNOWN_REQUIRES_REVIEW",
+      "attributionRequired": null,
+      "intendedRoles": [
+        "cutter_candidate"
+      ],
+      "priority": 1,
+      "downloadStatus": "AWAITING_OWNER_DOWNLOAD",
+      "inspectionStatus": "NOT_INSPECTED",
+      "notes": "Owner-specified candidate; exact model/task URL, creator, account plan and download-time terms were not supplied. Generic platform URL only. Record provenance in V2; UNKNOWN_REQUIRES_REVIEW prevents production use."
+    },
+    {
+      "id": "meshy-elite-quadruped-military-drone",
+      "displayName": "Elite quadruped military drone",
+      "category": "07_meshy",
+      "expectedLocalFolder": "ExternalAssetIntake/FreeAssetIntakeV1/07_meshy/04_elite_quadruped_military_drone",
+      "sourceUrl": "https://www.meshy.ai/",
+      "publisher": "OWNER_TO_CONFIRM",
+      "sourcePlatform": "MESHY",
+      "expectedLicense": "UNKNOWN_REQUIRES_REVIEW",
+      "attributionRequired": null,
+      "intendedRoles": [
+        "elite_candidate"
+      ],
+      "priority": 1,
+      "downloadStatus": "AWAITING_OWNER_DOWNLOAD",
+      "inspectionStatus": "NOT_INSPECTED",
+      "notes": "Owner-specified candidate; exact model/task URL, creator, account plan and download-time terms were not supplied. Generic platform URL only. Record provenance in V2; UNKNOWN_REQUIRES_REVIEW prevents production use."
+    },
+    {
+      "id": "meshy-custodian-spider-candidate",
+      "displayName": "Custodian spider candidate",
+      "category": "07_meshy",
+      "expectedLocalFolder": "ExternalAssetIntake/FreeAssetIntakeV1/07_meshy/05_custodian_spider_candidate",
+      "sourceUrl": "https://www.meshy.ai/",
+      "publisher": "OWNER_TO_CONFIRM",
+      "sourcePlatform": "MESHY",
+      "expectedLicense": "UNKNOWN_REQUIRES_REVIEW",
+      "attributionRequired": null,
+      "intendedRoles": [
+        "custodian_candidate"
+      ],
+      "priority": 1,
+      "downloadStatus": "AWAITING_OWNER_DOWNLOAD",
+      "inspectionStatus": "NOT_INSPECTED",
+      "notes": "Owner-specified candidate; exact model/task URL, creator, account plan and download-time terms were not supplied. Generic platform URL only. Record provenance in V2; UNKNOWN_REQUIRES_REVIEW prevents production use."
+    },
+    {
+      "id": "meshy-custodian-railgun-spider-candidate",
+      "displayName": "Custodian railgun spider candidate",
+      "category": "07_meshy",
+      "expectedLocalFolder": "ExternalAssetIntake/FreeAssetIntakeV1/07_meshy/06_custodian_railgun_spider_candidate",
+      "sourceUrl": "https://www.meshy.ai/",
+      "publisher": "OWNER_TO_CONFIRM",
+      "sourcePlatform": "MESHY",
+      "expectedLicense": "UNKNOWN_REQUIRES_REVIEW",
+      "attributionRequired": null,
+      "intendedRoles": [
+        "custodian_candidate"
+      ],
+      "priority": 1,
+      "downloadStatus": "AWAITING_OWNER_DOWNLOAD",
+      "inspectionStatus": "NOT_INSPECTED",
+      "notes": "Owner-specified candidate; exact model/task URL, creator, account plan and download-time terms were not supplied. Generic platform URL only. Record provenance in V2; UNKNOWN_REQUIRES_REVIEW prevents production use."
+    },
+    {
+      "id": "meshy-heavy-turret-donor",
+      "displayName": "Heavy turret donor",
+      "category": "07_meshy",
+      "expectedLocalFolder": "ExternalAssetIntake/FreeAssetIntakeV1/07_meshy/07_heavy_turret_donor",
+      "sourceUrl": "https://www.meshy.ai/",
+      "publisher": "OWNER_TO_CONFIRM",
+      "sourcePlatform": "MESHY",
+      "expectedLicense": "UNKNOWN_REQUIRES_REVIEW",
+      "attributionRequired": null,
+      "intendedRoles": [
+        "turret_parts"
+      ],
+      "priority": 2,
+      "downloadStatus": "AWAITING_OWNER_DOWNLOAD",
+      "inspectionStatus": "NOT_INSPECTED",
+      "notes": "Owner-specified candidate; exact model/task URL, creator, account plan and download-time terms were not supplied. Generic platform URL only. Record provenance in V2; UNKNOWN_REQUIRES_REVIEW prevents production use."
+    },
+    {
+      "id": "meshy-generator-donor",
+      "displayName": "Generator donor",
+      "category": "07_meshy",
+      "expectedLocalFolder": "ExternalAssetIntake/FreeAssetIntakeV1/07_meshy/08_generator_donor",
+      "sourceUrl": "https://www.meshy.ai/",
+      "publisher": "OWNER_TO_CONFIRM",
+      "sourcePlatform": "MESHY",
+      "expectedLicense": "UNKNOWN_REQUIRES_REVIEW",
+      "attributionRequired": null,
+      "intendedRoles": [
+        "machinery_parts"
+      ],
+      "priority": 2,
+      "downloadStatus": "AWAITING_OWNER_DOWNLOAD",
+      "inspectionStatus": "NOT_INSPECTED",
+      "notes": "Owner-specified candidate; exact model/task URL, creator, account plan and download-time terms were not supplied. Generic platform URL only. Record provenance in V2; UNKNOWN_REQUIRES_REVIEW prevents production use."
+    },
+    {
+      "id": "meshy-scifi-crate-donor",
+      "displayName": "Sci-fi crate donor",
+      "category": "07_meshy",
+      "expectedLocalFolder": "ExternalAssetIntake/FreeAssetIntakeV1/07_meshy/09_scifi_crate_donor",
+      "sourceUrl": "https://www.meshy.ai/",
+      "publisher": "OWNER_TO_CONFIRM",
+      "sourcePlatform": "MESHY",
+      "expectedLicense": "UNKNOWN_REQUIRES_REVIEW",
+      "attributionRequired": null,
+      "intendedRoles": [
+        "prop_parts"
+      ],
+      "priority": 2,
+      "downloadStatus": "AWAITING_OWNER_DOWNLOAD",
+      "inspectionStatus": "NOT_INSPECTED",
+      "notes": "Owner-specified candidate; exact model/task URL, creator, account plan and download-time terms were not supplied. Generic platform URL only. Record provenance in V2; UNKNOWN_REQUIRES_REVIEW prevents production use."
+    },
+    {
+      "id": "meshy-weapon-rpk7",
+      "displayName": "Weapon RPK7",
+      "category": "07_meshy",
+      "expectedLocalFolder": "ExternalAssetIntake/FreeAssetIntakeV1/07_meshy/10_weapon_rpk7",
+      "sourceUrl": "https://www.meshy.ai/",
+      "publisher": "OWNER_TO_CONFIRM",
+      "sourcePlatform": "MESHY",
+      "expectedLicense": "UNKNOWN_REQUIRES_REVIEW",
+      "attributionRequired": null,
+      "intendedRoles": [
+        "weapon_parts"
+      ],
+      "priority": 2,
+      "downloadStatus": "AWAITING_OWNER_DOWNLOAD",
+      "inspectionStatus": "NOT_INSPECTED",
+      "notes": "Owner-specified candidate; exact model/task URL, creator, account plan and download-time terms were not supplied. Generic platform URL only. Record provenance in V2; UNKNOWN_REQUIRES_REVIEW prevents production use."
+    },
+    {
+      "id": "meshy-weapon-heavy-energy-gun",
+      "displayName": "Weapon heavy energy gun",
+      "category": "07_meshy",
+      "expectedLocalFolder": "ExternalAssetIntake/FreeAssetIntakeV1/07_meshy/11_weapon_heavy_energy_gun",
+      "sourceUrl": "https://www.meshy.ai/",
+      "publisher": "OWNER_TO_CONFIRM",
+      "sourcePlatform": "MESHY",
+      "expectedLicense": "UNKNOWN_REQUIRES_REVIEW",
+      "attributionRequired": null,
+      "intendedRoles": [
+        "weapon_parts"
+      ],
+      "priority": 2,
+      "downloadStatus": "AWAITING_OWNER_DOWNLOAD",
+      "inspectionStatus": "NOT_INSPECTED",
+      "notes": "Owner-specified candidate; exact model/task URL, creator, account plan and download-time terms were not supplied. Generic platform URL only. Record provenance in V2; UNKNOWN_REQUIRES_REVIEW prevents production use."
+    }
+  ]
+}
