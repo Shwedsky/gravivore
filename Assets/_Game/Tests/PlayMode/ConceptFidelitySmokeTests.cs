@@ -89,13 +89,23 @@ namespace Gravivore.Tests.PlayMode
             Assert.That(root.GetComponentsInChildren<Transform>(true).Length,Is.EqualTo(transforms));
             Directory.CreateDirectory("docs/concept-fidelity-v2/verification");
             File.WriteAllText("docs/concept-fidelity-v2/verification/runtime_inventory.json",JsonUtility.ToJson(new Inventory{
-                transforms=transforms,renderers=renderers,sharedMaterials=root.GetComponentsInChildren<Renderer>(true).Select(r=>r.sharedMaterial).Distinct().Count(),
+                transforms=transforms,renderers=renderers,sharedMaterials=MaterialCount(root),
                 realtimeLights=root.GetComponentsInChildren<Light>(true).Length,heroRouteRenderers=route.GetComponentsInChildren<Renderer>(true).Length},true));
         }
         [Serializable] private sealed class Inventory{public int transforms,renderers,sharedMaterials,realtimeLights,heroRouteRenderers;}
         private sealed class RouteInput : IMovementInput{public Vector2 Movement{get;set;}}
+        private static int MaterialCount(Component owner)=>owner.GetComponentsInChildren<Renderer>(true)
+            .SelectMany(r=>r.sharedMaterials).Where(m=>m!=null).Distinct().Count();
+        private static int TransformCount(Component owner)=>owner.GetComponentsInChildren<Transform>(true).Length;
+        private static int ActorTransformCount(S01SceneCompositionRoot root)=>
+            TransformCount(root.EnemyPopulation)+TransformCount(root.PlayerObject.transform);
+        private static int FidelityTransformCount(S01SceneCompositionRoot root)=>
+            TransformCount(root.VisualEnvironment.Floor.Find("Chapter 01 Concept Fidelity V2"))+
+            TransformCount(root.RepairHub.Manipulators)+TransformCount(root.GetComponentInChildren<FidelityAtmospherePresenter>());
         [Serializable] private sealed class SustainedEvidence
-        {public double seconds,worstFrameGapMilliseconds;public int frames,completedStops,initialTransforms,finalTransforms,initialMaterials,finalMaterials;public long assimilation;public string mode="Editor graphics, development gate unlock and god mode; real locomotion, combat, cooldowns and saves";}
+        {public double seconds,worstFrameGapMilliseconds;public int frames,completedStops,initialTransforms,finalTransforms,initialMaterials,finalMaterials,
+            initialActorTransforms,finalActorTransforms,initialFidelityTransforms,finalFidelityTransforms,maximumLiveEnemies;
+            public long assimilation;public string mode="Editor graphics, development gate unlock and god mode; real locomotion, combat, cooldowns and saves";}
         [UnityTest,Timeout(600000)] public IEnumerator FiveMinuteRuntimeHeroRouteUsesRealLocomotionCombatAndBoundedPresentation()
         {
             _scene=new CanonicalSceneTestScope();yield return _scene.Load();var root=_scene.Root;
@@ -108,7 +118,7 @@ namespace Gravivore.Tests.PlayMode
             var stops=new[]{new Vector3(-20,0,-12),new Vector3(20,0,-12),new Vector3(0,0,10),new Vector3(-26,0,20),
                 new Vector3(26,0,20),new Vector3(0,0,40),new Vector3(0,0,68),new Vector3(0,0,89.5f),new Vector3(0,0,-28)};
             var evidence=new SustainedEvidence{initialTransforms=root.GetComponentsInChildren<Transform>(true).Length,
-                initialMaterials=root.GetComponentsInChildren<Renderer>(true).Select(r=>r.sharedMaterial).Distinct().Count()};
+                initialMaterials=MaterialCount(root),initialActorTransforms=ActorTransformCount(root),initialFidelityTransforms=FidelityTransformCount(root)};
             var started=Time.realtimeSinceStartupAsDouble;var previous=started;var index=0;var point=0;var dwellUntil=0d;
             System.Collections.Generic.List<Vector3> path=null;
             var nextCapture=60d;
@@ -116,7 +126,7 @@ namespace Gravivore.Tests.PlayMode
             {
                 var now=Time.realtimeSinceStartupAsDouble;evidence.frames++;
                 evidence.worstFrameGapMilliseconds=Math.Max(evidence.worstFrameGapMilliseconds,(now-previous)*1000);previous=now;
-                Assert.That(root.EnemyPopulation.LiveEnemyCount,Is.LessThanOrEqualTo(25));
+                evidence.maximumLiveEnemies=Math.Max(evidence.maximumLiveEnemies,root.EnemyPopulation.LiveEnemyCount);
                 if(now>=dwellUntil)
                 {
                     if(path==null)
@@ -141,16 +151,25 @@ namespace Gravivore.Tests.PlayMode
             }
             input.Movement=Vector2.zero;evidence.seconds=Time.realtimeSinceStartupAsDouble-started;
             evidence.finalTransforms=root.GetComponentsInChildren<Transform>(true).Length;
-            evidence.finalMaterials=root.GetComponentsInChildren<Renderer>(true).Select(r=>r.sharedMaterial).Distinct().Count();
+            evidence.finalMaterials=MaterialCount(root);evidence.finalActorTransforms=ActorTransformCount(root);
+            evidence.finalFidelityTransforms=FidelityTransformCount(root);
             evidence.assimilation=root.Progression.State.TotalAssimilationScore;
+            // Evidence is written before assertions so a failed soak still exposes its inventories.
+            Directory.CreateDirectory("docs/concept-fidelity-v2/verification");
+            File.WriteAllText("docs/concept-fidelity-v2/verification/five_minute_runtime.json",JsonUtility.ToJson(evidence,true));
             Assert.That(evidence.completedStops,Is.GreaterThanOrEqualTo(stops.Length),"Five-minute traversal must cover the whole route.");
-            Assert.That(evidence.finalTransforms,Is.LessThanOrEqualTo(evidence.initialTransforms+300));
+            Assert.That(evidence.maximumLiveEnemies,Is.LessThanOrEqualTo(root.EnemyPopulation.GlobalLiveEnemyCap));
+            Assert.That(evidence.finalFidelityTransforms,Is.EqualTo(evidence.initialFidelityTransforms));
+            // The accepted S15 factory lazily retains one art variant per archetype per pooled actor.
+            // Account for that explicit cache, while requiring every non-actor transform to remain fixed.
+            Assert.That(evidence.finalTransforms-evidence.finalActorTransforms,
+                Is.EqualTo(evidence.initialTransforms-evidence.initialActorTransforms));
+            Assert.That(root.EnemyPopulation.GetComponentsInChildren<OrdinaryEnemyController>(true).Length,
+                Is.EqualTo(root.EnemyPopulation.GlobalLiveEnemyCap));
             Assert.That(evidence.finalMaterials,Is.LessThanOrEqualTo(evidence.initialMaterials+4));
             Assert.IsTrue(root.FlushNow());
             var diagnostics=root.GetComponentInChildren<Gravivore.Presentation.Development.ColdStartDiagnostics>();
             Assert.IsFalse(diagnostics.enabled);Assert.IsTrue(File.Exists(diagnostics.OutputPath));
-            Directory.CreateDirectory("docs/concept-fidelity-v2/verification");
-            File.WriteAllText("docs/concept-fidelity-v2/verification/five_minute_runtime.json",JsonUtility.ToJson(evidence,true));
             File.Copy(diagnostics.OutputPath,"docs/concept-fidelity-v2/verification/cold-start-fidelity-editor.json",true);
         }
         private static void Capture(S01SceneCompositionRoot root,string name)
