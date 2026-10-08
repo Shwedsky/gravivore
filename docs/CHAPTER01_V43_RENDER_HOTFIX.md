@@ -9,3 +9,17 @@ Initial comparison: no tracked changes to ProjectSettings, Packages, URP setting
 Scope: rendering diagnosis, narrow correction, one-shot DEV diagnostics, focused regression and strengthened APK proof. Preserve gameplay, saves, equipment and V3 composition. Build a separate signed ARM64 IL2CPP DEV v43 APK; retain v42.
 
 Required validation: compile, ProjectValidator, full EditMode, full PlayMode, Android v43 build and shader/material/dependency proof. Report whether actual Android execution is available; Editor rendering is not device proof.
+
+## Evidence-based diagnosis
+
+Generated `GraphicsSettings.asset` differs despite unchanged tracked render code: v41 retains the seven standard built-in always-included shaders; v42 has an empty list. Pipeline and renderer values match after normalizing generated GUIDs (HDR on, MSAA 1, render scale 1, forward, no renderer features, null post-process data).
+
+A read-only SerializedFile format-22 inspector reassembles APK split chunks and checks actual class-48 Shader objects. Known-good v41 contains `UI/Default` (pathId 10770, 9,220 serialized bytes) and `UI/DefaultETC1` (10783, 9,136 bytes) in `Resources/unity_builtin_extra`. v42 contains neither shader object. Both versions have their names as runtime lookup strings in `globalgamemanagers`; those strings are not evidence of a packed shader.
+
+`HudUiFactory` creates uGUI Images in code with implicit default materials, including transparent screen-sized input panels. uGUI's `Graphic.defaultGraphicMaterial` calls `Canvas.GetDefaultCanvasMaterial()`. Without the packed UI shader, the error shader can render those transparent panels as opaque magenta over the camera. This directly explains the entire-frame symptom while the intended Lit/hostile materials remain unchanged.
+
+Narrow correction: deterministically retain only the two required runtime uGUI shaders on every project configuration/build. Do not disable URP stripping or rewrite scene materials. Add missing-UI-shader build validation and typed APK proof, plus the requested V3 renderer audit and DEV boot diagnostics.
+
+Android execution availability: bundled adb reports no connected devices; no emulator executable, system images or AVD were found in the installed Android SDK/user configuration. Actual Android rendering remains the owner's first gate.
+
+Unity's shader-loading documentation explains magenta fallback when the required compiled variant is unavailable: https://docs.unity3d.com/2023.2/Documentation/Manual/shader-loading.html. Inspector format was checked against the upstream SerializedFile implementation; no UnityPy package is installed or introduced.
