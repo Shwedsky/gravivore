@@ -31,10 +31,17 @@ $fidelityCertificate=@($fidelitySignature | Where-Object {$_ -match '^Signer #1 
 $fidelityPriorCertificate=@($fidelityPriorSignature | Where-Object {$_ -match '^Signer #1 certificate SHA-256 digest:'})
 if($fidelityCertificate.Count -ne 1 -or $fidelityPriorCertificate.Count -ne 1 -or $fidelityCertificate[0] -ne $fidelityPriorCertificate[0]){throw 'APK signer differs from v40.'}
 $fidelityHash=(Get-FileHash -LiteralPath $fidelityApk -Algorithm SHA256).Hash.ToLowerInvariant()
+$fidelityChapterProofPath=Join-Path $fidelityRoot 'docs/chapter01-production/verification/apk_packed_dependencies.json'
+$fidelityChapterProof=Get-Content -LiteralPath $fidelityChapterProofPath -Raw | ConvertFrom-Json
+if($fidelityChapterProof.apkSha256 -ne $fidelityHash){
+ # Historical chapter reports may be restored after their current-build evidence
+ # is copied into this milestone's immutable delivery folder.
+ $fidelityChapterProofPath=Join-Path $fidelityOutput 'complete_chapter_packing.json'
+}
 $fidelityProofs=@(
  [IO.Path]::ChangeExtension($fidelityApk,'.visual-slice.json'),
  [IO.Path]::ChangeExtension($fidelityApk,'.post-device.json'),
- (Join-Path $fidelityRoot 'docs/chapter01-production/verification/apk_packed_dependencies.json'),
+ $fidelityChapterProofPath,
  (Join-Path $fidelityOutput 'apk_packed_dependencies.json'))
 foreach($fidelityProofPath in $fidelityProofs){
  $fidelityProof=Get-Content -LiteralPath $fidelityProofPath -Raw | ConvertFrom-Json
@@ -60,6 +67,9 @@ $fidelitySignature | Set-Content -LiteralPath (Join-Path $fidelityOutput 'apk_si
 Copy-Item -LiteralPath ([IO.Path]::ChangeExtension($fidelityApk,'.build.json')) -Destination (Join-Path $fidelityOutput 'build_metadata.json')
 Copy-Item -LiteralPath $fidelityProofs[0] -Destination (Join-Path $fidelityOutput 'accepted_visual_packing.json')
 Copy-Item -LiteralPath $fidelityProofs[1] -Destination (Join-Path $fidelityOutput 'accepted_audio_packing.json')
-Copy-Item -LiteralPath $fidelityProofs[2] -Destination (Join-Path $fidelityOutput 'complete_chapter_packing.json')
+$fidelityChapterCopy=Join-Path $fidelityOutput 'complete_chapter_packing.json'
+if([IO.Path]::GetFullPath($fidelityProofs[2]) -ne [IO.Path]::GetFullPath($fidelityChapterCopy)){
+ Copy-Item -LiteralPath $fidelityProofs[2] -Destination $fidelityChapterCopy
+}
 $fidelityEvidence | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath (Join-Path $fidelityOutput 'apk_verification.json') -Encoding utf8
 $fidelityEvidence | ConvertTo-Json -Depth 8
