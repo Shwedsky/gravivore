@@ -32,7 +32,19 @@ Final full EditMode: 455/455 passed. Final full PlayMode: 131/131 passed, no fai
 
 The 90-second cold-start recorder remains enabled in development builds and was exercised by the full PlayMode suite. These captures and performance inventories are Editor evidence, not device FPS measurements. Final test XML, runtime inventories and lossless structural PNGs are under `docs/chapter01-v3/`.
 
-APK provenance is recorded after the integrated build. Runtime graphics captures are internal evidence, not an intermediate human approval gate. Android device frame rate and the owner playtest remain the next human gate. Hero-route dressing receives the most detail; distant peripheral alleys retain simpler baseline kit and lighting.
+Unity compile, standalone ProjectValidator and Android DEV build all exited 0. The final APK verifier exited 0. All four accepted asset-packing checks match the delivered APK hash; the original production settings and actual serialized M-0 definition were independently inspected in the APK.
+
+Branch: `integration/chapter01-v3-playtest-build`. Draft PR: https://github.com/Shwedsky/gravivore/pull/65.
+
+APK source commit: `bc4b424907afffadfbc255aebea95903e9d4b01f`. The final evidence checkpoint changes documentation and verification artifacts only; runtime code and content are identical to this tested build source.
+
+Delivered APK: `C:/Users/pamak/Documents/ChatGPT/gravivore/Builds/Android/gravivore-dev-0.1.0+42.apk`.
+
+Version: `0.1.0`, versionCode `42`, package `com.gravivore.mobile.dev`, ARM64 only, IL2CPP, development/debuggable build. Size: **82,642,069 bytes**. SHA256: `efe69bc5c4e415dc05b0c3c4f23b30c1ff12d96107149699eb08f295d962f6c8`. APK signature verification passed and the signer matches accepted v41, allowing an in-place update. The delivered copy has the same SHA256 as the build output.
+
+Evidence: `docs/chapter01-v3/verification/validation_summary.json`, `apk_verification.json`, `apk_delivery.json`, build metadata, signature/badging output, four asset-packing reports, `accepted_runtime_content.json` and `v3_runtime_content.json`. Full changed-file inventory: `docs/chapter01-v3/changed_files.txt`.
+
+Runtime graphics captures are internal evidence, not an intermediate human approval gate. Android device frame rate and the owner playtest remain the next human gate. Hero-route dressing receives the most detail; distant peripheral alleys retain simpler baseline kit and lighting. The world uses the existing mobile atlas and the new original meshes; it remains a stylized mobile interpretation of the board rather than an exact reproduction of its rendered detail.
 
 Assumptions: M-0's first copy auto-equips so the owner immediately sees the loot; additional copies at rank 5 acknowledge the kill's loot without further stats or an invented currency. Existing schema-2 profiles retain their history but receive the new weapon from their next legitimate rewarded Custodian kill.
 
