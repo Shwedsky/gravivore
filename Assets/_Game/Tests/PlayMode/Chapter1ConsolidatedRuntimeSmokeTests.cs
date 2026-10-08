@@ -82,10 +82,16 @@ namespace Gravivore.Tests.PlayMode
             root.EnemyPopulation.EnemyDied += death => rewards = death.RewardMultiplier;
             while (strong.LiveCount > 0) strong.GetLiveEnemy(0).ApplyDamage(new DamageRequest(100000f, DamageType.Gravity));
             Assert.That(rewards, Is.EqualTo(root.StrongSpots[0].RewardMultiplier));
-            Assert.That(strong.RespawnPenaltySteps, Is.EqualTo(1));
+            Assert.That(strong.RespawnPenaltySteps, Is.Zero);
             Assert.That(independent.RespawnPenaltySteps, Is.Zero);
             root.EnemyPopulation.Tick(20f);
-            Assert.That(strong.LiveCount, Is.GreaterThan(0));
+            Assert.That(strong.LiveCount, Is.Zero);
+            Assert.That(strong.SecondsUntilNextRespawn, Is.EqualTo(100f));
+            root.EnemyPopulation.Tick(100f);
+            Assert.That(strong.LiveCount, Is.Zero, "Camping blocks an eligible strong ordinary wave too.");
+            Move(root, strong.Position + Vector3.back * (strong.SafeReturnRadius + .5f));
+            root.EnemyPopulation.Tick(0f);
+            Assert.That(strong.LiveCount, Is.EqualTo(strong.DesiredPopulation));
             Assert.That(root.EnemyPopulation.LiveEnemyCount, Is.LessThanOrEqualTo(25));
             Move(root, strong.Position + Vector3.back * 3f);
             Capture(root, "05_strong_ordinary.png");

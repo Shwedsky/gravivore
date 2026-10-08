@@ -32,6 +32,8 @@ namespace Gravivore.Presentation.Map
         private RectTransform _detailsPanel;
         private Text _detailsText;
         private Text _zoneText;
+        private TacticalMapGraphic _compactTopology, _expandedTopology;
+        public TacticalMapTopology Topology { get; private set; }
         public string CurrentZoneText => _zoneText != null ? _zoneText.text : string.Empty;
         private bool _uiBuilt;
         private bool _expanded;
@@ -74,6 +76,21 @@ namespace Gravivore.Presentation.Map
         {
             autoRefresh = enabled;
         }
+        public void InitializeTopology(TacticalMapTopology topology)
+        {
+            if (Topology != null) throw new InvalidOperationException("Map topology is already initialized.");
+            Topology = topology ?? throw new ArgumentNullException(nameof(topology));
+            _compactTopology = CreateTopology(_compactSurface, topology);
+            _expandedTopology = CreateTopology(_expandedSurface, topology);
+            RefreshNow();
+        }
+        private static TacticalMapGraphic CreateTopology(RectTransform parent, TacticalMapTopology topology)
+        {
+            var rect = MapUiFactory.CreateRect(parent, "TraversalTopology");
+            MapUiFactory.Stretch(rect); rect.SetAsFirstSibling();
+            var graphic = rect.gameObject.AddComponent<TacticalMapGraphic>();
+            graphic.Initialize(topology); return graphic;
+        }
 
         public void RefreshNow()
         {
@@ -83,6 +100,8 @@ namespace Gravivore.Presentation.Map
             if (_refreshStamp == int.MaxValue) _refreshStamp = 1;
 
             FindPlayer(out var playerPosition);
+            _compactTopology?.Refresh(_projection.GetLocalWindow(playerPosition));
+            _expandedTopology?.Refresh(_projection.ChapterBounds);
             var count = _source.Count;
             var selectedFound = false;
             var zoneDistance = float.MaxValue;
@@ -210,7 +229,7 @@ namespace Gravivore.Presentation.Map
 
         private void BuildCompact(RectTransform root)
         {
-            var compactPanel = MapUiFactory.CreatePanel(root, "CompactMinimap", new Color(.025f,.045f,.058f,.98f), true);
+            var compactPanel = MapUiFactory.CreatePanel(root, "CompactMinimap", Color.clear, true);
             compactPanel.anchorMin = new Vector2(0.70f, 0.765f);
             compactPanel.anchorMax = new Vector2(0.97f, 0.765f);
             compactPanel.pivot = Vector2.one;
@@ -221,6 +240,10 @@ namespace Gravivore.Presentation.Map
             compactFitter.aspectRatio = .90f;
             var button = MapUiFactory.AddButton(compactPanel);
             button.onClick.AddListener(OpenExpanded);
+            var backing = MapUiFactory.CreateRect(compactPanel, "OctagonalBacking");
+            MapUiFactory.Stretch(backing);
+            var background = backing.gameObject.AddComponent<TacticalHudFrame>();
+            background.color = new Color(.025f,.065f,.085f,.82f); background.Configure(false);
 
             _compactSurface = MapUiFactory.CreatePanel(compactPanel, "CompactMapSurface", MapUiFactory.SurfaceColor);
             _compactSurface.anchorMin = new Vector2(.07f, .14f);
@@ -228,8 +251,8 @@ namespace Gravivore.Presentation.Map
             _compactSurface.offsetMin = Vector2.zero;
             _compactSurface.offsetMax = Vector2.zero;
             _compactSurface.gameObject.AddComponent<RectMask2D>();
-            MapUiFactory.CreateGrid(_compactSurface, 3, 3);
-            MapUiFactory.TacticalFrame(compactPanel);
+            var frame = MapUiFactory.CreateRect(compactPanel,"OctagonalBorder"); MapUiFactory.Stretch(frame);
+            frame.gameObject.AddComponent<TacticalHudFrame>().Configure(true);
             _zoneText = MapUiFactory.CreateText(compactPanel, "CurrentZone", "СЕКТОР", 18, TextAnchor.MiddleLeft);
             _zoneText.color = new Color(.72f,.82f,.86f,1);
             _zoneText.rectTransform.anchorMin = new Vector2(.08f,.02f);
@@ -282,7 +305,6 @@ namespace Gravivore.Presentation.Map
             _expandedSurface.gameObject.AddComponent<RectMask2D>();
             var backgroundButton = MapUiFactory.AddButton(_expandedSurface);
             backgroundButton.onClick.AddListener(ClearSelection);
-            MapUiFactory.CreateGrid(_expandedSurface, 6, 10);
 
             var north = MapUiFactory.CreateText(_expandedSurface, "North", "С", 18, TextAnchor.UpperCenter);
             north.rectTransform.anchorMin = new Vector2(0.42f, 0.955f);
@@ -413,6 +435,7 @@ namespace Gravivore.Presentation.Map
                 case MapAvailabilityState.Available: return "ДОСТУПНО";
                 case MapAvailabilityState.Active: return "АКТИВНО";
                 case MapAvailabilityState.Cooldown: return "ВОССТАНОВЛЕНИЕ";
+                case MapAvailabilityState.Ready: return "ГОТОВО · ОТОЙДИТЕ ОТ ЗОНЫ";
                 case MapAvailabilityState.Defeated: return "ПОБЕЖДЕНО";
                 default: return "НЕАКТИВНО";
             }

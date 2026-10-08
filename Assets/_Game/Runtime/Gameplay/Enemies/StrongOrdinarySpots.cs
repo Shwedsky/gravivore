@@ -57,7 +57,7 @@ namespace Gravivore.Gameplay.Enemies
                 source.TargetPointHeight, source.Behavior);
             return new SpawnSpotRuntimeConfiguration(Id, enemy, Position, ordinary.AnchorOffsets,
                 SpawnPopulationPolicy.MinimumAllowedPopulation, ordinary.MinimumPlayerDistance,
-                BaseRespawnSeconds, BaseRespawnSeconds, PressurePolicy, RewardMultiplier);
+                BaseRespawnSeconds, BaseRespawnSeconds, PressurePolicy, RewardMultiplier, ordinary.WaveCooldownSeconds);
         }
 
         private static void ValidateTier(StrongOrdinaryRegion region, float hp, float damage, float reward, float respawn)

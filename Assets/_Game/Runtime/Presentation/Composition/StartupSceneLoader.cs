@@ -11,6 +11,9 @@ namespace Gravivore.Presentation.Composition
 
         private void Start()
         {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            Gravivore.Presentation.Development.ColdStartDiagnostics.Begin(transform,true);
+#endif
             if (_targetSceneBuildIndex < 0 || _targetSceneBuildIndex >= SceneManager.sceneCountInBuildSettings)
             {
                 throw new InvalidOperationException(

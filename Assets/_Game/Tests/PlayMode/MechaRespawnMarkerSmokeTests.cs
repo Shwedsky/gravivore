@@ -102,22 +102,21 @@ namespace Gravivore.Tests.PlayMode
             Assert.That(root.Progression.State.TotalAssimilationScore, Is.EqualTo(rewardedScore));
             for (var i = 0; i < 3; i++) spot.GetLiveEnemy(0).ApplyDamage(new DamageRequest(10000f, DamageType.Gravity));
             Assert.That(spot.LiveCount, Is.Zero);
-            Assert.That(spot.RespawnPenaltySteps, Is.EqualTo(1));
-            Assert.That(spot.AdditionalRespawnDelay, Is.EqualTo(8f));
+            Assert.That(spot.RespawnPenaltySteps, Is.Zero);
+            Assert.That(spot.AdditionalRespawnDelay, Is.Zero);
             Assert.That(untouched.RespawnPenaltySteps, Is.Zero);
             var empty = markers.GetMarker(1);
             Assert.That(empty.Id, Is.EqualTo(spot.Id));
             Assert.That(empty.Position, Is.EqualTo(spot.Position));
             Assert.That(empty.Status, Is.EqualTo(WorldMarkerStatus.Respawning));
             Assert.That(empty.PendingRespawns, Is.EqualTo(4));
-            Assert.That(empty.PenaltySteps, Is.EqualTo(1));
+            Assert.That(empty.PenaltySteps, Is.Zero);
 
-            // First three deaths stay at baseline; the fourth is scheduled at baseline + 8.
-            spot.Tick(12f);
-            Assert.That(spot.LiveCount, Is.EqualTo(3));
-            Assert.That(spot.PendingRespawns, Is.EqualTo(1));
-            Assert.That(spot.SecondsUntilNextRespawn, Is.InRange(4f, 8f));
-            spot.Tick(8f);
+            spot.Tick(119f);
+            Assert.That(spot.LiveCount, Is.Zero);
+            Assert.That(spot.PendingRespawns, Is.EqualTo(4));
+            Assert.That(spot.SecondsUntilNextRespawn, Is.EqualTo(1f));
+            spot.Tick(1f);
             Assert.That(spot.LiveCount, Is.EqualTo(4));
             Assert.That(root.EnemyPopulation.LiveEnemyCount, Is.LessThanOrEqualTo(25));
             Assert.That(first.CurrentHitPoints, Is.EqualTo(first.MaximumHitPoints));
@@ -125,7 +124,7 @@ namespace Gravivore.Tests.PlayMode
             Assert.That(spot.RespawnPenaltySteps, Is.Zero);
             Assert.That(markers.GetMarker(1).Status, Is.EqualTo(WorldMarkerStatus.Available));
             spot.GetLiveEnemy(0).ApplyDamage(new DamageRequest(10000f, DamageType.Gravity));
-            Assert.That(spot.SecondsUntilNextRespawn, Is.InRange(8f, 12f));
+            Assert.That(spot.SecondsUntilNextRespawn, Is.EqualTo(120f));
             Assert.That(spot.AdditionalRespawnDelay, Is.Zero);
             var restored = WorldUnlockState.Restore("elite-gate", "boss-gate", root.MagnetarGuard.Id,
                 new WorldUnlockSnapshot(true, true, true));

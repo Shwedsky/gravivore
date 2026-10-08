@@ -879,8 +879,8 @@ namespace Gravivore.Editor
                 }
 
                 var configuration = definition.CreateRuntimeConfiguration();
-                if (!configuration.AdaptiveRespawn.IsEnabled)
-                    throw new InvalidOperationException($"Canonical spawn spot {definition.Id} requires adaptive respawn tuning.");
+                if (configuration.WaveCooldownSeconds < WaveRespawnState.MinimumCooldownSeconds)
+                    throw new InvalidOperationException($"Canonical spawn spot {definition.Id} requires a minimum 120-second wave cooldown.");
                 if (!ids.Add(definition.Id))
                 {
                     throw new InvalidOperationException($"Duplicate spawn spot id: {definition.Id}.");

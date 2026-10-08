@@ -86,19 +86,21 @@ namespace Gravivore.Presentation.Map
 
             if (expanded)
             {
-                _label = MapUiFactory.CreateText(root, "Label", string.Empty, 16, TextAnchor.MiddleLeft);
+                _label = MapUiFactory.CreateText(root, "Label", string.Empty, 20, TextAnchor.MiddleCenter);
                 var labelRect = _label.rectTransform;
                 labelRect.anchorMin = labelRect.anchorMax = new Vector2(1f, 0.62f);
                 labelRect.pivot = new Vector2(0f, 0.5f);
                 labelRect.anchoredPosition = new Vector2(4f, 0f);
-                MapUiFactory.SetSize(labelRect, 150f, 22f);
+                MapUiFactory.SetSize(labelRect, 170f, 25f);
 
-                _timer = MapUiFactory.CreateText(root, "Timer", string.Empty, 14, TextAnchor.MiddleLeft);
+            }
+            {
+                _timer = MapUiFactory.CreateText(root, "Timer", string.Empty, expanded ? 16 : 18, expanded ? TextAnchor.MiddleLeft : TextAnchor.MiddleCenter);
                 var timerRect = _timer.rectTransform;
-                timerRect.anchorMin = timerRect.anchorMax = new Vector2(1f, 0.20f);
-                timerRect.pivot = new Vector2(0f, 0.5f);
-                timerRect.anchoredPosition = new Vector2(4f, 0f);
-                MapUiFactory.SetSize(timerRect, 120f, 20f);
+                timerRect.anchorMin = timerRect.anchorMax = new Vector2(expanded ? 1f : .5f, expanded ? .20f : 0f);
+                timerRect.pivot = new Vector2(expanded ? 0f : .5f, expanded ? .5f : 1f);
+                timerRect.anchoredPosition = new Vector2(expanded ? 4f : 0f, expanded ? 0f : 3f);
+                MapUiFactory.SetSize(timerRect, expanded ? 150f : 78f, 23f);
                 _timer.color = new Color(0.82f, 0.88f, 0.89f, 0.95f);
             }
         }
@@ -151,20 +153,21 @@ namespace Gravivore.Presentation.Map
 
             if (_expanded)
             {
-                PositionOverviewText(_label, normalizedPosition.x > 0.5f, 0.62f);
-                PositionOverviewText(_timer, normalizedPosition.x > 0.5f, 0.20f);
+                PositionOverviewText(_label, 0f, normalizedPosition.x);
+                PositionOverviewText(_timer, -24f, normalizedPosition.x);
                 _label.text = snapshot.DisplayName;
-                UpdateRoundedTimer(snapshot);
+                _label.gameObject.SetActive(snapshot.Kind != MapMarkerKind.Player);
             }
+            UpdateRoundedTimer(snapshot);
         }
 
-        private static void PositionOverviewText(Text text, bool alignRight, float anchorY)
+        private static void PositionOverviewText(Text text, float offset, float mapX)
         {
             var rect = text.rectTransform;
-            rect.anchorMin = rect.anchorMax = new Vector2(alignRight ? 0f : 1f, anchorY);
-            rect.pivot = new Vector2(alignRight ? 1f : 0f, 0.5f);
-            rect.anchoredPosition = new Vector2(alignRight ? -4f : 4f, 0f);
-            text.alignment = alignRight ? TextAnchor.MiddleRight : TextAnchor.MiddleLeft;
+            rect.anchorMin = rect.anchorMax = new Vector2(.5f, 0f);
+            rect.pivot = new Vector2(mapX < .2f ? 0f : mapX > .8f ? 1f : .5f, 1f);
+            rect.anchoredPosition = new Vector2(0f, offset);
+            text.alignment = TextAnchor.MiddleCenter;
         }
 
         public void SetSelection(bool selected)
@@ -311,9 +314,8 @@ namespace Gravivore.Presentation.Map
 
         private void UpdateRoundedTimer(MapMarkerSnapshot snapshot)
         {
-            var showTimer = snapshot.Availability == MapAvailabilityState.Cooldown &&
-                            snapshot.RemainingSeconds > 0f &&
-                            (snapshot.Kind == MapMarkerKind.Elite || snapshot.Kind == MapMarkerKind.Boss);
+            var showTimer = snapshot.Availability == MapAvailabilityState.Cooldown || snapshot.Availability == MapAvailabilityState.Ready ||
+                _expanded && snapshot.Kind != MapMarkerKind.Player && snapshot.Kind != MapMarkerKind.RepairHub;
             _timer.gameObject.SetActive(showTimer);
             if (!showTimer)
             {
@@ -322,10 +324,12 @@ namespace Gravivore.Presentation.Map
                 return;
             }
 
-            var bucket = MapTimerFormatter.RoundedBucket(snapshot.RemainingSeconds);
+            var bucket = snapshot.Availability == MapAvailabilityState.Cooldown ? MapTimerFormatter.ExactSecondBucket(snapshot.RemainingSeconds) : -1-(int)snapshot.Availability;
             if (bucket == _lastRoundedTimerBucket) return;
             _lastRoundedTimerBucket = bucket;
-            _timer.text = MapTimerFormatter.FormatRounded(snapshot.RemainingSeconds);
+            _timer.text = snapshot.ProgressionLocked ? "ЗАКРЫТО" : snapshot.Availability == MapAvailabilityState.Cooldown ? MapTimerFormatter.FormatExact(snapshot.RemainingSeconds) :
+                snapshot.Availability == MapAvailabilityState.Ready ? "ГОТОВО" : snapshot.Availability == MapAvailabilityState.Active ? "В БОЮ" :
+                snapshot.Kind == MapMarkerKind.Gate ? "ОТКРЫТО" : "ДОСТУПНО";
         }
 
         private void ResetGlyphPieces()

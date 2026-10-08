@@ -22,6 +22,7 @@ namespace Gravivore.Presentation.Composition
 
         public void Initialize(S01SceneCompositionRoot root)
         {
+            if (_root != null) throw new InvalidOperationException("Production map integration is already initialized.");
             _root = root != null ? root : throw new ArgumentNullException(nameof(root));
             InitializeProductionMap();
         }
@@ -52,6 +53,8 @@ namespace Gravivore.Presentation.Composition
                 MapPresenter = mapObject.GetComponent<MapMinimapPresenter>();
                 MapPresenter.Initialize(
                     _root.MapMarkers, _root.MapBounds);
+                MapPresenter.InitializeTopology(new TacticalMapTopology(_root.WorldPresenter, _root.EnemyPopulation,
+                    _root.RepairHub.RepairPosition, _root.RepairHub.RepairRadius));
             }
 
             RebuildProductionTouchExclusion(safeAreaRect);

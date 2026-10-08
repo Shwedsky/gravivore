@@ -68,7 +68,7 @@ namespace Gravivore.Tests.PlayMode
 
                 var ordinaryOverviewTimer = presenter.ExpandedSurface.Find("Marker_ordinary/Timer");
                 Assert.NotNull(ordinaryOverviewTimer);
-                Assert.IsFalse(ordinaryOverviewTimer.gameObject.activeSelf, "Ordinary overview uses ring-only timing.");
+                Assert.IsTrue(ordinaryOverviewTimer.gameObject.activeSelf, "Ordinary overview exposes the authoritative wave timer.");
 
                 presenter.OpenExpanded();
                 Assert.IsTrue(presenter.IsExpanded);

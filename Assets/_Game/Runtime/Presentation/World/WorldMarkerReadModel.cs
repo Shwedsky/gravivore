@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Gravivore.Presentation.World
 {
     public enum WorldMarkerKind { Player, RegularSpot, Elite, Boss }
-    public enum WorldMarkerStatus { Available, Locked, Respawning, Defeated }
+    public enum WorldMarkerStatus { Available, Locked, Respawning, Defeated, Active, Ready }
 
     public readonly struct WorldMarkerSnapshot
     {
@@ -70,7 +70,7 @@ namespace Gravivore.Presentation.World
             {
                 var spot = _population.GetSpot(index - 1);
                 return new WorldMarkerSnapshot(spot.Id, WorldMarkerKind.RegularSpot, spot.Position,
-                    spot.LiveCount > 0 ? WorldMarkerStatus.Available : WorldMarkerStatus.Respawning,
+                    SpotStatus(spot.Availability),
                     spot.LiveCount, spot.PendingRespawns, spot.SecondsUntilNextRespawn, spot.RespawnPenaltySteps);
             }
             if (index == _population.SpotCount + 1)
@@ -80,6 +80,17 @@ namespace Gravivore.Presentation.World
             return new WorldMarkerSnapshot(_boss.Id, WorldMarkerKind.Boss, _boss.transform.position,
                 _boss.Completion.IsDefeated ? WorldMarkerStatus.Defeated :
                 _boss.CanBeTargeted ? WorldMarkerStatus.Available : WorldMarkerStatus.Locked);
+        }
+        private static WorldMarkerStatus SpotStatus(SpawnSpotAvailability availability)
+        {
+            switch(availability)
+            {
+                case SpawnSpotAvailability.Cooldown:return WorldMarkerStatus.Respawning;
+                case SpawnSpotAvailability.Ready:return WorldMarkerStatus.Ready;
+                case SpawnSpotAvailability.Active:return WorldMarkerStatus.Active;
+                case SpawnSpotAvailability.Locked:return WorldMarkerStatus.Locked;
+                default:return WorldMarkerStatus.Available;
+            }
         }
     }
 }
