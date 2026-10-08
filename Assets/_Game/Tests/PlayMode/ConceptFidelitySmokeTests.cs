@@ -1,0 +1,108 @@
+using System;
+using System.Collections;
+using System.IO;
+using System.Linq;
+using Gravivore.Gameplay.Combat;
+using Gravivore.Gameplay.Enemies;
+using Gravivore.Gameplay.Player;
+using Gravivore.Presentation.Assets;
+using Gravivore.Presentation.Camera;
+using Gravivore.Presentation.Composition;
+using Gravivore.Presentation.World;
+using NUnit.Framework;
+using UnityEngine;
+using UnityEngine.TestTools;
+using Object=UnityEngine.Object;
+
+namespace Gravivore.Tests.PlayMode
+{
+    public sealed class ConceptFidelitySmokeTests
+    {
+        private CanonicalSceneTestScope _scene;
+        [UnityTearDown] public IEnumerator Cleanup(){if(_scene!=null)yield return _scene.Cleanup();}
+        private IEnumerator Load()
+        {
+            _scene=new CanonicalSceneTestScope();yield return _scene.Load();var root=_scene.Root;
+            root.EnemyPopulation.enabled=false;root.MagnetarGuard.enabled=false;root.CustodianBoss.enabled=false;
+            root.PlayerObject.GetComponent<PlayerLocomotion>().enabled=false;root.PlayerObject.GetComponent<GravityAttackController>().enabled=false;
+            root.PlayerHealth.enabled=false;
+            foreach(var enemy in root.GetComponentsInChildren<OrdinaryEnemyController>(true))enemy.enabled=false;
+        }
+        private static void Move(S01SceneCompositionRoot root,Vector3 position)
+        {var body=root.PlayerObject.GetComponent<CharacterController>();body.enabled=false;body.transform.position=position;body.enabled=true;Physics.SyncTransforms();}
+        [UnityTest] public IEnumerator BossHasAuthoredRigDistinctAttackClipsAndThreeLodsWithoutArtAuthority()
+        {
+            yield return Load();var root=_scene.Root;var boss=root.CustodianBoss;var model=boss.GetComponent<CharacterVisualBinding>().ActiveModel;
+            StringAssert.StartsWith("Custodian_V2",model.name);PresentationPrefabValidation.ValidateOrThrow(model.gameObject);
+            var animator=model.GetComponentInChildren<Animator>();Assert.IsFalse(animator.applyRootMotion);
+            foreach(var state in new[]{"Idle","Run","Windup","Release","Special","Hit","Death"})
+                Assert.IsTrue(animator.HasState(0,Animator.StringToHash(state)),state);
+            var lod=model.GetComponentInChildren<LODGroup>().GetLODs();Assert.That(lod.Length,Is.EqualTo(3));
+            var triangles=lod.Select(l=>(int)((SkinnedMeshRenderer)l.renderers[0]).sharedMesh.GetIndexCount(0)/3).ToArray();
+            Assert.That(triangles[0],Is.LessThan(25000));Assert.That(triangles[1],Is.LessThan(triangles[0]));Assert.That(triangles[2],Is.LessThan(triangles[1]));
+            Assert.That(model.GetComponentsInChildren<Collider>().Length,Is.Zero);
+            var authorityPosition=boss.transform.position;var radius=boss.CollisionRadius;var hp=boss.CurrentHitPoints;
+            foreach(var state in new[]{"Windup","Release","Special","Hit","Death"}){animator.Play(state,0,.55f);animator.Update(0);}
+            Assert.That(boss.transform.position,Is.EqualTo(authorityPosition));Assert.That(boss.CollisionRadius,Is.EqualTo(radius));Assert.That(boss.CurrentHitPoints,Is.EqualTo(hp));
+        }
+        [UnityTest] public IEnumerator AuthoredRepairAndAmbientPoolsStayBoundedAndNeverHealByPresentation()
+        {
+            yield return Load();var root=_scene.Root;var hub=root.RepairHub;var arms=hub.Manipulators;
+            Assert.That(arms.ArmCount,Is.EqualTo(2));
+            foreach(var filter in arms.GetComponentsInChildren<MeshFilter>())Assert.IsNotNull(filter.sharedMesh,filter.name);
+            Assert.That(arms.GetComponentsInChildren<Collider>().Length,Is.Zero);
+            var count=root.GetComponentsInChildren<Transform>(true).Length;var materials=arms.GetComponentsInChildren<Renderer>().Select(r=>r.sharedMaterial).Distinct().Count();
+            Assert.That(materials,Is.EqualTo(1));var atmosphere=root.GetComponentInChildren<FidelityAtmospherePresenter>();
+            Assert.That(atmosphere.Capacity,Is.EqualTo(1));Assert.That(atmosphere.LightCount,Is.LessThanOrEqualTo(2));
+            root.PlayerHealth.ApplyDamage(new DamageRequest(50,DamageType.Physical));root.PlayerHealth.Tick(3.1f);root.PlayerHealth.Tick(.1f);
+            Assert.IsTrue(hub.IsRepairing);var hp=root.PlayerHealth.CurrentHitPoints;
+            for(var i=0;i<300;i++)arms.Tick(.016f);
+            Assert.That(root.PlayerHealth.CurrentHitPoints,Is.EqualTo(hp));Assert.That(arms.Engagement,Is.EqualTo(1));
+            Assert.That(root.GetComponentsInChildren<Transform>(true).Length,Is.EqualTo(count));
+            Capture(root,"01_repair_active");Move(root,hub.RepairPosition+Vector3.right*10);yield return null;arms.Tick(.5f);
+            Assert.IsFalse(hub.IsRepairing);Assert.That(arms.Engagement,Is.Zero);
+        }
+        [UnityTest] public IEnumerator ContinuousHeroRouteCameraReviewAndStablePresentationInventory()
+        {
+            yield return Load();var root=_scene.Root;var route=root.VisualEnvironment.Floor.Find("Chapter 01 Concept Fidelity V2");Assert.NotNull(route);
+            Assert.That(route.GetComponentsInChildren<Collider>(true).Length,Is.Zero);
+            var materials=route.GetComponentsInChildren<Renderer>(true).Select(r=>r.sharedMaterial).Distinct().ToArray();Assert.That(materials.Length,Is.EqualTo(1));
+            Assert.NotNull(route.Find("Continuous worn deck"));Assert.NotNull(route.Find("Industrial focal points"));
+            var renderers=root.GetComponentsInChildren<Renderer>(true).Length;var transforms=root.GetComponentsInChildren<Transform>(true).Length;
+            foreach(var pair in new[]{("02_spawn",new Vector3(0,0,-28)),("03_capacitors",new Vector3(-20,0,-12)),("04_haulers",new Vector3(20,0,-12)),
+                ("05_corridor",new Vector3(0,0,10)),("06_relay",new Vector3(-26,0,20)),("07_shield",new Vector3(26,0,20)),
+                ("08_cutting",new Vector3(0,0,40)),("09_elite_approach",new Vector3(0,0,54)),("10_magnetar",new Vector3(0,0,68)),
+                ("11_containment",new Vector3(0,0,84))})
+            {Move(root,pair.Item2);yield return null;Capture(root,pair.Item1);}
+            root.WorldUnlocks.PrepareEliteEncounterForDevelopment();root.Chapter1Encounters.Tick();
+            root.MagnetarGuard.ApplyDamage(new DamageRequest(100000,DamageType.Gravity));
+            Move(root,new Vector3(0,0,89.5f));root.CustodianBoss.Tick(0);yield return null;
+            var bossAnimator=root.CustodianBoss.GetComponent<CharacterVisualBinding>().ActiveModel.GetComponentInChildren<Animator>();
+            foreach(var pair in new[]{("12_custodian_idle","Idle"),("13_custodian_windup","Windup"),("14_custodian_release","Release"),("15_custodian_special","Special"),("16_custodian_shutdown","Death")})
+            {bossAnimator.Play(pair.Item2,0,.55f);bossAnimator.Update(0);Capture(root,pair.Item1);}
+            Assert.That(root.GetComponentsInChildren<Renderer>(true).Length,Is.EqualTo(renderers));
+            Assert.That(root.GetComponentsInChildren<Transform>(true).Length,Is.EqualTo(transforms));
+            Directory.CreateDirectory("docs/concept-fidelity-v2/verification");
+            File.WriteAllText("docs/concept-fidelity-v2/verification/runtime_inventory.json",JsonUtility.ToJson(new Inventory{
+                transforms=transforms,renderers=renderers,sharedMaterials=root.GetComponentsInChildren<Renderer>(true).Select(r=>r.sharedMaterial).Distinct().Count(),
+                realtimeLights=root.GetComponentsInChildren<Light>(true).Length,heroRouteRenderers=route.GetComponentsInChildren<Renderer>(true).Length},true));
+        }
+        [Serializable] private sealed class Inventory{public int transforms,renderers,sharedMaterials,realtimeLights,heroRouteRenderers;}
+        private static void Capture(S01SceneCompositionRoot root,string name)
+        {
+            root.MapIntegration.MapPresenter.RefreshNow();var camera=UnityEngine.Camera.main;camera.GetComponent<PortraitFollowCamera>().SnapToTarget();
+            var canvas=root.GetComponentInChildren<Canvas>();var mode=canvas.renderMode;var priorCamera=canvas.worldCamera;
+            var priorTarget=camera.targetTexture;var priorActive=RenderTexture.active;
+            var render=new RenderTexture(540,960,24,RenderTextureFormat.ARGBHalf);var texture=new Texture2D(540,960,TextureFormat.RGB24,false);
+            try
+            {
+                canvas.renderMode=RenderMode.ScreenSpaceCamera;canvas.worldCamera=camera;canvas.planeDistance=1;
+                camera.targetTexture=render;Canvas.ForceUpdateCanvases();camera.Render();RenderTexture.active=render;
+                texture.ReadPixels(new Rect(0,0,540,960),0,0);texture.Apply();Directory.CreateDirectory("docs/concept-fidelity-v2/internal");
+                File.WriteAllBytes("docs/concept-fidelity-v2/internal/"+name+".png",texture.EncodeToPNG());
+            }
+            finally
+            {canvas.renderMode=mode;canvas.worldCamera=priorCamera;camera.targetTexture=priorTarget;RenderTexture.active=priorActive;render.Release();Object.Destroy(render);Object.Destroy(texture);}
+        }
+    }
+}

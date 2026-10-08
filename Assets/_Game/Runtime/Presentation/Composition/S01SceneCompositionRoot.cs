@@ -260,7 +260,14 @@ namespace Gravivore.Presentation.Composition
             repairObject.transform.SetParent(transform, false);
             RepairHub = repairObject.GetComponent<RepairHubProductionPresenter>();
             RepairHub.Initialize(PlayerHealth, _playerSpawn, _playerRecoverySettings.Configuration, _phase6BProductionDefinition,
-                _materialPalette.LitMaterial, _materialPalette.UnlitMaterial);
+                _materialPalette.LitMaterial, _materialPalette.UnlitMaterial, _visualEnvironment?.Definition.Fidelity);
+            if (_visualEnvironment?.Definition.Fidelity != null)
+            {
+                var atmosphereObject = new GameObject("Fidelity bounded atmosphere", typeof(FidelityAtmospherePresenter));
+                atmosphereObject.transform.SetParent(transform, false);
+                atmosphereObject.GetComponent<FidelityAtmospherePresenter>().Initialize(
+                    _visualEnvironment, PlayerObject.transform, _phase6BProductionDefinition);
+            }
             InitializeS14Presentation();
             StartupPhase("animation/presentation");
             if (_deviceCorrection != null)
@@ -956,6 +963,11 @@ namespace Gravivore.Presentation.Composition
             cameraComponent.farClipPlane = 100f;
             cameraComponent.clearFlags = CameraClearFlags.SolidColor;
             cameraComponent.backgroundColor = new Color(0.035f, 0.047f, 0.06f, 1f);
+            if (_visualEnvironment?.Definition.Fidelity?.MobileBloom == true)
+            {
+                cameraComponent.allowHDR = true;
+                cameraObject.AddComponent<UnityEngine.Rendering.Universal.UniversalAdditionalCameraData>().renderPostProcessing = true;
+            }
 
             cameraObject.GetComponent<PortraitFollowCamera>().Initialize(target, _cameraSettings);
             return cameraObject.transform;

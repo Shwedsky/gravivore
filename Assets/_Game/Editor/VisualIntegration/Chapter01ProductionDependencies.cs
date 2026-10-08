@@ -14,11 +14,13 @@ namespace Gravivore.Editor.VisualIntegration
     public sealed class Chapter01ProductionDependencies : IPreprocessBuildWithReport, IPostprocessBuildWithReport
     {
         public int callbackOrder => 31;
-        public static string[] Required => Chapter01ProductionBuilder.Machines.Concat(Chapter01ProductionBuilder.Kit)
+        private static bool FidelityActive=>AssetDatabase.LoadAssetAtPath<Gravivore.Presentation.World.ChapterVisualIntegrationDefinition>("Assets/_Game/Content/Definitions/Chapter01_VisualIntegration.asset")?.Fidelity!=null;
+        public static string[] Required => Chapter01ProductionBuilder.Machines.Where(n=>n!="Custodian_V1"||!FidelityActive).Concat(Chapter01ProductionBuilder.Kit)
             .Select(n=>Chapter01ProductionBuilder.Root+"/Models/"+n+".fbx")
             .Concat(new[]{Chapter01ProductionBuilder.Prefab("Full_Chapter_Environment")})
             .Concat(new[]{"relay-yard","cutting-floor","shield-dump","capacitor-field","hauler-graveyard"}.Select(n=>Chapter01ProductionBuilder.Prefab("Zone_"+n)))
-            .Concat(FirstVisualSliceDependencies.Required).ToArray();
+            .Concat(FirstVisualSliceDependencies.Required)
+            .Concat(FidelityActive?new[]{ConceptFidelityBuilder.Root+"/Models/Custodian_V2.fbx",ConceptFidelityBuilder.Prefab("Custodian_V2")}:Array.Empty<string>()).ToArray();
         [Serializable] private sealed class Evidence { public bool validated; public string sourceSha,apkSha256; public string[] dependencies,required,packedAssets,serializedEntries; }
         public static void ValidateOrThrow()
         {
@@ -32,7 +34,8 @@ namespace Gravivore.Editor.VisualIntegration
         public void OnPreprocessBuild(BuildReport report)=>ValidateOrThrow();
         public void OnPostprocessBuild(BuildReport report)
         {
-            var names=Chapter01ProductionBuilder.Machines.Select(n=>n+"_LOD0").Concat(Chapter01ProductionBuilder.Kit)
+            var names=Chapter01ProductionBuilder.Machines.Where(n=>n!="Custodian_V1"||!FidelityActive).Select(n=>n+"_LOD0").Concat(Chapter01ProductionBuilder.Kit)
+                .Concat(FidelityActive?new[]{"Custodian_V2_LOD0"}:Array.Empty<string>())
                 .Concat(new[]{"Chapter 01 Full Production","relay-yard","cutting-floor","shield-dump","capacitor-field","hauler-graveyard"}).ToArray();
             var found=new string[names.Length];
             using(var archive=ZipFile.OpenRead(report.summary.outputPath)) foreach(var entry in archive.Entries)

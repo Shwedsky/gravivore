@@ -15,7 +15,8 @@ namespace Gravivore.Presentation.Player
     public sealed class VisualSliceAnimationBridge : MonoBehaviour
     {
         private static readonly int Idle = Animator.StringToHash("Idle"), Run = Animator.StringToHash("Run"),
-            Attack = Animator.StringToHash("Attack"), Hit = Animator.StringToHash("Hit"), Death = Animator.StringToHash("Death");
+            Attack = Animator.StringToHash("Attack"), Hit = Animator.StringToHash("Hit"), Death = Animator.StringToHash("Death"),
+            Windup = Animator.StringToHash("Windup"), Release = Animator.StringToHash("Release"), Special = Animator.StringToHash("Special");
         private sealed class Actor
         {
             public CharacterVisualBinding Binding;
@@ -100,6 +101,8 @@ namespace Gravivore.Presentation.Player
         private Corpse[] _corpses;
         private Transform _corpseRoot;
         private float _playerDeathUntil, _playerAttackUntil, _playerHitUntil, _eliteAttackUntil, _eliteHitUntil;
+        private float _bossReleaseUntil, _bossWindupDuration=1;
+        private BossAttackType _bossAttack;
         public string PlayerState { get; private set; }
         public int ActiveShutdownCount { get; private set; }
         private Gravivore.Presentation.Combat.PostDevicePresentationDefinition _locomotionSettings;
@@ -138,6 +141,8 @@ namespace Gravivore.Presentation.Player
             root.MagnetarGuard.TelegraphStarted += EliteAttack; root.MagnetarGuard.Damaged += EliteDamaged;
             root.MagnetarGuard.Activated += EliteActivated;
             root.CustodianBoss.EncounterReset += BossReset;
+            root.CustodianBoss.TelegraphStarted += BossWindup;
+            root.CustodianBoss.AttackResolved += BossRelease;
         }
         private static Actor Make(Transform authority) => new Actor
         { Binding = authority.GetComponent<CharacterVisualBinding>(), Position = authority.position };
@@ -153,7 +158,12 @@ namespace Gravivore.Presentation.Player
         private void EliteAttack(EliteShockwaveTelegraphEvent value) { _eliteAttackUntil = Time.time + value.Duration; _elite.State = 0; }
         private void EliteDamaged(DamageResult value) { if (!value.WasLethal) _eliteHitUntil = Time.time + .28f; }
         private void EliteActivated(MagnetarGuardActivatedEvent value) { _elite.State = 0; _elite.Pose(Idle); }
-        private void BossReset(BossEncounterResetEvent value) { _boss.State = 0; _boss.ReactionUntil = 0; _boss.Pose(Idle); }
+        private void BossReset(BossEncounterResetEvent value)
+        { _boss.State = 0; _boss.ReactionUntil = 0; _bossReleaseUntil=0; _boss.Pose(Idle); if(_boss.Animator!=null)_boss.Animator.speed=1; }
+        private void BossWindup(BossTelegraphEvent value)
+        { _bossAttack=value.Attack;_bossWindupDuration=Mathf.Max(.01f,value.Duration);_bossReleaseUntil=0;_boss.State=0; }
+        private void BossRelease(BossAttackResolvedEvent value)
+        { _bossAttack=value.Attack;_bossReleaseUntil=Time.time+.5f;_boss.State=0; }
         private void EnemyDied(EnemyDeathEvent value)
         {
             for (var i = 0; i < _corpses.Length; i++)
@@ -215,11 +225,16 @@ namespace Gravivore.Presentation.Player
                 Time.time < _eliteAttackUntil ? Attack : Idle);
             var boss = _root.CustodianBoss;
             if (boss.CurrentHitPoints < _boss.Hp) _boss.ReactionUntil = Time.time + .23f;
-            var bossState = boss.State == CustodianBossState.Dead ? Death :
-                Time.time < _boss.ReactionUntil ? Hit :
-                boss.State == CustodianBossState.Telegraphing || boss.State == CustodianBossState.ExecutingAttack ? Attack :
-                (boss.transform.position - _boss.Position).sqrMagnitude > .000001f ? Run : Idle;
+            _boss.Refresh();
+            var authoredBoss=_boss.Animator!=null && _boss.Animator.HasState(0,Windup);
+            var movingBoss=(boss.transform.position-_boss.Position).sqrMagnitude>.000001f;
+            var pose=CustodianPresentationSelector.Select(boss.State,_bossAttack,Time.time<_boss.ReactionUntil,Time.time<_bossReleaseUntil,movingBoss);
+            var bossState=pose==CustodianPresentationPose.Death?Death:pose==CustodianPresentationPose.Hit?Hit:
+                pose==CustodianPresentationPose.Windup?(authoredBoss?Windup:Attack):
+                pose==CustodianPresentationPose.Special?(authoredBoss?Special:Attack):
+                pose==CustodianPresentationPose.Release?(authoredBoss?Release:Attack):pose==CustodianPresentationPose.Run?Run:Idle;
             _boss.Pose(bossState); _boss.Hp=boss.CurrentHitPoints; _boss.Position=boss.transform.position;
+            if(_boss.Animator!=null)_boss.Animator.speed=authoredBoss&&pose==CustodianPresentationPose.Windup?1/_bossWindupDuration:1;
             ActiveShutdownCount = 0;
             for (var i = 0; i < _corpses.Length; i++)
             {
@@ -235,6 +250,11 @@ namespace Gravivore.Presentation.Player
             if (_root.PlayerHealth != null) { _root.PlayerHealth.Damaged -= PlayerDamaged; _root.PlayerHealth.Died -= PlayerDied; }
             if (_root.EnemyPopulation != null) _root.EnemyPopulation.EnemyDied -= EnemyDied;
             if (_root.CustodianBoss != null) _root.CustodianBoss.EncounterReset -= BossReset;
+            if (_root.CustodianBoss != null)
+            {
+                _root.CustodianBoss.TelegraphStarted -= BossWindup;
+                _root.CustodianBoss.AttackResolved -= BossRelease;
+            }
             if (_root.MagnetarGuard != null)
             {
                 _root.MagnetarGuard.TelegraphStarted -= EliteAttack; _root.MagnetarGuard.Damaged -= EliteDamaged;

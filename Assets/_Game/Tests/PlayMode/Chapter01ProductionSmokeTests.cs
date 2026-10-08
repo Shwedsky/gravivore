@@ -181,7 +181,7 @@ namespace Gravivore.Tests.PlayMode
             foreach(var enemy in root.EnemyPopulation.GetComponentsInChildren<OrdinaryEnemyController>(true))
             {var binding=enemy.GetComponent<CharacterVisualBinding>();if(binding.ActiveModel==null)continue;
                 Assert.IsNotNull(binding.ActiveModel.GetComponentInChildren<Animator>(),enemy.LifeId.ToString());}
-            StringAssert.StartsWith("Custodian_V1",root.CustodianBoss.GetComponent<CharacterVisualBinding>().ActiveModel.name);
+            StringAssert.StartsWith("Custodian_V2",root.CustodianBoss.GetComponent<CharacterVisualBinding>().ActiveModel.name);
             for(var i=0;i<env.SliceObstacleCount;i++)
             {var obstacle=env.GetSliceObstacle(i);if(!obstacle.Name.StartsWith("Chapter01 "))continue;
                 var proxy=Enumerable.Range(0,root.WorldPresenter.EnvironmentBlockerCount).Select(root.WorldPresenter.GetEnvironmentBlocker).Single(c=>c.name==obstacle.Name);
