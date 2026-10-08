@@ -23,7 +23,8 @@ namespace Gravivore.Presentation.Composition
         public RepairManipulatorPresenter Manipulators { get; private set; }
 
         public void Initialize(PlayerHealthController health, Vector3 repairPosition,
-            PlayerRecoveryConfiguration recovery, Phase6BProductionDefinition definition, Material lit, Material unlit)
+            PlayerRecoveryConfiguration recovery, Phase6BProductionDefinition definition, Material lit, Material unlit,
+            Gravivore.Presentation.World.ConceptFidelityDefinition fidelity = null)
         {
             if (_health != null) throw new InvalidOperationException("Repair presentation is already initialized.");
             _health = health != null ? health : throw new ArgumentNullException(nameof(health));
@@ -36,7 +37,7 @@ namespace Gravivore.Presentation.Composition
             _vfx = gameObject.AddComponent<Phase6BVfxPool>();
             _vfx.Initialize(definition.CreateRepairBindings());
             Manipulators = gameObject.AddComponent<RepairManipulatorPresenter>();
-            Manipulators.Initialize(this, health.transform, lit, unlit);
+            Manipulators.Initialize(this, health.transform, fidelity);
             _health.Healed += HandleHealed;
             _health.Died += HandleDeath;
         }

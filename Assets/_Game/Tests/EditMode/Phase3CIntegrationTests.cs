@@ -37,8 +37,8 @@ namespace Gravivore.Tests.EditMode
             }
             var definition = AssetDatabase.LoadAssetAtPath<ChapterVisualIntegrationDefinition>(VisualIntegrationFoundationBuilder.DefinitionPath);
             Assert.That(definition.Elite.Prefab.name, Is.EqualTo("Magnetar_V1"));
-            Assert.That(definition.Boss.Prefab.name, Is.EqualTo("Custodian_V1"));
-            Assert.That(definition.RepairHub.Prefab.name, Is.EqualTo("RepairHub_Phase3D"));
+            Assert.That(definition.Boss.Prefab.name, Is.EqualTo("Custodian_V2"));
+            Assert.That(definition.RepairHub.Prefab.name, Is.EqualTo("Repair_Platform_V2"));
         }
     }
 }

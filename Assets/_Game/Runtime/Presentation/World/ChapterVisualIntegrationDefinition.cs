@@ -9,14 +9,17 @@ namespace Gravivore.Presentation.World
         [SerializeField] private PresentationModelBinding _elite = new PresentationModelBinding();
         [SerializeField] private PresentationModelBinding _boss = new PresentationModelBinding();
         [SerializeField] private PresentationModelBinding _repairHub = new PresentationModelBinding();
+        [SerializeField] private ConceptFidelityDefinition _fidelity;
 
         public PresentationModelBinding Elite => _elite;
         public PresentationModelBinding Boss => _boss;
         public PresentationModelBinding RepairHub => _repairHub;
+        public ConceptFidelityDefinition Fidelity => _fidelity;
 
         public void ValidateOrThrow()
         {
             _elite.ValidateOrThrow(); _boss.ValidateOrThrow(); _repairHub.ValidateOrThrow();
+            _fidelity?.ValidateOrThrow();
         }
     }
 }

@@ -62,11 +62,12 @@ namespace Gravivore.Tests.PlayMode
                 Assert.That(binding.VisualRoot.GetComponentsInChildren<Collider>(true), Is.Empty);
             }
             var hub = environment.GetRegion("repair-hub").Root;
-            var model = hub.Find("MainPlatform/RepairHub_Phase3D"); Assert.IsNotNull(model);
+            var model = hub.Find("MainPlatform/Repair_Platform_V2"); Assert.IsNotNull(model);
             Assert.That(Vector3.Distance(hub.Find("PlayerDockPoint").position, model.Find("ServicePoint").position), Is.LessThan(.001f));
-            var anchors = new[] { "ManipulatorLeft", "ManipulatorRight", "RearManipulatorA", "RearManipulatorB", "RepairBeamOriginLeft", "RepairBeamOriginRight", "RepairBeamOriginRearA", "RepairBeamOriginRearB", "AmbientFxRoot" };
-            var refs = new[] { "ManipulatorMount_L", "ManipulatorMount_R", "RearManipulatorMount_A", "RearManipulatorMount_B", "BeamEmitter_L", "BeamEmitter_R", "BeamEmitter_RearA", "BeamEmitter_RearB", "AmbientFxVisualRoot" };
-            for (var i = 0; i < anchors.Length; i++) Assert.That(Vector3.Distance(hub.Find(anchors[i]).position,model.Find(refs[i]).position),Is.LessThan(.001f));
+            Assert.That(root.RepairHub.Manipulators.ArmCount,Is.EqualTo(2));
+            Assert.That(root.RepairHub.Manipulators.transform.position,Is.EqualTo(root.RepairHub.RepairPosition));
+            Assert.NotNull(root.RepairHub.Manipulators.transform.Find("Authored repair pedestal 0"));
+            Assert.NotNull(root.RepairHub.Manipulators.transform.Find("Authored repair pedestal 1"));
             Assert.That(root.CustodianBoss.GetComponent<CharacterVisualBinding>().ActiveModel.Find("ConeAttackOrigin"),Is.Not.Null);
             Assert.That(root.CustodianBoss.GetComponent<CharacterVisualBinding>().ActiveModel.Find("LineAttackOrigin"),Is.Not.Null);
             Assert.That(root.CustodianBoss.GetComponent<CharacterVisualBinding>().ActiveModel.Find("CircleAttackOrigin"),Is.Not.Null);
