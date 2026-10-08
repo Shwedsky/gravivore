@@ -179,6 +179,27 @@ def export(name,animated=False,states=None):
         global_scale=1,apply_unit_scale=True,apply_scale_options='FBX_SCALE_UNITS',mesh_smooth_type='FACE',use_tspace=True,
         add_leaf_bones=False,axis_forward='-Z',axis_up='Y',bake_anim=animated,bake_anim_use_all_actions=True,bake_anim_use_nla_strips=False,bake_anim_simplify_factor=0,path_mode='STRIP')
 
+def deck_cells(seeds):
+    """Clip irregular large maintenance plates; no uniform rectangular lattice."""
+    cells=[]
+    for sx,sy in seeds:
+        points=[(-3,-3),(3,-3),(3,3),(-3,3)]
+        for tx,ty in seeds:
+            if(sx,sy)==(tx,ty):continue
+            nx,ny=tx-sx,ty-sy;limit=(tx*tx+ty*ty-sx*sx-sy*sy)/2
+            output=[]
+            for a,b in zip(points,points[1:]+points[:1]):
+                da=a[0]*nx+a[1]*ny-limit;db=b[0]*nx+b[1]*ny-limit
+                if da<=0:output.append(a)
+                if (da<=0)!=(db<=0):
+                    u=da/(da-db);output.append((a[0]+u*(b[0]-a[0]),a[1]+u*(b[1]-a[1])))
+            points=output
+            if not points:break
+        if points:
+            cx=sum(x for x,y in points)/len(points);cy=sum(y for x,y in points)/len(points)
+            cells.append([(cx+(x-cx)*.993,cy+(y-cy)*.993) for x,y in points])
+    return cells
+
 def bolts(cx,cy,z,r,number=8,bone='BODY'):
     for i in range(number):
         a=i*math.tau/number;rod('Recessed flange fastener',(cx+r*math.cos(a),cy+r*math.sin(a),z),(cx+r*math.cos(a),cy+r*math.sin(a),z+.035),.045,1,bone,6)
@@ -277,22 +298,24 @@ reset();arc('Contained scanner aperture',(0,0,0),.82,.82,.025,0,math.tau,.022,7,
 for variant in range(3):
     reset();rng=random.Random(810+variant)
     poly('Base structural deck',[(-3,-3),(3,-3),(3,3),(-3,3)],-.035,.09,15,bevel=.008)
-    for row in range(3):
-        for col in range(3):
-            x=-2+col*2+rng.uniform(-.13,.13);y=-2+row*2+rng.uniform(-.10,.10)
-            cut=.22+rng.random()*.3;w=.91+rng.random()*.035;d=.9+rng.random()*.06
-            pts=[(x-w+cut,y-d),(x+w-.13,y-d+.035),(x+w,y-d+.23),(x+w,y+d-.20),(x+w-.24,y+d),(x-w+.14,y+d-.025),(x-w,y+d-.27),(x-w,y-d+cut)]
-            if row==variant and col==1:pts[2]=(x+w-.33,y-d+.43)
-            poly('Individually damaged deck plate',pts,.025,.08,3 if (row+col+variant)%3 else 14,bevel=.019)
-            if (row+col+variant)%4==0:
-                poly('Welded overlapping maintenance patch',[(x-.45,y-.25),(x+.25,y-.31),(x+.51,y+.14),(x-.25,y+.39)],.079,.025,1,bevel=.006)
-                for a in (-.3,.3):rod('Visible patch weld',(x+a,y-.19,.101),(x+a+.07,y+.2,.101),.012,13,vertices=6)
-    # Slotted cover/cable cavity is deliberately offset from the panel grid.
-    box('Service cavity',(.87,-1.1,.10),(.62,1.62,.027),8,angle=.13,bevel=.009)
-    for j in range(7):box('Drainage slotted grate',(.85,-1.75+j*.20,.12),(.56,.045,.028),1,angle=.13,bevel=.005)
-    hose('Recessed curved deck services',[(-2.6,1.22,.078),(-1.65,1.31,.085),(-.75,1.10,.087),(.2,1.52,.085),(1.65,1.68,.08)],.037,8)
-    for j in range(3):box('Interrupted hazard marking',(-2.49+j*.20,-2.40,.082),(.11,.5,.008),4,angle=-.35,bevel=0)
-    poly('Broad traffic scorch',[(1.57,2.28),(2.3,2.14),(2.7,2.55),(2.56,2.87),(1.92,2.71)],.085,.005,9,bevel=0)
+    seeds=[(-2.35,-1.75),(.85,-2.38),(2.48,-.38),(-1.52,.27),(.49,.39),(-2.15,2.46),(1.16,2.19)]
+    seeds=[(x+rng.uniform(-.34,.34),y+rng.uniform(-.37,.37)) for x,y in seeds]
+    for index,pts in enumerate(deck_cells(seeds)):
+        poly('Irregular fitted structural plating',pts,.025,.08,3 if index%4 else 14,bevel=.009)
+    if variant!=1:
+        poly('Welded overlapping maintenance patch',[(-.53,-.41),(.49,-.46),(.64,.31),(-.42,.57)],.079,.025,14,bevel=.007)
+        for a in (-.38,.41):rod('Visible patch weld',(a,-.30,.101),(a+.04,.29,.101),.012,1,vertices=6)
+    if variant==0:
+        box('Recessed service cavity',(1.94,-1.2,.076),(.48,1.29,.027),8,angle=.21,bevel=.009)
+        for j in range(6):box('Flush drainage cover',(1.94,-1.73+j*.20,.091),(.43,.045,.014),14,angle=.21,bevel=.004)
+        for j in range(3):box('Local service hazard marking',(2.22-j*.20,-2.3,.082),(.11,.48,.008),13,angle=-.35,bevel=0)
+    if variant==1:
+        hose('Exposed recessed deck services',[(-2.6,1.22,.071),(-1.65,1.31,.074),(-.75,1.10,.076),(.2,1.52,.076),(1.65,1.68,.073)],.022,8)
+        poly('Irregular scorched maintenance area',[(1.32,-2.18),(1.92,-2.34),(2.32,-1.86),(2.10,-1.35),(1.55,-1.51)],.079,.004,9,bevel=0)
+    if variant==2:
+        poly('Partly removed access hatch',[(-2.27,.98),(-1.21,1.03),(-1.06,2.15),(-2.30,2.06)],.079,.021,8,bevel=.007)
+        hose('Conduit inside missing hatch',[(-2.09,1.12,.095),(-1.48,1.32,.092),(-1.24,1.88,.094)],.027,1)
+        poly('Displaced hatch cover',[(-2.75,2.38),(-1.74,2.27),(-1.51,2.94),(-2.83,2.96)],.09,.019,14,bevel=.006)
     export('Deck_V2_'+str(variant))
 
 reset()
@@ -316,9 +339,13 @@ export('Bulkhead_V2')
 def pressure_machine(name,energy=6,turbine=False):
     reset();bone('ROTOR_PRESSURE',(0,0,1.6))
     shell('Asymmetric reactor foundation',(0,0,.20),3.1,3.4,.4,14)
-    arc('Curved protective vessel cradle',(0,0,1.15),1.10,1.15,.27,.2,math.tau-.34,1.28,0)
+    arc('Curved protective vessel cradle',(0,0,1.15),1.10,1.15,.27,-.77,4.34,1.28,0)
     rod('Internal recessed energy column',(0,0,.55),(0,0,2.30),.52,energy,vertices=24)
-    dome('Pressure crown',(0,0,2.51),(.98,.98,.37),2)
+    arc('Split curved pressure crown',(0,0,2.51),1.01,1.01,.30,-.40,3.82,.34,2)
+    ring('Protected crown aperture',(0,0,2.56),.80,.10,1)
+    dome('Recessed luminous pressure source',(0,0,2.22),(.42,.42,.17),energy)
+    for x in (-.29,.29):
+        rod('Opaque crown shielding cage',(x,-.53,2.1),(x,.53,2.56),.027,0)
     for z in (.55,1.08,1.93,2.27):ring('Industrial vessel armor hoop',(0,0,z),.92,.09,1)
     for i in range(6):
         a=i*math.tau/6;x=.90*math.cos(a);y=.90*math.sin(a)

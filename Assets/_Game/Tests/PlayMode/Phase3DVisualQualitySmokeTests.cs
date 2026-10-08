@@ -141,14 +141,17 @@ namespace Gravivore.Tests.PlayMode
             var presenters = root.GetComponentsInChildren<Phase3DMechanicalMotionPresenter>(true);
             Assert.That(presenters, Has.Length.EqualTo(1));
             var presenter = presenters[0];
-            Assert.That(presenter.ChannelCount, Is.EqualTo(4),"Retained repair hub channels; retired prototype scenery no longer runs motion channels.");
+            Assert.That(presenter.ChannelCount, Is.Zero,"Retired primitive repair arms no longer run cosmetic idle channels.");
 
             var elitePosition = root.MagnetarGuard.transform.position;
             var bossPosition = root.CustodianBoss.transform.position;
             var hub = root.VisualEnvironment.GetRegion("repair-hub").Root;
-            var arm = hub.Find("MainPlatform/RepairHub_Phase3D/ServiceArm_L_Forearm");
+            var arm = root.RepairHub.Manipulators.transform.Find("Authored upper manipulator 0");
             Assert.IsNotNull(arm);
             var before = arm.localRotation;
+            root.PlayerHealth.ApplyDamage(new Gravivore.Gameplay.Combat.DamageRequest(50,Gravivore.Gameplay.Combat.DamageType.Physical));
+            root.PlayerHealth.Tick(3.1f);root.PlayerHealth.Tick(.1f);
+            Assert.IsTrue(root.RepairHub.IsRepairing);
 
             // A single 100 ms sample can straddle a sine turning point, where
             // Quaternion.Angle rounds the small change to zero. Observe a bounded
@@ -157,6 +160,7 @@ namespace Gravivore.Tests.PlayMode
             for (var sample = 0; sample < 10 && observedAngle <= .02f; sample++)
             {
                 yield return new WaitForSecondsRealtime(.1f);
+                root.RepairHub.Manipulators.Tick(.1f);
                 observedAngle = Mathf.Max(observedAngle, Quaternion.Angle(before, arm.localRotation));
             }
 

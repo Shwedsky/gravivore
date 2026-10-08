@@ -28,6 +28,9 @@ namespace Gravivore.Editor.VisualIntegration
             Directory.CreateDirectory(Root+"/Materials");Directory.CreateDirectory(Root+"/Prefabs");AssetDatabase.Refresh();
             UrpConfigurator.ConfigureUrp();
             var atlas=Atlas();
+            foreach(var path in new[]{"Assets/_Game/Content/VisualSlice/Materials/Slice_IndustrialAtlas.mat",
+                "Assets/_Game/Content/Chapter01Production/Materials/Chapter01_IndustrialAtlas.mat"})
+            {var accepted=AssetDatabase.LoadAssetAtPath<Material>(path);if(accepted==null)continue;accepted.SetColor("_EmissionColor",Color.white*3.2f);EditorUtility.SetDirty(accepted);}
             foreach(var name in StaticAssets)ImportPrefab(name,atlas,false);
             foreach(var name in AnimatedAssets)ImportPrefab(name,atlas,true);
             var settingsPath=Root+"/ConceptFidelity.asset";
@@ -64,7 +67,7 @@ namespace Gravivore.Editor.VisualIntegration
                 for(var x=-6;x<=6;x+=6)for(var z=-6;z<=6;z+=6)
                     if(Mathf.Abs(center.x+x)>6)Place(deck,"Deck_V2_"+(Math.Abs(x+z+(int)center.x)%3),center+new Vector3(x,.065f,z),((x-z)/6%4)*90);
             }
-            foreach(var z in new[]{-12,20})foreach(var x in new[]{-18,-12,12,18})
+            foreach(var z in new[]{-12,20})foreach(var x in new[]{-18,-12,-6,6,12,18})
                 Place(deck,"Deck_V2_"+(Math.Abs(x/6)%3),new Vector3(x,.065f,z),90);
             var services=Group(route,"Bowed services and threshold machinery");
             foreach(var z in new[]{-30,-18,-6,6,18,30,42,54,66,78,90})
@@ -73,9 +76,16 @@ namespace Gravivore.Editor.VisualIntegration
                 Place(services,"Curved_Services_V2",new Vector3(side*4.3f,.10f,z),side*90);
                 if(z!=66&&z!=90)Place(services,"Bulkhead_V2",new Vector3(-side*5.2f,0,z),side*90);
             }
+            // Extra services terminate at actual sector thresholds rather than following
+            // every deck seam. Preserve the clear controller lane down the centre.
+            foreach(var pair in new[]{new Vector3(-4.6f,0,-24),new Vector3(4.5f,0,-5),new Vector3(-4.7f,0,9),
+                new Vector3(4.4f,0,26),new Vector3(-4.6f,0,47),new Vector3(4.8f,0,74),new Vector3(-5.5f,0,86)})
+                Place(services,"Curved_Services_V2",pair,pair.x<0?60:-70);
             // Large silhouettes sit outside clear central lanes and existing spawn cores.
             var heroes=Group(route,"Industrial focal points");
             Place(heroes,"Turbine_V2",new Vector3(-5.4f,0,-28),-15,false);
+            Place(heroes,"Turbine_V2",new Vector3(5.6f,0,10),-20,false);
+            Place(heroes,"Reactor_V2",new Vector3(-5.6f,0,26),25,false);
             Place(heroes,"Reactor_V2",new Vector3(-24.5f,0,-6),18,false);
             Place(heroes,"Pressure_Wreck_V2",new Vector3(25.1f,0,-6.2f),-18);
             Place(heroes,"Turbine_V2",new Vector3(-30.4f,0,26),25,false);
@@ -85,13 +95,24 @@ namespace Gravivore.Editor.VisualIntegration
             Place(heroes,"Reactor_V2",new Vector3(-5.7f,0,69),-25,false);
             Place(heroes,"Containment_Vessel_V2",new Vector3(7.7f,0,85),-20,false);
             Place(heroes,"Containment_Vessel_V2",new Vector3(-8.2f,0,94),12,false);
+            // Retire old prop art at replaced footprints, retaining its independent
+            // authored collision proxies and nested baseline dependency packages.
+            foreach(var node in env.Floor.GetComponentsInChildren<Transform>(true))
+            {
+                if(node.IsChildOf(route))continue;
+                if(node.name.StartsWith("Transformer",StringComparison.Ordinal)&&Vector3.Distance(node.position,new Vector3(-24.5f,0,-6))<.1f||
+                    node.name.StartsWith("Coolant_Pump",StringComparison.Ordinal)&&Vector3.Distance(node.position,new Vector3(-10,0,34))<.1f||
+                    node.name.StartsWith("Hauler_Wreck",StringComparison.Ordinal)&&Vector3.Distance(node.position,new Vector3(25.1f,0,-6.2f))<.1f)
+                    node.gameObject.SetActive(false);
+            }
             foreach(var z in new[]{82,90,98})foreach(var side in new[]{-1,1})
                 Place(heroes,"Containment_Frame_V2",new Vector3(side*6.4f,0,z),side*12);
             foreach(var point in new[]{new Vector3(-5.4f,1.2f,-28),new Vector3(-24.5f,1.2f,-6),new Vector3(25,1.0f,-6),
                 new Vector3(-10,1.3f,34),new Vector3(-5.7f,1.3f,69),new Vector3(7.7f,1.4f,85)})
             {var fault=new GameObject("Fidelity service fault").transform;fault.SetParent(route,false);fault.position=point;}
             foreach(var pair in new[]{("cyan",new Vector3(0,1.1f,-28)),("cyan",new Vector3(-5.4f,1.7f,-28)),("amber",new Vector3(-24.5f,1.7f,-6)),
-                ("cyan",new Vector3(-30.4f,1.7f,26)),("amber",new Vector3(-10,1.7f,34)),("cyan",new Vector3(5.8f,1.7f,54)),
+                ("cyan",new Vector3(-30.4f,1.7f,26)),("cyan",new Vector3(5.6f,1.7f,10)),("amber",new Vector3(-5.6f,1.7f,26)),
+                ("amber",new Vector3(-10,1.7f,34)),("cyan",new Vector3(5.8f,1.7f,54)),
                 ("amber",new Vector3(-5.7f,1.7f,69)),("red",new Vector3(7.7f,1.7f,85)),("red",new Vector3(-8.2f,1.7f,94)),("red",new Vector3(0,2.5f,94))})
             {var source=new GameObject("Fidelity light "+pair.Item1).transform;source.SetParent(route,false);source.position=pair.Item2;}
             // Only two reused unshadowed lights contribute local material response.
@@ -170,7 +191,14 @@ namespace Gravivore.Editor.VisualIntegration
                 importer.clipAnimations=clips;
             }
             importer.SaveAndReimport();
-            var obj=Object.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>(path));obj.name=name;
+            GameObject obj;
+            if(animated){obj=Object.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>(path));obj.name=name;}
+            else
+            {
+                // Preserve the imported FBX axis correction below a neutral placement
+                // root. Placement must never replace that source rotation.
+                obj=new GameObject(name);Object.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>(path),obj.transform,false);
+            }
             foreach(var renderer in obj.GetComponentsInChildren<Renderer>())renderer.sharedMaterials=new[]{material};
             if(animated)
             {
@@ -195,6 +223,7 @@ namespace Gravivore.Editor.VisualIntegration
                     {var t=new GameObject(socket).transform;t.SetParent(sockets,false);t.localPosition=new Vector3(0,1.5f,socket=="AttackOrigin"?1:0);}
                 }
             }
+            if(name=="Repair_Platform_V2")new GameObject("ServicePoint").transform.SetParent(obj.transform,false);
             PrefabUtility.SaveAsPrefabAsset(obj,Prefab(name));Object.DestroyImmediate(obj);
         }
         private static void Lighting(ChapterVisualEnvironment env)

@@ -68,6 +68,11 @@ namespace Gravivore.Tests.PlayMode
             Assert.That(route.GetComponentsInChildren<Collider>(true).Length,Is.Zero);
             var materials=route.GetComponentsInChildren<Renderer>(true).Select(r=>r.sharedMaterial).Distinct().ToArray();Assert.That(materials.Length,Is.EqualTo(1));
             Assert.NotNull(route.Find("Continuous worn deck"));Assert.NotNull(route.Find("Industrial focal points"));
+            foreach(var tile in route.Find("Continuous worn deck").GetComponentsInChildren<Renderer>())
+            {
+                Assert.That(tile.bounds.size.y,Is.LessThan(.4f),"Deck must lie flat: "+tile.name);
+                Assert.That(tile.bounds.size.x,Is.GreaterThan(5.9f));Assert.That(tile.bounds.size.z,Is.GreaterThan(5.9f));
+            }
             var renderers=root.GetComponentsInChildren<Renderer>(true).Length;var transforms=root.GetComponentsInChildren<Transform>(true).Length;
             foreach(var pair in new[]{("02_spawn",new Vector3(0,0,-28)),("03_capacitors",new Vector3(-20,0,-12)),("04_haulers",new Vector3(20,0,-12)),
                 ("05_corridor",new Vector3(0,0,10)),("06_relay",new Vector3(-26,0,20)),("07_shield",new Vector3(26,0,20)),
@@ -88,6 +93,66 @@ namespace Gravivore.Tests.PlayMode
                 realtimeLights=root.GetComponentsInChildren<Light>(true).Length,heroRouteRenderers=route.GetComponentsInChildren<Renderer>(true).Length},true));
         }
         [Serializable] private sealed class Inventory{public int transforms,renderers,sharedMaterials,realtimeLights,heroRouteRenderers;}
+        private sealed class RouteInput : IMovementInput{public Vector2 Movement{get;set;}}
+        [Serializable] private sealed class SustainedEvidence
+        {public double seconds,worstFrameGapMilliseconds;public int frames,completedStops,initialTransforms,finalTransforms,initialMaterials,finalMaterials;public long assimilation;public string mode="Editor graphics, development gate unlock and god mode; real locomotion, combat, cooldowns and saves";}
+        [UnityTest,Timeout(600000)] public IEnumerator FiveMinuteRuntimeHeroRouteUsesRealLocomotionCombatAndBoundedPresentation()
+        {
+            _scene=new CanonicalSceneTestScope();yield return _scene.Load();var root=_scene.Root;
+            root.PlayerHealth.SetDevelopmentGodMode(true);
+            root.WorldUnlocks.PrepareEliteEncounterForDevelopment();root.Chapter1Encounters.Tick();
+            root.MagnetarGuard.ApplyDamage(new DamageRequest(100000,DamageType.Gravity));
+            Physics.SyncTransforms();
+            var input=new RouteInput();var camera=UnityEngine.Camera.main;
+            root.PlayerObject.GetComponent<PlayerLocomotion>().Initialize(input,camera.transform,root.PlayerStats,360);
+            var stops=new[]{new Vector3(-20,0,-12),new Vector3(20,0,-12),new Vector3(0,0,10),new Vector3(-26,0,20),
+                new Vector3(26,0,20),new Vector3(0,0,40),new Vector3(0,0,68),new Vector3(0,0,89.5f),new Vector3(0,0,-28)};
+            var evidence=new SustainedEvidence{initialTransforms=root.GetComponentsInChildren<Transform>(true).Length,
+                initialMaterials=root.GetComponentsInChildren<Renderer>(true).Select(r=>r.sharedMaterial).Distinct().Count()};
+            var started=Time.realtimeSinceStartupAsDouble;var previous=started;var index=0;var point=0;var dwellUntil=0d;
+            System.Collections.Generic.List<Vector3> path=null;
+            var nextCapture=60d;
+            while(Time.realtimeSinceStartupAsDouble-started<300)
+            {
+                var now=Time.realtimeSinceStartupAsDouble;evidence.frames++;
+                evidence.worstFrameGapMilliseconds=Math.Max(evidence.worstFrameGapMilliseconds,(now-previous)*1000);previous=now;
+                Assert.That(root.EnemyPopulation.LiveEnemyCount,Is.LessThanOrEqualTo(25));
+                if(now>=dwellUntil)
+                {
+                    if(path==null)
+                    {
+                        var grid=new Chapter01ProductionSmokeTests.RouteGrid(root,root.PlayerObject.transform.position);
+                        Assert.IsTrue(grid.Reaches(stops[index]),"Unchanged collision route: "+index);
+                        path=grid.Path(stops[index]);point=0;
+                    }
+                    while(point<path.Count&&Vector3.Distance(root.PlayerObject.transform.position,path[point])<.40f)point++;
+                    if(point==path.Count)
+                    {input.Movement=Vector2.zero;path=null;index=(index+1)%stops.Length;dwellUntil=now+7;evidence.completedStops++;}
+                    else
+                    {
+                        var direction=path[point]-root.PlayerObject.transform.position;direction.y=0;direction.Normalize();
+                        var forward=Vector3.ProjectOnPlane(camera.transform.forward,Vector3.up).normalized;
+                        var right=Vector3.ProjectOnPlane(camera.transform.right,Vector3.up).normalized;
+                        input.Movement=new Vector2(Vector3.Dot(direction,right),Vector3.Dot(direction,forward));
+                    }
+                }
+                if(now-started>=nextCapture){Capture(root,"sustained_"+(int)nextCapture);nextCapture+=120;Assert.IsTrue(root.FlushNow());}
+                yield return null;
+            }
+            input.Movement=Vector2.zero;evidence.seconds=Time.realtimeSinceStartupAsDouble-started;
+            evidence.finalTransforms=root.GetComponentsInChildren<Transform>(true).Length;
+            evidence.finalMaterials=root.GetComponentsInChildren<Renderer>(true).Select(r=>r.sharedMaterial).Distinct().Count();
+            evidence.assimilation=root.Progression.State.TotalAssimilationScore;
+            Assert.That(evidence.completedStops,Is.GreaterThanOrEqualTo(stops.Length),"Five-minute traversal must cover the whole route.");
+            Assert.That(evidence.finalTransforms,Is.LessThanOrEqualTo(evidence.initialTransforms+300));
+            Assert.That(evidence.finalMaterials,Is.LessThanOrEqualTo(evidence.initialMaterials+4));
+            Assert.IsTrue(root.FlushNow());
+            var diagnostics=root.GetComponentInChildren<Gravivore.Presentation.Development.ColdStartDiagnostics>();
+            Assert.IsFalse(diagnostics.enabled);Assert.IsTrue(File.Exists(diagnostics.OutputPath));
+            Directory.CreateDirectory("docs/concept-fidelity-v2/verification");
+            File.WriteAllText("docs/concept-fidelity-v2/verification/five_minute_runtime.json",JsonUtility.ToJson(evidence,true));
+            File.Copy(diagnostics.OutputPath,"docs/concept-fidelity-v2/verification/cold-start-fidelity-editor.json",true);
+        }
         private static void Capture(S01SceneCompositionRoot root,string name)
         {
             root.MapIntegration.MapPresenter.RefreshNow();var camera=UnityEngine.Camera.main;camera.GetComponent<PortraitFollowCamera>().SnapToTarget();
