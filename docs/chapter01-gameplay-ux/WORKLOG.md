@@ -34,3 +34,7 @@ Final source: Unity compile and ProjectValidator exit 0. Full EditMode: 436/436 
 Cold-start conclusion and bounded device evidence collection are recorded in COLD_START_INVESTIGATION.md. The sustained device issue was not reproduced in Editor; no speculative warmup or claim of a confirmed device fix.
 
 Next milestone: CHAPTER 01 CONCEPT FIDELITY V2, after the APK device gate.
+
+## APK delivery
+
+ARM64 IL2CPP DEV build exit 0, versionCode 40, source `3eb97e761bc9432e5a7bfebe769f2a580e4fe2b4`. APK signature v2, manifest, native ABI, compiled gameplay UX types and packed Chapter 01 production dependencies verified. Size 76,767,909 bytes; SHA256 `5865fc7f5f694bcb9fabd8be59356b193ad1e44194dd7dcac52e8264e883c2e2`. See REPORT.md and verification/apk_verification.json for the exact APK path and proof. Device installation/playthrough is pending the human APK gate.
