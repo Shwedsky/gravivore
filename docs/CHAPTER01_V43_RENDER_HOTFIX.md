@@ -39,3 +39,21 @@ Static-batched renderers use their serialized firstSubMesh/subMeshCount subset o
 Only the two runtime UI shaders are added to Always Included Shaders. Existing explicit inclusions are preserved; URP materials are left intact. A post-strip compiler observer records retained target variants for Vulkan and GLES3x. The typed APK inspector resolves material shader PPtrs to actual Shader objects and checks material keywords, alongside the build report's dependency and serialized-renderer audit. No fallback material substitution is used: the intended materials must remain valid.
 
 Assumption: the demonstrated missing UI shader is the most plausible cause of the owner frame. The owner's same-device rendering gate is required to confirm the resulting APK on that GPU/API. Next spec remains the existing Chapter 01 V3 acceptance gate; first, rendering only.
+
+## Final v43 verification and delivery
+
+- APK source commit: `3aee32d13a8ce1a342371653d18859835a478415`. Following commits contain documentation/evidence only.
+- Unity 6000.3.0f1 standalone compile and ProjectValidator: exit 0.
+- Full EditMode: 469/469 passed, no skips. Full PlayMode: 134/134 passed, no skips, including the optional structure capture. PlayMode ran against the final runtime source at `7f083e9`; the later change affects only the Editor static-batch auditor and its passing EditMode regression.
+- Final Android ARM64 IL2CPP DEV build: exit 0. Both scene audit entries are present: Bootstrap has 0 renderers; Chapter 01 has 898 renderers, including 93 V3, with no missing/error materials.
+- Typed APK proof: both real UI Shader objects present; both real URP asset objects present; all eight V3 GameObject names present; compiled RenderingBootDiagnostics present. Atlas and hostile material PPtrs resolve to the intended real Shader objects, with their required keywords.
+- Post-strip retained variants on each of Vulkan and GLES3x: UI/Default 4, UI/DefaultETC1 4, Lit with emission/metallic-map 17, transparent Particles/Unlit 2. Build-report dependencies, existing production/concept packing proofs and V3 runtime/equipment packing checks pass.
+- Version 0.1.0, versionCode 43, package `com.gravivore.mobile.dev`. APK signature is valid and matches both actual v41 and v42 packages.
+- Delivered APK: `C:/Users/pamak/Documents/ChatGPT/gravivore/Builds/Android/gravivore-dev-0.1.0+43.apk`.
+- Size: **82,729,697 bytes**. SHA256: `ed1d778cf0108932d82151c66c30d608986d19efb472c25237e86c3262091ace`.
+- Post-build PlayerSettings are restored to the configured candidate package `com.gravivore.mobile`, version 0.1.0, repository versionCode 1. The APK itself correctly retains DEV package/versionCode 43.
+- The delivered v42 remains intact at its original SHA256 `efe69bc5c4e415dc05b0c3c4f23b30c1ff12d96107149699eb08f295d962f6c8`.
+
+Verification artifacts: `docs/render-hotfix/verification/`. Changed source files: `source_files.txt`. The five-minute Editor route completed 16 stops with at most 20/25 live enemies, stable 54 shared materials and no non-actor transform growth. This is a regression smoke check, not Android performance evidence.
+
+Actual Android execution: **not performed**; no connected hardware or installed emulator/AVD is available. No device capture or device FPS claim is made. PR #65 must remain Draft and unmerged. Install v43 on the same owner device; the first gate is **normal rendering with no magenta**. Gameplay acceptance follows only after that gate passes.
