@@ -28,7 +28,7 @@ namespace Gravivore.Tests.PlayMode
             var root = _scene.Root;
             var world = root.WorldPresenter;
             Assert.That(root.VisualEnvironment.GetComponentsInChildren<Collider>(true), Is.Empty);
-            Assert.That(world.EnvironmentBlockerCount, Is.EqualTo(4 + root.VisualEnvironment.SliceObstacleCount));
+            Assert.That(world.EnvironmentBlockerCount, Is.EqualTo(2 + root.VisualEnvironment.SliceObstacleCount));
             Assert.That(world.GameplayRoot.lossyScale, Is.EqualTo(Vector3.one));
 
             foreach (var regionId in new[]

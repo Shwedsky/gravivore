@@ -52,7 +52,8 @@ namespace Gravivore.Tests.PlayMode
             Assert.That(spot.LiveCount, Is.EqualTo(3), spot.Id);
             Assert.That(spot.GetLiveEnemy(0).CurrentHitPoints, Is.GreaterThan(root.EnemyPopulation.GetSpot(3).GetLiveEnemy(0).CurrentHitPoints));
             var marker = root.MapMarkers.GetMarker(6);
-            Assert.That(marker.Availability, Is.EqualTo(MapAvailabilityState.Available));
+            Assert.That(marker.Availability, Is.EqualTo(MapAvailabilityState.Active));
+            Assert.That(marker.LiveEnemyCount,Is.EqualTo(3));
             Assert.That(marker.ProgressionLocked, Is.False);
             Assert.That(marker.DisplayName, Is.EqualTo("Усиленная зона"));
             Assert.That(root.EnemyPopulation.LiveEnemyCount, Is.LessThanOrEqualTo(25));

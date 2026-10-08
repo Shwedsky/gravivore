@@ -14,7 +14,7 @@ Delivery gate: integrated ARM64 Android development APK, ProjectValidator, full 
 
 Repair exit investigation reproduced the stop at player X=4.4268, Z=-27 with the real capsule. Exact offending AABBs: `Chapter01 Service corridors Structural_Support 100` at (4.98,1.45,-28), size (1.04,2.89,.90); `Chapter01 Service corridors Maintenance_Station 101` at (5.56,.98,-26.57), size (1.27,1.96,1.22). Both authored objects and their corresponding proxies move +3 X. Retired repair-platform service-frame proxies are also omitted for the production platform. Regression walks from (0,0,-27) to (6,0,-27), then checks stylized perimeter lanes with the real controller.
 
-Strong spots retain their actual ordinary archetype, reward ladder and population cap. HP multipliers are 1.7/1.85/2.0/2.2; damage 1.3/1.4/1.45/1.6; movement is 10% faster and attack intervals 10% shorter. The east elite-side anchor moves one metre outward to avoid crossing Magnetar's wider acquisition boundary.
+Strong spots retain their actual ordinary archetype, reward ladder and population cap. HP multipliers are 1.7/1.85/2.0/2.2; damage 1.3/1.4/1.45/1.6; movement is 10% faster and attack intervals 10% shorter. The east elite-side spot moves two metres outward so every individual spawn anchor clears Magnetar's wider acquisition boundary.
 
 Magnetar has 510 HP, 16 armor, 27 shockwave damage and 21-damage basics with .35s warning and 1.25s cadence. Custodian retains 820 HP / 15 armor, uses 46/52/62 special damage and 29-damage basics. Initial aggro is 8m; active combat leash is 21m; pursuit is 3.2m/s. Grace accumulates only beyond that leash and clears immediately upon re-entry.
 
@@ -28,4 +28,12 @@ V3 adds six original runtime meshes, broken deck edges, exposed conduits, trench
 
 ## Delivery evidence
 
-Full validation and APK provenance are recorded after the integrated build. Runtime graphics captures are internal evidence, not an intermediate human approval gate. Android device frame rate and the owner playtest remain the next human gate. Hero-route dressing receives the most detail; distant peripheral alleys retain simpler baseline kit and lighting.
+Final full EditMode: 455/455 passed. Final full PlayMode: 131/131 passed, no failures or skips; the optional structural capture test was explicitly enabled. Standalone ProjectValidator exited 0. The five-minute real-locomotion/combat scenario completed 17 route stops with at most 20 live enemies against the cap of 25. Shared materials stayed at 54; all 402 retained additional transforms were the accepted lazy actor-variant cache, and non-actor presentation remained fixed.
+
+The 90-second cold-start recorder remains enabled in development builds and was exercised by the full PlayMode suite. These captures and performance inventories are Editor evidence, not device FPS measurements. Final test XML, runtime inventories and lossless structural PNGs are under `docs/chapter01-v3/`.
+
+APK provenance is recorded after the integrated build. Runtime graphics captures are internal evidence, not an intermediate human approval gate. Android device frame rate and the owner playtest remain the next human gate. Hero-route dressing receives the most detail; distant peripheral alleys retain simpler baseline kit and lighting.
+
+Assumptions: M-0's first copy auto-equips so the owner immediately sees the loot; additional copies at rank 5 acknowledge the kill's loot without further stats or an invented currency. Existing schema-2 profiles retain their history but receive the new weapon from their next legitimate rewarded Custodian kill.
+
+Next specification/gate: owner installation and Chapter 01 V3 device playtest. No subsequent numbered implementation specification is authorized by this milestone.

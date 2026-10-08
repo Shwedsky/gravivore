@@ -161,6 +161,8 @@ namespace Gravivore.Editor.VisualIntegration
                 var skins=obj.GetComponentsInChildren<SkinnedMeshRenderer>().OrderBy(r=>r.name).ToArray();foreach(var old in obj.GetComponentsInChildren<LODGroup>(true))Object.DestroyImmediate(old);
                 var lod=obj.AddComponent<LODGroup>();lod.SetLODs(new[]{new LOD(.16f,new Renderer[]{skins[0]}),new LOD(.075f,new Renderer[]{skins[1]}),new LOD(.018f,new Renderer[]{skins[2]})});lod.RecalculateBounds();
                 var sockets=Group(obj.transform,"Presentation Sockets");
+                foreach(var origin in new[]{"ConeAttackOrigin","LineAttackOrigin","CircleAttackOrigin"})
+                {var point=Group(obj.transform,origin);point.localPosition=origin=="CircleAttackOrigin"?new Vector3(0,2.64f,.22f):new Vector3(1.74f,1.36f,2.14f);}
                 foreach(var socket in new[]{"AttackOrigin","HitCenter","HealthAnchor","DeathOrigin"})
                 {var t=Group(sockets,socket);t.localPosition=new Vector3(socket=="AttackOrigin"?1.74f:0,1.36f,socket=="AttackOrigin"?2.14f:0);}
                 EditorUtility.SetDirty(controller);EditorUtility.SetDirty(machine);

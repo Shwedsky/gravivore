@@ -1,0 +1,1195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="131" result="Passed" total="131" passed="131" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-08 11:13:46Z" end-time="2026-10-08 11:21:22Z" duration="456,0445593">
+  <test-suite type="TestSuite" id="1172" name="GRAVIVORE" fullname="GRAVIVORE" runstate="Runnable" testcasecount="131" result="Passed" start-time="2026-10-08 11:13:46Z" end-time="2026-10-08 11:21:22Z" duration="456.044559" total="131" passed="131" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1166" name="Gravivore.PlayModeTests.dll" fullname="C:/Users/pamak/Documents/ChatGPT/gravivore/.codex-worktrees/chapter01-v3-playtest-build/Library/ScriptAssemblies/Gravivore.PlayModeTests.dll" runstate="Runnable" testcasecount="131" result="Passed" start-time="2026-10-08 11:13:46Z" end-time="2026-10-08 11:21:22Z" duration="456.033647" total="131" passed="131" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="10836" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1167" name="Gravivore" fullname="Gravivore" runstate="Runnable" testcasecount="131" result="Passed" start-time="2026-10-08 11:13:46Z" end-time="2026-10-08 11:21:22Z" duration="456.031009" total="131" passed="131" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1168" name="Tests" fullname="Gravivore.Tests" runstate="Runnable" testcasecount="131" result="Passed" start-time="2026-10-08 11:13:46Z" end-time="2026-10-08 11:21:22Z" duration="456.027898" total="131" passed="131" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1169" name="PlayMode" fullname="Gravivore.Tests.PlayMode" runstate="Runnable" testcasecount="131" result="Passed" start-time="2026-10-08 11:13:46Z" end-time="2026-10-08 11:21:22Z" duration="456.025088" total="131" passed="131" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1001" name="ArtRuntimePreviewSmokeTests" fullname="Gravivore.Tests.PlayMode.ArtRuntimePreviewSmokeTests" classname="Gravivore.Tests.PlayMode.ArtRuntimePreviewSmokeTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-08 11:13:46Z" end-time="2026-10-08 11:13:49Z" duration="3.072019" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1003" name="ActualCutterPopulationPreservesRootPhysicsPbrAndDeathRecycle" fullname="Gravivore.Tests.PlayMode.ArtRuntimePreviewSmokeTests.ActualCutterPopulationPreservesRootPhysicsPbrAndDeathRecycle" methodname="ActualCutterPopulationPreservesRootPhysicsPbrAndDeathRecycle" classname="Gravivore.Tests.PlayMode.ArtRuntimePreviewSmokeTests" runstate="Runnable" seed="1107769134" result="Passed" start-time="2026-10-08 11:13:46Z" end-time="2026-10-08 11:13:47Z" duration="1.491556" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1002" name="CanonicalProgressionSelectsExactlyOneWholeFormAtExistingThresholds" fullname="Gravivore.Tests.PlayMode.ArtRuntimePreviewSmokeTests.CanonicalProgressionSelectsExactlyOneWholeFormAtExistingThresholds" methodname="CanonicalProgressionSelectsExactlyOneWholeFormAtExistingThresholds" classname="Gravivore.Tests.PlayMode.ArtRuntimePreviewSmokeTests" runstate="Runnable" seed="467509528" result="Passed" start-time="2026-10-08 11:13:47Z" end-time="2026-10-08 11:13:48Z" duration="0.788049" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1004" name="Tier2AndFourActualCuttersProduceRuntimeStructuralAuditAndAlignedVfx" fullname="Gravivore.Tests.PlayMode.ArtRuntimePreviewSmokeTests.Tier2AndFourActualCuttersProduceRuntimeStructuralAuditAndAlignedVfx" methodname="Tier2AndFourActualCuttersProduceRuntimeStructuralAuditAndAlignedVfx" classname="Gravivore.Tests.PlayMode.ArtRuntimePreviewSmokeTests" runstate="Runnable" seed="1162536242" result="Passed" start-time="2026-10-08 11:13:48Z" end-time="2026-10-08 11:13:49Z" duration="0.776185" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1005" name="Chapter01GameplayUxSmokeTests" fullname="Gravivore.Tests.PlayMode.Chapter01GameplayUxSmokeTests" classname="Gravivore.Tests.PlayMode.Chapter01GameplayUxSmokeTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-08 11:13:49Z" end-time="2026-10-08 11:15:26Z" duration="97.772046" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1011" name="ColdStartNinetySecondObservationAndReloadEvidence" fullname="Gravivore.Tests.PlayMode.Chapter01GameplayUxSmokeTests.ColdStartNinetySecondObservationAndReloadEvidence" methodname="ColdStartNinetySecondObservationAndReloadEvidence" classname="Gravivore.Tests.PlayMode.Chapter01GameplayUxSmokeTests" runstate="Runnable" seed="973291693" result="Passed" start-time="2026-10-08 11:13:49Z" end-time="2026-10-08 11:15:23Z" duration="94.107659" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[Save] Offline clock delta was non-positive; no reward was granted.
+]]></output>
+              </test-case>
+              <test-case id="1010" name="ColdStartRecorderCapturesFirstFramesAndRemainsBounded" fullname="Gravivore.Tests.PlayMode.Chapter01GameplayUxSmokeTests.ColdStartRecorderCapturesFirstFramesAndRemainsBounded" methodname="ColdStartRecorderCapturesFirstFramesAndRemainsBounded" classname="Gravivore.Tests.PlayMode.Chapter01GameplayUxSmokeTests" runstate="Runnable" seed="997561920" result="Passed" start-time="2026-10-08 11:15:23Z" end-time="2026-10-08 11:15:23Z" duration="0.502695" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1006" name="FirstKillOwnsOneTimerCampingWaitsThenWholeMissingWaveReturnsWithUniqueRewards" fullname="Gravivore.Tests.PlayMode.Chapter01GameplayUxSmokeTests.FirstKillOwnsOneTimerCampingWaitsThenWholeMissingWaveReturnsWithUniqueRewards" methodname="FirstKillOwnsOneTimerCampingWaitsThenWholeMissingWaveReturnsWithUniqueRewards" classname="Gravivore.Tests.PlayMode.Chapter01GameplayUxSmokeTests" runstate="Runnable" seed="422333558" result="Passed" start-time="2026-10-08 11:15:23Z" end-time="2026-10-08 11:15:25Z" duration="1.413800" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1008" name="MapFootprintsMatchEveryTraversalBlockerAndOpenGatesKeepTheirGeometry" fullname="Gravivore.Tests.PlayMode.Chapter01GameplayUxSmokeTests.MapFootprintsMatchEveryTraversalBlockerAndOpenGatesKeepTheirGeometry" methodname="MapFootprintsMatchEveryTraversalBlockerAndOpenGatesKeepTheirGeometry" classname="Gravivore.Tests.PlayMode.Chapter01GameplayUxSmokeTests" runstate="Runnable" seed="916936846" result="Passed" start-time="2026-10-08 11:15:25Z" end-time="2026-10-08 11:15:25Z" duration="0.669628" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1007" name="RelevanceRecyclePreservesFirstKillDeadlineAndDoesNotGrowPool" fullname="Gravivore.Tests.PlayMode.Chapter01GameplayUxSmokeTests.RelevanceRecyclePreservesFirstKillDeadlineAndDoesNotGrowPool" methodname="RelevanceRecyclePreservesFirstKillDeadlineAndDoesNotGrowPool" classname="Gravivore.Tests.PlayMode.Chapter01GameplayUxSmokeTests" runstate="Runnable" seed="1122614719" result="Passed" start-time="2026-10-08 11:15:25Z" end-time="2026-10-08 11:15:26Z" duration="0.519679" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1009" name="RepairArmsObserveHealingAndKeepObjectsVfxAudioBounded" fullname="Gravivore.Tests.PlayMode.Chapter01GameplayUxSmokeTests.RepairArmsObserveHealingAndKeepObjectsVfxAudioBounded" methodname="RepairArmsObserveHealingAndKeepObjectsVfxAudioBounded" classname="Gravivore.Tests.PlayMode.Chapter01GameplayUxSmokeTests" runstate="Runnable" seed="117439107" result="Passed" start-time="2026-10-08 11:15:26Z" end-time="2026-10-08 11:15:26Z" duration="0.555025" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1012" name="Chapter01ProductionSmokeTests" fullname="Gravivore.Tests.PlayMode.Chapter01ProductionSmokeTests" classname="Gravivore.Tests.PlayMode.Chapter01ProductionSmokeTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-08 11:15:26Z" end-time="2026-10-08 11:15:31Z" duration="4.250184" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1014" name="CharacteristicsLiveRewardLevelEquipmentAndSaveReloadUseAuthoritativeState" fullname="Gravivore.Tests.PlayMode.Chapter01ProductionSmokeTests.CharacteristicsLiveRewardLevelEquipmentAndSaveReloadUseAuthoritativeState" methodname="CharacteristicsLiveRewardLevelEquipmentAndSaveReloadUseAuthoritativeState" classname="Gravivore.Tests.PlayMode.Chapter01ProductionSmokeTests" runstate="Runnable" seed="1732084877" result="Passed" start-time="2026-10-08 11:15:26Z" end-time="2026-10-08 11:15:28Z" duration="1.082545" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1015" name="CompleteWorldLockedAndUnlockedCapsuleRoutesAndActualControllerTraversal" fullname="Gravivore.Tests.PlayMode.Chapter01ProductionSmokeTests.CompleteWorldLockedAndUnlockedCapsuleRoutesAndActualControllerTraversal" methodname="CompleteWorldLockedAndUnlockedCapsuleRoutesAndActualControllerTraversal" classname="Gravivore.Tests.PlayMode.Chapter01ProductionSmokeTests" runstate="Runnable" seed="267918614" result="Passed" start-time="2026-10-08 11:15:28Z" end-time="2026-10-08 11:15:29Z" duration="1.006787" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1013" name="CustodianActualHudFullHalfLowResetRepeatDeathAndNoOrdinaryPlate" fullname="Gravivore.Tests.PlayMode.Chapter01ProductionSmokeTests.CustodianActualHudFullHalfLowResetRepeatDeathAndNoOrdinaryPlate" methodname="CustodianActualHudFullHalfLowResetRepeatDeathAndNoOrdinaryPlate" classname="Gravivore.Tests.PlayMode.Chapter01ProductionSmokeTests" runstate="Runnable" seed="420383358" result="Passed" start-time="2026-10-08 11:15:29Z" end-time="2026-10-08 11:15:29Z" duration="0.762339" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1016" name="ProductionArtIsLiveSolidPropsHaveMatchingGameplayProxiesAndFullMapUsesAuthority" fullname="Gravivore.Tests.PlayMode.Chapter01ProductionSmokeTests.ProductionArtIsLiveSolidPropsHaveMatchingGameplayProxiesAndFullMapUsesAuthority" methodname="ProductionArtIsLiveSolidPropsHaveMatchingGameplayProxiesAndFullMapUsesAuthority" classname="Gravivore.Tests.PlayMode.Chapter01ProductionSmokeTests" runstate="Runnable" seed="1926240118" result="Passed" start-time="2026-10-08 11:15:29Z" end-time="2026-10-08 11:15:30Z" duration="0.862585" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1017" name="SustainedRunStepsAreQuieterAndLessFrequentThanV38WithIndependentCombatGain" fullname="Gravivore.Tests.PlayMode.Chapter01ProductionSmokeTests.SustainedRunStepsAreQuieterAndLessFrequentThanV38WithIndependentCombatGain" methodname="SustainedRunStepsAreQuieterAndLessFrequentThanV38WithIndependentCombatGain" classname="Gravivore.Tests.PlayMode.Chapter01ProductionSmokeTests" runstate="Runnable" seed="126234052" result="Passed" start-time="2026-10-08 11:15:30Z" end-time="2026-10-08 11:15:31Z" duration="0.533444" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1018" name="Chapter01V3SmokeTests" fullname="Gravivore.Tests.PlayMode.Chapter01V3SmokeTests" classname="Gravivore.Tests.PlayMode.Chapter01V3SmokeTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-08 11:15:31Z" end-time="2026-10-08 11:15:35Z" duration="4.325889" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1022" name="BossUsesSmallAdmissionThenWideCombatLeashAndOnlyResetsBeyondGrace" fullname="Gravivore.Tests.PlayMode.Chapter01V3SmokeTests.BossUsesSmallAdmissionThenWideCombatLeashAndOnlyResetsBeyondGrace" methodname="BossUsesSmallAdmissionThenWideCombatLeashAndOnlyResetsBeyondGrace" classname="Gravivore.Tests.PlayMode.Chapter01V3SmokeTests" runstate="Runnable" seed="1764188865" result="Passed" start-time="2026-10-08 11:15:31Z" end-time="2026-10-08 11:15:31Z" duration="0.596238" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1021" name="EliteAndBossBasicAttacksEmitBoundedSourceTravelImpactBetweenSpecials" fullname="Gravivore.Tests.PlayMode.Chapter01V3SmokeTests.EliteAndBossBasicAttacksEmitBoundedSourceTravelImpactBetweenSpecials" methodname="EliteAndBossBasicAttacksEmitBoundedSourceTravelImpactBetweenSpecials" classname="Gravivore.Tests.PlayMode.Chapter01V3SmokeTests" runstate="Runnable" seed="580364121" result="Passed" start-time="2026-10-08 11:15:31Z" end-time="2026-10-08 11:15:32Z" duration="0.620294" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1024" name="IncomingDamageUsesHostileOutlinedPooledNumbersBesideG0" fullname="Gravivore.Tests.PlayMode.Chapter01V3SmokeTests.IncomingDamageUsesHostileOutlinedPooledNumbersBesideG0" methodname="IncomingDamageUsesHostileOutlinedPooledNumbersBesideG0" classname="Gravivore.Tests.PlayMode.Chapter01V3SmokeTests" runstate="Runnable" seed="1870250039" result="Passed" start-time="2026-10-08 11:15:32Z" end-time="2026-10-08 11:15:33Z" duration="0.565793" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1023" name="LegitimateBossLootUnlocksEquipsAttachesSavesAndRanksExactlyOncePerKill" fullname="Gravivore.Tests.PlayMode.Chapter01V3SmokeTests.LegitimateBossLootUnlocksEquipsAttachesSavesAndRanksExactlyOncePerKill" methodname="LegitimateBossLootUnlocksEquipsAttachesSavesAndRanksExactlyOncePerKill" classname="Gravivore.Tests.PlayMode.Chapter01V3SmokeTests" runstate="Runnable" seed="2010355537" result="Passed" start-time="2026-10-08 11:15:33Z" end-time="2026-10-08 11:15:34Z" duration="1.294886" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[Save] Offline clock delta was non-positive; no reward was granted.
+]]></output>
+              </test-case>
+              <test-case id="1019" name="RepairRightExitAndAllStylizedEdgesRemainTraversableWithRealCapsule" fullname="Gravivore.Tests.PlayMode.Chapter01V3SmokeTests.RepairRightExitAndAllStylizedEdgesRemainTraversableWithRealCapsule" methodname="RepairRightExitAndAllStylizedEdgesRemainTraversableWithRealCapsule" classname="Gravivore.Tests.PlayMode.Chapter01V3SmokeTests" runstate="Runnable" seed="662671665" result="Passed" start-time="2026-10-08 11:15:34Z" end-time="2026-10-08 11:15:35Z" duration="0.718585" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1020" name="SurvivingWaveShowsCountUntilEmptyThenFirstKillDeadlineAndReady" fullname="Gravivore.Tests.PlayMode.Chapter01V3SmokeTests.SurvivingWaveShowsCountUntilEmptyThenFirstKillDeadlineAndReady" methodname="SurvivingWaveShowsCountUntilEmptyThenFirstKillDeadlineAndReady" classname="Gravivore.Tests.PlayMode.Chapter01V3SmokeTests" runstate="Runnable" seed="1240336222" result="Passed" start-time="2026-10-08 11:15:35Z" end-time="2026-10-08 11:15:35Z" duration="0.527907" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1025" name="Chapter1ConsolidatedRuntimeSmokeTests" fullname="Gravivore.Tests.PlayMode.Chapter1ConsolidatedRuntimeSmokeTests" classname="Gravivore.Tests.PlayMode.Chapter1ConsolidatedRuntimeSmokeTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-08 11:15:35Z" end-time="2026-10-08 11:15:38Z" duration="2.951078" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1028" name="CustodianPresentation_UsesExactGameplayGeometryTimingAndCancelsOnReset" fullname="Gravivore.Tests.PlayMode.Chapter1ConsolidatedRuntimeSmokeTests.CustodianPresentation_UsesExactGameplayGeometryTimingAndCancelsOnReset" methodname="CustodianPresentation_UsesExactGameplayGeometryTimingAndCancelsOnReset" classname="Gravivore.Tests.PlayMode.Chapter1ConsolidatedRuntimeSmokeTests" runstate="Runnable" seed="50445247" result="Passed" start-time="2026-10-08 11:15:35Z" end-time="2026-10-08 11:15:36Z" duration="0.596039" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1027" name="MagnetarAndCustodian_FirstClearRepeatCooldownAndReload_PreservePermanentProgression" fullname="Gravivore.Tests.PlayMode.Chapter1ConsolidatedRuntimeSmokeTests.MagnetarAndCustodian_FirstClearRepeatCooldownAndReload_PreservePermanentProgression" methodname="MagnetarAndCustodian_FirstClearRepeatCooldownAndReload_PreservePermanentProgression" classname="Gravivore.Tests.PlayMode.Chapter1ConsolidatedRuntimeSmokeTests" runstate="Runnable" seed="1518306569" result="Passed" start-time="2026-10-08 11:15:36Z" end-time="2026-10-08 11:15:37Z" duration="1.277436" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[Save] Offline clock delta was non-positive; no reward was granted.
+]]></output>
+              </test-case>
+              <test-case id="1029" name="PlayerAndEnemyFeedback_UseOneProductionObserverAndResetPooledLives" fullname="Gravivore.Tests.PlayMode.Chapter1ConsolidatedRuntimeSmokeTests.PlayerAndEnemyFeedback_UseOneProductionObserverAndResetPooledLives" methodname="PlayerAndEnemyFeedback_UseOneProductionObserverAndResetPooledLives" classname="Gravivore.Tests.PlayMode.Chapter1ConsolidatedRuntimeSmokeTests" runstate="Runnable" seed="401130506" result="Passed" start-time="2026-10-08 11:15:37Z" end-time="2026-10-08 11:15:37Z" duration="0.523905" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1026" name="ProductionMapStrongSpotsAndRepair_UseAuthoritativeStateAndBoundedPools" fullname="Gravivore.Tests.PlayMode.Chapter1ConsolidatedRuntimeSmokeTests.ProductionMapStrongSpotsAndRepair_UseAuthoritativeStateAndBoundedPools" methodname="ProductionMapStrongSpotsAndRepair_UseAuthoritativeStateAndBoundedPools" classname="Gravivore.Tests.PlayMode.Chapter1ConsolidatedRuntimeSmokeTests" runstate="Runnable" seed="1709937483" result="Passed" start-time="2026-10-08 11:15:37Z" end-time="2026-10-08 11:15:38Z" duration="0.551902" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1030" name="Chapter1DeviceStabilizationSmokeTests" fullname="Gravivore.Tests.PlayMode.Chapter1DeviceStabilizationSmokeTests" classname="Gravivore.Tests.PlayMode.Chapter1DeviceStabilizationSmokeTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-08 11:15:38Z" end-time="2026-10-08 11:15:40Z" duration="1.658911" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1033" name="ActualNonlethalEnemyHit_UsesDirectionalHostileImpactWithoutLegacyRedDiscs" fullname="Gravivore.Tests.PlayMode.Chapter1DeviceStabilizationSmokeTests.ActualNonlethalEnemyHit_UsesDirectionalHostileImpactWithoutLegacyRedDiscs" methodname="ActualNonlethalEnemyHit_UsesDirectionalHostileImpactWithoutLegacyRedDiscs" classname="Gravivore.Tests.PlayMode.Chapter1DeviceStabilizationSmokeTests" runstate="Runnable" seed="1414663131" result="Passed" start-time="2026-10-08 11:15:38Z" end-time="2026-10-08 11:15:39Z" duration="0.518376" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1031" name="FreshProfile_PreEliteStrongPackSpawnsWithoutUnlockAndPhysicalGatesRemainIntact" fullname="Gravivore.Tests.PlayMode.Chapter1DeviceStabilizationSmokeTests.FreshProfile_PreEliteStrongPackSpawnsWithoutUnlockAndPhysicalGatesRemainIntact" methodname="FreshProfile_PreEliteStrongPackSpawnsWithoutUnlockAndPhysicalGatesRemainIntact" classname="Gravivore.Tests.PlayMode.Chapter1DeviceStabilizationSmokeTests" runstate="Runnable" seed="437005941" result="Passed" start-time="2026-10-08 11:15:39Z" end-time="2026-10-08 11:15:39Z" duration="0.516907" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1032" name="ProductionUi_AllMarkersEquipmentStatesAndDeveloperSurfaceUseRussian" fullname="Gravivore.Tests.PlayMode.Chapter1DeviceStabilizationSmokeTests.ProductionUi_AllMarkersEquipmentStatesAndDeveloperSurfaceUseRussian" methodname="ProductionUi_AllMarkersEquipmentStatesAndDeveloperSurfaceUseRussian" classname="Gravivore.Tests.PlayMode.Chapter1DeviceStabilizationSmokeTests" runstate="Runnable" seed="555736481" result="Passed" start-time="2026-10-08 11:15:39Z" end-time="2026-10-08 11:15:40Z" duration="0.621871" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1034" name="ConceptFidelitySmokeTests" fullname="Gravivore.Tests.PlayMode.ConceptFidelitySmokeTests" classname="Gravivore.Tests.PlayMode.ConceptFidelitySmokeTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-08 11:15:40Z" end-time="2026-10-08 11:20:43Z" duration="302.978657" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1036" name="AuthoredRepairAndAmbientPoolsStayBoundedAndNeverHealByPresentation" fullname="Gravivore.Tests.PlayMode.ConceptFidelitySmokeTests.AuthoredRepairAndAmbientPoolsStayBoundedAndNeverHealByPresentation" methodname="AuthoredRepairAndAmbientPoolsStayBoundedAndNeverHealByPresentation" classname="Gravivore.Tests.PlayMode.ConceptFidelitySmokeTests" runstate="Runnable" seed="1979955192" result="Passed" start-time="2026-10-08 11:15:40Z" end-time="2026-10-08 11:15:40Z" duration="0.559460" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1035" name="BossHasAuthoredRigDistinctAttackClipsAndThreeLodsWithoutArtAuthority" fullname="Gravivore.Tests.PlayMode.ConceptFidelitySmokeTests.BossHasAuthoredRigDistinctAttackClipsAndThreeLodsWithoutArtAuthority" methodname="BossHasAuthoredRigDistinctAttackClipsAndThreeLodsWithoutArtAuthority" classname="Gravivore.Tests.PlayMode.ConceptFidelitySmokeTests" runstate="Runnable" seed="786773977" result="Passed" start-time="2026-10-08 11:15:40Z" end-time="2026-10-08 11:15:41Z" duration="0.504525" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1037" name="ContinuousHeroRouteCameraReviewAndStablePresentationInventory" fullname="Gravivore.Tests.PlayMode.ConceptFidelitySmokeTests.ContinuousHeroRouteCameraReviewAndStablePresentationInventory" methodname="ContinuousHeroRouteCameraReviewAndStablePresentationInventory" classname="Gravivore.Tests.PlayMode.ConceptFidelitySmokeTests" runstate="Runnable" seed="647343750" result="Passed" start-time="2026-10-08 11:15:41Z" end-time="2026-10-08 11:15:42Z" duration="1.315175" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1038" name="FiveMinuteRuntimeHeroRouteUsesRealLocomotionCombatAndBoundedPresentation" fullname="Gravivore.Tests.PlayMode.ConceptFidelitySmokeTests.FiveMinuteRuntimeHeroRouteUsesRealLocomotionCombatAndBoundedPresentation" methodname="FiveMinuteRuntimeHeroRouteUsesRealLocomotionCombatAndBoundedPresentation" classname="Gravivore.Tests.PlayMode.ConceptFidelitySmokeTests" runstate="Runnable" seed="504554373" result="Passed" start-time="2026-10-08 11:15:42Z" end-time="2026-10-08 11:20:43Z" duration="300.597600" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="Timeout" value="600000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1039" name="DeviceCorrectionSmokeTests" fullname="Gravivore.Tests.PlayMode.DeviceCorrectionSmokeTests" classname="Gravivore.Tests.PlayMode.DeviceCorrectionSmokeTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-08 11:20:43Z" end-time="2026-10-08 11:20:46Z" duration="3.005840" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1043" name="MobileCameraShowsAllThreeEvolutionsAndRebuiltSlice" fullname="Gravivore.Tests.PlayMode.DeviceCorrectionSmokeTests.MobileCameraShowsAllThreeEvolutionsAndRebuiltSlice" methodname="MobileCameraShowsAllThreeEvolutionsAndRebuiltSlice" classname="Gravivore.Tests.PlayMode.DeviceCorrectionSmokeTests" runstate="Runnable" seed="2068363580" result="Passed" start-time="2026-10-08 11:20:43Z" end-time="2026-10-08 11:20:44Z" duration="1.442043" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1042" name="OriginalMusicFadesCombatAndRespectsMute_TacticalMapRetainsAuthority" fullname="Gravivore.Tests.PlayMode.DeviceCorrectionSmokeTests.OriginalMusicFadesCombatAndRespectsMute_TacticalMapRetainsAuthority" methodname="OriginalMusicFadesCombatAndRespectsMute_TacticalMapRetainsAuthority" classname="Gravivore.Tests.PlayMode.DeviceCorrectionSmokeTests" runstate="Runnable" seed="68121024" result="Passed" start-time="2026-10-08 11:20:44Z" end-time="2026-10-08 11:20:45Z" duration="0.520148" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1040" name="PullPresentationIsShortBoundedAndNeverMovesAuthorityOrSensors" fullname="Gravivore.Tests.PlayMode.DeviceCorrectionSmokeTests.PullPresentationIsShortBoundedAndNeverMovesAuthorityOrSensors" methodname="PullPresentationIsShortBoundedAndNeverMovesAuthorityOrSensors" classname="Gravivore.Tests.PlayMode.DeviceCorrectionSmokeTests" runstate="Runnable" seed="1879337217" result="Passed" start-time="2026-10-08 11:20:45Z" end-time="2026-10-08 11:20:45Z" duration="0.528288" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1041" name="ThreePlayerVariantsReusePoolsAndNeverReplaceDangerZoneGeometry" fullname="Gravivore.Tests.PlayMode.DeviceCorrectionSmokeTests.ThreePlayerVariantsReusePoolsAndNeverReplaceDangerZoneGeometry" methodname="ThreePlayerVariantsReusePoolsAndNeverReplaceDangerZoneGeometry" classname="Gravivore.Tests.PlayMode.DeviceCorrectionSmokeTests" runstate="Runnable" seed="659178008" result="Passed" start-time="2026-10-08 11:20:45Z" end-time="2026-10-08 11:20:46Z" duration="0.513513" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1044" name="EliteBossSmokeTests" fullname="Gravivore.Tests.PlayMode.EliteBossSmokeTests" classname="Gravivore.Tests.PlayMode.EliteBossSmokeTests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-10-08 11:20:46Z" end-time="2026-10-08 11:20:46Z" duration="0.025232" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1045" name="ActiveBoss_AccessChangesDoNotHealOrTeleport_ExitGraceResetsExactlyOnce" fullname="Gravivore.Tests.PlayMode.EliteBossSmokeTests.ActiveBoss_AccessChangesDoNotHealOrTeleport_ExitGraceResetsExactlyOnce" methodname="ActiveBoss_AccessChangesDoNotHealOrTeleport_ExitGraceResetsExactlyOnce" classname="Gravivore.Tests.PlayMode.EliteBossSmokeTests" runstate="Runnable" seed="1216617586" result="Passed" start-time="2026-10-08 11:20:46Z" end-time="2026-10-08 11:20:46Z" duration="0.003852" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1049" name="Boss_TakesDamageNeverDisplacesAndCompletesExactlyOnce" fullname="Gravivore.Tests.PlayMode.EliteBossSmokeTests.Boss_TakesDamageNeverDisplacesAndCompletesExactlyOnce" methodname="Boss_TakesDamageNeverDisplacesAndCompletesExactlyOnce" classname="Gravivore.Tests.PlayMode.EliteBossSmokeTests" runstate="Runnable" seed="1298944876" result="Passed" start-time="2026-10-08 11:20:46Z" end-time="2026-10-08 11:20:46Z" duration="0.002482" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1047" name="BossSequence_ShowsEveryTelegraphAndImpactChecksCurrentPlayerGeometry" fullname="Gravivore.Tests.PlayMode.EliteBossSmokeTests.BossSequence_ShowsEveryTelegraphAndImpactChecksCurrentPlayerGeometry" methodname="BossSequence_ShowsEveryTelegraphAndImpactChecksCurrentPlayerGeometry" classname="Gravivore.Tests.PlayMode.EliteBossSmokeTests" runstate="Runnable" seed="1557696821" result="Passed" start-time="2026-10-08 11:20:46Z" end-time="2026-10-08 11:20:46Z" duration="0.004966" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1051" name="MagnetarDeathDuringTelegraph_HidesIndicatorAndCannotResolveDamage" fullname="Gravivore.Tests.PlayMode.EliteBossSmokeTests.MagnetarDeathDuringTelegraph_HidesIndicatorAndCannotResolveDamage" methodname="MagnetarDeathDuringTelegraph_HidesIndicatorAndCannotResolveDamage" classname="Gravivore.Tests.PlayMode.EliteBossSmokeTests" runstate="Runnable" seed="1153841533" result="Passed" start-time="2026-10-08 11:20:46Z" end-time="2026-10-08 11:20:46Z" duration="0.003184" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1046" name="MagnetarGuard_IsTargetableUsesReducedPullAndUnlocksBossGateOnce" fullname="Gravivore.Tests.PlayMode.EliteBossSmokeTests.MagnetarGuard_IsTargetableUsesReducedPullAndUnlocksBossGateOnce" methodname="MagnetarGuard_IsTargetableUsesReducedPullAndUnlocksBossGateOnce" classname="Gravivore.Tests.PlayMode.EliteBossSmokeTests" runstate="Runnable" seed="322661497" result="Passed" start-time="2026-10-08 11:20:46Z" end-time="2026-10-08 11:20:46Z" duration="0.004131" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1048" name="PlayerDeathAndProlongedArenaExit_ResetBossHealthPositionAndTransientState" fullname="Gravivore.Tests.PlayMode.EliteBossSmokeTests.PlayerDeathAndProlongedArenaExit_ResetBossHealthPositionAndTransientState" methodname="PlayerDeathAndProlongedArenaExit_ResetBossHealthPositionAndTransientState" classname="Gravivore.Tests.PlayMode.EliteBossSmokeTests" runstate="Runnable" seed="59399184" result="Passed" start-time="2026-10-08 11:20:46Z" end-time="2026-10-08 11:20:46Z" duration="0.002495" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1050" name="RestoredBossDefeat_StartsDeadAndCannotReengage" fullname="Gravivore.Tests.PlayMode.EliteBossSmokeTests.RestoredBossDefeat_StartsDeadAndCannotReengage" methodname="RestoredBossDefeat_StartsDeadAndCannotReengage" classname="Gravivore.Tests.PlayMode.EliteBossSmokeTests" runstate="Runnable" seed="1399709455" result="Passed" start-time="2026-10-08 11:20:46Z" end-time="2026-10-08 11:20:46Z" duration="0.002099" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1052" name="EnemyPopulationSmokeTests" fullname="Gravivore.Tests.PlayMode.EnemyPopulationSmokeTests" classname="Gravivore.Tests.PlayMode.EnemyPopulationSmokeTests" runstate="Runnable" testcasecount="9" result="Passed" start-time="2026-10-08 11:20:46Z" end-time="2026-10-08 11:20:46Z" duration="0.547578" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1055" name="EnemyDeath_IsUniquePerLifeAndPooledReuseStartsWithFullHealth" fullname="Gravivore.Tests.PlayMode.EnemyPopulationSmokeTests.EnemyDeath_IsUniquePerLifeAndPooledReuseStartsWithFullHealth" methodname="EnemyDeath_IsUniquePerLifeAndPooledReuseStartsWithFullHealth" classname="Gravivore.Tests.PlayMode.EnemyPopulationSmokeTests" runstate="Runnable" seed="1328688866" result="Passed" start-time="2026-10-08 11:20:46Z" end-time="2026-10-08 11:20:46Z" duration="0.002723" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1059" name="EnemyPopulation_RelayContinuesAfterThrowingSubscriber" fullname="Gravivore.Tests.PlayMode.EnemyPopulationSmokeTests.EnemyPopulation_RelayContinuesAfterThrowingSubscriber" methodname="EnemyPopulation_RelayContinuesAfterThrowingSubscriber" classname="Gravivore.Tests.PlayMode.EnemyPopulationSmokeTests" runstate="Runnable" seed="1015345336" result="Passed" start-time="2026-10-08 11:20:46Z" end-time="2026-10-08 11:20:46Z" duration="0.515192" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[InvalidOperationException: population observer failed
+Gravivore.Tests.PlayMode.EnemyPopulationSmokeTests+<>c.<EnemyPopulation_RelayContinuesAfterThrowingSubscriber>b__6_0 (Gravivore.Gameplay.Enemies.EnemyDamageEvent _) (at Assets/_Game/Tests/PlayMode/EnemyPopulationSmokeTests.cs:248)
+Gravivore.Core.Events.SafeEventDispatch.Publish[T] (System.Action`1[T] handlers, T value) (at Assets/_Game/Runtime/Core/Events/SafeEventDispatch.cs:33)
+UnityEngine.Debug:LogException(Exception)
+Gravivore.Core.Events.SafeEventDispatch:Publish(Action`1, EnemyDamageEvent) (at Assets/_Game/Runtime/Core/Events/SafeEventDispatch.cs:37)
+Gravivore.Gameplay.Enemies.EnemyPopulationController:HandleEnemyDamaged(EnemyDamageEvent) (at Assets/_Game/Runtime/Gameplay/Enemies/EnemyPopulationController.cs:145)
+Gravivore.Core.Events.SafeEventDispatch:Publish(Action`1, EnemyDamageEvent) (at Assets/_Game/Runtime/Core/Events/SafeEventDispatch.cs:33)
+Gravivore.Gameplay.Enemies.SpawnSpotRuntime:HandleEnemyDamaged(EnemyDamageEvent) (at Assets/_Game/Runtime/Gameplay/Enemies/SpawnSpotRuntime.cs:293)
+Gravivore.Core.Events.SafeEventDispatch:Publish(Action`1, EnemyDamageEvent) (at Assets/_Game/Runtime/Core/Events/SafeEventDispatch.cs:33)
+Gravivore.Gameplay.Enemies.OrdinaryEnemyController:ApplyDamage(DamageRequest&) (at Assets/_Game/Runtime/Gameplay/Enemies/OrdinaryEnemyController.cs:199)
+Gravivore.Tests.PlayMode.<EnemyPopulation_RelayContinuesAfterThrowingSubscriber>d__6:MoveNext() (at Assets/_Game/Tests/PlayMode/EnemyPopulationSmokeTests.cs:252)
+UnityEngine.SetupCoroutine:InvokeMoveNext(IEnumerator, IntPtr)
+
+]]></output>
+              </test-case>
+              <test-case id="1061" name="FiveSpawnSpots_ExceedDemandCapAndReuseReleasedSlot" fullname="Gravivore.Tests.PlayMode.EnemyPopulationSmokeTests.FiveSpawnSpots_ExceedDemandCapAndReuseReleasedSlot" methodname="FiveSpawnSpots_ExceedDemandCapAndReuseReleasedSlot" classname="Gravivore.Tests.PlayMode.EnemyPopulationSmokeTests" runstate="Runnable" seed="945990278" result="Passed" start-time="2026-10-08 11:20:46Z" end-time="2026-10-08 11:20:46Z" duration="0.006296" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1053" name="OrdinaryEnemyAttack_AppliesDamageToPlayerHealth" fullname="Gravivore.Tests.PlayMode.EnemyPopulationSmokeTests.OrdinaryEnemyAttack_AppliesDamageToPlayerHealth" methodname="OrdinaryEnemyAttack_AppliesDamageToPlayerHealth" classname="Gravivore.Tests.PlayMode.EnemyPopulationSmokeTests" runstate="Runnable" seed="1911542153" result="Passed" start-time="2026-10-08 11:20:46Z" end-time="2026-10-08 11:20:46Z" duration="0.003170" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1057" name="OrdinaryEnemyPool_RepeatedLethalCyclesKeepFixedHierarchyAndSingleLifeEvents" fullname="Gravivore.Tests.PlayMode.EnemyPopulationSmokeTests.OrdinaryEnemyPool_RepeatedLethalCyclesKeepFixedHierarchyAndSingleLifeEvents" methodname="OrdinaryEnemyPool_RepeatedLethalCyclesKeepFixedHierarchyAndSingleLifeEvents" classname="Gravivore.Tests.PlayMode.EnemyPopulationSmokeTests" runstate="Runnable" seed="1795404191" result="Passed" start-time="2026-10-08 11:20:46Z" end-time="2026-10-08 11:20:46Z" duration="0.004583" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1056" name="OrdinaryEnemyPool_ReusesInstanceWithCleanRuntimeState" fullname="Gravivore.Tests.PlayMode.EnemyPopulationSmokeTests.OrdinaryEnemyPool_ReusesInstanceWithCleanRuntimeState" methodname="OrdinaryEnemyPool_ReusesInstanceWithCleanRuntimeState" classname="Gravivore.Tests.PlayMode.EnemyPopulationSmokeTests" runstate="Runnable" seed="1369953016" result="Passed" start-time="2026-10-08 11:20:46Z" end-time="2026-10-08 11:20:46Z" duration="0.003801" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1054" name="PlayerDeath_RespawnsOnceAtConfiguredPointWithStatsAndFullHealth" fullname="Gravivore.Tests.PlayMode.EnemyPopulationSmokeTests.PlayerDeath_RespawnsOnceAtConfiguredPointWithStatsAndFullHealth" methodname="PlayerDeath_RespawnsOnceAtConfiguredPointWithStatsAndFullHealth" classname="Gravivore.Tests.PlayMode.EnemyPopulationSmokeTests" runstate="Runnable" seed="353220976" result="Passed" start-time="2026-10-08 11:20:46Z" end-time="2026-10-08 11:20:46Z" duration="0.002312" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1060" name="SpawnSpot_RecoversPopulationAfterDeathLikeRecycle" fullname="Gravivore.Tests.PlayMode.EnemyPopulationSmokeTests.SpawnSpot_RecoversPopulationAfterDeathLikeRecycle" methodname="SpawnSpot_RecoversPopulationAfterDeathLikeRecycle" classname="Gravivore.Tests.PlayMode.EnemyPopulationSmokeTests" runstate="Runnable" seed="723356148" result="Passed" start-time="2026-10-08 11:20:46Z" end-time="2026-10-08 11:20:46Z" duration="0.002668" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1058" name="ThrowingDamagePresentation_DoesNotRollbackLethalStateOrBlockDeathObservers" fullname="Gravivore.Tests.PlayMode.EnemyPopulationSmokeTests.ThrowingDamagePresentation_DoesNotRollbackLethalStateOrBlockDeathObservers" methodname="ThrowingDamagePresentation_DoesNotRollbackLethalStateOrBlockDeathObservers" classname="Gravivore.Tests.PlayMode.EnemyPopulationSmokeTests" runstate="Runnable" seed="251554876" result="Passed" start-time="2026-10-08 11:20:46Z" end-time="2026-10-08 11:20:46Z" duration="0.004760" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[InvalidOperationException: presentation failed
+Gravivore.Tests.PlayMode.EnemyPopulationSmokeTests+<>c.<ThrowingDamagePresentation_DoesNotRollbackLethalStateOrBlockDeathObservers>b__5_0 (Gravivore.Gameplay.Enemies.EnemyDamageEvent _) (at Assets/_Game/Tests/PlayMode/EnemyPopulationSmokeTests.cs:224)
+Gravivore.Core.Events.SafeEventDispatch.Publish[T] (System.Action`1[T] handlers, T value) (at Assets/_Game/Runtime/Core/Events/SafeEventDispatch.cs:33)
+UnityEngine.Debug:LogException(Exception)
+Gravivore.Core.Events.SafeEventDispatch:Publish(Action`1, EnemyDamageEvent) (at Assets/_Game/Runtime/Core/Events/SafeEventDispatch.cs:37)
+Gravivore.Gameplay.Enemies.OrdinaryEnemyController:ApplyDamage(DamageRequest&) (at Assets/_Game/Runtime/Gameplay/Enemies/OrdinaryEnemyController.cs:199)
+Gravivore.Tests.PlayMode.<>c__DisplayClass5_0:<ThrowingDamagePresentation_DoesNotRollbackLethalStateOrBlockDeathObservers>b__3() (at Assets/_Game/Tests/PlayMode/EnemyPopulationSmokeTests.cs:230)
+NUnit.Framework.Constraints.VoidInvocationDescriptor:Invoke()
+NUnit.Framework.Constraints.ExceptionInterceptor:Intercept(Object)
+NUnit.Framework.Constraints.ThrowsNothingConstraint:ApplyTo(Object)
+NUnit.Framework.Assert:That(Object, IResolveConstraint, String, Object[])
+NUnit.Framework.Assert:That(TestDelegate, IResolveConstraint, String, Object[])
+NUnit.Framework.Assert:DoesNotThrow(TestDelegate, String, Object[])
+NUnit.Framework.Assert:DoesNotThrow(TestDelegate)
+Gravivore.Tests.PlayMode.<ThrowingDamagePresentation_DoesNotRollbackLethalStateOrBlockDeathObservers>d__5:MoveNext() (at Assets/_Game/Tests/PlayMode/EnemyPopulationSmokeTests.cs:230)
+UnityEngine.SetupCoroutine:InvokeMoveNext(IEnumerator, IntPtr)
+
+InvalidOperationException: death presentation failed
+Gravivore.Tests.PlayMode.EnemyPopulationSmokeTests+<>c.<ThrowingDamagePresentation_DoesNotRollbackLethalStateOrBlockDeathObservers>b__5_1 (Gravivore.Gameplay.Enemies.EnemyDeathEvent _) (at Assets/_Game/Tests/PlayMode/EnemyPopulationSmokeTests.cs:225)
+Gravivore.Core.Events.SafeEventDispatch.Publish[T] (System.Action`1[T] handlers, T value) (at Assets/_Game/Runtime/Core/Events/SafeEventDispatch.cs:33)
+UnityEngine.Debug:LogException(Exception)
+Gravivore.Core.Events.SafeEventDispatch:Publish(Action`1, EnemyDeathEvent) (at Assets/_Game/Runtime/Core/Events/SafeEventDispatch.cs:37)
+Gravivore.Gameplay.Enemies.OrdinaryEnemyController:ApplyDamage(DamageRequest&) (at Assets/_Game/Runtime/Gameplay/Enemies/OrdinaryEnemyController.cs:207)
+Gravivore.Tests.PlayMode.<>c__DisplayClass5_0:<ThrowingDamagePresentation_DoesNotRollbackLethalStateOrBlockDeathObservers>b__3() (at Assets/_Game/Tests/PlayMode/EnemyPopulationSmokeTests.cs:230)
+NUnit.Framework.Constraints.VoidInvocationDescriptor:Invoke()
+NUnit.Framework.Constraints.ExceptionInterceptor:Intercept(Object)
+NUnit.Framework.Constraints.ThrowsNothingConstraint:ApplyTo(Object)
+NUnit.Framework.Assert:That(Object, IResolveConstraint, String, Object[])
+NUnit.Framework.Assert:That(TestDelegate, IResolveConstraint, String, Object[])
+NUnit.Framework.Assert:DoesNotThrow(TestDelegate, String, Object[])
+NUnit.Framework.Assert:DoesNotThrow(TestDelegate)
+Gravivore.Tests.PlayMode.<ThrowingDamagePresentation_DoesNotRollbackLethalStateOrBlockDeathObservers>d__5:MoveNext() (at Assets/_Game/Tests/PlayMode/EnemyPopulationSmokeTests.cs:230)
+UnityEngine.SetupCoroutine:InvokeMoveNext(IEnumerator, IntPtr)
+
+]]></output>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1062" name="EquipmentSmokeTests" fullname="Gravivore.Tests.PlayMode.EquipmentSmokeTests" classname="Gravivore.Tests.PlayMode.EquipmentSmokeTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-08 11:20:46Z" end-time="2026-10-08 11:20:47Z" duration="1.066587" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1063" name="ChapterScene_EquipmentUpdatesCombatHealthAndMovementStats" fullname="Gravivore.Tests.PlayMode.EquipmentSmokeTests.ChapterScene_EquipmentUpdatesCombatHealthAndMovementStats" methodname="ChapterScene_EquipmentUpdatesCombatHealthAndMovementStats" classname="Gravivore.Tests.PlayMode.EquipmentSmokeTests" runstate="Runnable" seed="950282319" result="Passed" start-time="2026-10-08 11:20:46Z" end-time="2026-10-08 11:20:47Z" duration="0.537955" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1064" name="DeathRespawn_PreservesEquippedEffectsAndPermanentLevels" fullname="Gravivore.Tests.PlayMode.EquipmentSmokeTests.DeathRespawn_PreservesEquippedEffectsAndPermanentLevels" methodname="DeathRespawn_PreservesEquippedEffectsAndPermanentLevels" classname="Gravivore.Tests.PlayMode.EquipmentSmokeTests" runstate="Runnable" seed="1595077910" result="Passed" start-time="2026-10-08 11:20:47Z" end-time="2026-10-08 11:20:47Z" duration="0.525008" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1065" name="SaveDtoReload_ReappliesSameDerivedStats" fullname="Gravivore.Tests.PlayMode.EquipmentSmokeTests.SaveDtoReload_ReappliesSameDerivedStats" methodname="SaveDtoReload_ReappliesSameDerivedStats" classname="Gravivore.Tests.PlayMode.EquipmentSmokeTests" runstate="Runnable" seed="951933511" result="Passed" start-time="2026-10-08 11:20:47Z" end-time="2026-10-08 11:20:47Z" duration="0.002386" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1066" name="EvolutionSmokeTests" fullname="Gravivore.Tests.PlayMode.EvolutionSmokeTests" classname="Gravivore.Tests.PlayMode.EvolutionSmokeTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-08 11:20:47Z" end-time="2026-10-08 11:20:47Z" duration="0.012484" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1068" name="DominantAccentAndRecreatedPresenter_UseCurrentPermanentState" fullname="Gravivore.Tests.PlayMode.EvolutionSmokeTests.DominantAccentAndRecreatedPresenter_UseCurrentPermanentState" methodname="DominantAccentAndRecreatedPresenter_UseCurrentPermanentState" classname="Gravivore.Tests.PlayMode.EvolutionSmokeTests" runstate="Runnable" seed="1182940757" result="Passed" start-time="2026-10-08 11:20:47Z" end-time="2026-10-08 11:20:47Z" duration="0.005925" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1069" name="PlayerDeathAndRespawn_PreserveEvolutionState" fullname="Gravivore.Tests.PlayMode.EvolutionSmokeTests.PlayerDeathAndRespawn_PreserveEvolutionState" methodname="PlayerDeathAndRespawn_PreserveEvolutionState" classname="Gravivore.Tests.PlayMode.EvolutionSmokeTests" runstate="Runnable" seed="1885979326" result="Passed" start-time="2026-10-08 11:20:47Z" end-time="2026-10-08 11:20:47Z" duration="0.002810" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1067" name="ProgressionCrossesTiers_WithExclusiveVisibleSilhouetteModules" fullname="Gravivore.Tests.PlayMode.EvolutionSmokeTests.ProgressionCrossesTiers_WithExclusiveVisibleSilhouetteModules" methodname="ProgressionCrossesTiers_WithExclusiveVisibleSilhouetteModules" classname="Gravivore.Tests.PlayMode.EvolutionSmokeTests" runstate="Runnable" seed="1874150309" result="Passed" start-time="2026-10-08 11:20:47Z" end-time="2026-10-08 11:20:47Z" duration="0.002652" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1070" name="FirstVisualSliceSmokeTests" fullname="Gravivore.Tests.PlayMode.FirstVisualSliceSmokeTests" classname="Gravivore.Tests.PlayMode.FirstVisualSliceSmokeTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-08 11:20:47Z" end-time="2026-10-08 11:20:50Z" duration="3.089594" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1071" name="CanonicalGameplayUsesAllNewVisualsAndAuthorityCollision" fullname="Gravivore.Tests.PlayMode.FirstVisualSliceSmokeTests.CanonicalGameplayUsesAllNewVisualsAndAuthorityCollision" methodname="CanonicalGameplayUsesAllNewVisualsAndAuthorityCollision" classname="Gravivore.Tests.PlayMode.FirstVisualSliceSmokeTests" runstate="Runnable" seed="1622719047" result="Passed" start-time="2026-10-08 11:20:47Z" end-time="2026-10-08 11:20:48Z" duration="0.508347" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1073" name="InternalGameplayCameraCaptureShowsRebuiltApproachAndElite" fullname="Gravivore.Tests.PlayMode.FirstVisualSliceSmokeTests.InternalGameplayCameraCaptureShowsRebuiltApproachAndElite" methodname="InternalGameplayCameraCaptureShowsRebuiltApproachAndElite" classname="Gravivore.Tests.PlayMode.FirstVisualSliceSmokeTests" runstate="Runnable" seed="1041409011" result="Passed" start-time="2026-10-08 11:20:48Z" end-time="2026-10-08 11:20:49Z" duration="1.030872" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1072" name="OrdinaryShutdownAnimationOutlivesImmediateRecycleWithoutDelayingReward" fullname="Gravivore.Tests.PlayMode.FirstVisualSliceSmokeTests.OrdinaryShutdownAnimationOutlivesImmediateRecycleWithoutDelayingReward" methodname="OrdinaryShutdownAnimationOutlivesImmediateRecycleWithoutDelayingReward" classname="Gravivore.Tests.PlayMode.FirstVisualSliceSmokeTests" runstate="Runnable" seed="1472740362" result="Passed" start-time="2026-10-08 11:20:49Z" end-time="2026-10-08 11:20:50Z" duration="1.549033" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1074" name="G0ProductionV3IsolationSmokeTests" fullname="Gravivore.Tests.PlayMode.G0ProductionV3IsolationSmokeTests" classname="Gravivore.Tests.PlayMode.G0ProductionV3IsolationSmokeTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-08 11:20:50Z" end-time="2026-10-08 11:20:51Z" duration="0.517650" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1075" name="ImportedVisualAnimationsNeverMoveGameplayAuthority" fullname="Gravivore.Tests.PlayMode.G0ProductionV3IsolationSmokeTests.ImportedVisualAnimationsNeverMoveGameplayAuthority" methodname="ImportedVisualAnimationsNeverMoveGameplayAuthority" classname="Gravivore.Tests.PlayMode.G0ProductionV3IsolationSmokeTests" runstate="Runnable" seed="155625869" result="Passed" start-time="2026-10-08 11:20:50Z" end-time="2026-10-08 11:20:51Z" duration="0.516679" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1076" name="G0V21GameplayIsolationSmokeTests" fullname="Gravivore.Tests.PlayMode.G0V21GameplayIsolationSmokeTests" classname="Gravivore.Tests.PlayMode.G0V21GameplayIsolationSmokeTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-08 11:20:51Z" end-time="2026-10-08 11:20:51Z" duration="0.517039" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1077" name="ChangingReviewGeometryNeverChangesCanonicalPlayerOrCamera" fullname="Gravivore.Tests.PlayMode.G0V21GameplayIsolationSmokeTests.ChangingReviewGeometryNeverChangesCanonicalPlayerOrCamera" methodname="ChangingReviewGeometryNeverChangesCanonicalPlayerOrCamera" classname="Gravivore.Tests.PlayMode.G0V21GameplayIsolationSmokeTests" runstate="Runnable" seed="1810375506" result="Passed" start-time="2026-10-08 11:20:51Z" end-time="2026-10-08 11:20:51Z" duration="0.515943" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1078" name="MapMinimapPresentationSmokeTests" fullname="Gravivore.Tests.PlayMode.MapMinimapPresentationSmokeTests" classname="Gravivore.Tests.PlayMode.MapMinimapPresentationSmokeTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-08 11:20:51Z" end-time="2026-10-08 11:20:51Z" duration="0.044765" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1079" name="PresentationModule_MovesPlayerReusesMarkersExpandsAndHandlesPortraitAspects" fullname="Gravivore.Tests.PlayMode.MapMinimapPresentationSmokeTests.PresentationModule_MovesPlayerReusesMarkersExpandsAndHandlesPortraitAspects" methodname="PresentationModule_MovesPlayerReusesMarkersExpandsAndHandlesPortraitAspects" classname="Gravivore.Tests.PlayMode.MapMinimapPresentationSmokeTests" runstate="Runnable" seed="1376997598" result="Passed" start-time="2026-10-08 11:20:51Z" end-time="2026-10-08 11:20:51Z" duration="0.043773" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1080" name="MechaRespawnMarkerSmokeTests" fullname="Gravivore.Tests.PlayMode.MechaRespawnMarkerSmokeTests" classname="Gravivore.Tests.PlayMode.MechaRespawnMarkerSmokeTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-08 11:20:51Z" end-time="2026-10-08 11:20:53Z" duration="1.041904" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1081" name="CanonicalMecha_AllTiersKeepLimbsAndOnlyAuthoritativeCollider" fullname="Gravivore.Tests.PlayMode.MechaRespawnMarkerSmokeTests.CanonicalMecha_AllTiersKeepLimbsAndOnlyAuthoritativeCollider" methodname="CanonicalMecha_AllTiersKeepLimbsAndOnlyAuthoritativeCollider" classname="Gravivore.Tests.PlayMode.MechaRespawnMarkerSmokeTests" runstate="Runnable" seed="1195348091" result="Passed" start-time="2026-10-08 11:20:51Z" end-time="2026-10-08 11:20:52Z" duration="0.504023" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1082" name="CanonicalSpots_DelayDeathsOnceRecoverAndPublishLiveMarkerSnapshots" fullname="Gravivore.Tests.PlayMode.MechaRespawnMarkerSmokeTests.CanonicalSpots_DelayDeathsOnceRecoverAndPublishLiveMarkerSnapshots" methodname="CanonicalSpots_DelayDeathsOnceRecoverAndPublishLiveMarkerSnapshots" classname="Gravivore.Tests.PlayMode.MechaRespawnMarkerSmokeTests" runstate="Runnable" seed="1374056294" result="Passed" start-time="2026-10-08 11:20:52Z" end-time="2026-10-08 11:20:53Z" duration="0.536615" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1083" name="Phase3CIntegrationSmokeTests" fullname="Gravivore.Tests.PlayMode.Phase3CIntegrationSmokeTests" classname="Gravivore.Tests.PlayMode.Phase3CIntegrationSmokeTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-08 11:20:53Z" end-time="2026-10-08 11:20:54Z" duration="1.554857" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1084" name="ActualBindingsSocketsAndCoveredEnvironmentPreserveAuthority" fullname="Gravivore.Tests.PlayMode.Phase3CIntegrationSmokeTests.ActualBindingsSocketsAndCoveredEnvironmentPreserveAuthority" methodname="ActualBindingsSocketsAndCoveredEnvironmentPreserveAuthority" classname="Gravivore.Tests.PlayMode.Phase3CIntegrationSmokeTests" runstate="Runnable" seed="110748024" result="Passed" start-time="2026-10-08 11:20:53Z" end-time="2026-10-08 11:20:53Z" duration="0.518595" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1085" name="IntegratedPoolReuseClearsOldSocketsAndUsesNewFamilyOffsets" fullname="Gravivore.Tests.PlayMode.Phase3CIntegrationSmokeTests.IntegratedPoolReuseClearsOldSocketsAndUsesNewFamilyOffsets" methodname="IntegratedPoolReuseClearsOldSocketsAndUsesNewFamilyOffsets" classname="Gravivore.Tests.PlayMode.Phase3CIntegrationSmokeTests" runstate="Runnable" seed="1067517862" result="Passed" start-time="2026-10-08 11:20:53Z" end-time="2026-10-08 11:20:54Z" duration="0.503324" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1086" name="RuntimeCapturesAndFrustumCostSnapshot" fullname="Gravivore.Tests.PlayMode.Phase3CIntegrationSmokeTests.RuntimeCapturesAndFrustumCostSnapshot" methodname="RuntimeCapturesAndFrustumCostSnapshot" classname="Gravivore.Tests.PlayMode.Phase3CIntegrationSmokeTests" runstate="Runnable" seed="1509441305" result="Passed" start-time="2026-10-08 11:20:54Z" end-time="2026-10-08 11:20:54Z" duration="0.531138" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1087" name="Phase3DReviewCaptureTests" fullname="Gravivore.Tests.PlayMode.Phase3DReviewCaptureTests" classname="Gravivore.Tests.PlayMode.Phase3DReviewCaptureTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-08 11:20:54Z" end-time="2026-10-08 11:20:55Z" duration="0.506066" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1088" name="RealGameplayCameraProducesRequiredReviewSetWhenOptedIn" fullname="Gravivore.Tests.PlayMode.Phase3DReviewCaptureTests.RealGameplayCameraProducesRequiredReviewSetWhenOptedIn" methodname="RealGameplayCameraProducesRequiredReviewSetWhenOptedIn" classname="Gravivore.Tests.PlayMode.Phase3DReviewCaptureTests" runstate="Runnable" seed="274684576" result="Passed" start-time="2026-10-08 11:20:54Z" end-time="2026-10-08 11:20:55Z" duration="0.504934" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1089" name="Phase3DVisualQualitySmokeTests" fullname="Gravivore.Tests.PlayMode.Phase3DVisualQualitySmokeTests" classname="Gravivore.Tests.PlayMode.Phase3DVisualQualitySmokeTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-08 11:20:55Z" end-time="2026-10-08 11:20:56Z" duration="1.742069" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1090" name="CollisionProxiesStayOnAuthoritySideAndCanonicalTraversalRemainsClear" fullname="Gravivore.Tests.PlayMode.Phase3DVisualQualitySmokeTests.CollisionProxiesStayOnAuthoritySideAndCanonicalTraversalRemainsClear" methodname="CollisionProxiesStayOnAuthoritySideAndCanonicalTraversalRemainsClear" classname="Gravivore.Tests.PlayMode.Phase3DVisualQualitySmokeTests" runstate="Runnable" seed="451317338" result="Passed" start-time="2026-10-08 11:20:55Z" end-time="2026-10-08 11:20:55Z" duration="0.616317" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1091" name="IndustrialGateVisualKeepsGameplayBarrierAuthority" fullname="Gravivore.Tests.PlayMode.Phase3DVisualQualitySmokeTests.IndustrialGateVisualKeepsGameplayBarrierAuthority" methodname="IndustrialGateVisualKeepsGameplayBarrierAuthority" classname="Gravivore.Tests.PlayMode.Phase3DVisualQualitySmokeTests" runstate="Runnable" seed="1911661855" result="Passed" start-time="2026-10-08 11:20:55Z" end-time="2026-10-08 11:20:56Z" duration="0.509216" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1092" name="MechanicalMotionInitializesOnceAndStaysInsideVisualEnvironment" fullname="Gravivore.Tests.PlayMode.Phase3DVisualQualitySmokeTests.MechanicalMotionInitializesOnceAndStaysInsideVisualEnvironment" methodname="MechanicalMotionInitializesOnceAndStaysInsideVisualEnvironment" classname="Gravivore.Tests.PlayMode.Phase3DVisualQualitySmokeTests" runstate="Runnable" seed="756523741" result="Passed" start-time="2026-10-08 11:20:56Z" end-time="2026-10-08 11:20:56Z" duration="0.614973" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1093" name="Phase6BAudioVfxSmokeTests" fullname="Gravivore.Tests.PlayMode.Phase6BAudioVfxSmokeTests" classname="Gravivore.Tests.PlayMode.Phase6BAudioVfxSmokeTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-08 11:20:56Z" end-time="2026-10-08 11:21:03Z" duration="6.660874" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1096" name="IsolatedReviewScene_HasAudibleListenerAndCompletesReplay" fullname="Gravivore.Tests.PlayMode.Phase6BAudioVfxSmokeTests.IsolatedReviewScene_HasAudibleListenerAndCompletesReplay" methodname="IsolatedReviewScene_HasAudibleListenerAndCompletesReplay" classname="Gravivore.Tests.PlayMode.Phase6BAudioVfxSmokeTests" runstate="Runnable" seed="305521773" result="Passed" start-time="2026-10-08 11:20:56Z" end-time="2026-10-08 11:21:03Z" duration="6.613670" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1095" name="RuntimePools_PlayEveryCueRemainBoundedAndStop" fullname="Gravivore.Tests.PlayMode.Phase6BAudioVfxSmokeTests.RuntimePools_PlayEveryCueRemainBoundedAndStop" methodname="RuntimePools_PlayEveryCueRemainBoundedAndStop" classname="Gravivore.Tests.PlayMode.Phase6BAudioVfxSmokeTests" runstate="Runnable" seed="781498499" result="Passed" start-time="2026-10-08 11:21:03Z" end-time="2026-10-08 11:21:03Z" duration="0.031305" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1094" name="RuntimeRendering_PreservesPlayerHostileAndRepairCueTints" fullname="Gravivore.Tests.PlayMode.Phase6BAudioVfxSmokeTests.RuntimeRendering_PreservesPlayerHostileAndRepairCueTints" methodname="RuntimeRendering_PreservesPlayerHostileAndRepairCueTints" classname="Gravivore.Tests.PlayMode.Phase6BAudioVfxSmokeTests" runstate="Runnable" seed="1968134051" result="Passed" start-time="2026-10-08 11:21:03Z" end-time="2026-10-08 11:21:03Z" duration="0.014491" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1097" name="PlayerFeelSmokeTests" fullname="Gravivore.Tests.PlayMode.PlayerFeelSmokeTests" classname="Gravivore.Tests.PlayMode.PlayerFeelSmokeTests" runstate="Runnable" testcasecount="10" result="Passed" start-time="2026-10-08 11:21:03Z" end-time="2026-10-08 11:21:08Z" duration="5.220722" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1098" name="ActualMovementAllDirectionsAndTiersWalkStopAndNeverMoveAuthority" fullname="Gravivore.Tests.PlayMode.PlayerFeelSmokeTests.ActualMovementAllDirectionsAndTiersWalkStopAndNeverMoveAuthority" methodname="ActualMovementAllDirectionsAndTiersWalkStopAndNeverMoveAuthority" classname="Gravivore.Tests.PlayMode.PlayerFeelSmokeTests" runstate="Runnable" seed="1548922594" result="Passed" start-time="2026-10-08 11:21:03Z" end-time="2026-10-08 11:21:04Z" duration="0.526068" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1099" name="AngledAttacksUseActiveCoreSocketAndPoolChargeReleaseImpact" fullname="Gravivore.Tests.PlayMode.PlayerFeelSmokeTests.AngledAttacksUseActiveCoreSocketAndPoolChargeReleaseImpact" methodname="AngledAttacksUseActiveCoreSocketAndPoolChargeReleaseImpact" classname="Gravivore.Tests.PlayMode.PlayerFeelSmokeTests" runstate="Runnable" seed="1694526266" result="Passed" start-time="2026-10-08 11:21:04Z" end-time="2026-10-08 11:21:04Z" duration="0.519332" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1105" name="AudioMuteVolumeAndIndependentDamageObserverRemainEffective" fullname="Gravivore.Tests.PlayMode.PlayerFeelSmokeTests.AudioMuteVolumeAndIndependentDamageObserverRemainEffective" methodname="AudioMuteVolumeAndIndependentDamageObserverRemainEffective" classname="Gravivore.Tests.PlayMode.PlayerFeelSmokeTests" runstate="Runnable" seed="1109813838" result="Passed" start-time="2026-10-08 11:21:04Z" end-time="2026-10-08 11:21:05Z" duration="0.535210" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[InvalidOperationException: audio observer failed
+Gravivore.Tests.PlayMode.PlayerFeelSmokeTests+<>c.<AudioMuteVolumeAndIndependentDamageObserverRemainEffective>b__10_1 (Gravivore.Gameplay.Combat.DamageResult _) (at Assets/_Game/Tests/PlayMode/PlayerFeelSmokeTests.cs:288)
+Gravivore.Gameplay.Player.PlayerHealthController.Publish[T] (System.Action`1[T] handlers, T value) (at Assets/_Game/Runtime/Gameplay/Player/PlayerHealthController.cs:201)
+UnityEngine.Debug:LogException(Exception)
+Gravivore.Gameplay.Player.PlayerHealthController:Publish(Action`1, DamageResult) (at Assets/_Game/Runtime/Gameplay/Player/PlayerHealthController.cs:205)
+Gravivore.Gameplay.Player.PlayerHealthController:ApplyDamage(DamageRequest&) (at Assets/_Game/Runtime/Gameplay/Player/PlayerHealthController.cs:106)
+Gravivore.Tests.PlayMode.<AudioMuteVolumeAndIndependentDamageObserverRemainEffective>d__10:MoveNext() (at Assets/_Game/Tests/PlayMode/PlayerFeelSmokeTests.cs:291)
+UnityEngine.SetupCoroutine:InvokeMoveNext(IEnumerator, IntPtr)
+
+]]></output>
+              </test-case>
+              <test-case id="1102" name="ChargeExpiryCannotCommitDamageAndTargetLossClearsVisualPose" fullname="Gravivore.Tests.PlayMode.PlayerFeelSmokeTests.ChargeExpiryCannotCommitDamageAndTargetLossClearsVisualPose" methodname="ChargeExpiryCannotCommitDamageAndTargetLossClearsVisualPose" classname="Gravivore.Tests.PlayMode.PlayerFeelSmokeTests" runstate="Runnable" seed="1694059293" result="Passed" start-time="2026-10-08 11:21:05Z" end-time="2026-10-08 11:21:05Z" duration="0.520387" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1101" name="DisablingGameplayCancelsItsPendingChargeImmediately" fullname="Gravivore.Tests.PlayMode.PlayerFeelSmokeTests.DisablingGameplayCancelsItsPendingChargeImmediately" methodname="DisablingGameplayCancelsItsPendingChargeImmediately" classname="Gravivore.Tests.PlayMode.PlayerFeelSmokeTests" runstate="Runnable" seed="613122622" result="Passed" start-time="2026-10-08 11:21:05Z" end-time="2026-10-08 11:21:06Z" duration="0.520619" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1106" name="EnemyDeathAndPlayerDeathUseDistinctBoundedShutdownPools" fullname="Gravivore.Tests.PlayMode.PlayerFeelSmokeTests.EnemyDeathAndPlayerDeathUseDistinctBoundedShutdownPools" methodname="EnemyDeathAndPlayerDeathUseDistinctBoundedShutdownPools" classname="Gravivore.Tests.PlayMode.PlayerFeelSmokeTests" runstate="Runnable" seed="1261054413" result="Passed" start-time="2026-10-08 11:21:06Z" end-time="2026-10-08 11:21:06Z" duration="0.540314" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1104" name="RecycledEnemyLifeCancelsOldChargeAndReleasedImpactKeepsOldSnapshot" fullname="Gravivore.Tests.PlayMode.PlayerFeelSmokeTests.RecycledEnemyLifeCancelsOldChargeAndReleasedImpactKeepsOldSnapshot" methodname="RecycledEnemyLifeCancelsOldChargeAndReleasedImpactKeepsOldSnapshot" classname="Gravivore.Tests.PlayMode.PlayerFeelSmokeTests" runstate="Runnable" seed="1359878843" result="Passed" start-time="2026-10-08 11:21:06Z" end-time="2026-10-08 11:21:07Z" duration="0.512773" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1107" name="RuntimeReviewCapturesAndPerformanceSnapshot" fullname="Gravivore.Tests.PlayMode.PlayerFeelSmokeTests.RuntimeReviewCapturesAndPerformanceSnapshot" methodname="RuntimeReviewCapturesAndPerformanceSnapshot" classname="Gravivore.Tests.PlayMode.PlayerFeelSmokeTests" runstate="Runnable" seed="1138310536" result="Passed" start-time="2026-10-08 11:21:07Z" end-time="2026-10-08 11:21:07Z" duration="0.511131" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1103" name="ThrowingPrechargeObserverCannotBlockNextGameplayCommitOrLaterObservers" fullname="Gravivore.Tests.PlayMode.PlayerFeelSmokeTests.ThrowingPrechargeObserverCannotBlockNextGameplayCommitOrLaterObservers" methodname="ThrowingPrechargeObserverCannotBlockNextGameplayCommitOrLaterObservers" classname="Gravivore.Tests.PlayMode.PlayerFeelSmokeTests" runstate="Runnable" seed="1045269616" result="Passed" start-time="2026-10-08 11:21:07Z" end-time="2026-10-08 11:21:08Z" duration="0.513607" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[InvalidOperationException: precharge observer failed
+Gravivore.Tests.PlayMode.PlayerFeelSmokeTests+<>c.<ThrowingPrechargeObserverCannotBlockNextGameplayCommitOrLaterObservers>b__8_0 (Gravivore.Presentation.Combat.GravityLashCue cue, UnityEngine.Vector3 _) (at Assets/_Game/Tests/PlayMode/PlayerFeelSmokeTests.cs:226)
+Gravivore.Presentation.Combat.GravityLashVfxPool.PublishCue (Gravivore.Presentation.Combat.GravityLashCue cue, UnityEngine.Vector3 position) (at Assets/_Game/Runtime/Presentation/Combat/GravityLashVfxPool.cs:333)
+UnityEngine.Debug:LogException(Exception)
+Gravivore.Presentation.Combat.GravityLashVfxPool:PublishCue(GravityLashCue, Vector3) (at Assets/_Game/Runtime/Presentation/Combat/GravityLashVfxPool.cs:334)
+Gravivore.Presentation.Combat.GravityLashVfxPool:BeginCharge(Vector3, Vector3, ITargetable, Single) (at Assets/_Game/Runtime/Presentation/Combat/GravityLashVfxPool.cs:144)
+Gravivore.Gameplay.Combat.GravityAttackController:TryBeginPresentationCharge() (at Assets/_Game/Runtime/Gameplay/Combat/GravityAttackController.cs:120)
+Gravivore.Gameplay.Combat.GravityAttackController:Tick(Single) (at Assets/_Game/Runtime/Gameplay/Combat/GravityAttackController.cs:108)
+Gravivore.Tests.PlayMode.<ThrowingPrechargeObserverCannotBlockNextGameplayCommitOrLaterObservers>d__8:MoveNext() (at Assets/_Game/Tests/PlayMode/PlayerFeelSmokeTests.cs:229)
+UnityEngine.SetupCoroutine:InvokeMoveNext(IEnumerator, IntPtr)
+
+]]></output>
+              </test-case>
+              <test-case id="1100" name="ThrowingReleaseObserverCannotCancelImmediateDamageHitFeedbackOrPull" fullname="Gravivore.Tests.PlayMode.PlayerFeelSmokeTests.ThrowingReleaseObserverCannotCancelImmediateDamageHitFeedbackOrPull" methodname="ThrowingReleaseObserverCannotCancelImmediateDamageHitFeedbackOrPull" classname="Gravivore.Tests.PlayMode.PlayerFeelSmokeTests" runstate="Runnable" seed="352880749" result="Passed" start-time="2026-10-08 11:21:08Z" end-time="2026-10-08 11:21:08Z" duration="0.518241" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[InvalidOperationException: release observer failed
+Gravivore.Tests.PlayMode.PlayerFeelSmokeTests+<>c.<ThrowingReleaseObserverCannotCancelImmediateDamageHitFeedbackOrPull>b__5_0 (Gravivore.Presentation.Combat.GravityLashCue cue, UnityEngine.Vector3 _) (at Assets/_Game/Tests/PlayMode/PlayerFeelSmokeTests.cs:153)
+Gravivore.Presentation.Combat.GravityLashVfxPool.PublishCue (Gravivore.Presentation.Combat.GravityLashCue cue, UnityEngine.Vector3 position) (at Assets/_Game/Runtime/Presentation/Combat/GravityLashVfxPool.cs:333)
+UnityEngine.Debug:LogException(Exception)
+Gravivore.Presentation.Combat.GravityLashVfxPool:PublishCue(GravityLashCue, Vector3) (at Assets/_Game/Runtime/Presentation/Combat/GravityLashVfxPool.cs:334)
+Gravivore.Presentation.Combat.GravityLashVfxPool:Play(Vector3, Vector3, ITargetable) (at Assets/_Game/Runtime/Presentation/Combat/GravityLashVfxPool.cs:189)
+Gravivore.Gameplay.Combat.GravityAttackController:ExecuteAttack() (at Assets/_Game/Runtime/Gameplay/Combat/GravityAttackController.cs:177)
+Gravivore.Gameplay.Combat.GravityAttackController:Tick(Single) (at Assets/_Game/Runtime/Gameplay/Combat/GravityAttackController.cs:104)
+Gravivore.Tests.PlayMode.<ThrowingReleaseObserverCannotCancelImmediateDamageHitFeedbackOrPull>d__5:MoveNext() (at Assets/_Game/Tests/PlayMode/PlayerFeelSmokeTests.cs:156)
+UnityEngine.SetupCoroutine:InvokeMoveNext(IEnumerator, IntPtr)
+
+]]></output>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1108" name="PlayerMovementSmokeTests" fullname="Gravivore.Tests.PlayMode.PlayerMovementSmokeTests" classname="Gravivore.Tests.PlayMode.PlayerMovementSmokeTests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-10-08 11:21:08Z" end-time="2026-10-08 11:21:11Z" duration="2.890454" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1109" name="ChapterScene_ComposesPlayerCameraAndSafeAreaHud" fullname="Gravivore.Tests.PlayMode.PlayerMovementSmokeTests.ChapterScene_ComposesPlayerCameraAndSafeAreaHud" methodname="ChapterScene_ComposesPlayerCameraAndSafeAreaHud" classname="Gravivore.Tests.PlayMode.PlayerMovementSmokeTests" runstate="Runnable" seed="1004092626" result="Passed" start-time="2026-10-08 11:21:08Z" end-time="2026-10-08 11:21:09Z" duration="0.515390" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1110" name="GravityAttack_AcquiresDamagesPullsAndReleasesDeadTarget" fullname="Gravivore.Tests.PlayMode.PlayerMovementSmokeTests.GravityAttack_AcquiresDamagesPullsAndReleasesDeadTarget" methodname="GravityAttack_AcquiresDamagesPullsAndReleasesDeadTarget" classname="Gravivore.Tests.PlayMode.PlayerMovementSmokeTests" runstate="Runnable" seed="669518759" result="Passed" start-time="2026-10-08 11:21:09Z" end-time="2026-10-08 11:21:09Z" duration="0.598531" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1113" name="GravityAttack_FirstReleaseBeamPrecedesImmediateDeathAndRemainsCosmetic" fullname="Gravivore.Tests.PlayMode.PlayerMovementSmokeTests.GravityAttack_FirstReleaseBeamPrecedesImmediateDeathAndRemainsCosmetic" methodname="GravityAttack_FirstReleaseBeamPrecedesImmediateDeathAndRemainsCosmetic" classname="Gravivore.Tests.PlayMode.PlayerMovementSmokeTests" runstate="Runnable" seed="1577274253" result="Passed" start-time="2026-10-08 11:21:09Z" end-time="2026-10-08 11:21:10Z" duration="0.597481" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1111" name="GravityAttack_LethalResultClearsPooledIdentityBeforeDisplacement" fullname="Gravivore.Tests.PlayMode.PlayerMovementSmokeTests.GravityAttack_LethalResultClearsPooledIdentityBeforeDisplacement" methodname="GravityAttack_LethalResultClearsPooledIdentityBeforeDisplacement" classname="Gravivore.Tests.PlayMode.PlayerMovementSmokeTests" runstate="Runnable" seed="685228961" result="Passed" start-time="2026-10-08 11:21:10Z" end-time="2026-10-08 11:21:11Z" duration="0.588293" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1112" name="GravityAttack_ThrowingDamageObserverDoesNotCancelDisplacement" fullname="Gravivore.Tests.PlayMode.PlayerMovementSmokeTests.GravityAttack_ThrowingDamageObserverDoesNotCancelDisplacement" methodname="GravityAttack_ThrowingDamageObserverDoesNotCancelDisplacement" classname="Gravivore.Tests.PlayMode.PlayerMovementSmokeTests" runstate="Runnable" seed="1913883738" result="Passed" start-time="2026-10-08 11:21:11Z" end-time="2026-10-08 11:21:11Z" duration="0.583292" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[InvalidOperationException: damage observer failed
+Gravivore.Tests.PlayMode.PlayerMovementSmokeTests+<>c.<GravityAttack_ThrowingDamageObserverDoesNotCancelDisplacement>b__3_0 (Gravivore.Gameplay.Enemies.EnemyDamageEvent _) (at Assets/_Game/Tests/PlayMode/PlayerMovementSmokeTests.cs:180)
+Gravivore.Core.Events.SafeEventDispatch.Publish[T] (System.Action`1[T] handlers, T value) (at Assets/_Game/Runtime/Core/Events/SafeEventDispatch.cs:33)
+UnityEngine.Debug:LogException(Exception)
+Gravivore.Core.Events.SafeEventDispatch:Publish(Action`1, EnemyDamageEvent) (at Assets/_Game/Runtime/Core/Events/SafeEventDispatch.cs:37)
+Gravivore.Gameplay.Enemies.OrdinaryEnemyController:ApplyDamage(DamageRequest&) (at Assets/_Game/Runtime/Gameplay/Enemies/OrdinaryEnemyController.cs:199)
+Gravivore.Gameplay.Enemies.OrdinaryEnemyController:Gravivore.Gameplay.Combat.IDamageable.ApplyDamage(DamageRequest&)
+Gravivore.Gameplay.Combat.GravityAttackController:ExecuteAttack() (at Assets/_Game/Runtime/Gameplay/Combat/GravityAttackController.cs:186)
+Gravivore.Gameplay.Combat.GravityAttackController:Tick(Single) (at Assets/_Game/Runtime/Gameplay/Combat/GravityAttackController.cs:104)
+Gravivore.Gameplay.Combat.GravityAttackController:Update() (at Assets/_Game/Runtime/Gameplay/Combat/GravityAttackController.cs:66)
+
+]]></output>
+              </test-case>
+              <test-case id="1115" name="PlayerLocomotion_MovesSpawnedPlayerFromInjectedInput" fullname="Gravivore.Tests.PlayMode.PlayerMovementSmokeTests.PlayerLocomotion_MovesSpawnedPlayerFromInjectedInput" methodname="PlayerLocomotion_MovesSpawnedPlayerFromInjectedInput" classname="Gravivore.Tests.PlayMode.PlayerMovementSmokeTests" runstate="Runnable" seed="1589986760" result="Passed" start-time="2026-10-08 11:21:11Z" end-time="2026-10-08 11:21:11Z" duration="0.003369" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1114" name="PullDestinationResolver_StopsTargetBeforeHardBlocker" fullname="Gravivore.Tests.PlayMode.PlayerMovementSmokeTests.PullDestinationResolver_StopsTargetBeforeHardBlocker" methodname="PullDestinationResolver_StopsTargetBeforeHardBlocker" classname="Gravivore.Tests.PlayMode.PlayerMovementSmokeTests" runstate="Runnable" seed="1746763769" result="Passed" start-time="2026-10-08 11:21:11Z" end-time="2026-10-08 11:21:11Z" duration="0.001882" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1116" name="PostDeviceCombatSmokeTests" fullname="Gravivore.Tests.PlayMode.PostDeviceCombatSmokeTests" classname="Gravivore.Tests.PlayMode.PostDeviceCombatSmokeTests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-10-08 11:21:11Z" end-time="2026-10-08 11:21:15Z" duration="3.876853" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1118" name="AllCurrentStrongSpotsHaveCapsulePathsAndControllerCanTraverseEastServicePortal" fullname="Gravivore.Tests.PlayMode.PostDeviceCombatSmokeTests.AllCurrentStrongSpotsHaveCapsulePathsAndControllerCanTraverseEastServicePortal" methodname="AllCurrentStrongSpotsHaveCapsulePathsAndControllerCanTraverseEastServicePortal" classname="Gravivore.Tests.PlayMode.PostDeviceCombatSmokeTests" runstate="Runnable" seed="870190235" result="Passed" start-time="2026-10-08 11:21:11Z" end-time="2026-10-08 11:21:12Z" duration="0.571531" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1120" name="CombatTextVfxAndAudioStayBoundedDuringRepeatedKillsAndExpiredTextReturns" fullname="Gravivore.Tests.PlayMode.PostDeviceCombatSmokeTests.CombatTextVfxAndAudioStayBoundedDuringRepeatedKillsAndExpiredTextReturns" methodname="CombatTextVfxAndAudioStayBoundedDuringRepeatedKillsAndExpiredTextReturns" classname="Gravivore.Tests.PlayMode.PostDeviceCombatSmokeTests" runstate="Runnable" seed="589894095" result="Passed" start-time="2026-10-08 11:21:12Z" end-time="2026-10-08 11:21:12Z" duration="0.586865" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1122" name="DevHitchSnapshotsHaveCooldownAndBoundedFilesWithPresentationCounts" fullname="Gravivore.Tests.PlayMode.PostDeviceCombatSmokeTests.DevHitchSnapshotsHaveCooldownAndBoundedFilesWithPresentationCounts" methodname="DevHitchSnapshotsHaveCooldownAndBoundedFilesWithPresentationCounts" classname="Gravivore.Tests.PlayMode.PostDeviceCombatSmokeTests" runstate="Runnable" seed="770335483" result="Passed" start-time="2026-10-08 11:21:12Z" end-time="2026-10-08 11:21:13Z" duration="0.568535" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[Hitch] Bounded diagnostic snapshot: C:\Users\pamak\AppData\Local\Temp\gravivore-hitch-test-5df8cb4c80cf486689ebf0846ca77bd8\hitch-0.json
+[Hitch] Bounded diagnostic snapshot: C:\Users\pamak\AppData\Local\Temp\gravivore-hitch-test-5df8cb4c80cf486689ebf0846ca77bd8\hitch-1.json
+[Hitch] Bounded diagnostic snapshot: C:\Users\pamak\AppData\Local\Temp\gravivore-hitch-test-5df8cb4c80cf486689ebf0846ca77bd8\hitch-2.json
+[Hitch] Bounded diagnostic snapshot: C:\Users\pamak\AppData\Local\Temp\gravivore-hitch-test-5df8cb4c80cf486689ebf0846ca77bd8\hitch-3.json
+[Hitch] Bounded diagnostic snapshot: C:\Users\pamak\AppData\Local\Temp\gravivore-hitch-test-5df8cb4c80cf486689ebf0846ca77bd8\hitch-0.json
+[Hitch] Bounded diagnostic snapshot: C:\Users\pamak\AppData\Local\Temp\gravivore-hitch-test-5df8cb4c80cf486689ebf0846ca77bd8\hitch-1.json
+[Hitch] Bounded diagnostic snapshot: C:\Users\pamak\AppData\Local\Temp\gravivore-hitch-test-5df8cb4c80cf486689ebf0846ca77bd8\hitch-2.json
+[Hitch] Bounded diagnostic snapshot: C:\Users\pamak\AppData\Local\Temp\gravivore-hitch-test-5df8cb4c80cf486689ebf0846ca77bd8\hitch-3.json
+[Hitch] Bounded diagnostic snapshot: C:\Users\pamak\AppData\Local\Temp\gravivore-hitch-test-5df8cb4c80cf486689ebf0846ca77bd8\hitch-0.json
+[Hitch] Bounded diagnostic snapshot: C:\Users\pamak\AppData\Local\Temp\gravivore-hitch-test-5df8cb4c80cf486689ebf0846ca77bd8\hitch-1.json
+[Hitch] Bounded diagnostic snapshot: C:\Users\pamak\AppData\Local\Temp\gravivore-hitch-test-5df8cb4c80cf486689ebf0846ca77bd8\hitch-2.json
+]]></output>
+              </test-case>
+              <test-case id="1119" name="HealthAndRewardPreviewReadAuthority_DamageUsesResolvedResult_DeathRewardsExactlyOnce" fullname="Gravivore.Tests.PlayMode.PostDeviceCombatSmokeTests.HealthAndRewardPreviewReadAuthority_DamageUsesResolvedResult_DeathRewardsExactlyOnce" methodname="HealthAndRewardPreviewReadAuthority_DamageUsesResolvedResult_DeathRewardsExactlyOnce" classname="Gravivore.Tests.PlayMode.PostDeviceCombatSmokeTests" runstate="Runnable" seed="102826393" result="Passed" start-time="2026-10-08 11:21:13Z" end-time="2026-10-08 11:21:13Z" duration="0.530250" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1123" name="InternalMobileCaptureShowsCompactCombatFeedbackInAcceptedSlice" fullname="Gravivore.Tests.PlayMode.PostDeviceCombatSmokeTests.InternalMobileCaptureShowsCompactCombatFeedbackInAcceptedSlice" methodname="InternalMobileCaptureShowsCompactCombatFeedbackInAcceptedSlice" classname="Gravivore.Tests.PlayMode.PostDeviceCombatSmokeTests" runstate="Runnable" seed="769154690" result="Passed" start-time="2026-10-08 11:21:13Z" end-time="2026-10-08 11:21:14Z" duration="0.580892" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1117" name="MovingAttackReturnsLeft_StationaryTracksRightThenChangedTarget_CombatEndKeepsFacing" fullname="Gravivore.Tests.PlayMode.PostDeviceCombatSmokeTests.MovingAttackReturnsLeft_StationaryTracksRightThenChangedTarget_CombatEndKeepsFacing" methodname="MovingAttackReturnsLeft_StationaryTracksRightThenChangedTarget_CombatEndKeepsFacing" classname="Gravivore.Tests.PlayMode.PostDeviceCombatSmokeTests" runstate="Runnable" seed="791751976" result="Passed" start-time="2026-10-08 11:21:14Z" end-time="2026-10-08 11:21:14Z" duration="0.517221" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1121" name="VelocityMatchedAnimationAndFootContactsNeverMoveGameplayAuthority" fullname="Gravivore.Tests.PlayMode.PostDeviceCombatSmokeTests.VelocityMatchedAnimationAndFootContactsNeverMoveGameplayAuthority" methodname="VelocityMatchedAnimationAndFootContactsNeverMoveGameplayAuthority" classname="Gravivore.Tests.PlayMode.PostDeviceCombatSmokeTests" runstate="Runnable" seed="396226694" result="Passed" start-time="2026-10-08 11:21:14Z" end-time="2026-10-08 11:21:15Z" duration="0.519376" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1124" name="ProgressionSmokeTests" fullname="Gravivore.Tests.PlayMode.ProgressionSmokeTests" classname="Gravivore.Tests.PlayMode.ProgressionSmokeTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-08 11:21:15Z" end-time="2026-10-08 11:21:15Z" duration="0.004758" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1125" name="PopulationDeath_GrantsOnceAndPooledReuseGetsNewLifeReward" fullname="Gravivore.Tests.PlayMode.ProgressionSmokeTests.PopulationDeath_GrantsOnceAndPooledReuseGetsNewLifeReward" methodname="PopulationDeath_GrantsOnceAndPooledReuseGetsNewLifeReward" classname="Gravivore.Tests.PlayMode.ProgressionSmokeTests" runstate="Runnable" seed="741055484" result="Passed" start-time="2026-10-08 11:21:15Z" end-time="2026-10-08 11:21:15Z" duration="0.003640" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1126" name="QuestOnboardingSmokeTests" fullname="Gravivore.Tests.PlayMode.QuestOnboardingSmokeTests" classname="Gravivore.Tests.PlayMode.QuestOnboardingSmokeTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-08 11:21:15Z" end-time="2026-10-08 11:21:16Z" duration="0.537305" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1127" name="CanonicalChapter_ComposesQuestWorldAndInactiveEliteAfterOneFrame" fullname="Gravivore.Tests.PlayMode.QuestOnboardingSmokeTests.CanonicalChapter_ComposesQuestWorldAndInactiveEliteAfterOneFrame" methodname="CanonicalChapter_ComposesQuestWorldAndInactiveEliteAfterOneFrame" classname="Gravivore.Tests.PlayMode.QuestOnboardingSmokeTests" runstate="Runnable" seed="1500584122" result="Passed" start-time="2026-10-08 11:21:15Z" end-time="2026-10-08 11:21:16Z" duration="0.527433" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1128" name="Chapter01Onboarding_TracksMarkersUnlockAndRestore" fullname="Gravivore.Tests.PlayMode.QuestOnboardingSmokeTests.Chapter01Onboarding_TracksMarkersUnlockAndRestore" methodname="Chapter01Onboarding_TracksMarkersUnlockAndRestore" classname="Gravivore.Tests.PlayMode.QuestOnboardingSmokeTests" runstate="Runnable" seed="1091789095" result="Passed" start-time="2026-10-08 11:21:16Z" end-time="2026-10-08 11:21:16Z" duration="0.008827" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1129" name="S13HudSmokeTests" fullname="Gravivore.Tests.PlayMode.S13HudSmokeTests" classname="Gravivore.Tests.PlayMode.S13HudSmokeTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-08 11:21:16Z" end-time="2026-10-08 11:21:16Z" duration="0.030871" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1131" name="BossHud_ShowsUpdatesAndHidesOnResetAndCompletion" fullname="Gravivore.Tests.PlayMode.S13HudSmokeTests.BossHud_ShowsUpdatesAndHidesOnResetAndCompletion" methodname="BossHud_ShowsUpdatesAndHidesOnResetAndCompletion" classname="Gravivore.Tests.PlayMode.S13HudSmokeTests" runstate="Runnable" seed="636246453" result="Passed" start-time="2026-10-08 11:21:16Z" end-time="2026-10-08 11:21:16Z" duration="0.005386" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1135" name="CompletionAndPause_SerializeModalsAndRestoreGameplayInput" fullname="Gravivore.Tests.PlayMode.S13HudSmokeTests.CompletionAndPause_SerializeModalsAndRestoreGameplayInput" methodname="CompletionAndPause_SerializeModalsAndRestoreGameplayInput" classname="Gravivore.Tests.PlayMode.S13HudSmokeTests" runstate="Runnable" seed="384700779" result="Passed" start-time="2026-10-08 11:21:16Z" end-time="2026-10-08 11:21:16Z" duration="0.006244" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1130" name="HealthAndStatsHud_ReflectAuthoritativeChangesAndRespawn" fullname="Gravivore.Tests.PlayMode.S13HudSmokeTests.HealthAndStatsHud_ReflectAuthoritativeChangesAndRespawn" methodname="HealthAndStatsHud_ReflectAuthoritativeChangesAndRespawn" classname="Gravivore.Tests.PlayMode.S13HudSmokeTests" runstate="Runnable" seed="1511971634" result="Passed" start-time="2026-10-08 11:21:16Z" end-time="2026-10-08 11:21:16Z" duration="0.003252" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1134" name="ModalFreezesScaledGameplayAndSafelyResumesAllListeners" fullname="Gravivore.Tests.PlayMode.S13HudSmokeTests.ModalFreezesScaledGameplayAndSafelyResumesAllListeners" methodname="ModalFreezesScaledGameplayAndSafelyResumesAllListeners" classname="Gravivore.Tests.PlayMode.S13HudSmokeTests" runstate="Runnable" seed="2090058071" result="Passed" start-time="2026-10-08 11:21:16Z" end-time="2026-10-08 11:21:16Z" duration="0.006349" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[InvalidOperationException: modal listener failed
+Gravivore.Tests.PlayMode.S13HudSmokeTests+<>c.<ModalFreezesScaledGameplayAndSafelyResumesAllListeners>b__5_0 () (at Assets/_Game/Tests/PlayMode/S13HudSmokeTests.cs:227)
+Gravivore.Core.Events.SafeEventDispatch.Publish (System.Action handlers) (at Assets/_Game/Runtime/Core/Events/SafeEventDispatch.cs:16)
+UnityEngine.Debug:LogException(Exception)
+Gravivore.Core.Events.SafeEventDispatch:Publish(Action) (at Assets/_Game/Runtime/Core/Events/SafeEventDispatch.cs:20)
+Gravivore.Presentation.UI.HudModalController:Close(Object) (at Assets/_Game/Runtime/Presentation/UI/HudModalController.cs:42)
+Gravivore.Tests.PlayMode.<ModalFreezesScaledGameplayAndSafelyResumesAllListeners>d__5:MoveNext() (at Assets/_Game/Tests/PlayMode/S13HudSmokeTests.cs:230)
+UnityEngine.SetupCoroutine:InvokeMoveNext(IEnumerator, IntPtr)
+
+]]></output>
+              </test-case>
+              <test-case id="1132" name="OfflinePanel_ClaimsThroughServiceAndClosesIdempotently" fullname="Gravivore.Tests.PlayMode.S13HudSmokeTests.OfflinePanel_ClaimsThroughServiceAndClosesIdempotently" methodname="OfflinePanel_ClaimsThroughServiceAndClosesIdempotently" classname="Gravivore.Tests.PlayMode.S13HudSmokeTests" runstate="Runnable" seed="2111040858" result="Passed" start-time="2026-10-08 11:21:16Z" end-time="2026-10-08 11:21:16Z" duration="0.004320" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1133" name="RestoredCompletionStaysHiddenWhileLiveDefeatOpens" fullname="Gravivore.Tests.PlayMode.S13HudSmokeTests.RestoredCompletionStaysHiddenWhileLiveDefeatOpens" methodname="RestoredCompletionStaysHiddenWhileLiveDefeatOpens" classname="Gravivore.Tests.PlayMode.S13HudSmokeTests" runstate="Runnable" seed="608026348" result="Passed" start-time="2026-10-08 11:21:16Z" end-time="2026-10-08 11:21:16Z" duration="0.003734" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1136" name="S14PresentationSmokeTests" fullname="Gravivore.Tests.PlayMode.S14PresentationSmokeTests" classname="Gravivore.Tests.PlayMode.S14PresentationSmokeTests" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-10-08 11:21:16Z" end-time="2026-10-08 11:21:16Z" duration="0.023363" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1140" name="AudioSettings_ClampVolumeAndPersistMute" fullname="Gravivore.Tests.PlayMode.S14PresentationSmokeTests.AudioSettings_ClampVolumeAndPersistMute" methodname="AudioSettings_ClampVolumeAndPersistMute" classname="Gravivore.Tests.PlayMode.S14PresentationSmokeTests" runstate="Runnable" seed="1185471050" result="Passed" start-time="2026-10-08 11:21:16Z" end-time="2026-10-08 11:21:16Z" duration="0.001875" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1137" name="GravityLashPool_ShowsBeamImmediatelyThenReusesForImpactTail" fullname="Gravivore.Tests.PlayMode.S14PresentationSmokeTests.GravityLashPool_ShowsBeamImmediatelyThenReusesForImpactTail" methodname="GravityLashPool_ShowsBeamImmediatelyThenReusesForImpactTail" classname="Gravivore.Tests.PlayMode.S14PresentationSmokeTests" runstate="Runnable" seed="2091758244" result="Passed" start-time="2026-10-08 11:21:16Z" end-time="2026-10-08 11:21:16Z" duration="0.006948" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[InvalidOperationException: lash presentation failed
+Gravivore.Tests.PlayMode.S14PresentationSmokeTests+<>c.<GravityLashPool_ShowsBeamImmediatelyThenReusesForImpactTail>b__0_0 (Gravivore.Presentation.Combat.GravityLashCue _, UnityEngine.Vector3 _) (at Assets/_Game/Tests/PlayMode/S14PresentationSmokeTests.cs:28)
+Gravivore.Presentation.Combat.GravityLashVfxPool.PublishCue (Gravivore.Presentation.Combat.GravityLashCue cue, UnityEngine.Vector3 position) (at Assets/_Game/Runtime/Presentation/Combat/GravityLashVfxPool.cs:333)
+UnityEngine.Debug:LogException(Exception)
+Gravivore.Presentation.Combat.GravityLashVfxPool:PublishCue(GravityLashCue, Vector3) (at Assets/_Game/Runtime/Presentation/Combat/GravityLashVfxPool.cs:334)
+Gravivore.Presentation.Combat.GravityLashVfxPool:Play(Vector3, Vector3, ITargetable) (at Assets/_Game/Runtime/Presentation/Combat/GravityLashVfxPool.cs:189)
+Gravivore.Presentation.Combat.GravityLashVfxPool:Play(Vector3, Vector3) (at Assets/_Game/Runtime/Presentation/Combat/GravityLashVfxPool.cs:165)
+Gravivore.Tests.PlayMode.<GravityLashPool_ShowsBeamImmediatelyThenReusesForImpactTail>d__0:MoveNext() (at Assets/_Game/Tests/PlayMode/S14PresentationSmokeTests.cs:32)
+UnityEngine.SetupCoroutine:InvokeMoveNext(IEnumerator, IntPtr)
+
+InvalidOperationException: lash presentation failed
+Gravivore.Tests.PlayMode.S14PresentationSmokeTests+<>c.<GravityLashPool_ShowsBeamImmediatelyThenReusesForImpactTail>b__0_0 (Gravivore.Presentation.Combat.GravityLashCue _, UnityEngine.Vector3 _) (at Assets/_Game/Tests/PlayMode/S14PresentationSmokeTests.cs:28)
+Gravivore.Presentation.Combat.GravityLashVfxPool.PublishCue (Gravivore.Presentation.Combat.GravityLashCue cue, UnityEngine.Vector3 position) (at Assets/_Game/Runtime/Presentation/Combat/GravityLashVfxPool.cs:333)
+UnityEngine.Debug:LogException(Exception)
+Gravivore.Presentation.Combat.GravityLashVfxPool:PublishCue(GravityLashCue, Vector3) (at Assets/_Game/Runtime/Presentation/Combat/GravityLashVfxPool.cs:334)
+Gravivore.Presentation.Combat.GravityLashVfxPool:Tick(Single) (at Assets/_Game/Runtime/Presentation/Combat/GravityLashVfxPool.cs:249)
+Gravivore.Tests.PlayMode.<GravityLashPool_ShowsBeamImmediatelyThenReusesForImpactTail>d__0:MoveNext() (at Assets/_Game/Tests/PlayMode/S14PresentationSmokeTests.cs:35)
+UnityEngine.SetupCoroutine:InvokeMoveNext(IEnumerator, IntPtr)
+
+InvalidOperationException: lash presentation failed
+Gravivore.Tests.PlayMode.S14PresentationSmokeTests+<>c.<GravityLashPool_ShowsBeamImmediatelyThenReusesForImpactTail>b__0_0 (Gravivore.Presentation.Combat.GravityLashCue _, UnityEngine.Vector3 _) (at Assets/_Game/Tests/PlayMode/S14PresentationSmokeTests.cs:28)
+Gravivore.Presentation.Combat.GravityLashVfxPool.PublishCue (Gravivore.Presentation.Combat.GravityLashCue cue, UnityEngine.Vector3 position) (at Assets/_Game/Runtime/Presentation/Combat/GravityLashVfxPool.cs:333)
+UnityEngine.Debug:LogException(Exception)
+Gravivore.Presentation.Combat.GravityLashVfxPool:PublishCue(GravityLashCue, Vector3) (at Assets/_Game/Runtime/Presentation/Combat/GravityLashVfxPool.cs:334)
+Gravivore.Presentation.Combat.GravityLashVfxPool:Play(Vector3, Vector3, ITargetable) (at Assets/_Game/Runtime/Presentation/Combat/GravityLashVfxPool.cs:189)
+Gravivore.Presentation.Combat.GravityLashVfxPool:Play(Vector3, Vector3) (at Assets/_Game/Runtime/Presentation/Combat/GravityLashVfxPool.cs:165)
+Gravivore.Tests.PlayMode.<GravityLashPool_ShowsBeamImmediatelyThenReusesForImpactTail>d__0:MoveNext() (at Assets/_Game/Tests/PlayMode/S14PresentationSmokeTests.cs:41)
+UnityEngine.SetupCoroutine:InvokeMoveNext(IEnumerator, IntPtr)
+
+]]></output>
+              </test-case>
+              <test-case id="1141" name="HapticContract_AcceptsPresentationCueWithoutGameplayDependency" fullname="Gravivore.Tests.PlayMode.S14PresentationSmokeTests.HapticContract_AcceptsPresentationCueWithoutGameplayDependency" methodname="HapticContract_AcceptsPresentationCueWithoutGameplayDependency" classname="Gravivore.Tests.PlayMode.S14PresentationSmokeTests" runstate="Runnable" seed="84631204" result="Passed" start-time="2026-10-08 11:21:16Z" end-time="2026-10-08 11:21:16Z" duration="0.000382" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1143" name="HapticThrottle_DisabledSettingProducesNoVibration" fullname="Gravivore.Tests.PlayMode.S14PresentationSmokeTests.HapticThrottle_DisabledSettingProducesNoVibration" methodname="HapticThrottle_DisabledSettingProducesNoVibration" classname="Gravivore.Tests.PlayMode.S14PresentationSmokeTests" runstate="Runnable" seed="1626591285" result="Passed" start-time="2026-10-08 11:21:16Z" end-time="2026-10-08 11:21:16Z" duration="0.000204" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1142" name="HapticThrottle_RapidEventsProduceOneVibration" fullname="Gravivore.Tests.PlayMode.S14PresentationSmokeTests.HapticThrottle_RapidEventsProduceOneVibration" methodname="HapticThrottle_RapidEventsProduceOneVibration" classname="Gravivore.Tests.PlayMode.S14PresentationSmokeTests" runstate="Runnable" seed="1526068474" result="Passed" start-time="2026-10-08 11:21:16Z" end-time="2026-10-08 11:21:16Z" duration="0.000215" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1138" name="HitImpactAndAssimilationPools_ReuseAndResetMotionTarget" fullname="Gravivore.Tests.PlayMode.S14PresentationSmokeTests.HitImpactAndAssimilationPools_ReuseAndResetMotionTarget" methodname="HitImpactAndAssimilationPools_ReuseAndResetMotionTarget" classname="Gravivore.Tests.PlayMode.S14PresentationSmokeTests" runstate="Runnable" seed="148408334" result="Passed" start-time="2026-10-08 11:21:16Z" end-time="2026-10-08 11:21:16Z" duration="0.003470" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1144" name="PlayerHealthDamage_IsSingleDamageHapticOwner" fullname="Gravivore.Tests.PlayMode.S14PresentationSmokeTests.PlayerHealthDamage_IsSingleDamageHapticOwner" methodname="PlayerHealthDamage_IsSingleDamageHapticOwner" classname="Gravivore.Tests.PlayMode.S14PresentationSmokeTests" runstate="Runnable" seed="355000221" result="Passed" start-time="2026-10-08 11:21:16Z" end-time="2026-10-08 11:21:16Z" duration="0.000761" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1139" name="VfxPoolSaturation_ReusesFixedHierarchyAndReturnsToZeroActiveItems" fullname="Gravivore.Tests.PlayMode.S14PresentationSmokeTests.VfxPoolSaturation_ReusesFixedHierarchyAndReturnsToZeroActiveItems" methodname="VfxPoolSaturation_ReusesFixedHierarchyAndReturnsToZeroActiveItems" classname="Gravivore.Tests.PlayMode.S14PresentationSmokeTests" runstate="Runnable" seed="1618864044" result="Passed" start-time="2026-10-08 11:21:16Z" end-time="2026-10-08 11:21:16Z" duration="0.007625" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1145" name="S15AssetIntegrationSmokeTests" fullname="Gravivore.Tests.PlayMode.S15AssetIntegrationSmokeTests" classname="Gravivore.Tests.PlayMode.S15AssetIntegrationSmokeTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-08 11:21:16Z" end-time="2026-10-08 11:21:16Z" duration="0.524765" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1146" name="CanonicalScene_BuildsPlayerAndEnvironmentFromAuthoredMeshes" fullname="Gravivore.Tests.PlayMode.S15AssetIntegrationSmokeTests.CanonicalScene_BuildsPlayerAndEnvironmentFromAuthoredMeshes" methodname="CanonicalScene_BuildsPlayerAndEnvironmentFromAuthoredMeshes" classname="Gravivore.Tests.PlayMode.S15AssetIntegrationSmokeTests" runstate="Runnable" seed="1172966640" result="Passed" start-time="2026-10-08 11:21:16Z" end-time="2026-10-08 11:21:16Z" duration="0.518093" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1148" name="EnemyPool_ActivationFailureRestoresAccounting" fullname="Gravivore.Tests.PlayMode.S15AssetIntegrationSmokeTests.EnemyPool_ActivationFailureRestoresAccounting" methodname="EnemyPool_ActivationFailureRestoresAccounting" classname="Gravivore.Tests.PlayMode.S15AssetIntegrationSmokeTests" runstate="Runnable" seed="1436352480" result="Passed" start-time="2026-10-08 11:21:16Z" end-time="2026-10-08 11:21:16Z" duration="0.003106" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1147" name="EnemyPool_ResetsAndReappliesVisualStateAcrossArchetypes" fullname="Gravivore.Tests.PlayMode.S15AssetIntegrationSmokeTests.EnemyPool_ResetsAndReappliesVisualStateAcrossArchetypes" methodname="EnemyPool_ResetsAndReappliesVisualStateAcrossArchetypes" classname="Gravivore.Tests.PlayMode.S15AssetIntegrationSmokeTests" runstate="Runnable" seed="176939600" result="Passed" start-time="2026-10-08 11:21:16Z" end-time="2026-10-08 11:21:16Z" duration="0.002389" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1149" name="S16DevelopmentToolsSmokeTests" fullname="Gravivore.Tests.PlayMode.S16DevelopmentToolsSmokeTests" classname="Gravivore.Tests.PlayMode.S16DevelopmentToolsSmokeTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-08 11:21:16Z" end-time="2026-10-08 11:21:17Z" duration="1.031104" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1150" name="CanonicalScene_ComposesGuardedOverlayWithoutMutatingProgression" fullname="Gravivore.Tests.PlayMode.S16DevelopmentToolsSmokeTests.CanonicalScene_ComposesGuardedOverlayWithoutMutatingProgression" methodname="CanonicalScene_ComposesGuardedOverlayWithoutMutatingProgression" classname="Gravivore.Tests.PlayMode.S16DevelopmentToolsSmokeTests" runstate="Runnable" seed="379701838" result="Passed" start-time="2026-10-08 11:21:16Z" end-time="2026-10-08 11:21:17Z" duration="0.511457" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1151" name="CanonicalScene_DevelopmentToggleDoesNotOverlapPauseButton" fullname="Gravivore.Tests.PlayMode.S16DevelopmentToolsSmokeTests.CanonicalScene_DevelopmentToggleDoesNotOverlapPauseButton" methodname="CanonicalScene_DevelopmentToggleDoesNotOverlapPauseButton" classname="Gravivore.Tests.PlayMode.S16DevelopmentToolsSmokeTests" runstate="Runnable" seed="777348910" result="Passed" start-time="2026-10-08 11:21:17Z" end-time="2026-10-08 11:21:17Z" duration="0.518623" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1152" name="S17MonetizationBoundarySmokeTests" fullname="Gravivore.Tests.PlayMode.S17MonetizationBoundarySmokeTests" classname="Gravivore.Tests.PlayMode.S17MonetizationBoundarySmokeTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-08 11:21:17Z" end-time="2026-10-08 11:21:18Z" duration="0.504382" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1153" name="CanonicalScene_ComposesDisabledMonetizationWithoutUiOrGameplayChanges" fullname="Gravivore.Tests.PlayMode.S17MonetizationBoundarySmokeTests.CanonicalScene_ComposesDisabledMonetizationWithoutUiOrGameplayChanges" methodname="CanonicalScene_ComposesDisabledMonetizationWithoutUiOrGameplayChanges" classname="Gravivore.Tests.PlayMode.S17MonetizationBoundarySmokeTests" runstate="Runnable" seed="1797407569" result="Passed" start-time="2026-10-08 11:21:17Z" end-time="2026-10-08 11:21:18Z" duration="0.503357" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1154" name="SaveOfflineSmokeTests" fullname="Gravivore.Tests.PlayMode.SaveOfflineSmokeTests" classname="Gravivore.Tests.PlayMode.SaveOfflineSmokeTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-08 11:21:18Z" end-time="2026-10-08 11:21:19Z" duration="1.198990" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1155" name="CanonicalChapter_SaveReloadRestoresAuthoritativeGraphAtConstruction" fullname="Gravivore.Tests.PlayMode.SaveOfflineSmokeTests.CanonicalChapter_SaveReloadRestoresAuthoritativeGraphAtConstruction" methodname="CanonicalChapter_SaveReloadRestoresAuthoritativeGraphAtConstruction" classname="Gravivore.Tests.PlayMode.SaveOfflineSmokeTests" runstate="Runnable" seed="637856246" result="Passed" start-time="2026-10-08 11:21:18Z" end-time="2026-10-08 11:21:19Z" duration="1.197950" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1156" name="VisualIntegrationSmokeTests" fullname="Gravivore.Tests.PlayMode.VisualIntegrationSmokeTests" classname="Gravivore.Tests.PlayMode.VisualIntegrationSmokeTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-08 11:21:19Z" end-time="2026-10-08 11:21:22Z" duration="2.798385" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1157" name="AuthoredRegionsHubAndVisualEnvironmentContainNoCollisionOrGameplayState" fullname="Gravivore.Tests.PlayMode.VisualIntegrationSmokeTests.AuthoredRegionsHubAndVisualEnvironmentContainNoCollisionOrGameplayState" methodname="AuthoredRegionsHubAndVisualEnvironmentContainNoCollisionOrGameplayState" classname="Gravivore.Tests.PlayMode.VisualIntegrationSmokeTests" runstate="Runnable" seed="426972390" result="Passed" start-time="2026-10-08 11:21:19Z" end-time="2026-10-08 11:21:19Z" duration="0.515539" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1160" name="CaptureStructuralFoundationWhenRequested" fullname="Gravivore.Tests.PlayMode.VisualIntegrationSmokeTests.CaptureStructuralFoundationWhenRequested" methodname="CaptureStructuralFoundationWhenRequested" classname="Gravivore.Tests.PlayMode.VisualIntegrationSmokeTests" runstate="Runnable" seed="255819591" result="Passed" start-time="2026-10-08 11:21:19Z" end-time="2026-10-08 11:21:20Z" duration="1.135204" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1158" name="FullEliteBossAndPlayerOverridesKeepAuthorityDimensionsTargetsAndPrototypeTiming" fullname="Gravivore.Tests.PlayMode.VisualIntegrationSmokeTests.FullEliteBossAndPlayerOverridesKeepAuthorityDimensionsTargetsAndPrototypeTiming" methodname="FullEliteBossAndPlayerOverridesKeepAuthorityDimensionsTargetsAndPrototypeTiming" classname="Gravivore.Tests.PlayMode.VisualIntegrationSmokeTests" runstate="Runnable" seed="816620091" result="Passed" start-time="2026-10-08 11:21:20Z" end-time="2026-10-08 11:21:21Z" duration="0.540649" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1159" name="UnsafeDressingCannotBeInstantiatedOrIntroduceASecondRegenController" fullname="Gravivore.Tests.PlayMode.VisualIntegrationSmokeTests.UnsafeDressingCannotBeInstantiatedOrIntroduceASecondRegenController" methodname="UnsafeDressingCannotBeInstantiatedOrIntroduceASecondRegenController" classname="Gravivore.Tests.PlayMode.VisualIntegrationSmokeTests" runstate="Runnable" seed="1968144273" result="Passed" start-time="2026-10-08 11:21:21Z" end-time="2026-10-08 11:21:22Z" duration="0.605189" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1161" name="WorldGateSmokeTests" fullname="Gravivore.Tests.PlayMode.WorldGateSmokeTests" classname="Gravivore.Tests.PlayMode.WorldGateSmokeTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-08 11:21:22Z" end-time="2026-10-08 11:21:22Z" duration="0.034632" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1162" name="LockedGatesAndWorldBoundary_BlockBypassUntilAuthoritativeUnlocks" fullname="Gravivore.Tests.PlayMode.WorldGateSmokeTests.LockedGatesAndWorldBoundary_BlockBypassUntilAuthoritativeUnlocks" methodname="LockedGatesAndWorldBoundary_BlockBypassUntilAuthoritativeUnlocks" classname="Gravivore.Tests.PlayMode.WorldGateSmokeTests" runstate="Runnable" seed="1234272977" result="Passed" start-time="2026-10-08 11:21:22Z" end-time="2026-10-08 11:21:22Z" duration="0.011898" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1163" name="OrdinaryZonesAndSpawnAnchors_StayInsideUnobstructedPlayableBounds" fullname="Gravivore.Tests.PlayMode.WorldGateSmokeTests.OrdinaryZonesAndSpawnAnchors_StayInsideUnobstructedPlayableBounds" methodname="OrdinaryZonesAndSpawnAnchors_StayInsideUnobstructedPlayableBounds" classname="Gravivore.Tests.PlayMode.WorldGateSmokeTests" runstate="Runnable" seed="350214889" result="Passed" start-time="2026-10-08 11:21:22Z" end-time="2026-10-08 11:21:22Z" duration="0.009961" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1164" name="RestoredSnapshot_AppliesImmediatelyWithoutMilestoneReplay" fullname="Gravivore.Tests.PlayMode.WorldGateSmokeTests.RestoredSnapshot_AppliesImmediatelyWithoutMilestoneReplay" methodname="RestoredSnapshot_AppliesImmediatelyWithoutMilestoneReplay" classname="Gravivore.Tests.PlayMode.WorldGateSmokeTests" runstate="Runnable" seed="2063010212" result="Passed" start-time="2026-10-08 11:21:22Z" end-time="2026-10-08 11:21:22Z" duration="0.008183" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1165" name="UnlockedWorldState_SurvivesPlayerDeathAndRespawn" fullname="Gravivore.Tests.PlayMode.WorldGateSmokeTests.UnlockedWorldState_SurvivesPlayerDeathAndRespawn" methodname="UnlockedWorldState_SurvivesPlayerDeathAndRespawn" classname="Gravivore.Tests.PlayMode.WorldGateSmokeTests" runstate="Runnable" seed="180936550" result="Passed" start-time="2026-10-08 11:21:22Z" end-time="2026-10-08 11:21:22Z" duration="0.002830" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Saving results to: C:/Users/pamak/AppData/LocalLow/Project Gravivore/GRAVIVORE\TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

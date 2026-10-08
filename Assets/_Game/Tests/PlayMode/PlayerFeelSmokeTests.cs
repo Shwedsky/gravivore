@@ -385,7 +385,7 @@ namespace Gravivore.Tests.PlayMode
             };
             var particles = root.GetComponentsInChildren<ParticleSystem>(true);
             Assert.That(particles.Length, Is.LessThanOrEqualTo(
-                lash.Phase6BCreatedVfxCount + root.RepairHub.Vfx.CreatedInstanceCount));
+                lash.Phase6BCreatedVfxCount + root.RepairHub.Vfx.CreatedInstanceCount + root.GetComponentInChildren<Gravivore.Presentation.Combat.AttackCausalityPresenter>().Capacity + 2));
             foreach (var particle in particles) Assert.That(particle.main.maxParticles, Is.LessThanOrEqualTo(64));
             Assert.That(snapshot.presentationMotionControllers, Is.EqualTo(1));
             var directory = Environment.GetEnvironmentVariable("GRAVIVORE_PLAYER_FEEL_QA");

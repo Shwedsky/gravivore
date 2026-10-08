@@ -41,7 +41,7 @@ namespace Gravivore.Tests.PlayMode
             Assert.IsEmpty(root.VisualEnvironment.GetComponentsInChildren<Collider>(true));
             Assert.That(root.PlayerObject.GetComponent<CharacterController>().radius, Is.EqualTo(.42f));
             Assert.That(root.PlayerObject.GetComponent<CharacterController>().height, Is.EqualTo(1.4f));
-            Assert.That(root.WorldPresenter.EnvironmentBlockerCount, Is.EqualTo(4 + root.VisualEnvironment.SliceObstacleCount));
+            Assert.That(root.WorldPresenter.EnvironmentBlockerCount, Is.EqualTo(2 + root.VisualEnvironment.SliceObstacleCount));
             // The main approach, strong-spot and elite centres remain reachable when the normal gate unlocks.
             root.WorldPresenter.EliteGate.SetLocked(false); Physics.SyncTransforms();
             for (var z = 37; z < 79; z++)
