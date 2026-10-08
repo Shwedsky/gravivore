@@ -225,7 +225,7 @@ namespace Gravivore.Tests.EditMode
         {
             var policy = new AdaptiveRespawnPolicy(1, 2f, 3, 30f, 10f);
             var elite = new StrongOrdinarySpotRuntime(new StrongOrdinarySpotDefinition(
-                "elite", StrongOrdinaryRegion.Elite, Vector3.zero, 1.3f, 1.2f, 1.75f, 14f, policy));
+                "elite", StrongOrdinaryRegion.Elite, Vector3.zero, 1.7f, 1.3f, 1.75f, 14f, policy));
             var boss = new StrongOrdinarySpotRuntime(new StrongOrdinarySpotDefinition(
                 "boss", StrongOrdinaryRegion.Boss, Vector3.right, 1.7f, 1.45f, 2.75f, 19f, policy));
             elite.RegisterKill(0d);

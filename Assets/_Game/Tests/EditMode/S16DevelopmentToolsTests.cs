@@ -195,7 +195,7 @@ namespace Gravivore.Tests.EditMode
                 StringAssert.StartsWith("#if UNITY_EDITOR || DEVELOPMENT_BUILD", File.ReadAllText(path));
             }
 
-            Assert.That(SaveSchema.CurrentVersion, Is.EqualTo(2));
+            Assert.That(SaveSchema.CurrentVersion, Is.EqualTo(3));
         }
 
         private static PlayerStatsState CreateStats()

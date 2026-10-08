@@ -214,8 +214,9 @@ namespace Gravivore.Gameplay.Encounters
                 new EncounterBasicAttackEvent(basicSource, basicTarget, _configuration.BasicAttack.Windup));
             if (_basic.Resolved)
             {
-                if (_basic.Hit) _playerHealth.ApplyDamage(new DamageRequest(_configuration.BasicAttack.Damage, DamageType.Physical));
-                SafeEventDispatch.Publish(BasicAttackResolved, new EncounterBasicAttackEvent(basicSource, basicTarget, 0, _basic.Hit));
+                var hit = _basic.Hit;
+                if (hit) _playerHealth.ApplyDamage(new DamageRequest(_configuration.BasicAttack.Damage, DamageType.Physical));
+                SafeEventDispatch.Publish(BasicAttackResolved, new EncounterBasicAttackEvent(basicSource, basicTarget, 0, hit));
             }
             if (decision.TelegraphBegan) BeginTelegraph(decision.Attack);
             if (decision.ResolveAttack) ResolveAttack(decision.Attack);

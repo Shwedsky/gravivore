@@ -46,6 +46,7 @@ namespace Gravivore.Presentation.UI
             public Vector3 Origin;
             public float Age, Lifetime;
             public bool Active;
+            public float AggregatedDamage;
         }
         private static readonly Color Hostile = new Color(.95f,.25f,.23f,1);
         private static readonly Color Elite = new Color(1,.65f,.19f,1);
@@ -63,6 +64,7 @@ namespace Gravivore.Presentation.UI
         private Plate[] _plates;
         private Floating[] _floating;
         private int _damageCursor, _rewardCursor, _incomingCursor;
+        private int _lastIncoming=-1;
         public int IncomingFeedbackCount { get; private set; }
         public string LastIncomingText { get; private set; }
         public int PlateCapacity => _plates?.Length ?? 0;
@@ -138,10 +140,13 @@ namespace Gravivore.Presentation.UI
         private void IncomingDamaged(DamageResult value)
         {
             if (value.AppliedDamage <= 0) return;
-            IncomingFeedbackCount++; LastIncomingText = "−" + FormatDamage(value.AppliedDamage);
-            var index = _settings.DamageTextCapacity + _settings.RewardTextCapacity + _incomingCursor++ % 3;
+            IncomingFeedbackCount++;
+            var aggregate=_lastIncoming>=0 && _floating[_lastIncoming].Active && _floating[_lastIncoming].Age<.15f;
+            var index = aggregate?_lastIncoming:_settings.DamageTextCapacity + _settings.RewardTextCapacity + _incomingCursor++ % 3;
             var slot = _floating[index];
-            slot.Origin = _root.PlayerObject.transform.position + Vector3.up * 1.8f;
+            slot.AggregatedDamage=aggregate?slot.AggregatedDamage+value.AppliedDamage:value.AppliedDamage;
+            _lastIncoming=index;LastIncomingText="−"+FormatDamage(slot.AggregatedDamage);
+            slot.Origin = _root.PlayerObject.transform.position + Vector3.up * 1.8f+Vector3.right*((index%3-1)*.2f);
             slot.Age = 0; slot.Lifetime = _settings.DamageLifetime;
             slot.Text.fontSize = 42; slot.Text.text = LastIncomingText;
             slot.Text.color = new Color(1,.32f,.26f,1); slot.Active = true;

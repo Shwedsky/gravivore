@@ -44,6 +44,11 @@ void ConfigureLine(float n){var c=_color;c.a*=IsWarning?(0.9f+0.1f*Mathf.Cos(n*M
 if(_shape==Phase6BVfxShape.Beam||_shape==Phase6BVfxShape.Line){
     _line.loop=false;
     var end=(_destination-_origin).sqrMagnitude>.0001f?_destination:_origin+transform.forward*_range;
+    if(_cue==Phase6BVfxCue.HostileTravel){
+        _line.positionCount=2;
+        _line.SetPosition(0,Vector3.Lerp(_origin,end,Mathf.Max(0,n-.24f)));
+        _line.SetPosition(1,Vector3.Lerp(_origin,end,Mathf.Clamp01(n+.20f)));return;
+    }
     if(_cue==Phase6BVfxCue.GravityLashTravel && _playerVariant==1){
         _line.positionCount=2;_line.widthMultiplier=_width*_pulseWidthMultiplier;
         _line.startColor=new Color(.7f,.95f,1,c.a);_line.endColor=new Color(.4f,.85f,1,c.a);

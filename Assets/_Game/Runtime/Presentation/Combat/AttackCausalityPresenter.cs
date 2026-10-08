@@ -75,7 +75,9 @@ namespace Gravivore.Presentation.Combat
         private void OrdinaryAttack(int index)
         {
             if(!_enemies[index].IsAlive)return;
-            var source=_origins[index].position;Source(source,.1f);
+            // A pooled actor can switch archetype; its binding already caches the active sockets.
+            var binding=_enemies[index].GetComponent<CharacterVisualBinding>();
+            var source=(binding!=null?binding.GetSocketOr(PresentationSocket.AttackOrigin,_enemies[index].TargetPoint):_origins[index]).position;Source(source,.1f);
             Release(source,_root.PlayerObject.transform.position+Vector3.up,true);
         }
         private void EliteBasicStart(EncounterBasicAttackEvent value)=>Source(_eliteOrigin.position,value.Duration);

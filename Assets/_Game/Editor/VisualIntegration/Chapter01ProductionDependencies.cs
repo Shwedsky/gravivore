@@ -20,7 +20,7 @@ namespace Gravivore.Editor.VisualIntegration
             .Concat(new[]{Chapter01ProductionBuilder.Prefab("Full_Chapter_Environment")})
             .Concat(new[]{"relay-yard","cutting-floor","shield-dump","capacitor-field","hauler-graveyard"}.Select(n=>Chapter01ProductionBuilder.Prefab("Zone_"+n)))
             .Concat(FirstVisualSliceDependencies.Required)
-            .Concat(FidelityActive?new[]{ConceptFidelityBuilder.Root+"/Models/Custodian_V2.fbx",ConceptFidelityBuilder.Prefab("Custodian_V2")}:Array.Empty<string>()).ToArray();
+            .Concat(FidelityActive?new[]{Chapter01V3Builder.Root+"/Models/Custodian_V3.fbx",Chapter01V3Builder.Prefab("Custodian_V3")}:Array.Empty<string>()).ToArray();
         [Serializable] private sealed class Evidence { public bool validated; public string sourceSha,apkSha256; public string[] dependencies,required,packedAssets,serializedEntries; }
         public static void ValidateOrThrow()
         {
@@ -35,7 +35,7 @@ namespace Gravivore.Editor.VisualIntegration
         public void OnPostprocessBuild(BuildReport report)
         {
             var names=Chapter01ProductionBuilder.Machines.Where(n=>n!="Custodian_V1"||!FidelityActive).Select(n=>n+"_LOD0").Concat(Chapter01ProductionBuilder.Kit)
-                .Concat(FidelityActive?new[]{"Custodian_V2_LOD0"}:Array.Empty<string>())
+                .Concat(FidelityActive?new[]{"Custodian_V3_LOD0"}:Array.Empty<string>())
                 .Concat(new[]{"Chapter 01 Full Production","relay-yard","cutting-floor","shield-dump","capacitor-field","hauler-graveyard"}).ToArray();
             var found=new string[names.Length];
             using(var archive=ZipFile.OpenRead(report.summary.outputPath)) foreach(var entry in archive.Entries)

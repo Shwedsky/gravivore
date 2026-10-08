@@ -7,7 +7,7 @@ namespace Gravivore.Presentation.UI
     public sealed class WeaponEquipmentPanel : MonoBehaviour
     {
         private EquipmentService _service;
-        private RectTransform _panel, _toast;
+        private RectTransform _panel, _toast, _menu;
         private Text _description, _toastText;
         private Button _toggle;
         private float _toastRemaining;
@@ -17,11 +17,12 @@ namespace Gravivore.Presentation.UI
         {
             _service = service;
             var menu = (RectTransform)menuRoot.Find("Game Menu");
+            _menu=menu;
             menu.Find("Equipment Title").gameObject.SetActive(false);
             HudUiFactory.CreateButton(menu, "Open Equipment", new Vector2(.08f,.42f), new Vector2(.92f,.49f), "СНАРЯЖЕНИЕ", Open);
             _panel = HudUiFactory.CreatePanel(menuRoot, "Equipment Panel", new Vector2(.07f,.08f), new Vector2(.93f,.92f), HudUiFactory.PanelColor, true);
             HudUiFactory.CreateText(_panel, "Title", new Vector2(.07f,.87f),new Vector2(.93f,.97f),"ОРУЖИЕ",34,TextAnchor.MiddleCenter,Color.white);
-            HudUiFactory.CreateText(_panel, "Item", new Vector2(.08f,.68f),new Vector2(.92f,.86f),"ИМПУЛЬСНЫЙ ИЗЛУЧАТЕЛЬ M-0",30,TextAnchor.MiddleCenter,HudUiFactory.AccentColor);
+            HudUiFactory.CreateText(_panel, "Item", new Vector2(.08f,.68f),new Vector2(.92f,.86f),"ИМПУЛЬСНЫЙ ИЗЛУЧАТЕЛЬ М-0",30,TextAnchor.MiddleCenter,HudUiFactory.AccentColor);
             _description = HudUiFactory.CreateText(_panel,"Description",new Vector2(.08f,.32f),new Vector2(.92f,.66f),"",26,TextAnchor.UpperLeft,Color.white);
             _toggle = HudUiFactory.CreateButton(_panel,"Equip Weapon",new Vector2(.08f,.18f),new Vector2(.92f,.28f),"",ToggleWeapon);
             HudUiFactory.CreateButton(_panel,"Back",new Vector2(.08f,.05f),new Vector2(.92f,.14f),"НАЗАД",Close);
@@ -32,8 +33,8 @@ namespace Gravivore.Presentation.UI
             service.InventoryChanged += InventoryChanged; service.EquipmentGranted += Granted;
             Refresh();
         }
-        public void Open() { Refresh(); _panel.SetAsLastSibling(); _panel.gameObject.SetActive(true); }
-        public void Close() { if (_panel != null) _panel.gameObject.SetActive(false); }
+        public void Open() { Refresh(); _menu.gameObject.SetActive(false); _panel.SetAsLastSibling(); _panel.gameObject.SetActive(true); }
+        public void Close() { if (_panel != null) _panel.gameObject.SetActive(false);if(_menu!=null)_menu.gameObject.SetActive(true); }
         public void ToggleWeapon()
         {
             if (!_service.Inventory.HasItem(Chapter01Weapon.ItemId)) return;
@@ -45,7 +46,7 @@ namespace Gravivore.Presentation.UI
         private void Granted(EquipmentGrantedEvent value)
         {
             if (value.ItemId != Chapter01Weapon.ItemId) return;
-            _toastText.text = "ПОЛУЧЕНО: ИЗЛУЧАТЕЛЬ M-0\nОбычный · ранг " + _service.Inventory.GetRank(value.ItemId) + "/5\nМеню → Снаряжение";
+            _toastText.text = "ПОЛУЧЕНО: ИЗЛУЧАТЕЛЬ М-0\nОбычный · ранг " + _service.Inventory.GetRank(value.ItemId) + "/5\nМеню → Снаряжение";
             _toastRemaining=4f;_toast.gameObject.SetActive(true);
         }
         private void Update()
@@ -62,7 +63,7 @@ namespace Gravivore.Presentation.UI
             var equipped=_service.Inventory.TryGetEquipped(EquipmentSlot.Weapon,out _);
             _description.text=owned ? "Обычный · ранг "+rank+" / "+item.MaximumRank+"\n\nУрон +"+item.ModifierAtRank(rank).BaseDamage.ToString("0.#")+
                 "\n"+(equipped?"УСТАНОВЛЕНО НА ПРАВЫЙ МАНИПУЛЯТОР":"В ИНВЕНТАРЕ")+"\n\nПовторная победа над Кустодианом повышает ранг до 5." :
-                "Обычный · не получено\n\nПобедите Кустодиана M-0, чтобы получить оружие.\n\nПервая копия устанавливается на G-0. Повторные копии повышают ранг до 5.";
+                "Обычный · не получено\n\nПобедите Кустодиана М-0, чтобы получить оружие.\n\nПервая копия устанавливается на мех. Повторные копии повышают ранг до 5.";
             _toggle.interactable=owned;_toggle.GetComponentInChildren<Text>().text=!owned?"НУЖНА ПОБЕДА НАД БОССОМ":equipped?"СНЯТЬ ОРУЖИЕ":"УСТАНОВИТЬ";
         }
         private void OnDestroy()

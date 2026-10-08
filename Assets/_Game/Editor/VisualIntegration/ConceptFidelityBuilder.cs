@@ -259,7 +259,11 @@ namespace Gravivore.Editor.VisualIntegration
                 }
             }
             var deps=AssetDatabase.GetDependencies(FirstVisualSliceBuilder.ScenePath,true);
-            foreach(var name in StaticAssets.Concat(AnimatedAssets))if(!deps.Contains(Prefab(name)))throw new InvalidOperationException("Live scene lacks "+name);
+            foreach(var name in StaticAssets.Concat(AnimatedAssets))
+            {
+                var required=name=="Custodian_V2"?Chapter01V3Builder.Prefab("Custodian_V3"):Prefab(name);
+                if(!deps.Contains(required))throw new InvalidOperationException("Live scene lacks "+required);
+            }
             Debug.Log("CONCEPT_FIDELITY_ASSET_VALIDATION_PASS");
         }
     }

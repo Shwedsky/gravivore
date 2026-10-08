@@ -16,6 +16,8 @@ namespace Gravivore.Presentation.World
         private Transform[] _sources;
         private Color[] _sourceColors;
         private Light[] _lights;
+        private ParticleSystem[] _mist;
+        public int AtmosphericParticleCapacity=>32;
         public int LightCount=>_lights?.Length??0;
         public int Capacity=>_pool!=null?_pool.CreatedInstanceCount:0;
         public void Initialize(ChapterVisualEnvironment environment,Transform player,Phase6BProductionDefinition effects)
@@ -43,6 +45,23 @@ namespace Gravivore.Presentation.World
             var repair=effects.CreateRepairBindings();
             _pool=gameObject.AddComponent<Phase6BVfxPool>();
             _pool.Initialize(new[]{repair[1]});_remaining=_settings.AtmosphereInterval;
+            // Two prebuilt reused systems: four steam puffs and eight drifting motes per nearby fault.
+            var material=_pool.GetComponentInChildren<ParticleSystemRenderer>(true).sharedMaterial;
+            _mist=new ParticleSystem[2];
+            for(var i=0;i<_mist.Length;i++)
+            {
+                var obj=new GameObject(i==0?"Reused service steam":"Reused drifting dust",typeof(ParticleSystem));obj.transform.SetParent(transform,false);
+                var particles=obj.GetComponent<ParticleSystem>();particles.Stop(true,ParticleSystemStopBehavior.StopEmittingAndClear);
+                var main=particles.main;main.playOnAwake=false;main.loop=false;main.simulationSpace=ParticleSystemSimulationSpace.World;
+                main.maxParticles=i==0?8:24;main.startLifetime=i==0?2.2f:3f;main.startSize=i==0?.65f:.045f;main.startSpeed=i==0?.35f:.12f;
+                main.startColor=i==0?new Color(.55f,.66f,.7f,.12f):new Color(.6f,.72f,.78f,.35f);
+                var emission=particles.emission;emission.enabled=false;var shape=particles.shape;shape.shapeType=ParticleSystemShapeType.Cone;shape.angle=20;shape.radius=i==0?.2f:1.5f;
+                obj.transform.localRotation=Quaternion.Euler(-90,0,0);
+                var color=particles.colorOverLifetime;color.enabled=true;
+                var gradient=new Gradient();gradient.SetKeys(new[]{new GradientColorKey(Color.white,0),new GradientColorKey(Color.white,1)},new[]{new GradientAlphaKey(0,0),new GradientAlphaKey(1,.15f),new GradientAlphaKey(0,1)});color.color=gradient;
+                var renderer=particles.GetComponent<ParticleSystemRenderer>();renderer.sharedMaterial=material;renderer.shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.Off;renderer.receiveShadows=false;
+                _mist[i]=particles;
+            }
         }
         private void Update()
         {
@@ -61,6 +80,7 @@ namespace Gravivore.Presentation.World
                 if(!light.enabled)continue;
                 var source=_sources[index];light.transform.position=source.position;
                 light.color=_sourceColors[index];
+                light.intensity=_settings.LocalLightIntensity*(.97f+.03f*Mathf.Sin(Time.time*4.1f+index));
             }
             _remaining-=Time.deltaTime;if(_remaining>0)return;
             _remaining=_settings.AtmosphereInterval;
@@ -68,9 +88,11 @@ namespace Gravivore.Presentation.World
             {
                 var fault=_faults[_cursor];_cursor=(_cursor+1)%_faults.Length;
                 if((fault.position-_player.position).sqrMagnitude>_settings.AtmosphereRange*_settings.AtmosphereRange)continue;
-                _pool.TryPlay(Phase6BVfxCue.WeldingSparks,fault.position,fault.position,.24f);break;
+                _pool.TryPlay(Phase6BVfxCue.WeldingSparks,fault.position,fault.position,.24f);
+                _mist[0].transform.position=fault.position;_mist[0].Emit(4);
+                _mist[1].transform.position=fault.position+Vector3.up*1.5f;_mist[1].Emit(8);break;
             }
         }
-        private void OnDisable(){_pool?.StopAll();if(_lights!=null)foreach(var light in _lights)light.enabled=false;}
+        private void OnDisable(){_pool?.StopAll();if(_lights!=null)foreach(var light in _lights)light.enabled=false;if(_mist!=null)foreach(var particles in _mist)particles.Stop(true,ParticleSystemStopBehavior.StopEmittingAndClear);}
     }
 }

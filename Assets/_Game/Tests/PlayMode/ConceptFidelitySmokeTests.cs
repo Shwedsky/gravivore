@@ -33,7 +33,7 @@ namespace Gravivore.Tests.PlayMode
         [UnityTest] public IEnumerator BossHasAuthoredRigDistinctAttackClipsAndThreeLodsWithoutArtAuthority()
         {
             yield return Load();var root=_scene.Root;var boss=root.CustodianBoss;var model=boss.GetComponent<CharacterVisualBinding>().ActiveModel;
-            StringAssert.StartsWith("Custodian_V2",model.name);PresentationPrefabValidation.ValidateOrThrow(model.gameObject);
+            StringAssert.StartsWith("Custodian_V3",model.name);PresentationPrefabValidation.ValidateOrThrow(model.gameObject);
             var animator=model.GetComponentInChildren<Animator>();Assert.IsFalse(animator.applyRootMotion);
             foreach(var state in new[]{"Idle","Run","Windup","Release","Special","Hit","Death"})
                 Assert.IsTrue(animator.HasState(0,Animator.StringToHash(state)),state);

@@ -19,7 +19,8 @@ namespace Gravivore.Editor.VisualIntegration
         {public bool validated;public string apkSha256;public string[] required,serializedEntries,dependencies;}
         public void OnPostprocessBuild(BuildReport report)
         {
-            var names=ConceptFidelityBuilder.StaticAssets.Concat(ConceptFidelityBuilder.AnimatedAssets.Select(n=>n+"_LOD0"))
+            var names=ConceptFidelityBuilder.StaticAssets.Concat(ConceptFidelityBuilder.AnimatedAssets.Select(n=>(n=="Custodian_V2"?"Custodian_V3":n)+"_LOD0"))
+                .Concat(Chapter01V3Builder.Models.Where(n=>n!="Custodian_V3"))
                 .Concat(new[]{"ConceptFidelity","Fidelity_IndustrialAtlas","Chapter 01 Concept Fidelity V2"}).ToArray();
             var found=new string[names.Length];
             using(var archive=ZipFile.OpenRead(report.summary.outputPath))foreach(var entry in archive.Entries)

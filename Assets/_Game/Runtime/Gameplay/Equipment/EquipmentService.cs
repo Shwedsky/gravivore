@@ -49,7 +49,12 @@ namespace Gravivore.Gameplay.Equipment
         {
             var item = _catalog.GetRequired(itemId);
             if (!_inventory.HasItem(itemId)) return GrantEquipment(itemId);
-            if (!_inventory.IncreaseRank(itemId, item.MaximumRank)) return false;
+            if (!_inventory.IncreaseRank(itemId, item.MaximumRank))
+            {
+                // A legitimate copy is still acknowledged at the rank cap; it cannot raise stats.
+                Publish(EquipmentGranted, new EquipmentGrantedEvent(itemId, EquipmentGrantSource.GameplayReward));
+                return false;
+            }
             ApplyEquippedModifiers();
             Publish(EquipmentGranted, new EquipmentGrantedEvent(itemId, EquipmentGrantSource.GameplayReward));
             Publish(InventoryChanged, new InventoryChangedEvent(InventoryChangeType.ItemGranted));

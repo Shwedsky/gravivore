@@ -44,7 +44,7 @@ namespace Gravivore.Tests.PlayMode
         {
             yield return Load();
             var root = _scene.Root;
-            Assert.That(root.SaveSchemaVersion, Is.EqualTo(2));
+            Assert.That(root.SaveSchemaVersion, Is.EqualTo(3));
             Assert.That(root.EnemyPopulation.SpotCount, Is.EqualTo(9));
             Assert.That(root.StrongSpots.Count, Is.EqualTo(4));
             Assert.That(root.MapMarkers.Count, Is.EqualTo(15));
