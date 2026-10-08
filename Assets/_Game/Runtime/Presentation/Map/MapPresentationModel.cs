@@ -50,7 +50,7 @@ namespace Gravivore.Presentation.Map
             bool firstClearCompleted = false,
             EncounterRewardEntitlement rewardEntitlement = EncounterRewardEntitlement.FirstClear,
             int premiumRewardsRemaining = 0,
-            float rewardWindowRemainingSeconds = 0f)
+            float rewardWindowRemainingSeconds = 0f, int liveEnemyCount = 0)
         {
             if (string.IsNullOrEmpty(id)) throw new ArgumentException("Marker id is required.", nameof(id));
             Id = id;
@@ -68,6 +68,7 @@ namespace Gravivore.Presentation.Map
             RewardEntitlement = rewardEntitlement;
             PremiumRewardsRemaining = premiumRewardsRemaining;
             RewardWindowRemainingSeconds = rewardWindowRemainingSeconds;
+            LiveEnemyCount = Mathf.Max(0, liveEnemyCount);
         }
 
         public string Id { get; }
@@ -85,6 +86,7 @@ namespace Gravivore.Presentation.Map
         public EncounterRewardEntitlement RewardEntitlement { get; }
         public int PremiumRewardsRemaining { get; }
         public float RewardWindowRemainingSeconds { get; }
+        public int LiveEnemyCount { get; }
 
         public bool Equals(MapMarkerSnapshot other) =>
             Id == other.Id &&
@@ -97,7 +99,7 @@ namespace Gravivore.Presentation.Map
             Mathf.Approximately(HeadingDegrees, other.HeadingDegrees) &&
             Mathf.Approximately(RemainingSeconds, other.RemainingSeconds) &&
             Mathf.Approximately(CooldownProgress01, other.CooldownProgress01) &&
-            RewardState == other.RewardState && FirstClearCompleted == other.FirstClearCompleted &&
+            LiveEnemyCount == other.LiveEnemyCount && RewardState == other.RewardState && FirstClearCompleted == other.FirstClearCompleted &&
             RewardEntitlement == other.RewardEntitlement && PremiumRewardsRemaining == other.PremiumRewardsRemaining &&
             Mathf.Approximately(RewardWindowRemainingSeconds, other.RewardWindowRemainingSeconds);
 

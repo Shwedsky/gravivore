@@ -14,14 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier:
   _id: magnetar-guard
   _spawnPosition: {x: 0, y: 0, z: 69}
-  _maximumHitPoints: 220
-  _armor: 8
-  _moveSpeed: 1.8
-  _attackDamage: 11
+  _maximumHitPoints: 510
+  _armor: 16
+  _moveSpeed: 3.1
+  _attackDamage: 27
   _collisionRadius: 0.65
   _targetPointHeight: 1.2
-  _aggroRadius: 8
+  _aggroRadius: 13
   _attackRange: 2.4
   _shockwaveRadius: 3.2
   _telegraphDuration: 1
-  _recoveryDuration: 1.5
+  _recoveryDuration: 1.8
+  _basicAttack:
+    _damage: 21
+    _range: 8
+    _interval: 1.25
+    _windup: 0.35

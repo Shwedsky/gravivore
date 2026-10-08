@@ -17,21 +17,31 @@ namespace Gravivore.Gameplay.Equipment
         public string ItemId { get; }
     }
 
+    public readonly struct ItemRankSnapshot
+    {
+        public ItemRankSnapshot(string itemId, int rank) { ItemId = itemId; Rank = rank; }
+        public string ItemId { get; }
+        public int Rank { get; }
+    }
     public sealed class InventoryStateSnapshot
     {
-        public InventoryStateSnapshot(string[] ownedItemIds, EquippedItemSnapshot[] equippedItems)
+        public InventoryStateSnapshot(string[] ownedItemIds, EquippedItemSnapshot[] equippedItems, ItemRankSnapshot[] ranks = null)
         {
+            Ranks = ranks != null ? (ItemRankSnapshot[])ranks.Clone() : Array.Empty<ItemRankSnapshot>();
             OwnedItemIds = ownedItemIds != null ? (string[])ownedItemIds.Clone() : throw new ArgumentNullException(nameof(ownedItemIds));
             EquippedItems = equippedItems != null ? (EquippedItemSnapshot[])equippedItems.Clone() : throw new ArgumentNullException(nameof(equippedItems));
         }
 
+        public ItemRankSnapshot[] Ranks { get; }
         public string[] OwnedItemIds { get; }
         public EquippedItemSnapshot[] EquippedItems { get; }
     }
 
     public sealed class InventoryState
     {
-        private const int SlotCount = 3;
+        private const int SlotCount = 4;
+        private readonly Dictionary<string,int> _ranks = new Dictionary<string,int>(StringComparer.Ordinal);
+        public int GetRank(string itemId) => _ranks.TryGetValue(itemId, out var rank) ? rank : HasItem(itemId) ? 1 : 0;
         private readonly SortedSet<string> _ownedItemIds = new SortedSet<string>(StringComparer.Ordinal);
         private readonly string[] _equippedItemIds = new string[SlotCount];
 
@@ -65,7 +75,9 @@ namespace Gravivore.Gameplay.Equipment
                 equipped[destination++] = new EquippedItemSnapshot((EquipmentSlot)i, _equippedItemIds[i]);
             }
 
-            return new InventoryStateSnapshot(owned, equipped);
+            var ranks = new ItemRankSnapshot[owned.Length];
+            for (var i = 0; i < owned.Length; i++) ranks[i] = new ItemRankSnapshot(owned[i], GetRank(owned[i]));
+            return new InventoryStateSnapshot(owned, equipped, ranks);
         }
 
         public static InventoryState Restore(InventoryStateSnapshot snapshot)
@@ -97,6 +109,12 @@ namespace Gravivore.Gameplay.Equipment
                 state._equippedItemIds[(int)equipped.Slot] = equipped.ItemId;
             }
 
+            foreach (var entry in snapshot.Ranks)
+            {
+                if (!state.HasItem(entry.ItemId) || entry.Rank < 1 || entry.Rank > 5 || state._ranks.ContainsKey(entry.ItemId))
+                    throw new ArgumentException("Invalid, duplicate or unowned equipment rank.", nameof(snapshot));
+                state._ranks.Add(entry.ItemId, entry.Rank);
+            }
             return state;
         }
 
@@ -104,6 +122,13 @@ namespace Gravivore.Gameplay.Equipment
         {
             ValidateItemId(itemId);
             return _ownedItemIds.Add(itemId);
+        }
+
+        internal bool IncreaseRank(string itemId, int maximum)
+        {
+            if (!HasItem(itemId)) throw new InvalidOperationException("Ranked item must be owned.");
+            var rank = GetRank(itemId); if (rank >= maximum) return false;
+            _ranks[itemId] = rank + 1; return true;
         }
 
         internal string SetEquipped(EquipmentSlot slot, string itemId)

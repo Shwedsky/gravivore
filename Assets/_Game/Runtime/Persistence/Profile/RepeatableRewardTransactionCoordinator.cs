@@ -16,15 +16,18 @@ namespace Gravivore.Persistence.Profile
         private readonly RepeatableEncounterService _encounters;
         private readonly AuthoredRewardApplier _rewardApplier;
         private readonly Action<PendingEncounterReward> _completeFirstClear;
+        private readonly Action<PendingEncounterReward> _applyLoot;
 
         public RepeatableRewardTransactionCoordinator(
             ProfileSession session,
             AuthoredRewardApplier rewardApplier,
-            Action<PendingEncounterReward> completeFirstClear = null)
+            Action<PendingEncounterReward> completeFirstClear = null,
+            Action<PendingEncounterReward> applyLoot = null)
         {
             _session = session ?? throw new ArgumentNullException(nameof(session));
             _rewardApplier = rewardApplier ?? throw new ArgumentNullException(nameof(rewardApplier));
             _completeFirstClear = completeFirstClear;
+            _applyLoot = applyLoot;
             _encounters = new RepeatableEncounterService(session.State.Repeatable, session.EffectiveTime);
         }
 
@@ -70,6 +73,7 @@ namespace Gravivore.Persistence.Profile
                 if (!preparedCheckpointAlreadyDurable && !_session.FlushNow()) return false;
 
                 _rewardApplier.Apply(pending.Reward);
+                _applyLoot?.Invoke(pending);
                 pending.MarkApplied();
                 Gravivore.Core.Events.SafeEventDispatch.Publish(RewardApplied, pending);
                 _completeFirstClear?.Invoke(pending);

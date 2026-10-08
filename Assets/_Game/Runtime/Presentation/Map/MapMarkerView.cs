@@ -314,7 +314,8 @@ namespace Gravivore.Presentation.Map
 
         private void UpdateRoundedTimer(MapMarkerSnapshot snapshot)
         {
-            var showTimer = snapshot.Availability == MapAvailabilityState.Cooldown || snapshot.Availability == MapAvailabilityState.Ready ||
+            var showCount = snapshot.LiveEnemyCount > 0 && !snapshot.ProgressionLocked;
+            var showTimer = showCount || snapshot.Availability == MapAvailabilityState.Cooldown || snapshot.Availability == MapAvailabilityState.Ready ||
                 _expanded && snapshot.Kind != MapMarkerKind.Player && snapshot.Kind != MapMarkerKind.RepairHub;
             _timer.gameObject.SetActive(showTimer);
             if (!showTimer)
@@ -324,10 +325,10 @@ namespace Gravivore.Presentation.Map
                 return;
             }
 
-            var bucket = snapshot.Availability == MapAvailabilityState.Cooldown ? MapTimerFormatter.ExactSecondBucket(snapshot.RemainingSeconds) : -1-(int)snapshot.Availability;
+            var bucket = showCount ? 100000 + snapshot.LiveEnemyCount : snapshot.Availability == MapAvailabilityState.Cooldown ? MapTimerFormatter.ExactSecondBucket(snapshot.RemainingSeconds) : -1-(int)snapshot.Availability;
             if (bucket == _lastRoundedTimerBucket) return;
             _lastRoundedTimerBucket = bucket;
-            _timer.text = snapshot.ProgressionLocked ? "ЗАКРЫТО" : snapshot.Availability == MapAvailabilityState.Cooldown ? MapTimerFormatter.FormatExact(snapshot.RemainingSeconds) :
+            _timer.text = showCount ? "×" + snapshot.LiveEnemyCount : snapshot.ProgressionLocked ? "ЗАКРЫТО" : snapshot.Availability == MapAvailabilityState.Cooldown ? MapTimerFormatter.FormatExact(snapshot.RemainingSeconds) :
                 snapshot.Availability == MapAvailabilityState.Ready ? "ГОТОВО" : snapshot.Availability == MapAvailabilityState.Active ? "В БОЮ" :
                 snapshot.Kind == MapMarkerKind.Gate ? "ОТКРЫТО" : "ДОСТУПНО";
         }

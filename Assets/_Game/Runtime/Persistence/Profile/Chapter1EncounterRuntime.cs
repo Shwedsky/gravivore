@@ -1,4 +1,5 @@
 using System;
+using Gravivore.Gameplay.Equipment;
 using Gravivore.Gameplay.Encounters;
 using Gravivore.Gameplay.Progression;
 using Gravivore.Gameplay.Quests;
@@ -16,13 +17,19 @@ namespace Gravivore.Persistence.Profile
         private QuestService _quests;
 
         public Chapter1EncounterRuntime(ProfileSession session, ProgressionConfiguration progression,
-            CoreReward eliteUnit, CoreReward bossUnit)
+            CoreReward eliteUnit, CoreReward bossUnit, EquipmentService equipment = null)
         {
             _session = session ?? throw new ArgumentNullException(nameof(session));
             _ladder = new RepeatableEncounterRewardLadder(eliteUnit, bossUnit);
             Transactions = new RepeatableRewardTransactionCoordinator(session,
                 new AuthoredRewardApplier(session.State.PlayerStats, session.State.Progression, progression),
-                CompleteFirstClear);
+                CompleteFirstClear, pending =>
+                {
+                    if (equipment == null || pending.EncounterKind != RepeatableEncounterKind.Custodian) return;
+                    var firstCopy = !equipment.Inventory.HasItem(Chapter01Weapon.ItemId);
+                    equipment.GrantRankedCopy(Chapter01Weapon.ItemId);
+                    if (firstCopy) equipment.Equip(Chapter01Weapon.ItemId, EquipmentSlot.Weapon);
+                });
             session.State.World.GateUnlocked += HandleGateUnlocked;
         }
 

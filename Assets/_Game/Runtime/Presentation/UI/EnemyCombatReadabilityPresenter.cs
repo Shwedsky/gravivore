@@ -62,7 +62,9 @@ namespace Gravivore.Presentation.UI
         private int[] _order;
         private Plate[] _plates;
         private Floating[] _floating;
-        private int _damageCursor, _rewardCursor;
+        private int _damageCursor, _rewardCursor, _incomingCursor;
+        public int IncomingFeedbackCount { get; private set; }
+        public string LastIncomingText { get; private set; }
         public int PlateCapacity => _plates?.Length ?? 0;
         public int TextCapacity => _floating?.Length ?? 0;
         public int ActiveCombatTextCount { get; private set; }
@@ -90,9 +92,10 @@ namespace Gravivore.Presentation.UI
             _actors[enemies.Length] = new Actor { Root=root.MagnetarGuard.transform,Strong=true };
             _plates = new Plate[settings.VisibleBars];
             for(var i=0;i<_plates.Length;i++) _plates[i]=CreatePlate(i);
-            _floating = new Floating[settings.DamageTextCapacity+settings.RewardTextCapacity];
+            _floating = new Floating[settings.DamageTextCapacity+settings.RewardTextCapacity+3];
             for(var i=0;i<_floating.Length;i++) _floating[i]=CreateFloating(i);
             _attack.AttackResolved += AttackResolved;
+            root.PlayerHealth.Damaged += IncomingDamaged;
             root.EnemyPopulation.EnemyDamaged += Damaged;
             root.Progression.RewardGranted += RewardGranted;
             root.Chapter1Encounters.Transactions.RewardApplied += EncounterReward;
@@ -110,9 +113,9 @@ namespace Gravivore.Presentation.UI
         }
         private Floating CreateFloating(int i)
         {
-            var text=HudUiFactory.CreateText(_layer,"Pooled Combat Text "+i,Vector2.one*.5f,Vector2.one*.5f,"",29,TextAnchor.MiddleCenter,Color.white);
+            var text=HudUiFactory.CreateText(_layer,"Pooled Combat Text "+i,Vector2.one*.5f,Vector2.one*.5f,"",36,TextAnchor.MiddleCenter,Color.white);
             text.rectTransform.sizeDelta=new Vector2(380,84); text.fontStyle=FontStyle.Bold;
-            var outline=text.gameObject.AddComponent<Outline>(); outline.effectColor=new Color(.01f,.02f,.025f,.95f); outline.effectDistance=new Vector2(1,-1);
+            var outline=text.gameObject.AddComponent<Outline>(); outline.effectColor=new Color(.01f,.02f,.025f,.95f); outline.effectDistance=new Vector2(2,-2);
             var group=text.gameObject.AddComponent<CanvasGroup>(); group.blocksRaycasts=false; group.interactable=false;
             text.gameObject.SetActive(false); return new Floating { Rect=text.rectTransform,Text=text,Group=group };
         }
@@ -130,7 +133,19 @@ namespace Gravivore.Presentation.UI
         private void AttackResolved(PlayerAttackResolvedEvent value)
         {
             LastAppliedDamage=value.Result.AppliedDamage; LastDamageText=FormatDamage(LastAppliedDamage); DamageFeedbackCount++;
-            ShowText(value.Position+Vector3.up*.3f,LastDamageText,Color.white,false);
+            ShowText(value.Position+Vector3.up*1.4f,LastDamageText,new Color(.80f,1f,1f,1),false);
+        }
+        private void IncomingDamaged(DamageResult value)
+        {
+            if (value.AppliedDamage <= 0) return;
+            IncomingFeedbackCount++; LastIncomingText = "−" + FormatDamage(value.AppliedDamage);
+            var index = _settings.DamageTextCapacity + _settings.RewardTextCapacity + _incomingCursor++ % 3;
+            var slot = _floating[index];
+            slot.Origin = _root.PlayerObject.transform.position + Vector3.up * 1.8f;
+            slot.Age = 0; slot.Lifetime = _settings.DamageLifetime;
+            slot.Text.fontSize = 42; slot.Text.text = LastIncomingText;
+            slot.Text.color = new Color(1,.32f,.26f,1); slot.Active = true;
+            slot.Group.alpha = 1; slot.Rect.gameObject.SetActive(true);
         }
         private void RewardGranted(CoreRewardGrantedEvent value)
         {
@@ -148,7 +163,7 @@ namespace Gravivore.Presentation.UI
         {
             var index=reward ? _settings.DamageTextCapacity+_rewardCursor++%_settings.RewardTextCapacity : _damageCursor++%_settings.DamageTextCapacity;
             var slot=_floating[index]; slot.Origin=origin; slot.Age=0; slot.Lifetime=reward?_settings.RewardLifetime:_settings.DamageLifetime;
-            slot.Text.fontSize=reward?24:29;
+            slot.Text.fontSize=reward?24:36;
             slot.Active=true; slot.Text.text=text; slot.Text.color=color; slot.Group.alpha=1; slot.Rect.gameObject.SetActive(true);
         }
         private void LateUpdate() => Tick(Time.unscaledDeltaTime);
@@ -197,6 +212,7 @@ namespace Gravivore.Presentation.UI
                 if(slot.Age>=slot.Lifetime) { slot.Active=false; slot.Rect.gameObject.SetActive(false); continue; }
                 ActiveCombatTextCount++;
                 var fraction=slot.Age/slot.Lifetime;
+                slot.Rect.localScale = Vector3.one * Mathf.Lerp(1.24f, 1f, Mathf.Clamp01(slot.Age / .14f));
                 var onScreen=OnScreen(slot.Origin+Vector3.up*(_settings.TextTravel*fraction),out var point);
                 slot.Rect.gameObject.SetActive(onScreen); slot.Rect.anchoredPosition=point;
                 slot.Group.alpha=1-Mathf.InverseLerp(.55f,1,fraction);
@@ -268,6 +284,7 @@ namespace Gravivore.Presentation.UI
         {
             if(_attack!=null) _attack.AttackResolved-=AttackResolved;
             if(_root==null) return;
+            if(_root.PlayerHealth!=null) _root.PlayerHealth.Damaged-=IncomingDamaged;
             if(_root.EnemyPopulation!=null) _root.EnemyPopulation.EnemyDamaged-=Damaged;
             if(_root.Progression!=null) _root.Progression.RewardGranted-=RewardGranted;
             if(_root.Chapter1Encounters!=null) _root.Chapter1Encounters.Transactions.RewardApplied-=EncounterReward;

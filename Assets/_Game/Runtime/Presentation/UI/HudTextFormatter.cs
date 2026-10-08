@@ -39,13 +39,13 @@ namespace Gravivore.Presentation.UI
         {
             if (inventory == null) throw new ArgumentNullException(nameof(inventory));
             if (catalog == null) throw new ArgumentNullException(nameof(catalog));
-            var slots = new[] { EquipmentSlot.Core, EquipmentSlot.Chassis, EquipmentSlot.Module };
+            var slots = new[] { EquipmentSlot.Core, EquipmentSlot.Chassis, EquipmentSlot.Module, EquipmentSlot.Weapon };
             var lines = new string[slots.Length];
             for (var i = 0; i < slots.Length; i++)
             {
                 var value = RussianUiText.EmptyEquipment;
                 if (inventory.TryGetEquipped(slots[i], out var itemId) && catalog.TryGet(itemId, out var item))
-                    value = item.DisplayName;
+                    value = item.DisplayName + (item.MaximumRank > 1 ? " · " + inventory.GetRank(item.Id) + "/" + item.MaximumRank : "");
                 lines[i] = $"{RussianUiText.EquipmentSlotName(slots[i])}: {value}";
             }
 

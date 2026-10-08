@@ -53,8 +53,10 @@ namespace Gravivore.Gameplay.Enemies
         {
             var source = ordinary.Enemy;
             var enemy = new EnemyRuntimeConfiguration(source.Id, source.MaximumHitPoints * HealthMultiplier,
-                source.MoveSpeed, source.AttackDamage * DamageMultiplier, source.CollisionRadius,
-                source.TargetPointHeight, source.Behavior);
+                source.MoveSpeed * 1.1f, source.AttackDamage * DamageMultiplier, source.CollisionRadius,
+                source.TargetPointHeight, new EnemyBehaviorParameters(source.Behavior.AggroRadius,
+                    source.Behavior.AggroReleaseRadius, source.Behavior.AttackRange,
+                    source.Behavior.AttackInterval * .9f, source.Behavior.Aggression));
             return new SpawnSpotRuntimeConfiguration(Id, enemy, Position, ordinary.AnchorOffsets,
                 SpawnPopulationPolicy.MinimumAllowedPopulation, ordinary.MinimumPlayerDistance,
                 BaseRespawnSeconds, BaseRespawnSeconds, PressurePolicy, RewardMultiplier, ordinary.WaveCooldownSeconds);
@@ -64,11 +66,11 @@ namespace Gravivore.Gameplay.Enemies
         {
             if (region == StrongOrdinaryRegion.Elite)
             {
-                if (hp < 1.25f || hp > 1.4f || damage < 1.15f || damage > 1.25f ||
+                if (hp < 1.5f || hp > 2.2f || damage < 1.2f || damage > 1.6f ||
                     reward < 1.5f || reward > 2f || respawn < 12f || respawn > 16f)
                     throw new ArgumentException("Elite-side strong spot is outside the authored Phase 4 range.");
             }
-            else if (hp < 1.5f || hp > 1.75f || damage < 1.3f || damage > 1.5f ||
+            else if (hp < 1.5f || hp > 2.2f || damage < 1.2f || damage > 1.6f ||
                      reward < 2f || reward > 3f || respawn < 14f || respawn > 20f)
             {
                 throw new ArgumentException("Boss-side strong spot is outside the authored Phase 4 range.");
@@ -113,13 +115,13 @@ namespace Gravivore.Gameplay.Enemies
             var spots = new[]
             {
                 new StrongOrdinarySpotDefinition("strong-elite-a", StrongOrdinaryRegion.Elite,
-                    ClampInside(world.Bounds, eliteBase + new Vector3(-18f, 0f, -5f)), 1.3f, 1.2f, 1.75f, 14f, pressure),
+                    ClampInside(world.Bounds, eliteBase + new Vector3(-18f, 0f, -5f)), 1.7f, 1.3f, 1.75f, 14f, pressure),
                 new StrongOrdinarySpotDefinition("strong-elite-b", StrongOrdinaryRegion.Elite,
-                    ClampInside(world.Bounds, eliteBase + new Vector3(18f, 0f, 4f)), 1.4f, 1.25f, 2f, 16f, pressure),
+                    ClampInside(world.Bounds, eliteBase + new Vector3(18f, 0f, 4f)), 1.85f, 1.4f, 2f, 16f, pressure),
                 new StrongOrdinarySpotDefinition("strong-boss-a", StrongOrdinaryRegion.Boss,
-                    ClampInside(world.Bounds, bossBase + new Vector3(-18f, 0f, 0f)), 1.55f, 1.35f, 2.25f, 16f, pressure),
+                    ClampInside(world.Bounds, bossBase + new Vector3(-18f, 0f, 0f)), 2f, 1.45f, 2.25f, 16f, pressure),
                 new StrongOrdinarySpotDefinition("strong-boss-b", StrongOrdinaryRegion.Boss,
-                    ClampInside(world.Bounds, bossBase + new Vector3(18f, 0f, -world.BossArenaRadius * 0.35f)), 1.7f, 1.45f, 2.75f, 19f, pressure)
+                    ClampInside(world.Bounds, bossBase + new Vector3(18f, 0f, -world.BossArenaRadius * 0.35f)), 2.2f, 1.6f, 2.75f, 19f, pressure)
             };
             ValidateDistinct(spots, existingOrdinaryPositions);
             return spots;

@@ -18,19 +18,27 @@ MonoBehaviour:
   _armor: 15
   _collisionRadius: 1
   _targetPointHeight: 1.5
-  _recoveryDuration: 1.5
+  _recoveryDuration: 1.8
   _lowHealthThreshold: 0.35
   _lowHealthCadenceMultiplier: 0.65
   _arenaExitResetGraceSeconds: 3
   _circleTelegraphDuration: 1
-  _circleDamage: 18
-  _circleRadius: 4
+  _circleDamage: 46
+  _circleRadius: 5
   _coneTelegraphDuration: 1
-  _coneDamage: 20
-  _coneRange: 6
+  _coneDamage: 52
+  _coneRange: 9
   _coneHalfAngle: 35
   _lineTelegraphDuration: 1.1
-  _lineDamage: 24
-  _lineLength: 7
-  _lineWidth: 1.8
+  _lineDamage: 62
+  _lineLength: 10
+  _lineWidth: 2.3
   _chargeDistance: 5
+  _basicAttack:
+    _damage: 29
+    _range: 10
+    _interval: 1.25
+    _windup: 0.35
+  _initialAggroRadius: 8
+  _combatLeashRadius: 21
+  _pursuitSpeed: 3.2

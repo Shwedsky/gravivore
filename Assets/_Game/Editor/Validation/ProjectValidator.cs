@@ -545,9 +545,9 @@ namespace Gravivore.Editor
 
             definition.ValidateOrThrow();
             var catalog = definition.Catalog;
-            if (catalog.Count < 4 || catalog.Count > 6 || Enum.GetValues(typeof(EquipmentSlot)).Length > 3)
+            if (catalog.Count != 7 || Enum.GetValues(typeof(EquipmentSlot)).Length != 4)
             {
-                throw new InvalidOperationException("The S10 catalog requires four to six canonical items and at most three slot types.");
+                throw new InvalidOperationException("The Chapter 01 V3 catalog requires seven canonical items and four slot types.");
             }
 
             var expectedIds = new HashSet<string>(StringComparer.Ordinal)
@@ -557,7 +557,8 @@ namespace Gravivore.Editor
                 "layered-carapace",
                 "impact-frame",
                 "vector-fins",
-                "flux-vanes"
+                "flux-vanes",
+                Chapter01Weapon.ItemId
             };
             var representedSlots = new HashSet<EquipmentSlot>();
             for (var i = 0; i < catalog.Count; i++)
@@ -571,9 +572,9 @@ namespace Gravivore.Editor
                 representedSlots.Add(item.Slot);
             }
 
-            if (expectedIds.Count != 0 || representedSlots.Count != 3)
+            if (expectedIds.Count != 0 || representedSlots.Count != 4)
             {
-                throw new InvalidOperationException("Canonical equipment must contain six known items across exactly three slots.");
+                throw new InvalidOperationException("Canonical equipment must contain seven known items across exactly four slots.");
             }
 
             var dependencies = AssetDatabase.GetDependencies(scenePath, true);

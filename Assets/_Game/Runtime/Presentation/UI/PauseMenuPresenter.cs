@@ -1,4 +1,5 @@
 using System;
+using Gravivore.Presentation.Composition;
 using Gravivore.Gameplay.Equipment;
 using Gravivore.Gameplay.Player;
 using Gravivore.Presentation.Feedback;
@@ -97,6 +98,7 @@ namespace Gravivore.Presentation.UI
 
         public void Resume()
         {
+            GetComponentInParent<S01SceneCompositionRoot>()?.GetComponent<WeaponEquipmentPanel>()?.Close();
             if (Characteristics != null && Characteristics.IsVisible) Characteristics.Close();
             if (_root != null) _root.gameObject.SetActive(false);
             _modal?.Close(this);

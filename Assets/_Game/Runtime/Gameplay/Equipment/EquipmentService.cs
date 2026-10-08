@@ -10,7 +10,7 @@ namespace Gravivore.Gameplay.Equipment
         private readonly EquipmentCatalog _catalog;
         private readonly InventoryState _inventory;
         private readonly IPlayerDerivedStatsModifier[] _equippedModifiers =
-            new IPlayerDerivedStatsModifier[3];
+            new IPlayerDerivedStatsModifier[4];
 
         public EquipmentService(
             PlayerStatsState playerStats,
@@ -40,6 +40,18 @@ namespace Gravivore.Gameplay.Equipment
             if (!_inventory.Grant(item.Id)) return false;
 
             Publish(EquipmentGranted, new EquipmentGrantedEvent(item.Id, source));
+            Publish(InventoryChanged, new InventoryChangedEvent(InventoryChangeType.ItemGranted));
+            return true;
+        }
+
+        /// <summary>Only called inside a durable encounter reward transaction for gameplay loot.</summary>
+        public bool GrantRankedCopy(string itemId)
+        {
+            var item = _catalog.GetRequired(itemId);
+            if (!_inventory.HasItem(itemId)) return GrantEquipment(itemId);
+            if (!_inventory.IncreaseRank(itemId, item.MaximumRank)) return false;
+            ApplyEquippedModifiers();
+            Publish(EquipmentGranted, new EquipmentGrantedEvent(itemId, EquipmentGrantSource.GameplayReward));
             Publish(InventoryChanged, new InventoryChangedEvent(InventoryChangeType.ItemGranted));
             return true;
         }
@@ -81,7 +93,8 @@ namespace Gravivore.Gameplay.Equipment
             var snapshot = _inventory.ExportSnapshot();
             for (var i = 0; i < snapshot.OwnedItemIds.Length; i++)
             {
-                _catalog.GetRequired(snapshot.OwnedItemIds[i]);
+                var item = _catalog.GetRequired(snapshot.OwnedItemIds[i]);
+                if (_inventory.GetRank(item.Id) > item.MaximumRank) throw new ArgumentException("Restored rank exceeds item cap.");
             }
 
             for (var i = 0; i < snapshot.EquippedItems.Length; i++)
@@ -101,7 +114,7 @@ namespace Gravivore.Gameplay.Equipment
             for (var slotIndex = 0; slotIndex < _equippedModifiers.Length; slotIndex++)
             {
                 if (!_inventory.TryGetEquipped((EquipmentSlot)slotIndex, out var itemId)) continue;
-                _equippedModifiers[count++] = _catalog.GetRequired(itemId).Modifier;
+                _equippedModifiers[count++] = _catalog.GetRequired(itemId).ModifierAtRank(_inventory.GetRank(itemId));
             }
 
             var active = new IPlayerDerivedStatsModifier[count];

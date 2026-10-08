@@ -20,10 +20,12 @@ namespace Gravivore.Persistence
                 };
             }
 
+            var ranks = new ItemRankSaveDto[snapshot.Ranks.Length];
+            for (var i = 0; i < ranks.Length; i++) ranks[i] = new ItemRankSaveDto { ItemId = snapshot.Ranks[i].ItemId, Rank = snapshot.Ranks[i].Rank };
             return new InventorySaveDto
             {
                 OwnedItemIds = (string[])snapshot.OwnedItemIds.Clone(),
-                EquippedItems = equipped
+                EquippedItems = equipped, ItemRanks = ranks
             };
         }
 
@@ -106,7 +108,18 @@ namespace Gravivore.Persistence
                 equipped.Add(new EquippedItemSnapshot(slot, item.Id));
             }
 
-            return InventoryState.Restore(new InventoryStateSnapshot(owned.ToArray(), equipped.ToArray()));
+            var ranks = new List<ItemRankSnapshot>();
+            var rankedIds = new HashSet<string>(StringComparer.Ordinal);
+            foreach (var rank in dto.ItemRanks ?? Array.Empty<ItemRankSaveDto>())
+            {
+                if (rank == null || string.IsNullOrWhiteSpace(rank.ItemId) || !rawOwned.Contains(rank.ItemId) ||
+                    !rankedIds.Add(rank.ItemId) || rank.Rank < 1 || rank.Rank > 5)
+                    throw new ArgumentException("Invalid equipment rank save.", nameof(dto));
+                if (!catalog.TryGet(rank.ItemId, out var item)) continue;
+                if (rank.Rank > item.MaximumRank) throw new ArgumentException("Rank exceeds catalog cap.", nameof(dto));
+                ranks.Add(new ItemRankSnapshot(rank.ItemId, rank.Rank));
+            }
+            return InventoryState.Restore(new InventoryStateSnapshot(owned.ToArray(), equipped.ToArray(), ranks.ToArray()));
         }
     }
 }

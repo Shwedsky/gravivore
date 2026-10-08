@@ -28,7 +28,8 @@ namespace Gravivore.Gameplay.Encounters
             float attackRange,
             float shockwaveRadius,
             float telegraphDuration,
-            float recoveryDuration)
+            float recoveryDuration,
+            EncounterBasicAttackConfiguration basicAttack = default)
         {
             RequireId(id, nameof(id));
             ValidateFinite(spawnPosition, nameof(spawnPosition));
@@ -64,6 +65,7 @@ namespace Gravivore.Gameplay.Encounters
             ShockwaveRadius = shockwaveRadius;
             TelegraphDuration = telegraphDuration;
             RecoveryDuration = recoveryDuration;
+            BasicAttack = basicAttack;
         }
 
         public string Id { get; }
@@ -79,6 +81,7 @@ namespace Gravivore.Gameplay.Encounters
         public float ShockwaveRadius { get; }
         public float TelegraphDuration { get; }
         public float RecoveryDuration { get; }
+        public EncounterBasicAttackConfiguration BasicAttack { get; }
         public DisplacementClass DisplacementClass => DisplacementClass.Elite;
 
         private static void RequireId(string value, string name)
@@ -191,7 +194,9 @@ namespace Gravivore.Gameplay.Encounters
             float lowHealthCadenceMultiplier,
             IReadOnlyList<BossAttackConfiguration> attacks,
             IReadOnlyList<BossAttackType> attackSequence,
-            float arenaExitResetGraceSeconds = 3f)
+            float arenaExitResetGraceSeconds = 3f,
+            EncounterBasicAttackConfiguration basicAttack = default,
+            float initialAggroRadius = 0f, float combatLeashRadius = 0f, float pursuitSpeed = 0f)
         {
             if (string.IsNullOrWhiteSpace(id)) throw new ArgumentException("Stable boss id is required.", nameof(id));
             ValidateFinite(startPosition, nameof(startPosition));
@@ -260,6 +265,14 @@ namespace Gravivore.Gameplay.Encounters
             LowHealthThreshold = lowHealthThreshold;
             LowHealthCadenceMultiplier = lowHealthCadenceMultiplier;
             ArenaExitResetGraceSeconds = arenaExitResetGraceSeconds;
+            BasicAttack = basicAttack;
+            InitialAggroRadius = initialAggroRadius == 0 ? arenaRadius : initialAggroRadius;
+            CombatLeashRadius = combatLeashRadius == 0 ? arenaRadius : combatLeashRadius;
+            ValidatePositive(InitialAggroRadius, nameof(initialAggroRadius));
+            ValidatePositive(CombatLeashRadius, nameof(combatLeashRadius));
+            ValidateNonNegative(pursuitSpeed, nameof(pursuitSpeed));
+            if (CombatLeashRadius < InitialAggroRadius) throw new ArgumentException("Combat leash must contain admission radius.");
+            PursuitSpeed = pursuitSpeed;
         }
 
         public string Id { get; }
@@ -275,6 +288,10 @@ namespace Gravivore.Gameplay.Encounters
         public float LowHealthThreshold { get; }
         public float LowHealthCadenceMultiplier { get; }
         public float ArenaExitResetGraceSeconds { get; }
+        public EncounterBasicAttackConfiguration BasicAttack { get; }
+        public float InitialAggroRadius { get; }
+        public float CombatLeashRadius { get; }
+        public float PursuitSpeed { get; }
         public DisplacementClass DisplacementClass => DisplacementClass.Boss;
         public int AttackSequenceCount => _attackSequence.Length;
 
