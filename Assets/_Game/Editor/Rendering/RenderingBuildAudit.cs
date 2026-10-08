@@ -69,7 +69,16 @@ namespace Gravivore.Editor.Rendering
             if (materials.Length == 0) throw new InvalidOperationException("Renderer has no materials: " + renderer.name);
             foreach (var material in materials) ValidateMaterial(material, renderer.name);
             var mesh = renderer is SkinnedMeshRenderer skin ? skin.sharedMesh : renderer.GetComponent<MeshFilter>()?.sharedMesh;
-            if (mesh != null && materials.Length < mesh.subMeshCount) throw new InvalidOperationException("Incomplete submesh material coverage: " + renderer.name);
+            if (mesh != null)
+            {
+                // A static-batched renderer addresses only its subset of the combined mesh.
+                var batch = new SerializedObject(renderer).FindProperty("m_StaticBatchInfo");
+                var batchCount = batch?.FindPropertyRelative("subMeshCount")?.intValue ?? 0;
+                var first = batch?.FindPropertyRelative("firstSubMesh")?.intValue ?? 0;
+                var effectiveCount = batchCount > 0 ? batchCount : mesh.subMeshCount;
+                if (first < 0 || (batchCount > 0 && first + batchCount > mesh.subMeshCount)) throw new InvalidOperationException("Invalid static batch subset: " + renderer.name);
+                if (materials.Length < effectiveCount) throw new InvalidOperationException("Incomplete submesh material coverage: " + renderer.name);
+            }
             var scale = renderer.transform.lossyScale; var bounds = renderer.bounds;
             foreach (var value in new[] { scale.x, scale.y, scale.z, bounds.center.x, bounds.center.y, bounds.center.z, bounds.extents.x, bounds.extents.y, bounds.extents.z })
                 if (float.IsNaN(value) || float.IsInfinity(value)) throw new InvalidOperationException("Non-finite renderer geometry: " + renderer.name);
@@ -95,6 +104,9 @@ namespace Gravivore.Editor.Rendering
         }
         public void OnPostprocessBuild(BuildReport report)
         {
+            var sceneAudit = File.ReadAllText(Path.Combine(Output,"serialized_scene_renderers.txt"));
+            foreach (var scene in Build.AndroidBuild.BuildScenes)
+                if (!sceneAudit.Contains(scene + ": renderers=")) throw new BuildFailedException("MAGENTA_GUARD scene renderer audit incomplete: " + scene);
             var packed = report.packedAssets.SelectMany(p => p.contents).Select(c => c.sourceAssetPath).Distinct().OrderBy(p => p).ToArray();
             var required = new[] { UrpConfigurator.UrpAssetPath, UrpConfigurator.RendererDataPath, Atlas, Hostile, AssetDatabase.GetAssetPath(AssetDatabase.LoadAssetAtPath<Material>(Atlas).shader), AssetDatabase.GetAssetPath(AssetDatabase.LoadAssetAtPath<Material>(Hostile).shader) };
             foreach (var path in required) if (!packed.Contains(path)) throw new BuildFailedException("MAGENTA_GUARD render dependency omitted: " + path);

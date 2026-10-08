@@ -68,5 +68,32 @@ namespace Gravivore.Tests.EditMode
             Assert.That(renderer.FindProperty("m_RendererFeatures").arraySize,Is.Zero);Assert.That(pipeline.FindProperty("m_RendererDataList").GetArrayElementAtIndex(0).objectReferenceValue,Is.SameAs(renderer.targetObject));
             Assert.That(PlayerSettings.colorSpace,Is.EqualTo(ColorSpace.Gamma));Assert.That(PlayerSettings.GetGraphicsAPIs(BuildTarget.Android),Does.Contain(GraphicsDeviceType.OpenGLES3));
         }
+        [Test] public void StaticBatchSubsetUsesEffectiveMaterialCoverageAndRejectsInvalidRanges()
+        {
+            var owner = new GameObject("static batch subset", typeof(MeshFilter), typeof(MeshRenderer));
+            var mesh = new Mesh { vertices = new[] { Vector3.zero, Vector3.right, Vector3.up }, subMeshCount = 3 };
+            for (var i = 0; i < 3; i++) mesh.SetTriangles(new[] { 0, 1, 2 }, i);
+            owner.GetComponent<MeshFilter>().sharedMesh = mesh;
+            var renderer = owner.GetComponent<MeshRenderer>();
+            renderer.sharedMaterial = AssetDatabase.LoadAssetAtPath<Material>(RenderingBuildAudit.Atlas);
+            void Subset(int first, int count)
+            {
+                var serialized = new SerializedObject(renderer);
+                var batch = serialized.FindProperty("m_StaticBatchInfo");
+                batch.FindPropertyRelative("firstSubMesh").intValue = first;
+                batch.FindPropertyRelative("subMeshCount").intValue = count;
+                serialized.ApplyModifiedPropertiesWithoutUndo();
+            }
+            try
+            {
+                Subset(1, 1); Assert.DoesNotThrow(() => RenderingBuildAudit.ValidateRenderer(renderer));
+                Subset(3, 1); Assert.Throws<InvalidOperationException>(() => RenderingBuildAudit.ValidateRenderer(renderer));
+                Subset(0, 0);
+                renderer.sharedMaterials = new[] { AssetDatabase.LoadAssetAtPath<Material>(RenderingBuildAudit.Atlas) };
+                Assert.That(renderer.sharedMaterials.Length, Is.EqualTo(1));
+                Assert.Throws<InvalidOperationException>(() => RenderingBuildAudit.ValidateRenderer(renderer));
+            }
+            finally { Object.DestroyImmediate(owner); Object.DestroyImmediate(mesh); }
+        }
     }
 }
