@@ -160,6 +160,7 @@ namespace Gravivore.Editor
             VisualIntegration.VisualIntegrationValidator.ValidateOrThrow();
             VisualIntegration.Chapter01V3Builder.ValidateOrThrow();
             VisualIntegration.VisualReplacementV3Audit.ValidateOrThrow();
+            VisualIntegration.SurfaceHeroV46Audit.ValidateOrThrow();
         }
 
         private static void ValidateS20Balance()
