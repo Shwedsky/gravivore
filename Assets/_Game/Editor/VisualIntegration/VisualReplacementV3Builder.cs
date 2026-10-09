@@ -83,6 +83,11 @@ namespace Gravivore.Editor.VisualIntegration
                 else if(name=="Capacitor_Bank")donor="VR3_generatorpilelarge";
                 else if(name=="Shield_Stack")donor="VR3_propcrate";
                 else if(name=="Freight_Container")donor="VR3_propcrate";
+                else if(full && name=="Coolant_Pump")donor="VR3_centrifuge";
+                else if(full && name=="Transformer")donor="VR3_generator";
+                else if(full && name=="Containment_Buttress")donor="VR3_cryotube";
+                else if(full && name=="Bulkhead_Module")donor="VR3_shortwallmetalplatesstraight";
+                else if(full && name=="Service_Arch")donor="VR3_doorframesquare";
                 if(donor==null || !node.gameObject.activeInHierarchy)continue;
                 var renderers=node.GetComponentsInChildren<Renderer>(true);if(renderers.Length==0)continue;
                 var bounds=renderers[0].bounds;foreach(var r in renderers)bounds.Encapsulate(r.bounds);
