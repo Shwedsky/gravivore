@@ -1,10 +1,10 @@
 # Chapter01 Visual Replacement V3 — production integration
 
-Status: Production integration and validation complete; Android packaging pending. Draft PR; owner device acceptance is required before merge.
+Status: **V44 APK ready.** Production integration, validation, Android build and package verification complete. [PR #68](https://github.com/Shwedsky/gravivore/pull/68) remains draft; owner device acceptance is required before merge.
 
 Baseline: `9516026da7ff88dd982c43527cab04d4ca8a222b` (merged Free Asset Intake V2).
 Branch: `art/chapter01-visual-replacement-v3`.
-Delivery target: fresh ARM64 IL2CPP development APK, versionCode 44.
+Delivery: fresh ARM64 IL2CPP development APK, versionCode 44.
 
 ## Constraints
 
@@ -14,7 +14,7 @@ Retain bipedal G-0, gameplay, camera, collision, progression and save authority.
 
 ## Checkpoints
 
-1. Branch persistence and draft PR — this checkpoint.
+1. Branch persistence and draft PR.
 2. Shared materials, Repair Hub and representative adjacent environment; production-camera review.
 3. Full environment and recognizable sectors.
 4. Role-specific enemy presentation, including low broad Magnetar and industrial Custodian.
@@ -27,7 +27,7 @@ Each major checkpoint is committed and pushed. No completed validation or visual
 
 ## Evidence and limitations
 
-Implementation evidence, executed validation results, mobile budgets, assumptions and final APK metadata will be recorded here as work proceeds.
+Implementation evidence, executed validation results, mobile budgets, assumptions and final APK metadata are recorded below. [Changed-file manifest](visual-replacement-v3/verification/files_changed.txt) covers the complete change from the specified baseline.
 
 ### Repair checkpoint
 
@@ -45,7 +45,7 @@ The Molten payload contains no Container mesh despite the V2 role listing; the v
 
 ### Executed production validation
 
-Full EditMode: **471/471 passed** (`EditModeRelease.xml`). Full PlayMode: **136/136 passed**, no skips (`PlayModeRelease.xml`), including the optional full-chapter structural capture enabled for this run. The two production review tests also passed after aligning the attack capture target with the actual mounted emitter (`FinalCaptureReview.xml`). They verify rank 1–5 geometry switching, actual thumbnail selection, real muzzle charge/travel origin, impact destination, unchanged VFX instance count, rank-5 save/reload and equipped restore. **ProjectValidator passed**, including shader inclusion, all renderer materials and the new collision/license audit (`ProjectValidatorRelease.log`). **Production compilation passed** (`ProductionCompileRelease.log`). Android remains pending.
+Full EditMode: **471/471 passed** (`EditModeRelease.xml`). Full PlayMode: **136/136 passed**, no skips (`PlayModeRelease.xml`), including the optional full-chapter structural capture enabled for this run. The two production review tests also passed after aligning the attack capture target with the actual mounted emitter (`FinalCaptureReview.xml`). They verify rank 1–5 geometry switching, actual thumbnail selection, real muzzle charge/travel origin, impact destination, unchanged VFX instance count, rank-5 save/reload and equipped restore. **ProjectValidator passed**, including shader inclusion, all renderer materials and the new collision/license audit (`ProjectValidatorRelease.log`). **Production compilation passed** (`ProductionCompileRelease.log`). **Android build and final APK verification passed** (`AndroidV44.log`, `apk_verification.json`).
 
 All twelve requested production-camera subjects (with three attack-phase frames), five structural views, and four comparison/review boards are retained under `docs/visual-replacement-v3/internal`. Internal review accepted the stronger layered construction, dense serviced perimeter, heavier elite/boss forms, external emitter and actual-model equipment display for device delivery. Before/after boards use archived V43 frames; differing encounter/UI state is visible and they are not pixel-identical performance comparisons. The local owner concept was inspected as visual authority and is not redistributed.
 
@@ -59,8 +59,27 @@ Authored static scene inventory: 1,377 renderers total, 884 enabled, 8 shared ma
 
 The raw FBX transform audit found scale-100 exports during iteration. Exports now use explicit metre units; the existing rendering guard was preserved and all affected EditMode checks pass. Intermediate failed logs are retained as iteration evidence and are superseded by the final successful XML.
 
-Initial Android attempts assembled their APKs but the new postbuild guard assumed that static FBXs, expanded art prefabs and the scene itself appeared as ordinary packed-source entries. A complete source-list comparison identified 15 static FBXs and 15 renderer-only prefabs expanded into the scene; all required material, texture, UI and dynamic weapon paths were present. Typed inspection confirmed that Unity baked the 460 decorative renderers into combined scene meshes. The final guard keeps strict build-report checks for those runtime resources, rejects any supposedly static art prefab with scripts/colliders, records the expanded sources separately, and requires the production root in `level1` plus all 460 baked decorative MeshFilter references to resolve to actual class-43 meshes and production material objects in that scene. This preserves static batching and verifies the shipped representation. ProjectValidator and all 471 EditMode tests passed after the static-source correction; typed inspection also passed the direct scene-root checks. Packaging is being repeated from a pushed checkpoint.
+Initial Android attempts assembled their APKs but the new postbuild guard assumed that static FBXs, expanded art prefabs and the scene itself appeared as ordinary packed-source entries. A complete source-list comparison identified 15 static FBXs and 15 renderer-only prefabs expanded into the scene; all required material, texture, UI and dynamic weapon paths were present. Typed inspection confirmed that Unity baked the 460 decorative renderers into combined scene meshes. The final guard keeps strict build-report checks for those runtime resources, rejects any supposedly static art prefab with scripts/colliders, records the expanded sources separately, and requires the production root in `level1` plus all 460 baked decorative MeshFilter references to resolve to actual class-43 meshes and production material objects in that scene. This preserves static batching and verifies the shipped representation. ProjectValidator and all 471 EditMode tests passed after the static-source correction. The final build from the pushed source checkpoint succeeded, and typed inspection of that exact APK passed all direct scene-root, combined-mesh and production material checks.
+
+### Final Android delivery
+
+- APK: `C:\Users\pamak\Documents\ChatGPT\gravivore\Builds\Android\gravivore-dev-0.1.0+44.apk`.
+- Package: `com.gravivore.mobile.dev`; versionName `0.1.0`; versionCode **44**.
+- ARM64-only, IL2CPP, DEV/debuggable; Unity `6000.3.0f1`.
+- Size: **95,798,777 bytes** (95.80 MB; 91.36 MiB).
+- SHA256: `4abb00bb960c6569e4ffa08e3bb9d2d29b8aba1012b61ebb4f0108eb22a0c044`.
+- Build source: `ca7923270bd4b8477af53f5e2a4c2add47ccbc9b`; later delivery commits contain reports/evidence only.
+- Build timestamp: `2026-10-09T11:24:04.5875804Z`; Unity build and final verifier both exited **0**.
+- Signature verified; signer matches V43. V43 remains unchanged with SHA256 `ed1d778cf0108932d82151c66c30d608986d19efb472c25237e86c3262091ace`.
+
+The final APK contains the production Chapter01 root, all 460 resolved decorative scene renderers, 28 strictly required new runtime source paths, all five M-0 rank models, five actual-model thumbnails, injected production UI skin, compiled presentation types and EXE attribution. Expanded static sources are recorded separately and checked for renderer-only content. Actual `UI/Default` and `UI/DefaultETC1` shader objects are present; retained Vulkan and GLES3x shader variants pass the existing inclusion checks. Packed-dependency, serialized renderer/material and license audits pass. The copied delivery APK matches the verified worktree APK byte-for-byte by SHA256.
+
+Evidence: [delivery receipt](visual-replacement-v3/verification/delivery.json), [APK verification](visual-replacement-v3/verification/apk_verification.json), [typed production inspection](visual-replacement-v3/verification/apk_typed_production.json), [build metadata](visual-replacement-v3/verification/build_metadata.json), [build log](visual-replacement-v3/verification/AndroidV44.log), and [shader audit](visual-replacement-v3/verification/apk_rendering.json).
+
+Review boards: [V43/V44 Repair Hub](visual-replacement-v3/internal/before_after_repair.jpg), [weapon rank progression](visual-replacement-v3/internal/weapon_rank_progression.jpg), [encounters and equipment](visual-replacement-v3/internal/encounter_and_equipment.jpg), and [source → travel → impact](visual-replacement-v3/internal/causal_weapon_attack.jpg).
+
+No Android play session has been executed by the agent. Real-device rendering, sustained FPS, touch readability and the owner's A-/A grade remain unverified. The accepted Editor soak's frame-gap limitation is recorded above; it is not a 60 FPS device claim.
 
 ### Assumptions and remaining acceptance
 
-CC0 shells are donor material, not stock role replacements. Original independent machinery fills gaps where redistribution-compatible donors were unsuitable. Cladding may occupy less than its authority footprint when a narrow donor would otherwise require extreme stretch. APK and device performance are not inferred from Editor captures. The owner retains the A-/A visual grade and real-device rendering/readability acceptance gate. Next gate: V44 Chapter 01 device playtest, followed by draft-PR acceptance.
+CC0 shells are donor material, not stock role replacements. Original independent machinery fills gaps where redistribution-compatible donors were unsuitable, including original industrial VFX masks. The missing Molten Container is replaced by the verified CC0 Essentials crate. Cladding may occupy less than its authority footprint when a narrow donor would otherwise require extreme stretch. Device performance is not inferred from Editor captures. The owner retains the A-/A visual grade and real-device rendering/readability acceptance gate. Next specification/gate: **V44 Chapter 01 device acceptance**, with 10–20 minutes of owner playtesting, followed by draft-PR acceptance. The PR remains draft and unmerged.
