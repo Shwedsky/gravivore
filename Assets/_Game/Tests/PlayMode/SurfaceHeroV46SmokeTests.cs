@@ -41,6 +41,9 @@ namespace Gravivore.Tests.PlayMode
                 Assert.IsEmpty(layer.GetComponentsInChildren<Collider>(true));Assert.IsEmpty(layer.GetComponentsInChildren<MonoBehaviour>(true));Assert.IsEmpty(layer.GetComponentsInChildren<Light>(true));
                 foreach(var family in new[]{"PressureVessel","EnergyCylinder","ArcMachine","GateModule","LightDock","HeavyDock","SpecialDock"})
                 {
+                    // V47 replaces the three V46 rear consoles with full deployment
+                    // facilities; the new pass independently reviews their live bindings.
+                    if(family.EndsWith("Dock")&&root.VisualEnvironment.Floor.Find("Chapter 01 Concept Convergence V47")!=null)continue;
                     var t=layer.GetComponentsInChildren<Transform>().FirstOrDefault(n=>n.name=="V46_"+family&&n.GetComponentsInChildren<Renderer>().Any(r=>r.enabled));Assert.NotNull(t,family);
                     var rs=t.GetComponentsInChildren<Renderer>();var b=rs[0].bounds;foreach(var r in rs)b.Encapsulate(r.bounds);
                     Close(root,"hero_"+family,b.center,Mathf.Max(b.size.x,b.size.y,b.size.z)*1.8f);

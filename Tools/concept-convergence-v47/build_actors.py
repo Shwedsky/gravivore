@@ -161,14 +161,16 @@ def boss(rig):
         fin('Charged sweep cutter',[(s*1.44,-.75),(s*2.09,-1.16),(s*2.15,-1.78),(s*1.72,-2.16),(s*1.81,-1.52)],.67,.31,1)
         tube('Weapon active edge',[(s*1.78,-1.05,.85),(s*1.97,-1.48,.85),(s*1.83,-1.91,.80)],.045,5,10)
     weight('BODY')
-    profile('Rear command tower',(0,1.10,2.46),(1.06,.99,1.19),0)
-    profile('Command tower armored canopy',(0,1.14,3.01),(1.24,1.15,.43),2)
-    plate('Command tower sensor slit',(0,.59,2.90),(.46,.034,.105),5,.02,.008)
-    core((0,-.20,2.09),.48)
+    profile('Offset rear command tower',(.83,1.10,2.20),(.77,.89,.90),0)
+    profile('Command tower armored canopy',(.83,1.14,2.63),(.91,1.02,.30),2)
+    plate('Command tower sensor slit',(.83,.65,2.55),(.40,.034,.105),5,.02,.008)
+    # Dorsal containment remains visible from the fixed portrait camera even
+    # when the authored rear command housing faces the player during reset.
+    core((0,.80,2.37),.48)
     weight('ROTOR_CAGE')
     for i in range(6):
-        a=i*math.tau/6;x,y=.57*math.cos(a),-.20+.57*math.sin(a)
-        tube('Attached reactor cage vane',[(x,y,1.86),(x*1.1,(y+.20)*1.1-.20,2.11),(x,y,2.43)],.066,10,12)
+        a=i*math.tau/6;x,y=.57*math.cos(a),.80+.57*math.sin(a)
+        tube('Attached reactor cage vane',[(x,y,2.08),(x*1.1,(y-.80)*1.1+.80,2.33),(x,y,2.57)],.066,10,12)
     weight('BODY')
 
 def export(name,folder,rig):

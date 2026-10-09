@@ -12,8 +12,8 @@ def board(name,items):
  for i,(label,picture) in enumerate(items):
   draw.text((i*540+16,12),label,font=font,fill=(180,214,225));sheet.paste(picture.resize((540,960)),(i*540,60))
  sheet.save(OUT/(name+'.jpg'),quality=92)
-board('before_after_repair',[('V43 archived production frame',before('docs/concept-fidelity-v2/internal/01_repair_active.png')),('V44 repair / layered construction',Image.open(OUT/'01_repair_hub.png'))])
-board('weapon_rank_progression',[('V43 archived equipped M-0',before('docs/chapter01-v3/internal/g0_bipedal_with_m0.png')),('V44 M-0 rank 1',Image.open(OUT/'07_g0_rank1.png')),('V44 M-0 rank 5',Image.open(OUT/'08_g0_rank5.png'))])
+board('before_after_repair',[('V43 archived production frame',before('docs/history/visual-stages/chapter01-visual-passes/concept-fidelity-v2/internal/01_repair_active.png')),('V44 repair / layered construction',Image.open(OUT/'01_repair_hub.png'))])
+board('weapon_rank_progression',[('V43 archived equipped M-0',before('docs/history/visual-stages/chapter01-visual-passes/chapter01-v3/internal/g0_bipedal_with_m0.png')),('V44 M-0 rank 1',Image.open(OUT/'07_g0_rank1.png')),('V44 M-0 rank 5',Image.open(OUT/'08_g0_rank5.png'))])
 board('encounter_and_equipment',[('Magnetar production encounter',Image.open(OUT/'05_magnetar_encounter.png')),('Custodian / production boss HUD',Image.open(OUT/'10_boss_hud.png')),('Actual-model equipment display',Image.open(OUT/'09_equipment_inventory.png'))])
 board('causal_weapon_attack',[('SOURCE on external emitter',Image.open(OUT/'12a_weapon_source.png')),('TRAVEL from real muzzle',Image.open(OUT/'12b_weapon_travel.png')),('IMPACT at destination',Image.open(OUT/'12c_weapon_impact.png'))])
 for raw in (OUT/'structure').glob('*.ppm'):

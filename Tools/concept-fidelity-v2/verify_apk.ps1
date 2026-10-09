@@ -3,7 +3,7 @@ param([string]$ApkPath='Builds/Android/gravivore-dev-0.1.0+41.apk',[Parameter(Ma
 $ErrorActionPreference='Stop'
 $fidelityRoot=Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $fidelityApk=(Resolve-Path -LiteralPath (Join-Path $fidelityRoot $ApkPath)).Path
-$fidelityOutput=Join-Path $fidelityRoot 'docs/concept-fidelity-v2/verification'
+$fidelityOutput=Join-Path $fidelityRoot 'docs/history/visual-stages/chapter01-visual-passes/concept-fidelity-v2/verification'
 $fidelityAndroid='C:/Program Files/Unity/Hub/Editor/6000.3.0f1/Editor/Data/PlaybackEngines/AndroidPlayer'
 $fidelityBadging=& (Join-Path $fidelityAndroid 'SDK/build-tools/36.0.0/aapt.exe') dump badging $fidelityApk
 if($LASTEXITCODE -ne 0){throw 'aapt inspection failed.'}
@@ -31,7 +31,7 @@ $fidelityCertificate=@($fidelitySignature | Where-Object {$_ -match '^Signer #1 
 $fidelityPriorCertificate=@($fidelityPriorSignature | Where-Object {$_ -match '^Signer #1 certificate SHA-256 digest:'})
 if($fidelityCertificate.Count -ne 1 -or $fidelityPriorCertificate.Count -ne 1 -or $fidelityCertificate[0] -ne $fidelityPriorCertificate[0]){throw 'APK signer differs from v40.'}
 $fidelityHash=(Get-FileHash -LiteralPath $fidelityApk -Algorithm SHA256).Hash.ToLowerInvariant()
-$fidelityChapterProofPath=Join-Path $fidelityRoot 'docs/chapter01-production/verification/apk_packed_dependencies.json'
+$fidelityChapterProofPath=Join-Path $fidelityRoot 'docs/history/visual-stages/chapter01-visual-passes/chapter01-production/verification/apk_packed_dependencies.json'
 $fidelityChapterProof=Get-Content -LiteralPath $fidelityChapterProofPath -Raw | ConvertFrom-Json
 if($fidelityChapterProof.apkSha256 -ne $fidelityHash){
  # Historical chapter reports may be restored after their current-build evidence

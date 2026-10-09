@@ -15,7 +15,7 @@ namespace Gravivore.Editor.Rendering
 {
     public sealed class RenderingBuildAudit : IPreprocessBuildWithReport, IPostprocessBuildWithReport, IPreprocessShaders
     {
-        public const string Output = "docs/render-hotfix/verification";
+        public const string Output = "docs/history/visual-stages/chapter01-visual-passes/render-hotfix/verification";
         public static readonly string[] UiShaders = { "UI/Default", "UI/DefaultETC1" };
         public static readonly string[] V3Prefabs = { "Custodian_V3", "Emitter_M0", "Broken_Edge_V3_0", "Broken_Edge_V3_1", "Service_Trench_V3", "Collapsed_Hull_V3", "HostileChargeV3", "HostileTravelV3" };
         public const string Atlas = "Assets/_Game/Content/ConceptFidelityV2/Materials/Fidelity_IndustrialAtlas.mat";

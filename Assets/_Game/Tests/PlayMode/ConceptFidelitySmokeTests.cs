@@ -98,8 +98,8 @@ namespace Gravivore.Tests.PlayMode
             {Sample(bossAnimator,pair.Item2,.55f);yield return null;yield return null;Capture(root,pair.Item1);}
             Assert.That(root.GetComponentsInChildren<Renderer>(true).Length,Is.EqualTo(renderers));
             Assert.That(root.GetComponentsInChildren<Transform>(true).Length,Is.EqualTo(transforms));
-            Directory.CreateDirectory("docs/concept-fidelity-v2/verification");
-            File.WriteAllText("docs/concept-fidelity-v2/verification/runtime_inventory.json",JsonUtility.ToJson(new Inventory{
+            Directory.CreateDirectory("docs/history/visual-stages/chapter01-visual-passes/concept-fidelity-v2/verification");
+            File.WriteAllText("docs/history/visual-stages/chapter01-visual-passes/concept-fidelity-v2/verification/runtime_inventory.json",JsonUtility.ToJson(new Inventory{
                 transforms=transforms,renderers=renderers,sharedMaterials=MaterialCount(root),
                 realtimeLights=root.GetComponentsInChildren<Light>(true).Length,heroRouteRenderers=route.GetComponentsInChildren<Renderer>(true).Length},true));
         }
@@ -175,8 +175,8 @@ namespace Gravivore.Tests.PlayMode
             evidence.finalFidelityTransforms=FidelityTransformCount(root);
             evidence.assimilation=root.Progression.State.TotalAssimilationScore;
             // Evidence is written before assertions so a failed soak still exposes its inventories.
-            Directory.CreateDirectory("docs/concept-fidelity-v2/verification");
-            File.WriteAllText("docs/concept-fidelity-v2/verification/five_minute_runtime.json",JsonUtility.ToJson(evidence,true));
+            Directory.CreateDirectory("docs/history/visual-stages/chapter01-visual-passes/concept-fidelity-v2/verification");
+            File.WriteAllText("docs/history/visual-stages/chapter01-visual-passes/concept-fidelity-v2/verification/five_minute_runtime.json",JsonUtility.ToJson(evidence,true));
             Assert.That(evidence.completedStops,Is.GreaterThanOrEqualTo(stops.Length),"Five-minute traversal must cover the whole route.");
             Assert.That(evidence.maximumLiveEnemies,Is.LessThanOrEqualTo(root.EnemyPopulation.GlobalLiveEnemyCap));
             Assert.That(evidence.finalFidelityTransforms,Is.EqualTo(evidence.initialFidelityTransforms));
@@ -190,7 +190,7 @@ namespace Gravivore.Tests.PlayMode
             Assert.IsTrue(root.FlushNow());
             var diagnostics=root.GetComponentInChildren<Gravivore.Presentation.Development.ColdStartDiagnostics>();
             Assert.IsFalse(diagnostics.enabled);Assert.IsTrue(File.Exists(diagnostics.OutputPath));
-            File.Copy(diagnostics.OutputPath,"docs/concept-fidelity-v2/verification/cold-start-fidelity-editor.json",true);
+            File.Copy(diagnostics.OutputPath,"docs/history/visual-stages/chapter01-visual-passes/concept-fidelity-v2/verification/cold-start-fidelity-editor.json",true);
         }
         private static void Capture(S01SceneCompositionRoot root,string name)
         {
@@ -202,8 +202,8 @@ namespace Gravivore.Tests.PlayMode
             {
                 canvas.renderMode=RenderMode.ScreenSpaceCamera;canvas.worldCamera=camera;canvas.planeDistance=1;
                 camera.targetTexture=render;Canvas.ForceUpdateCanvases();camera.Render();RenderTexture.active=render;
-                texture.ReadPixels(new Rect(0,0,540,960),0,0);texture.Apply();Directory.CreateDirectory("docs/concept-fidelity-v2/internal");
-                File.WriteAllBytes("docs/concept-fidelity-v2/internal/"+name+".png",texture.EncodeToPNG());
+                texture.ReadPixels(new Rect(0,0,540,960),0,0);texture.Apply();Directory.CreateDirectory("docs/history/visual-stages/chapter01-visual-passes/concept-fidelity-v2/internal");
+                File.WriteAllBytes("docs/history/visual-stages/chapter01-visual-passes/concept-fidelity-v2/internal/"+name+".png",texture.EncodeToPNG());
             }
             finally
             {canvas.renderMode=mode;canvas.worldCamera=priorCamera;camera.targetTexture=priorTarget;RenderTexture.active=priorActive;render.Release();Object.Destroy(render);Object.Destroy(texture);}

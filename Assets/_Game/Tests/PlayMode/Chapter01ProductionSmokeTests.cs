@@ -128,8 +128,8 @@ namespace Gravivore.Tests.PlayMode
                 Move(root,start);foreach(var point in opened.Path(target.point))Walk(body,point,target.id);Walk(body,target.point,target.id);
                 Assert.That(Vector3.Distance(body.transform.position,target.point),Is.LessThan(.2f),target.id+" actual controller");
             }
-            Directory.CreateDirectory("docs/chapter01-production/verification");
-            File.WriteAllLines("docs/chapter01-production/verification/reachability.txt",targets.Select(t=>t.id+" => "+t.point+" capsule + CharacterController PASS"));
+            Directory.CreateDirectory("docs/history/visual-stages/chapter01-visual-passes/chapter01-production/verification");
+            File.WriteAllLines("docs/history/visual-stages/chapter01-visual-passes/chapter01-production/verification/reachability.txt",targets.Select(t=>t.id+" => "+t.point+" capsule + CharacterController PASS"));
         }
         private static void Walk(CharacterController body,Vector3 point,string label)
         {for(var i=0;i<40;i++){var delta=point-body.transform.position;delta.y=0;if(delta.magnitude<.08f)return;body.Move(Vector3.ClampMagnitude(delta,.16f));Physics.SyncTransforms();}
@@ -219,8 +219,8 @@ namespace Gravivore.Tests.PlayMode
                 audio.Play(S14AudioCue.Telegraph);Assert.That(sources.Any(s=>Mathf.Abs(s.volume-.8f*.65f)<.0001f),Is.True);
                 audio.Play(S14AudioCue.LashImpact);Assert.That(sources.Any(s=>Mathf.Abs(s.volume-.8f*.45f)<.0001f),Is.True);
                 audio.SetVolume(.5f);Assert.That(sources.Last().volume,Is.EqualTo(.5f*tuned.StepVolume).Within(.0001f));
-                Assert.That(sources.Length,Is.EqualTo(4));Directory.CreateDirectory("docs/chapter01-production/verification");
-                File.WriteAllLines("docs/chapter01-production/verification/footsteps.txt",counts);
+                Assert.That(sources.Length,Is.EqualTo(4));Directory.CreateDirectory("docs/history/visual-stages/chapter01-visual-passes/chapter01-production/verification");
+                File.WriteAllLines("docs/history/visual-stages/chapter01-visual-passes/chapter01-production/verification/footsteps.txt",counts);
             }
             finally{SetField(motion,"_settings",tuned);motion.ConfigureStride(2.25f);root.PlayerObject.transform.position=position;audio.SetMuted(muted);audio.SetVolume(volume);Object.Destroy(baseline);}
         }
@@ -240,7 +240,7 @@ namespace Gravivore.Tests.PlayMode
             var canvas=root.GetComponentInChildren<Canvas>();var mode=canvas.renderMode;var world=canvas.worldCamera;var prior=camera.targetTexture;var active=RenderTexture.active;
             var render=new RenderTexture(540,960,24);var texture=new Texture2D(540,960,TextureFormat.RGB24,false);
             try{canvas.renderMode=RenderMode.ScreenSpaceCamera;canvas.worldCamera=camera;canvas.planeDistance=1;camera.targetTexture=render;Canvas.ForceUpdateCanvases();camera.Render();RenderTexture.active=render;
-                texture.ReadPixels(new Rect(0,0,540,960),0,0);texture.Apply();Directory.CreateDirectory("docs/chapter01-production/internal");File.WriteAllBytes("docs/chapter01-production/internal/"+name+".png",texture.EncodeToPNG());}
+                texture.ReadPixels(new Rect(0,0,540,960),0,0);texture.Apply();Directory.CreateDirectory("docs/history/visual-stages/chapter01-visual-passes/chapter01-production/internal");File.WriteAllBytes("docs/history/visual-stages/chapter01-visual-passes/chapter01-production/internal/"+name+".png",texture.EncodeToPNG());}
             finally{canvas.renderMode=mode;canvas.worldCamera=world;camera.targetTexture=prior;RenderTexture.active=active;render.Release();Object.Destroy(render);Object.Destroy(texture);}
         }
     }

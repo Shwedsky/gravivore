@@ -1,5 +1,5 @@
 [CmdletBinding()]
-param([Parameter(Mandatory=$true)][string]$ExpectedSourceSha,[int]$VersionCode=42,[string]$OutputDirectory='docs/chapter01-v3/verification')
+param([Parameter(Mandatory=$true)][string]$ExpectedSourceSha,[int]$VersionCode=42,[string]$OutputDirectory='docs/history/visual-stages/chapter01-visual-passes/chapter01-v3/verification')
 $ErrorActionPreference='Stop'
 $v3Root=Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $v3Stem='Builds/Android/gravivore-dev-0.1.0+'+$VersionCode
@@ -35,7 +35,7 @@ if(Test-Path -LiteralPath $v3Baseline){
  $v3SameSigner=$true
 }
 $v3Hash=(Get-FileHash -LiteralPath $v3Apk -Algorithm SHA256).Hash.ToLowerInvariant()
-foreach($v3Proof in @(($v3Stem+'.visual-slice.json'),($v3Stem+'.post-device.json'),'docs/chapter01-production/verification/apk_packed_dependencies.json','docs/concept-fidelity-v2/verification/apk_packed_dependencies.json')){
+foreach($v3Proof in @(($v3Stem+'.visual-slice.json'),($v3Stem+'.post-device.json'),'docs/history/visual-stages/chapter01-visual-passes/chapter01-production/verification/apk_packed_dependencies.json','docs/history/visual-stages/chapter01-visual-passes/concept-fidelity-v2/verification/apk_packed_dependencies.json')){
  $v3ProofPath=Join-Path $v3Root $v3Proof
  $v3Packing=Get-Content -LiteralPath $v3ProofPath -Raw | ConvertFrom-Json
  if(-not $v3Packing.validated -or $v3Packing.apkSha256 -ne $v3Hash){throw ('Packing mismatch: '+$v3Proof)}

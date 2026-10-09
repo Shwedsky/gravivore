@@ -44,7 +44,7 @@ namespace Gravivore.Editor.VisualIntegration
                 requiredDependencies=AssetDatabase.GetDependencies(FirstVisualSliceBuilder.ScenePath,true).Where(p=>p==PostDeviceCombatBuilder.SettingsPath || p.EndsWith(".wav",StringComparison.Ordinal)).ToArray() };
             var json=JsonUtility.ToJson(evidence,true);
             File.WriteAllText(Path.ChangeExtension(report.summary.outputPath,".post-device.json"),json);
-            Directory.CreateDirectory("docs/post-device-combat-readability"); File.WriteAllText("docs/post-device-combat-readability/apk_packed_dependencies.json",json);
+            Directory.CreateDirectory("docs/history/visual-stages/chapter01-visual-passes/post-device-combat-readability"); File.WriteAllText("docs/history/visual-stages/chapter01-visual-passes/post-device-combat-readability/apk_packed_dependencies.json",json);
             Debug.Log("POST_DEVICE_APK_CONTENT_VERIFIED: "+string.Join(", ",found));
         }
         private static bool IsSerializedArchive(string path)

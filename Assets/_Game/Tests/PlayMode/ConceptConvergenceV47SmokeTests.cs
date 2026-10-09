@@ -29,7 +29,7 @@ namespace Gravivore.Tests.PlayMode
             Assert.That(root.WorldPresenter.Bounds.Size.x,Is.EqualTo(56));Assert.That(root.WorldPresenter.Bounds.Size.y,Is.EqualTo(118));
             Capture(root,"01_repair_hub");
             for(var i=0;i<5;i++)
-            {var spot=root.EnemyPopulation.GetSpot(i);Move(root,spot.Position);yield return null;Capture(root,"sector_"+spot.Id);Close(root,"dock_"+spot.Id,spot.Position+new Vector3(0,.85f,3.4f),5.5f);}
+            {var spot=root.EnemyPopulation.GetSpot(i);Move(root,spot.Position);yield return null;Capture(root,"sector_"+spot.Id);Close(root,"dock_"+spot.Id,spot.Position+new Vector3(0,2.0f,3.4f),11f);var enemy=spot.GetLiveEnemy(0);Assert.NotNull(enemy);Close(root,"actor_"+spot.Id,enemy.transform.position+Vector3.up*.8f,4.2f);}
             Move(root,new Vector3(0,0,-1.25f));yield return null;Capture(root,"04_service_corridor");Close(root,"corridor_machine",new Vector3(-3.7f,1.2f,2),5);
             root.WorldUnlocks.PrepareEliteEncounterForDevelopment();root.Chapter1Encounters.Tick();
             Move(root,root.MagnetarGuard.transform.position+Vector3.back*5);yield return null;Capture(root,"05_magnetar_encounter");Close(root,"magnetar_surface",root.MagnetarGuard.transform.position+Vector3.up*.8f,4.7f);
@@ -37,11 +37,11 @@ namespace Gravivore.Tests.PlayMode
             Move(root,root.WorldPresenter.Configuration.BossArenaCenter+Vector3.back*4.5f);root.CustodianBoss.Tick(0);yield return null;Capture(root,"06_custodian_arena");Close(root,"custodian_surface",root.CustodianBoss.transform.position+Vector3.up*.9f,6.4f);
             if(_phase=="after")
             {
-                var layer=root.VisualEnvironment.Floor.Find("Chapter 01 Production Machinery V46");
+                var layer=root.VisualEnvironment.Floor.Find("Chapter 01 Concept Convergence V47");
                 Assert.IsEmpty(layer.GetComponentsInChildren<Collider>(true));Assert.IsEmpty(layer.GetComponentsInChildren<MonoBehaviour>(true));Assert.IsEmpty(layer.GetComponentsInChildren<Light>(true));
-                foreach(var family in new[]{"PressureVessel","EnergyCylinder","ArcMachine","GateModule","LightDock","HeavyDock","SpecialDock"})
+                foreach(var family in new[]{"DeploymentBay","FabricationBay","InductionStation"})
                 {
-                    var t=layer.GetComponentsInChildren<Transform>().FirstOrDefault(n=>n.name=="V46_"+family&&n.GetComponentsInChildren<Renderer>().Any(r=>r.enabled));Assert.NotNull(t,family);
+                    var t=layer.GetComponentsInChildren<Transform>().FirstOrDefault(n=>n.name.StartsWith("V47 "+family+" / ")&&n.GetComponentsInChildren<Renderer>().Any(r=>r.enabled));Assert.NotNull(t,family);
                     var rs=t.GetComponentsInChildren<Renderer>();var b=rs[0].bounds;foreach(var r in rs)b.Encapsulate(r.bounds);
                     Close(root,"hero_"+family,b.center,Mathf.Max(b.size.x,b.size.y,b.size.z)*1.8f);
                 }

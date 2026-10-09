@@ -27,8 +27,8 @@ namespace Gravivore.Editor.VisualIntegration
             var deps=AssetDatabase.GetDependencies(FirstVisualSliceBuilder.ScenePath,true);
             // Zone packages are retained as nested prefab dependencies as well as inspectable art packages.
             foreach(var path in Required) if(!deps.Contains(path)) throw new BuildFailedException("Chapter01 production dependency missing: "+path);
-            Directory.CreateDirectory("docs/chapter01-production/verification");
-            File.WriteAllText("docs/chapter01-production/verification/production_dependencies.json",JsonUtility.ToJson(new Evidence{validated=true,dependencies=deps,required=Required},true));
+            Directory.CreateDirectory("docs/history/visual-stages/chapter01-visual-passes/chapter01-production/verification");
+            File.WriteAllText("docs/history/visual-stages/chapter01-visual-passes/chapter01-production/verification/production_dependencies.json",JsonUtility.ToJson(new Evidence{validated=true,dependencies=deps,required=Required},true));
             Debug.Log("CHAPTER01_PRODUCTION_DEPENDENCIES_PASS");
         }
         public void OnPreprocessBuild(BuildReport report)=>ValidateOrThrow();
@@ -49,7 +49,7 @@ namespace Gravivore.Editor.VisualIntegration
             string hash;using(var sha=SHA256.Create())using(var file=File.OpenRead(report.summary.outputPath))hash=BitConverter.ToString(sha.ComputeHash(file)).Replace("-","").ToLowerInvariant();
             var evidence=new Evidence{validated=true,apkSha256=hash,required=Required,dependencies=AssetDatabase.GetDependencies(FirstVisualSliceBuilder.ScenePath,true),
                 packedAssets=report.packedAssets.SelectMany(a=>a.contents).Select(c=>c.sourceAssetPath).Distinct().ToArray(),serializedEntries=found};
-            File.WriteAllText("docs/chapter01-production/verification/apk_packed_dependencies.json",JsonUtility.ToJson(evidence,true));
+            File.WriteAllText("docs/history/visual-stages/chapter01-visual-passes/chapter01-production/verification/apk_packed_dependencies.json",JsonUtility.ToJson(evidence,true));
             Debug.Log("CHAPTER01_APK_PACKING_PASS: "+hash);
         }
         private static bool ContainsSerialized(byte[] bytes,string value)

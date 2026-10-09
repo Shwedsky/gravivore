@@ -341,6 +341,6 @@ for s in (-1,1):
     rod('Gate hydraulic lock '+str(s),(s*1.91,-.25,.32),(s*1.91,-.25,2.14),.072,1)
     box('Containment seam marker '+str(s),(s*.14,-.26,1.21),(.055,.03,1.55),6)
 export_static('Containment_Gate')
-(ROOT/'docs/first-visual-slice').mkdir(parents=True,exist_ok=True)
-(ROOT/'docs/first-visual-slice/asset_metrics.json').write_text(json.dumps(metrics,indent=2))
+(ROOT/'docs/history/visual-stages/chapter01-visual-passes/first-visual-slice').mkdir(parents=True,exist_ok=True)
+(ROOT/'docs/history/visual-stages/chapter01-visual-passes/first-visual-slice/asset_metrics.json').write_text(json.dumps(metrics,indent=2))
 print('VISUAL_SLICE_ASSETS_COMPLETE',json.dumps(metrics))

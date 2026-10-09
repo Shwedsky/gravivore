@@ -12,18 +12,18 @@ if($LASTEXITCODE){throw 'V44 typed shader/UI/rank/model verification failed'}
 $replacementHash=(Get-FileHash -LiteralPath $replacementApk -Algorithm SHA256).Hash.ToLowerInvariant()
 $replacementPacking=Get-Content (Join-Path $replacementOutput 'apk_production_dependencies.json') -Raw | ConvertFrom-Json
 if(-not $replacementPacking.validated -or $replacementPacking.apkSha256 -ne $replacementHash){throw 'Production packing proof differs from APK'}
-$replacementVariants=Get-Content (Join-Path $replacementRoot 'docs/render-hotfix/verification/compiled_shader_variants.txt')
+$replacementVariants=Get-Content (Join-Path $replacementRoot 'docs/history/visual-stages/chapter01-visual-passes/render-hotfix/verification/compiled_shader_variants.txt')
 foreach($replacementShader in @('UI/Default','UI/DefaultETC1','Universal Render Pipeline/Lit','Universal Render Pipeline/Particles/Unlit')){
  foreach($replacementBackend in @('Vulkan','GLES3x')){
   if(-not @($replacementVariants | Where-Object {$_.StartsWith($replacementShader+' | ') -and $_.Contains(' | '+$replacementBackend+' | ')}).Count){throw ('Target variant missing: '+$replacementShader+' / '+$replacementBackend)}
  }
 }
-$replacementSceneAudit=Get-Content (Join-Path $replacementRoot 'docs/render-hotfix/verification/serialized_scene_renderers.txt') -Raw
+$replacementSceneAudit=Get-Content (Join-Path $replacementRoot 'docs/history/visual-stages/chapter01-visual-passes/render-hotfix/verification/serialized_scene_renderers.txt') -Raw
 foreach($replacementScene in @('Bootstrap','Chapter01_ScrapExclusion')){
  if($replacementSceneAudit -notmatch ($replacementScene+'\.unity: renderers=\d+; v3=\d+; missing/error materials=0')){throw ('Serialized renderer audit missing: '+$replacementScene)}
 }
-Copy-Item -LiteralPath (Join-Path $replacementRoot 'docs/render-hotfix/verification/compiled_shader_variants.txt') -Destination (Join-Path $replacementOutput 'compiled_shader_variants.txt')
-Copy-Item -LiteralPath (Join-Path $replacementRoot 'docs/render-hotfix/verification/serialized_scene_renderers.txt') -Destination (Join-Path $replacementOutput 'serialized_scene_renderers.txt')
+Copy-Item -LiteralPath (Join-Path $replacementRoot 'docs/history/visual-stages/chapter01-visual-passes/render-hotfix/verification/compiled_shader_variants.txt') -Destination (Join-Path $replacementOutput 'compiled_shader_variants.txt')
+Copy-Item -LiteralPath (Join-Path $replacementRoot 'docs/history/visual-stages/chapter01-visual-passes/render-hotfix/verification/serialized_scene_renderers.txt') -Destination (Join-Path $replacementOutput 'serialized_scene_renderers.txt')
 $replacementEvidence=Get-Content (Join-Path $replacementOutput 'apk_verification.json') -Raw | ConvertFrom-Json
 $replacementEvidence | Add-Member -NotePropertyName typedProductionAndRenderingVerified -NotePropertyValue $true
 $replacementEvidence | Add-Member -NotePropertyName targetShaderVariantsVerified -NotePropertyValue $true

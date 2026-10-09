@@ -15,14 +15,14 @@ foreach($proofPath in @('docs/history/implementation-passes/chapter01-visual-rep
  if(-not $proof.validated -or $proof.apkSha256 -ne $correctiveHash){throw ('Packing receipt differs from delivered APK: '+$proofPath)}
  if($proofPath -like '*visual-replacement*'){Copy-Item -LiteralPath (Join-Path $correctiveRoot $proofPath) -Destination (Join-Path $correctiveOutput 'apk_production_dependencies.json')}
 }
-$correctiveVariants=Get-Content (Join-Path $correctiveRoot 'docs/render-hotfix/verification/compiled_shader_variants.txt')
+$correctiveVariants=Get-Content (Join-Path $correctiveRoot 'docs/history/visual-stages/chapter01-visual-passes/render-hotfix/verification/compiled_shader_variants.txt')
 foreach($shader in @('UI/Default','UI/DefaultETC1','Universal Render Pipeline/Lit','Universal Render Pipeline/Particles/Unlit')){
  foreach($backend in @('Vulkan','GLES3x')){
   if(-not @($correctiveVariants | Where-Object {$_.StartsWith($shader+' | ') -and $_.Contains(' | '+$backend+' | ')}).Count){throw ('Target shader variant missing: '+$shader+' / '+$backend)}
  }
 }
-Copy-Item -LiteralPath (Join-Path $correctiveRoot 'docs/render-hotfix/verification/compiled_shader_variants.txt') -Destination (Join-Path $correctiveOutput 'compiled_shader_variants.txt')
-Copy-Item -LiteralPath (Join-Path $correctiveRoot 'docs/render-hotfix/verification/serialized_scene_renderers.txt') -Destination (Join-Path $correctiveOutput 'serialized_scene_renderers.txt')
+Copy-Item -LiteralPath (Join-Path $correctiveRoot 'docs/history/visual-stages/chapter01-visual-passes/render-hotfix/verification/compiled_shader_variants.txt') -Destination (Join-Path $correctiveOutput 'compiled_shader_variants.txt')
+Copy-Item -LiteralPath (Join-Path $correctiveRoot 'docs/history/visual-stages/chapter01-visual-passes/render-hotfix/verification/serialized_scene_renderers.txt') -Destination (Join-Path $correctiveOutput 'serialized_scene_renderers.txt')
 $correctiveAndroid='C:/Program Files/Unity/Hub/Editor/6000.3.0f1/Editor/Data/PlaybackEngines/AndroidPlayer'
 $correctivePrior=Join-Path $correctiveRoot 'Builds/Android/gravivore-dev-0.1.0+44.apk'
 $correctivePriorCert=@(& (Join-Path $correctiveAndroid 'OpenJDK/bin/java.exe') -jar (Join-Path $correctiveAndroid 'SDK/build-tools/36.0.0/lib/apksigner.jar') verify --print-certs $correctivePrior | Where-Object {$_ -match '^Signer #1 certificate SHA-256 digest:'})

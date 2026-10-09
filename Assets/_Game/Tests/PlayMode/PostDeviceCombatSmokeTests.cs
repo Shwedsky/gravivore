@@ -243,8 +243,8 @@ namespace Gravivore.Tests.PlayMode
                 canvas.renderMode=RenderMode.ScreenSpaceCamera; canvas.worldCamera=camera; canvas.planeDistance=1;
                 camera.targetTexture=render; Canvas.ForceUpdateCanvases(); root.CombatReadability.Tick(0); camera.Render(); RenderTexture.active=render;
                 texture.ReadPixels(new Rect(0,0,540,960),0,0); texture.Apply();
-                Directory.CreateDirectory("docs/post-device-combat-readability/internal");
-                File.WriteAllBytes("docs/post-device-combat-readability/internal/combat.png",texture.EncodeToPNG());
+                Directory.CreateDirectory("docs/history/visual-stages/chapter01-visual-passes/post-device-combat-readability/internal");
+                File.WriteAllBytes("docs/history/visual-stages/chapter01-visual-passes/post-device-combat-readability/internal/combat.png",texture.EncodeToPNG());
                 Assert.That(root.CombatReadability.VisiblePlateCount,Is.GreaterThan(0));
                 var overlay=canvas.transform.Find("Enemy Combat Overlay");
                 Assert.That(overlay.GetSiblingIndex(),Is.Zero,"HUD controls must draw over combat annotations.");

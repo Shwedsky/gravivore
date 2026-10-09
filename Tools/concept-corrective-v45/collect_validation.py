@@ -18,17 +18,17 @@ expected={c.attrib['fullname'] for c in earlier.iter('test-case') if c.attrib['r
 assert passed==expected and len(passed)==136
 prior=OUT/'validation.json'
 if prior.exists() and json.loads(prior.read_text())['soakSourceRunSha256']==hashlib.sha256((OUT/'PlayModeFinal.xml').read_bytes()).hexdigest():
- assert (ROOT/'docs/concept-fidelity-v2/verification/five_minute_runtime.json').read_bytes()==(OUT/'five_minute_runtime.json').read_bytes(), 'Historical soak output restored; retain the already collected V45 evidence.'
+ assert (ROOT/'docs/history/visual-stages/chapter01-visual-passes/concept-fidelity-v2/verification/five_minute_runtime.json').read_bytes()==(OUT/'five_minute_runtime.json').read_bytes(), 'Historical soak output restored; retain the already collected V45 evidence.'
 soak.tail=None
 ET.ElementTree(soak).write(OUT/'five_minute_pass.xml',encoding='utf-8',xml_declaration=True)
 for source,target in {
- 'docs/concept-fidelity-v2/verification/five_minute_runtime.json':'five_minute_runtime.json',
- 'docs/concept-fidelity-v2/verification/runtime_inventory.json':'runtime_inventory.json',
+ 'docs/history/visual-stages/chapter01-visual-passes/concept-fidelity-v2/verification/five_minute_runtime.json':'five_minute_runtime.json',
+ 'docs/history/visual-stages/chapter01-visual-passes/concept-fidelity-v2/verification/runtime_inventory.json':'runtime_inventory.json',
  'docs/chapter01-gameplay-ux/verification/cold-start-editor.json':'cold_start_editor.json',
  'docs/chapter01-gameplay-ux/verification/reload-editor.json':'reload_editor.json',
- 'docs/chapter01-production/verification/reachability.txt':'reachability.txt',
+ 'docs/history/visual-stages/chapter01-visual-passes/chapter01-production/verification/reachability.txt':'reachability.txt',
  'docs/history/implementation-passes/chapter01-visual-replacement-v3/v44/verification/license_audit.json':'license_audit.json',
- 'docs/render-hotfix/verification/render_profile.json':'render_profile.json',
+ 'docs/history/visual-stages/chapter01-visual-passes/render-hotfix/verification/render_profile.json':'render_profile.json',
 }.items():shutil.copyfile(ROOT/source,OUT/target)
 for subject in ('07_g0_rank1','08_g0_rank5','09_equipment_inventory','10_boss_hud','11_minimap_hud','12a_weapon_source','12b_weapon_travel','12c_weapon_impact'):
  shutil.copyfile(ROOT/'docs/history/implementation-passes/chapter01-visual-replacement-v3/v44/internal'/f'{subject}.png',OUT.parent/'internal/after'/f'{subject}.png')

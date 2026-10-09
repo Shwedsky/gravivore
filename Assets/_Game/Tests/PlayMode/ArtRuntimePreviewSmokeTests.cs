@@ -193,8 +193,8 @@ namespace Gravivore.Tests.PlayMode
             Assert.That(snapshot.renderers, Is.LessThanOrEqualTo(92));
             Assert.That(snapshot.materialSlots, Is.LessThanOrEqualTo(180));
             Assert.That(snapshot.triangles, Is.InRange(1L, 50000L));
-            Directory.CreateDirectory("docs/art-spike");
-            File.WriteAllText("docs/art-spike/RUNTIME_PERFORMANCE.json", JsonUtility.ToJson(snapshot, true) + "\n");
+            Directory.CreateDirectory("docs/history/visual-stages/art-spike/evidence");
+            File.WriteAllText("docs/history/visual-stages/art-spike/evidence/RUNTIME_PERFORMANCE.json", JsonUtility.ToJson(snapshot, true) + "\n");
         }
     }
 }

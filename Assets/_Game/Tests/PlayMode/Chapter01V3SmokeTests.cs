@@ -138,7 +138,7 @@ namespace Gravivore.Tests.PlayMode
             var mode=canvas.renderMode;var priorCamera=canvas.worldCamera;var priorTarget=camera.targetTexture;var priorActive=RenderTexture.active;
             var render=new RenderTexture(540,960,24,RenderTextureFormat.ARGBHalf);var texture=new Texture2D(540,960,TextureFormat.RGB24,false);
             try{canvas.renderMode=RenderMode.ScreenSpaceCamera;canvas.worldCamera=camera;canvas.planeDistance=1;camera.targetTexture=render;Canvas.ForceUpdateCanvases();camera.Render();RenderTexture.active=render;
-                texture.ReadPixels(new Rect(0,0,540,960),0,0);texture.Apply();Directory.CreateDirectory("docs/chapter01-v3/internal");File.WriteAllBytes("docs/chapter01-v3/internal/"+name+".png",texture.EncodeToPNG());}
+                texture.ReadPixels(new Rect(0,0,540,960),0,0);texture.Apply();Directory.CreateDirectory("docs/history/visual-stages/chapter01-visual-passes/chapter01-v3/internal");File.WriteAllBytes("docs/history/visual-stages/chapter01-visual-passes/chapter01-v3/internal/"+name+".png",texture.EncodeToPNG());}
             finally{canvas.renderMode=mode;canvas.worldCamera=priorCamera;camera.targetTexture=priorTarget;RenderTexture.active=priorActive;render.Release();Object.Destroy(render);Object.Destroy(texture);}
         }
     }

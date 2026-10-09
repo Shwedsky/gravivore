@@ -39,8 +39,8 @@ namespace Gravivore.Editor.VisualIntegration
                 if (!dependencies.Contains(path)) throw new BuildFailedException("Visual slice missing from Chapter01 production dependencies: " + path);
             var env = AssetDatabase.LoadAssetAtPath<GameObject>(FirstVisualSliceBuilder.Prefab("Environment_Slice"));
             if (env.GetComponentsInChildren<Collider>(true).Length != 0) throw new BuildFailedException("Environment art contains collision authority.");
-            Directory.CreateDirectory("docs/device-correction");
-            File.WriteAllText("docs/device-correction/production_dependencies.json", JsonUtility.ToJson(new Evidence
+            Directory.CreateDirectory("docs/history/visual-stages/chapter01-visual-passes/device-correction");
+            File.WriteAllText("docs/history/visual-stages/chapter01-visual-passes/device-correction/production_dependencies.json", JsonUtility.ToJson(new Evidence
             { scene = FirstVisualSliceBuilder.ScenePath, required = Required, dependencies = dependencies, validated = true }, true));
             Debug.Log("FIRST_VISUAL_SLICE_DEPENDENCIES_PASS: " + string.Join(", ", Required));
         }
@@ -79,7 +79,7 @@ namespace Gravivore.Editor.VisualIntegration
                 modelSources = models, packedReportPaths = packed, packedReportComplete = models.All(packed.Contains),
                 serializedRequired = names, serializedArchiveEntries = found, apkSha256 = hash, validated = true };
             File.WriteAllText(Path.ChangeExtension(report.summary.outputPath, ".visual-slice.json"), JsonUtility.ToJson(evidence, true));
-            File.WriteAllText("docs/device-correction/apk_packed_dependencies.json", JsonUtility.ToJson(evidence, true));
+            File.WriteAllText("docs/history/visual-stages/chapter01-visual-passes/device-correction/apk_packed_dependencies.json", JsonUtility.ToJson(evidence, true));
             Debug.Log("FIRST_VISUAL_SLICE_APK_PACKING_PASS: " + string.Join(", ", found));
         }
         private static bool ContainsSerializedString(byte[] bytes, string value)

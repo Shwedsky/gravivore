@@ -108,7 +108,7 @@ namespace Gravivore.Tests.PlayMode
             var map = root.GetComponentInChildren<MapMinimapPresenter>(true); map.RefreshNow();
             Assert.That(map.CurrentZoneText,Is.EqualTo("Контур Магнетара"));
             var view = root.PlayerObject.GetComponent<PlayerEvolutionView>();
-            Directory.CreateDirectory("docs/device-correction/internal");
+            Directory.CreateDirectory("docs/history/visual-stages/chapter01-visual-passes/device-correction/internal");
             foreach (var tier in new[] { EvolutionTier.Tier0,EvolutionTier.Tier1,EvolutionTier.Tier2 })
             {
                 view.Apply(new EvolutionVisualState(tier,view.CurrentDominantStat));
@@ -120,7 +120,7 @@ namespace Gravivore.Tests.PlayMode
                 try { camera.targetTexture = target; canvas.renderMode = RenderMode.ScreenSpaceCamera; canvas.worldCamera = camera;
                     canvas.planeDistance = 1; Canvas.ForceUpdateCanvases(); camera.Render(); RenderTexture.active = target;
                     texture.ReadPixels(new Rect(0,0,540,960),0,0); texture.Apply();
-                    File.WriteAllBytes("docs/device-correction/internal/live_tier"+(int)tier+".png",texture.EncodeToPNG()); }
+                    File.WriteAllBytes("docs/history/visual-stages/chapter01-visual-passes/device-correction/internal/live_tier"+(int)tier+".png",texture.EncodeToPNG()); }
                 finally { canvas.renderMode = mode; canvas.worldCamera = canvasCamera; camera.targetTexture = null;
                     RenderTexture.active = prior; target.Release(); Object.Destroy(target); Object.Destroy(texture); }
             }

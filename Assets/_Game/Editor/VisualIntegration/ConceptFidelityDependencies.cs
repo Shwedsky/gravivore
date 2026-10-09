@@ -32,8 +32,8 @@ namespace Gravivore.Editor.VisualIntegration
             }
             for(var i=0;i<found.Length;i++)if(found[i]==null)throw new BuildFailedException("APK is missing authored fidelity content: "+names[i]);
             string hash;using(var sha=SHA256.Create())using(var apk=File.OpenRead(report.summary.outputPath))hash=BitConverter.ToString(sha.ComputeHash(apk)).Replace("-","").ToLowerInvariant();
-            Directory.CreateDirectory("docs/concept-fidelity-v2/verification");
-            File.WriteAllText("docs/concept-fidelity-v2/verification/apk_packed_dependencies.json",JsonUtility.ToJson(new Evidence{
+            Directory.CreateDirectory("docs/history/visual-stages/chapter01-visual-passes/concept-fidelity-v2/verification");
+            File.WriteAllText("docs/history/visual-stages/chapter01-visual-passes/concept-fidelity-v2/verification/apk_packed_dependencies.json",JsonUtility.ToJson(new Evidence{
                 validated=true,apkSha256=hash,required=names,serializedEntries=found,dependencies=AssetDatabase.GetDependencies(FirstVisualSliceBuilder.ScenePath,true)},true));
             Debug.Log("CONCEPT_FIDELITY_APK_PACKING_PASS "+hash);
         }

@@ -120,8 +120,8 @@ namespace Gravivore.Editor.VisualIntegration
             Lighting(env);
             EditorSceneManager.MarkSceneDirty(scene);EditorSceneManager.SaveScene(scene);AssetDatabase.SaveAssets();
             ValidateOrThrow();
-            Directory.CreateDirectory("docs/concept-fidelity-v2");
-            File.WriteAllText("docs/concept-fidelity-v2/hero_route.json",JsonUtility.ToJson(new RouteEvidence(),true));
+            Directory.CreateDirectory("docs/history/visual-stages/chapter01-visual-passes/concept-fidelity-v2");
+            File.WriteAllText("docs/history/visual-stages/chapter01-visual-passes/concept-fidelity-v2/hero_route.json",JsonUtility.ToJson(new RouteEvidence(),true));
             Debug.Log("CONCEPT_FIDELITY_V2_INTEGRATED");
         }
         [Serializable] private sealed class RouteEvidence

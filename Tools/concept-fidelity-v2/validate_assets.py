@@ -2,7 +2,7 @@
 import bpy,json,math
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
-metrics=json.loads((ROOT/'docs/concept-fidelity-v2/asset_metrics.json').read_text())
+metrics=json.loads((ROOT/'docs/history/visual-stages/chapter01-visual-passes/concept-fidelity-v2/asset_metrics.json').read_text())
 results={}
 for name,expected in metrics.items():
     bpy.ops.wm.open_mainfile(filepath=str(ROOT/'art/concept-fidelity-v2'/(name+'.blend')),load_ui=False,use_scripts=False)
@@ -25,5 +25,5 @@ for name,expected in metrics.items():
             assert all(len(v.groups)==1 and abs(v.groups[0].weight-1)<.001 for v in ob.data.vertices),(name,'rigid weights')
     assert (ROOT/'Assets/_Game/Content/ConceptFidelityV2/Models'/(name+'.fbx')).stat().st_size>10000,name
     results[name]={'validated':True,'triangles':expected['triangles'],'rigBones':expected['bones'],'source':str(Path('art/concept-fidelity-v2')/(name+'.blend'))}
-(ROOT/'docs/concept-fidelity-v2/source_validation.json').write_text(json.dumps(results,indent=2))
+(ROOT/'docs/history/visual-stages/chapter01-visual-passes/concept-fidelity-v2/source_validation.json').write_text(json.dumps(results,indent=2))
 print('CONCEPT_FIDELITY_SOURCE_VALIDATION_PASS')
