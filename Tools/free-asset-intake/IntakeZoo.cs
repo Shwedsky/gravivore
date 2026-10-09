@@ -13,7 +13,7 @@ using Object = UnityEngine.Object;
 public static class IntakeZoo
 {
     [Serializable] public class Entry { public string sourceId, assetPath, originalPath, category; public bool render; }
-    [Serializable] public class Catalog { public Entry[] entries; }
+    [Serializable] public class Catalog { public Entry[] entries, uiEntries; }
     [Serializable] public class Capture { public string sourceId, originalPath, category, renderPath, materialMode; public float sourceLongestDimension, previewScale; }
     [Serializable] public class CaptureList { public List<Capture> captures = new List<Capture>(); }
     static string Work => Path.GetFullPath(Path.Combine(Application.dataPath, "../.."));
@@ -29,17 +29,19 @@ public static class IntakeZoo
             if (new[] {".cs", ".dll", ".exe", ".ps1", ".bat", ".cmd", ".shader", ".shadergraph", ".blend", ".asmdef"}.Contains(Path.GetExtension(path).ToLowerInvariant()))
                 throw new InvalidOperationException("Forbidden payload in art-only project: " + path);
         AssetDatabase.Refresh();
-        var renderer = ScriptableObject.CreateInstance<UniversalRendererData>();
+        ShaderUtil.allowAsyncCompilation = false;
+        var renderer = AssetDatabase.LoadAssetAtPath<UniversalRendererData>("Assets/_Game/Content/Settings/Gravivore_URP_Renderer.asset");
         Directory.CreateDirectory("Assets/Zoo");
-        AssetDatabase.CreateAsset(renderer, "Assets/Zoo/Renderer.asset");
-        var pipeline = UniversalRenderPipelineAsset.Create(renderer);
+        if(renderer==null){renderer=ScriptableObject.CreateInstance<UniversalRendererData>();AssetDatabase.CreateAsset(renderer,"Assets/Zoo/Renderer.asset");}
+        var pipeline = AssetDatabase.LoadAssetAtPath<UniversalRenderPipelineAsset>("Assets/_Game/Content/Settings/Gravivore_URP.asset");
+        if(pipeline==null){pipeline=UniversalRenderPipelineAsset.Create(renderer);AssetDatabase.CreateAsset(pipeline,"Assets/Zoo/Pipeline.asset");}
         pipeline.renderScale = 1; pipeline.msaaSampleCount = 1;
-        AssetDatabase.CreateAsset(pipeline, "Assets/Zoo/Pipeline.asset");
         GraphicsSettings.defaultRenderPipeline = pipeline;
         QualitySettings.renderPipeline = pipeline;
         Lit = Shader.Find("Universal Render Pipeline/Lit");
         if (Lit == null) throw new InvalidOperationException("URP Lit unavailable");
-        Ground = new Material(Lit); Ground.color = new Color(.035f,.047f,.059f); Ground.SetFloat("_Smoothness", .1f);
+        Ground = new Material(Lit); Ground.SetColor("_BaseColor", new Color(.035f,.047f,.059f)); Ground.SetFloat("_Smoothness", .1f);
+        AssetDatabase.CreateAsset(Ground,"Assets/Zoo/NeutralGround.mat");
         var catalog = JsonUtility.FromJson<Catalog>(File.ReadAllText("catalog.json"));
         var csv = new List<string> {"sourceId,originalPath,assetType,fileFormat,triangleCount,vertexCount,submeshCount,materialCount,textureCount,maxPreviewTextureResolution,shaderFamily,LOD,animationClips,rigged,boneCount,skinnedMeshCount,colliders,lights,particleSystems,scriptsComponents,mobileRisk,urpRisk,measurement"};
         var captures = new CaptureList();
@@ -55,7 +57,7 @@ public static class IntakeZoo
             instance.name = entry.sourceId + " / " + model.name;
             var filters = instance.GetComponentsInChildren<MeshFilter>(true);
             var skin = instance.GetComponentsInChildren<SkinnedMeshRenderer>(true);
-            var meshes = filters.Select(x => x.sharedMesh).Concat(skin.Select(x => x.sharedMesh)).Where(x=>x!=null).Distinct().ToArray();
+            var meshes = filters.Select(x => x.sharedMesh).Concat(skin.Select(x => x.sharedMesh)).Where(x=>x!=null).ToArray();
             long triangles = 0; int vertices = 0, submeshes = 0;
             foreach (var mesh in meshes) { vertices += mesh.vertexCount; submeshes += mesh.subMeshCount; for (int s=0;s<mesh.subMeshCount;s++) if(mesh.GetTopology(s)==MeshTopology.Triangles) triangles += (long)mesh.GetIndexCount(s)/3; }
             var renderers = instance.GetComponentsInChildren<Renderer>(true);
@@ -91,6 +93,20 @@ public static class IntakeZoo
             instance.transform.position += new Vector3((sampleIndex%12)*6,0,(sampleIndex/12)*8);
             sampleIndex++;
         }
+        foreach(var name in new[]{"ENVIRONMENT","MACHINERY_HERO_PROPS","PIPES_SERVICES","MECHS_ENEMIES","WEAPONS_TURRETS","VFX","UI"})
+            if(!categories.ContainsKey(name))categories.Add(name,new GameObject(name).transform);
+        foreach(var source in new[]{"vfx-impact","vfx-fog","vfx-magic","vfx-black-hole","vfx-fire"})
+        {var note=new GameObject(source+" — static YAML audit only; animation not imported");note.transform.SetParent(categories["VFX"]);}
+        foreach(var entry in catalog.uiEntries??Array.Empty<Entry>())
+        {
+            var texture=AssetDatabase.LoadAssetAtPath<Texture2D>(entry.assetPath);
+            var card=GameObject.CreatePrimitive(PrimitiveType.Quad);card.name=entry.sourceId+" / "+Path.GetFileNameWithoutExtension(entry.originalPath);card.transform.SetParent(categories["UI"]);
+            card.transform.position=new Vector3((sampleIndex%12)*6,.1f,(sampleIndex/12)*8);card.transform.rotation=Quaternion.Euler(90,0,0);card.transform.localScale=new Vector3(4,4f*texture.height/texture.width,1);
+            var material=new Material(Shader.Find("Universal Render Pipeline/Unlit"));material.SetTexture("_BaseMap",texture);material.SetColor("_BaseColor",Color.white);material.SetFloat("_Cull",0);AssetDatabase.CreateAsset(material,"Assets/Zoo/UI_"+Sanitize(card.name)+".mat");card.GetComponent<Renderer>().sharedMaterial=material;sampleIndex++;
+        }
+        var zooFloor=GameObject.CreatePrimitive(PrimitiveType.Cube);zooFloor.name="Zoo industrial ground";zooFloor.transform.position=new Vector3(33,-.2f,Mathf.Ceil(sampleIndex/12f)*4);zooFloor.transform.localScale=new Vector3(78,.2f,Mathf.Ceil(sampleIndex/12f)*8+12);zooFloor.GetComponent<Renderer>().sharedMaterial=Ground;
+        var zooLight=new GameObject("Zoo neutral key");var keyLight=zooLight.AddComponent<Light>();keyLight.type=LightType.Directional;keyLight.intensity=1.6f;zooLight.transform.rotation=Quaternion.Euler(48,-30,0);
+        var zooCamera=new GameObject("Zoo overview camera");var overview=zooCamera.AddComponent<Camera>();overview.clearFlags=CameraClearFlags.SolidColor;overview.backgroundColor=new Color(.025f,.035f,.045f);overview.farClipPlane=400;overview.orthographic=true;overview.orthographicSize=55;zooCamera.transform.position=new Vector3(33,130,-35);zooCamera.transform.LookAt(new Vector3(33,0,55));zooCamera.AddComponent<UniversalAdditionalCameraData>().renderPostProcessing=false;
         File.WriteAllLines(Path.Combine(Work,"reports/unity_models.csv"),csv);
         File.WriteAllText(Path.Combine(Work,"reports/render_manifest.json"),JsonUtility.ToJson(captures,true));
         EditorSceneManager.SaveScene(zoo,"Assets/Zoo/AssetZoo.unity");
@@ -103,6 +119,15 @@ public static class IntakeZoo
 
     static Material Convert(Material input,string source,string model)
     {
+        if(input!=null)
+        {
+            // Imported FBX embedded materials can omit maps; prefer the actual source
+            // material with the same serialized name, without loading source prefabs/code.
+            var sourceMaterial=AssetDatabase.FindAssets("t:Material",new[]{"Assets/Intake/"+source})
+                .Select(AssetDatabase.GUIDToAssetPath).Select(p=>AssetDatabase.LoadAssetAtPath<Material>(p))
+                .FirstOrDefault(m=>m!=null&&MaterialName(m.name)==MaterialName(input.name));
+            if(sourceMaterial!=null)input=sourceMaterial;
+        }
         string key=source+"/"+(input==null?"fallback":input.name);
         if(Converted.TryGetValue(key,out var cached))return cached;
         var mat=new Material(Lit){name=key.Replace('/','_')};
@@ -119,7 +144,8 @@ public static class IntakeZoo
             var guids=AssetDatabase.FindAssets("t:Texture2D",new[]{"Assets/Intake/"+source});
             var candidates=guids.Select(AssetDatabase.GUIDToAssetPath).Where(p=>!p.EndsWith(".meta")&&!new[]{"normal","rough","metal","occlu","emissi","height","specular","preview","sample","cover"}.Any(x=>Path.GetFileName(p).ToLowerInvariant().Contains(x))).ToArray();
             var best=candidates.OrderByDescending(p=>TextureScore(p,input==null?model:input.name,model)).FirstOrDefault();
-            if(best!=null && TextureScore(best,input==null?model:input.name,model)>0)texture=AssetDatabase.LoadAssetAtPath<Texture2D>(best);
+            if(best!=null && TextureScore(best,input==null?model:input.name,model)>0)
+            {texture=AssetDatabase.LoadAssetAtPath<Texture2D>(best);color=Color.white;}
         }
         mat.SetColor("_BaseColor",color);mat.SetTexture("_BaseMap",texture);mat.SetFloat("_Metallic",metal==null?.18f:.6f);mat.SetFloat("_Smoothness",.25f);
         if(normal!=null){mat.SetTexture("_BumpMap",normal);mat.EnableKeyword("_NORMALMAP");}
@@ -128,6 +154,7 @@ public static class IntakeZoo
         string path="Assets/Zoo/"+Sanitize(key)+".mat"; AssetDatabase.CreateAsset(mat,path);Converted.Add(key,mat);return mat;
     }
     static string Sanitize(string s)=>string.Concat(s.Select(c=>char.IsLetterOrDigit(c)?c:'_'));
+    static string MaterialName(string s)=>string.Concat(s.ToLowerInvariant().Where(char.IsLetterOrDigit));
     static int TextureScore(string path,string material,string model)
     {
         string n=Path.GetFileNameWithoutExtension(path).ToLowerInvariant(),m=material.ToLowerInvariant(),o=model.ToLowerInvariant();
@@ -142,7 +169,7 @@ public static class IntakeZoo
         RenderSettings.ambientMode=AmbientMode.Flat;RenderSettings.ambientLight=new Color(.36f,.39f,.43f);
         var lightObj=new GameObject("Neutral key");var light=lightObj.AddComponent<Light>();light.type=LightType.Directional;light.intensity=1.6f;light.color=new Color(.94f,.97f,1);lightObj.transform.rotation=Quaternion.Euler(48,-30,0);
         var cameraObj=new GameObject("Elevated inspection camera");var cam=cameraObj.AddComponent<Camera>();cam.clearFlags=CameraClearFlags.SolidColor;cam.backgroundColor=new Color(.025f,.035f,.045f);cam.fieldOfView=35;cam.nearClipPlane=.05f;cam.farClipPlane=100;cam.allowHDR=false;
-        var b=BoundsOf(subject);cam.transform.position=b.center+new Vector3(5,8,-6);cam.transform.LookAt(b.center);cam.AddComponent<UniversalAdditionalCameraData>().renderPostProcessing=false;
+        var b=BoundsOf(subject);cam.transform.position=b.center+new Vector3(5,8,-6);cam.transform.LookAt(b.center);cameraObj.AddComponent<UniversalAdditionalCameraData>().renderPostProcessing=false;
         var rt=new RenderTexture(480,360,24,RenderTextureFormat.ARGB32);rt.Create();cam.targetTexture=rt;cam.Render();var old=RenderTexture.active;RenderTexture.active=rt;
         var tex=new Texture2D(480,360,TextureFormat.RGB24,false);tex.ReadPixels(new Rect(0,0,480,360),0,0);tex.Apply();File.WriteAllBytes(output,tex.EncodeToPNG());RenderTexture.active=old;cam.targetTexture=null;rt.Release();Object.DestroyImmediate(rt);Object.DestroyImmediate(tex);
         Object.DestroyImmediate(cameraObj);Object.DestroyImmediate(lightObj);Object.DestroyImmediate(floor);foreach(var root in roots)root.SetActive(true);

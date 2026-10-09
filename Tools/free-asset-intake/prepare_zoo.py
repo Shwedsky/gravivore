@@ -2,7 +2,8 @@
 
 No source scenes, prefabs, shaders, package code, plugins, Blender files or custom
 importers enter Unity. Source model metadata is inspected; importer defaults are
-used except safe material references. All GUIDs are namespaced per source.
+used except safe material references. Original art GUIDs are preserved after a
+collision check, including references inside binary Unity materials.
 """
 import json
 import re
@@ -14,6 +15,12 @@ from intake_v2 import ROOT, WORK, write_json
 
 SOURCE_BY_STORE = {'92152':'env-creepycat-starter','159280':'env-sickhead-construction','82913':'env-karboosx-modular','86679':'env-dmitrii-industrial','143414':'env-seed-hunter','82234':'mechs-combat-drone','124342':'mechs-medium-striker','57540':'weapons-warzone','246331':'weapons-tower-defence','112251':'weapons-rts-assets','335800':'vfx-impact','356686':'vfx-black-hole','247933':'vfx-magic','266226':'vfx-fire','351840':'vfx-fog'}
 ZIP_MATCH = [('animated mech','mechs-quaternius'),('modular sci fi guns','weapons-quaternius'),('modular scifi megakit','env-quaternius-megakit'),('sci-fi essentials','env-quaternius-essentials'),('molten maps','env-molten-maps'),('modular-space','env-kenney-space'),('space-station','env-kenney-station'),('ui-pack-space','ui-kenney'),('techlab','pipes-techlab'),('exe -','ui-exe'),('ui sci-fi files','ui-tiago')]
+
+def preview_material(raw):
+    """Never text-decode binary Unity serialization; preserve its external GUIDs."""
+    if not raw.startswith((b'%YAML',b'\xef\xbb\xbf%YAML')):return raw
+    text=raw.decode('utf-8-sig')
+    return re.sub(r'm_Shader:.*', 'm_Shader: {fileID: 46, guid: 0000000000000000f0000000000000000, type: 0}',text).encode('utf-8')
 
 def identify(item):
     store=item.get('storeMetadata',{}).get('id')
@@ -42,10 +49,14 @@ def category(source,p):
 
 def representatives(source,all_models):
     if source.startswith('vfx-'):return set()
+    if source=='mechs-medium-striker':return {p for p in all_models if p.stem=='MediumMechStriker'}
     if source.startswith('mechs-') or source.startswith('pipes-'):return set(all_models)
     tokens=['floor','wall','door','gate','ramp','fence','rail','stair','damage','broken','hole','pipe','generator','reactor','engine','container','crate','tank','light','column']
     if source=='env-quaternius-essentials':tokens=['enemy_eye','enemy_quad','enemy_trilo','prop_barrel','prop_container','prop_crate','prop_console','prop_generator','prop_computer','prop_pillar','gun_rifle']
     if source=='env-molten-maps':tokens=['generator','cryo','centrifuge','command','container','wall','floor','ramp','monitor','light']
+    if source=='env-quaternius-megakit':tokens=['platform_metal','platform_darkplates','platform_stairs_2','platform_ramp_2','platform_rails_2','shortwall_metalplates_straight','door_darkmetal','door_frame_square','topcables_straight','column_pipes','prop_pipeholder','prop_vent_big','prop_light_floor','bottommetal_straight']
+    if source=='env-creepycat-starter':tokens=['floor','tile','wallmetal','wall','door','gate','ramp','rail','pipe','generator','container','crate','light','column']
+    if source=='env-sickhead-construction':tokens=['floortile01','floortile02','wallbaydoor','wallfan','wallcorridorentrance','wallsupport','walllight','pipes01','pipes02','ductvent']
     if source=='weapons-quaternius':tokens=['ar_1','ar_4','sniper_1','pistol_1','barrel','scope','body','stock','magazine']
     if source=='weapons-rts-assets':tokens=['structure_v1','structure_v2','structure_v3','laser_tower','turret_v1','vehicle_v1']
     picks=[]
@@ -66,11 +77,34 @@ def prepare():
     manifest['dependencies'].pop('com.unity.ide.visualstudio',None)
     write_json(zoo/'Packages/manifest.json',manifest)
     (zoo/'ProjectSettings/ProjectVersion.txt').write_text('m_EditorVersion: 6000.3.0f1\n',encoding='utf-8')
-    catalog=[]; audit=[]
+    # Reuse owned, compatible URP resource wiring in scratch only. Empty runtime-
+    # created renderer data can lack editor resources on its first batch render.
+    template=ROOT/'Tools/free-asset-intake/urp-baseline'
+    for src in template.rglob('*'):
+        if src.is_file() and src.name!='README.md':
+            target=zoo/src.relative_to(template);target.parent.mkdir(parents=True,exist_ok=True)
+            shutil.copyfile(src,target)
+    catalog=[]; ui_catalog=[]; audit=[]
     for item in inspection:
         source=identify(item)
         item['sourceId']=source
-        if source=='reference-concept-board' or source.startswith('ui-'):continue
+        if source=='reference-concept-board':continue
+        if source.startswith('ui-'):
+            if source=='ui-tiago':continue # mixed rights; reviewed as local native UI contact only
+            base=ROOT/item['contentRoot'];dest=zoo/'Assets/Intake'/source;dest.mkdir(parents=True,exist_ok=True)
+            images=sorted(p for p in base.rglob('*.png') if 'upsized' not in str(p).lower() and 'preview' not in p.name.lower())
+            if source=='ui-kenney':
+                picks=[]
+                for token in ['panel','button','bar','slider','cursor','crosshair']:
+                    hit=next((p for p in images if token in p.stem.lower() and p not in picks),None)
+                    if hit:picks.append(hit)
+                images=picks
+            for p in images[:9]:
+                rel=p.relative_to(base).as_posix();target=dest/(p.stem+'__'+uuid.uuid5(uuid.NAMESPACE_URL,rel).hex[:8]+'.png')
+                with Image.open(p) as im:im.thumbnail((1024,1024));im.convert('RGBA').save(target)
+                ui_catalog.append({'sourceId':source,'assetPath':target.relative_to(zoo).as_posix(),'originalPath':rel,'category':'UI','render':False})
+                audit.append({'sourceId':source,'originalPath':rel,'scratchPath':str(target.relative_to(zoo)),'sha256Original':__import__('intake_v2').digest(p),'normalization':'1024px preview UI card; original native resolution retained in inventory'})
+            continue
         base=ROOT/item['contentRoot']; dest=zoo/'Assets/Intake'/source
         dest.mkdir(parents=True,exist_ok=True)
         chosen=models(item); reps=representatives(source,chosen)
@@ -83,7 +117,9 @@ def prepare():
             if meta.exists():
                 text=meta.read_text(encoding='utf-8-sig',errors='replace')
                 match=re.search(r'^guid: ([0-9a-f]{32})',text,re.M)
-                if match:guids[match[1]]=uuid.uuid5(uuid.NAMESPACE_URL,source+'/'+match[1]).hex
+                # Preserve original art GUIDs: binary Unity materials contain external
+                # PPtr GUIDs that cannot safely be rewritten with a YAML regexp.
+                if match:guids[match[1]]=match[1]
         def rewrite(text):
             return re.sub(r'\b[0-9a-f]{32}\b',lambda m:guids.get(m[0],m[0]),text)
         for p in copy_files:
@@ -101,11 +137,9 @@ def prepare():
                     audit.append({'sourceId':source,'originalPath':rel,'excludedTexture':str(error)})
                     continue
             elif p.suffix.lower()=='.mat':
-                text=rewrite(p.read_text(encoding='utf-8-sig',errors='replace'))
                 # Shader dependencies are audited separately. Scratch materials use a Unity built-in
                 # shader solely to expose serialized source map/color properties for conversion.
-                text=re.sub(r'm_Shader:.*', 'm_Shader: {fileID: 46, guid: 0000000000000000f0000000000000000, type: 0}',text)
-                target.write_text(text,encoding='utf-8')
+                target.write_bytes(preview_material(p.read_bytes()))
             else:shutil.copyfile(p,target)
             meta=Path(str(p)+'.meta')
             if meta.exists():
@@ -114,12 +148,19 @@ def prepare():
                 if expected not in text:raise ValueError('Custom/unexpected importer rejected: '+str(meta))
                 text=rewrite(text)
                 Path(str(target)+'.meta').write_text(text,encoding='utf-8')
-            audit.append({'sourceId':source,'originalPath':rel,'scratchPath':str(target.relative_to(zoo)),'sha256Original':__import__('intake_v2').digest(p),'normalization':'1024px preview texture / shader substituted / GUID namespaced as applicable'})
+            audit.append({'sourceId':source,'originalPath':rel,'scratchPath':str(target.relative_to(zoo)),'sha256Original':__import__('intake_v2').digest(p),'normalization':'1024px preview texture; YAML material shader substituted; binary material and original art GUIDs preserved'})
             if p in chosen:catalog.append({'sourceId':source,'assetPath':target.relative_to(zoo).as_posix(),'originalPath':rel,'category':category(source,p),'render':p in reps})
         print(source,'models',len(chosen),'render',len(reps),'safe files',len(copy_files),flush=True)
-    write_json(zoo/'catalog.json',{'entries':catalog})
+    write_json(zoo/'catalog.json',{'entries':catalog,'uiEntries':ui_catalog})
     write_json(WORK/'reports/normalization_audit.json',audit)
     write_json(WORK/'reports/inspection.json',inspection)
+    all_meta=[p for p in (zoo/'Assets/Intake').rglob('*.meta') if p.is_file()]
+    seen={}
+    for p in all_meta:
+        m=re.search(r'^guid: ([0-9a-f]{32})',p.read_text(encoding='utf-8-sig'),re.M)
+        if m:
+            if m[1] in seen:raise ValueError('Cross-source art GUID collision: '+str(p)+' / '+str(seen[m[1]]))
+            seen[m[1]]=p
     if any(p.suffix.lower() not in {'.fbx','.png','.jpg','.jpeg','.tga','.dds','.mat','.meta'} for p in (zoo/'Assets/Intake').rglob('*') if p.is_file()):raise ValueError('Art import allowlist violated')
     print('ART_ONLY_PROJECT_READY',len(catalog),'models')
 

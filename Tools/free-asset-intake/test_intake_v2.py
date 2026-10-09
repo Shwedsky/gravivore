@@ -6,6 +6,7 @@ import unittest
 import zipfile
 from pathlib import Path
 import intake_v2 as intake
+from prepare_zoo import preview_material
 
 
 class SafeExtractionTests(unittest.TestCase):
@@ -58,6 +59,29 @@ class SafeExtractionTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp:
             with self.assertRaises(ValueError):
                 intake.copy_member(io.BytesIO(), Path(temp) / 'x', intake.MAX_FILE + 1)
+
+    def test_binary_material_is_byte_identical(self):
+        # Regression: UTF-8 replacement of a native Unity material destroys PPtr GUIDs.
+        binary=b'\x00\x00\x01\x7f\xfe\xffMaterial\x00'+bytes(range(256))
+        self.assertEqual(preview_material(binary),binary)
+
+    def test_yaml_material_preserves_texture_guid_and_changes_only_shader(self):
+        raw=b'%YAML 1.1\nm_Shader: {fileID: 1, guid: deadbeef}\nm_Texture: {fileID: 2, guid: abc123}\n'
+        result=preview_material(raw)
+        self.assertIn(b'm_Texture: {fileID: 2, guid: abc123}',result)
+        self.assertNotIn(b'deadbeef',result)
+        self.assertIn(b'fileID: 46',result)
+
+    def test_conflicting_zip_variants_preserved_only_when_explicit(self):
+        with tempfile.TemporaryDirectory() as temp:
+            archive=Path(temp)/'pack.zip'
+            with zipfile.ZipFile(archive,'w') as z:
+                z.writestr('texture.png',b'first')
+                z.writestr('texture.png',b'second')
+            output=Path(temp)/'out'
+            intake.extract_archive(archive,output,preserve_conflicts=True)
+            values={p.read_bytes() for p in output.rglob('*.png')}
+            self.assertEqual(values,{b'first',b'second'})
 
 
 if __name__ == '__main__':
