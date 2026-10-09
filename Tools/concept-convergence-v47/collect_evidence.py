@@ -31,12 +31,17 @@ for name,path in captures.items():
     if source.exists():
         target=OUT/'internal/regression'/name;target.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(source,target);copied.append(path)
 summary={}
-for name in ('EditModeFull','PlayModeFull','EditModeFinal','PlayModeFinal','V47ReviewedCamera','ActorBindings'):
+for name in ('EditModeFull','PlayModeFull','EditModeFinal','PlayModeFinal','CameraInventoryFinal','V47ReviewedCamera','ActorBindings'):
     path=OUT/'verification'/(name+'.xml')
     if not path.exists():continue
     run=ET.parse(path).getroot();summary[name]={k:run.attrib.get(k) for k in ('result','total','passed','failed','skipped','duration')}
     summary[name]['failures']=[{'name':t.attrib['fullname'],'message':t.findtext('failure/message')} for t in run.iter('test-case') if t.attrib.get('result')=='Failed']
     summary[name]['skips']=[{'name':t.attrib['fullname'],'reason':t.findtext('reason/message')} for t in run.iter('test-case') if t.attrib.get('result')=='Skipped']
+if (OUT/'verification/CameraInventoryFinal.xml').exists():
+    cases={t.attrib['fullname']:t.attrib['result'] for t in ET.parse(OUT/'verification/PlayModeFinal.xml').getroot().iter('test-case')}
+    for t in ET.parse(OUT/'verification/CameraInventoryFinal.xml').getroot().iter('test-case'):
+        assert t.attrib['fullname'] in cases;cases[t.attrib['fullname']]=t.attrib['result']
+    summary['PlayModeResolved']={'method':'Full suite plus affected diagnostic-test rerun; original XML is preserved','fullRun':'PlayModeFinal.xml','affectedRerun':'CameraInventoryFinal.xml','total':len(cases),'passed':sum(s=='Passed' for s in cases.values()),'failed':sum(s=='Failed' for s in cases.values()),'skipped':sum(s=='Skipped' for s in cases.values()),'failures':[n for n,s in cases.items() if s=='Failed']}
 (OUT/'verification/test_summary.json').write_text(json.dumps(summary,indent=2))
 (OUT/'verification/regression_receipt_sources.json').write_text(json.dumps({'freshCopiesFromExistingRegressionHarnesses':copied,'historyIsNonAuthoritative':True},indent=2))
 font=ImageFont.truetype('C:/Windows/Fonts/segoeui.ttf',24)

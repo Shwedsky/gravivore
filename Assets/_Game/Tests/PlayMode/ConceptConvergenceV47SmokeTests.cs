@@ -73,7 +73,7 @@ namespace Gravivore.Tests.PlayMode
             var visible=root.GetComponentsInChildren<Renderer>(true).Where(r=>r.enabled&&r.gameObject.activeInHierarchy&&GeometryUtility.TestPlanesAABB(planes,r.bounds)).ToArray();
             var evidence=new CameraInventory{capture=name,renderers=visible.Length,skinnedRenderers=visible.OfType<SkinnedMeshRenderer>().Count(),materialSlots=visible.Sum(r=>r.sharedMaterials.Length),uniqueMaterials=visible.SelectMany(r=>r.sharedMaterials).Distinct().Count(),lights=root.GetComponentsInChildren<Light>(true).Count(l=>l.enabled&&l.gameObject.activeInHierarchy)};
             foreach(var r in visible)
-            {var mesh=r is SkinnedMeshRenderer skin?skin.sharedMesh:r.GetComponent<MeshFilter>()?.sharedMesh;if(mesh!=null)for(var i=0;i<mesh.subMeshCount;i++)evidence.triangles+=(long)mesh.GetIndexCount(i)/3;}
+            {var skin=r as SkinnedMeshRenderer;var filter=r.GetComponent<MeshFilter>();var mesh=skin!=null?skin.sharedMesh:filter!=null?filter.sharedMesh:null;if(mesh!=null)for(var i=0;i<mesh.subMeshCount;i++)evidence.triangles+=(long)mesh.GetIndexCount(i)/3;}
             evidence.particles=root.GetComponentsInChildren<ParticleSystem>(true).Sum(p=>p.particleCount);
             File.WriteAllText(dir+"/"+name+"_cost.json",JsonUtility.ToJson(evidence,true));
         }

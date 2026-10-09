@@ -1,0 +1,106 @@
+{
+  "EditModeFull": {
+    "result": "Passed",
+    "total": "497",
+    "passed": "497",
+    "failed": "0",
+    "skipped": "0",
+    "duration": "19,727927",
+    "failures": [],
+    "skips": []
+  },
+  "PlayModeFull": {
+    "result": "Failed(Child)",
+    "total": "139",
+    "passed": "136",
+    "failed": "2",
+    "skipped": "1",
+    "duration": "524,8120716",
+    "failures": [
+      {
+        "name": "Gravivore.Tests.PlayMode.ArtRuntimePreviewSmokeTests.ActualCutterPopulationPreservesRootPhysicsPbrAndDeathRecycle",
+        "message": "  Expected: True\n  But was:  False\n"
+      },
+      {
+        "name": "Gravivore.Tests.PlayMode.ArtRuntimePreviewSmokeTests.Tier2AndFourActualCuttersProduceRuntimeStructuralAuditAndAlignedVfx",
+        "message": "  Expected: in range (1,50000)\n  But was:  53984\n"
+      }
+    ],
+    "skips": [
+      {
+        "name": "Gravivore.Tests.PlayMode.VisualIntegrationSmokeTests.CaptureStructuralFoundationWhenRequested",
+        "reason": "Set GRAVIVORE_VISUAL_INTEGRATION_QA to export structural review captures."
+      }
+    ]
+  },
+  "EditModeFinal": {
+    "result": "Passed",
+    "total": "497",
+    "passed": "497",
+    "failed": "0",
+    "skipped": "0",
+    "duration": "20,4679705",
+    "failures": [],
+    "skips": []
+  },
+  "PlayModeFinal": {
+    "result": "Failed(Child)",
+    "total": "139",
+    "passed": "137",
+    "failed": "1",
+    "skipped": "1",
+    "duration": "520,1175684",
+    "failures": [
+      {
+        "name": "Gravivore.Tests.PlayMode.ConceptConvergenceV47SmokeTests.ProductionAndCloseSurfaceReview",
+        "message": "UnityEngine.MissingComponentException : There is no 'MeshFilter' attached to the \"Reused service steam\" game object, but a script is trying to access it.\nYou probably need to add a MeshFilter to the game object \"Reused service steam\". Or your script needs to check if the component is attached before using it."
+      }
+    ],
+    "skips": [
+      {
+        "name": "Gravivore.Tests.PlayMode.VisualIntegrationSmokeTests.CaptureStructuralFoundationWhenRequested",
+        "reason": "Set GRAVIVORE_VISUAL_INTEGRATION_QA to export structural review captures."
+      }
+    ]
+  },
+  "CameraInventoryFinal": {
+    "result": "Passed",
+    "total": "1",
+    "passed": "1",
+    "failed": "0",
+    "skipped": "0",
+    "duration": "8,6618915",
+    "failures": [],
+    "skips": []
+  },
+  "V47ReviewedCamera": {
+    "result": "Passed",
+    "total": "1",
+    "passed": "1",
+    "failed": "0",
+    "skipped": "0",
+    "duration": "5,1872256",
+    "failures": [],
+    "skips": []
+  },
+  "ActorBindings": {
+    "result": "Passed",
+    "total": "8",
+    "passed": "8",
+    "failed": "0",
+    "skipped": "0",
+    "duration": "0,1944837",
+    "failures": [],
+    "skips": []
+  },
+  "PlayModeResolved": {
+    "method": "Full suite plus affected diagnostic-test rerun; original XML is preserved",
+    "fullRun": "PlayModeFinal.xml",
+    "affectedRerun": "CameraInventoryFinal.xml",
+    "total": 139,
+    "passed": 138,
+    "failed": 0,
+    "skipped": 1,
+    "failures": []
+  }
+}
