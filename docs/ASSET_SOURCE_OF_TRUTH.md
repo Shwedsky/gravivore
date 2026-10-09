@@ -61,6 +61,45 @@ Use it for:
 
 Do not use its old worktree paths as current instructions.
 
+## 5.1 Current Chapter 01 blueprint payloads
+
+For the owner-approved Chapter 01 Visual Blueprint V1, the current owner-local raw packages are:
+
+`ExternalAssetIntake/Current/quaternius-modular-scifi-megakit-standard/Modular SciFi MegaKit[Standard].zip`
+
+and
+
+`ExternalAssetIntake/Current/molten-maps-scifi/Molten Maps SciFi Asset Pack.zip`
+
+These two payload locations are the canonical current raw inputs for the next Chapter 01 visual/world rebuild.
+
+They are intentionally separate from the old `FreeAssetIntakeV1` cache.
+
+The raw ZIPs remain owner-local / git-ignored unless an exact license review and deliberate source-redistribution decision says otherwise. Codex may inspect/extract them in ignored scratch space for the active blueprint task.
+
+Primary intended usage:
+
+**Quaternius Modular Sci-Fi MegaKit [Standard]**
+- `Platform_*` families;
+- `Door_*` and `Door_Frame_*`;
+- `ShortWall_*`, `Wall*`, `Bottom*`, `Top*`;
+- `Column_*`, especially structural/piped columns;
+- rails, ramps and stairs;
+- cable, vent, pipe-holder, access-point and light props.
+
+**Molten Maps SciFi Asset Pack**
+- `Generator`, `Generator Pile Large/Small`;
+- `Cryo Tube ON/OFF`;
+- `Centrifuge`;
+- `Command Console`, `Wall Command`;
+- `Corridor Large/Small`;
+- `Catwalk`;
+- metal/mid-path/hazard floor families;
+- `Wall Pipe`, wall-light, wall-door and second-floor wall families;
+- batteries and selected functional machinery.
+
+Do not interpret this as an instruction to scatter stock assets across the map. The Chapter blueprint defines composition; donor modules are ingredients. Unique hero structures should be custom-authored or materially reworked when the kit cannot satisfy the approved concept.
+
 ## 6. Public repository safety
 
 Before committing third-party source bytes, verify the exact item license permits redistribution in a public source repository.
@@ -88,3 +127,11 @@ If source redistribution is not permitted, keep raw source local/private and com
 The owner concept is design reference, not a third-party asset pack. Its artistic requirements are normalized into `CURRENT_VISUAL_TARGET.md` so a Codex environment that cannot access the binary still has a current target.
 
 When the owner reference image is available to the task, treat it as primary visual evidence, subject to the explicit bipedal G-0 override and newer owner corrections.
+
+For Chapter 01 scene composition, also read:
+
+`docs/visual-blueprints/chapter01/CHAPTER01_VISUAL_BLUEPRINT_V1.md`
+
+and the board image at:
+
+`docs/visual-blueprints/chapter01/CHAPTER01_VISUAL_BLUEPRINT_V1.jpg`
