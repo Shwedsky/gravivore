@@ -66,7 +66,10 @@ namespace Gravivore.Tests.PlayMode
                 Assert.That(form.GetComponentsInChildren<Collider>(true), Is.Empty);
                 Assert.That(form.GetComponentsInChildren<MonoBehaviour>(true), Is.Empty);
                 Assert.That(form.GetComponentsInChildren<Renderer>().Length, Is.EqualTo(3));
-                Assert.IsTrue(form.GetComponentsInChildren<Renderer>().All(r => r.sharedMaterial.name == "Slice_IndustrialAtlas"));
+                Assert.IsTrue(form.GetComponentsInChildren<Renderer>().All(r =>
+                    r.sharedMaterial.name == "VR3_WornIndustrialAtlas" &&
+                    r.sharedMaterial.shader.name == "Universal Render Pipeline/Lit" &&
+                    r.sharedMaterial.IsKeywordEnabled("_METALLICSPECGLOSSMAP")));
             }
             var killed = cutters[0];
             var result = killed.ApplyDamage(new DamageRequest(10000, DamageType.Gravity));

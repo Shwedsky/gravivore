@@ -10,6 +10,7 @@ using Gravivore.Gameplay.Equipment;
 using Gravivore.Presentation.Player;
 using Gravivore.Presentation.UI;
 using Gravivore.Presentation.Combat;
+using Gravivore.Presentation.AudioVfx;
 using UnityEngine.UI;
 using NUnit.Framework;
 using UnityEngine;
@@ -108,13 +109,23 @@ namespace Gravivore.Tests.PlayMode
             }
             Assert.That(weapon.ActiveMuzzle.localPosition.z,Is.GreaterThan(rank1Origin.z+.5f));
             yield return new WaitForSeconds(4.1f);Capture(root,"08_g0_rank5");Capture(root,"11_minimap_hud");
-            var lash=root.GetComponentInChildren<GravityLashVfxPool>();var destination=root.PlayerObject.transform.position+Vector3.forward*4+Vector3.up*.65f;
+            var lash=root.GetComponentInChildren<GravityLashVfxPool>();var destination=weapon.ActiveMuzzle.position+weapon.ActiveMuzzle.forward*4;
             var count=lash.Phase6BCreatedVfxCount;
+            // Freeze only presentation clocks while the GPU uploads each review frame. A slow
+            // ReadPixels must not consume a short production cue before it can be photographed.
+            lash.enabled=false;
+            foreach(var cue in lash.Vfx.GetComponentsInChildren<Phase6BVfxInstance>(true))cue.enabled=false;
             lash.BeginCharge(Vector3.zero,destination,null,.5f);
             Assert.That(Vector3.Distance(lash.LastPlayedObject.transform.position,weapon.ActiveMuzzle.position),Is.LessThan(.01f));
-            yield return null;Capture(root,"12a_weapon_source");
-            lash.Play(Vector3.zero,destination);yield return null;Capture(root,"12b_weapon_travel");
-            lash.Tick(1);yield return null;Capture(root,"12c_weapon_impact");
+            AdvanceCaptureParticles(lash.Vfx.LastPlayedInstance);yield return null;
+            Capture(root,"12a_weapon_source");
+            lash.Play(Vector3.zero,destination);lash.Vfx.LastPlayedInstance.Tick(.025f);
+            var travel=lash.Vfx.LastPlayedInstance.GetComponentInChildren<LineRenderer>();
+            Assert.That(Vector3.Distance(travel.GetPosition(0),weapon.ActiveMuzzle.position),Is.LessThan(.01f));
+            yield return null;Capture(root,"12b_weapon_travel");
+            lash.Tick(1);AdvanceCaptureParticles(lash.Vfx.LastPlayedInstance);yield return null;
+            Assert.That(Vector3.Distance(lash.Vfx.LastPlayedInstance.transform.position,destination),Is.LessThan(.01f));
+            Capture(root,"12c_weapon_impact");lash.Vfx.StopAll();
             Assert.That(lash.Phase6BCreatedVfxCount,Is.EqualTo(count));
             root.PauseMenu.Open();var panel=root.GetComponent<WeaponEquipmentPanel>();panel.Open();yield return null;
             Assert.That(panel.DisplayedWeapon,Is.SameAs(root.VisualEnvironment.Definition.UiSkin.WeaponThumbnail(5)));
@@ -124,6 +135,11 @@ namespace Gravivore.Tests.PlayMode
             Assert.That(root.Equipment.Inventory.GetRank(Chapter01Weapon.ItemId),Is.EqualTo(5));
             Assert.That(weapon.VisualRank,Is.EqualTo(5));Assert.IsTrue(weapon.IsEquipped);
             Assert.That(root.GetComponentInChildren<GravityLashVfxPool>().EquipmentOrigin,Is.SameAs(weapon.ActiveMuzzle));
+        }
+        private static void AdvanceCaptureParticles(Phase6BVfxInstance cue)
+        {
+            foreach(var particle in cue.GetComponentsInChildren<ParticleSystem>())
+            {particle.Simulate(.045f,true,false,true);particle.Pause();}
         }
     }
 }

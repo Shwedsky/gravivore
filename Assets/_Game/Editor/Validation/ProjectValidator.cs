@@ -159,6 +159,7 @@ namespace Gravivore.Editor
             ValidateCanonicalScenes();
             VisualIntegration.VisualIntegrationValidator.ValidateOrThrow();
             VisualIntegration.Chapter01V3Builder.ValidateOrThrow();
+            VisualIntegration.VisualReplacementV3Audit.ValidateOrThrow();
         }
 
         private static void ValidateS20Balance()

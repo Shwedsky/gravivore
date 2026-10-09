@@ -1,7 +1,7 @@
 """Original role-specific production shells around the accepted mechanical rigs.
 
 Reuses project-owned baseline construction and preserves mesh/clip/bone names.
-CC0 Essentials is a mechanism reference; no Asset Store geometry is imported.
+CC0 Essentials upper plating is selectively extracted; no Asset Store geometry is imported.
 """
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]

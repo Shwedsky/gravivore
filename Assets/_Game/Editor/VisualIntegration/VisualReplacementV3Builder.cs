@@ -107,9 +107,16 @@ namespace Gravivore.Editor.VisualIntegration
             foreach(var name in new[]{"HostileSoft","PlayerSoft","PlayerStreak","RepairSoft","RepairStreak"})
             {
                 var material=AssetDatabase.LoadAssetAtPath<Material>("Assets/_Game/Content/Presentation/Phase6B/VFX/Materials/M_Phase6B_"+name+".mat");
-                var texture=AssetDatabase.LoadAssetAtPath<Texture2D>(Root+"/Textures/VR3_"+(name.Contains("Streak")||name=="HostileSoft"?"Spark":"Energy")+"Mask.png");
+                var texture=AssetDatabase.LoadAssetAtPath<Texture2D>(Root+"/Textures/VR3_"+(name.Contains("Streak")||name=="HostileSoft"?"Beam":"Energy")+"Mask.png");
                 material.SetTexture("_BaseMap",texture);material.SetTexture("_MainTex",texture);EditorUtility.SetDirty(material);
             }
+            var sparkPath=Root+"/Materials/VR3_MetalSpark.mat";
+            var spark=AssetDatabase.LoadAssetAtPath<Material>(sparkPath);
+            if(spark==null){spark=new Material(AssetDatabase.LoadAssetAtPath<Material>("Assets/_Game/Content/Presentation/Phase6B/VFX/Materials/M_Phase6B_HostileSoft.mat"));AssetDatabase.CreateAsset(spark,sparkPath);}
+            var sparkTexture=AssetDatabase.LoadAssetAtPath<Texture2D>(Root+"/Textures/VR3_SparkMask.png");spark.SetTexture("_BaseMap",sparkTexture);spark.SetTexture("_MainTex",sparkTexture);EditorUtility.SetDirty(spark);
+            const string impactPath="Assets/_Game/Content/Presentation/Phase6B/VFX/Prefabs/PFX_HostileImpact.prefab";
+            var impact=PrefabUtility.LoadPrefabContents(impactPath);var effectData=new SerializedObject(impact.GetComponent<Gravivore.Presentation.AudioVfx.Phase6BVfxInstance>());
+            effectData.FindProperty("_material").objectReferenceValue=spark;effectData.ApplyModifiedPropertiesWithoutUndo();PrefabUtility.SaveAsPrefabAsset(impact,impactPath);PrefabUtility.UnloadPrefabContents(impact);
             AssetDatabase.Refresh();AssetDatabase.SaveAssets();Debug.Log("VISUAL_REPLACEMENT_V3_UI_PASS");
         }
         private static void Environment(bool full)

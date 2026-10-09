@@ -21,6 +21,9 @@ switch($Action){
  'Build' {$replacementArgs+=@('-quit','-buildTarget','Android','-executeMethod','Gravivore.Editor.Build.AndroidBuild.BuildDev','-GravivoreVersion','0.1.0','-VersionCode','44')}
 }
 if($TestFilter){$replacementArgs+=@('-testFilter',$TestFilter)}
+if($Action -eq 'PlayMode'){
+ $env:GRAVIVORE_VISUAL_INTEGRATION_QA=Join-Path $replacementRoot 'docs/visual-replacement-v3/internal/structure'
+}
 $replacementProcess=Start-Process -FilePath $replacementUnity -ArgumentList $replacementArgs -WorkingDirectory $replacementRoot -WindowStyle Hidden -PassThru
 $replacementProcess.WaitForExit()
 Write-Output ('UNITY_'+$Action+'_EXIT='+$replacementProcess.ExitCode)

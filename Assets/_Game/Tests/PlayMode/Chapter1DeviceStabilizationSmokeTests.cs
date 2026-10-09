@@ -157,7 +157,19 @@ namespace Gravivore.Tests.PlayMode
         private static void Audit(S01SceneCompositionRoot root)
         {
             foreach (var text in root.GetComponentsInChildren<Text>(true))
+            {
+                // Required legal attribution preserves the author's proper name,
+                // source URL and license identifier; functional UI stays Russian.
+                if(text.name=="UI Attribution")
+                {
+                    StringAssert.StartsWith("Оформление:",text.text);
+                    StringAssert.Contains("Catherine Laserna",text.text);
+                    StringAssert.Contains("CC BY 4.0",text.text);
+                    StringAssert.Contains("cjlaserna.itch.io/exe",text.text);
+                    continue;
+                }
                 Assert.That(Regex.IsMatch(text.text, "[A-Za-z]"), Is.False, text.name + ": " + text.text);
+            }
         }
     }
 }
