@@ -108,6 +108,11 @@ Builds/Logs/*.log
 /ExternalAssetIntake/FreeAssetIntakeV1/_local_reports/
 /Builds/
 
+# Owner V2 downloads were dropped at the worktree root. Preserve locally only.
+/98_unclassified/
+/00_reference/
+/ExternalAssetIntake/FreeAssetIntakeV1/_work_v2/
+
 # Local donor extraction / Blender render intermediates (G-0 V2).
 /.local-g0-v2/
 *.blend1
