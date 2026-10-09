@@ -1,0 +1,15 @@
+# Chapter 01 Blueprint World-only R1 authoring
+
+This toolset rebuilds the environment in the canonical Chapter01_ScrapExclusion scene from the owner-approved Blueprint V1. It does not author actors, weapons, combat effects or UI skins.
+
+The input packages are the two ignored owner-local ZIPs under ExternalAssetIntake/Current. Preserve the originals. `intake.py` extracts only the recorded CC0 source entries and license evidence; `inspect_donors.py` records real donor dimensions using Blender. `prepare_surfaces.py` retains native MegaKit trim UV maps and converts ORM to URP metallic/smoothness and occlusion channels, plus the original industrial machinery atlas.
+
+`layout.json` owns sector centers, movement surfaces, major footprint blockers, platform-edge barriers, route points and the existing four strong-spot coordinates. `complete_layout.py` regenerates perimeter barriers from the union of movement surfaces. The one-time `fit_portrait_layout.py` migration records the matching footprint adjustment for the unchanged production camera. `refine_landmarks.py` records the final induction footprint, Relay bay jambs, pre-gate strong encounter accessibility and the elite position that preserves the five-second minimum route to the boss.
+
+Run `author_world.py` through Blender 5.2 in background mode with `--python-exit-code 1`. It exports the eight distinct sector FBXs, service network and gate model, plus a portable compressed Blender source with packed derivative textures. World axes are Blender X/Y/Z to Unity X/Z/Y. Unit-scale FBX export is mandatory; meshes are triangulated before export and consolidated in spatial bands for culling. Every input uses one consistently named UVMap before joining; `inspect_authored_uv.py` verifies the packed source has no conflicting UV channels.
+
+Run `run_unity.ps1 -Action Author` in this repository/worktree. The editor builder creates controlled URP materials, pure presentation prefabs, the world layout asset, remaps existing encounter positions and completely replaces the former environment object. Gameplay colliders remain outside presentation. The same script supports Compile, Audit, Validate, EditMode and PlayMode, with optional TestFilter and Label.
+
+Evidence is written under docs/history/implementation-passes/chapter01-blueprint-world-r1. Run the current-world portrait and CharacterController tests before an Android build, then the full relevant regression suites and the real five-minute soak. Editor timing is not Android device FPS. Device/human review remains necessary.
+
+`verify_locked_scope.py` compares protected actors, G-0, combat/VFX/audio, UI, gameplay and save source against the pre-implementation merged branch (db8828f). The separately recorded synchronized main SHA is 38e0ed8. Encounter definitions allow only their position fields to differ; the main branch alone is not the accepted V47 art baseline.

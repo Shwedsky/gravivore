@@ -159,6 +159,7 @@ namespace Gravivore.Editor.VisualIntegration
         }
         public static void Audit()
         {
+            if (Chapter01BlueprintWorldBuilder.IsBlueprintWorld()) { Chapter01BlueprintWorldBuilder.Audit(); return; }
             AuditActors();var setup=EditorSceneManager.GetSceneManagerSetup();
             try
             {

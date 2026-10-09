@@ -23,7 +23,15 @@ namespace Gravivore.Tests.EditMode
         {
             Assert.DoesNotThrow(FirstVisualSliceDependencies.ValidateOrThrow);
             var deps = AssetDatabase.GetDependencies(FirstVisualSliceBuilder.ScenePath, true);
-            foreach (var path in FirstVisualSliceDependencies.Required) Assert.Contains(path, deps);
+            if(Chapter01BlueprintWorldBuilder.IsBlueprintWorld())
+            {
+                foreach(var sector in Chapter01BlueprintWorldBuilder.ReadLayout().sectors)
+                    Assert.Contains(Chapter01BlueprintWorldBuilder.Root+"/Models/R1_"+sector.model+".fbx",deps);
+                foreach(var path in FirstVisualSliceDependencies.Required.Where(p=>p!=FirstVisualSliceBuilder.Prefab("Environment_Slice") && !p.EndsWith("Deck_ServiceMarkings.fbx")))
+                    Assert.Contains(path,deps);
+                Assert.IsFalse(deps.Contains(FirstVisualSliceBuilder.Prefab("Environment_Slice")),"Historical world is not a production dependency.");
+            }
+            else foreach (var path in FirstVisualSliceDependencies.Required) Assert.Contains(path, deps);
             Assert.IsFalse(EditorBuildSettings.scenes.Any(s => s.path.Contains("ArtReview")));
         }
         [TestCase("Scout_V1")] [TestCase("Cutter_V1")] [TestCase("Magnetar_V1")]

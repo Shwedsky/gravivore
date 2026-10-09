@@ -28,7 +28,7 @@ namespace Gravivore.Tests.PlayMode
             var root = _scene.Root;
             var world = root.WorldPresenter;
             Assert.That(root.VisualEnvironment.GetComponentsInChildren<Collider>(true), Is.Empty);
-            Assert.That(world.EnvironmentBlockerCount, Is.EqualTo(2 + root.VisualEnvironment.SliceObstacleCount));
+            Assert.That(world.EnvironmentBlockerCount, Is.EqualTo(world.Layout != null ? world.Layout.BlockerCount : 2 + root.VisualEnvironment.SliceObstacleCount));
             Assert.That(world.GameplayRoot.lossyScale, Is.EqualTo(Vector3.one));
 
             foreach (var regionId in new[]
@@ -52,7 +52,8 @@ namespace Gravivore.Tests.PlayMode
                 Assert.That(blocker.gameObject.layer, Is.EqualTo(LayerMask.NameToLayer("HardBlocker")));
                 Assert.IsNull(blocker.GetComponent<Renderer>(), blocker.name);
                 Assert.IsNull(blocker.GetComponent<MeshFilter>(), blocker.name);
-                Assert.That(Vector3.Distance(blocker.bounds.size, blocker.transform.lossyScale), Is.LessThan(.001f),
+                var authoredSize=world.Layout!=null?world.Layout.GetBlocker(i).Size:blocker.transform.lossyScale;
+                Assert.That(Vector3.Distance(blocker.bounds.size, authoredSize), Is.LessThan(.001f),
                     blocker.name + " world dimensions must match the authored proxy size.");
             }
 
@@ -111,7 +112,8 @@ namespace Gravivore.Tests.PlayMode
             Assert.IsNotNull(visualRoot);
             var assembly = visualRoot.Find("Containment Gate Assembly");
             Assert.IsNotNull(assembly);
-            Assert.That(assembly.GetComponentsInChildren<Renderer>(true).Length, Is.EqualTo(1));
+            var authoredRendererCount=root.VisualEnvironment.BlueprintWorldOnly?root.VisualEnvironment.SliceGate.GetComponentsInChildren<Renderer>(true).Length:1;
+            Assert.That(assembly.GetComponentsInChildren<Renderer>(true).Length, Is.EqualTo(authoredRendererCount));
             Assert.That(assembly.GetComponentsInChildren<Collider>(true), Is.Empty);
             Assert.That(assembly.GetComponentsInChildren<Light>(true), Is.Empty);
             Assert.That(assembly.GetComponentsInChildren<Renderer>(true)

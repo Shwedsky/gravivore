@@ -171,6 +171,7 @@ namespace Gravivore.Editor.VisualIntegration
         }
         public static void ValidateOrThrow()
         {
+            if (Chapter01BlueprintWorldBuilder.IsBlueprintWorld()) { Chapter01BlueprintWorldBuilder.Audit(); return; }
             var dependencies=AssetDatabase.GetDependencies(FirstVisualSliceBuilder.ScenePath,true);
             foreach(var name in Models){var prefab=AssetDatabase.LoadAssetAtPath<GameObject>(Prefab(name));PresentationPrefabValidation.ValidateOrThrow(prefab);
                 if(!dependencies.Contains(Prefab(name)))throw new InvalidOperationException("V3 production scene lacks "+name);}

@@ -106,7 +106,7 @@ namespace Gravivore.Tests.PlayMode
             root.MagnetarGuard.ActivateEncounter();
             camera.GetComponent<Gravivore.Presentation.Camera.PortraitFollowCamera>().SnapToTarget();
             var map = root.GetComponentInChildren<MapMinimapPresenter>(true); map.RefreshNow();
-            Assert.That(map.CurrentZoneText,Is.EqualTo("Контур Магнетара"));
+            Assert.That(map.CurrentZoneText,Is.EqualTo("Комплекс Магнетара"));
             var view = root.PlayerObject.GetComponent<PlayerEvolutionView>();
             Directory.CreateDirectory("docs/history/visual-stages/chapter01-visual-passes/device-correction/internal");
             foreach (var tier in new[] { EvolutionTier.Tier0,EvolutionTier.Tier1,EvolutionTier.Tier2 })

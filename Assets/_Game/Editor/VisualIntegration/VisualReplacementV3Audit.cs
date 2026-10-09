@@ -22,6 +22,7 @@ namespace Gravivore.Editor.VisualIntegration
         {public bool validated=true;public string apkSha256;public string[] dependencies,staticGeometrySources;public string productionScene=FirstVisualSliceBuilder.ScenePath;public string staticGeometryPacking="Scene static batches; scene root and meshes verified by typed APK references";}
         public static void ValidateOrThrow()
         {
+            if (Chapter01BlueprintWorldBuilder.IsBlueprintWorld()) { Chapter01BlueprintWorldBuilder.Audit(); return; }
             var definition=AssetDatabase.LoadAssetAtPath<ChapterVisualIntegrationDefinition>("Assets/_Game/Content/Definitions/Chapter01_VisualIntegration.asset");
             if(definition.UiSkin==null)throw new InvalidOperationException("Production UI skin missing");definition.UiSkin.ValidateOrThrow();
             if(!File.ReadAllText("Assets/StreamingAssets/ThirdPartyNotices.txt").Contains("Catherine Laserna"))throw new InvalidOperationException("Shipped EXE attribution missing");
@@ -66,6 +67,7 @@ namespace Gravivore.Editor.VisualIntegration
         public void OnPreprocessBuild(BuildReport report)=>ValidateOrThrow();
         public void OnPostprocessBuild(BuildReport report)
         {
+            if (Chapter01BlueprintWorldBuilder.IsBlueprintWorld()) return;
             var packed=report.packedAssets.SelectMany(p=>p.contents).Select(c=>c.sourceAssetPath).Distinct().ToArray();
             File.WriteAllLines(Output+"/build_report_asset_paths.txt",packed);
             var dependencies=AssetDatabase.GetDependencies(FirstVisualSliceBuilder.ScenePath,true).Where(p=>p.StartsWith(VisualReplacementV3Builder.Root,StringComparison.Ordinal)&&!p.EndsWith(".cs",StringComparison.Ordinal)).ToArray();

@@ -21,6 +21,7 @@ namespace Gravivore.Editor.VisualIntegration
         {public bool validated;public int flatColorOnlyHeroRenderers,primitiveOnlyHeroProps,heroRenderers,enabledRenderers,sharedMaterials,authoredLights;public long staticTriangles;public Row[] renderers;public Pair[] boundsOverlapCandidates;public string overlapMethod="Conservative bounds candidates, including hollow frames; actual production-camera inspection determines visible defects.";}
         public static void ValidateOrThrow()
         {
+            if (Chapter01BlueprintWorldBuilder.IsBlueprintWorld()) { Chapter01BlueprintWorldBuilder.Audit(); return; }
             if(!Directory.Exists(SurfaceHeroV46Builder.Root))return;
             var setup=EditorSceneManager.GetSceneManagerSetup();
             try
@@ -69,6 +70,7 @@ namespace Gravivore.Editor.VisualIntegration
         public void OnPreprocessBuild(BuildReport report)=>ValidateOrThrow();
         public void OnPostprocessBuild(BuildReport report)
         {
+            if (Chapter01BlueprintWorldBuilder.IsBlueprintWorld()) return;
             var packed=report.packedAssets.SelectMany(p=>p.contents).Select(c=>c.sourceAssetPath).Distinct().ToArray();
             var required=AssetDatabase.GetDependencies(FirstVisualSliceBuilder.ScenePath,true).Where(p=>p.StartsWith(SurfaceHeroV46Builder.Root+"/Materials/")||p.StartsWith(SurfaceHeroV46Builder.Root+"/Textures/")).ToArray();
             foreach(var p in required)if(!packed.Contains(p))throw new BuildFailedException("V46 PBR resource missing in build: "+p);

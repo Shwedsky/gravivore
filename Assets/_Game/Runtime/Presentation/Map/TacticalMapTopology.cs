@@ -34,6 +34,7 @@ namespace Gravivore.Presentation.Map
         }
         private readonly Footprint[] _blockers;
         private readonly Area[] _areas;
+        private readonly Area[] _surfaces;
         public TacticalMapTopology(Chapter01WorldPresenter world, EnemyPopulationController population, Vector3 repair, float repairRadius)
         {
             Bounds = new MapWorldBounds(world.Bounds.MinX, world.Bounds.MaxX, world.Bounds.MinZ, world.Bounds.MaxZ);
@@ -41,6 +42,15 @@ namespace Gravivore.Presentation.Map
             foreach (var collider in world.GameplayRoot.GetComponentsInChildren<BoxCollider>(true))
                 if (collider.gameObject.layer == LayerMask.NameToLayer("HardBlocker")) walls.Add(new Footprint(collider));
             _blockers = walls.ToArray();
+            var surfaces = new List<Area>();
+            if (world.Layout != null)
+                for (var i = 0; i < world.Layout.SurfaceCount; i++)
+                {
+                    var surface = world.Layout.GetSurface(i);
+                    surfaces.Add(new Area(surface.Center, new Vector2(surface.Size.x, surface.Size.z), new Color(.08f,.17f,.21f,.92f)));
+                }
+            else surfaces.Add(new Area(new Vector3(Bounds.Center.x,0,Bounds.Center.y),new Vector2(Bounds.Width,Bounds.Depth),new Color(.08f,.17f,.21f,.92f)));
+            _surfaces = surfaces.ToArray();
             var areas = new List<Area>();
             for (var i = 0; i < population.SpotCount; i++)
             {
@@ -58,6 +68,8 @@ namespace Gravivore.Presentation.Map
         public MapWorldBounds Bounds { get; }
         public WorldGateView EliteGate { get; } public WorldGateView BossGate { get; }
         public int BlockerCount => _blockers.Length;
+        public int SurfaceCount => _surfaces.Length;
+        public Area GetSurface(int index) => _surfaces[index];
         public Footprint GetBlocker(int index) => _blockers[index];
         public int AreaCount => _areas.Length;
         public Area GetArea(int index) => _areas[index];
@@ -80,7 +92,8 @@ namespace Gravivore.Presentation.Map
         {
             vh.Clear(); if (_topology == null) return;
             var bounds = _topology.Bounds;
-            Rectangle(vh, new Vector3(bounds.Center.x,0,bounds.Center.y), new Vector2(bounds.Width,bounds.Depth), new Color(.08f,.17f,.21f,.92f));
+            for (var i=0;i<_topology.SurfaceCount;i++)
+            { var surface=_topology.GetSurface(i); Rectangle(vh,surface.Center,surface.Size,surface.Tint); }
             // Open floor is traversable; solid authority footprints carve the actual corridors.
             for (var i=0;i<_topology.AreaCount;i++)
             { var area = _topology.GetArea(i); Rectangle(vh,area.Center,area.Size,area.Tint); }

@@ -98,6 +98,16 @@ Verified on 2026-10-09 against the retained V2 provenance, included license text
 
 Production derivatives: `Assets/_Game/Content/VisualReplacementV3/`. Included license evidence: its `Licenses/` directory. Asset Store sources, unknown/mixed-rights sources, TechLab, Tiago and Meshy are excluded from this public production integration. All new custom damage surfaces, mechanism shells and VFX masks are original project work.
 
+## Chapter 01 Blueprint World-only R1 — environment donors
+
+- Verified: 2026-10-10 against the two owner-local canonical archives, their bundled CC0 license files and the official source pages.
+- Quaternius Modular Sci-Fi MegaKit Standard by Quaternius: https://quaternius.com/packs/modularscifimegakit.html — CC0 1.0 Universal. Runtime-used families: Column_Pipes, Column_Astra, Door_Frame_A, Door_Frame_SquareTall, Platform_Round1, WallAstra_Straight, WallAstra_Straight_Broken, TopCables_Straight and Prop_Vent_Wide. Native trim UVs retained; structures consolidated into authored sector meshes, with controlled URP PBR channel conversion.
+- Molten Maps SciFi Asset Pack by Moltenbolt: https://moltenmaps.itch.io/molten-maps-scifi-pack — CC0 1.0 Universal. Runtime-used families: Generator, Generator Pile Large/Small, Cryo Tube ON, Centrifuge, Command Console, Wall Command and Catwalk. Machinery was resized, regrouped, given industrial atlas UVs and integrated with original housings, presses, gantries, conduits and containment structures.
+- License: https://creativecommons.org/publicdomain/zero/1.0/; attribution is voluntary. No author endorsement is implied.
+- Runtime derivatives: `Assets/_Game/Content/BlueprintWorldR1/`; editable authored source: `art/blueprint-world-r1/Chapter01_BlueprintWorld_R1.blend`; reproducible intake/authoring: `Tools/blueprint-world-r1/`.
+- Exact archive SHA256, source entries and individual source hashes: `docs/history/implementation-passes/chapter01-blueprint-world-r1/asset-intake.json`. Bundled license evidence: `Assets/_Game/Content/BlueprintWorldR1/Licenses/`.
+- Original archives and inspection sources remain ignored under `ExternalAssetIntake/Current/`. This pass replaces environment geometry only; accepted actor, weapon and UI art retain their existing notices.
+
 ## Import template (future additions)
 
 When importing any external asset, append:

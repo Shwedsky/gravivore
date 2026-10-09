@@ -88,7 +88,7 @@ namespace Gravivore.Tests.PlayMode
             yield return scene.Load();
             while (scene.Root.Progression.State.TotalAssimilationScore < 42) Grant(scene);
             var player = scene.Root.PlayerObject;
-            var previewPosition = new Vector3(0, 0, scene.Root.EnemyPopulation.GetSpot(1).Position.z);
+            var previewPosition = scene.Root.EnemyPopulation.GetSpot(1).Position;
             player.transform.position = previewPosition;
             var camera = Camera.main;
             Assert.IsNotNull(camera);

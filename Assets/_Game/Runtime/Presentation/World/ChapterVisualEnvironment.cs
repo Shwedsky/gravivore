@@ -41,6 +41,8 @@ namespace Gravivore.Presentation.World
         }
         [SerializeField] private GameObject _sliceGate;
         [SerializeField] private bool _fullChapterProduction;
+        [SerializeField] private bool _blueprintWorldOnly;
+        public bool BlueprintWorldOnly => _blueprintWorldOnly;
         public bool FullChapterProduction => _fullChapterProduction;
         [SerializeField] private SliceObstacle[] _sliceObstacles = Array.Empty<SliceObstacle>();
         public GameObject SliceGate => _sliceGate;
@@ -76,7 +78,8 @@ namespace Gravivore.Presentation.World
             if (_initialized) return;
             ValidateOrThrow();
             for (var i = 0; i < _dressing.Length; i++) _dressing[i].Model.InstantiateUnder(_dressing[i].Anchor);
-            _definition.RepairHub.InstantiateUnder(GetRegion("repair-hub").Root.Find("MainPlatform"));
+            if (!_blueprintWorldOnly)
+                _definition.RepairHub.InstantiateUnder(GetRegion("repair-hub").Root.Find("MainPlatform"));
 
             if (_phase3DMotion == null)
             {

@@ -34,6 +34,7 @@ namespace Gravivore.Editor.VisualIntegration
         }
         public static void ValidateOrThrow()
         {
+            if (Chapter01BlueprintWorldBuilder.IsBlueprintWorld()) { Chapter01BlueprintWorldBuilder.Audit(); return; }
             var dependencies = AssetDatabase.GetDependencies(FirstVisualSliceBuilder.ScenePath, true);
             foreach (var path in Required)
                 if (!dependencies.Contains(path)) throw new BuildFailedException("Visual slice missing from Chapter01 production dependencies: " + path);
@@ -47,6 +48,7 @@ namespace Gravivore.Editor.VisualIntegration
         public void OnPreprocessBuild(BuildReport report) => ValidateOrThrow();
         public void OnPostprocessBuild(BuildReport report)
         {
+            if (Chapter01BlueprintWorldBuilder.IsBlueprintWorld()) return;
             var packed = report.packedAssets.SelectMany(a => a.contents).Select(c => c.sourceAssetPath).Distinct().ToArray();
             var models = Required.Take(4).Concat(Required.Skip(5).Take(2)).Concat(Required.Skip(8)).Concat(new[] { FirstVisualSliceBuilder.Root + "/Models/Hero_Reactor.fbx", FirstVisualSliceBuilder.Root + "/Models/Deck_Module.fbx" }).ToArray();
             var dependencies = AssetDatabase.GetDependencies(FirstVisualSliceBuilder.ScenePath, true);

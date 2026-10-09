@@ -20,6 +20,7 @@ namespace Gravivore.Editor.VisualIntegration
         [Serializable] private sealed class Packed {public bool validated=true;public string apkSha256;public string[] requiredResources,staticSectorMeshes;}
         public static void ValidateOrThrow()
         {
+            if (Chapter01BlueprintWorldBuilder.IsBlueprintWorld()) { Chapter01BlueprintWorldBuilder.Audit(); return; }
             var setup=EditorSceneManager.GetSceneManagerSetup();
             try
             {
@@ -48,6 +49,7 @@ namespace Gravivore.Editor.VisualIntegration
         public void OnPreprocessBuild(BuildReport report)=>ValidateOrThrow();
         public void OnPostprocessBuild(BuildReport report)
         {
+            if (Chapter01BlueprintWorldBuilder.IsBlueprintWorld()) return;
             var dependencies=AssetDatabase.GetDependencies(FirstVisualSliceBuilder.ScenePath,true).Where(p=>p.StartsWith(ConceptCorrectiveV45Builder.Root+"/",StringComparison.Ordinal)).ToArray();
             var resources=dependencies.Where(p=>!p.StartsWith(ConceptCorrectiveV45Builder.Root+"/Meshes/",StringComparison.Ordinal)).ToArray();
             var packed=report.packedAssets.SelectMany(p=>p.contents).Select(c=>c.sourceAssetPath).Distinct().ToArray();

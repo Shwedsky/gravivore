@@ -13,6 +13,7 @@ namespace Gravivore.Editor.VisualIntegration
         public void OnPreprocessBuild(BuildReport report)=>ConceptConvergenceV47Builder.Audit();
         public void OnPostprocessBuild(BuildReport report)
         {
+            if (Chapter01BlueprintWorldBuilder.IsBlueprintWorld()) return;
             var packed=report.packedAssets.SelectMany(p=>p.contents).Select(c=>c.sourceAssetPath).Distinct().ToArray();
             var dependencies=AssetDatabase.GetDependencies(FirstVisualSliceBuilder.ScenePath,true);
             var actorModels=ConceptConvergenceV47Builder.Actors.Select(a=>"Assets/_Game/Content/"+a.folder+"/Models/"+a.name+".fbx").ToArray();

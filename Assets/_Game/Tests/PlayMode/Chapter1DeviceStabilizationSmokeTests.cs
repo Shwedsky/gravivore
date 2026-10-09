@@ -57,7 +57,10 @@ namespace Gravivore.Tests.PlayMode
             Assert.That(root.EnemyPopulation.LiveEnemyCount, Is.LessThanOrEqualTo(25));
             yield return null;
             Chapter1ConsolidatedRuntimeSmokeTests.Capture(root, "02_strong_spot_pre_elite.png");
-            WalkCapsulePath(root, body, new Vector3(root.WorldPresenter.Bounds.MinX+2, player.position.y, player.position.z));
+            var gateApproach=root.VisualEnvironment.BlueprintWorldOnly
+                ? new Vector3(-root.WorldPresenter.Configuration.EliteGate.Size.x*.5f+1.25f,player.position.y,root.WorldPresenter.Configuration.EliteGate.Position.z-2)
+                : new Vector3(root.WorldPresenter.Bounds.MinX+2,player.position.y,player.position.z);
+            WalkCapsulePath(root, body, gateApproach);
             for (var i = 0; i < 100; i++) body.Move(Vector3.forward * .5f);
             Assert.That(player.position.z, Is.LessThan(root.WorldPresenter.Configuration.EliteGate.Position.z), "Permanent gate side walls still enforce the genuine boundary.");
             Assert.That(root.WorldUnlocks.State.EliteGateUnlocked, Is.False);

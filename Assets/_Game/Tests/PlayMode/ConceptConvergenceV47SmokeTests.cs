@@ -26,7 +26,7 @@ namespace Gravivore.Tests.PlayMode
             root.PlayerObject.GetComponent<GravityAttackController>().enabled=false;
             root.EnemyPopulation.enabled=false;root.MagnetarGuard.enabled=false;root.CustodianBoss.enabled=false;
             foreach(var e in root.GetComponentsInChildren<OrdinaryEnemyController>(true))e.enabled=false;
-            Assert.That(root.WorldPresenter.Bounds.Size.x,Is.EqualTo(56));Assert.That(root.WorldPresenter.Bounds.Size.y,Is.EqualTo(118));
+            Assert.That(root.WorldPresenter.Bounds.Size,Is.EqualTo(root.WorldPresenter.Configuration.GroundSize));
             Capture(root,"01_repair_hub");
             for(var i=0;i<5;i++)
             {var spot=root.EnemyPopulation.GetSpot(i);Move(root,spot.Position);yield return null;Capture(root,"sector_"+spot.Id);Close(root,"dock_"+spot.Id,spot.Position+new Vector3(0,2.0f,3.4f),11f);var enemy=spot.GetLiveEnemy(0);Assert.NotNull(enemy);Close(root,"actor_"+spot.Id,enemy.transform.position+Vector3.up*.8f,4.2f);}

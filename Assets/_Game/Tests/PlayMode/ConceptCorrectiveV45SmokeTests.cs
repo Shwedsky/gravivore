@@ -31,15 +31,20 @@ namespace Gravivore.Tests.PlayMode
         {var b=root.PlayerObject.GetComponent<CharacterController>();b.enabled=false;b.transform.position=p;b.enabled=true;Physics.SyncTransforms();}
         [UnityTest] public IEnumerator ProductionCameraSectorReviewAndBoundedIdleLife()
         {
-            yield return Load();var root=_scene.Root;var env=root.VisualEnvironment;var layer=env.Floor.Find("Chapter 01 Active Industrial Facility V45");Assert.NotNull(layer);
+            yield return Load();var root=_scene.Root;var env=root.VisualEnvironment;
+            var layer=env.BlueprintWorldOnly?env.Floor:env.Floor.Find("Chapter 01 Active Industrial Facility V45");Assert.NotNull(layer);
             Assert.IsEmpty(layer.GetComponentsInChildren<Collider>(true));Assert.IsEmpty(layer.GetComponentsInChildren<MonoBehaviour>(true));
             Assert.That(layer.GetComponentsInChildren<Light>(true).Length,Is.Zero,"Reuse the existing two local lights.");
-            Assert.That(root.WorldPresenter.Bounds.Size.x,Is.EqualTo(56));Assert.That(root.WorldPresenter.Configuration.EliteGate.Position.z-root.RepairHub.RepairPosition.z,Is.EqualTo(68));
+            Assert.That(root.WorldPresenter.Bounds.Size.x,Is.EqualTo(root.WorldPresenter.Configuration.GroundSize.x));
+            if(!env.BlueprintWorldOnly)Assert.That(root.WorldPresenter.Configuration.EliteGate.Position.z-root.RepairHub.RepairPosition.z,Is.EqualTo(68));
+            else Assert.IsNull(env.Floor.Find("Chapter 01 Active Industrial Facility V45"));
             Assert.That(root.WorldPresenter.Configuration.BossGate.Position.z-root.WorldPresenter.Configuration.EliteGate.Position.z,Is.EqualTo(20));
             var indices=new[]{3,4,0,2,1};
             Capture(root,"01_repair_hub");
             foreach(var i in indices)
-            {var spot=root.EnemyPopulation.GetSpot(i);Move(root,spot.Position);yield return null;Capture(root,"sector_"+spot.Id);Assert.NotNull(layer.Find("Serviced enemy dock "+spot.Id));}
+            {var spot=root.EnemyPopulation.GetSpot(i);Move(root,spot.Position);yield return null;Capture(root,"sector_"+spot.Id);
+                if(env.BlueprintWorldOnly)Assert.IsNotEmpty(env.GetRegion(spot.Id).Root.GetComponentsInChildren<Renderer>());
+                else Assert.NotNull(layer.Find("Serviced enemy dock "+spot.Id));}
             Move(root,root.EnemyPopulation.GetSpot(0).Position);yield return null;Capture(root,"02_ordinary_sector");
             Move(root,root.EnemyPopulation.GetSpot(1).Position);yield return null;Capture(root,"03_strong_ordinary");
             Move(root,new Vector3(0,0,-1.25f));yield return null;Capture(root,"04_service_corridor");FloorCoverage(root,"04_service_corridor");

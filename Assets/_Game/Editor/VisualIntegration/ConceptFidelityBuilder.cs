@@ -246,6 +246,7 @@ namespace Gravivore.Editor.VisualIntegration
         }
         public static void ValidateOrThrow()
         {
+            if (Chapter01BlueprintWorldBuilder.IsBlueprintWorld()) { Chapter01BlueprintWorldBuilder.Audit(); return; }
             foreach(var name in StaticAssets.Concat(AnimatedAssets))
             {
                 var prefab=AssetDatabase.LoadAssetAtPath<GameObject>(Prefab(name));

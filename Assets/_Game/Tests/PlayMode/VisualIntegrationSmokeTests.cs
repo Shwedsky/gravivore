@@ -148,7 +148,7 @@ namespace Gravivore.Tests.PlayMode
             for (var i = 0; i < environment.RegionCount; i++)
                 Marker(environment.GetRegion(i).Root.position,Color.cyan,1);
             Capture(camera,directory,"01-chapter-roots",new Vector3(76,112,-40),new Vector3(0,0,29),
-                "CHAPTER FOUNDATION\nGameplay Geometry: collision / gates\nVisual Environment: art only\n11 cyan region anchors; unchanged layout",900,1000,65);
+                "CHAPTER FOUNDATION\nGameplay Geometry: collision / gates\nVisual Environment: art only\n11 cyan region anchors; current authored layout",900,1000,65);
             var hub = environment.GetRegion("repair-hub").Root;
             foreach (Transform anchor in hub) Marker(anchor.position,Color.yellow,.25f);
             Capture(camera,directory,"02-repair-hub-anchors",hub.position + new Vector3(6,8,-9),hub.position,

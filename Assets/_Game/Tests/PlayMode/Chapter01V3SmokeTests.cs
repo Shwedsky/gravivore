@@ -41,6 +41,28 @@ namespace Gravivore.Tests.PlayMode
             yield return Load();var root=_scene.Root;var body=root.PlayerObject.GetComponent<CharacterController>();
             foreach(var collider in root.GetComponentsInChildren<CharacterController>(true))if(collider!=body)collider.enabled=false;
             Assert.IsFalse(root.WorldPresenter.GameplayRoot.GetComponentsInChildren<Transform>().Any(t=>t.name=="Repair Hub Right Service Frame"));
+            if(root.VisualEnvironment.BlueprintWorldOnly)
+            {
+                var layout=root.WorldPresenter.Layout;Assert.NotNull(layout);
+                Assert.IsNull(root.VisualEnvironment.Floor.Find("Chapter 01 V3 richness"));
+                Assert.IsEmpty(root.VisualEnvironment.Floor.GetComponentsInChildren<Collider>(true));
+                Assert.That(root.VisualEnvironment.Floor.GetComponentsInChildren<Renderer>().Length,Is.GreaterThan(75));
+                root.WorldPresenter.EliteGate.SetLocked(false);root.WorldPresenter.BossGate.SetLocked(false);
+                Move(root,layout.GetRoutePoint(0));
+                for(var routeIndex=1;routeIndex<layout.RoutePointCount;routeIndex++)
+                {
+                    var target=layout.GetRoutePoint(routeIndex);var reached=false;
+                    for(var step=0;step<400;step++)
+                    {
+                        var delta=target-body.transform.position;delta.y=0;
+                        if(delta.magnitude<.09f){reached=true;break;}
+                        body.Move(Vector3.ClampMagnitude(delta,.25f)+Vector3.down*.015f);Physics.SyncTransforms();
+                        Assert.That(body.transform.position.y,Is.InRange(-.15f,.3f));
+                    }
+                    Assert.IsTrue(reached,"New authored service route: "+target);yield return null;
+                }
+                yield break;
+            }
             Move(root,new Vector3(0,0,-27));for(var i=0;i<24;i++)body.Move(Vector3.right*.25f);
             var near=Physics.OverlapCapsule(body.transform.position+Vector3.up*.5f,body.transform.position+Vector3.up*.9f,body.radius+.25f,LayerMask.GetMask("HardBlocker"));
             Assert.That(body.transform.position.x,Is.EqualTo(6).Within(.1f),string.Join("; ",near.Select(c=>c.name+" center="+c.bounds.center+" size="+c.bounds.size)));Assert.That(body.transform.position.z,Is.EqualTo(-27).Within(.1f));

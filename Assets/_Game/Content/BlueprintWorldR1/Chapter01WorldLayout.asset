@@ -1,0 +1,311 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a298b026dde91bb46a6b395e429fb938, type: 3}
+  m_Name: Chapter01WorldLayout
+  m_EditorClassIdentifier: Gravivore.Gameplay::Gravivore.Gameplay.World.ChapterWorldLayoutDefinition
+  _surfaces:
+  - _id: repair-service-plinth
+    _center: {x: 0, y: -0.16, z: -30}
+    _size: {x: 22, y: 0.32, z: 20}
+  - _id: relay-assembly-deck
+    _center: {x: 0, y: -0.16, z: -10}
+    _size: {x: 24, y: 0.32, z: 18}
+  - _id: north-service-spine
+    _center: {x: 0, y: -0.16, z: 15}
+    _size: {x: 8, y: 0.32, z: 94}
+  - _id: capacitor-deck
+    _center: {x: -15, y: -0.16, z: 10}
+    _size: {x: 20, y: 0.32, z: 20}
+  - _id: cutting-deck
+    _center: {x: 15, y: -0.16, z: 10}
+    _size: {x: 20, y: 0.32, z: 20}
+  - _id: energy-fabrication-crossing
+    _center: {x: 0, y: -0.16, z: 10}
+    _size: {x: 50, y: 0.32, z: 8}
+  - _id: shield-deck
+    _center: {x: -15, y: -0.16, z: 32}
+    _size: {x: 20, y: 0.32, z: 20}
+  - _id: hauler-deck
+    _center: {x: 15, y: -0.16, z: 32}
+    _size: {x: 20, y: 0.32, z: 20}
+  - _id: armor-logistics-crossing
+    _center: {x: 0, y: -0.16, z: 32}
+    _size: {x: 50, y: 0.32, z: 8}
+  - _id: magnetar-induction-deck
+    _center: {x: 0, y: -0.16, z: 54}
+    _size: {x: 50, y: 0.32, z: 20}
+  - _id: containment-entry-bridge
+    _center: {x: 0, y: -0.16, z: 65}
+    _size: {x: 8, y: 0.32, z: 10}
+  - _id: custodian-containment-deck
+    _center: {x: 0, y: -0.16, z: 76}
+    _size: {x: 50, y: 0.32, z: 26}
+  _blockers:
+  - _id: hub-west-maintenance-wall
+    _center: {x: -6.09, y: 1.7, z: -30}
+    _size: {x: 2.1, y: 3.4, z: 14.4}
+  - _id: hub-east-maintenance-wall
+    _center: {x: 6.09, y: 1.7, z: -30}
+    _size: {x: 2.1, y: 3.4, z: 14.4}
+  - _id: hub-rear-diagnostic-bank
+    _center: {x: 0, y: 1.53, z: -37.2}
+    _size: {x: 10.5, y: 3.06, z: 2.7}
+  - _id: relay-west-deployment-line
+    _center: {x: -6.6, y: 1.7, z: -10}
+    _size: {x: 3, y: 3.4, z: 11.9}
+  - _id: relay-east-command-bay
+    _center: {x: 6.6, y: 1.7, z: -10}
+    _size: {x: 3, y: 3.4, z: 11.9}
+  - _id: capacitor-west-banks
+    _center: {x: -21.16, y: 2.125, z: 10}
+    _size: {x: 2.31, y: 4.25, z: 13.32}
+  - _id: capacitor-rear-distributor
+    _center: {x: -15, y: 1.7, z: 15.92}
+    _size: {x: 9.24, y: 3.4, z: 3.33}
+  - _id: cutting-east-press-housing
+    _center: {x: 21.16, y: 2.125, z: 10}
+    _size: {x: 2.31, y: 4.25, z: 13.32}
+  - _id: cutting-rear-furnace-line
+    _center: {x: 15, y: 1.7, z: 15.92}
+    _size: {x: 9.24, y: 3.4, z: 3.33}
+  - _id: shield-west-armor-cells
+    _center: {x: -21.16, y: 2.04, z: 32}
+    _size: {x: 2.31, y: 4.08, z: 13.32}
+  - _id: shield-rear-shield-press
+    _center: {x: -15, y: 1.7, z: 37.92}
+    _size: {x: 9.24, y: 3.4, z: 3.33}
+  - _id: hauler-east-loading-gantry
+    _center: {x: 21.16, y: 1.7, z: 32}
+    _size: {x: 2.31, y: 3.4, z: 13.32}
+  - _id: hauler-rear-cargo-bank
+    _center: {x: 15, y: 1.275, z: 37.92}
+    _size: {x: 9.24, y: 2.55, z: 3.33}
+  - _id: west-row1-service-island
+    _center: {x: -7, y: 2, z: 21}
+    _size: {x: 3, y: 4, z: 10}
+  - _id: east-row1-service-island
+    _center: {x: 7, y: 2, z: 21}
+    _size: {x: 3, y: 4, z: 10}
+  - _id: magnetar-reactor-footprint
+    _center: {x: -5, y: 3.2, z: 59}
+    _size: {x: 8.6, y: 6.4, z: 6}
+  - _id: magnetar-west-outer-support
+    _center: {x: -23, y: 2.5, z: 54}
+    _size: {x: 2, y: 5, z: 18}
+  - _id: magnetar-east-outer-support
+    _center: {x: 23, y: 2.5, z: 54}
+    _size: {x: 2, y: 5, z: 18}
+  - _id: custodian-reactor-footprint
+    _center: {x: 0, y: 4, z: 85}
+    _size: {x: 9, y: 8, z: 6}
+  - _id: custodian-west-containment-wall
+    _center: {x: -23, y: 3.5, z: 76}
+    _size: {x: 2, y: 7, z: 24}
+  - _id: custodian-east-containment-wall
+    _center: {x: 23, y: 3.5, z: 76}
+    _size: {x: 2, y: 7, z: 24}
+  - _id: custodian-north-reactor-wall
+    _center: {x: 0, y: 3, z: 89}
+    _size: {x: 50, y: 6, z: 1}
+  - _id: platform-edge/x/-25/0/20
+    _center: {x: -25.12, y: 1.2, z: 10}
+    _size: {x: 0.24, y: 2.4, z: 20.1}
+  - _id: platform-edge/x/-25/22/42
+    _center: {x: -25.12, y: 1.2, z: 32}
+    _size: {x: 0.24, y: 2.4, z: 20.1}
+  - _id: platform-edge/x/-25/44/89
+    _center: {x: -25.12, y: 1.2, z: 66.5}
+    _size: {x: 0.24, y: 2.4, z: 45.1}
+  - _id: platform-edge/x/-12/-19/-1
+    _center: {x: -12.12, y: 1.2, z: -10}
+    _size: {x: 0.24, y: 2.4, z: 18.1}
+  - _id: platform-edge/x/-11/-40/-20
+    _center: {x: -11.12, y: 1.2, z: -30}
+    _size: {x: 0.24, y: 2.4, z: 20.1}
+  - _id: platform-edge/x/-5/0/6
+    _center: {x: -4.88, y: 1.2, z: 3}
+    _size: {x: 0.24, y: 2.4, z: 6.1}
+  - _id: platform-edge/x/-5/14/20
+    _center: {x: -4.88, y: 1.2, z: 17}
+    _size: {x: 0.24, y: 2.4, z: 6.1}
+  - _id: platform-edge/x/-5/22/28
+    _center: {x: -4.88, y: 1.2, z: 25}
+    _size: {x: 0.24, y: 2.4, z: 6.1}
+  - _id: platform-edge/x/-5/36/42
+    _center: {x: -4.88, y: 1.2, z: 39}
+    _size: {x: 0.24, y: 2.4, z: 6.1}
+  - _id: platform-edge/x/-4/-20/-19
+    _center: {x: -4.12, y: 1.2, z: -19.5}
+    _size: {x: 0.24, y: 2.4, z: 1.1}
+  - _id: platform-edge/x/-4/-1/6
+    _center: {x: -4.12, y: 1.2, z: 2.5}
+    _size: {x: 0.24, y: 2.4, z: 7.1}
+  - _id: platform-edge/x/-4/14/28
+    _center: {x: -4.12, y: 1.2, z: 21}
+    _size: {x: 0.24, y: 2.4, z: 14.1}
+  - _id: platform-edge/x/-4/36/44
+    _center: {x: -4.12, y: 1.2, z: 40}
+    _size: {x: 0.24, y: 2.4, z: 8.1}
+  - _id: platform-edge/x/4/-20/-19
+    _center: {x: 4.12, y: 1.2, z: -19.5}
+    _size: {x: 0.24, y: 2.4, z: 1.1}
+  - _id: platform-edge/x/4/-1/6
+    _center: {x: 4.12, y: 1.2, z: 2.5}
+    _size: {x: 0.24, y: 2.4, z: 7.1}
+  - _id: platform-edge/x/4/14/28
+    _center: {x: 4.12, y: 1.2, z: 21}
+    _size: {x: 0.24, y: 2.4, z: 14.1}
+  - _id: platform-edge/x/4/36/44
+    _center: {x: 4.12, y: 1.2, z: 40}
+    _size: {x: 0.24, y: 2.4, z: 8.1}
+  - _id: platform-edge/x/5/0/6
+    _center: {x: 4.88, y: 1.2, z: 3}
+    _size: {x: 0.24, y: 2.4, z: 6.1}
+  - _id: platform-edge/x/5/14/20
+    _center: {x: 4.88, y: 1.2, z: 17}
+    _size: {x: 0.24, y: 2.4, z: 6.1}
+  - _id: platform-edge/x/5/22/28
+    _center: {x: 4.88, y: 1.2, z: 25}
+    _size: {x: 0.24, y: 2.4, z: 6.1}
+  - _id: platform-edge/x/5/36/42
+    _center: {x: 4.88, y: 1.2, z: 39}
+    _size: {x: 0.24, y: 2.4, z: 6.1}
+  - _id: platform-edge/x/11/-40/-20
+    _center: {x: 11.12, y: 1.2, z: -30}
+    _size: {x: 0.24, y: 2.4, z: 20.1}
+  - _id: platform-edge/x/12/-19/-1
+    _center: {x: 12.12, y: 1.2, z: -10}
+    _size: {x: 0.24, y: 2.4, z: 18.1}
+  - _id: platform-edge/x/25/0/20
+    _center: {x: 25.12, y: 1.2, z: 10}
+    _size: {x: 0.24, y: 2.4, z: 20.1}
+  - _id: platform-edge/x/25/22/42
+    _center: {x: 25.12, y: 1.2, z: 32}
+    _size: {x: 0.24, y: 2.4, z: 20.1}
+  - _id: platform-edge/x/25/44/89
+    _center: {x: 25.12, y: 1.2, z: 66.5}
+    _size: {x: 0.24, y: 2.4, z: 45.1}
+  - _id: platform-edge/z/-40/-11/11
+    _center: {x: 0, y: 1.2, z: -40.12}
+    _size: {x: 22.1, y: 2.4, z: 0.24}
+  - _id: platform-edge/z/-20/-11/-4
+    _center: {x: -7.5, y: 1.2, z: -19.88}
+    _size: {x: 7.1, y: 2.4, z: 0.24}
+  - _id: platform-edge/z/-20/4/11
+    _center: {x: 7.5, y: 1.2, z: -19.88}
+    _size: {x: 7.1, y: 2.4, z: 0.24}
+  - _id: platform-edge/z/-19/-12/-4
+    _center: {x: -8, y: 1.2, z: -19.12}
+    _size: {x: 8.1, y: 2.4, z: 0.24}
+  - _id: platform-edge/z/-19/4/12
+    _center: {x: 8, y: 1.2, z: -19.12}
+    _size: {x: 8.1, y: 2.4, z: 0.24}
+  - _id: platform-edge/z/-1/-12/-4
+    _center: {x: -8, y: 1.2, z: -0.88}
+    _size: {x: 8.1, y: 2.4, z: 0.24}
+  - _id: platform-edge/z/-1/4/12
+    _center: {x: 8, y: 1.2, z: -0.88}
+    _size: {x: 8.1, y: 2.4, z: 0.24}
+  - _id: platform-edge/z/0/-25/-5
+    _center: {x: -15, y: 1.2, z: -0.12}
+    _size: {x: 20.1, y: 2.4, z: 0.24}
+  - _id: platform-edge/z/0/5/25
+    _center: {x: 15, y: 1.2, z: -0.12}
+    _size: {x: 20.1, y: 2.4, z: 0.24}
+  - _id: platform-edge/z/6/-5/-4
+    _center: {x: -4.5, y: 1.2, z: 5.88}
+    _size: {x: 1.1, y: 2.4, z: 0.24}
+  - _id: platform-edge/z/6/4/5
+    _center: {x: 4.5, y: 1.2, z: 5.88}
+    _size: {x: 1.1, y: 2.4, z: 0.24}
+  - _id: platform-edge/z/14/-5/-4
+    _center: {x: -4.5, y: 1.2, z: 14.12}
+    _size: {x: 1.1, y: 2.4, z: 0.24}
+  - _id: platform-edge/z/14/4/5
+    _center: {x: 4.5, y: 1.2, z: 14.12}
+    _size: {x: 1.1, y: 2.4, z: 0.24}
+  - _id: platform-edge/z/20/-25/-5
+    _center: {x: -15, y: 1.2, z: 20.12}
+    _size: {x: 20.1, y: 2.4, z: 0.24}
+  - _id: platform-edge/z/20/5/25
+    _center: {x: 15, y: 1.2, z: 20.12}
+    _size: {x: 20.1, y: 2.4, z: 0.24}
+  - _id: platform-edge/z/22/-25/-5
+    _center: {x: -15, y: 1.2, z: 21.88}
+    _size: {x: 20.1, y: 2.4, z: 0.24}
+  - _id: platform-edge/z/22/5/25
+    _center: {x: 15, y: 1.2, z: 21.88}
+    _size: {x: 20.1, y: 2.4, z: 0.24}
+  - _id: platform-edge/z/28/-5/-4
+    _center: {x: -4.5, y: 1.2, z: 27.88}
+    _size: {x: 1.1, y: 2.4, z: 0.24}
+  - _id: platform-edge/z/28/4/5
+    _center: {x: 4.5, y: 1.2, z: 27.88}
+    _size: {x: 1.1, y: 2.4, z: 0.24}
+  - _id: platform-edge/z/36/-5/-4
+    _center: {x: -4.5, y: 1.2, z: 36.12}
+    _size: {x: 1.1, y: 2.4, z: 0.24}
+  - _id: platform-edge/z/36/4/5
+    _center: {x: 4.5, y: 1.2, z: 36.12}
+    _size: {x: 1.1, y: 2.4, z: 0.24}
+  - _id: platform-edge/z/42/-25/-5
+    _center: {x: -15, y: 1.2, z: 42.12}
+    _size: {x: 20.1, y: 2.4, z: 0.24}
+  - _id: platform-edge/z/42/5/25
+    _center: {x: 15, y: 1.2, z: 42.12}
+    _size: {x: 20.1, y: 2.4, z: 0.24}
+  - _id: platform-edge/z/44/-25/-4
+    _center: {x: -14.5, y: 1.2, z: 43.88}
+    _size: {x: 21.1, y: 2.4, z: 0.24}
+  - _id: platform-edge/z/44/4/25
+    _center: {x: 14.5, y: 1.2, z: 43.88}
+    _size: {x: 21.1, y: 2.4, z: 0.24}
+  - _id: platform-edge/z/89/-25/25
+    _center: {x: 0, y: 1.2, z: 89.12}
+    _size: {x: 50.1, y: 2.4, z: 0.24}
+  - _id: relay-north-assembly-jamb--1
+    _center: {x: -4.7, y: 1.7, z: -5.5}
+    _size: {x: 1.3, y: 3.4, z: 2.8}
+  - _id: relay-north-assembly-jamb-1
+    _center: {x: 4.7, y: 1.7, z: -5.5}
+    _size: {x: 1.3, y: 3.4, z: 2.8}
+  _route:
+  - {x: 0, y: 0, z: -30}
+  - {x: 0, y: 0, z: -10}
+  - {x: 0, y: 0, z: 10}
+  - {x: -15, y: 0, z: 10}
+  - {x: 0, y: 0, z: 10}
+  - {x: 15, y: 0, z: 10}
+  - {x: 0, y: 0, z: 10}
+  - {x: 0, y: 0, z: 32}
+  - {x: -15, y: 0, z: 32}
+  - {x: 0, y: 0, z: 32}
+  - {x: 15, y: 0, z: 32}
+  - {x: 0, y: 0, z: 32}
+  - {x: -7.5, y: 0, z: 32}
+  - {x: -7.5, y: 0, z: 38.5}
+  - {x: -7.5, y: 0, z: 32}
+  - {x: 0, y: 0, z: 32}
+  - {x: 0, y: 0, z: 54}
+  - {x: 17, y: 0, z: 54}
+  - {x: 0, y: 0, z: 54}
+  - {x: 0, y: 0, z: 70}
+  - {x: -18, y: 0, z: 75}
+  - {x: 0, y: 0, z: 70}
+  - {x: 18, y: 0, z: 74}
+  - {x: 0, y: 0, z: 70}
+  - {x: 0, y: 0, z: 76}
+  _strongSpotPositions:
+  - {x: -7.5, y: 0, z: 38.5}
+  - {x: 17, y: 0, z: 54}
+  - {x: -18, y: 0, z: 75}
+  - {x: 18, y: 0, z: 74}

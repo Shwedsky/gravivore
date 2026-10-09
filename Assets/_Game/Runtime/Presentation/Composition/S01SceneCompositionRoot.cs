@@ -671,7 +671,7 @@ namespace Gravivore.Presentation.Composition
             var worldObject = new GameObject("Chapter 01 World", typeof(Chapter01WorldPresenter));
             worldObject.transform.SetParent(transform, false);
             WorldPresenter = worldObject.GetComponent<Chapter01WorldPresenter>();
-            WorldPresenter.Initialize(configuration, state, _materialPalette.LitMaterial, _s15VisualCatalog, _visualEnvironment);
+            WorldPresenter.Initialize(configuration, state, _materialPalette.LitMaterial, _s15VisualCatalog, _visualEnvironment, _worldDefinition.Layout);
         }
 
         private void InitializeQuests(QuestCatalog catalog, Chapter01WorldConfiguration world)
@@ -912,7 +912,7 @@ namespace Gravivore.Presentation.Composition
                 ordinary[i] = _spawnSpotDefinitions[i].CreateRuntimeConfiguration();
                 positions[i] = ordinary[i].WorldOrigin;
             }
-            StrongSpots = Chapter1StrongOrdinarySpotCatalog.Create(_worldDefinition.Configuration, positions);
+            StrongSpots = Chapter1StrongOrdinarySpotCatalog.Create(_worldDefinition.Configuration, positions, _worldDefinition.Layout?.StrongSpotPositions);
             _strongActivationRadii = new float[StrongSpots.Count];
             var configurations = new SpawnSpotRuntimeConfiguration[ordinary.Length + StrongSpots.Count];
             for (var i = 0; i < StrongSpots.Count; i++)

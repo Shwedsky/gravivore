@@ -166,6 +166,24 @@ namespace Gravivore.Tests.PlayMode
         {
             yield return Load();var root=_scene.Root;var env=root.VisualEnvironment;Assert.IsTrue(env.FullChapterProduction);
             Physics.SyncTransforms();
+            if(env.BlueprintWorldOnly)
+            {
+                foreach(var id in new[]{"repair-hub","relay-yard","capacitor-field","cutting-floor","shield-dump","hauler-graveyard","elite-arena","boss-arena"})
+                    Assert.IsNotEmpty(env.GetRegion(id).Root.GetComponentsInChildren<Renderer>(),id);
+                var layout=root.WorldPresenter.Layout;Assert.NotNull(layout);
+                Assert.That(root.WorldPresenter.EnvironmentBlockerCount,Is.EqualTo(layout.BlockerCount));
+                for(var i=0;i<layout.BlockerCount;i++)
+                {
+                    var volume=layout.GetBlocker(i);var proxy=root.WorldPresenter.GetEnvironmentBlocker(i);
+                    Assert.That(Vector3.Distance(proxy.bounds.center,volume.Center),Is.LessThan(.001f),volume.Id);
+                    Assert.That(Vector3.Distance(proxy.bounds.size,volume.Size),Is.LessThan(.001f),volume.Id);
+                    Assert.IsNull(proxy.GetComponent<Renderer>(),volume.Id);
+                }
+                Assert.IsEmpty(env.GetComponentsInChildren<Collider>(true));
+                Assert.IsNull(env.Floor.Find("Chapter 01 Full Production"));
+            }
+            else
+            {
             var production=env.Floor.Find("Chapter 01 Full Production");Assert.IsNotNull(production);
             foreach(var id in new[]{"relay-yard","cutting-floor","shield-dump","capacitor-field","hauler-graveyard"})Assert.IsNotNull(production.Find(id));
             Assert.IsNotNull(production.Find("Service corridors"));Assert.IsNotNull(production.Find("Custodian containment complex"));
@@ -180,6 +198,7 @@ namespace Gravivore.Tests.PlayMode
                     Assert.IsTrue(Covered(new Vector3(side*(bounds.MaxX-.5f),1.3f,z)),"Opaque perimeter visual at "+side+", "+z);
             }
             for(var x=bounds.MinX+.5f;x<=bounds.MaxX-.5f;x+=.5f)Assert.IsTrue(Covered(new Vector3(x,1.3f,bounds.MaxZ)),"North perimeter visual at "+x);
+            }
             foreach(var enemy in root.EnemyPopulation.GetComponentsInChildren<OrdinaryEnemyController>(true))
             {var binding=enemy.GetComponent<CharacterVisualBinding>();if(binding.ActiveModel==null)continue;
                 Assert.IsNotNull(binding.ActiveModel.GetComponentInChildren<Animator>(),enemy.LifeId.ToString());}

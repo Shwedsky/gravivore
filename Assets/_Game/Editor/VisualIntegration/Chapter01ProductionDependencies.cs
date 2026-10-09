@@ -24,6 +24,7 @@ namespace Gravivore.Editor.VisualIntegration
         [Serializable] private sealed class Evidence { public bool validated; public string sourceSha,apkSha256; public string[] dependencies,required,packedAssets,serializedEntries; }
         public static void ValidateOrThrow()
         {
+            if (Chapter01BlueprintWorldBuilder.IsBlueprintWorld()) { Chapter01BlueprintWorldBuilder.Audit(); return; }
             var deps=AssetDatabase.GetDependencies(FirstVisualSliceBuilder.ScenePath,true);
             // Zone packages are retained as nested prefab dependencies as well as inspectable art packages.
             foreach(var path in Required) if(!deps.Contains(path)) throw new BuildFailedException("Chapter01 production dependency missing: "+path);
@@ -34,6 +35,7 @@ namespace Gravivore.Editor.VisualIntegration
         public void OnPreprocessBuild(BuildReport report)=>ValidateOrThrow();
         public void OnPostprocessBuild(BuildReport report)
         {
+            if (Chapter01BlueprintWorldBuilder.IsBlueprintWorld()) return;
             var names=Chapter01ProductionBuilder.Machines.Where(n=>n!="Custodian_V1"||!FidelityActive).Select(n=>n+"_LOD0").Concat(Chapter01ProductionBuilder.Kit)
                 .Concat(FidelityActive?new[]{"Custodian_V3_LOD0"}:Array.Empty<string>())
                 .Concat(new[]{"Chapter 01 Full Production","relay-yard","cutting-floor","shield-dump","capacitor-field","hauler-graveyard"}).ToArray();

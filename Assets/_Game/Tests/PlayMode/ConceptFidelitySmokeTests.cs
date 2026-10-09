@@ -70,20 +70,42 @@ namespace Gravivore.Tests.PlayMode
         }
         [UnityTest] public IEnumerator ContinuousHeroRouteCameraReviewAndStablePresentationInventory()
         {
-            yield return Load();var root=_scene.Root;var route=root.VisualEnvironment.Floor.Find("Chapter 01 Concept Fidelity V2");Assert.NotNull(route);
+            yield return Load();var root=_scene.Root;var blueprint=root.VisualEnvironment.BlueprintWorldOnly;
+            var route=blueprint?root.VisualEnvironment.Floor:root.VisualEnvironment.Floor.Find("Chapter 01 Concept Fidelity V2");Assert.NotNull(route);
             Assert.That(route.GetComponentsInChildren<Collider>(true).Length,Is.Zero);
-            var materials=route.GetComponentsInChildren<Renderer>(true).Select(r=>r.sharedMaterial).Distinct().ToArray();Assert.That(materials.Length,Is.EqualTo(1));
+            var materials=route.GetComponentsInChildren<Renderer>(true).SelectMany(r=>r.sharedMaterials).Distinct().ToArray();Assert.That(materials.Length,Is.EqualTo(blueprint?4:1));
+            if(blueprint)
+            {
+                Assert.IsNull(route.Find("Chapter 01 Concept Fidelity V2"));
+                var floors=route.GetComponentsInChildren<Renderer>().Where(r=>r.name.Contains("_floor_")).ToArray();Assert.IsNotEmpty(floors);
+                foreach(var floor in floors)Assert.That(floor.bounds.size.y,Is.LessThan(1.1f),"Flush deck and structural foundation: "+floor.name);
+            }
+            else
+            {
             Assert.NotNull(route.Find("Continuous worn deck"));Assert.NotNull(route.Find("Industrial focal points"));
             foreach(var tile in route.Find("Continuous worn deck").GetComponentsInChildren<Renderer>())
             {
                 Assert.That(tile.bounds.size.y,Is.LessThan(.4f),"Deck must lie flat: "+tile.name);
                 Assert.That(tile.bounds.size.x,Is.GreaterThan(5.9f));Assert.That(tile.bounds.size.z,Is.GreaterThan(5.9f));
             }
+            }
             var renderers=root.GetComponentsInChildren<Renderer>(true).Length;var transforms=root.GetComponentsInChildren<Transform>(true).Length;
-            foreach(var pair in new[]{("02_spawn",new Vector3(0,0,-28)),("03_capacitors",new Vector3(-20,0,-12)),("04_haulers",new Vector3(20,0,-12)),
+            var reviewPoints=blueprint?new[]{
+                ("02_spawn",root.RepairHub.RepairPosition),
+                ("03_capacitors",root.VisualEnvironment.GetRegion("capacitor-field").Root.position),
+                ("04_haulers",root.VisualEnvironment.GetRegion("hauler-graveyard").Root.position),
+                ("05_corridor",new Vector3(0,0,21)),
+                ("06_relay",root.VisualEnvironment.GetRegion("relay-yard").Root.position),
+                ("07_shield",root.VisualEnvironment.GetRegion("shield-dump").Root.position),
+                ("08_cutting",root.VisualEnvironment.GetRegion("cutting-floor").Root.position),
+                ("09_elite_approach",root.WorldPresenter.Configuration.EliteGate.Position+Vector3.back*3),
+                ("10_magnetar",root.MagnetarGuard.transform.position),
+                ("11_containment",root.WorldPresenter.Configuration.BossArenaCenter)}:
+                new[]{("02_spawn",new Vector3(0,0,-28)),("03_capacitors",new Vector3(-20,0,-12)),("04_haulers",new Vector3(20,0,-12)),
                 ("05_corridor",new Vector3(0,0,10)),("06_relay",new Vector3(-26,0,20)),("07_shield",new Vector3(26,0,20)),
                 ("08_cutting",new Vector3(0,0,40)),("09_elite_approach",new Vector3(0,0,54)),("10_magnetar",new Vector3(0,0,68)),
-                ("11_containment",new Vector3(0,0,84))})
+                ("11_containment",new Vector3(0,0,84))};
+            foreach(var pair in reviewPoints)
             {Move(root,pair.Item2);yield return null;Capture(root,pair.Item1);}
             root.WorldUnlocks.PrepareEliteEncounterForDevelopment();root.Chapter1Encounters.Tick();
             root.MagnetarGuard.ApplyDamage(new DamageRequest(100000,DamageType.Gravity));
@@ -118,7 +140,7 @@ namespace Gravivore.Tests.PlayMode
         private static int ActorTransformCount(S01SceneCompositionRoot root)=>
             TransformCount(root.EnemyPopulation)+TransformCount(root.PlayerObject.transform);
         private static int FidelityTransformCount(S01SceneCompositionRoot root)=>
-            TransformCount(root.VisualEnvironment.Floor.Find("Chapter 01 Concept Fidelity V2"))+
+            TransformCount(root.VisualEnvironment.BlueprintWorldOnly?root.VisualEnvironment.Floor:root.VisualEnvironment.Floor.Find("Chapter 01 Concept Fidelity V2"))+
             TransformCount(root.RepairHub.Manipulators)+TransformCount(root.GetComponentInChildren<FidelityAtmospherePresenter>());
         [Serializable] private sealed class SustainedEvidence
         {public double seconds,worstFrameGapMilliseconds;public int frames,completedStops,initialTransforms,finalTransforms,initialMaterials,finalMaterials,

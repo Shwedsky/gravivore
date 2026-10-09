@@ -31,17 +31,26 @@ namespace Gravivore.Tests.PlayMode
             Assert.That(root.EnemyPopulation.GetSpot(0).GetLiveEnemy(0).GetComponent<CharacterVisualBinding>().ActiveModel.name, Is.EqualTo("Scout_V1"));
             Assert.That(root.EnemyPopulation.GetSpot(1).GetLiveEnemy(0).GetComponent<CharacterVisualBinding>().ActiveModel.name, Is.EqualTo("Cutter_V1"));
             Assert.That(root.MagnetarGuard.GetComponent<CharacterVisualBinding>().ActiveModel.name, Is.EqualTo("Magnetar_V1"));
-            Assert.IsNotNull(root.VisualEnvironment.Floor.Find("First Visual Slice Industrial Containment"));
-            var oldRoutes = root.VisualEnvironment.Floor.Find("Phase3C Routes");
-            foreach (Transform panel in oldRoutes)
-                Assert.IsTrue(panel.GetComponentsInChildren<Renderer>(true).All(r=>!r.enabled),
-                    "Old corridor surface must not cover the rebuilt floor: " + panel.name);
+            if(root.VisualEnvironment.BlueprintWorldOnly)
+            {
+                foreach(var id in new[]{"repair-hub","relay-yard","capacitor-field","cutting-floor","shield-dump","hauler-graveyard","elite-arena","boss-arena"})
+                    Assert.IsNotEmpty(root.VisualEnvironment.GetRegion(id).Root.GetComponentsInChildren<Renderer>());
+                Assert.IsNull(root.VisualEnvironment.Floor.Find("Phase3C Routes"));
+            }
+            else
+            {
+                Assert.IsNotNull(root.VisualEnvironment.Floor.Find("First Visual Slice Industrial Containment"));
+                var oldRoutes = root.VisualEnvironment.Floor.Find("Phase3C Routes");
+                foreach (Transform panel in oldRoutes)
+                    Assert.IsTrue(panel.GetComponentsInChildren<Renderer>(true).All(r=>!r.enabled),
+                        "Old corridor surface must not cover the rebuilt floor: " + panel.name);
+                Assert.IsNotNull(root.VisualEnvironment.Floor.Find("Chapter 01 Full Production/Facility deck segmentation"));
+            }
             Assert.IsTrue(root.VisualEnvironment.FullChapterProduction);
-            Assert.IsNotNull(root.VisualEnvironment.Floor.Find("Chapter 01 Full Production/Facility deck segmentation"));
             Assert.IsEmpty(root.VisualEnvironment.GetComponentsInChildren<Collider>(true));
             Assert.That(root.PlayerObject.GetComponent<CharacterController>().radius, Is.EqualTo(.42f));
             Assert.That(root.PlayerObject.GetComponent<CharacterController>().height, Is.EqualTo(1.4f));
-            Assert.That(root.WorldPresenter.EnvironmentBlockerCount, Is.EqualTo(2 + root.VisualEnvironment.SliceObstacleCount));
+            Assert.That(root.WorldPresenter.EnvironmentBlockerCount, Is.EqualTo(root.WorldPresenter.Layout != null ? root.WorldPresenter.Layout.BlockerCount : 2 + root.VisualEnvironment.SliceObstacleCount));
             // The main approach, strong-spot and elite centres remain reachable when the normal gate unlocks.
             root.WorldPresenter.EliteGate.SetLocked(false); root.WorldPresenter.BossGate.SetLocked(false); Physics.SyncTransforms();
             for (var z = Mathf.CeilToInt(root.WorldPresenter.Configuration.EliteGate.Position.z-1); z < root.WorldPresenter.Configuration.BossGate.Position.z-1; z++)
@@ -73,7 +82,7 @@ namespace Gravivore.Tests.PlayMode
         {
             yield return Load(); var root = _scene.Root;
             var body = root.PlayerObject.GetComponent<CharacterController>();
-            body.enabled = false; root.PlayerObject.transform.position = new Vector3(0,0,66); body.enabled = true;
+            body.enabled = false; root.PlayerObject.transform.position = root.MagnetarGuard.transform.position+Vector3.back*4; body.enabled = true;
             root.MagnetarGuard.ActivateEncounter();
             yield return new WaitForSeconds(.5f);
             var camera = Camera.main;
