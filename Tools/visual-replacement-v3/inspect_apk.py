@@ -66,9 +66,11 @@ for entry,obj in list(index.values()):
 assert len(baked)>100 and any(b['mesh'].startswith('Combined Mesh') for b in baked), 'Production static-batch geometry not verified'
 budget=json.loads((ROOT/'docs/visual-replacement-v3/verification/mobile_render_budget.json').read_text(encoding='utf-8-sig'))
 assert sum(b['mesh'].startswith('Combined Mesh') for b in baked)==budget['decorativeRenderers'], 'Packed decorative renderer count differs from the validated scene'
+assert any(key[0]=='level1' and name=='Chapter 01 Visual Replacement V3' for key,name in gameNames.items()), 'Packed Chapter01 scene root missing'
+assert all(b['meshEntry'].endswith('/level1') for b in baked if b['mesh'].startswith('Combined Mesh')), 'Decorative batches must belong to the actual Chapter01 scene'
 with zipfile.ZipFile(args.apk) as z:
  metadata=z.read('assets/bin/Data/Managed/Metadata/global-metadata.dat')
  assert all(s.encode() in metadata for s in ('ProductionUiSkinDefinition','ProductionUiSkinScope','VisualRank','WeaponThumbnail','WeaponEquipmentPresenter'))
  notices=z.read('assets/ThirdPartyNotices.txt').decode('utf-8');assert 'Catherine Laserna' in notices and 'CC BY 4.0' in notices
-evidence={'validated':True,'apkSha256':hashlib.sha256(args.apk.read_bytes()).hexdigest(),'resolvedProductionMaterials':proof,'weaponAndEnvironmentObjects':models,'actualModelThumbnails':thumbnails,'injectedSkin':skin,'resolvedStaticGeometry':baked,'compiledRankAndUiTypes':True,'exeAttributionPacked':True,'executedOnAndroid':False}
+evidence={'validated':True,'apkSha256':hashlib.sha256(args.apk.read_bytes()).hexdigest(),'productionSceneLevel':'assets/bin/Data/level1','productionSceneRootVerified':True,'resolvedProductionMaterials':proof,'weaponAndEnvironmentObjects':models,'actualModelThumbnails':thumbnails,'injectedSkin':skin,'resolvedStaticGeometry':baked,'compiledRankAndUiTypes':True,'exeAttributionPacked':True,'executedOnAndroid':False}
 args.output.write_text(json.dumps(evidence,indent=2));print('V44_TYPED_PRODUCTION_CONTENT_PASS')
