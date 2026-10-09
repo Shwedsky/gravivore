@@ -16,9 +16,13 @@ public static class IntakeZoo
     [Serializable] public class Catalog { public Entry[] entries, uiEntries; }
     [Serializable] public class Capture { public string sourceId, originalPath, category, renderPath, materialMode; public float sourceLongestDimension, previewScale; }
     [Serializable] public class CaptureList { public List<Capture> captures = new List<Capture>(); }
+    [Serializable] public class MaterialBinding { public string sourceId, modelName, materialName, baseMap, normalMap, evidence; public bool doubleSided; }
+    [Serializable] public class BindingList { public MaterialBinding[] bindings; }
     static string Work => Path.GetFullPath(Path.Combine(Application.dataPath, "../.."));
     static Shader Lit;
     static Material Ground;
+    static MaterialBinding[] Bindings;
+    static readonly HashSet<string> BoundModels = new HashSet<string>();
     static readonly Dictionary<string, Material> Converted = new Dictionary<string, Material>();
 
     public static void Build()
@@ -29,6 +33,13 @@ public static class IntakeZoo
             if (new[] {".cs", ".dll", ".exe", ".ps1", ".bat", ".cmd", ".shader", ".shadergraph", ".blend", ".asmdef"}.Contains(Path.GetExtension(path).ToLowerInvariant()))
                 throw new InvalidOperationException("Forbidden payload in art-only project: " + path);
         AssetDatabase.Refresh();
+        Bindings=JsonUtility.FromJson<BindingList>(File.ReadAllText("material_bindings.json")).bindings;
+        foreach(var path in Bindings.Select(b=>b.normalMap).Where(p=>!string.IsNullOrEmpty(p)).Distinct())
+        {
+            var importer=AssetImporter.GetAtPath(path) as TextureImporter;
+            if(importer!=null && importer.textureType!=TextureImporterType.NormalMap)
+            {importer.textureType=TextureImporterType.NormalMap;importer.SaveAndReimport();}
+        }
         ShaderUtil.allowAsyncCompilation = false;
         var renderer = AssetDatabase.LoadAssetAtPath<UniversalRendererData>("Assets/_Game/Content/Settings/Gravivore_URP_Renderer.asset");
         Directory.CreateDirectory("Assets/Zoo");
@@ -51,6 +62,7 @@ public static class IntakeZoo
         Directory.CreateDirectory(Path.Combine(Work,"renders/models"));
         foreach (var entry in catalog.entries)
         {
+            string originalModelName=Path.GetFileNameWithoutExtension(entry.originalPath);
             var model = AssetDatabase.LoadAssetAtPath<GameObject>(entry.assetPath);
             if (model == null) throw new InvalidOperationException("Failed model import: " + entry.assetPath);
             var instance = Object.Instantiate(model);
@@ -72,7 +84,7 @@ public static class IntakeZoo
             bool hadTexture = false;
             foreach (var r in renderers)
             {
-                r.sharedMaterials = r.sharedMaterials.Select(m=>Convert(m,entry.sourceId,model.name)).ToArray();
+                r.sharedMaterials = r.sharedMaterials.Select(m=>Convert(m,entry.sourceId,originalModelName)).ToArray();
                 if(r.sharedMaterials.Any(m=>m!=null && m.GetTexture("_BaseMap")!=null)) hadTexture=true;
             }
             foreach(var animator in instance.GetComponentsInChildren<Animator>(true)) animator.enabled=false;
@@ -87,7 +99,7 @@ public static class IntakeZoo
             string file = entry.sourceId+"__"+Path.GetFileNameWithoutExtension(entry.assetPath)+".png";
             string output = Path.Combine(Work,"renders/models",file);
             Render(instance,output);
-            captures.captures.Add(new Capture{sourceId=entry.sourceId,originalPath=entry.originalPath,category=entry.category,renderPath=output,materialMode=hadTexture?"source texture/color -> neutral URP Lit":"source colors or neutral geometry fallback; no texture detected",sourceLongestDimension=longest,previewScale=scale});
+            captures.captures.Add(new Capture{sourceId=entry.sourceId,originalPath=entry.originalPath,category=entry.category,renderPath=output,materialMode=BoundModels.Contains(entry.sourceId+"/"+originalModelName)?"declared source glTF base/normal map association -> neutral URP Lit":hadTexture?"source material or inferred filename/atlas map -> neutral URP Lit":"source colors or neutral geometry fallback; no texture detected",sourceLongestDimension=longest,previewScale=scale});
             if(!categories.TryGetValue(entry.category,out var parent)){parent=new GameObject(entry.category).transform;categories.Add(entry.category,parent);}
             instance.transform.SetParent(parent,true);
             instance.transform.position += new Vector3((sampleIndex%12)*6,0,(sampleIndex/12)*8);
@@ -128,7 +140,7 @@ public static class IntakeZoo
                 .FirstOrDefault(m=>m!=null&&MaterialName(m.name)==MaterialName(input.name));
             if(sourceMaterial!=null)input=sourceMaterial;
         }
-        string key=source+"/"+(input==null?"fallback":input.name);
+        string key=source+"/"+model+"/"+(input==null?"fallback":input.name);
         if(Converted.TryGetValue(key,out var cached))return cached;
         var mat=new Material(Lit){name=key.Replace('/','_')};
         var color=Color.gray; Texture texture=null,normal=null,metal=null; Color emission=Color.black;
@@ -139,6 +151,9 @@ public static class IntakeZoo
             if(input.HasProperty("_BumpMap"))normal=input.GetTexture("_BumpMap");if(input.HasProperty("_MetallicGlossMap"))metal=input.GetTexture("_MetallicGlossMap");
             if(input.HasProperty("_EmissionColor"))emission=input.GetColor("_EmissionColor");
         }
+        var binding=Bindings.FirstOrDefault(b=>b.sourceId==source&&b.modelName==model&&input!=null&&MaterialName(b.materialName)==MaterialName(input.name));
+        if(binding!=null)
+        {texture=AssetDatabase.LoadAssetAtPath<Texture2D>(binding.baseMap);normal=string.IsNullOrEmpty(binding.normalMap)?normal:AssetDatabase.LoadAssetAtPath<Texture2D>(binding.normalMap);color=Color.white;mat.SetFloat("_Cull",binding.doubleSided?0:2);BoundModels.Add(source+"/"+model);}
         if(texture==null)
         {
             var guids=AssetDatabase.FindAssets("t:Texture2D",new[]{"Assets/Intake/"+source});

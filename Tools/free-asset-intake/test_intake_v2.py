@@ -6,7 +6,7 @@ import unittest
 import zipfile
 from pathlib import Path
 import intake_v2 as intake
-from prepare_zoo import preview_material
+from prepare_zoo import preview_material, representatives
 
 
 class SafeExtractionTests(unittest.TestCase):
@@ -82,6 +82,11 @@ class SafeExtractionTests(unittest.TestCase):
             intake.extract_archive(archive,output,preserve_conflicts=True)
             values={p.read_bytes() for p in output.rglob('*.png')}
             self.assertEqual(values,{b'first',b'second'})
+
+    def test_representative_selection_normalizes_spaced_model_names(self):
+        paths=[Path('Floor Tile 01.fbx'),Path('Floor Tile 02.fbx'),Path('Wall BayDoor.fbx'),Path('Pipes 01.fbx'),Path('Crate Long.fbx')]
+        picks=representatives('env-sickhead-construction',paths)
+        self.assertEqual(picks,set(paths[:4]))
 
 
 if __name__ == '__main__':

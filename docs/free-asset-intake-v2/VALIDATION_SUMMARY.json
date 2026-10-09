@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-09",
+  "baseline": "a6541ef0c78f1489354bb4a5777de5e5b8847ce5",
+  "status": "PASS_TASK_SCOPE_WITH_DOCUMENTED_RENDER_RESOURCE_LIMITS",
+  "checks": [
+    "27 original owner files rehashed and byte-identical",
+    "all required deliverables exist",
+    "merge baseline is an ancestor",
+    "production and gameplay unchanged",
+    "changed files contain only owned tools/docs/annotated evidence",
+    "raw intake and scratch remain ignored",
+    "every discovered payload has a resolution",
+    "all 11 Meshy entries skipped_subscription",
+    "one real missing source only",
+    "all 26 discovered art sources selected once",
+    "all USE licenses permit production",
+    "weighted scores correct",
+    "matrix covers all 24 roles and six fields",
+    "one concrete stack covers nine roles",
+    "source art allowlist, no payload code or prefab execution",
+    "binary material sources intact; copy function preserves bytes",
+    "representative model capture count",
+    "all 120 selected frames pass magenta screening",
+    "sheet and tile identity evidence/environment_contact_sheet.png",
+    "sheet and tile identity evidence/environment_contact_sheet_02.png",
+    "sheet and tile identity evidence/environment_contact_sheet_03.png",
+    "sheet and tile identity evidence/machinery_contact_sheet.png",
+    "sheet and tile identity evidence/pipes_contact_sheet.png",
+    "sheet and tile identity evidence/mechs_contact_sheet.png",
+    "sheet and tile identity evidence/weapons_contact_sheet.png",
+    "sheet and tile identity evidence/ui_contact_sheet.png",
+    "2727 inventory rows and 1171 measured models",
+    "every inventoried item has a decision; all item USE licenses confirmed",
+    "all selected MegaKit captures use declared source map bindings",
+    "scratch compilation and inspection completed"
+  ],
+  "originalFiles": 27,
+  "originalBytes": 5000627772,
+  "binaryMaterialSourcesIntact": 65,
+  "unityScratchSerializationUpgrades": [
+    {
+      "sourceId": "weapons-warzone",
+      "originalPath": "Assets/WarZone Sci-Fi Turret pack/Materials/02 - Default.mat",
+      "scratchSha256": "3db59cf657d28c5551162f87171645a3505477190befe52b4301395971e1082e"
+    },
+    {
+      "sourceId": "weapons-warzone",
+      "originalPath": "Assets/WarZone Sci-Fi Turret pack/Materials/2.mat",
+      "scratchSha256": "39bee39bd14641b451a142033d254c3df89a41f0ad4205e994acca89e3121c1d"
+    }
+  ],
+  "expectedSourceStates": {
+    "FOUND": 27,
+    "MISSING": 1,
+    "SKIPPED_SUBSCRIPTION": 11
+  },
+  "selectionCounts": {
+    "DONOR": 14,
+    "USE": 4,
+    "REJECT": 6,
+    "UNRESOLVED": 2
+  },
+  "inventoryRows": 2727,
+  "measuredModels": 1171,
+  "captures": 120,
+  "contactSheets": 8,
+  "evidenceBytes": 2040907,
+  "unityLogSha256": "dc1936998827129351f3334599883bd9bf61b0a1a97e3049eeed159c33479918",
+  "compile": "Owned scratch editor code compiled as part of Inspect; no separate production compile",
+  "unityInspectExitCode": 0,
+  "vfxRuntime": "NOT_RUN_STATIC_AUDIT_ONLY",
+  "productionValidator": "NOT_RUN_PRODUCTION_OUTSIDE_TASK_SCOPE",
+  "androidBuild": "NOT_REQUIRED_BY_EXPLICIT_V2_TASK"
+}

@@ -1,5 +1,5 @@
 [CmdletBinding()]
-param([ValidateSet('Compile','Inspect')][string]$Action='Inspect')
+param([ValidateSet('Compile','Inspect')][string]$Action='Inspect',[ValidateRange(1,60)][int]$TimeoutMinutes=20)
 $ErrorActionPreference='Stop'
 $intakeRepo=Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $zooRoot=Join-Path $intakeRepo 'ExternalAssetIntake\FreeAssetIntakeV1\_work_v2\unity_zoo'
@@ -10,6 +10,9 @@ $zooArgs=@('-batchmode','-quit','-projectPath',('"'+$zooRoot+'"'),'-logFile',('"
 if($Action -eq 'Compile'){$zooArgs+='-nographics'}
 if($Action -eq 'Inspect'){$zooArgs+=@('-executeMethod','IntakeZoo.Build')}
 $zooProcess=Start-Process -FilePath $zooUnity -ArgumentList $zooArgs -WorkingDirectory $zooRoot -WindowStyle Hidden -PassThru
-$zooProcess.WaitForExit()
+if(!$zooProcess.WaitForExit($TimeoutMinutes*60*1000)){
+    Stop-Process -Id $zooProcess.Id
+    throw ('Scratch Unity timed out after '+$TimeoutMinutes+' minutes. Inspect the local log; no success is claimed.')
+}
 Write-Output ('UNITY_ZOO_'+$Action+'_EXIT='+$zooProcess.ExitCode)
 exit $zooProcess.ExitCode

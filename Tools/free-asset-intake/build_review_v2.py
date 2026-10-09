@@ -9,16 +9,37 @@ from intake_v2 import ROOT, WORK, digest, write_json
 
 DOCS=ROOT/'docs/free-asset-intake-v2'
 UNKNOWN='NOT_MEASURED'
+USE_MODELS={
+    'env-quaternius-megakit':['Platform_Metal','Platform_DarkPlates','Platform_Rails','Platform_Ramp','Platform_Stairs','ShortWall_MetalPlates','Door_Frame','Door_DarkMetal','TopCables','Column_Pipes','Prop_PipeHolder','Prop_Vent','Prop_Light'],
+    'env-molten-maps':['Generator','Cryo Tube','Centrifuge','Command','Container','Floor Metal Square Grate','Floor Hazard'],
+    'env-creepycat-starter':['Floor_Squared_01','Floor_Squared_02','Floor_Hole_01','Wall_Gear_01','Wall_Pipes_01','DoorWay_01','Crate_01']
+}
+
+def item_decision(row,decision):
+    sid=row['sourceId'];name=row['assetName'];kind=row['assetType'];path=row['originalPath'].lower()
+    if decision=='USE':
+        if kind=='model' and any(token.casefold() in name.casefold() for token in USE_MODELS.get(sid,[])):
+            return 'USE','Selected visible geometry family; material/scale pass and source license constraints apply.'
+        if sid=='ui-exe' and kind=='ui_image' and 'normal assets' in path and row['fileFormat'].lower()=='.png':
+            return 'USE','Selected normal-resolution frame art; slicing/atlas/recolor and CC BY attribution required.'
+        if kind=='prefab_or_graph':return 'DONOR','Source prefab is an audit/reference only; rebuild safe selected geometry without source behavior.'
+        return 'REJECT','Outside the selected visible families, or a duplicated/source-preview UI representation.'
+    if decision=='DONOR':
+        if kind=='ui_image' and any(t in path for t in ['preview','sample','sheet','cover']):return 'REJECT','Source preview or sheet, not a new production component.'
+        if sid=='env-dmitrii-industrial' and any(t in name.lower() for t in ['hangar','grass','road','concrete_fence']):return 'REJECT','Real-world architecture/dressing outside the selected industrial donor roles.'
+        if sid=='weapons-rts-assets' and 'vehicle' in name.lower():return 'REJECT','Unchanged RTS vehicle outside the selected weapon/support donor role.'
+        return 'DONOR','Parts/maps/reference only; follow source/item restrictions in ASSET_SELECTION_MATRIX; no unchanged source behavior.'
+    return decision,'Source-wide rejection or unresolved license/technical gate applies.'
 
 def inventory():
     inspected=json.loads((WORK/'reports/inspection.json').read_text(encoding='utf-8'))
     by_source={x['sourceId']:x for x in inspected}
     rows=[]
-    fields=['sourceId','assetName','originalPath','assetType','fileFormat','triangleCount','vertexCount','submeshCount','materialCount','importedTextureCount','maxPreviewTextureResolution','sourceImageCount','sourceMaxImageResolution','pbrMapNameHints','shaderFamily','LOD','animationClips','rigged','boneCount','skinnedMeshCount','colliders','lights','particleSystems','maxParticlesPerSystem','serializedParticleCapSum','rigidbodies','scriptsComponents','shaderDependencies','mobileRisk','urpRisk','spriteCount','atlasUsage','sourceAvailability','nativeResolution','nineSliceCandidate','hudComponents','inventoryComponents','healthStatComponents','minimapComponents','measurement','notes']
+    fields=['sourceId','assetName','originalPath','assetType','fileFormat','sourceDecision','itemDecision','selectionReason','triangleCount','vertexCount','submeshCount','materialCount','importedTextureCount','maxPreviewTextureResolution','sourceImageCount','sourceMaxImageResolution','pbrMapNameHints','shaderFamily','LOD','animationClips','rigged','boneCount','skinnedMeshCount','colliders','lights','particleSystems','maxParticlesPerSystem','serializedParticleCapSum','rigidbodies','scriptsComponents','shaderDependencies','mobileRisk','urpRisk','spriteCount','atlasUsage','sourceAvailability','nativeResolution','nineSliceCandidate','hudComponents','inventoryComponents','healthStatComponents','minimapComponents','measurement','notes']
     def common(sid,path,kind):
         source=by_source[sid]
         imgs=source['images']
-        maps=sorted({token for token in ['albedo','basecolor','base_color','diffuse','normal','rough','metal','occlusion','emiss','specular'] if any(token in x['path'].lower() for x in imgs)})
+        maps=sorted({token for token in ['albedo','basecolor','base_color','diffuse','normal','rough','metal','occlusion','emiss','specular','_orm'] if any(token in x['path'].lower() for x in imgs)})
         deps=source['customDependencies']
         if not isinstance(deps,str):deps=json.dumps(deps,ensure_ascii=False)
         return dict(sourceId=sid,assetName=Path(path).stem,originalPath=path,assetType=kind,fileFormat=Path(path).suffix,sourceImageCount=len(imgs),sourceMaxImageResolution=max([max(x.get('width',0),x.get('height',0)) for x in imgs],default=0),pbrMapNameHints='SOURCE_SCOPE_ONLY:'+(';'.join(maps) or 'none'),shaderDependencies=deps,notes='Source image counts/max include previews; map-name hints do not confirm assignment to this asset.')
@@ -38,6 +59,10 @@ def inventory():
             row=common(sid,path,'vfx_prefab' if sid.startswith('vfx-') else 'prefab_or_graph')
             raw=(base/path).read_bytes();yaml=raw.startswith((b'%YAML',b'\xef\xbb\xbf%YAML'))
             c=asset['classes']
+            text=raw.decode('utf-8-sig',errors='replace') if yaml else ''
+            material_lists=re.findall(r'm_Materials:\s*\n((?:\s+-\s*\{[^\n]+\}\s*\n)+)',text)
+            material_refs={ref for group in material_lists for ref in re.findall(r'\{[^\n]+\}',group) if 'fileID: 0' not in ref}
+            row['materialCount']=len(material_refs) if yaml else UNKNOWN
             def count(*ids):return sum(int(c.get(str(i),0)) for i in ids) if yaml else UNKNOWN
             row.update(colliders=count(64,65,135,136,143,154),lights=count(108),particleSystems=count(198),rigidbodies=count(54),skinnedMeshCount=count(137),scriptsComponents=';'.join(asset['scripts']) if yaml else UNKNOWN,LOD=str(asset['lod']) if yaml else UNKNOWN,shaderFamily='SOURCE_DEPENDENCIES_NOT_IMPORTED',shaderDependencies=';'.join(asset['shaderGuids']),maxParticlesPerSystem=';'.join(asset['particleMax']) if yaml else UNKNOWN,serializedParticleCapSum=sum(map(int,asset['particleMax'])) if yaml else UNKNOWN,measurement='STATIC_YAML_COMPONENT_AUDIT' if yaml else 'BINARY_PREFAB_NOT_IMPORTED',urpRisk='NOT_RUNTIME_VALIDATED',mobileRisk='HIGH_OVERDRAW_REVIEW' if sid.startswith('vfx-') else 'PREFAB_HIERARCHY_NOT_RENDERED')
             if not yaml:row['notes']+=' Binary prefab deliberately not imported; component/mesh counts are unknown, not zero.'
@@ -52,6 +77,11 @@ def inventory():
                 row.update(spriteCount='UNKNOWN_SUBRECTS' if sheet or sid=='ui-tiago' else '1_FILE_VARIANT_NOT_UNIQUE_COMPONENT',atlasUsage='SOURCE_SHEET_UNSLICED' if sheet or sid=='ui-tiago' else 'NO_PRODUCTION_ATLAS_BUILT',sourceAvailability=availability,nativeResolution=f"{image.get('width','?')}x{image.get('height','?')}",nineSliceCandidate='YES_INFERRED_NEEDS_BORDER_AUTHORING' if any(x in tokens for x in ['button','panel','window','inventory','tile','frame']) else 'NO_OR_UNCERTAIN',hudComponents='frame/buttons/dividers' if sid=='ui-exe' else 'panel/button/bar/glyph variants' if sid=='ui-kenney' else 'frames; Icons8 excluded',inventoryComponents='selected/unselected slots' if 'inventory' in tokens else 'custom layout required',healthStatComponents='bar skins only; custom readable numbers/fill required',minimapComponents='custom frame composition; no map behavior',measurement='PIL_NATIVE_IMAGE_DIMENSIONS',mobileRisk='ATLAS_AND_OVERDRAW_REVIEW',urpRisk='UI_IMPORT_SLICE_REQUIRED')
                 row['notes']+=' UI image totals include colors/states/upscaled duplicates and source sheets. No fabricated sprite count, atlas, 9-slice borders or finished HUD.'
                 rows.append(row)
+    selections=json.loads((ROOT/'Tools/free-asset-intake/selection_v2.json').read_text(encoding='utf-8'))
+    decisions={s['sourceId']:s['decision'] for s in selections['sources']}
+    for row in rows:
+        row['sourceDecision']=decisions[row['sourceId']]
+        row['itemDecision'],row['selectionReason']=item_decision(row,row['sourceDecision'])
     with (DOCS/'TECHNICAL_ASSET_INVENTORY.csv').open('w',encoding='utf-8',newline='') as f:
         writer=csv.DictWriter(f,fieldnames=fields,extrasaction='ignore');writer.writeheader()
         for row in rows:writer.writerow({k:row.get(k,UNKNOWN) for k in fields})
@@ -96,7 +126,8 @@ def sheets():
         for capture in ordered:
             if capture['category']!=category:continue
             sid=capture['sourceId'];name=Path(capture['originalPath']).stem
-            if (sid,name) in seen or caps.get(sid,0)>=limit:continue
+            source_limit=12 if sid=='env-quaternius-megakit' and category=='ENVIRONMENT' else limit
+            if (sid,name) in seen or caps.get(sid,0)>=source_limit:continue
             with Image.open(capture['renderPath']) as im:
                 pixels=list(im.resize((60,45)).get_flattened_data());magenta=sum(r>200 and g<65 and b>200 for r,g,b in pixels)/len(pixels)
                 if magenta>.01:raise ValueError('Invalid magenta render rejected: '+capture['renderPath'])
@@ -107,7 +138,11 @@ def sheets():
     labels=[('ENVIRONMENT','environment_contact_sheet.png','Environment / floor, walls, gates'),('MACHINERY_HERO_PROPS','machinery_contact_sheet.png','Machinery / containers, generators, service props'),('PIPES_SERVICES','pipes_contact_sheet.png','Pipes / services and cable silhouettes'),('MECHS_ENEMIES','mechs_contact_sheet.png','Mechs / enemy candidates — G-0 stays approved bipedal'),('WEAPONS_TURRETS','weapons_contact_sheet.png','Weapons / assembled groups and donor parts')]
     for category,name,title in labels:
         items=tiles(category)
-        evidence.append(make_sheet(name,title,'Elevated Unity 6000.3.0f1 / URP17.3.0 • longest dimension normalized to 4m',items))
+        for offset in range(0,len(items),24):
+            page=offset//24+1;page_count=math.ceil(len(items)/24)
+            page_name=name if page==1 else name.replace('.png',f'_{page:02}.png')
+            page_title=title+(f' — {page}/{page_count}' if page_count>1 else '')
+            evidence.append(make_sheet(page_name,page_title,'Elevated Unity 6000.3.0f1 / URP17.3.0 • longest dimension normalized to 4m',items[offset:offset+24]))
     inspected=json.loads((WORK/'reports/inspection.json').read_text(encoding='utf-8'));uitiles=[]
     for source in inspected:
         if source['sourceId'] not in {'ui-exe','ui-kenney','ui-tiago'}:continue

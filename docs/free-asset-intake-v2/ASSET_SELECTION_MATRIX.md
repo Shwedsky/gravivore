@@ -30,7 +30,7 @@ Judgment: 18 prefabs with large 1536–3072 textures and multiple particle layer
 
 Scores: 4 / 4 / 4 / 3 / 4 / 4; weighted **3.85/5 (77.0/100)**. License: UNITY_ASSET_STORE_EULA.
 
-Items: Floor/Tile/WallMetal, door-frame and Crate_01 families: USE after shared material conversion; bundled HDRP/URP archives are duplicate variants; source script excluded.
+Items: Floor_Squared_01/02_6x6, Floor_Hole_01, Wall_Gear_01_Half, Wall_Pipes_01_Large, DoorWay_01_Large and Crate_01: USE after shared material conversion; bundled HDRP/URP archives are duplicate variants; source script excluded.
 
 Judgment: 125 canonical FBX, generally inexpensive geometric panel detail. Selected crate/panel surfaces read clearly from above. Supports floor/wall variation, not a complete damaged industrial scene.
 
