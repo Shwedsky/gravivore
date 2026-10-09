@@ -112,6 +112,14 @@ Use the cheapest suitable combination of:
 
 Lighting must reveal form and material while preserving combat readability.
 
+## Legacy presentation compatibility
+
+Legacy presentation paths may remain in the codebase for rollback/backward compatibility, including old S15 part recipes and their `Body / Accent / Dark` material replacement behavior.
+
+They are **not the preferred path for new production art** when they would destroy authored PBR/material information or force a rich model back into a flat proxy look. Prefer a reviewed whole presentation prefab, or adapt/consolidate materials in a way that preserves the required surface information.
+
+Likewise, the rule that presentation art must not own gameplay collision/scripts is an authority-separation rule, not a demand for simple visuals. Rich facilities and hero machinery may use separate gameplay collision proxies and bounded presentation systems.
+
 ## Production vs proxy
 
 Blockouts, primitive rigs, procedural proxy geometry and quick kitbashes are valid for exploration and technical proof.
