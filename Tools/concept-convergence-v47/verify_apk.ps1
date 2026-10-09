@@ -6,6 +6,12 @@ $v47Output='docs/history/implementation-passes/chapter01-visual-replacement-v3/v
 $v47Apk=Join-Path $v47Root 'Builds/Android/gravivore-dev-0.1.0+47.apk'
 & (Join-Path $v47Root 'Tools/chapter01-v3/verify_apk.ps1') -ExpectedSourceSha $ExpectedSourceSha -VersionCode 47 -OutputDirectory $v47Output
 if($LASTEXITCODE){throw 'Package/provenance verification failed'}
+# Keep copied legacy receipts usable under the deeper V47 evidence root on Windows.
+foreach($v47Receipt in @(
+ @('docs_history_visual-stages_chapter01-visual-passes_chapter01-production_verification_apk_packed_dependencies.json','apk_chapter01_production_dependencies.json'),
+ @('docs_history_visual-stages_chapter01-visual-passes_concept-fidelity-v2_verification_apk_packed_dependencies.json','apk_concept_fidelity_dependencies.json'))){
+ Move-Item -LiteralPath (Join-Path $v47Root ($v47Output+'/'+$v47Receipt[0])) -Destination (Join-Path $v47Root ($v47Output+'/'+$v47Receipt[1])) -Force
+}
 $v47Python='C:/Users/pamak/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/python.exe'
 foreach($v47Inspection in @(@('Tools/visual-replacement-v3/inspect_apk.py','apk_accepted_production.json','--corrective'),@('Tools/surface-hero-v46/inspect_apk.py','apk_preserved_v46_pbr.json',''),@('Tools/concept-convergence-v47/inspect_apk.py','apk_v47_scene_skin_pbr.json',''))){
  $v47Args=@((Join-Path $v47Root $v47Inspection[0]),$v47Apk,'--output',(Join-Path $v47Root ($v47Output+'/'+$v47Inspection[1])))
