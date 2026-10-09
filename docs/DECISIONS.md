@@ -1,107 +1,93 @@
-# Frozen decisions — Vertical Slice v0.1
+# Frozen product decisions — Vertical Slice v0.1
 
-Date frozen: 2026-09-24.
+Status: **CURRENT**  
+Original freeze: 2026-09-24. Later explicit owner decisions and `docs/CURRENT_AUTHORITIES.md` supersede conflicting historical detail.
 
 ## Product
 
-Working codename: **GRAVIVORE**.  
-Public brand name is not legally cleared and may change before store release.
+Working codename: **GRAVIVORE**. Public brand name is not legally cleared and may change before store release.
 
-Player fantasy: a small escaped techno-organism powered by an unstable gravity core. It assimilates cores/modules from enemies and visibly changes its body as it grows.
+Player fantasy: an escaped techno-organism powered by an unstable gravity core. It assimilates compatible cores/modules and visibly changes as it grows.
 
-The game is inspired by the *genre/formula* of Butcher Hero / Alien Invasion / Devour / XP Hero, not by their protected IP or assets.
+The game is inspired by genre/formula, not by protected IP/assets/code from other games.
 
 ## Platform and engine
 
 - Unity 6.3 LTS.
 - Universal Render Pipeline.
-- Android.
-- Portrait-only.
+- Android portrait-only.
 - ARM64 required.
-- Minimum Android API: 26 for v0.1.
-- Target API for sideload build: highest supported installed SDK through Unity.
-- Future store target API will be pinned to store policy at release time.
-- Input: touch first; mouse simulation supported in Editor.
+- Minimum Android API 26 for v0.1.
+- Touch first; mouse simulation in Editor.
 
 ## Session and account
 
 - No login at launch.
-- Local anonymous profile.
-- Save stored locally.
-- Future account/cloud layer must be possible without rewriting gameplay.
+- Local anonymous profile/save.
 - No backend in v0.1.
+- Future account/cloud recovery must be possible without rewriting gameplay.
 
-## Controls
+## Controls and combat
 
 - One-thumb movement.
-- Floating joystick appears at the first valid touch in the lower gameplay area.
 - No auto-run.
 - No manual basic-attack button.
-- Auto-target/auto-attack when a hostile target is in valid range.
-- UI touches never move the player.
-- Boss skill expression comes primarily from repositioning around telegraphed attacks.
-
-## Combat
-
-- Standard enemies may be displaced by the gravity attack.
-- Elites have reduced displacement.
-- Bosses cannot be pulled.
-- Auto-attack pauses while no valid target exists.
+- Auto-target/auto-attack when a hostile target is valid/in range.
+- UI touches do not move the player.
+- Standard enemies can be displaced by gravity attack; elites reduced; bosses immune.
 - Player chooses engagements by positioning.
-- Design objective: 80% progression/stat check, 20% movement skill.
+- Design objective: about 80% progression/stat check, 20% movement skill.
 
-## Vertical slice content
+## Vertical-slice content
 
-- One zone/chapter.
-- Five enemy spots.
-- Each spot maintains 3–5 live ordinary enemies, configurable per spot.
-- Five ordinary enemy archetypes.
+- One Chapter 01 zone.
+- Five ordinary enemy spots, each configurable for 3–5 live enemies.
+- Five ordinary archetypes.
 - One elite.
 - One boss.
 - Five core progression stats.
-- At least two visible evolution milestones.
-- 30–45 minute first-play progression.
-- Death has no loss of permanent stats.
+- At least two clearly visible evolution milestones.
+- First-play target remains roughly 30–45 minutes while tuning continues.
+- Death does not remove permanent stats.
 
 ## Progression
 
-- Chapters in the future.
+- More chapters later.
 - Effectively unbounded stat growth.
-- Prestige/rebirth only in a later phase.
-- Offline reward is secondary and capped.
-- No auto-run.
-- Full auto-battle is explicitly out of scope.
+- Prestige/rebirth later, not v0.1.
+- Offline reward secondary/capped.
+- Full auto-battle out of scope.
 
 ## Monetization
 
-Not implemented in v0.1.
+Not implemented in v0.1. Future providers stay behind platform abstractions.
 
-Future design allows:
-- consumable/non-consumable purchases;
-- rewarded ads;
-- permanent ad skip;
-- time-limited passes/subscription-like benefits;
-- RuStore Pay SDK and SBP;
-- cloud/payment recovery account.
+## Art and visual direction
 
-All future payment providers are behind a platform abstraction.
+Initial asset spend remains **zero until the owner explicitly changes it**.
 
-## Art
+Current art authority is:
+- `docs/CURRENT_VISUAL_TARGET.md`
+- `docs/ART_DIRECTION.md`
+- `docs/ART_ASSET_POLICY.md`
 
-Budget for initial assets: zero.
-Allowed:
-- original project-created geometry/materials;
-- Unity built-ins;
-- truly free assets whose licenses allow commercial use;
-- preference for CC0.
+The current target is **mobile-optimized premium hard-surface industrial sci-fi**. `Low-poly` is not the target aesthetic; mesh/material/light reduction is an optimization technique only.
 
-Every imported external asset must be recorded in `ThirdPartyNotices.md`.
+Current G-0 is **bipedal**. Historical radial/four-support G-0 directions are superseded.
+
+Allowed art:
+- original project-created art;
+- Unity built-ins where not relied on as visible final art;
+- verified free commercial assets, CC0 preferred, CC BY acceptable with correct handling;
+- other free sources only after item-level license/public-repository review.
+
+Every promoted external asset requires provenance/notice. New raw acquisition paths are defined only by `docs/ASSET_SOURCE_OF_TRUTH.md`.
 
 ## Repository and delivery
 
 - GitHub.
-- Codex-oriented repository documentation.
+- Codex-oriented current-authority documentation.
+- `docs/history/` is non-authoritative development history.
 - Windows `build-android.ps1`.
-- Output APK under `Builds/Android/`.
 - Dev APK may use debug signing.
-- Release signing is deferred.
+- Release signing deferred.
