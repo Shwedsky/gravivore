@@ -65,7 +65,7 @@ Do not use its old worktree paths as current instructions.
 
 For the owner-approved Chapter 01 Visual Blueprint V1, the current owner-local raw packages are:
 
-`ExternalAssetIntake/Current/quaternius-modular-scifi-megakit-standard/Modular SciFi MegaKit[Standard].zip`
+`ExternalAssetIntake/Current/quaternius-modular-scifi-megakit-standard/Modular_SciFi_MegaKit_Standard.zip`
 
 and
 
