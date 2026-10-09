@@ -38,6 +38,14 @@ A current task may explicitly ask to inspect a historical document. That makes i
 
 Versioned names such as `Phase3`, `V3`, `V43`, `Art Spike`, `Concept Fidelity`, `First Visual Slice`, or similar are not evidence of current authority by themselves.
 
+### Where new phase reports go
+
+New versioned delivery reports, screenshots, validation snapshots, before/after boards and one-off implementation notes belong under a clearly historical path such as:
+
+`docs/history/implementation-passes/<pass-id>/`
+
+They must not be added to the root of `docs/` as if they were permanent project rules. If a stable decision emerges from a pass, update the appropriate CURRENT document separately.
+
 ## Current visual authority
 
 The project is targeting **mobile-optimized premium hard-surface industrial sci-fi**, not a low-poly aesthetic.
@@ -57,3 +65,7 @@ Do not discover current assets by scanning old local caches, old worktrees or hi
 G-0 is a **bipedal robotic combat mech** in the current game. Any historical four-support, spider-like, radial or tank-like G-0 description is superseded.
 
 The owner concept remains the visual-quality and world-composition target, except for that G-0 anatomy override and any later explicit owner correction.
+
+## Conflict-audit status
+
+The current-documentation conflict audit is recorded in `docs/CURRENT_DOCUMENTATION_AUDIT.md`. If a future task discovers a conflict between CURRENT documents, fix the authority documents rather than adding another one-off phase rule.
