@@ -35,7 +35,8 @@ namespace Gravivore.Presentation.World
             _sourceColors=new Color[_sources.Length];
             for(var i=0;i<_sources.Length;i++)
                 _sourceColors[i]=_sources[i].name.EndsWith("red",StringComparison.Ordinal)?new Color(1,.16f,.05f):
-                    _sources[i].name.EndsWith("cyan",StringComparison.Ordinal)?new Color(.10f,.8f,1):new Color(1,.48f,.10f);
+                    _sources[i].name.EndsWith("cyan",StringComparison.Ordinal)?new Color(.10f,.8f,1):
+                    _sources[i].name.EndsWith("white",StringComparison.Ordinal)?new Color(.8f,.9f,1):new Color(1,.48f,.10f);
             for(var i=0;i<_lights.Length;i++)
             {
                 var obj=new GameObject("Reused internal energy response "+i,typeof(Light));obj.transform.SetParent(transform,false);

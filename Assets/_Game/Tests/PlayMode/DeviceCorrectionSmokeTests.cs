@@ -102,7 +102,7 @@ namespace Gravivore.Tests.PlayMode
         {
             yield return Load(); var root = _scene.Root; var camera = Camera.main;
             var body = root.PlayerObject.GetComponent<CharacterController>(); body.enabled = false;
-            root.PlayerObject.transform.SetPositionAndRotation(new Vector3(0,0,66),Quaternion.Euler(0,180,0)); body.enabled = true;
+            root.PlayerObject.transform.SetPositionAndRotation(root.MagnetarGuard.transform.position+Vector3.back*3,Quaternion.Euler(0,180,0)); body.enabled = true;
             root.MagnetarGuard.ActivateEncounter();
             camera.GetComponent<Gravivore.Presentation.Camera.PortraitFollowCamera>().SnapToTarget();
             var map = root.GetComponentInChildren<MapMinimapPresenter>(true); map.RefreshNow();

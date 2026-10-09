@@ -64,11 +64,7 @@ namespace Gravivore.Tests.PlayMode
                 Assert.IsFalse(blocker.bounds.Intersects(exit), blocker.name + " blocks the authored south exit.");
             }
 
-            var spawnOrigins = new[]
-            {
-                new Vector3(-26f, 0f, 20f), new Vector3(0f, 0f, 40f), new Vector3(26f, 0f, 20f),
-                new Vector3(-20f, 0f, -12f), new Vector3(20f, 0f, -12f)
-            };
+            var spawnOrigins = System.Linq.Enumerable.Range(0,5).Select(i=>root.EnemyPopulation.GetSpot(i).Position).ToArray();
             var spawnOffsets = new[]
             {
                 new Vector3(-1.5f, 0f, -1.5f), new Vector3(1.5f, 0f, -1.5f),
@@ -81,10 +77,10 @@ namespace Gravivore.Tests.PlayMode
 
             foreach (var blocker in blockers)
             {
-                AssertPointOutsideXZ(blocker, new Vector3(0f, 0f, 69f), "elite encounter centre");
-                AssertPointOutsideXZ(blocker, new Vector3(0f, 0f, 94f), "boss encounter centre");
-                AssertPointOutsideXZ(blocker, new Vector3(0f, 0f, 60f), "elite gate centre");
-                AssertPointOutsideXZ(blocker, new Vector3(0f, 0f, 80f), "boss gate centre");
+                AssertPointOutsideXZ(blocker, root.MagnetarGuard.transform.position, "elite encounter centre");
+                AssertPointOutsideXZ(blocker, root.CustodianBoss.transform.position, "boss encounter centre");
+                AssertPointOutsideXZ(blocker, world.Configuration.EliteGate.Position, "elite gate centre");
+                AssertPointOutsideXZ(blocker, world.Configuration.BossGate.Position, "boss gate centre");
             }
 
             var basin = new Vector3(0f, 0f, -30f);
@@ -99,7 +95,7 @@ namespace Gravivore.Tests.PlayMode
             Assert.IsTrue(unlockedRoutes.Reaches(root.MagnetarGuard.transform.position));
             Assert.IsTrue(unlockedRoutes.Reaches(root.CustodianBoss.transform.position));
             foreach (var blocker in blockers)
-                AssertSegmentClearXZ(blocker, new Vector3(0f, 0f, 60f), new Vector3(0f, 0f, 94f),
+                AssertSegmentClearXZ(blocker, world.Configuration.EliteGate.Position, world.Configuration.BossArenaCenter,
                     "elite/boss traversal");
         }
 

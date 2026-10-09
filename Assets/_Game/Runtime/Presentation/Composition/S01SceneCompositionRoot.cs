@@ -47,6 +47,7 @@ namespace Gravivore.Presentation.Composition
         [SerializeField] private EquipmentCatalogDefinition _equipmentCatalogDefinition;
         [SerializeField] private GravityAttackSettings _gravityAttackSettings;
         [SerializeField] private SpawnSpotDefinition[] _spawnSpotDefinitions;
+        [SerializeField] private EnemyAmbientMotionSettings _enemyAmbientMotionSettings;
         [SerializeField] private PlayerProgressionDefinition _progressionDefinition;
         [SerializeField] private QuestDefinition _questDefinition;
         [SerializeField] private QuestOnboardingDefinition _questOnboardingDefinition;
@@ -945,7 +946,8 @@ namespace Gravivore.Presentation.Composition
                 targetLayer,
                 _materialPalette.LitMaterial,
                 new S15EnemyVisualFactory(_s15VisualCatalog),
-                PlayerStats, spotActivation: IsSpawnSpotActive);
+                PlayerStats, spotActivation: IsSpawnSpotActive,
+                ambientMotion: _enemyAmbientMotionSettings != null ? _enemyAmbientMotionSettings.Parameters : default);
         }
 
         private bool IsSpawnSpotActive(int index)

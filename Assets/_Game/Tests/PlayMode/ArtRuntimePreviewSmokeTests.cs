@@ -86,7 +86,8 @@ namespace Gravivore.Tests.PlayMode
             yield return scene.Load();
             while (scene.Root.Progression.State.TotalAssimilationScore < 42) Grant(scene);
             var player = scene.Root.PlayerObject;
-            player.transform.position = new Vector3(0, 0, 35);
+            var previewPosition = new Vector3(0, 0, scene.Root.EnemyPopulation.GetSpot(1).Position.z);
+            player.transform.position = previewPosition;
             var camera = Camera.main;
             Assert.IsNotNull(camera);
             camera.transform.position = player.transform.position + new Vector3(0, 14.8f, -11.2f);
@@ -109,7 +110,7 @@ namespace Gravivore.Tests.PlayMode
             var beam = vfx.LastPlayedObject.GetComponentInChildren<LineRenderer>(true);
             Assert.That(beam.GetPosition(0), Is.EqualTo(socket.position));
             Assert.That(beam.GetPosition(1), Is.EqualTo(cutters[0].TargetPoint.position));
-            Assert.That(player.transform.position, Is.EqualTo(new Vector3(0, 0, 35)));
+            Assert.That(player.transform.position, Is.EqualTo(previewPosition));
             WriteAudit(scene, forms, cutters.Length);
             yield return scene.Cleanup();
         }

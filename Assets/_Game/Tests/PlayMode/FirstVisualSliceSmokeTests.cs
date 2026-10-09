@@ -34,7 +34,7 @@ namespace Gravivore.Tests.PlayMode
             Assert.IsNotNull(root.VisualEnvironment.Floor.Find("First Visual Slice Industrial Containment"));
             var oldRoutes = root.VisualEnvironment.Floor.Find("Phase3C Routes");
             foreach (Transform panel in oldRoutes)
-                Assert.IsTrue(panel.localPosition.z < 36f || panel.localPosition.z > 76f,
+                Assert.IsTrue(panel.GetComponentsInChildren<Renderer>(true).All(r=>!r.enabled),
                     "Old corridor surface must not cover the rebuilt floor: " + panel.name);
             Assert.IsTrue(root.VisualEnvironment.FullChapterProduction);
             Assert.IsNotNull(root.VisualEnvironment.Floor.Find("Chapter 01 Full Production/Facility deck segmentation"));
@@ -43,16 +43,17 @@ namespace Gravivore.Tests.PlayMode
             Assert.That(root.PlayerObject.GetComponent<CharacterController>().height, Is.EqualTo(1.4f));
             Assert.That(root.WorldPresenter.EnvironmentBlockerCount, Is.EqualTo(2 + root.VisualEnvironment.SliceObstacleCount));
             // The main approach, strong-spot and elite centres remain reachable when the normal gate unlocks.
-            root.WorldPresenter.EliteGate.SetLocked(false); Physics.SyncTransforms();
-            for (var z = 37; z < 79; z++)
+            root.WorldPresenter.EliteGate.SetLocked(false); root.WorldPresenter.BossGate.SetLocked(false); Physics.SyncTransforms();
+            for (var z = Mathf.CeilToInt(root.WorldPresenter.Configuration.EliteGate.Position.z-1); z < root.WorldPresenter.Configuration.BossGate.Position.z-1; z++)
                 Assert.IsFalse(Physics.CheckCapsule(new Vector3(0,.45f,z), new Vector3(0,1.05f,z), .42f,
                     LayerMask.GetMask("HardBlocker"), QueryTriggerInteraction.Ignore), "central route at " + z);
             foreach (var spot in root.StrongSpots)
                 Assert.IsFalse(Physics.CheckCapsule(spot.Position + Vector3.up*.45f, spot.Position + Vector3.up*1.05f, .42f,
                     LayerMask.GetMask("HardBlocker"), QueryTriggerInteraction.Ignore), spot.Id);
-            for (var x = -18; x <= 0; x++)
-                Assert.IsFalse(Physics.CheckCapsule(new Vector3(x,.45f,54),new Vector3(x,1.05f,54),.42f,
-                    LayerMask.GetMask("HardBlocker"), QueryTriggerInteraction.Ignore), "strong side passage at " + x);
+            var body=root.PlayerObject.GetComponent<CharacterController>();
+            foreach(var other in root.GetComponentsInChildren<CharacterController>(true))if(other!=body)other.enabled=false;
+            foreach(var strong in root.StrongSpots)
+                Chapter1DeviceStabilizationSmokeTests.WalkCapsulePath(root,body,strong.Position);
         }
         [UnityTest] public IEnumerator OrdinaryShutdownAnimationOutlivesImmediateRecycleWithoutDelayingReward()
         {

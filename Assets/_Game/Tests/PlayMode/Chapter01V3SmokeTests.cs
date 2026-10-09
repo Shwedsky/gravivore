@@ -48,7 +48,8 @@ namespace Gravivore.Tests.PlayMode
             Assert.That(richness.GetComponentsInChildren<Collider>(true).Length,Is.Zero);
             Assert.That(richness.GetComponentsInChildren<Renderer>().Length,Is.GreaterThan(75));
             root.WorldPresenter.EliteGate.SetLocked(false);root.WorldPresenter.BossGate.SetLocked(false);
-            foreach(var pair in new[]{new Vector3(-34,0,-32),new Vector3(34,0,-32),new Vector3(-34,0,48),new Vector3(34,0,48),new Vector3(-34,0,90),new Vector3(34,0,90)})
+            var bounds=root.WorldPresenter.Bounds;
+            foreach(var pair in new[]{new Vector3(bounds.MinX+2,0,-32),new Vector3(bounds.MaxX-2,0,-32),new Vector3(bounds.MinX+2,0,32),new Vector3(bounds.MaxX-2,0,32),new Vector3(bounds.MinX+2,0,bounds.MaxZ-10),new Vector3(bounds.MaxX-2,0,bounds.MaxZ-10)})
             {
                 Move(root,pair);for(var i=0;i<12;i++)body.Move(Vector3.forward*.25f);
                 Assert.That(body.transform.position.z,Is.EqualTo(pair.z+3).Within(.15f));Capture(root,"edge_"+pair.x+"_"+pair.z);

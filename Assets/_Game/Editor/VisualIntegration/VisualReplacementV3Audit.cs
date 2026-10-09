@@ -60,6 +60,8 @@ namespace Gravivore.Editor.VisualIntegration
                 else EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);
             }
             Debug.Log("VISUAL_REPLACEMENT_V3_RENDER_LICENSE_COLLISION_PASS");
+            if(AssetDatabase.LoadAssetAtPath<Gravivore.Gameplay.Enemies.EnemyAmbientMotionSettings>(ConceptCorrectiveV45Builder.Root+"/EnemyAmbientMotion.asset")!=null)
+                ConceptCorrectiveV45Audit.ValidateOrThrow();
         }
         public void OnPreprocessBuild(BuildReport report)=>ValidateOrThrow();
         public void OnPostprocessBuild(BuildReport report)

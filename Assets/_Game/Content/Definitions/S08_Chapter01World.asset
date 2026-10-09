@@ -14,40 +14,40 @@ MonoBehaviour:
   m_EditorClassIdentifier:
   _worldId: chapter01-scrap-exclusion
   _basinCenter: {x: 0, y: 0, z: -30}
-  _groundCenter: {x: 0, y: 0, z: 30}
-  _groundSize: {x: 72, y: 140}
+  _groundCenter: {x: 0, y: 0, z: 19}
+  _groundSize: {x: 56, y: 118}
   _boundaryThickness: 0.6
   _boundaryHeight: 2.5
   _zones:
   - _id: relay-yard
-    _center: {x: -26, y: 0, z: 20}
-    _landmarkPosition: {x: -30, y: 0, z: 20}
+    _center: {x: -18, y: 0, z: 8}
+    _landmarkPosition: {x: -22, y: 0, z: 8}
     _color: {r: 0.18, g: 0.56, b: 0.72, a: 1}
   - _id: cutting-floor
-    _center: {x: 0, y: 0, z: 40}
-    _landmarkPosition: {x: 0, y: 0, z: 45}
+    _center: {x: 0, y: 0, z: 24}
+    _landmarkPosition: {x: 0, y: 0, z: 29}
     _color: {r: 0.82, g: 0.3, b: 0.22, a: 1}
   - _id: shield-dump
-    _center: {x: 26, y: 0, z: 20}
-    _landmarkPosition: {x: 30, y: 0, z: 20}
+    _center: {x: 18, y: 0, z: 8}
+    _landmarkPosition: {x: 22, y: 0, z: 8}
     _color: {r: 0.28, g: 0.68, b: 0.38, a: 1}
   - _id: capacitor-field
-    _center: {x: -20, y: 0, z: -12}
-    _landmarkPosition: {x: -24, y: 0, z: -15}
+    _center: {x: -12, y: 0, z: -13}
+    _landmarkPosition: {x: -16, y: 0, z: -15.625}
     _color: {r: 0.74, g: 0.62, b: 0.18, a: 1}
   - _id: hauler-graveyard
-    _center: {x: 20, y: 0, z: -12}
-    _landmarkPosition: {x: 24, y: 0, z: -15}
+    _center: {x: 12, y: 0, z: -13}
+    _landmarkPosition: {x: 16, y: 0, z: -15.625}
     _color: {r: 0.58, g: 0.34, b: 0.72, a: 1}
   _eliteGate:
     _id: elite-gate
-    _position: {x: 0, y: 0, z: 60}
+    _position: {x: 0, y: 0, z: 38}
     _size: {x: 5, y: 2.5, z: 0.6}
   _bossGate:
     _id: boss-gate
-    _position: {x: 0, y: 0, z: 80}
+    _position: {x: 0, y: 0, z: 58}
     _size: {x: 5, y: 2.5, z: 0.6}
-  _bossArenaCenter: {x: 0, y: 0, z: 94}
+  _bossArenaCenter: {x: 0, y: 0, z: 72}
   _bossArenaRadius: 5
   _eliteEnemyId: magnetar-guard
   _requiredQuestObjectiveIds:

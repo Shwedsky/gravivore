@@ -109,9 +109,10 @@ namespace Gravivore.Tests.PlayMode
             foreach(var definition in Field<SpawnSpotDefinition[]>(root,"_spawnSpotDefinitions"))
             {var config=definition.CreateRuntimeConfiguration();Assert.IsTrue(locked.Reaches(config.WorldOrigin),config.Id);
                 foreach(var anchor in config.AnchorOffsets)Assert.IsTrue(locked.Reaches(config.WorldOrigin+anchor),config.Id+" spawn "+anchor);}
-            foreach(var spot in root.StrongSpots)Assert.That(locked.Reaches(spot.Position),Is.EqualTo(spot.Position.z<60),"Locked: "+spot.Id);
-            Assert.IsTrue(locked.Reaches(new Vector3(0,0,58)));Assert.IsFalse(locked.Reaches(root.MagnetarGuard.transform.position));
-            Assert.IsFalse(locked.Reaches(new Vector3(0,0,78)));Assert.IsFalse(locked.Reaches(root.CustodianBoss.transform.position));
+            var world=root.WorldPresenter.Configuration;
+            foreach(var spot in root.StrongSpots)Assert.That(locked.Reaches(spot.Position),Is.EqualTo(spot.Position.z<world.EliteGate.Position.z),"Locked: "+spot.Id);
+            Assert.IsTrue(locked.Reaches(world.EliteGate.Position+Vector3.back*2));Assert.IsFalse(locked.Reaches(root.MagnetarGuard.transform.position));
+            Assert.IsFalse(locked.Reaches(world.BossGate.Position+Vector3.back*2));Assert.IsFalse(locked.Reaches(root.CustodianBoss.transform.position));
             root.WorldUnlocks.PrepareEliteEncounterForDevelopment();root.Chapter1Encounters.Tick();
             root.MagnetarGuard.ApplyDamage(new DamageRequest(100000,DamageType.Gravity));Physics.SyncTransforms();
             var opened=new RouteGrid(root,start);var targets=new List<(string id,Vector3 point)>();
@@ -119,8 +120,8 @@ namespace Gravivore.Tests.PlayMode
             foreach(var definition in Field<SpawnSpotDefinition[]>(root,"_spawnSpotDefinitions"))
             {var config=definition.CreateRuntimeConfiguration();foreach(var anchor in config.AnchorOffsets)targets.Add((config.Id+" anchor "+anchor,config.WorldOrigin+anchor));}
             foreach(var spot in root.StrongSpots)targets.Add((spot.Id,spot.Position));
-            targets.Add(("elite approach",new Vector3(0,0,58)));targets.Add(("Magnetar",root.MagnetarGuard.transform.position));
-            targets.Add(("boss gate approach",new Vector3(0,0,78)));targets.Add(("Custodian arena",root.CustodianBoss.transform.position));
+            targets.Add(("elite approach",world.EliteGate.Position+Vector3.back*2));targets.Add(("Magnetar",root.MagnetarGuard.transform.position));
+            targets.Add(("boss gate approach",world.BossGate.Position+Vector3.back*2));targets.Add(("Custodian arena",root.CustodianBoss.transform.position));
             foreach(var target in targets)
             {
                 Assert.IsTrue(opened.Reaches(target.point),target.id+" must have a capsule route.");
@@ -170,14 +171,15 @@ namespace Gravivore.Tests.PlayMode
             Assert.IsNotNull(production.Find("Service corridors"));Assert.IsNotNull(production.Find("Custodian containment complex"));
             var walls=env.Floor.GetComponentsInChildren<Renderer>().Where(r=>r.name.StartsWith("Bulkhead_Module",StringComparison.Ordinal)).ToArray();
             bool Covered(Vector3 p)=>walls.Any(r=>{var bounds=r.bounds;bounds.Expand(.12f);return bounds.Contains(p);});
+            var world=root.WorldPresenter.Configuration;var bounds=world.Bounds;
             foreach(var side in new[]{-1,1})
             {
-                foreach(var z in new[]{60,80})for(var x=3.5f;x<=35.5f;x+=.5f)
+                foreach(var z in new[]{world.EliteGate.Position.z,world.BossGate.Position.z})for(var x=3.5f;x<=bounds.MaxX-.5f;x+=.5f)
                     Assert.IsTrue(Covered(new Vector3(side*x,1.3f,z)),"Opaque gate flank visual at "+side*x+", "+z);
-                for(var z=-35.5f;z<=99.5f;z+=.5f)
-                    Assert.IsTrue(Covered(new Vector3(side*35.5f,1.3f,z)),"Opaque perimeter visual at "+side+", "+z);
+                for(var z=bounds.MinZ+4.5f;z<=bounds.MaxZ-.5f;z+=.5f)
+                    Assert.IsTrue(Covered(new Vector3(side*(bounds.MaxX-.5f),1.3f,z)),"Opaque perimeter visual at "+side+", "+z);
             }
-            for(var x=-35.5f;x<=35.5f;x+=.5f)Assert.IsTrue(Covered(new Vector3(x,1.3f,100)),"North perimeter visual at "+x);
+            for(var x=bounds.MinX+.5f;x<=bounds.MaxX-.5f;x+=.5f)Assert.IsTrue(Covered(new Vector3(x,1.3f,bounds.MaxZ)),"North perimeter visual at "+x);
             foreach(var enemy in root.EnemyPopulation.GetComponentsInChildren<OrdinaryEnemyController>(true))
             {var binding=enemy.GetComponent<CharacterVisualBinding>();if(binding.ActiveModel==null)continue;
                 Assert.IsNotNull(binding.ActiveModel.GetComponentInChildren<Animator>(),enemy.LifeId.ToString());}

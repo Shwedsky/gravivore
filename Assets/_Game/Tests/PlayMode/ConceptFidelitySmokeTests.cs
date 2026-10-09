@@ -87,7 +87,7 @@ namespace Gravivore.Tests.PlayMode
             {Move(root,pair.Item2);yield return null;Capture(root,pair.Item1);}
             root.WorldUnlocks.PrepareEliteEncounterForDevelopment();root.Chapter1Encounters.Tick();
             root.MagnetarGuard.ApplyDamage(new DamageRequest(100000,DamageType.Gravity));
-            Move(root,new Vector3(0,0,89.5f));root.CustodianBoss.Tick(0);yield return null;
+            Move(root,root.WorldPresenter.Configuration.BossArenaCenter+Vector3.back*4.5f);root.CustodianBoss.Tick(0);yield return null;
             var bossAnimator=root.CustodianBoss.GetComponent<CharacterVisualBinding>().ActiveModel.GetComponentInChildren<Animator>();
             // Freeze the observer only for explicit pose captures; otherwise its
             // authoritative state restores windup while the capture is being sampled.
@@ -133,8 +133,10 @@ namespace Gravivore.Tests.PlayMode
             Physics.SyncTransforms();
             var input=new RouteInput();var camera=UnityEngine.Camera.main;
             root.PlayerObject.GetComponent<PlayerLocomotion>().Initialize(input,camera.transform,root.PlayerStats,360);
-            var stops=new[]{new Vector3(-20,0,-12),new Vector3(20,0,-12),new Vector3(0,0,10),new Vector3(-26,0,20),
-                new Vector3(26,0,20),new Vector3(0,0,40),new Vector3(0,0,68),new Vector3(0,0,89.5f),new Vector3(0,0,-28)};
+            var stops=new[]{root.EnemyPopulation.GetSpot(3).Position,root.EnemyPopulation.GetSpot(4).Position,
+                new Vector3(0,0,-1.25f),root.EnemyPopulation.GetSpot(0).Position,root.EnemyPopulation.GetSpot(2).Position,
+                root.EnemyPopulation.GetSpot(1).Position,root.MagnetarGuard.transform.position+Vector3.back,
+                root.WorldPresenter.Configuration.BossArenaCenter+Vector3.back*4.5f,root.RepairHub.RepairPosition};
             var evidence=new SustainedEvidence{initialTransforms=root.GetComponentsInChildren<Transform>(true).Length,
                 initialMaterials=MaterialCount(root),initialActorTransforms=ActorTransformCount(root),initialFidelityTransforms=FidelityTransformCount(root)};
             var started=Time.realtimeSinceStartupAsDouble;var previous=started;var index=0;var point=0;var dwellUntil=0d;

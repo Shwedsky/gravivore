@@ -81,12 +81,12 @@ namespace Gravivore.Tests.PlayMode
         [UnityTest] public IEnumerator ProductionCameraReviewAndRankedEquipmentRestore()
         {
             yield return Load();var root=_scene.Root;
-            var points=new[]{new Vector3(-26,0,20),new Vector3(0,0,40),new Vector3(0,0,10),new Vector3(0,0,64)};
+            var points=new[]{root.EnemyPopulation.GetSpot(0).Position,root.EnemyPopulation.GetSpot(1).Position,new Vector3(0,0,-1.25f),root.MagnetarGuard.transform.position+Vector3.back*5};
             var names=new[]{"02_ordinary_sector","03_strong_ordinary","04_service_corridor","05_magnetar_encounter"};
             root.WorldUnlocks.PrepareEliteEncounterForDevelopment();root.Chapter1Encounters.Tick();
             for(var i=0;i<points.Length;i++){Move(root,points[i]);yield return null;Capture(root,names[i]);}
             root.MagnetarGuard.ApplyDamage(new DamageRequest(100000,DamageType.Gravity));
-            Move(root,new Vector3(0,0,89.5f));root.CustodianBoss.Tick(0);yield return null;
+            Move(root,root.WorldPresenter.Configuration.BossArenaCenter+Vector3.back*4.5f);root.CustodianBoss.Tick(0);yield return null;
             Capture(root,"06_custodian_arena");
             var bossHud=root.GetComponentInChildren<BossHealthHudPresenter>(true);Assert.NotNull(bossHud);Assert.IsTrue(bossHud.IsVisible);Assert.That(bossHud.FillAmount,Is.EqualTo(1));
             Capture(root,"10_boss_hud");

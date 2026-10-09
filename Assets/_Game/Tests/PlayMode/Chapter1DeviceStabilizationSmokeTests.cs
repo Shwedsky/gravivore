@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gravivore.Gameplay.Combat;
@@ -39,13 +40,10 @@ namespace Gravivore.Tests.PlayMode
             var root = _scene.Root;
             var player = root.PlayerObject.transform;
             var body = root.PlayerObject.GetComponent<CharacterController>();
+            foreach(var other in root.GetComponentsInChildren<CharacterController>(true))if(other!=body)other.enabled=false;
             var spot = root.EnemyPopulation.GetSpot(5);
             // Reach the actual pre-elite pack with CharacterController collision enabled.
-            Walk(body, new Vector3(player.position.x, player.position.y, -35f));
-            var side = Mathf.Sign(spot.Position.x) * 34f;
-            Walk(body, new Vector3(side, player.position.y, -35f));
-            Walk(body, new Vector3(side, player.position.y, spot.Position.z - 5f));
-            Walk(body, new Vector3(spot.Position.x, player.position.y, spot.Position.z - 5f));
+            WalkCapsulePath(root, body, spot.Position + Vector3.back*5f);
             root.EnemyPopulation.Tick(0f);
             Assert.That(root.WorldUnlocks.State.EliteGateUnlocked, Is.False);
             Assert.That(root.WorldUnlocks.State.BossGateUnlocked, Is.False);
@@ -59,9 +57,9 @@ namespace Gravivore.Tests.PlayMode
             Assert.That(root.EnemyPopulation.LiveEnemyCount, Is.LessThanOrEqualTo(25));
             yield return null;
             Chapter1ConsolidatedRuntimeSmokeTests.Capture(root, "02_strong_spot_pre_elite.png");
-            Walk(body, new Vector3(-34f, player.position.y, player.position.z));
+            WalkCapsulePath(root, body, new Vector3(root.WorldPresenter.Bounds.MinX+2, player.position.y, player.position.z));
             for (var i = 0; i < 100; i++) body.Move(Vector3.forward * .5f);
-            Assert.That(player.position.z, Is.LessThan(60f), "Permanent gate side walls still enforce the genuine boundary.");
+            Assert.That(player.position.z, Is.LessThan(root.WorldPresenter.Configuration.EliteGate.Position.z), "Permanent gate side walls still enforce the genuine boundary.");
             Assert.That(root.WorldUnlocks.State.EliteGateUnlocked, Is.False);
             Assert.That(root.WorldUnlocks.State.BossGateUnlocked, Is.False);
         }
@@ -148,10 +146,45 @@ namespace Gravivore.Tests.PlayMode
             for (var i = 0; i < 400; i++)
             {
                 var offset = target - body.transform.position; offset.y = 0f;
-                if (offset.magnitude < .1f) return;
-                body.Move(Vector3.ClampMagnitude(offset, .5f)); Physics.SyncTransforms();
+                if (offset.magnitude < .02f) return;
+                body.Move(Vector3.ClampMagnitude(offset, .16f)); Physics.SyncTransforms();
             }
             Assert.Fail("Physical side route blocked before " + target + ": " + body.transform.position);
+        }
+
+        internal static void WalkCapsulePath(S01SceneCompositionRoot root, CharacterController body, Vector3 target)
+        {
+            // Test-only route search uses the real capsule, proxies and casts; compact
+            // service clusters no longer promise a straight line across every row.
+            Physics.SyncTransforms();
+            var bounds=root.WorldPresenter.Bounds;const float spacing=.5f;
+            var radius=body.radius+body.skinWidth+.08f;
+            var lower=body.center-Vector3.up*(body.height/2-body.radius);
+            var upper=body.center+Vector3.up*(body.height/2-body.radius);
+            var width=Mathf.RoundToInt(bounds.Size.x/spacing)-1;
+            var height=Mathf.RoundToInt(bounds.Size.y/spacing)-1;
+            var origin=new Vector3(bounds.MinX+spacing,body.transform.position.y,bounds.MinZ+spacing);
+            int Cell(Vector3 p)=>Mathf.RoundToInt((p.z-origin.z)/spacing)*width+Mathf.RoundToInt((p.x-origin.x)/spacing);
+            Vector3 Point(int i)=>origin+new Vector3(i%width*spacing,0,i/width*spacing);
+            var parents=Enumerable.Repeat(-1,width*height).ToArray();var queue=new Queue<int>();
+            var start=Cell(body.transform.position);var goal=Cell(target);parents[start]=start;queue.Enqueue(start);
+            var mask=LayerMask.GetMask("HardBlocker");
+            while(queue.Count>0&&parents[goal]<0)
+            {
+                var current=queue.Dequeue();var x=current%width;var z=current/width;
+                foreach(var offset in new[]{-1,1,-width,width})
+                {
+                    var next=current+offset;
+                    if(next<0||next>=parents.Length||parents[next]>=0||offset==-1&&x==0||offset==1&&x==width-1||offset==-width&&z==0||offset==width&&z==height-1)continue;
+                    var a=Point(current);var b=Point(next);
+                    if(Physics.CheckCapsule(b+lower,b+upper,radius,mask,QueryTriggerInteraction.Ignore)||
+                       Physics.CapsuleCast(a+lower,a+upper,radius,(b-a).normalized,spacing,mask,QueryTriggerInteraction.Ignore))continue;
+                    parents[next]=current;queue.Enqueue(next);
+                }
+            }
+            Assert.That(parents[goal],Is.GreaterThanOrEqualTo(0),"No real capsule route to "+target);
+            var path=new List<int>();for(var at=goal;at!=start;at=parents[at])path.Add(at);
+            path.Reverse();foreach(var at in path)Walk(body,Point(at));Walk(body,target);
         }
 
         private static void Audit(S01SceneCompositionRoot root)
