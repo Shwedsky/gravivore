@@ -21,6 +21,13 @@ namespace Gravivore.Presentation.UI
             var border=go.GetComponent<Image>();border.sprite=scope.Definition.Frame;border.type=Image.Type.Sliced;border.fillCenter=false;
             border.color=rect.name.IndexOf("Boss",StringComparison.OrdinalIgnoreCase)>=0?new Color(.78f,.32f,.14f,.80f):new Color(.40f,.60f,.68f,.65f);
             border.raycastTarget=false;
+            if(scope.Definition.Divider!=null)
+            {
+                var rail=new GameObject("Production EXE Status Rail",typeof(RectTransform),typeof(CanvasRenderer),typeof(Image));
+                var railRect=rail.GetComponent<RectTransform>();railRect.SetParent(rect,false);
+                HudUiFactory.SetRect(railRect,new Vector2(.05f,.985f),new Vector2(.27f,.99f));
+                var railImage=rail.GetComponent<Image>();railImage.sprite=scope.Definition.Divider;railImage.color=border.color;railImage.raycastTarget=false;
+            }
         }
     }
 }

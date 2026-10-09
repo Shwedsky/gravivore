@@ -74,6 +74,8 @@ namespace Gravivore.Presentation.UI
                 new Color(0.08f, 0.22f, 0.24f, 0.96f),
                 true);
             var button = rect.gameObject.AddComponent<Button>();
+            var skin=rect.GetComponentInParent<ProductionUiSkinScope>()?.Definition;
+            if(skin?.Button!=null){var surface=rect.GetComponent<Image>();surface.sprite=skin.Button;surface.type=Image.Type.Sliced;}
             var colors = button.colors;
             colors.highlightedColor = new Color(0.16f, 0.48f, 0.46f, 1f);
             colors.pressedColor = new Color(0.08f, 0.62f, 0.54f, 1f);

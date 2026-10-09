@@ -6,6 +6,11 @@ using Gravivore.Gameplay.Enemies;
 using Gravivore.Gameplay.Player;
 using Gravivore.Presentation.Camera;
 using Gravivore.Presentation.Composition;
+using Gravivore.Gameplay.Equipment;
+using Gravivore.Presentation.Player;
+using Gravivore.Presentation.UI;
+using Gravivore.Presentation.Combat;
+using UnityEngine.UI;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -69,6 +74,56 @@ namespace Gravivore.Tests.PlayMode
             }
             finally
             {canvas.renderMode=mode;canvas.worldCamera=priorCamera;camera.targetTexture=priorTarget;RenderTexture.active=priorActive;render.Release();Object.Destroy(render);Object.Destroy(texture);}
+        }
+        private static void Move(S01SceneCompositionRoot root,Vector3 point)
+        {var controller=root.PlayerObject.GetComponent<CharacterController>();controller.enabled=false;controller.transform.position=point;controller.enabled=true;Physics.SyncTransforms();}
+        [UnityTest] public IEnumerator ProductionCameraReviewAndRankedEquipmentRestore()
+        {
+            yield return Load();var root=_scene.Root;
+            var points=new[]{new Vector3(-26,0,20),new Vector3(0,0,40),new Vector3(0,0,10),new Vector3(0,0,64)};
+            var names=new[]{"02_ordinary_sector","03_strong_ordinary","04_service_corridor","05_magnetar_encounter"};
+            root.WorldUnlocks.PrepareEliteEncounterForDevelopment();root.Chapter1Encounters.Tick();
+            for(var i=0;i<points.Length;i++){Move(root,points[i]);yield return null;Capture(root,names[i]);}
+            root.MagnetarGuard.ApplyDamage(new DamageRequest(100000,DamageType.Gravity));
+            Move(root,new Vector3(0,0,89.5f));root.CustodianBoss.Tick(0);yield return null;
+            Capture(root,"06_custodian_arena");
+            var bossHud=root.GetComponentInChildren<BossHealthHudPresenter>(true);Assert.NotNull(bossHud);Assert.IsTrue(bossHud.IsVisible);Assert.That(bossHud.FillAmount,Is.EqualTo(1));
+            Capture(root,"10_boss_hud");
+            root.Equipment.GrantEquipment(Chapter01Weapon.ItemId);root.Equipment.Equip(Chapter01Weapon.ItemId,EquipmentSlot.Weapon);
+            var weapon=root.PlayerObject.GetComponent<WeaponEquipmentPresenter>();
+            Move(root,new Vector3(0,0,10));root.CustodianBoss.Tick(10);yield return new WaitForSeconds(4.1f);
+            Assert.That(weapon.VisualRank,Is.EqualTo(1));Capture(root,"07_g0_rank1");
+            var rank1Origin=weapon.ActiveMuzzle.localPosition;
+            var hardpoint=weapon.ActiveMuzzle.parent.parent;
+            File.WriteAllText("docs/visual-replacement-v3/verification/weapon_mount.txt","Player "+root.PlayerObject.transform.position+"\nHardpoint "+hardpoint.position+" forward="+hardpoint.forward+" up="+hardpoint.up+" right="+hardpoint.right+" euler="+hardpoint.eulerAngles+"\nMuzzle "+weapon.ActiveMuzzle.position);
+            for(var rank=2;rank<=5;rank++)
+            {
+                root.Equipment.GrantRankedCopy(Chapter01Weapon.ItemId);Assert.That(weapon.VisualRank,Is.EqualTo(rank));
+                for(var tier=0;tier<3;tier++)
+                {
+                    var form=root.PlayerObject.GetComponent<Gravivore.Presentation.Evolution.PlayerEvolutionView>().GetTierForm((Gravivore.Gameplay.Progression.EvolutionTier)tier);
+                    var attachment=form.GetComponentsInChildren<Transform>(true).Single(t=>t.name=="M-0 Equipped Weapon");
+                    for(var r=1;r<=5;r++)Assert.That(attachment.Find("Rank"+r).gameObject.activeSelf,Is.EqualTo(r==rank));
+                }
+            }
+            Assert.That(weapon.ActiveMuzzle.localPosition.z,Is.GreaterThan(rank1Origin.z+.5f));
+            yield return new WaitForSeconds(4.1f);Capture(root,"08_g0_rank5");Capture(root,"11_minimap_hud");
+            var lash=root.GetComponentInChildren<GravityLashVfxPool>();var destination=root.PlayerObject.transform.position+Vector3.forward*4+Vector3.up*.65f;
+            var count=lash.Phase6BCreatedVfxCount;
+            lash.BeginCharge(Vector3.zero,destination,null,.5f);
+            Assert.That(Vector3.Distance(lash.LastPlayedObject.transform.position,weapon.ActiveMuzzle.position),Is.LessThan(.01f));
+            yield return null;Capture(root,"12a_weapon_source");
+            lash.Play(Vector3.zero,destination);yield return null;Capture(root,"12b_weapon_travel");
+            lash.Tick(1);yield return null;Capture(root,"12c_weapon_impact");
+            Assert.That(lash.Phase6BCreatedVfxCount,Is.EqualTo(count));
+            root.PauseMenu.Open();var panel=root.GetComponent<WeaponEquipmentPanel>();panel.Open();yield return null;
+            Assert.That(panel.DisplayedWeapon,Is.SameAs(root.VisualEnvironment.Definition.UiSkin.WeaponThumbnail(5)));
+            Assert.That(root.GetComponentsInChildren<Image>(true).Count(i=>i.name=="Production EXE Frame"),Is.GreaterThan(5));
+            Capture(root,"09_equipment_inventory");root.PauseMenu.Resume();Assert.IsTrue(root.FlushNow());
+            yield return _scene.Load();root=_scene.Root;weapon=root.PlayerObject.GetComponent<WeaponEquipmentPresenter>();
+            Assert.That(root.Equipment.Inventory.GetRank(Chapter01Weapon.ItemId),Is.EqualTo(5));
+            Assert.That(weapon.VisualRank,Is.EqualTo(5));Assert.IsTrue(weapon.IsEquipped);
+            Assert.That(root.GetComponentInChildren<GravityLashVfxPool>().EquipmentOrigin,Is.SameAs(weapon.ActiveMuzzle));
         }
     }
 }

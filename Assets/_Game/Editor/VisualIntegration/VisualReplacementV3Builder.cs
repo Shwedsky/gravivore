@@ -38,6 +38,10 @@ namespace Gravivore.Editor.VisualIntegration
             AssetDatabase.Refresh();
             var material=AssetDatabase.LoadAssetAtPath<Material>(Root+"/Materials/VR3_WornIndustrialAtlas.mat");
             var obj=new GameObject("Emitter_M0");
+            // R_TOOL's local right points inward on the approved rig. Lift and
+            // move the housing outward so the shoulder cannot hide the emitter.
+            obj.transform.localPosition=new Vector3(-.36f,.28f,.16f);
+            obj.transform.localScale=Vector3.one*1.5f;
             var muzzle=Group(obj.transform,"Muzzle");muzzle.localPosition=new Vector3(0,.025f,1.03f);
             for(var rank=1;rank<=5;rank++)
             {
@@ -62,7 +66,7 @@ namespace Gravivore.Editor.VisualIntegration
             {
                 var copy=Object.Instantiate(model);preview.AddSingleGO(copy);
                 var rs=copy.GetComponentsInChildren<Renderer>();var bounds=rs[0].bounds;foreach(var r in rs)bounds.Encapsulate(r.bounds);
-                preview.camera.orthographic=true;preview.camera.orthographicSize=bounds.extents.magnitude*.85f;
+                preview.camera.orthographic=true;preview.camera.orthographicSize=bounds.extents.magnitude*.68f;
                 preview.camera.nearClipPlane=.01f;preview.camera.farClipPlane=30;
                 preview.camera.transform.position=bounds.center+new Vector3(2.3f,1.8f,1.4f);preview.camera.transform.LookAt(bounds.center);
                 preview.camera.clearFlags=CameraClearFlags.SolidColor;preview.camera.backgroundColor=new Color(.035f,.05f,.063f,1);
@@ -84,12 +88,16 @@ namespace Gravivore.Editor.VisualIntegration
         public static void BuildUI()
         {
             AssetDatabase.Refresh();var path=Root+"/ProductionUiSkin.asset";
+            var worn=AssetDatabase.LoadAssetAtPath<Material>(Root+"/Materials/VR3_WornIndustrialAtlas.mat");
+            worn.globalIlluminationFlags=MaterialGlobalIlluminationFlags.BakedEmissive;worn.EnableKeyword("_EMISSION");EditorUtility.SetDirty(worn);
             var skin=AssetDatabase.LoadAssetAtPath<ProductionUiSkinDefinition>(path);
             if(skin==null){skin=ScriptableObject.CreateInstance<ProductionUiSkinDefinition>();AssetDatabase.CreateAsset(skin,path);}
             var data=new SerializedObject(skin);
             data.FindProperty("_frame").objectReferenceValue=UiSprite("UI_inventoryselectedfalse",true);
             data.FindProperty("_selected").objectReferenceValue=UiSprite("UI_inventoryselectedtrue",true);
             data.FindProperty("_utility").objectReferenceValue=UiSprite("UtilityBar",true);
+            data.FindProperty("_button").objectReferenceValue=UiSprite("UI_buttonscolorblack",true);
+            data.FindProperty("_divider").objectReferenceValue=UiSprite("UI_dividersborderstriped");
             var thumbnails=data.FindProperty("_weaponThumbnails");thumbnails.arraySize=5;
             for(var i=0;i<5;i++)thumbnails.GetArrayElementAtIndex(i).objectReferenceValue=UiSprite("M0_Thumbnail"+(i+1));
             data.ApplyModifiedPropertiesWithoutUndo();skin.ValidateOrThrow();
@@ -194,7 +202,8 @@ namespace Gravivore.Editor.VisualIntegration
             var prefab=AssetDatabase.LoadAssetAtPath<GameObject>(Prefab(name));if(prefab==null)throw new InvalidOperationException("Missing V3 module "+name);
             var obj=(GameObject)PrefabUtility.InstantiatePrefab(prefab,parent);obj.transform.position=Vector3.zero;
             var rs=obj.GetComponentsInChildren<Renderer>();var b=rs[0].bounds;foreach(var r in rs)b.Encapsulate(r.bounds);
-            obj.transform.localScale=new Vector3(size.x/Mathf.Max(.001f,b.size.x),b.size.y<.001f?1:size.y/b.size.y,size.z/Mathf.Max(.001f,b.size.z));
+            // Keep cladding inside the proxy footprint without extreme donor stretch.
+            obj.transform.localScale=new Vector3(Mathf.Min(8,size.x/Mathf.Max(.001f,b.size.x)),b.size.y<.001f?1:Mathf.Min(8,size.y/b.size.y),Mathf.Min(8,size.z/Mathf.Max(.001f,b.size.z)));
             var scale=obj.transform.localScale;var offset=Vector3.Scale(new Vector3(b.center.x,b.min.y,b.center.z),scale);
             var rotation=Quaternion.Euler(0,yaw,0);obj.transform.SetPositionAndRotation(position-rotation*offset,rotation);
             foreach(var node in obj.GetComponentsInChildren<Transform>())GameObjectUtility.SetStaticEditorFlags(node.gameObject,StaticEditorFlags.BatchingStatic);
@@ -232,7 +241,7 @@ namespace Gravivore.Editor.VisualIntegration
             }
             material.SetColor("_BaseColor",Color.white);material.SetFloat("_Smoothness",.65f);material.SetFloat("_Metallic",.7f);
             material.EnableKeyword("_METALLICSPECGLOSSMAP");material.EnableKeyword(emission?"_EMISSION":"_NORMALMAP");
-            if(emission)material.SetColor("_EmissionColor",Color.white*1.3f);
+            if(emission){material.SetColor("_EmissionColor",Color.white*1.3f);material.globalIlluminationFlags=MaterialGlobalIlluminationFlags.BakedEmissive;}
             material.enableInstancing=true;EditorUtility.SetDirty(material);return material;
         }
     }

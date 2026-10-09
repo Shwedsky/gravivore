@@ -51,3 +51,12 @@ for e in manifest:
   alpha=im.getchannel('A');tint=Image.new('RGBA',im.size,(180,216,227,255));tint.putalpha(alpha);im=tint
  im.save(OUT/(e['outputName']+'.png'))
 print('VR3_SURFACES_PASS')
+# Original contained industrial particle masks. No imported VFX shader/script.
+for label in ('Spark','Energy'):
+ mask=Image.new('RGBA',(128,128),(255,255,255,0))
+ for y in range(128):
+  for x in range(128):
+   u=(x-63.5)/63.5;v=(y-63.5)/63.5
+   a=max(0,1-abs(u))**.7*max(0,1-abs(v)*(12 if label=='Spark' else 3))**2
+   mask.putpixel((x,y),(255,255,255,int(a*255)))
+ mask.save(OUT/('VR3_'+label+'Mask.png'))

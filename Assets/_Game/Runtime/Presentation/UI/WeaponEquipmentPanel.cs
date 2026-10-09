@@ -29,13 +29,13 @@ namespace Gravivore.Presentation.UI
             _panel = HudUiFactory.CreatePanel(menuRoot, "Equipment Panel", new Vector2(.07f,.08f), new Vector2(.93f,.92f), HudUiFactory.PanelColor, true);
             HudUiFactory.CreateText(_panel, "Title", new Vector2(.07f,.87f),new Vector2(.93f,.97f),"ОРУЖИЕ",34,TextAnchor.MiddleCenter,Color.white);
             HudUiFactory.CreateText(_panel, "Item", new Vector2(.08f,.68f),new Vector2(.92f,.86f),"ИМПУЛЬСНЫЙ ИЗЛУЧАТЕЛЬ М-0",30,TextAnchor.MiddleCenter,HudUiFactory.AccentColor);
-            var modelRect=HudUiFactory.CreatePanel(_panel,"Actual Weapon Model",new Vector2(.08f,.50f),new Vector2(.92f,.69f),new Color(.03f,.05f,.06f,.8f));
+            var modelRect=HudUiFactory.CreatePanel(_panel,"Actual Weapon Model",new Vector2(.08f,.47f),new Vector2(.92f,.73f),new Color(.03f,.05f,.06f,.8f));
             _selectionFrame=modelRect.Find("Production EXE Frame")?.GetComponent<Image>();
             var preview=new GameObject("Model Render",typeof(RectTransform),typeof(CanvasRenderer),typeof(Image));
             var previewRect=preview.GetComponent<RectTransform>();previewRect.SetParent(modelRect,false);HudUiFactory.SetRect(previewRect,new Vector2(.05f,.07f),new Vector2(.95f,.93f));
             _model=preview.GetComponent<Image>();_model.preserveAspect=true;_model.raycastTarget=false;
-            _selection=HudUiFactory.CreateText(_panel,"Selected Equipped State",new Vector2(.08f,.45f),new Vector2(.92f,.50f),"",22,TextAnchor.MiddleCenter,HudUiFactory.AccentColor);
-            _description = HudUiFactory.CreateText(_panel,"Description",new Vector2(.08f,.30f),new Vector2(.92f,.45f),"",24,TextAnchor.UpperLeft,Color.white);
+            _selection=HudUiFactory.CreateText(_panel,"Selected Equipped State",new Vector2(.08f,.425f),new Vector2(.92f,.47f),"",22,TextAnchor.MiddleCenter,HudUiFactory.AccentColor);
+            _description = HudUiFactory.CreateText(_panel,"Description",new Vector2(.08f,.30f),new Vector2(.92f,.425f),"",24,TextAnchor.UpperLeft,Color.white);
             _toggle = HudUiFactory.CreateButton(_panel,"Equip Weapon",new Vector2(.08f,.18f),new Vector2(.92f,.28f),"",ToggleWeapon);
             HudUiFactory.CreateButton(_panel,"Back",new Vector2(.08f,.05f),new Vector2(.92f,.14f),"НАЗАД",Close);
             _panel.gameObject.SetActive(false);

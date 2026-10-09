@@ -11,6 +11,8 @@ OUT=ROOT/'Assets/_Game/Content/VisualReplacementV3'
 DOCS=ROOT/'docs/visual-replacement-v3'
 for p in (OUT/'Models',OUT/'Textures',ROOT/'art/visual-replacement-v3'):p.mkdir(parents=True,exist_ok=True)
 bpy.ops.wm.read_factory_settings(use_empty=True)
+bpy.context.scene.unit_settings.system='METRIC'
+bpy.context.scene.unit_settings.scale_length=1.0
 palette=[(.055,.078,.092),(.27,.34,.38),(.49,.56,.57),(.14,.18,.20),(.35,.23,.10),(.85,.035,.012),(1,.28,.027),(.035,.54,.65),(.014,.022,.029),(.12,.071,.043),(.21,.27,.29),(.34,.39,.40),(.10,.17,.20),(.42,.30,.12),(.20,.25,.27),(.032,.049,.061)]
 mats=[]
 for i,c in enumerate(palette):
@@ -50,7 +52,7 @@ def uv_merge(name,lod=False):
  return meshes
 def output(name):
  meshes=uv_merge(name)
- active(meshes[0]);bpy.ops.export_scene.fbx(filepath=str(OUT/'Models'/(name+'.fbx')),use_selection=True,object_types={'MESH'},axis_forward='-Z',axis_up='Y',bake_anim=False,path_mode='STRIP',mesh_smooth_type='FACE',use_tspace=True)
+ active(meshes[0]);bpy.ops.export_scene.fbx(filepath=str(OUT/'Models'/(name+'.fbx')),use_selection=True,object_types={'MESH'},global_scale=1,apply_unit_scale=True,apply_scale_options='FBX_SCALE_UNITS',axis_forward='-Z',axis_up='Y',bake_anim=False,path_mode='STRIP',mesh_smooth_type='FACE',use_tspace=True)
 def trim_output(name):
  bpy.ops.object.select_all(action='DESELECT')
  for o in parts:o.select_set(True)
@@ -59,7 +61,7 @@ def trim_output(name):
  o=bpy.context.object;o.name=name;active(o)
  mod=o.modifiers.new('Triangles','TRIANGULATE');bpy.ops.object.modifier_apply(modifier=mod.name)
  metrics[name]={'triangles':[len(o.data.polygons)],'materials':1,'source':'Quaternius CC0; retained authored trim UVs, atlas and coordinate adaptation'}
- bpy.ops.export_scene.fbx(filepath=str(OUT/'Models'/(name+'.fbx')),use_selection=True,object_types={'MESH'},axis_forward='-Z',axis_up='Y',bake_anim=False,path_mode='STRIP',mesh_smooth_type='FACE',use_tspace=True)
+ bpy.ops.export_scene.fbx(filepath=str(OUT/'Models'/(name+'.fbx')),use_selection=True,object_types={'MESH'},global_scale=1,apply_unit_scale=True,apply_scale_options='FBX_SCALE_UNITS',axis_forward='-Z',axis_up='Y',bake_anim=False,path_mode='STRIP',mesh_smooth_type='FACE',use_tspace=True)
 def classify(m,role):
  name=m.name.lower();c=m.diffuse_color
  if any(t in name for t in ('emit','glow','light')):return 7 if 'command' in role.lower() else 6
