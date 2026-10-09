@@ -2,7 +2,7 @@
 import io,subprocess
 from pathlib import Path
 from PIL import Image,ImageDraw,ImageFont
-ROOT=Path(__file__).resolve().parents[2];OUT=ROOT/'docs/visual-replacement-v3/internal'
+ROOT=Path(__file__).resolve().parents[2];OUT=ROOT/'docs/history/implementation-passes/chapter01-visual-replacement-v3/v44/internal'
 font=ImageFont.truetype('C:/Windows/Fonts/segoeui.ttf',25)
 def before(path):
  result=subprocess.run(['git','show','origin/main:'+path],cwd=ROOT,check=True,stdout=subprocess.PIPE)

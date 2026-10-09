@@ -3,7 +3,7 @@ import hashlib,json,shutil,subprocess,xml.etree.ElementTree as ET
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[2]
-OUT=ROOT/'docs/concept-corrective-v45/verification'
+OUT=ROOT/'docs/history/implementation-passes/chapter01-visual-replacement-v3/v45/verification'
 def read(name):return ET.parse(OUT/name).getroot()
 edit=read('EditModeFinal.xml')
 play=read('PlayModeFinalPass.xml')
@@ -27,11 +27,11 @@ for source,target in {
  'docs/chapter01-gameplay-ux/verification/cold-start-editor.json':'cold_start_editor.json',
  'docs/chapter01-gameplay-ux/verification/reload-editor.json':'reload_editor.json',
  'docs/chapter01-production/verification/reachability.txt':'reachability.txt',
- 'docs/visual-replacement-v3/verification/license_audit.json':'license_audit.json',
+ 'docs/history/implementation-passes/chapter01-visual-replacement-v3/v44/verification/license_audit.json':'license_audit.json',
  'docs/render-hotfix/verification/render_profile.json':'render_profile.json',
 }.items():shutil.copyfile(ROOT/source,OUT/target)
 for subject in ('07_g0_rank1','08_g0_rank5','09_equipment_inventory','10_boss_hud','11_minimap_hud','12a_weapon_source','12b_weapon_travel','12c_weapon_impact'):
- shutil.copyfile(ROOT/'docs/visual-replacement-v3/internal'/f'{subject}.png',OUT.parent/'internal/after'/f'{subject}.png')
+ shutil.copyfile(ROOT/'docs/history/implementation-passes/chapter01-visual-replacement-v3/v44/internal'/f'{subject}.png',OUT.parent/'internal/after'/f'{subject}.png')
 compileLog=(OUT/'CompileFinal.log').read_text(errors='replace')
 validateLog=(OUT/'ValidateFinal.log').read_text(errors='replace')
 assert 'Application will terminate with return code 0' in compileLog

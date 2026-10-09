@@ -64,7 +64,7 @@ for entry,obj in list(index.values()):
  assert any(n in ('VR3_WornIndustrialAtlas','VR3_IndustrialTrimAtlas') or args.corrective and n.startswith('V45_') for n in materialNames), 'Decorative renderer must resolve a verified production material'
  baked.append({'gameObject':gameNames[goKey],'mesh':Reader(mesh[1]['data']).string(),'meshClassId':43,'meshPathId':meshKey[1],'meshEntry':mesh[0],'materials':sorted(set(materialNames))})
 assert len(baked)>100 and any(b['mesh'].startswith('Combined Mesh') for b in baked), 'Production static-batch geometry not verified'
-budget=json.loads((ROOT/('docs/concept-corrective-v45/verification/mobile_render_budget.json' if args.corrective else 'docs/visual-replacement-v3/verification/mobile_render_budget.json')).read_text(encoding='utf-8-sig'))
+budget=json.loads((ROOT/('docs/history/implementation-passes/chapter01-visual-replacement-v3/v45/verification/mobile_render_budget.json' if args.corrective else 'docs/history/implementation-passes/chapter01-visual-replacement-v3/v44/verification/mobile_render_budget.json')).read_text(encoding='utf-8-sig'))
 if args.corrective:
  assert len(baked)==budget['allVR3Renderers'], 'Every enabled or retired production MeshFilter must resolve, including the corrective module instances'
 else:

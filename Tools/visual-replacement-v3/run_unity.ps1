@@ -22,7 +22,7 @@ switch($Action){
 }
 if($TestFilter){$replacementArgs+=@('-testFilter',$TestFilter)}
 if($Action -eq 'PlayMode'){
- $env:GRAVIVORE_VISUAL_INTEGRATION_QA=Join-Path $replacementRoot 'docs/visual-replacement-v3/internal/structure'
+ $env:GRAVIVORE_VISUAL_INTEGRATION_QA=Join-Path $replacementRoot 'docs/history/implementation-passes/chapter01-visual-replacement-v3/v44/internal/structure'
 }
 $replacementProcess=Start-Process -FilePath $replacementUnity -ArgumentList $replacementArgs -WorkingDirectory $replacementRoot -WindowStyle Hidden -PassThru
 $replacementProcess.WaitForExit()

@@ -1,10 +1,10 @@
 """Verify new original sources and the reused, already licensed CC0 ORM data."""
 import json,hashlib,subprocess,sys
 from pathlib import Path
-ROOT=Path(__file__).resolve().parents[2];DOC=ROOT/'docs/surface-hero-v46/verification'
+ROOT=Path(__file__).resolve().parents[2];DOC=ROOT/'docs/history/implementation-passes/chapter01-visual-replacement-v3/v46/verification'
 subprocess.run([sys.executable,str(ROOT/'Tools/visual-replacement-v3/license_audit.py')],check=True,stdout=subprocess.DEVNULL)
 surfaces=json.loads((DOC/'surface_provenance.json').read_text())
-proof=json.loads((ROOT/'docs/visual-replacement-v3/texture_provenance.json').read_text())
+proof=json.loads((ROOT/'docs/history/implementation-passes/chapter01-visual-replacement-v3/v44/texture_provenance.json').read_text())
 for e in surfaces['verifiedDonorAo']:
     assert e['license']=='CC0';assert hashlib.sha256((ROOT/e['sourcePath']).read_bytes()).hexdigest()==e['sha256']
     assert any(p['sourcePath']==e['sourcePath'] and p['sha256']==e['sha256'] for p in proof)

@@ -2,8 +2,8 @@
 param([Parameter(Mandatory=$true)][string]$ExpectedSourceSha)
 $ErrorActionPreference='Stop'
 $surfaceRoot=Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
-$surfaceOutput=Join-Path $surfaceRoot 'docs/surface-hero-v46/verification'
-& (Join-Path $surfaceRoot 'Tools/chapter01-v3/verify_apk.ps1') -ExpectedSourceSha $ExpectedSourceSha -VersionCode 46 -OutputDirectory 'docs/surface-hero-v46/verification'
+$surfaceOutput=Join-Path $surfaceRoot 'docs/history/implementation-passes/chapter01-visual-replacement-v3/v46/verification'
+& (Join-Path $surfaceRoot 'Tools/chapter01-v3/verify_apk.ps1') -ExpectedSourceSha $ExpectedSourceSha -VersionCode 46 -OutputDirectory 'docs/history/implementation-passes/chapter01-visual-replacement-v3/v46/verification'
 if($LASTEXITCODE){throw 'V46 base package verification failed'}
 $surfaceApk=Join-Path $surfaceRoot 'Builds/Android/gravivore-dev-0.1.0+46.apk'
 $surfacePython='C:/Users/pamak/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/python.exe'

@@ -1,7 +1,7 @@
 import bpy,json
 from pathlib import Path
 root=Path(__file__).resolve().parents[2]
-entries=json.loads((root/'docs/visual-replacement-v3/ingestion_manifest.json').read_text())
+entries=json.loads((root/'docs/history/implementation-passes/chapter01-visual-replacement-v3/v44/ingestion_manifest.json').read_text())
 for e in entries:
  if e['sourceId']!='env-quaternius-megakit':continue
  bpy.ops.wm.read_factory_settings(use_empty=True);bpy.ops.import_scene.fbx(filepath=str(root/e['sourcePath']))

@@ -9,7 +9,7 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFilter
 ROOT=Path(__file__).resolve().parents[2]
 OUT=ROOT/'Assets/_Game/Content/SurfaceHeroV46/Textures';OUT.mkdir(parents=True,exist_ok=True)
-DOC=ROOT/'docs/surface-hero-v46/verification';DOC.mkdir(parents=True,exist_ok=True)
+DOC=ROOT/'docs/history/implementation-passes/chapter01-visual-replacement-v3/v46/verification';DOC.mkdir(parents=True,exist_ok=True)
 PALETTE=[(32,43,49),(99,122,136),(154,169,173),(64,86,103),(143,104,48),(172,32,12),(195,103,20),(20,141,166),(17,24,28),(85,65,46),(115,139,148),(132,148,159),(46,95,109),(159,113,44),(121,139,144),(23,33,39)]
 def tile(index,size=512):
     rng=np.random.default_rng(460046+index)

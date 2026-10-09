@@ -62,7 +62,7 @@ namespace Gravivore.Tests.PlayMode
         {
             var canvas=root.GetComponentInChildren<Canvas>();var mode=canvas.renderMode;var priorCamera=canvas.worldCamera;var plane=canvas.planeDistance;var priorTarget=camera.targetTexture;var priorActive=RenderTexture.active;
             var render=new RenderTexture(width,height,24,RenderTextureFormat.ARGBHalf);var texture=new Texture2D(width,height,TextureFormat.RGB24,false);
-            try{canvas.renderMode=RenderMode.ScreenSpaceCamera;canvas.worldCamera=camera;canvas.planeDistance=1;camera.targetTexture=render;Canvas.ForceUpdateCanvases();camera.Render();RenderTexture.active=render;texture.ReadPixels(new Rect(0,0,width,height),0,0);texture.Apply();var dir="docs/surface-hero-v46/internal/"+_phase;Directory.CreateDirectory(dir);File.WriteAllBytes(dir+"/"+name+".png",texture.EncodeToPNG());}
+            try{canvas.renderMode=RenderMode.ScreenSpaceCamera;canvas.worldCamera=camera;canvas.planeDistance=1;camera.targetTexture=render;Canvas.ForceUpdateCanvases();camera.Render();RenderTexture.active=render;texture.ReadPixels(new Rect(0,0,width,height),0,0);texture.Apply();var dir="docs/history/implementation-passes/chapter01-visual-replacement-v3/v46/internal/"+_phase;Directory.CreateDirectory(dir);File.WriteAllBytes(dir+"/"+name+".png",texture.EncodeToPNG());}
             finally{canvas.renderMode=mode;canvas.worldCamera=priorCamera;canvas.planeDistance=plane;camera.targetTexture=priorTarget;RenderTexture.active=priorActive;render.Release();Object.Destroy(render);Object.Destroy(texture);}
         }
     }

@@ -14,7 +14,7 @@ namespace Gravivore.Editor.VisualIntegration
     public static class SurfaceHeroV46Builder
     {
         public const string Root="Assets/_Game/Content/SurfaceHeroV46";
-        public const string Output="docs/surface-hero-v46/verification";
+        public const string Output="docs/history/implementation-passes/chapter01-visual-replacement-v3/v46/verification";
         public const string Layer="Chapter 01 Production Machinery V46";
         public static string Hierarchy(Transform t)=>t.parent==null?t.name:Hierarchy(t.parent)+"/"+t.name;
         private static string MeshPath(Renderer r){var f=r.GetComponent<MeshFilter>();return AssetDatabase.GetAssetPath(f!=null?f.sharedMesh:r is SkinnedMeshRenderer s?s.sharedMesh:null);}
@@ -230,14 +230,14 @@ namespace Gravivore.Editor.VisualIntegration
             var key=new GameObject("Neutral gallery key").AddComponent<Light>();key.type=LightType.Directional;key.color=Color.white;key.intensity=1.4f;key.transform.rotation=Quaternion.Euler(40,-30,0);
             var fill=new GameObject("Neutral gallery fill").AddComponent<Light>();fill.type=LightType.Directional;fill.color=Color.white;fill.intensity=.45f;fill.transform.rotation=Quaternion.Euler(25,135,0);
             var camera=new GameObject("Neutral gallery camera").AddComponent<UnityEngine.Camera>();camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=new Color(.06f,.07f,.085f);camera.fieldOfView=38;camera.nearClipPlane=.05f;
-            Directory.CreateDirectory("docs/surface-hero-v46/internal/neutral");
+            Directory.CreateDirectory("docs/history/implementation-passes/chapter01-visual-replacement-v3/v46/internal/neutral");
             foreach(var family in Families)
             {
                 var obj=Object.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>(Root+"/Prefabs/V46_"+family+".prefab"));var b=BoundsOf(obj.GetComponentsInChildren<Renderer>());
                 camera.transform.position=b.center+new Vector3(.60f,.56f,-1).normalized*Mathf.Max(b.size.x,b.size.y,b.size.z)*2.3f;camera.transform.LookAt(b.center);
                 var rt=new RenderTexture(960,960,24,RenderTextureFormat.ARGBHalf);var tex=new Texture2D(960,960,TextureFormat.RGB24,false);
                 var prior=RenderTexture.active;camera.targetTexture=rt;
-                try{camera.Render();RenderTexture.active=rt;tex.ReadPixels(new Rect(0,0,960,960),0,0);tex.Apply();File.WriteAllBytes("docs/surface-hero-v46/internal/neutral/"+family+".png",tex.EncodeToPNG());}
+                try{camera.Render();RenderTexture.active=rt;tex.ReadPixels(new Rect(0,0,960,960),0,0);tex.Apply();File.WriteAllBytes("docs/history/implementation-passes/chapter01-visual-replacement-v3/v46/internal/neutral/"+family+".png",tex.EncodeToPNG());}
                 finally{camera.targetTexture=null;RenderTexture.active=prior;rt.Release();Object.DestroyImmediate(rt);Object.DestroyImmediate(tex);Object.DestroyImmediate(obj);}
             }
             Debug.Log("SURFACE_HERO_V46_NEUTRAL_GALLERY_CAPTURED");

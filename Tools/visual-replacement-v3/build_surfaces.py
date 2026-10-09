@@ -41,9 +41,9 @@ for kind in ('BaseColor','Normal','MetallicSmoothness'):
   # Pillow top-left becomes Unity high-v; invert quadrant y when packing.
   sheet.paste(im,((index%2)*1024,(1-index//2)*1024))
  sheet.save(OUT/('VR3_Trim_'+kind+'.png'))
-(ROOT/'docs/visual-replacement-v3/texture_provenance.json').write_text(json.dumps(texture_receipts,indent=2))
+(ROOT/'docs/history/implementation-passes/chapter01-visual-replacement-v3/v44/texture_provenance.json').write_text(json.dumps(texture_receipts,indent=2))
 # EXE frames use their actual contours; recolor only and keep transparency.
-manifest=json.loads((ROOT/'docs/visual-replacement-v3/ingestion_manifest.json').read_text(encoding='utf-8'))
+manifest=json.loads((ROOT/'docs/history/implementation-passes/chapter01-visual-replacement-v3/v44/ingestion_manifest.json').read_text(encoding='utf-8'))
 for e in manifest:
  if not e['sourcePath'].endswith('.png'):continue
  im=Image.open(ROOT/e['sourcePath']).convert('RGBA')

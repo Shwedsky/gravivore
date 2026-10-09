@@ -39,5 +39,5 @@ evidence={'validated':True,'baseline':BASE,'unchangedSourceAndConfigurationFiles
           'verifiedPaths':verified,'identicalSerializedAuthorityComponents':len(before),
           'unchangedExistingSceneTransforms':len(originalTransforms),
           'scene':scene,'allowedDefinitionChange':'Injected production UI skin reference only'}
-(ROOT/'docs/visual-replacement-v3/verification/authority_audit.json').write_text(json.dumps(evidence,indent=2))
+(ROOT/'docs/history/implementation-passes/chapter01-visual-replacement-v3/v44/verification/authority_audit.json').write_text(json.dumps(evidence,indent=2))
 print('GAMEPLAY_CAMERA_COLLISION_BASELINE_PASS: '+str(len(verified))+' files; '+str(len(before))+' scene components')

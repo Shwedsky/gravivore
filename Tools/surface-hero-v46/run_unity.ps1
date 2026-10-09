@@ -2,7 +2,7 @@
 param([ValidateSet('Compile','Baseline','Author','Gallery','Validate','Audit','EditMode','PlayMode')][string]$Action,[string]$TestFilter='',[string]$Label='')
 $ErrorActionPreference='Stop'
 $surfaceRoot=Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
-$surfaceOutput=Join-Path $surfaceRoot 'docs/surface-hero-v46/verification'
+$surfaceOutput=Join-Path $surfaceRoot 'docs/history/implementation-passes/chapter01-visual-replacement-v3/v46/verification'
 New-Item -ItemType Directory -Force -Path $surfaceOutput | Out-Null
 $surfaceLabel=if($Label){$Label}else{$Action}
 $surfaceArgs=@('-batchmode','-projectPath',('"'+$surfaceRoot+'"'),'-logFile',('"'+(Join-Path $surfaceOutput ($surfaceLabel+'.log'))+'"'))

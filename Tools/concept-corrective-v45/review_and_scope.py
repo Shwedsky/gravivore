@@ -4,7 +4,7 @@ from pathlib import Path
 from PIL import Image,ImageDraw,ImageFont
 
 ROOT=Path(__file__).resolve().parents[2]
-OUT=ROOT/'docs/concept-corrective-v45'
+OUT=ROOT/'docs/history/implementation-passes/chapter01-visual-replacement-v3/v45'
 BASE='f57c8ac94b73c74b6a05cd242b57576f615c0b3b'
 def git(*args):return subprocess.check_output(['git',*args],cwd=ROOT)
 def canonical(data):return b'\n'.join(line.rstrip() for line in data.replace(b'\r\n',b'\n').splitlines())

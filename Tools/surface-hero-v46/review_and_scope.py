@@ -2,7 +2,7 @@
 import hashlib,json,subprocess
 from pathlib import Path
 from PIL import Image,ImageDraw,ImageFont,ImageOps
-ROOT=Path(__file__).resolve().parents[2];OUT=ROOT/'docs/surface-hero-v46';BASE='ce92f5744b0cd8f4064150c827828992f4dc1c85'
+ROOT=Path(__file__).resolve().parents[2];OUT=ROOT/'docs/history/implementation-passes/chapter01-visual-replacement-v3/v46';BASE='ce92f5744b0cd8f4064150c827828992f4dc1c85'
 def git(*args):return subprocess.check_output(['git',*args],cwd=ROOT)
 def canonical(b):return b'\n'.join(l.rstrip() for l in b.replace(b'\r\n',b'\n').splitlines())
 preserved=[]

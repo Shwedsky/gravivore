@@ -8,7 +8,7 @@ from pathlib import Path
 from mathutils import Vector,Matrix
 ROOT=Path(__file__).resolve().parents[2]
 OUT=ROOT/'Assets/_Game/Content/VisualReplacementV3'
-DOCS=ROOT/'docs/visual-replacement-v3'
+DOCS=ROOT/'docs/history/implementation-passes/chapter01-visual-replacement-v3/v44'
 for p in (OUT/'Models',OUT/'Textures',ROOT/'art/visual-replacement-v3'):p.mkdir(parents=True,exist_ok=True)
 bpy.ops.wm.read_factory_settings(use_empty=True)
 bpy.context.scene.unit_settings.system='METRIC'

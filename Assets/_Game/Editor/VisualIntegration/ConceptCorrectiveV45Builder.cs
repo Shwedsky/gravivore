@@ -18,7 +18,7 @@ namespace Gravivore.Editor.VisualIntegration
     {
         public const string Root="Assets/_Game/Content/ConceptCorrectiveV45";
         public const string Layer="Chapter 01 Active Industrial Facility V45";
-        public const string Output="docs/concept-corrective-v45/verification";
+        public const string Output="docs/history/implementation-passes/chapter01-visual-replacement-v3/v45/verification";
         private static Material _steel,_dark,_amber,_cyan,_red,_white,_paint,_housing;
         private static readonly List<(string name,Vector3 center,Vector3 size)> _blockers=new List<(string,Vector3,Vector3)>();
         private static readonly List<string> _manifest=new List<string>();
@@ -107,7 +107,7 @@ namespace Gravivore.Editor.VisualIntegration
             env.KeyLight.intensity=1.5f;env.KeyLight.color=new Color(.78f,.85f,.94f);
             foreach(var t in layer.GetComponentsInChildren<Transform>(true))GameObjectUtility.SetStaticEditorFlags(t.gameObject,StaticEditorFlags.BatchingStatic);
             env.ValidateOrThrow();settings.ValidateOrThrow();EditorSceneManager.MarkSceneDirty(scene);EditorSceneManager.SaveScene(scene);AssetDatabase.SaveAssets();
-            File.WriteAllText("docs/visual-replacement-v3/verification/collision_fingerprint.txt",VisualReplacementV3Builder.AuthorityFingerprint(env));
+            File.WriteAllText("docs/history/implementation-passes/chapter01-visual-replacement-v3/v44/verification/collision_fingerprint.txt",VisualReplacementV3Builder.AuthorityFingerprint(env));
             File.WriteAllLines(Output+"/service_ecology_manifest.txt",_manifest);
             File.WriteAllText(Output+"/collision_fingerprint.txt",VisualReplacementV3Builder.AuthorityFingerprint(env));
             Debug.Log("CONCEPT_CORRECTIVE_V45_AUTHOR_PASS");

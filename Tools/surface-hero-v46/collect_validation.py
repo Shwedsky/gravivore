@@ -1,7 +1,7 @@
 """Collect executed receipts without inferring unexecuted tests or device FPS."""
 import json,hashlib,xml.etree.ElementTree as ET
 from pathlib import Path
-ROOT=Path(__file__).resolve().parents[2];OUT=ROOT/'docs/surface-hero-v46';D=OUT/'verification'
+ROOT=Path(__file__).resolve().parents[2];OUT=ROOT/'docs/history/implementation-passes/chapter01-visual-replacement-v3/v46';D=OUT/'verification'
 tests=[]
 for name in ('EditModeFull','PlayModeFull','PortablePathsEditMode','PortablePathsPlayMode'):
     root=ET.parse(D/(name+'.xml')).getroot();assert int(root.get('failed'))==0

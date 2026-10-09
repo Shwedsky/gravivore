@@ -51,9 +51,9 @@ namespace Gravivore.Tests.PlayMode
             root.PlayerHealth.ApplyDamage(new DamageRequest(35,DamageType.Physical));root.PlayerHealth.Tick(3.1f);root.PlayerHealth.Tick(.1f);
             root.RepairHub.Manipulators.Tick(.5f);yield return null;
             Capture(root,"01_repair_hub");
-            Directory.CreateDirectory("docs/visual-replacement-v3/verification");
-            File.WriteAllLines("docs/visual-replacement-v3/verification/repair_renderers.txt",renderers.Select(r=>r.name+" | "+r.bounds+" | "+r.sharedMaterial.name+" | base="+r.sharedMaterial.GetTexture("_BaseMap")?.name));
-            File.WriteAllLines("docs/visual-replacement-v3/verification/floor_layers.txt",root.VisualEnvironment.Floor.GetComponentsInChildren<Renderer>(true).Where(r=>r.enabled&&r.bounds.Contains(new Vector3(0,r.bounds.center.y,-30))).Select(r=>r.name+" | "+r.bounds));
+            Directory.CreateDirectory("docs/history/implementation-passes/chapter01-visual-replacement-v3/v44/verification");
+            File.WriteAllLines("docs/history/implementation-passes/chapter01-visual-replacement-v3/v44/verification/repair_renderers.txt",renderers.Select(r=>r.name+" | "+r.bounds+" | "+r.sharedMaterial.name+" | base="+r.sharedMaterial.GetTexture("_BaseMap")?.name));
+            File.WriteAllLines("docs/history/implementation-passes/chapter01-visual-replacement-v3/v44/verification/floor_layers.txt",root.VisualEnvironment.Floor.GetComponentsInChildren<Renderer>(true).Where(r=>r.enabled&&r.bounds.Contains(new Vector3(0,r.bounds.center.y,-30))).Select(r=>r.name+" | "+r.bounds));
             // Existing repair-exit physics must remain open with the real capsule.
             foreach(var other in root.GetComponentsInChildren<CharacterController>(true))if(other!=controller)other.enabled=false;
             controller.enabled=false;controller.transform.position=new Vector3(0,0,-27);controller.enabled=true;
@@ -70,8 +70,8 @@ namespace Gravivore.Tests.PlayMode
             {
                 canvas.renderMode=RenderMode.ScreenSpaceCamera;canvas.worldCamera=camera;canvas.planeDistance=1;
                 camera.targetTexture=render;Canvas.ForceUpdateCanvases();camera.Render();RenderTexture.active=render;
-                texture.ReadPixels(new Rect(0,0,540,960),0,0);texture.Apply();Directory.CreateDirectory("docs/visual-replacement-v3/internal");
-                File.WriteAllBytes("docs/visual-replacement-v3/internal/"+name+".png",texture.EncodeToPNG());
+                texture.ReadPixels(new Rect(0,0,540,960),0,0);texture.Apply();Directory.CreateDirectory("docs/history/implementation-passes/chapter01-visual-replacement-v3/v44/internal");
+                File.WriteAllBytes("docs/history/implementation-passes/chapter01-visual-replacement-v3/v44/internal/"+name+".png",texture.EncodeToPNG());
             }
             finally
             {canvas.renderMode=mode;canvas.worldCamera=priorCamera;camera.targetTexture=priorTarget;RenderTexture.active=priorActive;render.Release();Object.Destroy(render);Object.Destroy(texture);}
@@ -96,7 +96,7 @@ namespace Gravivore.Tests.PlayMode
             Assert.That(weapon.VisualRank,Is.EqualTo(1));Capture(root,"07_g0_rank1");
             var rank1Origin=weapon.ActiveMuzzle.localPosition;
             var hardpoint=weapon.ActiveMuzzle.parent.parent;
-            File.WriteAllText("docs/visual-replacement-v3/verification/weapon_mount.txt","Player "+root.PlayerObject.transform.position+"\nHardpoint "+hardpoint.position+" forward="+hardpoint.forward+" up="+hardpoint.up+" right="+hardpoint.right+" euler="+hardpoint.eulerAngles+"\nMuzzle "+weapon.ActiveMuzzle.position);
+            File.WriteAllText("docs/history/implementation-passes/chapter01-visual-replacement-v3/v44/verification/weapon_mount.txt","Player "+root.PlayerObject.transform.position+"\nHardpoint "+hardpoint.position+" forward="+hardpoint.forward+" up="+hardpoint.up+" right="+hardpoint.right+" euler="+hardpoint.eulerAngles+"\nMuzzle "+weapon.ActiveMuzzle.position);
             for(var rank=2;rank<=5;rank++)
             {
                 root.Equipment.GrantRankedCopy(Chapter01Weapon.ItemId);Assert.That(weapon.VisualRank,Is.EqualTo(rank));

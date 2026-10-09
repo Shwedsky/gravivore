@@ -167,8 +167,8 @@ namespace Gravivore.Editor.VisualIntegration
             if (AuthorityFingerprint(env) != before) throw new InvalidOperationException("Visual authoring changed collision authority.");
             env.ValidateOrThrow();
             EditorSceneManager.MarkSceneDirty(scene); EditorSceneManager.SaveScene(scene); AssetDatabase.SaveAssets();
-            Directory.CreateDirectory("docs/visual-replacement-v3/verification");
-            File.WriteAllText("docs/visual-replacement-v3/verification/collision_fingerprint.txt",before);
+            Directory.CreateDirectory("docs/history/implementation-passes/chapter01-visual-replacement-v3/v44/verification");
+            File.WriteAllText("docs/history/implementation-passes/chapter01-visual-replacement-v3/v44/verification/collision_fingerprint.txt",before);
             Debug.Log(full?"VISUAL_REPLACEMENT_V3_ENVIRONMENT_PASS":"VISUAL_REPLACEMENT_V3_REPAIR_PASS");
         }
         private static void ReplaceProxyArt(ChapterVisualEnvironment env,Transform parent,bool full)

@@ -2,7 +2,7 @@
 param([ValidateSet('Compile','Author','Validate','EditMode','PlayMode')][string]$Action,[string]$TestFilter='',[string]$Label='')
 $ErrorActionPreference='Stop'
 $correctiveRoot=Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
-$correctiveOutput=Join-Path $correctiveRoot 'docs/concept-corrective-v45/verification'
+$correctiveOutput=Join-Path $correctiveRoot 'docs/history/implementation-passes/chapter01-visual-replacement-v3/v45/verification'
 New-Item -ItemType Directory -Force -Path $correctiveOutput | Out-Null
 $correctiveLabel=if($Label){$Label}else{$Action}
 $correctiveArgs=@('-batchmode','-projectPath',('"'+$correctiveRoot+'"'),'-logFile',('"'+(Join-Path $correctiveOutput ($correctiveLabel+'.log'))+'"'))

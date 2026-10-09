@@ -10,7 +10,7 @@ sys.path.insert(0,str(ROOT/'Tools/free-asset-intake'))
 from prepare_zoo import identify, models
 WORK=ROOT/'ExternalAssetIntake/FreeAssetIntakeV1/_work_v2'
 OUT=ROOT/'Assets/_Game/Content/VisualReplacementV3'
-DOCS=ROOT/'docs/visual-replacement-v3'
+DOCS=ROOT/'docs/history/implementation-passes/chapter01-visual-replacement-v3/v44'
 PICKS={
  'env-quaternius-megakit':['Platform_Metal','Platform_DarkPlates','Platform_Rails_2','Platform_Ramp_2','Platform_Stairs_2','ShortWall_MetalPlates_Straight','Door_Frame_Square','Door_DarkMetal','TopCables_Straight','TopCables_Corner','Column_Pipes','Prop_PipeHolder','Prop_Vent_Big'],
  'env-molten-maps':['Generator','Generator Pile Large','Cryo Tube','Centrifuge','Command','Floor Metal Square Grate'],

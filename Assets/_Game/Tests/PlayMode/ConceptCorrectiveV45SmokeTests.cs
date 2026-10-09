@@ -17,7 +17,7 @@ namespace Gravivore.Tests.PlayMode
     public sealed class ConceptCorrectiveV45SmokeTests
     {
         private CanonicalSceneTestScope _scene;
-        private const string Output="docs/concept-corrective-v45";
+        private const string Output="docs/history/implementation-passes/chapter01-visual-replacement-v3/v45";
         [UnityTearDown] public IEnumerator Cleanup(){if(_scene!=null)yield return _scene.Cleanup();}
         private IEnumerator Load()
         {

@@ -2,8 +2,8 @@
 param([Parameter(Mandatory=$true)][string]$ExpectedSourceSha)
 $ErrorActionPreference='Stop'
 $replacementRoot=Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
-$replacementOutput=Join-Path $replacementRoot 'docs/visual-replacement-v3/verification'
-& (Join-Path $replacementRoot 'Tools/chapter01-v3/verify_apk.ps1') -ExpectedSourceSha $ExpectedSourceSha -VersionCode 44 -OutputDirectory 'docs/visual-replacement-v3/verification'
+$replacementOutput=Join-Path $replacementRoot 'docs/history/implementation-passes/chapter01-visual-replacement-v3/v44/verification'
+& (Join-Path $replacementRoot 'Tools/chapter01-v3/verify_apk.ps1') -ExpectedSourceSha $ExpectedSourceSha -VersionCode 44 -OutputDirectory 'docs/history/implementation-passes/chapter01-visual-replacement-v3/v44/verification'
 if($LASTEXITCODE){throw 'Base v44 manifest/signature/content verification failed'}
 $replacementApk=Join-Path $replacementRoot 'Builds/Android/gravivore-dev-0.1.0+44.apk'
 $replacementPython='C:/Users/pamak/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/python.exe'

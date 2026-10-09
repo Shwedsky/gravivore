@@ -3,7 +3,7 @@ import csv,hashlib,json,re
 from pathlib import Path
 from pypdf import PdfReader
 ROOT=Path(__file__).resolve().parents[2]
-DOCS=ROOT/'docs/visual-replacement-v3'
+DOCS=ROOT/'docs/history/implementation-passes/chapter01-visual-replacement-v3/v44'
 rights={r['sourceId']:r for r in csv.DictReader((ROOT/'docs/free-asset-intake-v2/ASSET_PROVENANCE_RESOLVED.csv').open(encoding='utf-8-sig'))}
 entries=json.loads((DOCS/'ingestion_manifest.json').read_text())
 for e in entries:

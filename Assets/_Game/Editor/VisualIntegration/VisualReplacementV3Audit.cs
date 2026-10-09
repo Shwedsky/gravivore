@@ -14,7 +14,7 @@ namespace Gravivore.Editor.VisualIntegration
 {
     public sealed class VisualReplacementV3Audit : IPreprocessBuildWithReport, IPostprocessBuildWithReport
     {
-        private const string Output="docs/visual-replacement-v3/verification";
+        private const string Output="docs/history/implementation-passes/chapter01-visual-replacement-v3/v44/verification";
         public int callbackOrder => 600;
         [Serializable] private sealed class Budget
         {public bool validated=true;public int sceneRenderers,enabledSceneRenderers,decorativeRenderers,materials,maximumBones,lights,productionMeshes,maximumTextureSize;public long authoredTriangles,enabledInstancedStaticTriangles;public string collisionAuthority="Unchanged from representative-section baseline";}
