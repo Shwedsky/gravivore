@@ -1,110 +1,104 @@
-# Art and Asset Policy
+# GRAVIVORE art and asset policy
 
-Initial asset spend: **0**.
+Status: **CURRENT / AUTHORITATIVE**
 
-## Current ART SPIKE V3 gate
+Read together with:
+- `docs/CURRENT_VISUAL_TARGET.md`
+- `docs/ASSET_SOURCE_OF_TRUTH.md`
+- `docs/ART_DIRECTION.md`
 
-The selected G-0/Cutter pipeline must have no ShareAlike, NC, unclear-license,
-paid or recognizable franchise assets. Skip acquisition requiring authentication
-or manual user interaction. The current explicit instruction permits original
-temporary modular proxy geometry when no suitable autonomous donor is available;
-preserve the approved V2 silhouette direction and document its eventual replacement.
-V3 uses original proxy modules with CC0 Poly Haven PBR maps; Kenney remains scenery.
-The current explicit runtime-preview request authorizes temporary G-0 Tier0/1/2
-and Cutter binding in the real S20 Chapter on the ART branch and PR #30.
-Full art replacement remains pending human device review and a
-subsequently authorized specification. See ART_ASSET_SHORTLIST.md for verified
-candidate terms and ART_SPIKE_REVIEW.md for the pending review.
+## Visual target
 
-## Project-owned generated audio
+The target is **mobile-optimized premium hard-surface industrial sci-fi**.
 
-The S14 placeholder combat cues under `Assets/_Game/Content/Audio/S14_*.wav` are original,
-deterministically generated mono tones created by `S14PresentationAssetConfigurator`.
-They contain no third-party samples, require no attribution, and may be replaced later through
-the serialized `S14PresentationDefinition` references.
+`Low-poly` is not an art direction. Polygon reduction, LODs, atlases, shared materials and draw-call reduction are optimization methods used after or during authoring while preserving the target appearance.
 
-## Style target
+Reject final presentation that still reads as:
+- primitive/proxy geometry;
+- toy-like box mechs;
+- flat single-color material replacement;
+- generic untouched stock art;
+- sparse test-floor dressing;
+- neon used in place of form/material definition.
 
-Stylized low-poly 3D:
-- strong silhouettes;
-- compact textures/material atlases;
-- limited material count;
-- exaggerated readable proportions;
-- bright readable VFX against darker industrial environment.
+## Spend and sourcing
 
-Do not try to visually imitate Butcher Hero exactly.
+Initial asset spend remains **0 unless the owner explicitly changes it**.
 
-## Preferred free sources
+Allowed sources:
+- original project-created geometry/materials/textures/audio;
+- Unity built-ins where they are not visible final art;
+- truly free assets with verified commercial-use terms;
+- CC0 preferred;
+- CC BY acceptable with exact attribution and redistribution review;
+- other free commercial licenses only after item-level review.
 
-Only import after checking the license on the actual downloaded pack.
+Never use:
+- ripped/extracted commercial-game assets;
+- recognizable franchise derivatives;
+- NC assets;
+- incompatible ShareAlike assets;
+- unclear-license downloads;
+- paid-only content while the zero-spend rule is active.
 
-Good current candidates:
+## Public repository rule
 
-### KayKit
-- Character Pack: Adventurers — CC0, rigged/animated, mobile-friendly.
-- Character Pack: Skeletons — CC0, free subset.
-- Character Animations — CC0, large animation library.
-- Prototype Bits — CC0.
-- Dungeon Pack — CC0, 200+ free modular props.
+A license that permits using an asset in a shipped game does not automatically permit publishing its raw/editable source in a public Git repository.
 
-Source: https://kaylousberg.itch.io/
+Keep restricted Asset Store/custom-license payloads local/private. Commit only what the license permits. Record provenance in `ThirdPartyNotices.md` and the current asset register.
 
-### Kenney
-Kenney states game assets on asset pages are CC0 and usable commercially without attribution.
+## Donor / kitbash rule
 
-Source: https://kenney.nl/
+Donor assets may provide useful:
+- joints;
+- armor mechanisms;
+- machinery pieces;
+- panels;
+- weapon parts;
+- pipes/services;
+- animation/rig structure where legally and technically suitable.
 
-### Quaternius
-Multiple packs are CC0 and include rigged/animated low-poly characters/environment pieces.
+But a donor is not automatically final art. Hero actors, major facilities and landmarks must be adapted until they fit the GRAVIVORE faction/world language and do not look like an unchanged marketplace asset.
 
-Source: https://quaternius.com/ and https://quaternius.itch.io/
+Kitbash is a production technique, not an excuse to preserve toy-like or obviously modular construction.
 
-## Techno-organism problem
+## Materials
 
-Free packs may not provide the exact player fantasy.
+Prefer a coherent shared material vocabulary, but preserve within-object variation through authored maps/masks:
+- BaseColor;
+- tangent-space Normal;
+- Metallic/Roughness or Metallic/Smoothness;
+- AO when useful;
+- localized Emission;
+- wear/recess/heat/damage information appropriate to the object.
 
-For v0.1, solve this by **kitbashing**:
-- choose a rigged free humanoid/mechanical base or simple custom primitive rig;
-- hide/replace visually human parts;
-- mount CC0 geometry/primitive armor modules on stable bones/sockets;
-- use emissive core rings and gravity VFX to establish identity;
-- use evolution attachments to make the silhouette progressively less generic.
+Do not flatten every imported material slot to one generic Body/Accent/Dark material if that destroys meaningful authored surface response. Material consolidation must preserve or rebake the visual information that matters.
 
-Do not wait for a perfect bespoke character before validating the gameplay.
+## Lighting and VFX
 
-## Visual evolution implementation
+Keep realtime cost bounded, but use baked/emissive/fake-light techniques to preserve depth. The absence of many realtime lights is not permission to ship a flat scene.
 
-Create attachment sockets on the player rig:
-- Back
-- LeftShoulder
-- RightShoulder
-- LeftArm
-- RightArm
-- Core
-- Hips
-- RearThruster
+VFX must remain pooled/bounded and support readable source -> travel -> impact causality.
 
-Evolution modules are prefabs attached to sockets.
+## Mobile optimization
 
-No runtime mesh fusion required.
+Target 60 FPS on a reasonable mid-range Android device.
 
-## License tracking
+Use:
+- LODs;
+- mesh simplification where invisible at gameplay scale;
+- shared atlases/materials;
+- ASTC/compressed textures;
+- mipmaps;
+- culling/batching;
+- bounded particle counts;
+- limited transparent overdraw;
+- limited shadowed realtime lights.
 
-Create `ThirdPartyNotices.md` with:
-- pack name;
-- author;
-- download URL;
-- exact license;
-- date checked;
-- files/directories imported;
-- whether attribution is required.
+Old per-asset triangle/material numbers are guidance/history unless reaffirmed by a current task. Real-device frame time is the final performance gate.
 
-CC0 attribution is optional, but recording provenance is mandatory.
+## Current external intake
 
-## Forbidden
+New downloads go under `ExternalAssetIntake/Current/` only. Historical V1/V2 raw-cache locations are not current source paths.
 
-- asset ripping;
-- importing models/textures/audio from installed commercial games;
-- using Dota/Pudge derivatives;
-- "free" assets without a license allowing redistribution/commercial game use;
-- paid Asset Store dependencies for v0.1.
+See `docs/ASSET_SOURCE_OF_TRUTH.md` for the full path contract.

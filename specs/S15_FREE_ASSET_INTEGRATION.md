@@ -2,42 +2,54 @@
 
 ## Goal
 
-Replace primitive placeholders selectively with coherent zero-cost commercially usable assets.
+Integrate legally usable zero-cost art into a coherent production presentation that supports the current GRAVIVORE visual target.
+
+## Current authority
+
+Follow:
+- `AGENTS.md`
+- `docs/CURRENT_VISUAL_TARGET.md`
+- `docs/ASSET_SOURCE_OF_TRUTH.md`
+- `docs/ART_ASSET_POLICY.md`
+- `docs/ART_INTAKE_CHECKLIST.md`
+
+Historical Phase 3 / Art Spike / V1 intake documents are evidence only and must not define current style or paths.
 
 ## Scope
 
-- license verification
-- ThirdPartyNotices.md
-- one consistent environment family
-- player base/kitbash
-- five enemy silhouettes using free sources/variants
-- animation retarget/import settings
+- item-level license/provenance verification;
+- `ThirdPartyNotices.md` updates;
+- coherent environment/hero-prop selection;
+- player/enemy/equipment donors where they materially improve the current target;
+- animation/rig import where intentionally used;
+- authored adaptation/kitbash/custom work required to remove obvious stock/proxy identity;
+- mobile optimization after visual fit is established.
 
 ## Out of scope
 
-- paid packs
-- ripped content
-- unlicensed AI marketplace downloads
-
-## Required architecture constraints
-
-- Follow `AGENTS.md`.
-- Use data/configuration rather than special-case branches where content may grow.
-- Do not modify unrelated systems.
-- Preserve backward-compatible save behavior once save exists.
-- No paid dependencies/assets.
+- ripped content;
+- unclear or incompatible licenses;
+- paid-only dependencies while the zero-spend rule is active;
+- treating raw vendor/demo projects as production architecture;
+- preserving low-poly/proxy appearance merely because an asset is mobile-friendly.
 
 ## Acceptance criteria
 
-- [ ] Every third-party imported directory has documented provenance/license
-- [ ] No paid asset required for build
-- [ ] Silhouettes distinguish five enemy roles
-- [ ] Asset import remains mobile friendly
+- [ ] Every promoted third-party asset has documented provenance/license and public-repository handling is legal.
+- [ ] No paid asset is required for the build while the zero-spend decision remains active.
+- [ ] Five ordinary enemy roles remain distinguishable by silhouette/function, not only color.
+- [ ] Major actor/hero/environment presentation materially matches `CURRENT_VISUAL_TARGET.md` and does not read as obvious primitive/proxy/stock art.
+- [ ] Materials retain meaningful authored surface variation after URP conversion/consolidation.
+- [ ] Production art remains separate from gameplay authority and current behavior/save/progression is preserved.
+- [ ] Android performance is measured; optimization decisions are based on actual device cost rather than historical prototype ceilings alone.
 
 ## Verification
 
-- editor validation for missing materials/animations
-- manual license audit
+- editor validation for missing meshes/materials/animations/references;
+- license/provenance audit;
+- real gameplay-camera review;
+- relevant EditMode/PlayMode tests;
+- Android device visual/performance gate for production acceptance.
 
 ## Definition of Done
 
