@@ -1,31 +1,86 @@
-# GRAVIVORE art direction — robotic industrial sci-fi
+# GRAVIVORE current art direction — industrial hard-surface sci-fi
 
-## Current player correction
+Status: **CURRENT / AUTHORITATIVE**
 
-The post-V3 human review rejected the tank-like player silhouette. Current G-0 is a biped combat mech with a separate torso, head/visor, arms, legs and mechanical joints. Reuse the original beveled mechanical modules and restrained CC0 PBR surfaces. Tier1/2 extend shoulders and containment without scaling the gameplay root. Keep the current S20 camera and world layout. See [MECHA_RESPAWN_CHECKPOINT.md](MECHA_RESPAWN_CHECKPOINT.md) for current bindings, validation and deferred animation. The V3 direction below is historical context and is superseded for the player.
+Primary visual contract: `docs/CURRENT_VISUAL_TARGET.md`.
 
-V2 established the approved **silhouette direction**: a low autonomous combat machine, central cyan gravity core, four mechanical supports and front-biased weapons. V3 preserves that direction using an explicitly authorized temporary modular proxy and CC0 PBR surfaces. The V3 implementation still requires human visual review.
+## G-0
 
-## G-0 identity and evolution
+Current G-0 is a **bipedal robotic combat mech**.
 
-Use a compact low chassis, coherent armor planes, mechanically connected joints and four supports. Keep the same core position/diameter, support socket positions and unit root scale across all tiers. Avoid humanoid proportions, stock commercial characters, recognizable factory containers, oversized gears and cute/toy palettes.
+Required read:
+- separate torso/body mass;
+- head/visor or equivalent readable sensor mass;
+- two mechanical legs with believable joints and load-bearing feet;
+- arms/tool/weapon mounting that reads at the portrait gameplay camera;
+- central cyan gravity-core identity integrated into the body;
+- non-human machine anatomy rather than a soldier in powered armor;
+- visible equipment/weapon changes when equipped;
+- evolution changes silhouette through added/replaced authored geometry, not only scale or brighter emission.
 
-- Tier 0: low chamfered chassis, four independent hip/knee/foot assemblies, common core and paired forward mandibles/fork emitters.
-- Tier 1: wider flank plates, narrow cyan power strips and an outer containment ring.
-- Tier 2: outer armor, larger paired weapon/fork assemblies and supported upper containment geometry.
+Historical low four-support/radial/tank-like G-0 directions are superseded and must not be resurrected from old phase docs or concept-board player anatomy.
 
-Evolution must change the silhouette at the actual S20 camera, through added geometry rather than uniform root scale or brighter emission. Use dark graphite structure, cool gray armor and restrained cyan energy. Preserve useful surface normals, roughness, metal and AO.
+## Hostile machines
 
-## Cutter and scenery
+Shared faction language:
+- serious modern sci-fi combat machines;
+- dark graphite exposed mechanics;
+- cool/pale metal armor shells;
+- layered armor over visible joints/actuators;
+- localized red/orange hostile energy;
+- mechanically plausible supports and attack sources;
+- role-specific silhouettes readable from the real gameplay camera;
+- no toy proportions;
+- no low-detail box-mech final forms;
+- no color-only role differentiation;
+- no generic stock identity after production adaptation.
 
-Cutter is lower/smaller than G-0 Tier 2, with two runners, a flat central chassis, unequal low cutting arms, long/short tapered blades and an offset shield. Red energy and asymmetry identify the hostile; no humanoid head or torso pose. Evaluate distinction with energy color ignored.
+Scout/Cutter/Magnetar specifics remain in `docs/visual-production-v2/ENEMY_VISUAL_TARGETS_APPROVED_V1.md`.
 
-Keep the existing industrial bay subordinate: quiet floor panels, low framing, peripheral conduits, compact reactor and open combat space. Kenney remains supporting scenery only.
+## Environment
 
-## Review and final-art requirements
+The world is a dense but readable industrial exclusion complex, not a quiet open floor with decoration around the edges.
 
-Current S20 settled camera: offset (0,14.8,-11.2), look-at height 0.9, vertical FOV 46, damping 0.18, portrait 9:16, from S20 SHA 9f744b1fc08d9ed25d5a8f818513922a9d9c3ea4. All ten comparison images were regenerated before temporary runtime binding. Judge silhouettes in full portrait renders; inspect surfaces in images 08/09 and module structure in image 10.
+Target composition:
+- layered floor construction, seams, trenches, grates and damaged transitions;
+- substantial wall/gate thickness and service framing;
+- connected pipes/cables/services with visible endpoints and purpose;
+- large machinery/facilities that explain the function of a zone;
+- reactors, generators, containment systems, docks, gantries, cranes, storage and wreckage;
+- broken/collapsed silhouettes and wear where the setting is damaged;
+- strong edge/periphery massing and vertical machinery;
+- open encounter centres and protected telegraph lanes.
 
-The proxy proves composition, permissive surface integration and independent pivots. Its repeated plates, planar texture density and simplified joints are temporary. Final original/refined modules must preserve the approved design language, with authored UVs and an appropriate locomotion rig. The isolated idle proof does not establish walking, combat animation or Android frame time.
+A gameplay `SpawnSpot` is only spawn authority. Its presentation may be a substantial facility/dock/fabricator or other authored industrial structure if that best communicates the concept.
 
-**ART SPIKE V3 VISUAL REVIEW: PENDING**
+## Materials
+
+Core palette:
+- graphite/near-black structure;
+- cool desaturated steel;
+- worn painted machinery;
+- dirty deck/concrete/industrial surfaces;
+- restrained rust/heat/damage;
+- cyan/blue service/player energy;
+- red/orange hostile/danger energy;
+- amber/ochre warning paint where functional.
+
+Use PBR surface depth and within-object variation. Do not let shared-material optimization make unrelated objects look like the same plastic construction toy.
+
+## Lighting
+
+Lighting should reveal mass, recesses and materials while keeping targets/telegraphs readable.
+
+Prefer efficient techniques suitable for mobile: directional/baked/emissive/reflection/fake-light treatment first, bounded local realtime lights only where the gain is real.
+
+## Camera-first acceptance
+
+Judge production art in the actual playable portrait camera on device.
+
+Beauty renders and close material views help diagnose quality but do not replace the gameplay-camera gate. Fine detail that cannot be perceived at gameplay scale must not carry the design; primary and secondary forms must do the work.
+
+## Production quality
+
+Primitive/procedural proxy modules, obvious blockout geometry and untouched stock models are acceptable for technical exploration only.
+
+When the active task is a production/concept-fidelity pass, final acceptance requires authored/refined forms and surfaces that materially close the gap to the owner concept rather than simply making the previous proxy more complex.
