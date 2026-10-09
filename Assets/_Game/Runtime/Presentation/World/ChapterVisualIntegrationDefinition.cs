@@ -16,6 +16,8 @@ namespace Gravivore.Presentation.World
         public PresentationModelBinding RepairHub => _repairHub;
         [SerializeField] private GameObject _weaponPrefab;
         public GameObject WeaponPrefab => _weaponPrefab;
+        [SerializeField] private Gravivore.Presentation.UI.ProductionUiSkinDefinition _uiSkin;
+        public Gravivore.Presentation.UI.ProductionUiSkinDefinition UiSkin => _uiSkin;
         [SerializeField] private Gravivore.Presentation.AudioVfx.Phase6BVfxInstance _hostileCharge, _hostileTravel, _hostileImpact;
         public Gravivore.Presentation.AudioVfx.Phase6BVfxInstance HostileCharge => _hostileCharge;
         public Gravivore.Presentation.AudioVfx.Phase6BVfxInstance HostileTravel => _hostileTravel;
@@ -26,6 +28,7 @@ namespace Gravivore.Presentation.World
         {
             _elite.ValidateOrThrow(); _boss.ValidateOrThrow(); _repairHub.ValidateOrThrow();
             _fidelity?.ValidateOrThrow();
+            _uiSkin?.ValidateOrThrow();
         }
     }
 }

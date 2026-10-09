@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using Gravivore.Presentation.Composition;
 using Gravivore.Presentation.World;
+using Gravivore.Presentation.UI;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -31,6 +32,77 @@ namespace Gravivore.Editor.VisualIntegration
             }
             AssetDatabase.SaveAssets();Chapter01V3Builder.ValidateOrThrow();
             Debug.Log("VISUAL_REPLACEMENT_V3_ACTORS_PASS");
+        }
+        public static void BuildEquipment()
+        {
+            AssetDatabase.Refresh();
+            var material=AssetDatabase.LoadAssetAtPath<Material>(Root+"/Materials/VR3_WornIndustrialAtlas.mat");
+            var obj=new GameObject("Emitter_M0");
+            var muzzle=Group(obj.transform,"Muzzle");muzzle.localPosition=new Vector3(0,.025f,1.03f);
+            for(var rank=1;rank<=5;rank++)
+            {
+                var path=Root+"/Models/M0_Rank"+rank+".fbx";
+                var importer=(ModelImporter)AssetImporter.GetAtPath(path);importer.materialImportMode=ModelImporterMaterialImportMode.None;
+                importer.importCameras=false;importer.importLights=false;importer.importAnimation=false;importer.animationType=ModelImporterAnimationType.None;
+                importer.bakeAxisConversion=true;importer.isReadable=false;importer.SaveAndReimport();
+                var group=Group(obj.transform,"Rank"+rank);
+                var model=Object.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>(path),group,false);
+                foreach(var renderer in model.GetComponentsInChildren<Renderer>())renderer.sharedMaterials=new[]{material};
+                Group(group,"RankMuzzle").localPosition=new Vector3(0,.025f,1.03f+(rank-1)*.16f);
+                RenderThumbnail(model,rank);group.gameObject.SetActive(rank==1);
+            }
+            PrefabUtility.SaveAsPrefabAsset(obj,Chapter01V3Builder.Prefab("Emitter_M0"));Object.DestroyImmediate(obj);
+            AssetDatabase.Refresh();AssetDatabase.SaveAssets();
+            Debug.Log("VISUAL_REPLACEMENT_V3_EQUIPMENT_PASS");
+        }
+        private static void RenderThumbnail(GameObject model,int rank)
+        {
+            var preview=new PreviewRenderUtility();
+            try
+            {
+                var copy=Object.Instantiate(model);preview.AddSingleGO(copy);
+                var rs=copy.GetComponentsInChildren<Renderer>();var bounds=rs[0].bounds;foreach(var r in rs)bounds.Encapsulate(r.bounds);
+                preview.camera.orthographic=true;preview.camera.orthographicSize=bounds.extents.magnitude*.85f;
+                preview.camera.nearClipPlane=.01f;preview.camera.farClipPlane=30;
+                preview.camera.transform.position=bounds.center+new Vector3(2.3f,1.8f,1.4f);preview.camera.transform.LookAt(bounds.center);
+                preview.camera.clearFlags=CameraClearFlags.SolidColor;preview.camera.backgroundColor=new Color(.035f,.05f,.063f,1);
+                preview.lights[0].intensity=1.8f;preview.lights[0].transform.rotation=Quaternion.Euler(35,-25,0);
+                preview.lights[1].intensity=.9f;preview.lights[1].transform.rotation=Quaternion.Euler(315,130,0);
+                preview.BeginStaticPreview(new Rect(0,0,512,320));preview.Render(true);
+                var texture=preview.EndStaticPreview();File.WriteAllBytes(Root+"/Textures/M0_Thumbnail"+rank+".png",texture.EncodeToPNG());Object.DestroyImmediate(texture);
+            }
+            finally{preview.Cleanup();}
+        }
+        private static Sprite UiSprite(string name,bool sliced=false)
+        {
+            var path=Root+"/Textures/"+name+".png";var importer=(TextureImporter)AssetImporter.GetAtPath(path);
+            importer.textureType=TextureImporterType.Sprite;importer.spriteImportMode=SpriteImportMode.Single;
+            importer.mipmapEnabled=false;importer.alphaIsTransparency=true;importer.maxTextureSize=512;
+            importer.spriteBorder=sliced?new Vector4(12,12,12,12):Vector4.zero;importer.SaveAndReimport();
+            return AssetDatabase.LoadAssetAtPath<Sprite>(path);
+        }
+        public static void BuildUI()
+        {
+            AssetDatabase.Refresh();var path=Root+"/ProductionUiSkin.asset";
+            var skin=AssetDatabase.LoadAssetAtPath<ProductionUiSkinDefinition>(path);
+            if(skin==null){skin=ScriptableObject.CreateInstance<ProductionUiSkinDefinition>();AssetDatabase.CreateAsset(skin,path);}
+            var data=new SerializedObject(skin);
+            data.FindProperty("_frame").objectReferenceValue=UiSprite("UI_inventoryselectedfalse",true);
+            data.FindProperty("_selected").objectReferenceValue=UiSprite("UI_inventoryselectedtrue",true);
+            data.FindProperty("_utility").objectReferenceValue=UiSprite("UtilityBar",true);
+            var thumbnails=data.FindProperty("_weaponThumbnails");thumbnails.arraySize=5;
+            for(var i=0;i<5;i++)thumbnails.GetArrayElementAtIndex(i).objectReferenceValue=UiSprite("M0_Thumbnail"+(i+1));
+            data.ApplyModifiedPropertiesWithoutUndo();skin.ValidateOrThrow();
+            var definition=AssetDatabase.LoadAssetAtPath<ChapterVisualIntegrationDefinition>("Assets/_Game/Content/Definitions/Chapter01_VisualIntegration.asset");
+            data=new SerializedObject(definition);data.FindProperty("_uiSkin").objectReferenceValue=skin;data.ApplyModifiedPropertiesWithoutUndo();
+            Directory.CreateDirectory("Assets/StreamingAssets");File.Copy("ThirdPartyNotices.md","Assets/StreamingAssets/ThirdPartyNotices.txt",true);
+            foreach(var name in new[]{"HostileSoft","PlayerSoft","PlayerStreak","RepairSoft","RepairStreak"})
+            {
+                var material=AssetDatabase.LoadAssetAtPath<Material>("Assets/_Game/Content/Presentation/Phase6B/VFX/Materials/M_Phase6B_"+name+".mat");
+                var texture=AssetDatabase.LoadAssetAtPath<Texture2D>(Root+"/Textures/VR3_"+(name.Contains("Streak")||name=="HostileSoft"?"Spark":"Energy")+"Mask.png");
+                material.SetTexture("_BaseMap",texture);material.SetTexture("_MainTex",texture);EditorUtility.SetDirty(material);
+            }
+            AssetDatabase.Refresh();AssetDatabase.SaveAssets();Debug.Log("VISUAL_REPLACEMENT_V3_UI_PASS");
         }
         private static void Environment(bool full)
         {

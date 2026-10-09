@@ -301,7 +301,7 @@ namespace Gravivore.Presentation.Composition
             if (_visualEnvironment?.Definition.WeaponPrefab != null)
             {
                 PlayerObject.AddComponent<Gravivore.Presentation.Player.WeaponEquipmentPresenter>().Initialize(Equipment, PlayerObject.GetComponent<PlayerEvolutionView>(), _gravityLashVfx, _visualEnvironment.Definition.WeaponPrefab);
-                gameObject.AddComponent<WeaponEquipmentPanel>().Initialize(PauseMenu.ModalRect, _hudRoot, Equipment);
+                gameObject.AddComponent<WeaponEquipmentPanel>().Initialize(PauseMenu.ModalRect, _hudRoot, Equipment, _visualEnvironment.Definition.UiSkin);
             }
             StartupPhase("map/UI generation");
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
@@ -433,6 +433,8 @@ namespace Gravivore.Presentation.Composition
             safeAreaTransform.offsetMax = Vector2.zero;
             safeAreaObject.AddComponent<SafeAreaHudRoot>();
             _hudRoot = safeAreaTransform;
+            if (_visualEnvironment?.Definition.UiSkin != null)
+                safeAreaObject.AddComponent<ProductionUiSkinScope>().Initialize(_visualEnvironment.Definition.UiSkin);
 
             var exclusionObject = new GameObject("HUD Touch Exclusion", typeof(RectTransform));
             var exclusionTransform = exclusionObject.GetComponent<RectTransform>();
