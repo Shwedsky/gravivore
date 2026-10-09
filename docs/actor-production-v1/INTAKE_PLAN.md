@@ -1,6 +1,6 @@
 # Chapter 01 actor asset intake plan
 
-Status: audit in progress. Owner request: 2026-10-10.
+Status: audit and donor selection completed; final modeling not started. Owner request: 2026-10-10.
 Baseline: origin/main at 38e0ed8fe5c95ff41ab5dbb246f45ed26bdcf9cc.
 Branch: chore/actor-asset-intake-v1; independent of PR #71.
 
