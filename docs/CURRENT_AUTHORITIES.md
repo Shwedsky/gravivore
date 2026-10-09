@@ -9,13 +9,14 @@ This file exists to stop historical phase documents from silently becoming requi
 1. `AGENTS.md`
 2. `docs/CURRENT_AUTHORITIES.md`
 3. `docs/CURRENT_VISUAL_TARGET.md` for any presentation, world, art, VFX, UI, model, material, lighting or asset task
-4. `docs/ASSET_SOURCE_OF_TRUTH.md` for any task that touches external or project-owned art assets
-5. `docs/DECISIONS.md`
-6. `docs/PROJECT_BIBLE.md`
-7. `docs/GAME_DESIGN.md`
-8. `docs/ARCHITECTURE.md`
-9. the active specification or explicit task
-10. `docs/TEST_STRATEGY.md` and `docs/BUILD_AND_RELEASE.md`
+4. `docs/visual-blueprints/chapter01/CHAPTER01_VISUAL_BLUEPRINT_V1.md` for any Chapter 01 world-layout, environment-composition, facility, collision-layout, minimap-geometry or full visual-rebuild task
+5. `docs/ASSET_SOURCE_OF_TRUTH.md` for any task that touches external or project-owned art assets
+6. `docs/DECISIONS.md`
+7. `docs/PROJECT_BIBLE.md`
+8. `docs/GAME_DESIGN.md`
+9. `docs/ARCHITECTURE.md`
+10. the active specification or explicit task
+11. `docs/TEST_STRATEGY.md` and `docs/BUILD_AND_RELEASE.md`
 
 The current explicit human task still has highest authority.
 
@@ -53,6 +54,8 @@ The project is targeting **mobile-optimized premium hard-surface industrial sci-
 Low polygon counts, LODs, shared materials, atlases, batching and restrained dynamic lighting are optimization techniques. They do not define the visual style and must not be used to justify toy-like geometry, flat materials, generic blockouts or sparse test-scene composition.
 
 The current visual contract is defined in `docs/CURRENT_VISUAL_TARGET.md` and `docs/ART_DIRECTION.md`.
+
+For Chapter 01, `docs/visual-blueprints/chapter01/CHAPTER01_VISUAL_BLUEPRINT_V1.md` is the current scene-composition authority. It intentionally supersedes the old practice of preserving V44–V47 physical presentation layout/collision fingerprint while merely replacing props.
 
 ## Current asset authority
 

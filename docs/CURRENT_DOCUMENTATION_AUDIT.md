@@ -20,7 +20,17 @@ Purpose: verify that new Codex work is no longer pulled toward superseded protot
 
 ### Spawn spot vs real facility
 
-**Resolved.** Spawn data owns spawn behavior only. Current docs explicitly allow substantial fabrication/deployment/maintenance facilities or other industrial structures around the same anchors without transferring gameplay authority to art.
+**Resolved.** Spawn data owns spawn behavior only. Current docs explicitly allow substantial fabrication/deployment/maintenance facilities or other industrial structures around the same encounter identity without transferring gameplay authority to art.
+
+### Old spawn coordinates / facility footprints as permanent authority
+
+**Resolved.** `S04` now preserves encounter identity, population/respawn/progression semantics rather than historical anchor coordinates. During an explicitly approved world rebuild, anchors may move inside the rebuilt sector and visual facilities may use materially different footprints.
+
+### Historical Chapter01 topology / collision fingerprint as permanent visual authority
+
+**Resolved.** `S08` now preserves gameplay/progression semantics rather than the V44–V47 physical presentation layout. An approved full world rebuild may change sector coordinates, lanes, floor/wall geometry, facility footprints, gate framing, minimap geometry and explicit collision proxies. The old collision fingerprint is no longer an acceptance requirement for a new visual layout.
+
+`docs/visual-blueprints/chapter01/CHAPTER01_VISUAL_BLUEPRINT_V1.md` is now the scene-composition authority for the next Chapter01 rebuild.
 
 ### Proxy/kitbash as final art
 
@@ -54,6 +64,8 @@ Purpose: verify that new Codex work is no longer pulled toward superseded protot
 
 Historical locations (`ExternalAssetIntake/FreeAssetIntakeV1/`, root `98_unclassified/`, root `00_reference/`, `.local-g0-v2/`, old worktree scratch) are explicitly non-current. `docs/free-asset-intake-v2/` remains useful vetted reference/evidence, but not a live payload path.
 
+For the Chapter01 Visual Blueprint V1, the current owner-local raw inputs are explicitly assigned to dedicated Quaternius MegaKit and Molten Maps subfolders under `ExternalAssetIntake/Current/`.
+
 ## Deliberately retained constraints
 
 These are not visual conflicts and remain valid:
@@ -72,7 +84,9 @@ These are not visual conflicts and remain valid:
 
 Some legacy runtime/editor systems still exist because old content depends on them. Examples include the S15 part/material fallback and presentation validators designed around strict gameplay/presentation separation.
 
-They may be refactored by a future implementation task when they materially block the current target. Their mere existence must not be interpreted as visual authority.
+Old V44–V47 presentation layers and builders also remain implementation/history debt until the new Chapter01 blueprint is implemented. They must not be treated as the geometric starting point merely because they still exist in the project.
+
+They may be refactored or removed by the next explicitly approved world-rebuild task when they materially block the current target. Their mere existence must not be interpreted as visual authority.
 
 ## Final result
 
@@ -85,6 +99,7 @@ For new visual work, the active documentation no longer requires or prefers:
 - tiny decorative spawn markers instead of functional facilities;
 - flat three-role material replacement for rich authored assets;
 - old Phase 3 triangle/light numbers as permanent quality ceilings;
-- historical asset cache paths.
+- historical asset cache paths;
+- old Chapter01 spot coordinates, facility footprints, repeated floor grid or collision fingerprint as permanent layout authority.
 
 If future work reintroduces one of those assumptions, treat it as a regression against the current authority documents, not as a legitimate interpretation of project history.
