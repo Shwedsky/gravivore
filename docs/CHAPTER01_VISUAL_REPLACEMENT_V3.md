@@ -28,3 +28,9 @@ Each major checkpoint is committed and pushed. No completed validation or visual
 ## Evidence and limitations
 
 Implementation evidence, executed validation results, mobile budgets, assumptions and final APK metadata will be recorded here as work proceeds.
+
+### Repair checkpoint
+
+Production portrait capture inspected at 540×960. MegaKit's original trim UV detail is retained in a shared cold-metal atlas; fractured original panels and recessed grates add construction depth. Command machinery, pipe columns and terminated service runs fit existing occupied art footprints. Repair ring remains visible. The real capsule passed the accepted right-hand exit (x=0 to x=6). One PlayMode repair test passed, including flat floor bounds, supported URP materials and absence of decorative colliders/scripts. Collision authority fingerprint is unchanged.
+
+The Molten payload contains no Container mesh despite the V2 role listing; the verified CC0 Essentials crate is substituted. CC0 proofs and hash receipts accompany production assets. Historical V43 captures remain comparison evidence, not new validation.
