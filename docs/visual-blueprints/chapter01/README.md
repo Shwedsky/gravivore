@@ -1,37 +1,30 @@
-# Chapter 01 visual blueprint workspace
+# Chapter 01 visual blueprint
 
-Status: **CURRENT for Chapter 01 rebuild planning**
+Status: **CURRENT / AUTHORITATIVE FOR THE NEXT FULL CHAPTER 01 WORLD REBUILD**
 
-Primary specification:
+Primary blueprint contract:
 
-`CHAPTER01_VISUAL_BLUEPRINT_V1.md`
+- `CHAPTER01_VISUAL_BLUEPRINT_V1.md`
+- `CHAPTER01_VISUAL_BLUEPRINT_V1.jpg`
 
-Expected owner-approved board:
+The board and text specification are intended to be read together.
 
-`CHAPTER01_VISUAL_BLUEPRINT_V1.jpg`
+The blueprint defines the target scene composition for the next Chapter 01 rebuild. It preserves gameplay semantics while explicitly allowing the old V44–V47 physical layout, exact coordinates, floor grid, facility footprints and collision fingerprint to be replaced.
 
-The board is project-owned/generated visual reference and should be committed next to this README.
+For implementation also read:
 
-## Owner-local raw kit payloads
+- `../../CURRENT_AUTHORITIES.md`
+- `../../CURRENT_VISUAL_TARGET.md`
+- `../../ART_DIRECTION.md`
+- `../../ASSET_SOURCE_OF_TRUTH.md`
+- `../../../specs/S04_ENEMY_FRAMEWORK_SPAWN_SPOTS.md`
+- `../../../specs/S08_WORLD_ZONE_GATES.md`
 
-Before the next full Chapter 01 rebuild, make these local paths exist in the repository working copy:
+Current owner-local raw packages expected by the blueprint task:
 
-```text
-ExternalAssetIntake/Current/quaternius-modular-scifi-megakit-standard/Modular SciFi MegaKit[Standard].zip
-ExternalAssetIntake/Current/molten-maps-scifi/Molten Maps SciFi Asset Pack.zip
-```
+- `ExternalAssetIntake/Current/quaternius-modular-scifi-megakit-standard/Modular_SciFi_MegaKit_Standard.zip`
+- `ExternalAssetIntake/Current/molten-maps-scifi/Molten Maps SciFi Asset Pack.zip`
 
-The ZIP payloads remain git-ignored/local. Do not publish raw external packages merely because they are available locally.
+These ZIPs remain git-ignored. The board is committed to Git and is visual authority for the rebuild.
 
-The generated blueprint board is different: it is project-owned and should be tracked in Git at the path above.
-
-## Implementation gate
-
-Do not start another incremental V48-style presentation layer.
-
-The next implementation task is a **full Chapter 01 world/presentation rebuild** only after:
-
-1. the blueprint board is present;
-2. current S04/S08 semantic-preservation rules are merged;
-3. the two current raw kit payloads are available locally to the implementing Codex environment;
-4. the implementation task explicitly permits rebuilding positions/collision proxies/minimap geometry while preserving gameplay/progression semantics.
+Do not implement the next pass as another presentation layer over the old map. Build the new Chapter world/layout from the blueprint and remap existing gameplay identities into that rebuilt world.
