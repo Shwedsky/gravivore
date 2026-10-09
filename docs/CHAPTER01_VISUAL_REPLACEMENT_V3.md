@@ -59,6 +59,8 @@ Authored static scene inventory: 1,377 renderers total, 884 enabled, 8 shared ma
 
 The raw FBX transform audit found scale-100 exports during iteration. Exports now use explicit metre units; the existing rendering guard was preserved and all affected EditMode checks pass. Intermediate failed logs are retained as iteration evidence and are superseded by the final successful XML.
 
+The first Android attempt assembled its APK but the new postbuild guard rejected a static floor FBX absent from the raw packed-source listing. Typed inspection confirmed that Unity baked the 460 decorative renderers into combined scene meshes. The final guard therefore keeps strict build-report checks for materials, textures, UI and dynamic weapon FBXs, records the static source list separately, and requires all 460 baked decorative MeshFilter references to resolve to actual class-43 meshes and production material objects in the APK. This preserves static batching and verifies the shipped representation. ProjectValidator and all 471 EditMode tests passed again after this audit correction; packaging is being repeated from a pushed checkpoint.
+
 ### Assumptions and remaining acceptance
 
 CC0 shells are donor material, not stock role replacements. Original independent machinery fills gaps where redistribution-compatible donors were unsuitable. Cladding may occupy less than its authority footprint when a narrow donor would otherwise require extreme stretch. APK and device performance are not inferred from Editor captures. The owner retains the A-/A visual grade and real-device rendering/readability acceptance gate. Next gate: V44 Chapter 01 device playtest, followed by draft-PR acceptance.
