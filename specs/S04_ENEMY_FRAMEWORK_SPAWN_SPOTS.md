@@ -16,11 +16,19 @@ Build reusable ordinary enemy AI and five-spot spawner architecture.
 - respawn jitter
 - global cap
 
+## Presentation boundary
+
+`SpawnSpotDefinition` owns spawn behavior, not the artistic size or complexity of the surrounding world.
+
+A spot may be presented by substantial authored industrial architecture, deployment/maintenance machinery, docks, wrecks or facilities while spawn anchors/population/timers remain unchanged. Presentation should follow `docs/CURRENT_VISUAL_TARGET.md` and keep collision/gameplay authority explicit.
+
+Do not interpret the simple spawn data model as a requirement for a simple visual spawn marker.
+
 ## Out of scope
 
 - elite/boss bespoke mechanics
-- all final models
-- procedural world
+- final art for the original S04 implementation
+- procedural world generation
 
 ## Required architecture constraints
 
@@ -28,7 +36,7 @@ Build reusable ordinary enemy AI and five-spot spawner architecture.
 - Use data/configuration rather than special-case branches where content may grow.
 - Do not modify unrelated systems.
 - Preserve backward-compatible save behavior once save exists.
-- No paid dependencies/assets.
+- No paid dependencies/assets unless the owner explicitly changes the zero-spend decision.
 
 ## Acceptance criteria
 

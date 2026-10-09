@@ -1,46 +1,53 @@
-# Art intake checklist
+# Current art intake checklist
 
-Use with [Phase 3A binding/hierarchy reference](VISUAL_WORLD_INTEGRATION_FOUNDATION.md).
+Status: **CURRENT**
 
-## Before a candidate enters gameplay
+Read first:
+- `docs/CURRENT_VISUAL_TARGET.md`
+- `docs/ASSET_SOURCE_OF_TRUTH.md`
+- `docs/ART_ASSET_POLICY.md`
 
-- Record author/source URL, license and permitted redistribution. No paid requirement, extracted game assets or derivative prohibited content.
-- Keep the raw imported asset separate from a cleaned presentation prefab. Do not replace gameplay roots.
-- Run `Gravivore > Art Intake > Report Selected Candidate`. Select the role for budget warnings; save the JSON with the review.
-- Check mesh/render/triangle/material-slot totals, unique materials, texture sizes, skin/bones/clips,
-  physics/scripts, lights/cameras/LODs, shader compatibility, missing references and scale/bounds.
-- Resolve magenta/non-URP materials, missing meshes/materials and missing texture references.
-  Empty optional texture properties are informational; inspect visible materials in the review scene.
-- Remove MonoBehaviours (including third-party demo scripts), colliders, Rigidbody, lights, cameras, Animator/Animation/playback
-  and missing scripts from the cleaned prefab. This milestone accepts meshes/skins/bones/LOD without imported playback authority.
-- Confirm clean prefab contains only Transform/MeshFilter/Renderer/LODGroup.
-- Establish metre scale, ground pivot, forward direction and a sensible renderer bounding box.
-- Optional socket container `Presentation Sockets`: exact names from the foundation doc; no duplicate opted-in socket name.
-- Open `Assets/_Game/ArtReview/Scenes/VisualIntegration_Review.unity`.
-  Assign the appropriate `ArtReviewSlot._candidate`, refresh, compare gameplay/close cameras against the one-metre reference.
-- Budget exceptions are warnings: assess visible LOD, draw calls, skins and device cost before acceptance.
-  Player <=50k/40 renderers/4–6 primary materials; ordinary <=25k/20/3–4; elite 40–60k/30; boss 80–120k/40 + LOD.
-  Environment: shared materials, modular pieces, usually 1k–2k textures.
+Do not use the historical Phase 3 binding documents as current instructions.
 
-## Bind a reviewed candidate
+## Before a candidate enters production
 
-- Player: S07_Evolution `_tierOverrides[0..2]`; preserve `_tierPrefabs` fallback and all tier thresholds.
-- Ordinary: S15_VisualCatalog `_enemies` recipe `_presentationPrefab` and offsets by original enemy ID.
-- Elite / boss: Chapter01_VisualIntegration `_elite` / `_boss` prefab and offsets.
-- Spot landmarks: S15_VisualCatalog `_landmarks` recipe by original spot ID; preserve gameplay spawn/zone coordinates.
-- Environment: Chapter01 Visual Environment categories/region dressing anchors or validated `_dressing` entries.
-  Keep physics, gate blockers and world state under Gameplay Geometry.
-- Hub: optional `_repairHub` visual under MainPlatform; keep PlayerDockPoint at current spawn and all anchors available.
-- Do not infer collider sizes from model bounds. Check visual/hitbox agreement explicitly for large elite/boss models.
-- Generic player geometry works without prototype joints; its own gait/clip playback is separate future presentation work.
-  Do not route damage through Animator, animation events or VFX completion.
+- Record original publisher/author, source URL, exact license, date checked and redistribution constraints.
+- Acquire new raw payload only under `ExternalAssetIntake/Current/<source-id>/`.
+- Do not execute vendor scripts/demo code during inspection by default.
+- Inspect mesh/render/triangle/material counts, texture maps/resolutions, LOD, rig/bones/clips, colliders, lights, cameras, particle systems, scripts, scale/pivots and shader compatibility.
+- Verify real visible materials, not only whether Unity imported without errors.
+- Judge the candidate against `CURRENT_VISUAL_TARGET.md`: silhouette, mechanical plausibility, surface depth, gameplay-camera readability and stock-asset recognizability.
+- Treat mobile budgets as optimization inputs, not style targets.
+- Establish metre scale, forward direction, ground/contact convention and required presentation sockets.
 
-## Verify and preserve rollback
+## Clean production asset
 
-- Keep fallback assets/recipes; clearing an override must restore them.
-- Run ProjectValidator and relevant EditMode/PlayMode suites; Phase 2 gait/attack/HP/audio regressions must remain green.
-- Inspect all player tiers; ordinary hit/death/pool reuse; elite/boss target points and telegraphs; repair hub with original recovery;
-  collision/gates when environment fallback is hidden.
-- Verify review scene remains outside gameplay Android build scenes.
-- Review actual arriving art on device for frame time, draw calls, shader/texture/skin cost and visible scale.
-- Commit source/license/report/binding changes together. Do not run the legacy S15 recipe generator over authored overrides.
+- Gameplay authority must not be hidden inside third-party scripts or art-prefab colliders.
+- Remove/disable vendor gameplay scripts, demo cameras and unrelated components.
+- Keep imported animation/Animator only when intentionally reviewed as presentation and root motion/authority remains compatible with gameplay.
+- Use separate gameplay collision proxies when complex visual geometry should not own collision.
+- Preserve useful authored material information; if materials are consolidated, rebake/recreate the visual variation rather than replacing everything with one flat generic material.
+- Convert shaders/materials to the current URP path without losing required BaseColor/Normal/metal/roughness-or-smoothness/AO/emission information.
+- Add LOD/material/texture optimization appropriate to the real gameplay-camera size.
+
+## Bind through current presentation architecture
+
+Use current scene/definition references on `main`; do not regenerate over authored production overrides from an old phase tool.
+
+General rules:
+- player art remains separate from movement/combat authority;
+- ordinary-enemy art remains separate from pooled enemy authority;
+- elite/boss art preserves attack/target/health/death sockets and encounter authority;
+- environment art preserves world topology and explicit gameplay blockers while allowing rich presentation around them;
+- hub/facility art preserves interaction/spawn points while presentation may be much larger/more detailed;
+- damage timing never depends on VFX/animation completion.
+
+## Verify
+
+- ProjectValidator and relevant EditMode/PlayMode suites pass.
+- No missing/error materials or references.
+- Pool reuse, target points, attack origins, telegraphs and death presentation still align with the visible model.
+- Traversal and collision proxies match the visual expectation for major solid structures.
+- Visual quality is reviewed in the real portrait gameplay camera.
+- Android/device frame time, thermals and visual result are checked before claiming production acceptance.
+- Provenance/notices and the promoted production subset are committed together where licensing permits.
