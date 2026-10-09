@@ -18,6 +18,20 @@ namespace Gravivore.Editor.VisualIntegration
         public static string Prefab(string name) => Root + "/Prefabs/" + name + ".prefab";
         public static void BuildRepair() => Environment(false);
         public static void BuildEnvironment() => Environment(true);
+        public static void BuildActors()
+        {
+            AssetDatabase.Refresh();
+            var worn=AssetDatabase.LoadAssetAtPath<Material>(Root+"/Materials/VR3_WornIndustrialAtlas.mat");
+            foreach(var pair in new[]{("VisualSlice","Scout_V1"),("VisualSlice","Cutter_V1"),("VisualSlice","Magnetar_V1"),("Chapter01Production","Warden_V1"),("Chapter01Production","ArcDrone_V1"),("Chapter01Production","Carrier_V1"),("Chapter01V3","Custodian_V3")})
+            {
+                var path="Assets/_Game/Content/"+pair.Item1+"/Prefabs/"+pair.Item2+".prefab";
+                var obj=PrefabUtility.LoadPrefabContents(path);
+                foreach(var renderer in obj.GetComponentsInChildren<Renderer>(true))renderer.sharedMaterials=new[]{worn};
+                PrefabUtility.SaveAsPrefabAsset(obj,path);PrefabUtility.UnloadPrefabContents(obj);
+            }
+            AssetDatabase.SaveAssets();Chapter01V3Builder.ValidateOrThrow();
+            Debug.Log("VISUAL_REPLACEMENT_V3_ACTORS_PASS");
+        }
         private static void Environment(bool full)
         {
             PrepareStatic();

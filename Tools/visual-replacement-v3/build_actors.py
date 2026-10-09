@@ -16,11 +16,39 @@ def skin_mesh(name,rig=None,lod=False):
  metrics[name]['bones']=len(bones) if rig else 0
  return meshes
 SOURCE=ROOT/'art/visual-replacement-v3'
+manifest=json.loads((DOCS/'ingestion_manifest.json').read_text())
+def donor_plating(role,center,size):
+ entry=next(e for e in manifest if e['role']==role)
+ path=ROOT/entry['sourcePath'];assert hashlib.sha256(path.read_bytes()).hexdigest()==entry['sourceSha256']
+ previous=set(bpy.data.objects);bpy.ops.import_scene.fbx(filepath=str(path))
+ imported=[o for o in bpy.data.objects if o not in previous]
+ selected=[]
+ for o in imported:
+  if o.type!='MESH':continue
+  world=o.matrix_world.copy();o.parent=None;o.matrix_world=Matrix.Identity(4);o.data.transform(world)
+  bm=bmesh.new();bm.from_mesh(o.data);bm.normal_update()
+  zmin=min(v.co.z for v in bm.verts);zmax=max(v.co.z for v in bm.verts)
+  discard=[f for f in bm.faces if f.normal.z<.30 or f.calc_center_median().z<zmin+(zmax-zmin)*.55]
+  bmesh.ops.delete(bm,geom=discard,context='FACES');bm.to_mesh(o.data);bm.free()
+  if not o.data.polygons:bpy.data.objects.remove(o,do_unlink=True);continue
+  selected.append(o)
+ for o in imported:
+  if o not in selected and o.name in bpy.data.objects:bpy.data.objects.remove(o,do_unlink=True)
+ if not selected:raise RuntimeError('Donor has no suitable independent upper plating')
+ bpy.ops.object.select_all(action='DESELECT')
+ for o in selected:o.select_set(True)
+ bpy.context.view_layer.objects.active=selected[0];bpy.ops.object.join();o=bpy.context.object
+ coords=[v.co for v in o.data.vertices];lo=Vector(tuple(min(v[i] for v in coords) for i in range(3)));hi=Vector(tuple(max(v[i] for v in coords) for i in range(3)))
+ for v in o.data.vertices:
+  for i in range(3):v.co[i]=(v.co[i]-(hi[i]+lo[i])*.5)*size[i]/max(.001,hi[i]-lo[i])+center[i]
+ o.name='CC0 '+role+' selectively extracted shell';o.data.materials.clear();o.data.materials.append(mats[2]);o.vertex_groups.clear()
+ group=o.vertex_groups.new(name='BODY');group.add(list(range(len(o.data.vertices))),1,'REPLACE');parts.append(o)
 first=(ROOT/'Tools/first-visual-slice/build_assets.py').read_text()
 for name,start,end in [('Scout_V1','reset();legs(6,.91',"rig_and_export('Scout_V1')"),('Cutter_V1','reset();legs(4,1.08',"rig_and_export('Cutter_V1')"),('Magnetar_V1','reset();legs(6,1.72',"rig_and_export('Magnetar_V1')")]:
  OUT=ROOT/'Assets/_Game/Content/VisualSlice'
  exec(first[first.index(start):first.index(end)])
  if name=='Scout_V1':
+  donor_plating('Enemy_QuadShell',(0,.12,.74),(.46,.58,.10))
   for s in (-1,1):
    poly('Independent swept recon shell',[(s*.09,-.33),(s*.34,-.13),(s*.31,.35),(s*.10,.48)],.69,.09,2)
    rod('Exposed sensor suspension',(s*.12,-.16,.50),(s*.23,-.43,.60),.025,1,vertices=8)
@@ -60,6 +88,7 @@ for name,start,end in [('ArcDrone_V1','# Arc Drone:',"rig_and_export('ArcDrone_V
    rod('Arc emitter electrode',(s*.19,-.49,1.15),(s*.19,-.79,1.18),.037,1,vertices=8)
   ring('Dorsal arc energy core',(0,-.16,1.44),.13,.035,0,'CORE');dome('Arc hostile heart',(0,-.16,1.45),(.09,.09,.05),5,'CORE')
  elif name=='Warden_V1':
+  donor_plating('Enemy_Trilobite',(0,.30,1.43),(1.17,.95,.13))
   for s in (-1,1):
    for j in range(3):shell('Overlapping defensive carapace',(s*.58,-.22+j*.34,1.20-j*.08),.56,.45,.17,2)
    rod('Top shield tensioner',(s*.64,-.55,1.18),(s*.54,.37,1.03),.046,0,vertices=10)
