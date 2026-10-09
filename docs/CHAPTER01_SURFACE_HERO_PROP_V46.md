@@ -51,7 +51,9 @@ Final static scene inventory: 1,008 enabled renderers and 1,611,176 static trian
 
 ## Android delivery
 
-V46 delivery verification is recorded in `surface-hero-v46/verification/delivery.json` after the build. Target: `gravivore-dev-0.1.0+46.apk`, versionCode 46, ARM64 IL2CPP DEV. V45 remains at its existing path with SHA256 `7486e448ab9304d3fc3fd61d1f8a2b90dd4743585b4f41e1b51e25a45b0d31d0`.
+Unity's Android build exited 0 after the internal visual gate. Delivered APK: `C:/Users/pamak/Documents/ChatGPT/gravivore/Builds/Android/gravivore-dev-0.1.0+46.apk`, **115,291,303 bytes**, SHA256 `10e31659731d931f62eb04e670c2369eee4322d43eef4505d7e9dc77c8cc495d`. Build source: `dbc0dcc0b8324ba6a7cedb239d403a8b7c8aff44`; the follow-up commit records delivery evidence only. VersionCode 46, versionName 0.1.0, package `com.gravivore.mobile.dev`, ARM64-only IL2CPP DEV/debuggable, signature and same signer as V45 all passed actual package verification.
+
+Typed packed-asset inspection resolves all nine V46 families to actual serialized meshes, the three shared hero materials to URP/Lit with normal/occlusion/metallic/emission keywords, and the required texture maps in the package. Build dependency callbacks confirm the referenced PBR resources are packed; Vulkan and GLES3x compiled shader receipts include the required surface keywords. The preserved world, patrol settings, M-0 ranks/thumbnails and production UI also pass typed package inspection. Delivery verification is recorded in `surface-hero-v46/verification/delivery.json`. V45 remains at its existing path with unchanged SHA256 `7486e448ab9304d3fc3fd61d1f8a2b90dd4743585b4f41e1b51e25a45b0d31d0`.
 
 The changed-file manifest is under `surface-hero-v46/verification/files_changed.txt`. Raw execution logs remain available locally; compact validation receipts, NUnit XML, source/mapping audits, camera evidence and package verification are retained with this pass.
 

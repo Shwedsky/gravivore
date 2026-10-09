@@ -1,0 +1,24 @@
+{
+    "pipeline": "Gravivore_URP",
+    "renderer": "Gravivore_URP_Renderer",
+    "colorSpace": "Gamma",
+    "hdr": true,
+    "postprocessData": false,
+    "automaticAndroidApis": true,
+    "msaa": 1,
+    "rendererFeatures": 0,
+    "renderScale": 1.0,
+    "androidApis": [
+        "Vulkan",
+        "OpenGLES3"
+    ],
+    "alwaysIncluded": [
+        "Legacy Shaders/Diffuse",
+        "Hidden/CubeBlur",
+        "Hidden/CubeCopy",
+        "Hidden/CubeBlend",
+        "Sprites/Default",
+        "UI/Default",
+        "UI/DefaultETC1"
+    ]
+}
