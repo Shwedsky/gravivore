@@ -53,7 +53,7 @@ for entry,obj in index.values():
         assert ('V46_HeroAmber' if name.startswith('Magnetar') else 'V46_HeroRed') in materialNames,'Actor lost rich material: '+name
         skins.append({'renderer':name,'meshClassId':43,'materials':sorted(materialNames)})
 for family in ('DeploymentBay','FabricationBay','InductionStation','Deck0','Deck1','Deck2'):
-    assert any(s['object']=='V47_'+family and s['enabled'] for s in static),'Missing enabled shipped V47 family: '+family
+    assert any(s['object'].removesuffix('(Clone)')=='V47_'+family and s['enabled'] for s in static),'Missing enabled shipped V47 family: '+family
 assert any(s['mesh'].startswith('Combined Mesh') for s in static),'Static-batched V47 geometry absent'
 for actor in ('Scout_V1','Cutter_V1','Warden_V1','ArcDrone_V1','Carrier_V1','Magnetar_V1','Custodian_V3'):
     for lod in range(3):assert any(s['renderer']==actor+'_LOD'+str(lod) for s in skins),'Missing shipped actor LOD: '+actor

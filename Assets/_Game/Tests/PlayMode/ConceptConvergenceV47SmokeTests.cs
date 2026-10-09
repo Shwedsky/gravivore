@@ -62,8 +62,20 @@ namespace Gravivore.Tests.PlayMode
         {
             var canvas=root.GetComponentInChildren<Canvas>();var mode=canvas.renderMode;var priorCamera=canvas.worldCamera;var plane=canvas.planeDistance;var priorTarget=camera.targetTexture;var priorActive=RenderTexture.active;
             var render=new RenderTexture(width,height,24,RenderTextureFormat.ARGBHalf);var texture=new Texture2D(width,height,TextureFormat.RGB24,false);
-            try{canvas.renderMode=RenderMode.ScreenSpaceCamera;canvas.worldCamera=camera;canvas.planeDistance=1;camera.targetTexture=render;Canvas.ForceUpdateCanvases();camera.Render();RenderTexture.active=render;texture.ReadPixels(new Rect(0,0,width,height),0,0);texture.Apply();var dir="docs/history/implementation-passes/chapter01-visual-replacement-v3/v47/internal/"+_phase;Directory.CreateDirectory(dir);File.WriteAllBytes(dir+"/"+name+".png",texture.EncodeToPNG());}
+            try{canvas.renderMode=RenderMode.ScreenSpaceCamera;canvas.worldCamera=camera;canvas.planeDistance=1;camera.targetTexture=render;Canvas.ForceUpdateCanvases();camera.Render();RenderTexture.active=render;texture.ReadPixels(new Rect(0,0,width,height),0,0);texture.Apply();var dir="docs/history/implementation-passes/chapter01-visual-replacement-v3/v47/internal/"+_phase;Directory.CreateDirectory(dir);File.WriteAllBytes(dir+"/"+name+".png",texture.EncodeToPNG());RecordCameraInventory(root,camera,name,dir);}
             finally{canvas.renderMode=mode;canvas.worldCamera=priorCamera;canvas.planeDistance=plane;camera.targetTexture=priorTarget;RenderTexture.active=priorActive;render.Release();Object.Destroy(render);Object.Destroy(texture);}
+        }
+        [System.Serializable] private sealed class CameraInventory
+        {public string capture,method="Editor camera frustum bounds, includes occluded bounds; excludes UI/shadow passes; not GPU timing or device FPS";public int renderers,skinnedRenderers,materialSlots,uniqueMaterials,particles,lights;public long triangles;}
+        private static void RecordCameraInventory(S01SceneCompositionRoot root,UnityEngine.Camera camera,string name,string dir)
+        {
+            var planes=GeometryUtility.CalculateFrustumPlanes(camera);
+            var visible=root.GetComponentsInChildren<Renderer>(true).Where(r=>r.enabled&&r.gameObject.activeInHierarchy&&GeometryUtility.TestPlanesAABB(planes,r.bounds)).ToArray();
+            var evidence=new CameraInventory{capture=name,renderers=visible.Length,skinnedRenderers=visible.OfType<SkinnedMeshRenderer>().Count(),materialSlots=visible.Sum(r=>r.sharedMaterials.Length),uniqueMaterials=visible.SelectMany(r=>r.sharedMaterials).Distinct().Count(),lights=root.GetComponentsInChildren<Light>(true).Count(l=>l.enabled&&l.gameObject.activeInHierarchy)};
+            foreach(var r in visible)
+            {var mesh=r is SkinnedMeshRenderer skin?skin.sharedMesh:r.GetComponent<MeshFilter>()?.sharedMesh;if(mesh!=null)for(var i=0;i<mesh.subMeshCount;i++)evidence.triangles+=(long)mesh.GetIndexCount(i)/3;}
+            evidence.particles=root.GetComponentsInChildren<ParticleSystem>(true).Sum(p=>p.particleCount);
+            File.WriteAllText(dir+"/"+name+"_cost.json",JsonUtility.ToJson(evidence,true));
         }
     }
 }

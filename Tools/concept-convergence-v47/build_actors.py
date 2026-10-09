@@ -164,13 +164,17 @@ def boss(rig):
     profile('Offset rear command tower',(.83,1.10,2.20),(.77,.89,.90),0)
     profile('Command tower armored canopy',(.83,1.14,2.63),(.91,1.02,.30),2)
     plate('Command tower sensor slit',(.83,.65,2.55),(.40,.034,.105),5,.02,.008)
-    # Dorsal containment remains visible from the fixed portrait camera even
-    # when the authored rear command housing faces the player during reset.
+    # A load-bearing containment pedestal closes the gap to the pressure chassis.
+    lathe('Reactor pressure feed and supporting pedestal',[(0,1.49),(.36,1.49),(.43,1.70),(.40,2.30),(.46,2.31),(0,2.31)],(0,.80,0),0,24)
+    # Forward dorsal containment remains visible from the fixed portrait camera.
     core((0,.80,2.37),.48)
-    weight('ROTOR_CAGE')
+    weight('BODY')
     for i in range(6):
         a=i*math.tau/6;x,y=.57*math.cos(a),.80+.57*math.sin(a)
         tube('Attached reactor cage vane',[(x,y,2.08),(x*1.1,(y-.80)*1.1+.80,2.33),(x,y,2.57)],.066,10,12)
+    # The rotating bearing remains concentric with the unchanged animated pivot.
+    weight('ROTOR_CAGE')
+    lathe('Concentric reactor circulation bearing',[(.36,-.08),(.50,-.08),(.52,0),(.50,.08),(.36,.08)],tuple(rig.data.bones['ROTOR_CAGE'].head_local),10,24)
     weight('BODY')
 
 def export(name,folder,rig):

@@ -14,7 +14,7 @@ for name in git('ls-tree','-r','--name-only',BASE,'Assets/_Game/Content').decode
     if '/Textures/' not in name and '/Materials/' not in name:continue
     assert canonical(git('show',BASE+':'+name))==canonical((ROOT/name).read_bytes()),'V46 PBR information changed: '+name
     protected.append(name)
-current=['AGENTS.md','README.md','docs/CURRENT_AUTHORITIES.md','docs/CURRENT_VISUAL_TARGET.md','docs/ASSET_SOURCE_OF_TRUTH.md','docs/CURRENT_DOCUMENTATION_AUDIT.md','docs/DECISIONS.md','docs/ART_DIRECTION.md','docs/ART_ASSET_POLICY.md','docs/ART_INTAKE_CHECKLIST.md']
+current=['AGENTS.md','README.md','docs/CURRENT_AUTHORITIES.md','docs/CURRENT_VISUAL_TARGET.md','docs/ASSET_SOURCE_OF_TRUTH.md','docs/CURRENT_DOCUMENTATION_AUDIT.md','docs/DECISIONS.md','docs/PROJECT_BIBLE.md','docs/GAME_DESIGN.md','docs/ARCHITECTURE.md','docs/ART_DIRECTION.md','docs/ART_ASSET_POLICY.md','docs/ART_INTAKE_CHECKLIST.md','docs/visual-production-v2/ENEMY_VISUAL_TARGETS_APPROVED_V1.md','docs/free-asset-intake-v2/README.md']
 for name in current:assert canonical(git('show','origin/main:'+name))==canonical((ROOT/name).read_bytes()),'Current authority altered: '+name
 metrics={p:json.loads((OUT/(p+'_metrics.json')).read_text()) for p in ('v46','v47')}
 delta={k:metrics['v47'][k]-metrics['v46'][k] for k in ('renderers','materials','lights','textureCount','staticTriangles','textureBytes')}
