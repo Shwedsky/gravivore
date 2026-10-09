@@ -70,7 +70,15 @@ namespace Gravivore.Editor.VisualIntegration
             // Unity can replace static FBX subassets with combined meshes whose source path
             // is the scene. Keep strict packing checks for textures/materials/UI and the
             // dynamically mounted weapon meshes; inspect the baked scene meshes in the APK.
-            var staticSources=dependencies.Where(p=>p.EndsWith(".fbx",StringComparison.Ordinal)&&!Path.GetFileName(p).StartsWith("M0_Rank",StringComparison.Ordinal)).ToArray();
+            var staticSources=dependencies.Where(p=>
+                p.EndsWith(".fbx",StringComparison.Ordinal)&&!Path.GetFileName(p).StartsWith("M0_Rank",StringComparison.Ordinal)||
+                p.StartsWith(VisualReplacementV3Builder.Root+"/Prefabs/",StringComparison.Ordinal)&&p.EndsWith(".prefab",StringComparison.Ordinal)).ToArray();
+            foreach(var path in staticSources.Where(p=>p.EndsWith(".prefab",StringComparison.Ordinal)))
+            {
+                var art=AssetDatabase.LoadAssetAtPath<GameObject>(path);
+                if(art==null||art.GetComponentsInChildren<MonoBehaviour>(true).Length!=0||art.GetComponentsInChildren<Collider>(true).Length!=0)
+                    throw new BuildFailedException("Only renderer art prefabs may be expanded into scene batches: "+path);
+            }
             var required=dependencies.Except(staticSources).ToArray();
             foreach(var path in required)if(!packed.Contains(path))throw new BuildFailedException("V44 dependency missing from APK: "+path);
             using(var stream=File.OpenRead(report.summary.outputPath))using(var hash=SHA256.Create())
