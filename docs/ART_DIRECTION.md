@@ -4,6 +4,8 @@ Status: **CURRENT / AUTHORITATIVE**
 
 Primary visual contract: `docs/CURRENT_VISUAL_TARGET.md`.
 
+Chapter 01 actor anatomy follows the exact [owner-approved Actor V2 PNG](visual-blueprints/chapter01-actors/CHAPTER01_ACTOR_VISUAL_TARGETS_V2.png), [V2 textual contract](visual-blueprints/chapter01-actors/CHAPTER01_ACTOR_VISUAL_TARGETS_V2.md) and package README. Newest explicit owner correction > V2 PNG > V2 text > CURRENT visual target > this art direction > donor audit/matrix > historical evidence. Stop actor production if the exact PNG is missing; do not substitute an old board. World/layout remains under Chapter 01 Visual Blueprint V1.
+
 ## G-0
 
 Current G-0 is a **bipedal robotic combat mech**.
@@ -27,7 +29,7 @@ Shared faction language:
 - dark graphite exposed mechanics;
 - cool/pale metal armor shells;
 - layered armor over visible joints/actuators;
-- localized red/orange hostile energy;
+- localized red/orange hostile energy by default, preserving the approved V2 Arc Drone's visible blue core/weapon energy;
 - mechanically plausible supports and attack sources;
 - role-specific silhouettes readable from the real gameplay camera;
 - no toy proportions;
@@ -35,7 +37,9 @@ Shared faction language:
 - no color-only role differentiation;
 - no generic stock identity after production adaptation.
 
-Scout/Cutter/Magnetar specifics remain in `docs/visual-production-v2/ENEMY_VISUAL_TARGETS_APPROVED_V1.md`.
+All Chapter 01 actor specifics now follow [Actor Visual Targets V2](visual-blueprints/chapter01-actors/CHAPTER01_ACTOR_VISUAL_TARGETS_V2.md). Scout is a light blade-arm biped, Warden a heavy biped holding two separate shields, Carrier a low streamlined enclosed vehicle and Arc Drone an airborne energy machine. Cutter may use quadruped mechanics; elite Magnetar and boss Custodian require distinct custom heavy architecture. Shared faction materials do not imply one shared body family.
+
+`docs/visual-production-v2/ENEMY_VISUAL_TARGETS_APPROVED_V1.md` is retained superseded evidence, not a current anatomy source. In particular its radial/spider Scout rule must not be used for new production. Donor mechanics must be adapted to V2, never the reverse.
 
 ## Environment
 
@@ -62,7 +66,7 @@ Core palette:
 - dirty deck/concrete/industrial surfaces;
 - restrained rust/heat/damage;
 - cyan/blue service/player energy;
-- red/orange hostile/danger energy;
+- red/orange hostile/danger energy by default; retain blue for Arc Drone where approved by the V2 actor image;
 - amber/ochre warning paint where functional.
 
 Use PBR surface depth and within-object variation. Do not let shared-material optimization make unrelated objects look like the same plastic construction toy.

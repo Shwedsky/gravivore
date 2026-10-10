@@ -1,0 +1,679 @@
+{
+  "blender": "5.2.2 LTS",
+  "portable_packed_sources": true,
+  "actors": [
+    {
+      "actor": "Scout",
+      "source_sha256": "3aa811e86a711e17845518a0b57987e1c16e47b050657d718e8ac844d7972446",
+      "lods": [
+        {
+          "name": "Scout_LOD0",
+          "triangles": 47684,
+          "vertices": 24529,
+          "zero_area_triangles": 0,
+          "one_rigid_weight_per_vertex": true
+        },
+        {
+          "name": "Scout_LOD1",
+          "triangles": 27178,
+          "vertices": 14276,
+          "zero_area_triangles": 0,
+          "one_rigid_weight_per_vertex": true
+        },
+        {
+          "name": "Scout_LOD2",
+          "triangles": 13828,
+          "vertices": 7601,
+          "zero_area_triangles": 0,
+          "one_rigid_weight_per_vertex": true
+        }
+      ],
+      "clips": [
+        {
+          "name": "Attack",
+          "frames": [
+            1.0,
+            31.0
+          ],
+          "root_in_place": true
+        },
+        {
+          "name": "Death",
+          "frames": [
+            1.0,
+            46.0
+          ],
+          "root_in_place": true
+        },
+        {
+          "name": "Hit",
+          "frames": [
+            1.0,
+            31.0
+          ],
+          "root_in_place": true
+        },
+        {
+          "name": "Idle",
+          "frames": [
+            1.0,
+            61.0
+          ],
+          "root_in_place": true
+        },
+        {
+          "name": "Move",
+          "frames": [
+            1.0,
+            61.0
+          ],
+          "root_in_place": true
+        }
+      ],
+      "maps": [
+        "HostileV2_BaseColor.png",
+        "HostileV2_EmissionRed.png",
+        "HostileV2_MetallicSmoothness.png",
+        "HostileV2_Normal.png"
+      ],
+      "motion_min_z": {
+        "Attack": 0.024784930050373077,
+        "Death": 0.022437073290348053,
+        "Hit": 0.02486397698521614,
+        "Idle": 0.024886470288038254,
+        "Move": 0.024270597845315933
+      }
+    },
+    {
+      "actor": "Cutter",
+      "source_sha256": "8dc5f2222b502d6341248e1a322d5ad2f415f7580a7b8b788636d6524d5da1bf",
+      "lods": [
+        {
+          "name": "Cutter_LOD0",
+          "triangles": 53595,
+          "vertices": 27459,
+          "zero_area_triangles": 0,
+          "one_rigid_weight_per_vertex": true
+        },
+        {
+          "name": "Cutter_LOD1",
+          "triangles": 30547,
+          "vertices": 15936,
+          "zero_area_triangles": 0,
+          "one_rigid_weight_per_vertex": true
+        },
+        {
+          "name": "Cutter_LOD2",
+          "triangles": 15537,
+          "vertices": 8432,
+          "zero_area_triangles": 0,
+          "one_rigid_weight_per_vertex": true
+        }
+      ],
+      "clips": [
+        {
+          "name": "Attack",
+          "frames": [
+            1.0,
+            31.0
+          ],
+          "root_in_place": true
+        },
+        {
+          "name": "Cut",
+          "frames": [
+            1.0,
+            31.0
+          ],
+          "root_in_place": true
+        },
+        {
+          "name": "Death",
+          "frames": [
+            1.0,
+            46.0
+          ],
+          "root_in_place": true
+        },
+        {
+          "name": "Hit",
+          "frames": [
+            1.0,
+            31.0
+          ],
+          "root_in_place": true
+        },
+        {
+          "name": "Idle",
+          "frames": [
+            1.0,
+            61.0
+          ],
+          "root_in_place": true
+        },
+        {
+          "name": "Move",
+          "frames": [
+            1.0,
+            61.0
+          ],
+          "root_in_place": true
+        }
+      ],
+      "maps": [
+        "HostileV2_BaseColor.png",
+        "HostileV2_EmissionRed.png",
+        "HostileV2_MetallicSmoothness.png",
+        "HostileV2_Normal.png"
+      ],
+      "motion_min_z": {
+        "Attack": 0.02443692460656166,
+        "Cut": 0.02443692460656166,
+        "Death": 0.02289198338985443,
+        "Hit": 0.024495510384440422,
+        "Idle": 0.024797968566417694,
+        "Move": 0.021361732855439186
+      }
+    },
+    {
+      "actor": "Warden",
+      "source_sha256": "e2667f0d3fa0da26fd9f95929974c3f7f36a905de180de6552880a75c6cf6cde",
+      "lods": [
+        {
+          "name": "Warden_LOD0",
+          "triangles": 55840,
+          "vertices": 28341,
+          "zero_area_triangles": 0,
+          "one_rigid_weight_per_vertex": true
+        },
+        {
+          "name": "Warden_LOD1",
+          "triangles": 31827,
+          "vertices": 16335,
+          "zero_area_triangles": 0,
+          "one_rigid_weight_per_vertex": true
+        },
+        {
+          "name": "Warden_LOD2",
+          "triangles": 16190,
+          "vertices": 8517,
+          "zero_area_triangles": 0,
+          "one_rigid_weight_per_vertex": true
+        }
+      ],
+      "clips": [
+        {
+          "name": "Attack",
+          "frames": [
+            1.0,
+            31.0
+          ],
+          "root_in_place": true
+        },
+        {
+          "name": "Block",
+          "frames": [
+            1.0,
+            31.0
+          ],
+          "root_in_place": true
+        },
+        {
+          "name": "Death",
+          "frames": [
+            1.0,
+            46.0
+          ],
+          "root_in_place": true
+        },
+        {
+          "name": "Hit",
+          "frames": [
+            1.0,
+            31.0
+          ],
+          "root_in_place": true
+        },
+        {
+          "name": "Idle",
+          "frames": [
+            1.0,
+            61.0
+          ],
+          "root_in_place": true
+        },
+        {
+          "name": "Move",
+          "frames": [
+            1.0,
+            61.0
+          ],
+          "root_in_place": true
+        }
+      ],
+      "maps": [
+        "HostileV2_BaseColor.png",
+        "HostileV2_EmissionAmber.png",
+        "HostileV2_MetallicSmoothness.png",
+        "HostileV2_Normal.png"
+      ],
+      "motion_min_z": {
+        "Attack": 0.024639790877699852,
+        "Block": 0.024639790877699852,
+        "Death": 0.015980124473571777,
+        "Hit": 0.02477101981639862,
+        "Idle": 0.02480969950556755,
+        "Move": 0.02339106984436512
+      }
+    },
+    {
+      "actor": "ArcDrone",
+      "source_sha256": "eeb43021440c334c2e68a02c393b5e087c1ff9033f1b6f818f8865cde6b854fe",
+      "lods": [
+        {
+          "name": "ArcDrone_LOD0",
+          "triangles": 20934,
+          "vertices": 10572,
+          "zero_area_triangles": 0,
+          "one_rigid_weight_per_vertex": true
+        },
+        {
+          "name": "ArcDrone_LOD1",
+          "triangles": 11932,
+          "vertices": 6071,
+          "zero_area_triangles": 0,
+          "one_rigid_weight_per_vertex": true
+        },
+        {
+          "name": "ArcDrone_LOD2",
+          "triangles": 6070,
+          "vertices": 3140,
+          "zero_area_triangles": 0,
+          "one_rigid_weight_per_vertex": true
+        }
+      ],
+      "clips": [
+        {
+          "name": "Attack",
+          "frames": [
+            1.0,
+            31.0
+          ],
+          "root_in_place": true
+        },
+        {
+          "name": "Death",
+          "frames": [
+            1.0,
+            46.0
+          ],
+          "root_in_place": true
+        },
+        {
+          "name": "Discharge",
+          "frames": [
+            1.0,
+            31.0
+          ],
+          "root_in_place": true
+        },
+        {
+          "name": "Hit",
+          "frames": [
+            1.0,
+            31.0
+          ],
+          "root_in_place": true
+        },
+        {
+          "name": "Hover",
+          "frames": [
+            1.0,
+            61.0
+          ],
+          "root_in_place": true
+        },
+        {
+          "name": "Idle",
+          "frames": [
+            1.0,
+            61.0
+          ],
+          "root_in_place": true
+        },
+        {
+          "name": "Move",
+          "frames": [
+            1.0,
+            61.0
+          ],
+          "root_in_place": true
+        }
+      ],
+      "maps": [
+        "HostileV2_BaseColor.png",
+        "HostileV2_EmissionBlue.png",
+        "HostileV2_MetallicSmoothness.png",
+        "HostileV2_Normal.png"
+      ],
+      "motion_min_z": {
+        "Attack": 0.3259410262107849,
+        "Death": 0.08459034562110901,
+        "Discharge": 0.3259410262107849,
+        "Hit": 0.29899439215660095,
+        "Hover": 0.32425764203071594,
+        "Idle": 0.32425764203071594,
+        "Move": 0.32425764203071594
+      }
+    },
+    {
+      "actor": "Carrier",
+      "source_sha256": "26fd900e2b093c7925e36f87c6ff2babc810637f30abce331633f047d181c06a",
+      "lods": [
+        {
+          "name": "Carrier_LOD0",
+          "triangles": 27863,
+          "vertices": 14050,
+          "zero_area_triangles": 0,
+          "one_rigid_weight_per_vertex": true
+        },
+        {
+          "name": "Carrier_LOD1",
+          "triangles": 15879,
+          "vertices": 8059,
+          "zero_area_triangles": 0,
+          "one_rigid_weight_per_vertex": true
+        },
+        {
+          "name": "Carrier_LOD2",
+          "triangles": 8077,
+          "vertices": 4158,
+          "zero_area_triangles": 0,
+          "one_rigid_weight_per_vertex": true
+        }
+      ],
+      "clips": [
+        {
+          "name": "Attack",
+          "frames": [
+            1.0,
+            31.0
+          ],
+          "root_in_place": true
+        },
+        {
+          "name": "Bank",
+          "frames": [
+            1.0,
+            31.0
+          ],
+          "root_in_place": true
+        },
+        {
+          "name": "Death",
+          "frames": [
+            1.0,
+            46.0
+          ],
+          "root_in_place": true
+        },
+        {
+          "name": "Hit",
+          "frames": [
+            1.0,
+            31.0
+          ],
+          "root_in_place": true
+        },
+        {
+          "name": "Idle",
+          "frames": [
+            1.0,
+            61.0
+          ],
+          "root_in_place": true
+        },
+        {
+          "name": "Move",
+          "frames": [
+            1.0,
+            61.0
+          ],
+          "root_in_place": true
+        }
+      ],
+      "maps": [
+        "HostileV2_BaseColor.png",
+        "HostileV2_EmissionAmber.png",
+        "HostileV2_MetallicSmoothness.png",
+        "HostileV2_Normal.png"
+      ],
+      "motion_min_z": {
+        "Attack": 0.054373737424612045,
+        "Bank": 0.03228059038519859,
+        "Death": 0.023922815918922424,
+        "Hit": 0.02412610873579979,
+        "Idle": 0.056429244577884674,
+        "Move": 0.029690787196159363
+      }
+    },
+    {
+      "actor": "Magnetar",
+      "source_sha256": "ea016f26828112a73f07d433f436f5c9dd488de81cf2bb5b215cd24596367976",
+      "lods": [
+        {
+          "name": "Magnetar_LOD0",
+          "triangles": 69074,
+          "vertices": 34982,
+          "zero_area_triangles": 0,
+          "one_rigid_weight_per_vertex": true
+        },
+        {
+          "name": "Magnetar_LOD1",
+          "triangles": 39372,
+          "vertices": 20131,
+          "zero_area_triangles": 0,
+          "one_rigid_weight_per_vertex": true
+        },
+        {
+          "name": "Magnetar_LOD2",
+          "triangles": 20030,
+          "vertices": 10460,
+          "zero_area_triangles": 0,
+          "one_rigid_weight_per_vertex": true
+        }
+      ],
+      "clips": [
+        {
+          "name": "Attack",
+          "frames": [
+            1.0,
+            31.0
+          ],
+          "root_in_place": true
+        },
+        {
+          "name": "Charge",
+          "frames": [
+            1.0,
+            31.0
+          ],
+          "root_in_place": true
+        },
+        {
+          "name": "Death",
+          "frames": [
+            1.0,
+            46.0
+          ],
+          "root_in_place": true
+        },
+        {
+          "name": "Hit",
+          "frames": [
+            1.0,
+            31.0
+          ],
+          "root_in_place": true
+        },
+        {
+          "name": "Idle",
+          "frames": [
+            1.0,
+            61.0
+          ],
+          "root_in_place": true
+        },
+        {
+          "name": "Move",
+          "frames": [
+            1.0,
+            61.0
+          ],
+          "root_in_place": true
+        },
+        {
+          "name": "Vent",
+          "frames": [
+            1.0,
+            31.0
+          ],
+          "root_in_place": true
+        }
+      ],
+      "maps": [
+        "HostileV2_BaseColor.png",
+        "HostileV2_EmissionAmber.png",
+        "HostileV2_MetallicSmoothness.png",
+        "HostileV2_Normal.png"
+      ],
+      "motion_min_z": {
+        "Attack": 0.024915998801589012,
+        "Charge": 0.024915998801589012,
+        "Death": 0.024221021682024002,
+        "Hit": 0.024568840861320496,
+        "Idle": 0.024193502962589264,
+        "Move": 0.01714283972978592,
+        "Vent": 0.024915998801589012
+      }
+    },
+    {
+      "actor": "Custodian",
+      "source_sha256": "fe32a37ff2e6c2b1805094481d8eb1a44fa74530ef566e9001d7ac016fbefc90",
+      "lods": [
+        {
+          "name": "Custodian_LOD0",
+          "triangles": 96893,
+          "vertices": 49076,
+          "zero_area_triangles": 0,
+          "one_rigid_weight_per_vertex": true
+        },
+        {
+          "name": "Custodian_LOD1",
+          "triangles": 55228,
+          "vertices": 28244,
+          "zero_area_triangles": 0,
+          "one_rigid_weight_per_vertex": true
+        },
+        {
+          "name": "Custodian_LOD2",
+          "triangles": 28096,
+          "vertices": 14678,
+          "zero_area_triangles": 0,
+          "one_rigid_weight_per_vertex": true
+        }
+      ],
+      "clips": [
+        {
+          "name": "Attack",
+          "frames": [
+            1.0,
+            31.0
+          ],
+          "root_in_place": true
+        },
+        {
+          "name": "AttackCircle",
+          "frames": [
+            1.0,
+            31.0
+          ],
+          "root_in_place": true
+        },
+        {
+          "name": "AttackCone",
+          "frames": [
+            1.0,
+            31.0
+          ],
+          "root_in_place": true
+        },
+        {
+          "name": "AttackLine",
+          "frames": [
+            1.0,
+            31.0
+          ],
+          "root_in_place": true
+        },
+        {
+          "name": "Death",
+          "frames": [
+            1.0,
+            46.0
+          ],
+          "root_in_place": true
+        },
+        {
+          "name": "Hit",
+          "frames": [
+            1.0,
+            31.0
+          ],
+          "root_in_place": true
+        },
+        {
+          "name": "Idle",
+          "frames": [
+            1.0,
+            61.0
+          ],
+          "root_in_place": true
+        },
+        {
+          "name": "Move",
+          "frames": [
+            1.0,
+            61.0
+          ],
+          "root_in_place": true
+        },
+        {
+          "name": "Telegraph",
+          "frames": [
+            1.0,
+            31.0
+          ],
+          "root_in_place": true
+        }
+      ],
+      "maps": [
+        "HostileV2_BaseColor.png",
+        "HostileV2_EmissionRed.png",
+        "HostileV2_MetallicSmoothness.png",
+        "HostileV2_Normal.png"
+      ],
+      "motion_min_z": {
+        "Attack": 0.02456388995051384,
+        "AttackCircle": 0.02456388995051384,
+        "AttackCone": 0.02456388995051384,
+        "AttackLine": 0.02456388995051384,
+        "Death": 0.023516416549682617,
+        "Hit": 0.02489246428012848,
+        "Idle": 0.02419346757233143,
+        "Move": 0.010920219123363495,
+        "Telegraph": 0.02456388995051384
+      }
+    }
+  ]
+}

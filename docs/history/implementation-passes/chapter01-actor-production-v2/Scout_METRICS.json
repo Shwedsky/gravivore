@@ -1,0 +1,262 @@
+{
+  "actor": "Scout",
+  "authored_geometry_percent": 100,
+  "donor_data_reused": false,
+  "coordinate_system": "meters, Z up, forward -Y; FBX -Z forward, Y up",
+  "energy": "Red",
+  "editable_components": 164,
+  "bones": 15,
+  "bone_hierarchy": {
+    "ROOT": null,
+    "BODY": "ROOT",
+    "HEAD": "BODY",
+    "L_HIP": "BODY",
+    "L_KNEE": "L_HIP",
+    "L_ANKLE": "L_KNEE",
+    "L_SHOULDER": "BODY",
+    "L_ELBOW": "L_SHOULDER",
+    "L_TOOL": "L_ELBOW",
+    "R_HIP": "BODY",
+    "R_KNEE": "R_HIP",
+    "R_ANKLE": "R_KNEE",
+    "R_SHOULDER": "BODY",
+    "R_ELBOW": "R_SHOULDER",
+    "R_TOOL": "R_ELBOW"
+  },
+  "sockets": {
+    "BladeTip_L": {
+      "position_xyz": [
+        -0.6611999869346619,
+        -0.18559999763965607,
+        0.09279999881982803
+      ],
+      "parent_bone": "L_TOOL"
+    },
+    "BladeRoot_L": {
+      "position_xyz": [
+        -0.33639997243881226,
+        -0.17399999499320984,
+        0.6380000114440918
+      ],
+      "parent_bone": "L_TOOL"
+    },
+    "AttackOrigin_L": {
+      "position_xyz": [
+        -0.33639997243881226,
+        -0.17399999499320984,
+        0.6380000114440918
+      ],
+      "parent_bone": "L_TOOL"
+    },
+    "BladeTip_R": {
+      "position_xyz": [
+        0.6611999869346619,
+        -0.18559999763965607,
+        0.09279999881982803
+      ],
+      "parent_bone": "R_TOOL"
+    },
+    "BladeRoot_R": {
+      "position_xyz": [
+        0.33639997243881226,
+        -0.17399999499320984,
+        0.6380000114440918
+      ],
+      "parent_bone": "R_TOOL"
+    },
+    "AttackOrigin_R": {
+      "position_xyz": [
+        0.33639997243881226,
+        -0.17399999499320984,
+        0.6380000114440918
+      ],
+      "parent_bone": "R_TOOL"
+    },
+    "VisualCenter": {
+      "position_xyz": [
+        0.0,
+        0.0,
+        0.653950035572052
+      ],
+      "parent_bone": "BODY"
+    },
+    "HitCenter": {
+      "position_xyz": [
+        0.0,
+        -0.03479999676346779,
+        0.653950035572052
+      ],
+      "parent_bone": "BODY"
+    },
+    "Core": {
+      "position_xyz": [
+        0.0,
+        -0.13919998705387115,
+        0.7371799945831299
+      ],
+      "parent_bone": "BODY"
+    },
+    "DamageNumberAnchor": {
+      "position_xyz": [
+        0.0,
+        0.0,
+        1.3049999475479126
+      ],
+      "parent_bone": "BODY"
+    },
+    "HealthBarAnchor": {
+      "position_xyz": [
+        0.0,
+        0.0,
+        1.3745999336242676
+      ],
+      "parent_bone": "BODY"
+    },
+    "GroundContact": {
+      "position_xyz": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "parent_bone": "ROOT"
+    },
+    "TelegraphOrigin": {
+      "position_xyz": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "parent_bone": "ROOT"
+    }
+  },
+  "lods": [
+    {
+      "name": "Scout_LOD0",
+      "vertices": 24529,
+      "triangles": 47684,
+      "dimensions_xyz": [
+        1.3455926179885864,
+        0.39596179127693176,
+        1.1762399524450302
+      ],
+      "min_xyz": [
+        -0.6727983951568604,
+        -0.23124179244041443,
+        0.024999991059303284
+      ],
+      "max_xyz": [
+        0.6727942228317261,
+        0.16471999883651733,
+        1.2012399435043335
+      ],
+      "materials": 1,
+      "weights_per_vertex": 1
+    },
+    {
+      "name": "Scout_LOD1",
+      "vertices": 14276,
+      "triangles": 27178,
+      "dimensions_xyz": [
+        1.3456653356552124,
+        0.39585529267787933,
+        1.1761090531945229
+      ],
+      "min_xyz": [
+        -0.6728343963623047,
+        -0.231135293841362,
+        0.02499999850988388
+      ],
+      "max_xyz": [
+        0.6728309392929077,
+        0.16471999883651733,
+        1.2011090517044067
+      ],
+      "materials": 1,
+      "weights_per_vertex": 1
+    },
+    {
+      "name": "Scout_LOD2",
+      "vertices": 7601,
+      "triangles": 13828,
+      "dimensions_xyz": [
+        1.3461247682571411,
+        0.39560648798942566,
+        1.1752077601850033
+      ],
+      "min_xyz": [
+        -0.6730620861053467,
+        -0.23086678981781006,
+        0.025499913841485977
+      ],
+      "max_xyz": [
+        0.6730626821517944,
+        0.1647396981716156,
+        1.2007076740264893
+      ],
+      "materials": 1,
+      "weights_per_vertex": 1
+    }
+  ],
+  "clips": [
+    {
+      "name": "Idle",
+      "frames": [
+        1,
+        61
+      ],
+      "fps": 30,
+      "duration": 2.0,
+      "root_motion": false
+    },
+    {
+      "name": "Move",
+      "frames": [
+        1,
+        61
+      ],
+      "fps": 30,
+      "duration": 2.0,
+      "root_motion": false
+    },
+    {
+      "name": "Attack",
+      "frames": [
+        1,
+        31
+      ],
+      "fps": 30,
+      "duration": 1.0,
+      "root_motion": false
+    },
+    {
+      "name": "Hit",
+      "frames": [
+        1,
+        31
+      ],
+      "fps": 30,
+      "duration": 1.0,
+      "root_motion": false
+    },
+    {
+      "name": "Death",
+      "frames": [
+        1,
+        46
+      ],
+      "fps": 30,
+      "duration": 1.5,
+      "root_motion": false
+    }
+  ],
+  "maps": [
+    "BaseColor",
+    "MetallicSmoothness",
+    "Normal",
+    "Occlusion",
+    "EmissionRed"
+  ],
+  "trim_atlas_size": 1024,
+  "ready_for_integration": false,
+  "acceptance": "Await matched Unity camera, animation/envelope validation and owner device gate."
+}

@@ -1,0 +1,302 @@
+{
+  "actor": "Magnetar",
+  "authored_geometry_percent": 100,
+  "donor_data_reused": false,
+  "coordinate_system": "meters, Z up, forward -Y; FBX -Z forward, Y up",
+  "energy": "Amber",
+  "editable_components": 247,
+  "bones": 19,
+  "bone_hierarchy": {
+    "ROOT": null,
+    "BODY": "ROOT",
+    "SUPPORT_0": "BODY",
+    "KNEE_0": "SUPPORT_0",
+    "CONTACT_0": "KNEE_0",
+    "SUPPORT_1": "BODY",
+    "KNEE_1": "SUPPORT_1",
+    "CONTACT_1": "KNEE_1",
+    "SUPPORT_2": "BODY",
+    "KNEE_2": "SUPPORT_2",
+    "CONTACT_2": "KNEE_2",
+    "SUPPORT_3": "BODY",
+    "KNEE_3": "SUPPORT_3",
+    "CONTACT_3": "KNEE_3",
+    "REACTOR": "BODY",
+    "CAGE_L": "BODY",
+    "TOOL_L": "CAGE_L",
+    "CAGE_R": "BODY",
+    "TOOL_R": "CAGE_R"
+  },
+  "sockets": {
+    "Contact_0": {
+      "position_xyz": [
+        -1.5339999198913574,
+        -0.9911999106407166,
+        0.047199998050928116
+      ],
+      "parent_bone": "CONTACT_0"
+    },
+    "Contact_1": {
+      "position_xyz": [
+        1.5339999198913574,
+        -0.9911999106407166,
+        0.047199998050928116
+      ],
+      "parent_bone": "CONTACT_1"
+    },
+    "Contact_2": {
+      "position_xyz": [
+        -1.5339999198913574,
+        0.9911999106407166,
+        0.047199998050928116
+      ],
+      "parent_bone": "CONTACT_2"
+    },
+    "Contact_3": {
+      "position_xyz": [
+        1.5339999198913574,
+        0.9911999106407166,
+        0.047199998050928116
+      ],
+      "parent_bone": "CONTACT_3"
+    },
+    "FieldOrigin_L": {
+      "position_xyz": [
+        -1.0856000185012817,
+        -0.5428000092506409,
+        1.6873998641967773
+      ],
+      "parent_bone": "TOOL_L"
+    },
+    "FieldOrigin_R": {
+      "position_xyz": [
+        1.0856000185012817,
+        -0.5428000092506409,
+        1.6873998641967773
+      ],
+      "parent_bone": "TOOL_R"
+    },
+    "MagneticCore": {
+      "position_xyz": [
+        0.0,
+        -0.44839996099472046,
+        2.241999864578247
+      ],
+      "parent_bone": "REACTOR"
+    },
+    "AttackOrigin": {
+      "position_xyz": [
+        0.0,
+        -0.44839996099472046,
+        2.241999864578247
+      ],
+      "parent_bone": "REACTOR"
+    },
+    "VisualCenter": {
+      "position_xyz": [
+        0.0,
+        0.0,
+        1.6095198392868042
+      ],
+      "parent_bone": "BODY"
+    },
+    "HitCenter": {
+      "position_xyz": [
+        0.0,
+        -0.03539999946951866,
+        1.6095198392868042
+      ],
+      "parent_bone": "BODY"
+    },
+    "Core": {
+      "position_xyz": [
+        0.0,
+        -0.14159999787807465,
+        1.8143680095672607
+      ],
+      "parent_bone": "BODY"
+    },
+    "DamageNumberAnchor": {
+      "position_xyz": [
+        0.0,
+        0.0,
+        3.0443997383117676
+      ],
+      "parent_bone": "BODY"
+    },
+    "HealthBarAnchor": {
+      "position_xyz": [
+        0.0,
+        0.0,
+        3.1152000427246094
+      ],
+      "parent_bone": "BODY"
+    },
+    "GroundContact": {
+      "position_xyz": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "parent_bone": "ROOT"
+    },
+    "TelegraphOrigin": {
+      "position_xyz": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "parent_bone": "ROOT"
+    }
+  },
+  "lods": [
+    {
+      "name": "Magnetar_LOD0",
+      "vertices": 34982,
+      "triangles": 69074,
+      "dimensions_xyz": [
+        3.4225971698760986,
+        2.426408886909485,
+        2.947663189843297
+      ],
+      "min_xyz": [
+        -1.7112985849380493,
+        -1.2810903787612915,
+        0.02499997429549694
+      ],
+      "max_xyz": [
+        1.7112985849380493,
+        1.1453185081481934,
+        2.972663164138794
+      ],
+      "materials": 1,
+      "weights_per_vertex": 1
+    },
+    {
+      "name": "Magnetar_LOD1",
+      "vertices": 20131,
+      "triangles": 39372,
+      "dimensions_xyz": [
+        3.4227242469787598,
+        2.4264036417007446,
+        2.947326922789216
+      ],
+      "min_xyz": [
+        -1.7113621234893799,
+        -1.2811115980148315,
+        0.025336241349577904
+      ],
+      "max_xyz": [
+        1.7113621234893799,
+        1.145292043685913,
+        2.972663164138794
+      ],
+      "materials": 1,
+      "weights_per_vertex": 1
+    },
+    {
+      "name": "Magnetar_LOD2",
+      "vertices": 10460,
+      "triangles": 20030,
+      "dimensions_xyz": [
+        3.423579216003418,
+        2.4264283180236816,
+        2.9459849428385496
+      ],
+      "min_xyz": [
+        -1.711789608001709,
+        -1.2804536819458008,
+        0.02639712579548359
+      ],
+      "max_xyz": [
+        1.711789608001709,
+        1.1459746360778809,
+        2.972382068634033
+      ],
+      "materials": 1,
+      "weights_per_vertex": 1
+    }
+  ],
+  "clips": [
+    {
+      "name": "Idle",
+      "frames": [
+        1,
+        61
+      ],
+      "fps": 30,
+      "duration": 2.0,
+      "root_motion": false
+    },
+    {
+      "name": "Move",
+      "frames": [
+        1,
+        61
+      ],
+      "fps": 30,
+      "duration": 2.0,
+      "root_motion": false
+    },
+    {
+      "name": "Attack",
+      "frames": [
+        1,
+        31
+      ],
+      "fps": 30,
+      "duration": 1.0,
+      "root_motion": false
+    },
+    {
+      "name": "Hit",
+      "frames": [
+        1,
+        31
+      ],
+      "fps": 30,
+      "duration": 1.0,
+      "root_motion": false
+    },
+    {
+      "name": "Death",
+      "frames": [
+        1,
+        46
+      ],
+      "fps": 30,
+      "duration": 1.5,
+      "root_motion": false
+    },
+    {
+      "name": "Charge",
+      "frames": [
+        1,
+        31
+      ],
+      "fps": 30,
+      "duration": 1.0,
+      "root_motion": false
+    },
+    {
+      "name": "Vent",
+      "frames": [
+        1,
+        31
+      ],
+      "fps": 30,
+      "duration": 1.0,
+      "root_motion": false
+    }
+  ],
+  "maps": [
+    "BaseColor",
+    "MetallicSmoothness",
+    "Normal",
+    "Occlusion",
+    "EmissionAmber"
+  ],
+  "trim_atlas_size": 1024,
+  "ready_for_integration": false,
+  "acceptance": "Await matched Unity camera, animation/envelope validation and owner device gate."
+}

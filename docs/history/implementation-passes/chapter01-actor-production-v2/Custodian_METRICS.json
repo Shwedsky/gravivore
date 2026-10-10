@@ -1,0 +1,346 @@
+{
+  "actor": "Custodian",
+  "authored_geometry_percent": 100,
+  "donor_data_reused": false,
+  "coordinate_system": "meters, Z up, forward -Y; FBX -Z forward, Y up",
+  "energy": "Red",
+  "editable_components": 300,
+  "bones": 19,
+  "bone_hierarchy": {
+    "ROOT": null,
+    "BODY": "ROOT",
+    "SUPPORT_0": "BODY",
+    "KNEE_0": "SUPPORT_0",
+    "CONTACT_0": "KNEE_0",
+    "SUPPORT_1": "BODY",
+    "KNEE_1": "SUPPORT_1",
+    "CONTACT_1": "KNEE_1",
+    "SUPPORT_2": "BODY",
+    "KNEE_2": "SUPPORT_2",
+    "CONTACT_2": "KNEE_2",
+    "SUPPORT_3": "BODY",
+    "KNEE_3": "SUPPORT_3",
+    "CONTACT_3": "KNEE_3",
+    "REACTOR": "BODY",
+    "CROWN_L": "BODY",
+    "TOOL_L": "CROWN_L",
+    "CROWN_R": "BODY",
+    "TOOL_R": "CROWN_R"
+  },
+  "sockets": {
+    "Contact_0": {
+      "position_xyz": [
+        -2.2039999961853027,
+        -1.3107999563217163,
+        0.04639999940991402
+      ],
+      "parent_bone": "CONTACT_0"
+    },
+    "Contact_1": {
+      "position_xyz": [
+        2.2039999961853027,
+        -1.3107999563217163,
+        0.04639999940991402
+      ],
+      "parent_bone": "CONTACT_1"
+    },
+    "Contact_2": {
+      "position_xyz": [
+        -2.2039999961853027,
+        1.3107999563217163,
+        0.04639999940991402
+      ],
+      "parent_bone": "CONTACT_2"
+    },
+    "Contact_3": {
+      "position_xyz": [
+        2.2039999961853027,
+        1.3107999563217163,
+        0.04639999940991402
+      ],
+      "parent_bone": "CONTACT_3"
+    },
+    "BossDischarge_L": {
+      "position_xyz": [
+        -1.832800030708313,
+        -0.545199990272522,
+        1.7863999605178833
+      ],
+      "parent_bone": "TOOL_L"
+    },
+    "MantlePivot_L": {
+      "position_xyz": [
+        -0.7539999485015869,
+        0.057999998331069946,
+        2.8187999725341797
+      ],
+      "parent_bone": "CROWN_L"
+    },
+    "BossDischarge_R": {
+      "position_xyz": [
+        1.832800030708313,
+        -0.545199990272522,
+        1.7863999605178833
+      ],
+      "parent_bone": "TOOL_R"
+    },
+    "MantlePivot_R": {
+      "position_xyz": [
+        0.7539999485015869,
+        0.057999998331069946,
+        2.8187999725341797
+      ],
+      "parent_bone": "CROWN_R"
+    },
+    "BossReactor": {
+      "position_xyz": [
+        0.0,
+        -0.545199990272522,
+        2.575199842453003
+      ],
+      "parent_bone": "REACTOR"
+    },
+    "AttackOrigin": {
+      "position_xyz": [
+        0.0,
+        -0.545199990272522,
+        2.575199842453003
+      ],
+      "parent_bone": "REACTOR"
+    },
+    "BossVent": {
+      "position_xyz": [
+        0.0,
+        0.05220000073313713,
+        3.978800058364868
+      ],
+      "parent_bone": "REACTOR"
+    },
+    "VisualCenter": {
+      "position_xyz": [
+        0.0,
+        0.0,
+        2.1947197914123535
+      ],
+      "parent_bone": "BODY"
+    },
+    "HitCenter": {
+      "position_xyz": [
+        0.0,
+        -0.03479999676346779,
+        2.1947197914123535
+      ],
+      "parent_bone": "BODY"
+    },
+    "Core": {
+      "position_xyz": [
+        0.0,
+        -0.13919998705387115,
+        2.474048137664795
+      ],
+      "parent_bone": "BODY"
+    },
+    "DamageNumberAnchor": {
+      "position_xyz": [
+        0.0,
+        0.0,
+        4.106400012969971
+      ],
+      "parent_bone": "BODY"
+    },
+    "HealthBarAnchor": {
+      "position_xyz": [
+        0.0,
+        0.0,
+        4.175999641418457
+      ],
+      "parent_bone": "BODY"
+    },
+    "GroundContact": {
+      "position_xyz": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "parent_bone": "ROOT"
+    },
+    "TelegraphOrigin": {
+      "position_xyz": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "parent_bone": "ROOT"
+    }
+  },
+  "lods": [
+    {
+      "name": "Custodian_LOD0",
+      "vertices": 49076,
+      "triangles": 96893,
+      "dimensions_xyz": [
+        4.9014153480529785,
+        3.2258801460266113,
+        3.932724917307496
+      ],
+      "min_xyz": [
+        -2.4507076740264893,
+        -1.6769181489944458,
+        0.024999892339110374
+      ],
+      "max_xyz": [
+        2.4507076740264893,
+        1.5489619970321655,
+        3.9577248096466064
+      ],
+      "materials": 1,
+      "weights_per_vertex": 1
+    },
+    {
+      "name": "Custodian_LOD1",
+      "vertices": 28244,
+      "triangles": 55228,
+      "dimensions_xyz": [
+        4.901474952697754,
+        3.225262999534607,
+        3.9325849656015635
+      ],
+      "min_xyz": [
+        -2.450737476348877,
+        -1.676619052886963,
+        0.024999892339110374
+      ],
+      "max_xyz": [
+        2.450737476348877,
+        1.548643946647644,
+        3.957584857940674
+      ],
+      "materials": 1,
+      "weights_per_vertex": 1
+    },
+    {
+      "name": "Custodian_LOD2",
+      "vertices": 14678,
+      "triangles": 28096,
+      "dimensions_xyz": [
+        4.902713775634766,
+        3.2257453203201294,
+        3.9321212396025658
+      ],
+      "min_xyz": [
+        -2.451356887817383,
+        -1.6757479906082153,
+        0.02523116022348404
+      ],
+      "max_xyz": [
+        2.451356887817383,
+        1.549997329711914,
+        3.95735239982605
+      ],
+      "materials": 1,
+      "weights_per_vertex": 1
+    }
+  ],
+  "clips": [
+    {
+      "name": "Idle",
+      "frames": [
+        1,
+        61
+      ],
+      "fps": 30,
+      "duration": 2.0,
+      "root_motion": false
+    },
+    {
+      "name": "Move",
+      "frames": [
+        1,
+        61
+      ],
+      "fps": 30,
+      "duration": 2.0,
+      "root_motion": false
+    },
+    {
+      "name": "Attack",
+      "frames": [
+        1,
+        31
+      ],
+      "fps": 30,
+      "duration": 1.0,
+      "root_motion": false
+    },
+    {
+      "name": "Hit",
+      "frames": [
+        1,
+        31
+      ],
+      "fps": 30,
+      "duration": 1.0,
+      "root_motion": false
+    },
+    {
+      "name": "Death",
+      "frames": [
+        1,
+        46
+      ],
+      "fps": 30,
+      "duration": 1.5,
+      "root_motion": false
+    },
+    {
+      "name": "Telegraph",
+      "frames": [
+        1,
+        31
+      ],
+      "fps": 30,
+      "duration": 1.0,
+      "root_motion": false
+    },
+    {
+      "name": "AttackLine",
+      "frames": [
+        1,
+        31
+      ],
+      "fps": 30,
+      "duration": 1.0,
+      "root_motion": false
+    },
+    {
+      "name": "AttackCircle",
+      "frames": [
+        1,
+        31
+      ],
+      "fps": 30,
+      "duration": 1.0,
+      "root_motion": false
+    },
+    {
+      "name": "AttackCone",
+      "frames": [
+        1,
+        31
+      ],
+      "fps": 30,
+      "duration": 1.0,
+      "root_motion": false
+    }
+  ],
+  "maps": [
+    "BaseColor",
+    "MetallicSmoothness",
+    "Normal",
+    "Occlusion",
+    "EmissionRed"
+  ],
+  "trim_atlas_size": 1024,
+  "ready_for_integration": false,
+  "acceptance": "Await matched Unity camera, animation/envelope validation and owner device gate."
+}

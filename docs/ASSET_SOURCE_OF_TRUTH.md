@@ -124,9 +124,17 @@ If source redistribution is not permitted, keep raw source local/private and com
 
 ## 8. Concept references
 
-The owner concept is design reference, not a third-party asset pack. Its artistic requirements are normalized into `CURRENT_VISUAL_TARGET.md` so a Codex environment that cannot access the binary still has a current target.
+The owner concept is design reference, not a third-party asset pack. General visual requirements are normalized into `CURRENT_VISUAL_TARGET.md`; domain image gates still apply. Text availability does not permit production against a missing primary actor image.
 
 When the owner reference image is available to the task, treat it as primary visual evidence, subject to the explicit bipedal G-0 override and newer owner corrections.
+
+For Chapter 01 actors, the exact owner-approved primary reference is:
+
+`docs/visual-blueprints/chapter01-actors/CHAPTER01_ACTOR_VISUAL_TARGETS_V2.png`
+
+Read its V2 Markdown contract and README. Preserve the existing original bytes; do not regenerate, retouch, recolor or substitute an older image. If the exact PNG is missing, stop and report missing visual authority. The owner-approved reference is tracked design evidence, not a donor download.
+
+PR #72 / `chore/actor-asset-intake-v1` supplies actor donor audit/matrix manufacturing evidence, pinned by the V2 contract. It does not determine approved silhouette, anatomy or colors. Raw donors remain owner-local under `ExternalAssetIntake/Current/`; audit and exact license evidence must be checked before later source promotion. This authority package imports no donor models, materials or raw/editable external source.
 
 For Chapter 01 scene composition, also read:
 

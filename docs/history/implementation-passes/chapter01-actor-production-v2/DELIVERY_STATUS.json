@@ -1,0 +1,79 @@
+{
+  "branch": "art/chapter01-actor-production-v2",
+  "draft_pr": "https://github.com/Shwedsky/gravivore/pull/74",
+  "baseline": "38e0ed8fe5c95ff41ab5dbb246f45ed26bdcf9cc",
+  "actor_count": 7,
+  "all_seven_ready_for_chapter01_integration": false,
+  "unity": "6000.3.0f1",
+  "tests": [
+    {
+      "name": "EditModeVerified",
+      "result": "Passed",
+      "total": 480,
+      "passed": 480,
+      "failed": 0,
+      "skipped": 0,
+      "skipped_details": []
+    },
+    {
+      "name": "PlayModeAll",
+      "result": "Skipped:Ignored",
+      "total": 136,
+      "passed": 135,
+      "failed": 0,
+      "skipped": 1,
+      "skipped_details": [
+        {
+          "test": "Gravivore.Tests.PlayMode.VisualIntegrationSmokeTests.CaptureStructuralFoundationWhenRequested",
+          "reason": "Set GRAVIVORE_VISUAL_INTEGRATION_QA to export structural review captures."
+        }
+      ]
+    }
+  ],
+  "project_validation_executed_successfully": true,
+  "android": {
+    "result": "Succeeded",
+    "apk": "Builds/Android/gravivore-actor-review-v2.apk",
+    "packageId": "com.gravivore.actorreview",
+    "errors": 0,
+    "bytes": 992888375,
+    "containsAllSeven": true,
+    "productionIntegration": false,
+    "packedActorAssets": [
+      "Assets/_Game/ArtReview/ActorProductionV2/ActorReviewPlayback.cs",
+      "Assets/_Game/ArtReview/ActorProductionV2/ArcDrone_V2.controller",
+      "Assets/_Game/ArtReview/ActorProductionV2/Carrier_V2.controller",
+      "Assets/_Game/ArtReview/ActorProductionV2/Custodian_V2.controller",
+      "Assets/_Game/ArtReview/ActorProductionV2/Cutter_V2.controller",
+      "Assets/_Game/ArtReview/ActorProductionV2/Magnetar_V2.controller",
+      "Assets/_Game/ArtReview/ActorProductionV2/Materials/HostileV2_Amber.mat",
+      "Assets/_Game/ArtReview/ActorProductionV2/Materials/HostileV2_Blue.mat",
+      "Assets/_Game/ArtReview/ActorProductionV2/Materials/HostileV2_Red.mat",
+      "Assets/_Game/ArtReview/ActorProductionV2/Models/ArcDrone_V2.fbx",
+      "Assets/_Game/ArtReview/ActorProductionV2/Models/Carrier_V2.fbx",
+      "Assets/_Game/ArtReview/ActorProductionV2/Models/Custodian_V2.fbx",
+      "Assets/_Game/ArtReview/ActorProductionV2/Models/Cutter_V2.fbx",
+      "Assets/_Game/ArtReview/ActorProductionV2/Models/Magnetar_V2.fbx",
+      "Assets/_Game/ArtReview/ActorProductionV2/Models/Scout_V2.fbx",
+      "Assets/_Game/ArtReview/ActorProductionV2/Models/Warden_V2.fbx",
+      "Assets/_Game/ArtReview/ActorProductionV2/Scout_V2.controller",
+      "Assets/_Game/ArtReview/ActorProductionV2/Textures/HostileV2_BaseColor.png",
+      "Assets/_Game/ArtReview/ActorProductionV2/Textures/HostileV2_EmissionAmber.png",
+      "Assets/_Game/ArtReview/ActorProductionV2/Textures/HostileV2_EmissionBlue.png",
+      "Assets/_Game/ArtReview/ActorProductionV2/Textures/HostileV2_EmissionRed.png",
+      "Assets/_Game/ArtReview/ActorProductionV2/Textures/HostileV2_MetallicSmoothness.png",
+      "Assets/_Game/ArtReview/ActorProductionV2/Textures/HostileV2_Normal.png",
+      "Assets/_Game/ArtReview/ActorProductionV2/Textures/HostileV2_Occlusion.png",
+      "Assets/_Game/ArtReview/ActorProductionV2/Warden_V2.controller"
+    ],
+    "sha256": "5585f72afb44f8f44d1f77935272f3612da7b4fad6ab394d53df12ac3c3e6bd6",
+    "file_bytes": 113251535,
+    "absolute_path": "C:\\Users\\pamak\\Documents\\ChatGPT\\gravivore\\.codex-worktrees\\chapter01-actor-production-v2\\Builds\\Android\\gravivore-actor-review-v2.apk"
+  },
+  "device_connected": false,
+  "device_visual_gate": "Not executed",
+  "android_performance_gate": "Not executed",
+  "initial_rest_placement_conservative_clear": true,
+  "scope_validation": "PASS",
+  "production_bindings_changed": false
+}

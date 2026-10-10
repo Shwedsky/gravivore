@@ -1,0 +1,259 @@
+{
+  "actor": "ArcDrone",
+  "authored_geometry_percent": 100,
+  "donor_data_reused": false,
+  "coordinate_system": "meters, Z up, forward -Y; FBX -Z forward, Y up",
+  "energy": "Blue",
+  "editable_components": 61,
+  "bones": 8,
+  "bone_hierarchy": {
+    "ROOT": null,
+    "BODY": "ROOT",
+    "EMITTER": "BODY",
+    "WING_L": "BODY",
+    "VANE_L": "BODY",
+    "WING_R": "BODY",
+    "VANE_R": "BODY",
+    "REAR_VANE": "BODY"
+  },
+  "sockets": {
+    "FlightVFX_L": {
+      "position_xyz": [
+        -0.5699999928474426,
+        0.06839999556541443,
+        1.1741999387741089
+      ],
+      "parent_bone": "WING_L"
+    },
+    "FlightVFX_R": {
+      "position_xyz": [
+        0.5699999928474426,
+        0.06839999556541443,
+        1.1741999387741089
+      ],
+      "parent_bone": "WING_R"
+    },
+    "ProjectileSource": {
+      "position_xyz": [
+        0.0,
+        -0.38760000467300415,
+        1.0943999290466309
+      ],
+      "parent_bone": "EMITTER"
+    },
+    "AttackOrigin": {
+      "position_xyz": [
+        0.0,
+        -0.38760000467300415,
+        1.0943999290466309
+      ],
+      "parent_bone": "EMITTER"
+    },
+    "VisualCenter": {
+      "position_xyz": [
+        0.0,
+        0.0,
+        0.821370005607605
+      ],
+      "parent_bone": "BODY"
+    },
+    "HitCenter": {
+      "position_xyz": [
+        0.0,
+        -0.034199997782707214,
+        0.821370005607605
+      ],
+      "parent_bone": "BODY"
+    },
+    "Core": {
+      "position_xyz": [
+        0.0,
+        -0.13679999113082886,
+        0.9259080290794373
+      ],
+      "parent_bone": "BODY"
+    },
+    "DamageNumberAnchor": {
+      "position_xyz": [
+        0.0,
+        0.0,
+        1.6073999404907227
+      ],
+      "parent_bone": "BODY"
+    },
+    "HealthBarAnchor": {
+      "position_xyz": [
+        0.0,
+        0.0,
+        1.6757999658584595
+      ],
+      "parent_bone": "BODY"
+    },
+    "GroundContact": {
+      "position_xyz": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "parent_bone": "ROOT"
+    },
+    "TelegraphOrigin": {
+      "position_xyz": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "parent_bone": "ROOT"
+    }
+  },
+  "lods": [
+    {
+      "name": "ArcDrone_LOD0",
+      "vertices": 10572,
+      "triangles": 20934,
+      "dimensions_xyz": [
+        1.4792392253875732,
+        0.7768485248088837,
+        1.1347009539604187
+      ],
+      "min_xyz": [
+        -0.7396196126937866,
+        -0.3326631784439087,
+        0.35869890451431274
+      ],
+      "max_xyz": [
+        0.7396196126937866,
+        0.444185346364975,
+        1.4933998584747314
+      ],
+      "materials": 1,
+      "weights_per_vertex": 1
+    },
+    {
+      "name": "ArcDrone_LOD1",
+      "vertices": 6071,
+      "triangles": 11932,
+      "dimensions_xyz": [
+        1.479441523551941,
+        0.7769125699996948,
+        1.1347553730010986
+      ],
+      "min_xyz": [
+        -0.7397319078445435,
+        -0.3326631784439087,
+        0.3586444854736328
+      ],
+      "max_xyz": [
+        0.7397096157073975,
+        0.44424939155578613,
+        1.4933998584747314
+      ],
+      "materials": 1,
+      "weights_per_vertex": 1
+    },
+    {
+      "name": "ArcDrone_LOD2",
+      "vertices": 3140,
+      "triangles": 6070,
+      "dimensions_xyz": [
+        1.4788669347763062,
+        0.7774819731712341,
+        1.1348545551300049
+      ],
+      "min_xyz": [
+        -0.7394598722457886,
+        -0.3329967260360718,
+        0.35855305194854736
+      ],
+      "max_xyz": [
+        0.7394070625305176,
+        0.44448524713516235,
+        1.4934076070785522
+      ],
+      "materials": 1,
+      "weights_per_vertex": 1
+    }
+  ],
+  "clips": [
+    {
+      "name": "Idle",
+      "frames": [
+        1,
+        61
+      ],
+      "fps": 30,
+      "duration": 2.0,
+      "root_motion": false
+    },
+    {
+      "name": "Move",
+      "frames": [
+        1,
+        61
+      ],
+      "fps": 30,
+      "duration": 2.0,
+      "root_motion": false
+    },
+    {
+      "name": "Attack",
+      "frames": [
+        1,
+        31
+      ],
+      "fps": 30,
+      "duration": 1.0,
+      "root_motion": false
+    },
+    {
+      "name": "Hit",
+      "frames": [
+        1,
+        31
+      ],
+      "fps": 30,
+      "duration": 1.0,
+      "root_motion": false
+    },
+    {
+      "name": "Death",
+      "frames": [
+        1,
+        46
+      ],
+      "fps": 30,
+      "duration": 1.5,
+      "root_motion": false
+    },
+    {
+      "name": "Hover",
+      "frames": [
+        1,
+        61
+      ],
+      "fps": 30,
+      "duration": 2.0,
+      "root_motion": false
+    },
+    {
+      "name": "Discharge",
+      "frames": [
+        1,
+        31
+      ],
+      "fps": 30,
+      "duration": 1.0,
+      "root_motion": false
+    }
+  ],
+  "maps": [
+    "BaseColor",
+    "MetallicSmoothness",
+    "Normal",
+    "Occlusion",
+    "EmissionBlue"
+  ],
+  "trim_atlas_size": 1024,
+  "ready_for_integration": false,
+  "acceptance": "Await matched Unity camera, animation/envelope validation and owner device gate."
+}
