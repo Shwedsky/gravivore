@@ -19,8 +19,20 @@ def activate(o):
 def recalc(me):
  bm=bmesh.new(); bm.from_mesh(me); bmesh.ops.recalc_face_normals(bm,faces=bm.faces); bm.to_mesh(me); bm.free()
 
-PALETTE=[(.035,.045,.057),(.49,.56,.62),(.27,.34,.40),(.075,.10,.135),(.68,.73,.78),(.55,.22,.046),(.09,.028,.016),(.15,.19,.23)]
+def clean_export_topology(me):
+ # Deterministic triangulation avoids collinear fan triangles on machined
+ # n-gon landings. Preserve UV/deform layers and remove only collapsed faces.
+ bm=bmesh.new(); bm.from_mesh(me)
+ bmesh.ops.triangulate(bm,faces=list(bm.faces),quad_method='BEAUTY',ngon_method='BEAUTY')
+ collapsed=[face for face in bm.faces if face.calc_area()<1e-12 or (len(face.verts)==3 and ((face.verts[1].co-face.verts[0].co).cross(face.verts[2].co-face.verts[0].co)).length_squared<1e-24)]
+ if collapsed: bmesh.ops.delete(bm,geom=collapsed,context='FACES_ONLY')
+ loose=[vertex for vertex in bm.verts if not vertex.link_faces]
+ if loose: bmesh.ops.delete(bm,geom=loose,context='VERTS')
+ bmesh.ops.recalc_face_normals(bm,faces=list(bm.faces)); bm.to_mesh(me); bm.free(); me.update()
+
+PALETTE=[(.035,.045,.057),(.58,.64,.68),(.27,.34,.40),(.12,.155,.20),(.68,.73,.78),(.55,.22,.046),(.09,.028,.016),(.20,.245,.29)]
 ENERGY={'Red':(1,.018,.006),'Amber':(1,.28,.014),'Blue':(.006,.32,1)}
+RENDER_IMAGES=True
 
 def atlas():
  """Authored industrial trim sheet, shared across the family; channel maps explicit."""
@@ -30,18 +42,25 @@ def atlas():
   row,colidx=divmod(i,4); sl=(slice(row*512,(row+1)*512),slice(colidx*256,(colidx+1)*256))
   # Vertical tiles are 512 pixels, same physical content with extra resolution.
   y,x=np.mgrid[0:512,0:256]; u=x/255; v=y/511
-  noise=rng.normal(0,.009,(512,256)); brushed=.012*np.sin(v*920)+.008*np.sin(v*271)
-  recess=(np.minimum.reduce([u,1-u,v,1-v])<.026).astype(float)
-  scratches=((rng.random((512,256))>.997)&(u>.1)&(u<.9)).astype(float)
-  grain=np.clip(1+noise+brushed-recess*.17+scratches*.16,.65,1.2)
+  noise=rng.normal(0,.015,(512,256)); brushed=.019*np.sin(v*920)+.013*np.sin(v*271)
+  edge=np.minimum.reduce([u,1-u,v,1-v]); recess=(edge<.062).astype(float)
+  scratches=np.zeros_like(u)
+  for j in range(75):
+   sx=rng.uniform(.05,.95); sy=rng.uniform(.05,.95); length=rng.uniform(.012,.13); slope=rng.uniform(-.16,.16)
+   scratches+=((abs(u-sx-slope*(v-sy))<rng.uniform(.0006,.002))&(abs(v-sy)<length*.5)).astype(float)*rng.uniform(.1,.5)
+  scratches=np.clip(scratches,0,1)
+  wear=((edge>.063)&(edge<.092)&(np.sin(u*177+v*223)>.1)).astype(float)*.14
+  grain=np.clip(1+noise+brushed-recess*.22+scratches*.27+wear,.65,1.2)
   tile=base[sl]; tile[:,:,:3]=np.asarray(col)[None,None,:]*grain[:,:,None]; tile[:,:,3]=1
-  metal=[.87,.8,.98,.82,.72,.55,.65,.93][i]; smooth=[.31,.43,.68,.37,.51,.3,.63,.56][i]
+  metal=[.62,.38,.98,.35,.20,.42,.65,.65][i]; smooth=[.31,.35,.68,.30,.40,.30,.63,.38][i]
   packed[sl][:,:,0]=metal; packed[sl][:,:,3]=np.clip(smooth+noise*2-recess*.09-scratches*.12,0,1)
-  normal[sl][:,:,:3]=np.stack([.5+np.cos(v*271)*.023,.5+np.sin(u*83)*.006,np.ones_like(u)],axis=-1); normal[sl][:,:,3]=1
+  normal[sl][:,:,:3]=np.stack([.5+np.cos(v*271)*.023+scratches*.025,.5+np.sin(u*83)*.006,np.ones_like(u)],axis=-1); normal[sl][:,:,3]=1
   ao[sl][:,:,:3]=(1-recess*.2)[:,:,None]; ao[sl][:,:,3]=1
   for k,c in ENERGY.items():
    emiss[k][sl][:,:,3]=1
-   if i==6: emiss[k][sl][:,:,:3]=np.asarray(c)[None,None,:]*(.88+noise)[:,:,None]
+   if i==6:
+    hot=np.exp(-((u-.5)**2+(v-.5)**2)/.004)
+    emiss[k][sl][:,:,:3]=np.asarray(c)[None,None,:]*(.88+noise)[:,:,None]*(1-hot[:,:,None]) + np.ones((512,256,3))*hot[:,:,None]
  arrays={'BaseColor':base,'MetallicSmoothness':packed,'Normal':normal,'Occlusion':ao,**{'Emission'+k:v for k,v in emiss.items()}}
  for name,data in arrays.items():
   path=IMPORT/'Textures'/('HostileV2_'+name+'.png')
@@ -114,9 +133,8 @@ class Actor:
  def tube(self,name,a,b,r1,r2=None,mat=2,bone='BODY',steps=16):
   a=Vector(a); b=Vector(b); d=b-a; q=d.to_track_quat('Z','Y'); r2=r1 if r2 is None else r2
   vs=[]
-  for z,r in [(0,r1*.86),(.035,r1),(d.length-.035,r2),(d.length,r2*.86)]:
-   # Clamp short bearing caps to avoid inverted bevel rings.
-   z=min(max(z,0),d.length)
+  lip=min(.035,d.length*.2)
+  for z,r in [(0,r1*.86),(lip,r1),(d.length-lip,r2),(d.length,r2*.86)]:
    vs += [a+q@Vector((r*math.cos(i*2*math.pi/steps),r*math.sin(i*2*math.pi/steps),z)) for i in range(steps)]
   fs=[tuple(range(steps-1,-1,-1))]
   for row in range(3):
@@ -143,6 +161,14 @@ class Actor:
   for f in [.31,.58]:
    pa=a+q@Vector((-width*.67,-width*.87,length*f)); pb=a+q@Vector((width*.64,-width*.87,length*f+.016))
    self.tube(name+' machined transverse interruption '+str(f),pa,pb,width*.035,mat=0,bone=bone,steps=8)
+ def swept_beam(self,name,centers,widths,depth,bone,mat=3):
+  vs=[]; profile=[(-.65,-1),(.65,-1),(1,-.55),(1,.55),(.65,1),(-.65,1),(-1,.55),(-1,-.55)]
+  for i,c in enumerate(centers):
+   c=Vector(c); prev=Vector(centers[max(0,i-1)]); nxt=Vector(centers[min(len(centers)-1,i+1)]); q=(nxt-prev).to_track_quat('Z','Y')
+   vs += [c+q@Vector((x*widths[i],y*depth,0)) for x,y in profile]
+  fs=[tuple(range(7,-1,-1)),tuple(range((len(centers)-1)*8,len(centers)*8))]
+  for j in range(len(centers)-1): fs += [(j*8+i,j*8+(i+1)%8,(j+1)*8+(i+1)%8,(j+1)*8+i) for i in range(8)]
+  self.mesh(name,vs,fs,mat,bone,.016,True)
  def sector(self,name,c,r,w,start,end,bone='BODY',mat=1):
   c=Vector(c); count=16; vs=[]
   for y,rad in [(-w*.20,r-w*.50),(-w*.20,r+w*.50),(w*.2,r+w*.50),(w*.2,r-w*.5)]:
@@ -200,9 +226,24 @@ class Actor:
     self.sector(name+' segmented containment armor '+str(i),c+Vector((0,r*.02,0)),r*1.15,r*.19,start,end,bone,7 if heavy else 1)
    self.ring(name+' contained axial coil',c+Vector((0,-r*.31,0)),r*.43,r*.034,r*.025,2,bone)
    self.tube(name+' central field pole',c+Vector((0,-r*.34,0)),c+Vector((0,-r*.54,0)),r*.105,mat=6,bone=bone,steps=12)
+   # Inboard conductors visibly terminate at the emitter. They remain opaque
+   # geometry; the hot source is localized rather than a broad emissive shell.
+   for i in range(8 if heavy else 6):
+    t=i*2*math.pi/(8 if heavy else 6)+.12
+    direction=Vector((math.sin(t),0,math.cos(t)))
+    self.tube(name+' radial conductor '+str(i),c+direction*r*.29+Vector((0,-r*.55,0)),c+direction*r*.62+Vector((0,-r*.46,0)),r*.028,mat=2,bone=bone,steps=8)
+    self.tube(name+' conductor retainer '+str(i),c+direction*r*.67+Vector((0,-r*.39,0)),c+direction*r*.67+Vector((0,-r*.49,0)),r*.047,mat=0,bone=bone,steps=8)
  def socket(self,name,position,parent='BODY'):
   self.sockets[name]=(Vector(position),parent)
  def finish(self):
+  # Concept labels have an unspecified axis. Ground bipeds use height; the
+  # low vehicle uses length. Bake the family fit into source coordinates,
+  # keeping exported transforms at unit scale and G-0 completely unchanged.
+  fit={'Scout':1.16,'Warden':1.16,'ArcDrone':1.14,'Carrier':1.125,'Magnetar':1.18,'Custodian':1.16}.get(self.name,1.)
+  for obj in self.parts:
+   for vertex in obj.data.vertices: vertex.co*=fit
+  self.bones={name:(head*fit,tail*fit,parent) for name,(head,tail,parent) in self.bones.items()}
+  self.sockets={name:(position*fit,bone) for name,(position,bone) in self.sockets.items()}
   rigdata=bpy.data.armatures.new(self.name+'_MECHANICAL_RIG'); rig=bpy.data.objects.new('RIG',rigdata); self.exports.objects.link(rig); self.rig=rig; activate(rig); bpy.ops.object.mode_set(mode='EDIT')
   for name,(head,tail,parent) in self.bones.items():
    b=rigdata.edit_bones.new(name); b.head=head; b.tail=tail; b.use_deform=True
@@ -212,11 +253,13 @@ class Actor:
    activate(o)
    for mod in list(o.modifiers): bpy.ops.object.modifier_apply(modifier=mod.name)
    # Per-face trim projection avoids overlapping different surface categories.
+   for old_uv in list(o.data.uv_layers): o.data.uv_layers.remove(old_uv)
    uv=o.data.uv_layers.new(name='IndustrialTrimUV')
+   mesh_lo=[min(v.co[i] for v in o.data.vertices) for i in range(3)]; mesh_hi=[max(v.co[i] for v in o.data.vertices) for i in range(3)]
    for p in o.data.polygons:
     idx=p.material_index; row,col=divmod(idx,4)
     normal=p.normal; axis=max(range(3),key=lambda i:abs(normal[i])); axes=[i for i in range(3) if i!=axis]; verts=[o.data.vertices[o.data.loops[k].vertex_index].co for k in p.loop_indices]
-    lo=[min(v[i] for v in verts) for i in axes]; hi=[max(v[i] for v in verts) for i in axes]
+    lo=[mesh_lo[i] for i in axes]; hi=[mesh_hi[i] for i in axes]
     for k,v in zip(p.loop_indices,verts):
      u=.055+.89*(v[axes[0]]-lo[0])/max(hi[0]-lo[0],.00001); w=.055+.89*(v[axes[1]]-lo[1])/max(hi[1]-lo[1],.00001)
      uv.data[k].uv=((col+u)/4,(row+w)/2)
@@ -232,18 +275,19 @@ class Actor:
   # Joining duplicates a single material slot; remove slot indirection.
   for p in skin.data.polygons: p.material_index=0
   skin.data.materials.clear(); skin.data.materials.append(self.mat)
+  clean_export_topology(skin.data)
   skins=[skin]
   for index,ratio in [(1,.57),(2,.29)]:
    o=skin.copy(); o.data=skin.data.copy(); self.exports.objects.link(o); o.name=self.name+'_LOD'+str(index); activate(o)
    mod=o.modifiers.new('Screen coverage LOD reduction','DECIMATE'); mod.ratio=ratio; mod.use_collapse_triangulate=True
    # Protect material seams and articulation weights where decimation permits.
-   bpy.ops.object.modifier_apply(modifier=mod.name); skins.append(o)
+   bpy.ops.object.modifier_apply(modifier=mod.name); clean_export_topology(o.data); skins.append(o)
   for o in skins:
    o.parent=rig; mod=o.modifiers.new('Rigid mechanism skin','ARMATURE'); mod.object=rig
   for name,(position,bone) in self.sockets.items():
    o=bpy.data.objects.new(name,None); self.exports.objects.link(o); o.empty_display_size=.025; o.parent=rig; o.parent_type='BONE'; o.parent_bone=bone
    bpy.context.view_layer.update(); o.matrix_world=Matrix.Translation(position)
-  self.animate()
+  self.skins=skins; self.animate()
   self.edit.hide_render=True; self.edit.hide_viewport=True
   skins[1].hide_render=skins[2].hide_render=True
   bpy.context.scene.frame_set(1)
@@ -254,9 +298,12 @@ class Actor:
   bpy.ops.object.select_all(action='DESELECT'); rig.select_set(True)
   for o in self.exports.all_objects: o.select_set(True)
   bpy.context.view_layer.objects.active=rig
-  bpy.ops.export_scene.fbx(filepath=str(IMPORT/'Models'/(self.name+'_V2.fbx')),use_selection=True,object_types={'ARMATURE','MESH','EMPTY'},axis_forward='-Z',axis_up='Y',apply_unit_scale=True,use_space_transform=True,add_leaf_bones=False,bake_anim=True,bake_anim_use_all_bones=True,bake_anim_use_nla_strips=False,bake_anim_use_all_actions=True,bake_anim_force_startend_keying=True,bake_anim_step=1,bake_anim_simplify_factor=0,path_mode='RELATIVE',use_mesh_modifiers=True)
+  bpy.ops.export_scene.fbx(filepath=str(IMPORT/'Models'/(self.name+'_V2.fbx')),use_selection=True,object_types={'ARMATURE','MESH','EMPTY'},global_scale=1,axis_forward='-Z',axis_up='Y',apply_unit_scale=True,apply_scale_options='FBX_SCALE_UNITS',bake_space_transform=False,use_space_transform=True,mesh_smooth_type='FACE',use_tspace=False,add_leaf_bones=False,primary_bone_axis='Y',secondary_bone_axis='X',bake_anim=True,bake_anim_use_all_bones=True,bake_anim_use_nla_strips=False,bake_anim_use_all_actions=True,bake_anim_force_startend_keying=True,bake_anim_step=1,bake_anim_simplify_factor=0,path_mode='RELATIVE',use_mesh_modifiers=True)
   skins[1].hide_render=skins[2].hide_render=True
   # Review cameras/lights stay in the editable source; no DCC helper exported.
+  for img in bpy.data.images:
+   if img.source=='FILE':
+    filename=Path(img.filepath).name; img.pack(); img.filepath='//../../Assets/_Game/ArtReview/ActorProductionV2/Textures/'+filename
   bpy.ops.wm.save_as_mainfile(filepath=str(ART/(self.name+'_V2.blend')))
   print('ACTOR_EXPORTED',self.name,flush=True)
  def animate(self):
@@ -266,6 +313,7 @@ class Actor:
    frames=61 if clip in ['Idle','Move','Hover'] else (46 if clip=='Death' else 31)
    action=bpy.data.actions.new(self.name+'|'+clip); action.use_fake_user=True; rig.animation_data.action=action
    for f in range(1,frames+1,3):
+    scene.frame_set(f)
     t=(f-1)/(frames-1); wave=math.sin(t*math.pi*2); pulse=math.sin(t*math.pi)
     for b in rig.pose.bones: b.rotation_mode='XYZ'; b.rotation_euler=(0,0,0); b.location=(0,0,0)
     body=rig.pose.bones['BODY']; body.rotation_euler.x=.012*wave
@@ -301,11 +349,39 @@ class Actor:
     if self.name=='Carrier':
      body.rotation_euler.y=wave*(.055 if clip in ['Move','Bank'] else .008)
      for side in ['L','R']: rig.pose.bones['PROPULSION_'+side].rotation_euler.x=wave*.025
+     if clip=='Attack':
+      body.rotation_euler.x=-pulse*.08
+      for side in ['L','R']: rig.pose.bones['PROPULSION_'+side].rotation_euler.x=pulse*.13
+    if self.name=='Magnetar' and clip in ['Charge','Vent']:
+     for side,sign in [('L',1),('R',-1)]:
+      rig.pose.bones['CAGE_'+side].rotation_euler.y=sign*pulse*(.26 if clip=='Charge' else .12)
+      rig.pose.bones['TOOL_'+side].rotation_euler.x=-pulse*(.34 if clip=='Charge' else -.16)
+     rig.pose.bones['REACTOR'].rotation_euler.z=wave*.055 if clip=='Vent' else 0
+    if self.name=='Custodian' and clip in ['Telegraph','AttackLine','AttackCircle','AttackCone']:
+     for side,sign in [('L',1),('R',-1)]:
+      crown=rig.pose.bones['CROWN_'+side]; tool=rig.pose.bones['TOOL_'+side]
+      crown.rotation_euler.y=sign*pulse*{'Telegraph':.20,'AttackLine':.045,'AttackCircle':.42,'AttackCone':.26}[clip]
+      crown.rotation_euler.z=sign*pulse*(.23 if clip=='AttackCircle' else .06)
+      tool.rotation_euler.x=-pulse*{'Telegraph':.18,'AttackLine':.48,'AttackCircle':.16,'AttackCone':.38}[clip]
+      tool.rotation_euler.y=sign*pulse*(.46 if clip=='AttackCircle' else .10)
+     rig.pose.bones['REACTOR'].rotation_euler.z=wave*.16 if clip=='AttackCircle' else pulse*.035
     if clip=='Hit': body.rotation_euler.x=-pulse*.15; body.rotation_euler.z=pulse*.10
     if clip=='Death':
      body.rotation_euler.x=t*.8; body.rotation_euler.z=t*.23; body.location.y=-t*(.35 if self.name!='Carrier' else .09)
      for b in rig.pose.bones:
       if b.name.startswith(('CAGE_','CROWN_','WING_')): b.rotation_euler.y=t*.30
+      if b.name.startswith('KNEE_') or b.name.endswith('_KNEE'): b.rotation_euler.x=t*.58
+      if b.name.endswith('_HIP'): b.rotation_euler.x=t*.36
+    # Baked presentation correction only: project the lowest posed point onto
+    # the floor, without moving ROOT or adding runtime foot/contact authority.
+    # This covers strike, recoil and collapse as well as locomotion.
+    bpy.context.view_layer.update()
+    evaluated=self.skins[0].evaluated_get(bpy.context.evaluated_depsgraph_get()); posed=evaluated.to_mesh()
+    coordinates=np.empty(len(posed.vertices)*3,dtype=np.float32); posed.vertices.foreach_get('co',coordinates)
+    min_z=float(coordinates.reshape(-1,3)[:,2].min()); evaluated.to_mesh_clear()
+    if min_z<.025:
+     local_up=rig.data.bones['BODY'].matrix_local.to_3x3().inverted()@Vector((0,0,1))
+     body.location+=local_up*(.025-min_z)
     for b in rig.pose.bones:
      b.keyframe_insert(data_path='rotation_euler',frame=f,group=b.name); b.keyframe_insert(data_path='location',frame=f,group=b.name)
    self.clips.append({'name':clip,'frames':[1,frames],'fps':30,'duration':(frames-1)/30,'root_motion':False})
@@ -335,11 +411,13 @@ class Actor:
    if view=='silhouette':
     old=skins[0].data.materials[0]; m=bpy.data.materials.new('Diagnostic black silhouette'); m.diffuse_color=(0,0,0,1); m.use_nodes=True; m.node_tree.nodes['Principled BSDF'].inputs['Base Color'].default_value=(0,0,0,1); skins[0].data.materials[0]=m
     scene.world.node_tree.nodes['Background'].inputs[0].default_value=(.85,.85,.85,1)
-   scene.render.filepath=str(EVID/'blender'/(self.name+'_'+view+'.png')); bpy.ops.render.render(write_still=True)
+   scene.render.filepath=str(EVID/'blender'/(self.name+'_'+view+'.png'))
+   if RENDER_IMAGES: bpy.ops.render.render(write_still=True)
    if old: skins[0].data.materials[0]=old; scene.world.node_tree.nodes['Background'].inputs[0].default_value=(.14,.19,.25,1)
   if self.name in ['Magnetar','Custodian']:
    self.rig.animation_data.action=bpy.data.actions[self.name+('|Charge' if self.name=='Magnetar' else '|Telegraph')]; scene.frame_set(16)
-   cam.location=center+Vector((1,-1.8,.95)).normalized()*span*4; cam.rotation_euler=(center-cam.location).to_track_quat('-Z','Y').to_euler(); scene.render.filepath=str(EVID/'blender'/(self.name+'_telegraph.png')); bpy.ops.render.render(write_still=True)
+   cam.location=center+Vector((1,-1.8,.95)).normalized()*span*4; cam.rotation_euler=(center-cam.location).to_track_quat('-Z','Y').to_euler(); scene.render.filepath=str(EVID/'blender'/(self.name+'_telegraph.png'))
+   if RENDER_IMAGES: bpy.ops.render.render(write_still=True)
    self.rig.animation_data.action=bpy.data.actions[self.name+'|Idle']; scene.frame_set(1)
 
 def common_sockets(a,z):
@@ -437,7 +515,17 @@ def carrier():
    a.tube(side+' pod mechanical brace',(s*.31,y,.28),(s*.44,y,.22),.03,mat=2,bone='PROPULSION_'+side)
   for y in [.37,.44,.51,.58,.65]:
    a.tube(side+' roof heat exchanger',(s*.07,y,.645),(s*.22,y,.645),.012,mat=0)
+  # Independent swept cheek armor, access ribs and recessed drive coverings
+  # break the long hull into believable serviceable construction.
+  a.swept_beam(side+' swept roof armor rail',[(s*.17,-.74,.43),(s*.25,-.34,.60),(s*.26,.16,.69),(s*.23,.61,.61)],[.045,.055,.055,.039],.023,'BODY',3)
+  a.panel(side+' aft lateral drive cover',[(s*.37,.30),(s*.40,.49),(s*.31,.57),(s*.24,.49),(s*.24,.32)],.54,.17,7,'BODY',.014,.005)
+  for y in [-.39,-.06,.24]:
+   a.tube(side+' propulsion nacelle seam',(s*.48,y,.27),(s*.57,y,.21),.009,mat=0,bone='PROPULSION_'+side)
   a.panel(side+' forward hull armor cheek',[(s*.13,.24),(s*.32,.30),(s*.31,.39),(s*.18,.36)],-.81,.07,3,'BODY',.01)
+  a.swept_beam(side+' recessed forward chine',[(s*.10,-1.03,.27),(s*.21,-.83,.35),(s*.29,-.62,.46),(s*.34,-.36,.48)],[.024,.033,.041,.030],.018,'BODY',2)
+  for y in [.28,.43,.58]:
+   a.ring(side+' lateral drive access bearing',(s*.395,y,.40),.046,.008,.018,2,'BODY',(s,0,0),24)
+   a.tube(side+' access core stud',(s*.4,y,.40),(s*.421,y,.40),.012,mat=0,bone='BODY',steps=8)
   a.tube(side+' front hostile position lamp',(s*.20,-.849,.305),(s*.20,-.849,.37),.01,mat=6)
   a.tube(side+' shoulder seam', (s*.34,-.35,.48),(s*.35,.32,.54),.006,mat=0)
   a.tube(side+' reinforced side cooling rail',(s*.395,-.45,.32),(s*.395,.55,.39),.019,mat=5)
@@ -455,7 +543,7 @@ def supports(a,heavy=False,boss=False):
  for i,(x,y) in enumerate(coords):
   s=1 if x>0 else -1; sy=1 if y>0 else -1; hip=(x,y,z); knee=(s*spread*.84,sy*(.67 if heavy or boss else .50),knee_z); foot=(s*spread,sy*(1.13 if boss else .84 if heavy else .72),.04)
   a.bone('SUPPORT_'+str(i),hip,knee,'BODY'); a.bone('KNEE_'+str(i),knee,foot,'SUPPORT_'+str(i)); a.bone('CONTACT_'+str(i),foot,(foot[0],foot[1]-.12,.02),'KNEE_'+str(i))
-  w=.17 if boss else .115 if heavy else .047
+  w=.215 if boss else .152 if heavy else .072
   a.joint('Support '+str(i)+' root',hip,w*1.4,'BODY'); a.joint('Support '+str(i)+' knuckle',knee,w*1.2,'SUPPORT_'+str(i))
   a.limb('Support '+str(i)+' armored upper load path',hip,knee,w,'SUPPORT_'+str(i),3 if boss else 1)
   a.limb('Support '+str(i)+' tibial shield',knee,foot,w*.79,'KNEE_'+str(i),3 if boss else 1)
@@ -467,7 +555,14 @@ def supports(a,heavy=False,boss=False):
    # Broad split contact shoe supplies mass and load spread, not a needle foot.
    a.loft('Support '+str(i)+' plated contact',[(.02,foot[0],foot[1]-.08,w*.85,w*1.1),(.09,foot[0],foot[1]-.05,w,w*1.2),(.20,foot[0],foot[1],w*.44,w*.60)],7,'CONTACT_'+str(i),.009)
    a.tube('Support '+str(i)+' field conduit',Vector(knee)+Vector((0,-w*.8,.03)),Vector(foot)+Vector((0,-w*.6,.21)),w*.085,mat=6,bone='KNEE_'+str(i))
-  else: a.blade('Support '+str(i)+' ground spur',Vector(foot)+Vector((0,0,.20)),foot,w*.66,'KNEE_'+str(i),False)
+   for position in [.31,.61]:
+    point=Vector(hip).lerp(Vector(knee),position)
+    a.ring('Support '+str(i)+' upper service bearing '+str(position),point+Vector((0,-w*.80,0)),w*.36,w*.06,w*.06,2,'SUPPORT_'+str(i),(0,-1,0),20)
+   a.actuator('Support '+str(i)+' opposed suspension ram',Vector(knee)+Vector((s*w*.6,w*.5,.11)),Vector(foot)+Vector((s*w*.2,w*.5,.23)),w*.27,'KNEE_'+str(i))
+  else:
+   a.armored_rail('Support '+str(i)+' predator load armor',hip,knee,w*1.12,'SUPPORT_'+str(i),3)
+   a.armored_rail('Support '+str(i)+' forward tibial armor',knee,foot,w,'KNEE_'+str(i),7)
+   a.blade('Support '+str(i)+' ground spur',Vector(foot)+Vector((0,0,.20)),foot,w*.66,'KNEE_'+str(i),False)
   a.socket('Contact_'+str(i),foot,'CONTACT_'+str(i))
 
 def cutter():
@@ -530,6 +625,10 @@ def magnetar():
   a.socket('FieldOrigin_'+side,(s*.92,-.46,1.43),'TOOL_'+side)
   for z in [1.72,1.84,1.96,2.08]: a.tube(side+' rear cooling rib',(s*.22,.41,z),(s*.39,.40,z),.025,mat=7,bone='REACTOR')
   a.panel(side+' independent upper containment manifold',[(s*.18,2.26),(s*.35,2.51),(s*.53,2.48),(s*.66,2.24),(s*.42,2.19)],.04,.22,7,'CAGE_'+side,.036,.009)
+  a.swept_beam(side+' external magnetic buttress',[(s*.32,-.04,1.39),(s*.62,-.05,1.56),(s*.70,-.01,2.14),(s*.46,.03,2.48)],[.09,.125,.13,.085],.075,'CAGE_'+side,7)
+  for z in [1.64,1.80,1.96,2.12]:
+   a.panel(side+' yoke recessed cooling land '+str(z),[(s*.49,z),(s*.62,z+.03),(s*.62,z+.075),(s*.49,z+.048)],-.145,.03,0,'CAGE_'+side,.003,.003)
+  a.actuator(side+' reactor restraint ram',(s*.25,.23,1.39),(s*.51,.22,2.31),.058,'CAGE_'+side)
  a.ring('Upper flux containment crown',(0,.055,2.42),.23,.038,.07,2,'REACTOR',(0,0,1),48)
  a.ring('Upper amber contained coil',(0,.055,2.46),.17,.024,.02,6,'REACTOR',(0,0,1),40)
  a.socket('MagneticCore',(0,-.38,1.90),'REACTOR'); a.socket('AttackOrigin',(0,-.38,1.90),'REACTOR'); common_sockets(a,2.48); a.finish()
@@ -547,7 +646,13 @@ def custodian():
   # Independent bulky attack mantles with articulated ribs and real pivot axes.
   a.joint(side+' major mantle root',(s*.65,.05,2.43),.24,'BODY')
   a.panel(side+' boss articulated mantle',[(s*.55,2.21),(s*.89,2.06),(s*1.48,2.18),(s*1.62,2.60),(s*1.34,2.91),(s*.89,2.95),(s*.58,2.64)],-.03,.40,3,'CROWN_'+side,.085,.018)
+  a.swept_beam(side+' reactor cathedral arch',[(s*.45,.05,2.48),(s*.65,.03,2.99),(s*.93,.05,3.27),(s*1.28,.12,3.15),(s*1.56,.18,2.61)],[.12,.14,.16,.17,.19],.13,'CROWN_'+side,3)
+  a.swept_beam(side+' arch inset thermal structure',[(s*.59,-.09,2.73),(s*.78,-.09,3.08),(s*.97,-.08,3.20),(s*1.26,-.03,3.08)],[.04,.04,.045,.05],.028,'CROWN_'+side,7)
+  a.tube(side+' arch local telegraph channel',(s*.76,-.11,3.00),(s*.95,-.10,3.14),.018,mat=6,bone='CROWN_'+side)
   a.panel(side+' mantle layered armor',[(s*.77,2.32),(s*1.24,2.26),(s*1.46,2.60),(s*1.23,2.79),(s*.89,2.81)],-.14,.07,7,'CROWN_'+side,.026,.012)
+  for zz in [2.37,2.48,2.59,2.70]:
+   a.panel(side+' mantle thermal shutter '+str(zz),[(s*.94,zz),(s*1.24,zz+.026),(s*1.27,zz+.085),(s*.95,zz+.058)],-.196,.042,3,'CROWN_'+side,.005,.004)
+  a.swept_beam(side+' mantle outboard stepped armor',[(s*1.17,-.02,2.88),(s*1.46,-.01,2.68),(s*1.55,.03,2.34),(s*1.33,.07,2.08)],[.12,.17,.145,.1],.10,'CROWN_'+side,3)
   a.panel(side+' reactor cheek armor',[(s*.31,1.72),(s*.56,1.64),(s*.78,1.92),(s*.77,2.31),(s*.51,2.64),(s*.38,2.55)],-.26,.14,3,'REACTOR',.04,.012)
   a.actuator(side+' mantle elevator',(s*.53,.34,1.99),(s*1.13,.30,2.60),.079,'CROWN_'+side)
   a.bone('TOOL_'+side,(s*1.18,-.06,2.29),(s*1.58,-.29,1.56),'CROWN_'+side)
@@ -559,6 +664,9 @@ def custodian():
    a.tube(side+' mantle service bolt',(s*1.11,-.181,z),(s*1.11,-.20,z),.043,mat=2,bone='CROWN_'+side,steps=6)
   a.socket('BossDischarge_'+side,(s*1.58,-.47,1.54),'TOOL_'+side); a.socket('MantlePivot_'+side,(s*.65,.05,2.43),'CROWN_'+side)
   a.tube(side+' rear reactor conduit',(s*.36,.48,1.77),(s*.26,.33,3.06),.049,mat=5,bone='REACTOR')
+  a.actuator(side+' reactor vault structural damper',(s*.49,.42,1.44),(s*.36,.36,2.78),.09,'REACTOR')
+  for zz in [2.89,3.05,3.20]:
+   a.ring(side+' chimney axial reinforcement '+str(zz),(s*.03,.04,zz),.23 if zz<3.1 else .20,.024,.045,0,'REACTOR',(0,0,1),40)
  a.ring('Chimney armored cap',(0,.045,3.36),.17,.032,.08,2,'REACTOR',(0,0,1),48)
  a.ring('Contained reactor vent',(0,.045,3.40),.12,.026,.014,6,'REACTOR',(0,0,1),40)
  a.panel('Boss ventral reactor armor',[(-.35,1.71),(-.24,1.36),(0,1.24),(.24,1.36),(.35,1.71)],-.29,.16,3,'BODY',.055,.012)
@@ -566,8 +674,9 @@ def custodian():
  a.socket('BossReactor',(0,-.47,2.22),'REACTOR'); a.socket('AttackOrigin',(0,-.47,2.22),'REACTOR'); a.socket('BossVent',(0,.045,3.43),'REACTOR'); common_sockets(a,3.44); a.finish()
 
 if __name__=='__main__':
- p=argparse.ArgumentParser(); p.add_argument('--actors',nargs='+',default=['Scout','Warden','Carrier','Cutter','ArcDrone','Magnetar','Custodian']); p.add_argument('--atlas-only',action='store_true')
+ p=argparse.ArgumentParser(); p.add_argument('--actors',nargs='+',default=['Scout','Warden','Carrier','Cutter','ArcDrone','Magnetar','Custodian']); p.add_argument('--atlas-only',action='store_true'); p.add_argument('--no-render',action='store_true')
  args=p.parse_args(sys.argv[sys.argv.index('--')+1:] if '--' in sys.argv else [])
+ RENDER_IMAGES=not args.no_render
  if not (IMPORT/'Textures/HostileV2_BaseColor.png').exists() or args.atlas_only: atlas()
  if not args.atlas_only:
   builders={'Scout':lambda:biped('Scout'),'Warden':lambda:biped('Warden',True),'Carrier':carrier,'Cutter':cutter,'ArcDrone':arc,'Magnetar':magnetar,'Custodian':custodian}

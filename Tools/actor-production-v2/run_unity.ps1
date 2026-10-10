@@ -3,6 +3,7 @@ param(
  [ValidateSet('', 'EditMode', 'PlayMode')][string]$TestPlatform = '',
  [string]$TestFilter = '',
  [string]$Name = 'Import',
+ [ValidateSet('', 'Android', 'StandaloneWindows64')][string]$BuildTarget = '',
  [switch]$NoGraphics
 )
 $ErrorActionPreference = 'Stop'
@@ -14,6 +15,7 @@ New-Item -ItemType Directory -Force -Path $output | Out-Null
 $log = Join-Path $output ($Name + '.log')
 $argv = @('-batchmode', '-projectPath', ('"' + $taskRoot + '"'), '-logFile', ('"' + $log + '"'))
 if ($NoGraphics) { $argv += '-nographics' }
+if ($BuildTarget) { $argv += @('-buildTarget', $BuildTarget) }
 if ($Method) { $argv += @('-executeMethod', $Method, '-quit') }
 elseif ($TestPlatform) {
  $argv += @('-runTests', '-testPlatform', $TestPlatform, '-testResults', ('"' + (Join-Path $output ($Name + '.xml')) + '"'))
