@@ -1,0 +1,2910 @@
+{
+  "blender": "5.2.2 LTS",
+  "records": [
+    {
+      "actor": "Scout",
+      "source_id": "quaternius-animated-mech-pack",
+      "member": "Animated Mech Pack - March 2021/Textured/Blends/George.blend",
+      "sha256": "55e24fbae28736f87684129d2f3e27e0e3ba246cc8e91668822d0b3faf155b0c",
+      "evaluated_triangles": 7864,
+      "dimensions": [
+        4.158522129058838,
+        2.831249952316284,
+        6.090261597186327
+      ],
+      "rigs": [
+        {
+          "name": "RobotArmature",
+          "bones": [
+            {
+              "name": "Body",
+              "parent": null,
+              "head": [
+                0.0,
+                -0.9173771142959595,
+                2.715611219406128
+              ],
+              "tail": [
+                0.0,
+                -0.7209972143173218,
+                3.296513795852661
+              ]
+            },
+            {
+              "name": "Torso",
+              "parent": "Body",
+              "head": [
+                0.0,
+                -0.1978919506072998,
+                2.3938541412353516
+              ],
+              "tail": [
+                0.0,
+                0.15959030389785767,
+                3.4513065814971924
+              ]
+            },
+            {
+              "name": "Chest",
+              "parent": "Torso",
+              "head": [
+                0.0,
+                0.15959030389785767,
+                3.4513065814971924
+              ],
+              "tail": [
+                0.0,
+                0.1423700749874115,
+                4.529212474822998
+              ]
+            },
+            {
+              "name": "Neck",
+              "parent": "Chest",
+              "head": [
+                0.0,
+                0.1423700749874115,
+                4.529212474822998
+              ],
+              "tail": [
+                2.173266016303228e-17,
+                -0.0023657307028770447,
+                4.972626209259033
+              ]
+            },
+            {
+              "name": "Head",
+              "parent": "Neck",
+              "head": [
+                2.173266016303228e-17,
+                -0.0023657307028770447,
+                4.972626209259033
+              ],
+              "tail": [
+                2.794057290526517e-17,
+                -0.13097232580184937,
+                5.4898481369018555
+              ]
+            },
+            {
+              "name": "Shoulder.L",
+              "parent": "Neck",
+              "head": [
+                0.367266982793808,
+                0.12529660761356354,
+                4.643439292907715
+              ],
+              "tail": [
+                0.7063307762145996,
+                0.12529653310775757,
+                4.860965728759766
+              ]
+            },
+            {
+              "name": "UpperArm.L",
+              "parent": "Shoulder.L",
+              "head": [
+                0.7063307762145996,
+                0.12529653310775757,
+                4.860965728759766
+              ],
+              "tail": [
+                1.8684160709381104,
+                0.1252966672182083,
+                4.853652000427246
+              ]
+            },
+            {
+              "name": "LowerArm.L",
+              "parent": "UpperArm.L",
+              "head": [
+                1.8684160709381104,
+                0.1252966672182083,
+                4.853652000427246
+              ],
+              "tail": [
+                2.95173978805542,
+                0.1252966970205307,
+                4.676558494567871
+              ]
+            },
+            {
+              "name": "PalmP.L",
+              "parent": "LowerArm.L",
+              "head": [
+                2.95173978805542,
+                0.1252966970205307,
+                4.676558494567871
+              ],
+              "tail": [
+                3.132446765899658,
+                0.28259605169296265,
+                4.676558494567871
+              ]
+            },
+            {
+              "name": "Pinky1.L",
+              "parent": "PalmP.L",
+              "head": [
+                3.132446765899658,
+                0.28259605169296265,
+                4.676558494567871
+              ],
+              "tail": [
+                3.321455955505371,
+                0.35241758823394775,
+                4.652894496917725
+              ]
+            },
+            {
+              "name": "Pinky2.L",
+              "parent": "Pinky1.L",
+              "head": [
+                3.321455955505371,
+                0.35241758823394775,
+                4.652894496917725
+              ],
+              "tail": [
+                3.4759464263916016,
+                0.3992328643798828,
+                4.5790324211120605
+              ]
+            },
+            {
+              "name": "PalmR.L",
+              "parent": "LowerArm.L",
+              "head": [
+                2.95173978805542,
+                0.1252966970205307,
+                4.676558494567871
+              ],
+              "tail": [
+                3.1811347007751465,
+                0.14589542150497437,
+                4.676558494567871
+              ]
+            },
+            {
+              "name": "Ring1.L",
+              "parent": "PalmR.L",
+              "head": [
+                3.1811347007751465,
+                0.14589542150497437,
+                4.676558494567871
+              ],
+              "tail": [
+                3.436746120452881,
+                0.1430865079164505,
+                4.654695987701416
+              ]
+            },
+            {
+              "name": "Ring2.L",
+              "parent": "Ring1.L",
+              "head": [
+                3.436746120452881,
+                0.1430865079164505,
+                4.654695987701416
+              ],
+              "tail": [
+                3.6165168285369873,
+                0.13934127986431122,
+                4.585434436798096
+              ]
+            },
+            {
+              "name": "PalmI.L",
+              "parent": "LowerArm.L",
+              "head": [
+                2.95173978805542,
+                0.1252966970205307,
+                4.676558494567871
+              ],
+              "tail": [
+                3.1549181938171387,
+                0.006385870277881622,
+                4.676558494567871
+              ]
+            },
+            {
+              "name": "Index1.L",
+              "parent": "PalmI.L",
+              "head": [
+                3.1549181938171387,
+                0.006385870277881622,
+                4.676558494567871
+              ],
+              "tail": [
+                3.3384342193603516,
+                -0.07226381450891495,
+                4.653436660766602
+              ]
+            },
+            {
+              "name": "Index2.L",
+              "parent": "Index1.L",
+              "head": [
+                3.3384342193603516,
+                -0.07226381450891495,
+                4.653436660766602
+              ],
+              "tail": [
+                3.4826252460479736,
+                -0.12656953930854797,
+                4.5867133140563965
+              ]
+            },
+            {
+              "name": "PalmT.L",
+              "parent": "LowerArm.L",
+              "head": [
+                2.95173978805542,
+                0.1252966970205307,
+                4.676558494567871
+              ],
+              "tail": [
+                2.9328837394714355,
+                -0.06846654415130615,
+                4.676558494567871
+              ]
+            },
+            {
+              "name": "Thumb1.L",
+              "parent": "PalmT.L",
+              "head": [
+                2.9328837394714355,
+                -0.06846654415130615,
+                4.676558494567871
+              ],
+              "tail": [
+                3.0024564266204834,
+                -0.19525793194770813,
+                4.657400131225586
+              ]
+            },
+            {
+              "name": "Thumb2.L",
+              "parent": "Thumb1.L",
+              "head": [
+                3.0024564266204834,
+                -0.19525793194770813,
+                4.657400131225586
+              ],
+              "tail": [
+                3.152005195617676,
+                -0.2804357409477234,
+                4.5900163650512695
+              ]
+            },
+            {
+              "name": "Shoulder.R",
+              "parent": "Neck",
+              "head": [
+                -0.367266982793808,
+                0.12529660761356354,
+                4.643439292907715
+              ],
+              "tail": [
+                -0.7063307762145996,
+                0.12529653310775757,
+                4.860965728759766
+              ]
+            },
+            {
+              "name": "UpperArm.R",
+              "parent": "Shoulder.R",
+              "head": [
+                -0.7063307762145996,
+                0.12529653310775757,
+                4.860965728759766
+              ],
+              "tail": [
+                -1.8684160709381104,
+                0.1252966672182083,
+                4.853652000427246
+              ]
+            },
+            {
+              "name": "LowerArm.R",
+              "parent": "UpperArm.R",
+              "head": [
+                -1.8684160709381104,
+                0.1252966672182083,
+                4.853652000427246
+              ],
+              "tail": [
+                -2.95173978805542,
+                0.1252966970205307,
+                4.676558494567871
+              ]
+            },
+            {
+              "name": "PalmP.R",
+              "parent": "LowerArm.R",
+              "head": [
+                -2.95173978805542,
+                0.1252966970205307,
+                4.676558494567871
+              ],
+              "tail": [
+                -3.132446765899658,
+                0.28259605169296265,
+                4.676558494567871
+              ]
+            },
+            {
+              "name": "Pinky1.R",
+              "parent": "PalmP.R",
+              "head": [
+                -3.132446765899658,
+                0.28259605169296265,
+                4.676558494567871
+              ],
+              "tail": [
+                -3.321455955505371,
+                0.35241758823394775,
+                4.652894496917725
+              ]
+            },
+            {
+              "name": "Pinky2.R",
+              "parent": "Pinky1.R",
+              "head": [
+                -3.321455955505371,
+                0.35241758823394775,
+                4.652894496917725
+              ],
+              "tail": [
+                -3.4759464263916016,
+                0.3992328643798828,
+                4.5790324211120605
+              ]
+            },
+            {
+              "name": "PalmR.R",
+              "parent": "LowerArm.R",
+              "head": [
+                -2.95173978805542,
+                0.1252966970205307,
+                4.676558494567871
+              ],
+              "tail": [
+                -3.1811347007751465,
+                0.14589542150497437,
+                4.676558494567871
+              ]
+            },
+            {
+              "name": "Ring1.R",
+              "parent": "PalmR.R",
+              "head": [
+                -3.1811347007751465,
+                0.14589542150497437,
+                4.676558494567871
+              ],
+              "tail": [
+                -3.436746120452881,
+                0.1430865079164505,
+                4.654695987701416
+              ]
+            },
+            {
+              "name": "Ring2.R",
+              "parent": "Ring1.R",
+              "head": [
+                -3.436746120452881,
+                0.1430865079164505,
+                4.654695987701416
+              ],
+              "tail": [
+                -3.6165168285369873,
+                0.13934127986431122,
+                4.585434436798096
+              ]
+            },
+            {
+              "name": "PalmI.R",
+              "parent": "LowerArm.R",
+              "head": [
+                -2.95173978805542,
+                0.1252966970205307,
+                4.676558494567871
+              ],
+              "tail": [
+                -3.1549181938171387,
+                0.006385870277881622,
+                4.676558494567871
+              ]
+            },
+            {
+              "name": "Index1.R",
+              "parent": "PalmI.R",
+              "head": [
+                -3.1549181938171387,
+                0.006385870277881622,
+                4.676558494567871
+              ],
+              "tail": [
+                -3.3384342193603516,
+                -0.07226381450891495,
+                4.653436660766602
+              ]
+            },
+            {
+              "name": "Index2.R",
+              "parent": "Index1.R",
+              "head": [
+                -3.3384342193603516,
+                -0.07226381450891495,
+                4.653436660766602
+              ],
+              "tail": [
+                -3.4826252460479736,
+                -0.12656953930854797,
+                4.5867133140563965
+              ]
+            },
+            {
+              "name": "PalmT.R",
+              "parent": "LowerArm.R",
+              "head": [
+                -2.95173978805542,
+                0.1252966970205307,
+                4.676558494567871
+              ],
+              "tail": [
+                -2.9328837394714355,
+                -0.06846654415130615,
+                4.676558494567871
+              ]
+            },
+            {
+              "name": "Thumb1.R",
+              "parent": "PalmT.R",
+              "head": [
+                -2.9328837394714355,
+                -0.06846654415130615,
+                4.676558494567871
+              ],
+              "tail": [
+                -3.0024564266204834,
+                -0.19525793194770813,
+                4.657400131225586
+              ]
+            },
+            {
+              "name": "Thumb2.R",
+              "parent": "Thumb1.R",
+              "head": [
+                -3.0024564266204834,
+                -0.19525793194770813,
+                4.657400131225586
+              ],
+              "tail": [
+                -3.152005195617676,
+                -0.2804357409477234,
+                4.5900163650512695
+              ]
+            },
+            {
+              "name": "UpperLeg.L",
+              "parent": "Body",
+              "head": [
+                0.9598936438560486,
+                0.15939083695411682,
+                2.735225200653076
+              ],
+              "tail": [
+                0.9598936438560486,
+                -0.9948301315307617,
+                1.8635019063949585
+              ]
+            },
+            {
+              "name": "MidLeg.L",
+              "parent": "UpperLeg.L",
+              "head": [
+                0.9598936438560486,
+                -0.9948301315307617,
+                1.8635019063949585
+              ],
+              "tail": [
+                0.9598936438560486,
+                0.5656267404556274,
+                1.2306231260299683
+              ]
+            },
+            {
+              "name": "LowerLeg.L",
+              "parent": "MidLeg.L",
+              "head": [
+                0.9598936438560486,
+                0.5656267404556274,
+                1.2306231260299683
+              ],
+              "tail": [
+                0.9598936438560486,
+                -0.857813835144043,
+                0.0953061580657959
+              ]
+            },
+            {
+              "name": "FootBack.L",
+              "parent": "LowerLeg.L",
+              "head": [
+                0.9598936438560486,
+                -0.857813835144043,
+                0.0953061580657959
+              ],
+              "tail": [
+                0.9598936438560486,
+                -0.20695233345031738,
+                0.0751764178276062
+              ]
+            },
+            {
+              "name": "UpperLeg.R",
+              "parent": "Body",
+              "head": [
+                -0.9598936438560486,
+                0.15939083695411682,
+                2.735225200653076
+              ],
+              "tail": [
+                -0.9598936438560486,
+                -0.9948301315307617,
+                1.8635019063949585
+              ]
+            },
+            {
+              "name": "MidLeg.R",
+              "parent": "UpperLeg.R",
+              "head": [
+                -0.9598936438560486,
+                -0.9948301315307617,
+                1.8635019063949585
+              ],
+              "tail": [
+                -0.9598936438560486,
+                0.5656267404556274,
+                1.2306231260299683
+              ]
+            },
+            {
+              "name": "LowerLeg.R",
+              "parent": "MidLeg.R",
+              "head": [
+                -0.9598936438560486,
+                0.5656267404556274,
+                1.2306231260299683
+              ],
+              "tail": [
+                -0.9598936438560486,
+                -0.857813835144043,
+                0.0953061580657959
+              ]
+            },
+            {
+              "name": "FootBack.R",
+              "parent": "LowerLeg.R",
+              "head": [
+                -0.9598936438560486,
+                -0.857813835144043,
+                0.0953061580657959
+              ],
+              "tail": [
+                -0.9598936438560486,
+                -0.20695233345031738,
+                0.0751764178276062
+              ]
+            },
+            {
+              "name": "PoleTarget.L",
+              "parent": "Body",
+              "head": [
+                0.9598932266235352,
+                -5.88778829574585,
+                2.0984385013580322
+              ],
+              "tail": [
+                0.9598932266235352,
+                -5.88778829574585,
+                3.0465633869171143
+              ]
+            },
+            {
+              "name": "PoleTarget.R",
+              "parent": "Body",
+              "head": [
+                -0.9598932266235352,
+                -5.88778829574585,
+                2.0984385013580322
+              ],
+              "tail": [
+                -0.9598932266235352,
+                -5.88778829574585,
+                3.0465633869171143
+              ]
+            },
+            {
+              "name": "Foot.L",
+              "parent": null,
+              "head": [
+                0.9598936438560486,
+                -0.857813835144043,
+                0.0953061580657959
+              ],
+              "tail": [
+                0.9598936438560486,
+                -1.4887069463729858,
+                0.0953061580657959
+              ]
+            },
+            {
+              "name": "Foot.R",
+              "parent": null,
+              "head": [
+                -0.9598936438560486,
+                -0.857813835144043,
+                0.0953061580657959
+              ],
+              "tail": [
+                -0.9598936438560486,
+                -1.4887069463729858,
+                0.0953061580657959
+              ]
+            }
+          ]
+        }
+      ],
+      "actions": [
+        {
+          "name": "Dance",
+          "frames": [
+            0.0,
+            24.0
+          ]
+        },
+        {
+          "name": "Death",
+          "frames": [
+            0.0,
+            43.0
+          ]
+        },
+        {
+          "name": "Hello",
+          "frames": [
+            0.0,
+            45.0
+          ]
+        },
+        {
+          "name": "HitRecieve_1",
+          "frames": [
+            0.0,
+            14.0
+          ]
+        },
+        {
+          "name": "HitRecieve_2",
+          "frames": [
+            0.0,
+            14.0
+          ]
+        },
+        {
+          "name": "Idle",
+          "frames": [
+            0.0,
+            100.0
+          ]
+        },
+        {
+          "name": "Jump",
+          "frames": [
+            0.0,
+            26.0
+          ]
+        },
+        {
+          "name": "Kick",
+          "frames": [
+            0.0,
+            18.0
+          ]
+        },
+        {
+          "name": "No",
+          "frames": [
+            0.0,
+            42.0
+          ]
+        },
+        {
+          "name": "Pickup",
+          "frames": [
+            0.0,
+            42.0
+          ]
+        },
+        {
+          "name": "Punch",
+          "frames": [
+            0.0,
+            17.0
+          ]
+        },
+        {
+          "name": "Run",
+          "frames": [
+            0.0,
+            25.0
+          ]
+        },
+        {
+          "name": "Run_Holding",
+          "frames": [
+            0.0,
+            25.0
+          ]
+        },
+        {
+          "name": "Run_Tall",
+          "frames": [
+            0.0,
+            25.0
+          ]
+        },
+        {
+          "name": "Shoot",
+          "frames": [
+            0.0,
+            15.0
+          ]
+        },
+        {
+          "name": "SwordSlash",
+          "frames": [
+            0.0,
+            18.0
+          ]
+        },
+        {
+          "name": "Walk",
+          "frames": [
+            0.0,
+            25.0
+          ]
+        },
+        {
+          "name": "Walk_Holding",
+          "frames": [
+            0.0,
+            25.0
+          ]
+        },
+        {
+          "name": "Walk_Tall",
+          "frames": [
+            0.0,
+            25.0
+          ]
+        },
+        {
+          "name": "Yes",
+          "frames": [
+            0.0,
+            42.0
+          ]
+        }
+      ],
+      "reuse": "Inspection only. No donor vertices, skin weights, textures, bone definitions or keyframes copied."
+    },
+    {
+      "actor": "Warden",
+      "source_id": "msgdi-medium-mech-striker",
+      "member": "Assets/MediumMechStriker/FBX/MediumMechStriker/MediumMechStriker.fbx",
+      "sha256": "b0cea6976225126369264bb4ace54f52b4d3f46f2ebaec9b997703ccafc17e91",
+      "evaluated_triangles": 6472,
+      "dimensions": [
+        10.375541687011719,
+        7.386870384216309,
+        15.456678201535397
+      ],
+      "rigs": [
+        {
+          "name": "MediumMechHumanoidSkeleton",
+          "bones": [
+            {
+              "name": "Root",
+              "parent": null,
+              "head": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "tail": [
+                0.0,
+                0.0,
+                6.325873851776123
+              ]
+            },
+            {
+              "name": "LowerTorso",
+              "parent": "Root",
+              "head": [
+                0.0,
+                6.325873851776123,
+                -2.384185791015625e-07
+              ],
+              "tail": [
+                -3.155703915411548e-14,
+                8.546503067016602,
+                -3.5656452723742404e-07
+              ]
+            },
+            {
+              "name": "UpperLeg_L",
+              "parent": "LowerTorso",
+              "head": [
+                2.0368080139160156,
+                7.180839538574219,
+                0.08579491078853607
+              ],
+              "tail": [
+                2.0368080139160156,
+                4.296767711639404,
+                0.7079231142997742
+              ]
+            },
+            {
+              "name": "LowerLeg_L",
+              "parent": "UpperLeg_L",
+              "head": [
+                2.0368080139160156,
+                4.296767711639404,
+                0.7079231142997742
+              ],
+              "tail": [
+                2.0368082523345947,
+                0.8586232662200928,
+                -0.06425333023071289
+              ]
+            },
+            {
+              "name": "Foot_L",
+              "parent": "LowerLeg_L",
+              "head": [
+                2.0368077754974365,
+                0.858623206615448,
+                -0.06425314396619797
+              ],
+              "tail": [
+                2.0368072986602783,
+                0.32823657989501953,
+                1.2754602432250977
+              ]
+            },
+            {
+              "name": "Toe_L",
+              "parent": "Foot_L",
+              "head": [
+                2.0368077754974365,
+                0.3282380998134613,
+                1.2754608392715454
+              ],
+              "tail": [
+                2.0368077754974365,
+                0.32823920249938965,
+                2.7163429260253906
+              ]
+            },
+            {
+              "name": "UpperLeg_R",
+              "parent": "LowerTorso",
+              "head": [
+                -2.0368080139160156,
+                7.180839538574219,
+                0.08579491078853607
+              ],
+              "tail": [
+                -2.0368080139160156,
+                4.296767711639404,
+                0.7079231142997742
+              ]
+            },
+            {
+              "name": "LowerLeg_R",
+              "parent": "UpperLeg_R",
+              "head": [
+                -2.0368080139160156,
+                4.296767711639404,
+                0.7079231142997742
+              ],
+              "tail": [
+                -2.036808490753174,
+                0.858623743057251,
+                -0.06425338983535767
+              ]
+            },
+            {
+              "name": "Foot_R",
+              "parent": "LowerLeg_R",
+              "head": [
+                -2.0368077754974365,
+                0.8586236834526062,
+                -0.06425312906503677
+              ],
+              "tail": [
+                -2.0368072986602783,
+                0.3282371759414673,
+                1.2754595279693604
+              ]
+            },
+            {
+              "name": "Toe_R",
+              "parent": "Foot_R",
+              "head": [
+                -2.0368075370788574,
+                0.32823872566223145,
+                1.275460124015808
+              ],
+              "tail": [
+                -2.0368075370788574,
+                0.32823991775512695,
+                2.716341495513916
+              ]
+            },
+            {
+              "name": "UpperTorso",
+              "parent": "LowerTorso",
+              "head": [
+                -3.1841062853857e-14,
+                8.566489219665527,
+                -3.5762786865234375e-07
+              ],
+              "tail": [
+                -3.1841062853857e-14,
+                13.148841857910156,
+                -5.579288426815765e-07
+              ]
+            },
+            {
+              "name": "Shoulder_L",
+              "parent": "UpperTorso",
+              "head": [
+                3.389294147491455,
+                11.636040687561035,
+                -0.29748114943504333
+              ],
+              "tail": [
+                3.389294147491455,
+                11.636040687561035,
+                -0.3074813783168793
+              ]
+            },
+            {
+              "name": "UpperArm_L",
+              "parent": "Shoulder_L",
+              "head": [
+                3.389294147491455,
+                11.636040687561035,
+                -0.29748106002807617
+              ],
+              "tail": [
+                3.389294147491455,
+                9.786154747009277,
+                -0.29748228192329407
+              ]
+            },
+            {
+              "name": "LowerArm_L",
+              "parent": "UpperArm_L",
+              "head": [
+                3.389294147491455,
+                9.786154747009277,
+                -0.29748228192329407
+              ],
+              "tail": [
+                3.389294147491455,
+                9.786154747009277,
+                1.5524036884307861
+              ]
+            },
+            {
+              "name": "Shoulder_R",
+              "parent": "UpperTorso",
+              "head": [
+                -3.389294147491455,
+                11.636040687561035,
+                -0.29748114943504333
+              ],
+              "tail": [
+                -3.389294147491455,
+                11.636040687561035,
+                -0.3074813783168793
+              ]
+            },
+            {
+              "name": "UpperArm_R",
+              "parent": "Shoulder_R",
+              "head": [
+                -3.389294147491455,
+                11.636040687561035,
+                -0.29748106002807617
+              ],
+              "tail": [
+                -3.389294147491455,
+                9.786154747009277,
+                -0.29748228192329407
+              ]
+            },
+            {
+              "name": "LowerArm_R",
+              "parent": "UpperArm_R",
+              "head": [
+                -3.389294147491455,
+                9.786154747009277,
+                -0.29748228192329407
+              ],
+              "tail": [
+                -3.389294147491455,
+                9.786154747009277,
+                1.5524036884307861
+              ]
+            }
+          ]
+        }
+      ],
+      "actions": [
+        {
+          "name": "MediumMechHumanoidSkeleton|a1ShutdownPose",
+          "frames": [
+            1.0,
+            11.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|a1ShutdownPose.001",
+          "frames": [
+            1.0,
+            11.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|a1ShutdownPose.002",
+          "frames": [
+            1.0,
+            11.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|a2ShutdownOverheat",
+          "frames": [
+            1.0,
+            11.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|a2ShutdownOverheat.001",
+          "frames": [
+            1.0,
+            11.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|a2ShutdownOverheat.002",
+          "frames": [
+            1.0,
+            31.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|a2ShutdownOverheat.003",
+          "frames": [
+            1.0,
+            31.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|a3StartupSequence",
+          "frames": [
+            1.0,
+            31.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|a4IdlePose",
+          "frames": [
+            1.0,
+            241.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|a5WalkCycle",
+          "frames": [
+            1.0,
+            25.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|a5WalkCycle.001",
+          "frames": [
+            1.0,
+            25.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|a5walkCycleLeftLegCrippled",
+          "frames": [
+            1.0,
+            41.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|a5WalkCycleLeftLegCrippled",
+          "frames": [
+            1.0,
+            41.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|a5WalkCycleLeftLegCrippledRootMotion",
+          "frames": [
+            1.0,
+            41.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|a5WalkCycleRightLegCrippled",
+          "frames": [
+            1.0,
+            41.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|a5WalkCycleRightLegCrippled.001",
+          "frames": [
+            1.0,
+            41.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|a5WalkCycleRightLegCrippledRootMotion",
+          "frames": [
+            1.0,
+            41.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|a5WalkCycleRootMotion",
+          "frames": [
+            1.0,
+            25.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|a6WalkCycleBack",
+          "frames": [
+            1.0,
+            41.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|a6WalkCycleBack.001",
+          "frames": [
+            1.0,
+            41.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|a6WalkCycleBackRootMotion",
+          "frames": [
+            1.0,
+            41.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|a7RunCycle",
+          "frames": [
+            1.0,
+            31.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|a7RunCycle.001",
+          "frames": [
+            1.0,
+            31.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|a7RunCycleRootMotion",
+          "frames": [
+            1.0,
+            31.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|a8Falling",
+          "frames": [
+            1.0,
+            31.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|a8Falling.001",
+          "frames": [
+            1.0,
+            31.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|a8FallingRootMotion",
+          "frames": [
+            1.0,
+            31.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|a8Jump",
+          "frames": [
+            1.0,
+            54.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|a8Jump.001",
+          "frames": [
+            1.0,
+            54.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|a8JumpJetFlying",
+          "frames": [
+            1.0,
+            31.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|a8JumpJetFlying.001",
+          "frames": [
+            1.0,
+            31.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|a8JumpJetFlyingRootMotion",
+          "frames": [
+            1.0,
+            31.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|a8JumpRootMotion",
+          "frames": [
+            1.0,
+            54.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|a8Landing",
+          "frames": [
+            1.0,
+            22.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|a9TurningSteps",
+          "frames": [
+            1.0,
+            25.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|b1HitBack1",
+          "frames": [
+            1.0,
+            2.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|b1HitBack1.001",
+          "frames": [
+            1.0,
+            11.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|b1HitBack2",
+          "frames": [
+            1.0,
+            2.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|b1HitBack2.001",
+          "frames": [
+            1.0,
+            11.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|b1HitBack3",
+          "frames": [
+            1.0,
+            11.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|b1HitFront1",
+          "frames": [
+            1.0,
+            2.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|b1HitFront1.001",
+          "frames": [
+            1.0,
+            11.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|b1HitFront2",
+          "frames": [
+            1.0,
+            11.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|b1HitFront2.001",
+          "frames": [
+            1.0,
+            11.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|b1HitFront3",
+          "frames": [
+            1.0,
+            11.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|b2DeathFallDown1",
+          "frames": [
+            1.0,
+            31.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|b2DeathFallDown2",
+          "frames": [
+            1.0,
+            32.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|b2DeathPose1",
+          "frames": [
+            1.0,
+            11.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|b2DeathPose2",
+          "frames": [
+            1.0,
+            11.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|b2StandUp1",
+          "frames": [
+            1.0,
+            48.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|b2StandUp2",
+          "frames": [
+            1.0,
+            41.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|c1HeadRam",
+          "frames": [
+            1.0,
+            51.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|c1KickLeft",
+          "frames": [
+            1.0,
+            22.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|c1KickRight",
+          "frames": [
+            1.0,
+            22.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|c1PunchLeft",
+          "frames": [
+            1.0,
+            36.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|c1PunchLeft.001",
+          "frames": [
+            1.0,
+            36.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|c1PunchRight",
+          "frames": [
+            1.0,
+            36.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|c1StompVehicle",
+          "frames": [
+            1.0,
+            22.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|MediumMechHumanoidSkeleton|a1ShutdownPose",
+          "frames": [
+            1.0,
+            11.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|MediumMechHumanoidSkeleton|a2ShutdownOverheat",
+          "frames": [
+            1.0,
+            31.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|MediumMechHumanoidSkeleton|a3StartupSequence",
+          "frames": [
+            1.0,
+            31.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|MediumMechHumanoidSkeleton|a4IdlePose",
+          "frames": [
+            1.0,
+            241.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|MediumMechHumanoidSkeleton|a5WalkCycle",
+          "frames": [
+            1.0,
+            25.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|MediumMechHumanoidSkeleton|a5WalkCycleLeftLegCrippled",
+          "frames": [
+            1.0,
+            41.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|MediumMechHumanoidSkeleton|a5WalkCycleLeftLegCrippledRootMotion",
+          "frames": [
+            1.0,
+            41.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|MediumMechHumanoidSkeleton|a5WalkCycleRightLegCrippled",
+          "frames": [
+            1.0,
+            41.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|MediumMechHumanoidSkeleton|a5WalkCycleRightLegCrippledR_3e0d755",
+          "frames": [
+            1.0,
+            41.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|MediumMechHumanoidSkeleton|a5WalkCycleRootMotion",
+          "frames": [
+            1.0,
+            25.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|MediumMechHumanoidSkeleton|a6WalkCycleBack",
+          "frames": [
+            1.0,
+            41.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|MediumMechHumanoidSkeleton|a6WalkCycleBackRootMotion",
+          "frames": [
+            1.0,
+            41.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|MediumMechHumanoidSkeleton|a7RunCycle",
+          "frames": [
+            1.0,
+            31.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|MediumMechHumanoidSkeleton|a7RunCycleRootMotion",
+          "frames": [
+            1.0,
+            31.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|MediumMechHumanoidSkeleton|a8Falling",
+          "frames": [
+            1.0,
+            31.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|MediumMechHumanoidSkeleton|a8FallingRootMotion",
+          "frames": [
+            1.0,
+            31.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|MediumMechHumanoidSkeleton|a8Jump",
+          "frames": [
+            1.0,
+            54.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|MediumMechHumanoidSkeleton|a8JumpJetFlying",
+          "frames": [
+            1.0,
+            31.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|MediumMechHumanoidSkeleton|a8JumpJetFlyingRootMotion",
+          "frames": [
+            1.0,
+            31.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|MediumMechHumanoidSkeleton|a8JumpRootMotion",
+          "frames": [
+            1.0,
+            54.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|MediumMechHumanoidSkeleton|a8Landing",
+          "frames": [
+            1.0,
+            22.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|MediumMechHumanoidSkeleton|a9TurningSteps",
+          "frames": [
+            1.0,
+            25.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|MediumMechHumanoidSkeleton|b1HitBack1",
+          "frames": [
+            1.0,
+            11.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|MediumMechHumanoidSkeleton|b1HitBack2",
+          "frames": [
+            1.0,
+            11.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|MediumMechHumanoidSkeleton|b1HitBack3",
+          "frames": [
+            1.0,
+            11.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|MediumMechHumanoidSkeleton|b1HitFront1",
+          "frames": [
+            1.0,
+            11.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|MediumMechHumanoidSkeleton|b1HitFront2",
+          "frames": [
+            1.0,
+            11.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|MediumMechHumanoidSkeleton|b1HitFront3",
+          "frames": [
+            1.0,
+            11.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|MediumMechHumanoidSkeleton|b2DeathFallDown1",
+          "frames": [
+            1.0,
+            31.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|MediumMechHumanoidSkeleton|b2DeathFallDown2",
+          "frames": [
+            1.0,
+            32.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|MediumMechHumanoidSkeleton|b2DeathPose1",
+          "frames": [
+            1.0,
+            11.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|MediumMechHumanoidSkeleton|b2DeathPose2",
+          "frames": [
+            1.0,
+            11.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|MediumMechHumanoidSkeleton|b2StandUp1",
+          "frames": [
+            1.0,
+            48.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|MediumMechHumanoidSkeleton|b2StandUp2",
+          "frames": [
+            1.0,
+            41.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|MediumMechHumanoidSkeleton|c1HeadRam",
+          "frames": [
+            1.0,
+            51.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|MediumMechHumanoidSkeleton|c1KickLeft",
+          "frames": [
+            1.0,
+            22.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|MediumMechHumanoidSkeleton|c1KickRight",
+          "frames": [
+            1.0,
+            22.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|MediumMechHumanoidSkeleton|c1PunchLeft",
+          "frames": [
+            1.0,
+            36.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|MediumMechHumanoidSkeleton|c1PunchRight",
+          "frames": [
+            1.0,
+            36.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|MediumMechHumanoidSkeleton|c1StompVehicle",
+          "frames": [
+            1.0,
+            22.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|MediumMechHumanoidSkeleton|xxxDefaultPose",
+          "frames": [
+            1.0,
+            11.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|xxxDefaultPose",
+          "frames": [
+            1.0,
+            11.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|xxxDefaultPose.001",
+          "frames": [
+            1.0,
+            11.0
+          ]
+        },
+        {
+          "name": "MediumMechHumanoidSkeleton|xxxDefaultPose.002",
+          "frames": [
+            1.0,
+            11.0
+          ]
+        }
+      ],
+      "reuse": "Inspection only. No donor vertices, skin weights, textures, bone definitions or keyframes copied."
+    },
+    {
+      "actor": "Carrier",
+      "source_id": "unityfan-scifi-vehicle-012",
+      "member": "source/sci-fi_vehicle_013_2.blend",
+      "sha256": "c3b6164b80876271a2569f41e2661c7fc030effc4b6d8558819dd40dee9393c6",
+      "evaluated_triangles": 9248,
+      "dimensions": [
+        2.4344382286071777,
+        6.120260238647461,
+        1.1082170456647873
+      ],
+      "rigs": [],
+      "actions": [],
+      "reuse": "Inspection only. No donor vertices, skin weights, textures, bone definitions or keyframes copied."
+    },
+    {
+      "actor": "Cutter",
+      "source_id": "quaternius-scifi-essentials",
+      "member": "FBX (Unity)/Enemy_QuadShell.fbx",
+      "sha256": "823ff8d076f4f99be412cf6854e8e85763efb06cc8e82f4bca8fd93b8a7407a0",
+      "evaluated_triangles": 7494,
+      "dimensions": [
+        2.014428734779358,
+        1.9660983681678772,
+        1.3672143099829555
+      ],
+      "rigs": [
+        {
+          "name": "Rig",
+          "bones": [
+            {
+              "name": "Root",
+              "parent": null,
+              "head": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "tail": [
+                0.0,
+                0.0,
+                1.3603074550628662
+              ]
+            },
+            {
+              "name": "Front_Leg_IK.L",
+              "parent": "Root",
+              "head": [
+                0.9730107188224792,
+                -0.9506130814552307,
+                0.004611283540725708
+              ],
+              "tail": [
+                0.9730107188224792,
+                -0.9506130814552307,
+                1.3649187088012695
+              ]
+            },
+            {
+              "name": "Back_Leg_IK.L",
+              "parent": "Root",
+              "head": [
+                0.9506130218505859,
+                0.9730107188224792,
+                0.004611283540725708
+              ],
+              "tail": [
+                0.9506130218505859,
+                0.9730107188224792,
+                1.3649187088012695
+              ]
+            },
+            {
+              "name": "Front_Leg_IK.R",
+              "parent": "Root",
+              "head": [
+                -0.9730107188224792,
+                -0.9506130814552307,
+                0.004611283540725708
+              ],
+              "tail": [
+                -0.9730107188224792,
+                -0.9506130814552307,
+                1.3649187088012695
+              ]
+            },
+            {
+              "name": "Back_Leg_IK.R",
+              "parent": "Root",
+              "head": [
+                -0.9506130218505859,
+                0.9730107188224792,
+                0.004611283540725708
+              ],
+              "tail": [
+                -0.9506130218505859,
+                0.9730107188224792,
+                1.3649187088012695
+              ]
+            },
+            {
+              "name": "Front_Leg_PT.L",
+              "parent": null,
+              "head": [
+                1.2298229932785034,
+                -1.2074254751205444,
+                0.6418613195419312
+              ],
+              "tail": [
+                1.2298229932785034,
+                -1.2074254751205444,
+                1.6418613195419312
+              ]
+            },
+            {
+              "name": "Body",
+              "parent": null,
+              "head": [
+                0.0,
+                0.0,
+                0.8309577703475952
+              ],
+              "tail": [
+                0.0,
+                0.0,
+                1.1059592962265015
+              ]
+            },
+            {
+              "name": "Front_Shoulder.L",
+              "parent": "Body",
+              "head": [
+                0.1297968178987503,
+                -0.12979675829410553,
+                0.7496496438980103
+              ],
+              "tail": [
+                0.25590890645980835,
+                -0.2559087872505188,
+                0.8126039505004883
+              ]
+            },
+            {
+              "name": "Front_Leg1.L",
+              "parent": "Front_Shoulder.L",
+              "head": [
+                0.25590890645980835,
+                -0.2559087872505188,
+                0.8126039505004883
+              ],
+              "tail": [
+                0.42872124910354614,
+                -0.40632373094558716,
+                0.43874186277389526
+              ]
+            },
+            {
+              "name": "Front_Leg2.L",
+              "parent": "Front_Leg1.L",
+              "head": [
+                0.42872124910354614,
+                -0.40632373094558716,
+                0.43874186277389526
+              ],
+              "tail": [
+                0.6910019516944885,
+                -0.6686045527458191,
+                0.649291455745697
+              ]
+            },
+            {
+              "name": "Front_Leg3.L",
+              "parent": "Front_Leg2.L",
+              "head": [
+                0.6910019516944885,
+                -0.6686045527458191,
+                0.649291455745697
+              ],
+              "tail": [
+                0.8496688008308411,
+                -0.8272711038589478,
+                0.2865748107433319
+              ]
+            },
+            {
+              "name": "Back_Shoulder.L",
+              "parent": "Body",
+              "head": [
+                0.12979675829410553,
+                0.1297968178987503,
+                0.7496495842933655
+              ],
+              "tail": [
+                0.2559087872505188,
+                0.25590890645980835,
+                0.8126038908958435
+              ]
+            },
+            {
+              "name": "Back_Leg1.L",
+              "parent": "Back_Shoulder.L",
+              "head": [
+                0.2559087872505188,
+                0.25590890645980835,
+                0.8126038908958435
+              ],
+              "tail": [
+                0.40632373094558716,
+                0.42872124910354614,
+                0.43874165415763855
+              ]
+            },
+            {
+              "name": "Back_Leg2.L",
+              "parent": "Back_Leg1.L",
+              "head": [
+                0.40632373094558716,
+                0.42872124910354614,
+                0.43874165415763855
+              ],
+              "tail": [
+                0.6686046123504639,
+                0.6910020112991333,
+                0.6492913365364075
+              ]
+            },
+            {
+              "name": "Back_Leg3.L",
+              "parent": "Back_Leg2.L",
+              "head": [
+                0.6686046123504639,
+                0.6910020112991333,
+                0.6492913365364075
+              ],
+              "tail": [
+                0.8272713422775269,
+                0.8496689796447754,
+                0.28657427430152893
+              ]
+            },
+            {
+              "name": "Front_Shoulder.R",
+              "parent": "Body",
+              "head": [
+                -0.1297968178987503,
+                -0.12979675829410553,
+                0.7496496438980103
+              ],
+              "tail": [
+                -0.25590890645980835,
+                -0.2559087872505188,
+                0.8126039505004883
+              ]
+            },
+            {
+              "name": "Front_Leg1.R",
+              "parent": "Front_Shoulder.R",
+              "head": [
+                -0.25590890645980835,
+                -0.2559087872505188,
+                0.8126039505004883
+              ],
+              "tail": [
+                -0.42872124910354614,
+                -0.40632373094558716,
+                0.43874186277389526
+              ]
+            },
+            {
+              "name": "Front_Leg2.R",
+              "parent": "Front_Leg1.R",
+              "head": [
+                -0.42872124910354614,
+                -0.40632373094558716,
+                0.43874186277389526
+              ],
+              "tail": [
+                -0.6910019516944885,
+                -0.6686045527458191,
+                0.649291455745697
+              ]
+            },
+            {
+              "name": "Front_Leg3.R",
+              "parent": "Front_Leg2.R",
+              "head": [
+                -0.6910019516944885,
+                -0.6686045527458191,
+                0.649291455745697
+              ],
+              "tail": [
+                -0.8496688008308411,
+                -0.8272711038589478,
+                0.2865748107433319
+              ]
+            },
+            {
+              "name": "Back_Shoulder.R",
+              "parent": "Body",
+              "head": [
+                -0.12979675829410553,
+                0.1297968178987503,
+                0.7496495842933655
+              ],
+              "tail": [
+                -0.2559087872505188,
+                0.25590890645980835,
+                0.8126038908958435
+              ]
+            },
+            {
+              "name": "Back_Leg1.R",
+              "parent": "Back_Shoulder.R",
+              "head": [
+                -0.2559087872505188,
+                0.25590890645980835,
+                0.8126038908958435
+              ],
+              "tail": [
+                -0.40632373094558716,
+                0.42872124910354614,
+                0.43874165415763855
+              ]
+            },
+            {
+              "name": "Back_Leg2.R",
+              "parent": "Back_Leg1.R",
+              "head": [
+                -0.40632373094558716,
+                0.42872124910354614,
+                0.43874165415763855
+              ],
+              "tail": [
+                -0.6686046123504639,
+                0.6910020112991333,
+                0.6492913365364075
+              ]
+            },
+            {
+              "name": "Back_Leg3.R",
+              "parent": "Back_Leg2.R",
+              "head": [
+                -0.6686046123504639,
+                0.6910020112991333,
+                0.6492913365364075
+              ],
+              "tail": [
+                -0.8272713422775269,
+                0.8496689796447754,
+                0.28657427430152893
+              ]
+            },
+            {
+              "name": "Gun.L",
+              "parent": "Body",
+              "head": [
+                0.22850850224494934,
+                -0.1858207881450653,
+                1.1352438926696777
+              ],
+              "tail": [
+                0.22850850224494934,
+                -0.46082228422164917,
+                1.1352438926696777
+              ]
+            },
+            {
+              "name": "Gun.R",
+              "parent": "Body",
+              "head": [
+                -0.22850850224494934,
+                -0.1858207881450653,
+                1.1352438926696777
+              ],
+              "tail": [
+                -0.22850850224494934,
+                -0.46082228422164917,
+                1.1352438926696777
+              ]
+            },
+            {
+              "name": "Back_Leg_PT.L",
+              "parent": null,
+              "head": [
+                1.2074254751205444,
+                1.2298229932785034,
+                0.6418612599372864
+              ],
+              "tail": [
+                1.2074254751205444,
+                1.2298229932785034,
+                1.6418614387512207
+              ]
+            },
+            {
+              "name": "Front_Leg_PT.R",
+              "parent": null,
+              "head": [
+                -1.2298229932785034,
+                -1.2074254751205444,
+                0.6418613195419312
+              ],
+              "tail": [
+                -1.2298229932785034,
+                -1.2074254751205444,
+                1.6418613195419312
+              ]
+            },
+            {
+              "name": "Back_Leg_PT.R",
+              "parent": null,
+              "head": [
+                -1.2074254751205444,
+                1.2298229932785034,
+                0.6418612599372864
+              ],
+              "tail": [
+                -1.2074254751205444,
+                1.2298229932785034,
+                1.6418614387512207
+              ]
+            }
+          ]
+        }
+      ],
+      "actions": [
+        {
+          "name": "Rig|Rig|Attack",
+          "frames": [
+            1.0,
+            11.0
+          ]
+        },
+        {
+          "name": "Rig|Rig|Charge",
+          "frames": [
+            1.0,
+            11.0
+          ]
+        },
+        {
+          "name": "Rig|Rig|Hit",
+          "frames": [
+            1.0,
+            8.0
+          ]
+        },
+        {
+          "name": "Rig|Rig|Idle",
+          "frames": [
+            1.0,
+            81.0
+          ]
+        },
+        {
+          "name": "Rig|Rig|Look",
+          "frames": [
+            1.0,
+            81.0
+          ]
+        },
+        {
+          "name": "Rig|Rig|Run",
+          "frames": [
+            1.0,
+            21.0
+          ]
+        },
+        {
+          "name": "Rig|Rig|TurnOff",
+          "frames": [
+            1.0,
+            15.0
+          ]
+        },
+        {
+          "name": "Rig|Rig|Walk",
+          "frames": [
+            1.0,
+            31.0
+          ]
+        }
+      ],
+      "reuse": "Inspection only. No donor vertices, skin weights, textures, bone definitions or keyframes copied."
+    },
+    {
+      "actor": "ArcDrone",
+      "source_id": "quaternius-scifi-essentials",
+      "member": "FBX (Unity)/Enemy_EyeDrone.fbx",
+      "sha256": "2ed79c0e1bf99052cbc769942033a637d63afb89496c1a46ff3031f3ef4916f2",
+      "evaluated_triangles": 3530,
+      "dimensions": [
+        0.996461033821106,
+        0.8922739624977112,
+        0.9954961538314819
+      ],
+      "rigs": [
+        {
+          "name": "Rig",
+          "bones": [
+            {
+              "name": "Root",
+              "parent": null,
+              "head": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "tail": [
+                0.0,
+                0.0,
+                0.009999999776482582
+              ]
+            },
+            {
+              "name": "Body",
+              "parent": "Root",
+              "head": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "tail": [
+                0.0,
+                0.0,
+                0.43373480439186096
+              ]
+            },
+            {
+              "name": "Eyelid_Top",
+              "parent": "Body",
+              "head": [
+                -0.0013005986111238599,
+                -0.35516929626464844,
+                0.09356069564819336
+              ],
+              "tail": [
+                -0.0013005986111238599,
+                -0.35516929626464844,
+                0.19419944286346436
+              ]
+            },
+            {
+              "name": "Eyelid_Top_end",
+              "parent": "Eyelid_Top",
+              "head": [
+                -0.0013005986111238599,
+                -0.35516929626464844,
+                0.19419944286346436
+              ],
+              "tail": [
+                -0.0013005986111238599,
+                -0.35516929626464844,
+                0.29483819007873535
+              ]
+            },
+            {
+              "name": "Eyelid_Bottom",
+              "parent": "Body",
+              "head": [
+                -0.0013005986111238599,
+                -0.35516929626464844,
+                -0.14256078004837036
+              ],
+              "tail": [
+                -0.0013005986111238599,
+                -0.35516929626464844,
+                -0.03431309759616852
+              ]
+            },
+            {
+              "name": "Eyelid_Bottom_end",
+              "parent": "Eyelid_Bottom",
+              "head": [
+                -0.0013005986111238599,
+                -0.35516929626464844,
+                -0.03431309759616852
+              ],
+              "tail": [
+                -0.0013005986111238599,
+                -0.35516929626464844,
+                0.07393458485603333
+              ]
+            },
+            {
+              "name": "FrontPiston.L",
+              "parent": "Body",
+              "head": [
+                0.33493757247924805,
+                -0.1796930879354477,
+                -0.2645567059516907
+              ],
+              "tail": [
+                0.4600989818572998,
+                -0.24943894147872925,
+                -0.37864112854003906
+              ]
+            },
+            {
+              "name": "FrontPiston.L_end",
+              "parent": "FrontPiston.L",
+              "head": [
+                0.4600989818572998,
+                -0.24943894147872925,
+                -0.37864112854003906
+              ],
+              "tail": [
+                0.5852603912353516,
+                -0.3191847801208496,
+                -0.49272555112838745
+              ]
+            },
+            {
+              "name": "BackPiston.L",
+              "parent": "Body",
+              "head": [
+                0.3114379644393921,
+                0.2369273155927658,
+                -0.247658833861351
+              ],
+              "tail": [
+                0.4304606318473816,
+                0.32505911588668823,
+                -0.3554154932498932
+              ]
+            },
+            {
+              "name": "BackPiston.L_end",
+              "parent": "BackPiston.L",
+              "head": [
+                0.4304606318473816,
+                0.32505911588668823,
+                -0.3554154932498932
+              ],
+              "tail": [
+                0.5494832992553711,
+                0.41319093108177185,
+                -0.46317213773727417
+              ]
+            },
+            {
+              "name": "FrontPiston.R",
+              "parent": "Body",
+              "head": [
+                -0.33493757247924805,
+                -0.1796930879354477,
+                -0.2645567059516907
+              ],
+              "tail": [
+                -0.4600989818572998,
+                -0.24943894147872925,
+                -0.37864112854003906
+              ]
+            },
+            {
+              "name": "FrontPiston.R_end",
+              "parent": "FrontPiston.R",
+              "head": [
+                -0.4600989818572998,
+                -0.24943894147872925,
+                -0.37864112854003906
+              ],
+              "tail": [
+                -0.5852603912353516,
+                -0.3191847801208496,
+                -0.49272555112838745
+              ]
+            },
+            {
+              "name": "BackPiston.R",
+              "parent": "Body",
+              "head": [
+                -0.3114379644393921,
+                0.2369273155927658,
+                -0.247658833861351
+              ],
+              "tail": [
+                -0.4304606318473816,
+                0.32505911588668823,
+                -0.3554154932498932
+              ]
+            },
+            {
+              "name": "BackPiston.R_end",
+              "parent": "BackPiston.R",
+              "head": [
+                -0.4304606318473816,
+                0.32505911588668823,
+                -0.3554154932498932
+              ],
+              "tail": [
+                -0.5494832992553711,
+                0.41319093108177185,
+                -0.46317213773727417
+              ]
+            }
+          ]
+        }
+      ],
+      "actions": [
+        {
+          "name": "Rig|Rig|Attack",
+          "frames": [
+            1.0,
+            19.0
+          ]
+        },
+        {
+          "name": "Rig|Rig|BackFlip",
+          "frames": [
+            1.0,
+            41.0
+          ]
+        },
+        {
+          "name": "Rig|Rig|Charging",
+          "frames": [
+            1.0,
+            16.0
+          ]
+        },
+        {
+          "name": "Rig|Rig|Hit",
+          "frames": [
+            1.0,
+            9.0
+          ]
+        },
+        {
+          "name": "Rig|Rig|Idle",
+          "frames": [
+            1.0,
+            101.0
+          ]
+        },
+        {
+          "name": "Rig|Rig|Look",
+          "frames": [
+            1.0,
+            101.0
+          ]
+        }
+      ],
+      "reuse": "Inspection only. No donor vertices, skin weights, textures, bone definitions or keyframes copied."
+    },
+    {
+      "actor": "Magnetar",
+      "source_id": "quaternius-scifi-essentials",
+      "member": "FBX (Unity)/Enemy_Trilobite.fbx",
+      "sha256": "015e1424f20afacd7fcd57a93b95418fd0745f849ee81790ea3853facc19f5e8",
+      "evaluated_triangles": 8338,
+      "dimensions": [
+        2.54111909866333,
+        2.656915307044983,
+        2.389990411698818
+      ],
+      "rigs": [
+        {
+          "name": "Rig",
+          "bones": [
+            {
+              "name": "Root",
+              "parent": null,
+              "head": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "tail": [
+                0.0,
+                0.0,
+                0.8212794065475464
+              ]
+            },
+            {
+              "name": "Leg_IK.L",
+              "parent": "Root",
+              "head": [
+                0.8100311756134033,
+                0.13438719511032104,
+                0.017012953758239746
+              ],
+              "tail": [
+                0.8100311756134033,
+                0.13438719511032104,
+                0.8382923603057861
+              ]
+            },
+            {
+              "name": "Leg_IK.R",
+              "parent": "Root",
+              "head": [
+                -0.8100311756134033,
+                0.13438719511032104,
+                0.017012953758239746
+              ],
+              "tail": [
+                -0.8100311756134033,
+                0.13438719511032104,
+                0.8382923603057861
+              ]
+            },
+            {
+              "name": "Leg_PT.L",
+              "parent": null,
+              "head": [
+                0.8672121167182922,
+                -2.412752866744995,
+                0.8986057639122009
+              ],
+              "tail": [
+                0.8672121167182922,
+                -2.412752866744995,
+                1.8986058235168457
+              ]
+            },
+            {
+              "name": "Body",
+              "parent": null,
+              "head": [
+                -2.5099142320073042e-08,
+                0.3958134651184082,
+                2.053905725479126
+              ],
+              "tail": [
+                -2.5099142320073042e-08,
+                0.3958134651184082,
+                2.7124617099761963
+              ]
+            },
+            {
+              "name": "Shoulder.L",
+              "parent": "Body",
+              "head": [
+                0.35599371790885925,
+                0.6483986377716064,
+                1.86927330493927
+              ],
+              "tail": [
+                0.8100312352180481,
+                0.6952609419822693,
+                1.8536893129348755
+              ]
+            },
+            {
+              "name": "Leg1.L",
+              "parent": "Shoulder.L",
+              "head": [
+                0.8100312352180481,
+                0.6952609419822693,
+                1.8536893129348755
+              ],
+              "tail": [
+                0.8100312352180481,
+                -0.008336663246154785,
+                1.6274687051773071
+              ]
+            },
+            {
+              "name": "Leg2.L",
+              "parent": "Leg1.L",
+              "head": [
+                0.810030996799469,
+                -0.008336728438735008,
+                1.6274688243865967
+              ],
+              "tail": [
+                0.810030996799469,
+                0.7036314606666565,
+                1.0886406898498535
+              ]
+            },
+            {
+              "name": "Leg3.L",
+              "parent": "Leg2.L",
+              "head": [
+                0.810030996799469,
+                0.7036314606666565,
+                1.0886406898498535
+              ],
+              "tail": [
+                0.8100311756134033,
+                0.21996358036994934,
+                0.3182419538497925
+              ]
+            },
+            {
+              "name": "Leg4.L",
+              "parent": "Leg3.L",
+              "head": [
+                0.8100311756134033,
+                0.21996358036994934,
+                0.3182419538497925
+              ],
+              "tail": [
+                0.8100310564041138,
+                0.1343870609998703,
+                0.017012745141983032
+              ]
+            },
+            {
+              "name": "Foot.L",
+              "parent": "Leg4.L",
+              "head": [
+                0.8100310564041138,
+                0.1343870609998703,
+                0.017012745141983032
+              ],
+              "tail": [
+                0.8100311756134033,
+                -0.17876210808753967,
+                0.01701275259256363
+              ]
+            },
+            {
+              "name": "Gun.L",
+              "parent": "Body",
+              "head": [
+                0.3199118971824646,
+                -0.3638894557952881,
+                2.2312347888946533
+              ],
+              "tail": [
+                0.3199118971824646,
+                -1.0224454402923584,
+                2.2312347888946533
+              ]
+            },
+            {
+              "name": "Shoulder.R",
+              "parent": "Body",
+              "head": [
+                -0.35599371790885925,
+                0.6483986377716064,
+                1.86927330493927
+              ],
+              "tail": [
+                -0.8100312352180481,
+                0.6952609419822693,
+                1.8536893129348755
+              ]
+            },
+            {
+              "name": "Leg1.R",
+              "parent": "Shoulder.R",
+              "head": [
+                -0.8100312352180481,
+                0.6952609419822693,
+                1.8536893129348755
+              ],
+              "tail": [
+                -0.8100312948226929,
+                -0.008336782455444336,
+                1.6274688243865967
+              ]
+            },
+            {
+              "name": "Leg2.R",
+              "parent": "Leg1.R",
+              "head": [
+                -0.8100312948226929,
+                -0.008336855098605156,
+                1.6274690628051758
+              ],
+              "tail": [
+                -0.8100312948226929,
+                0.7036319375038147,
+                1.0886406898498535
+              ]
+            },
+            {
+              "name": "Leg3.R",
+              "parent": "Leg2.R",
+              "head": [
+                -0.8100312948226929,
+                0.7036319375038147,
+                1.0886406898498535
+              ],
+              "tail": [
+                -0.8100311160087585,
+                0.21996381878852844,
+                0.3182416558265686
+              ]
+            },
+            {
+              "name": "Leg4.R",
+              "parent": "Leg3.R",
+              "head": [
+                -0.8100311160087585,
+                0.21996381878852844,
+                0.3182416558265686
+              ],
+              "tail": [
+                -0.8100313544273376,
+                0.13438713550567627,
+                0.017012327909469604
+              ]
+            },
+            {
+              "name": "Foot.R",
+              "parent": "Leg4.R",
+              "head": [
+                -0.8100313544273376,
+                0.13438713550567627,
+                0.017012327909469604
+              ],
+              "tail": [
+                -0.8100311756134033,
+                -0.17876216769218445,
+                0.017012303695082664
+              ]
+            },
+            {
+              "name": "Gun.R",
+              "parent": "Body",
+              "head": [
+                -0.3199118971824646,
+                -0.3638894557952881,
+                2.2312347888946533
+              ],
+              "tail": [
+                -0.3199118971824646,
+                -1.0224454402923584,
+                2.2312347888946533
+              ]
+            },
+            {
+              "name": "Leg_PT.R",
+              "parent": null,
+              "head": [
+                -0.8672121167182922,
+                -2.412752866744995,
+                0.8986057639122009
+              ],
+              "tail": [
+                -0.8672121167182922,
+                -2.412752866744995,
+                1.8986058235168457
+              ]
+            }
+          ]
+        }
+      ],
+      "actions": [
+        {
+          "name": "Rig|Rig|Attack",
+          "frames": [
+            1.0,
+            9.0
+          ]
+        },
+        {
+          "name": "Rig|Rig|AttackAuto",
+          "frames": [
+            1.0,
+            11.0
+          ]
+        },
+        {
+          "name": "Rig|Rig|Hanging",
+          "frames": [
+            1.0,
+            101.0
+          ]
+        },
+        {
+          "name": "Rig|Rig|Hit",
+          "frames": [
+            1.0,
+            9.0
+          ]
+        },
+        {
+          "name": "Rig|Rig|Idle",
+          "frames": [
+            1.0,
+            101.0
+          ]
+        },
+        {
+          "name": "Rig|Rig|Look",
+          "frames": [
+            1.0,
+            101.0
+          ]
+        },
+        {
+          "name": "Rig|Rig|Run",
+          "frames": [
+            1.0,
+            26.0
+          ]
+        },
+        {
+          "name": "Rig|Rig|TurnOff",
+          "frames": [
+            1.0,
+            31.0
+          ]
+        },
+        {
+          "name": "Rig|Rig|Walk",
+          "frames": [
+            1.0,
+            51.0
+          ]
+        }
+      ],
+      "reuse": "Inspection only. No donor vertices, skin weights, textures, bone definitions or keyframes copied."
+    }
+  ],
+  "custodian": "Custom architecture; inspected heavy joints from the Magnetar component reference, no full boss donor."
+}
