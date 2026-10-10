@@ -34,7 +34,8 @@ namespace Gravivore.Gameplay.Enemies
             Material visualMaterial,
             IEnemyVisualFactory visualFactory = null,
             PlayerStatsState playerStats = null,
-            Func<int, bool> spotActivation = null)
+            Func<int, bool> spotActivation = null,
+            AmbientPatrolParameters ambientMotion = default)
         {
             if (_isInitialized)
             {
@@ -71,7 +72,7 @@ namespace Gravivore.Gameplay.Enemies
                 targetLayer,
                 visualMaterial,
                 visualFactory,
-                playerStats);
+                playerStats, ambientMotion);
             _spots = new SpawnSpotRuntime[spotConfigurations.Count];
             for (var i = 0; i < _spots.Length; i++)
             {

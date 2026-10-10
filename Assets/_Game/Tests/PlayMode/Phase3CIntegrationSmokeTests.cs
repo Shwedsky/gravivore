@@ -62,8 +62,18 @@ namespace Gravivore.Tests.PlayMode
                 Assert.That(binding.VisualRoot.GetComponentsInChildren<Collider>(true), Is.Empty);
             }
             var hub = environment.GetRegion("repair-hub").Root;
-            var model = hub.Find("MainPlatform/Repair_Platform_V2"); Assert.IsNotNull(model);
-            Assert.That(Vector3.Distance(hub.Find("PlayerDockPoint").position, model.Find("ServicePoint").position), Is.LessThan(.001f));
+            if(environment.BlueprintWorldOnly)
+            {
+                var model=hub.GetComponentsInChildren<Transform>().SingleOrDefault(t=>t.name=="RepairHub / authored industrial sector");Assert.NotNull(model);
+                Assert.IsNotEmpty(model.GetComponentsInChildren<Renderer>());
+                Assert.IsNull(hub.Find("MainPlatform/Repair_Platform_V2"));
+                Assert.That(Vector3.Distance(hub.Find("PlayerDockPoint").position,root.RepairHub.RepairPosition),Is.LessThan(.001f));
+            }
+            else
+            {
+                var model=hub.Find("MainPlatform/Repair_Platform_V2");Assert.IsNotNull(model);
+                Assert.That(Vector3.Distance(hub.Find("PlayerDockPoint").position,model.Find("ServicePoint").position),Is.LessThan(.001f));
+            }
             Assert.That(root.RepairHub.Manipulators.ArmCount,Is.EqualTo(2));
             Assert.That(root.RepairHub.Manipulators.transform.position,Is.EqualTo(root.RepairHub.RepairPosition));
             Assert.NotNull(root.RepairHub.Manipulators.transform.Find("Authored repair pedestal 0"));

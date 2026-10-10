@@ -63,7 +63,7 @@ def main():
                              sample_rate=RATE,peak=max(abs(x) for x in data),
                              rms=math.sqrt(sum(x*x for x in data)/len(data)),
                              sha256=hashlib.sha256(path.read_bytes()).hexdigest()))
-    output=ROOT/"docs/post-device-combat-readability/sfx_masters.json"
+    output=ROOT/"docs/history/visual-stages/chapter01-visual-passes/post-device-combat-readability/sfx_masters.json"
     output.write_text(json.dumps(dict(authorship="Project-owned synthesis; no sampled audio",clips=evidence),indent=2))
     bank=ROOT/"Assets/_Game/Content/Presentation/Phase6B/Audio/Phase6B_AudioBank.asset"
     source=bank.read_text()

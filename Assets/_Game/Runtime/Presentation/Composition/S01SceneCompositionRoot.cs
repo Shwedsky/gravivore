@@ -47,6 +47,7 @@ namespace Gravivore.Presentation.Composition
         [SerializeField] private EquipmentCatalogDefinition _equipmentCatalogDefinition;
         [SerializeField] private GravityAttackSettings _gravityAttackSettings;
         [SerializeField] private SpawnSpotDefinition[] _spawnSpotDefinitions;
+        [SerializeField] private EnemyAmbientMotionSettings _enemyAmbientMotionSettings;
         [SerializeField] private PlayerProgressionDefinition _progressionDefinition;
         [SerializeField] private QuestDefinition _questDefinition;
         [SerializeField] private QuestOnboardingDefinition _questOnboardingDefinition;
@@ -301,7 +302,7 @@ namespace Gravivore.Presentation.Composition
             if (_visualEnvironment?.Definition.WeaponPrefab != null)
             {
                 PlayerObject.AddComponent<Gravivore.Presentation.Player.WeaponEquipmentPresenter>().Initialize(Equipment, PlayerObject.GetComponent<PlayerEvolutionView>(), _gravityLashVfx, _visualEnvironment.Definition.WeaponPrefab);
-                gameObject.AddComponent<WeaponEquipmentPanel>().Initialize(PauseMenu.ModalRect, _hudRoot, Equipment);
+                gameObject.AddComponent<WeaponEquipmentPanel>().Initialize(PauseMenu.ModalRect, _hudRoot, Equipment, _visualEnvironment.Definition.UiSkin);
             }
             StartupPhase("map/UI generation");
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
@@ -433,6 +434,8 @@ namespace Gravivore.Presentation.Composition
             safeAreaTransform.offsetMax = Vector2.zero;
             safeAreaObject.AddComponent<SafeAreaHudRoot>();
             _hudRoot = safeAreaTransform;
+            if (_visualEnvironment?.Definition.UiSkin != null)
+                safeAreaObject.AddComponent<ProductionUiSkinScope>().Initialize(_visualEnvironment.Definition.UiSkin);
 
             var exclusionObject = new GameObject("HUD Touch Exclusion", typeof(RectTransform));
             var exclusionTransform = exclusionObject.GetComponent<RectTransform>();
@@ -668,7 +671,7 @@ namespace Gravivore.Presentation.Composition
             var worldObject = new GameObject("Chapter 01 World", typeof(Chapter01WorldPresenter));
             worldObject.transform.SetParent(transform, false);
             WorldPresenter = worldObject.GetComponent<Chapter01WorldPresenter>();
-            WorldPresenter.Initialize(configuration, state, _materialPalette.LitMaterial, _s15VisualCatalog, _visualEnvironment);
+            WorldPresenter.Initialize(configuration, state, _materialPalette.LitMaterial, _s15VisualCatalog, _visualEnvironment, _worldDefinition.Layout);
         }
 
         private void InitializeQuests(QuestCatalog catalog, Chapter01WorldConfiguration world)
@@ -909,7 +912,7 @@ namespace Gravivore.Presentation.Composition
                 ordinary[i] = _spawnSpotDefinitions[i].CreateRuntimeConfiguration();
                 positions[i] = ordinary[i].WorldOrigin;
             }
-            StrongSpots = Chapter1StrongOrdinarySpotCatalog.Create(_worldDefinition.Configuration, positions);
+            StrongSpots = Chapter1StrongOrdinarySpotCatalog.Create(_worldDefinition.Configuration, positions, _worldDefinition.Layout?.StrongSpotPositions);
             _strongActivationRadii = new float[StrongSpots.Count];
             var configurations = new SpawnSpotRuntimeConfiguration[ordinary.Length + StrongSpots.Count];
             for (var i = 0; i < StrongSpots.Count; i++)
@@ -943,7 +946,8 @@ namespace Gravivore.Presentation.Composition
                 targetLayer,
                 _materialPalette.LitMaterial,
                 new S15EnemyVisualFactory(_s15VisualCatalog),
-                PlayerStats, spotActivation: IsSpawnSpotActive);
+                PlayerStats, spotActivation: IsSpawnSpotActive,
+                ambientMotion: _enemyAmbientMotionSettings != null ? _enemyAmbientMotionSettings.Parameters : default);
         }
 
         private bool IsSpawnSpotActive(int index)

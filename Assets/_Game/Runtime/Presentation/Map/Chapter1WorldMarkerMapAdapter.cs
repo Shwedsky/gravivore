@@ -42,8 +42,8 @@ namespace Gravivore.Presentation.Map
         {
             get
             {
-                if (_bossGate.HasValue && _player.position.z >= _bossGate.Value.Position.z) return "Арена Кустодиана";
-                if (_eliteGate.HasValue && _player.position.z >= _eliteGate.Value.Position.z) return "Контур Магнетара";
+                if (_bossGate.HasValue && _player.position.z >= _bossGate.Value.Position.z) return "Ядро Кустодиана";
+                if (_eliteGate.HasValue && _player.position.z >= _eliteGate.Value.Position.z) return "Комплекс Магнетара";
                 var best = float.MaxValue; var name = "Сектор";
                 for (var i = 0; i < _ordinaryCount; i++)
                 {

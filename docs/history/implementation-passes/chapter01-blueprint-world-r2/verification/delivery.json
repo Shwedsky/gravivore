@@ -1,0 +1,250 @@
+{
+  "branch": "art/chapter01-blueprint-rebuild-v1",
+  "draftPR": "https://github.com/Shwedsky/gravivore/pull/71",
+  "acceptedR1TechnicalBaseline": "67236348a2be8732f5fbd88eb2093da18f5f7251",
+  "worldPresentationOnly": true,
+  "apk": {
+    "path": "Builds\\Android\\gravivore-dev-0.1.0+49.apk",
+    "deliveredPath": "C:\\Users\\pamak\\Documents\\ChatGPT\\gravivore\\Builds\\Android\\gravivore-dev-0.1.0+49.apk",
+    "bytes": 97793249,
+    "sha256": "3d2fa87939418c267ed1e79acb327b8c12c145c66045ee9dd0c6cb72663f44a0",
+    "metadata": {
+      "flavor": "Dev",
+      "version": "0.1.0",
+      "versionCode": 49,
+      "applicationId": "com.gravivore.mobile.dev",
+      "buildTimestampUtc": "2026-10-10T17:55:10.8178997Z",
+      "gitCommitSha": "0d20154c0cf87d516078eb8c03ec2e508858bace",
+      "unityVersion": "6000.3.0f1",
+      "developmentBuild": true,
+      "allowDebugging": true,
+      "targetArchitecture": "ARM64",
+      "apkFilename": "gravivore-dev-0.1.0+49.apk"
+    },
+    "nativeLibraries": [
+      "lib/arm64-v8a/lib_burst_generated.so",
+      "lib/arm64-v8a/libc++_shared.so",
+      "lib/arm64-v8a/libgame.so",
+      "lib/arm64-v8a/libil2cpp.so",
+      "lib/arm64-v8a/libmain.so",
+      "lib/arm64-v8a/libswappywrapper.so",
+      "lib/arm64-v8a/libunity.so"
+    ],
+    "manifest": "package: name='com.gravivore.mobile.dev' versionCode='49' versionName='0.1.0' platformBuildVersionName='16' platformBuildVersionCode='36' compileSdkVersion='36' compileSdkVersionCodename='16'\nminSdkVersion:'26'\ntargetSdkVersion:'36'\napplication-debuggable\nnative-code: 'arm64-v8a'"
+  },
+  "tests": {
+    "editMode": {
+      "total": 502,
+      "passed": 502,
+      "failed": 0,
+      "skipped": 0,
+      "path": "docs\\history\\implementation-passes\\chapter01-blueprint-world-r2\\verification\\editmode-final.xml",
+      "sha256": "43b25c3bc693a2c321cc381db5270e1700bcd5211065437870b3e28530da1b39"
+    },
+    "playMode": {
+      "total": 142,
+      "passed": 142,
+      "failed": 0,
+      "skipped": 0,
+      "path": "docs\\history\\implementation-passes\\chapter01-blueprint-world-r2\\verification\\playmode-final.xml",
+      "sha256": "d1b0cf72420c2d1b90a2c24f0b23bdb10520463962eb45ee9ac9f467bcf3124c"
+    }
+  },
+  "executedGates": {
+    "compile": {
+      "passed": true,
+      "exitCode": 0,
+      "log": "docs\\history\\implementation-passes\\chapter01-blueprint-world-r2\\verification\\compile-final.log",
+      "sha256": "9b4711b677c1cbf5562cbf426ea743620423f95c9c1135d45a967ab213b59a9d"
+    },
+    "validator": {
+      "passed": true,
+      "exitCode": 0,
+      "log": "docs\\history\\implementation-passes\\chapter01-blueprint-world-r2\\verification\\validator-final.log",
+      "sha256": "684c5b8467868704b26bcbb90629496f11edcd895e0de95559f694025e0bfab0"
+    },
+    "androidBuild": {
+      "passed": true,
+      "exitCode": 0,
+      "log": "Builds\\Logs\\android-dev-20261010-175307.log",
+      "sha256": "39bd6d1c4251152c1d57a2dd1d9712f5605970a97535a765d8e4a22019726527"
+    }
+  },
+  "worldAudit": {
+    "validated": true,
+    "actorsRedesigned": false,
+    "uiRedesigned": false,
+    "oldCollisionFingerprintRequired": false,
+    "sectors": 8,
+    "movementSurfaces": 12,
+    "architecturalBlockers": 76,
+    "activeV45": 0,
+    "activeV46": 0,
+    "activeV47": 0,
+    "activeRepeatedDeck": 0,
+    "staticRenderers": 132,
+    "materials": 4,
+    "lights": 17,
+    "missingMaterials": 0,
+    "missingMeshes": 0,
+    "staticTriangles": 934657,
+    "textureBytes": 90347313
+  },
+  "preservation": {
+    "validated": true,
+    "r1AcceptedTechnicalBaseline": "67236348a2be8732f5fbd88eb2093da18f5f7251",
+    "protectedTrackedFiles": 1568,
+    "topologyCoordinatesCollisionMinimapGameplayUnchanged": true,
+    "failures": [],
+    "criticalAuthorityFiles": [
+      {
+        "path": "Tools/blueprint-world-r1/layout.json",
+        "unchanged": true,
+        "sha256": "1f0579dab2d86bfbff66a6543835a2cd10fc93b176d30690ec42740718df533a"
+      },
+      {
+        "path": "Assets/_Game/Content/BlueprintWorldR1/Chapter01WorldLayout.asset",
+        "unchanged": true,
+        "sha256": "f2b55a4d69ea47733716e7ee31856088c0e6c49f04cb25df83eaaf9c00f85c03"
+      },
+      {
+        "path": "Assets/_Game/Content/Definitions/S08_Chapter01World.asset",
+        "unchanged": true,
+        "sha256": "08fa3b758d352a82447f4ad405b41dd33efdd0309c17b0924efb696be2e55c07"
+      }
+    ],
+    "method": "Git worktree diff against R1 delivery HEAD for all runtime, content outside allowed world presentation, G0 source and layout. Critical layout/definition bytes separately compared after LF normalization."
+  },
+  "ownerOriginalsPreserved": true,
+  "finalPortraitCaptures": [
+    {
+      "path": "docs\\history\\implementation-passes\\chapter01-blueprint-world-r2\\internal\\01_repair-hub.png",
+      "sha256": "e31c16be842cb2cebe1bf30ddc3004019a8e31c6104de0fe272c824dabddd4d1"
+    },
+    {
+      "path": "docs\\history\\implementation-passes\\chapter01-blueprint-world-r2\\internal\\02_relay-yard.png",
+      "sha256": "0106ccb48070682574242a75d78ff5e90f96caf6fcc59e48d3c23e7f36b27d13"
+    },
+    {
+      "path": "docs\\history\\implementation-passes\\chapter01-blueprint-world-r2\\internal\\03_capacitor-field.png",
+      "sha256": "0bed1e44449450557a373da3886fe03ff282f6a3c6edd585faa98e68649b3d1f"
+    },
+    {
+      "path": "docs\\history\\implementation-passes\\chapter01-blueprint-world-r2\\internal\\04_cutting-floor.png",
+      "sha256": "bd31063dccb7b2eebde63ef7bcd3e40760e48a4c64f2e37be22ab0f436e861e9"
+    },
+    {
+      "path": "docs\\history\\implementation-passes\\chapter01-blueprint-world-r2\\internal\\05_shield-dump.png",
+      "sha256": "fc3c6c0a6e4cab9678bc897b5bbe6e50eaae306d5c329d267ba30c559ab97b9d"
+    },
+    {
+      "path": "docs\\history\\implementation-passes\\chapter01-blueprint-world-r2\\internal\\06_hauler-graveyard.png",
+      "sha256": "aaac11256ca9ef7a2a926085efc6a3ebbacaec01a966fcb0fca1d273001a8931"
+    },
+    {
+      "path": "docs\\history\\implementation-passes\\chapter01-blueprint-world-r2\\internal\\07_elite-arena.png",
+      "sha256": "c99c62987b8412b61e8b93931d248ba34ff39fb10a411c39bccd337067f8b866"
+    },
+    {
+      "path": "docs\\history\\implementation-passes\\chapter01-blueprint-world-r2\\internal\\07_elite-arena_facility_walk.png",
+      "sha256": "cc2a5e5a915b9b9fff56a1a17dfd7237cde00355578729ea2168698694f82d10"
+    },
+    {
+      "path": "docs\\history\\implementation-passes\\chapter01-blueprint-world-r2\\internal\\08_boss-arena.png",
+      "sha256": "ad7fc1c0aca4eb2863da5126bcd10915f0a48ca63b7bc20f8b46f397aa29b592"
+    },
+    {
+      "path": "docs\\history\\implementation-passes\\chapter01-blueprint-world-r2\\internal\\08_boss-arena_facility_walk.png",
+      "sha256": "185c01b8a19bf6b7ae4b9a36f6d887275c04428aeca37aecc7ae647a9fb43b99"
+    },
+    {
+      "path": "docs\\history\\implementation-passes\\chapter01-blueprint-world-r2\\internal\\09_remapped_chapter_map.png",
+      "sha256": "ab9b24b4a2d5ced53fee633ebee6182eb1edb915442a5e2844470fae42d3c554"
+    },
+    {
+      "path": "docs\\history\\implementation-passes\\chapter01-blueprint-world-r2\\internal\\no-ui\\01_repair-hub.png",
+      "sha256": "137c50a12fc97f90ce9e632442fb1407776bde9dc93c7998e5310b8244a17f9e"
+    },
+    {
+      "path": "docs\\history\\implementation-passes\\chapter01-blueprint-world-r2\\internal\\no-ui\\02_relay-yard.png",
+      "sha256": "fdafcd478e907c52baa2ce472be7ee56c8c484affc9ae8268bdbc998721843dd"
+    },
+    {
+      "path": "docs\\history\\implementation-passes\\chapter01-blueprint-world-r2\\internal\\no-ui\\03_capacitor-field.png",
+      "sha256": "8ad0824c6363ad9e60fa4d2b5b687a4281ac7c50eb3e770c88148e8874c39a3e"
+    },
+    {
+      "path": "docs\\history\\implementation-passes\\chapter01-blueprint-world-r2\\internal\\no-ui\\04_cutting-floor.png",
+      "sha256": "517479082ae9039a1894864b2f700aa50641e7616a4d296eecdff480a5298575"
+    },
+    {
+      "path": "docs\\history\\implementation-passes\\chapter01-blueprint-world-r2\\internal\\no-ui\\05_shield-dump.png",
+      "sha256": "10fe5c1da17646808a5859503919d03e6b9847130fd1c37eaf805c07db115ffb"
+    },
+    {
+      "path": "docs\\history\\implementation-passes\\chapter01-blueprint-world-r2\\internal\\no-ui\\06_hauler-graveyard.png",
+      "sha256": "a1f380d61a63564575b14d64e46b090eee3d2743c87a4e385113d3b18997e2af"
+    },
+    {
+      "path": "docs\\history\\implementation-passes\\chapter01-blueprint-world-r2\\internal\\no-ui\\07_elite-arena.png",
+      "sha256": "dd9cd2dfc9c89a3190fdcb703b1f40c5537f12971414b31a739dfd84dfb09369"
+    },
+    {
+      "path": "docs\\history\\implementation-passes\\chapter01-blueprint-world-r2\\internal\\no-ui\\07_elite-arena_facility_walk.png",
+      "sha256": "dbd1f5cb4effe55d46920757c26e58e0c047758a99875b70e7dcac5d7ec665e3"
+    },
+    {
+      "path": "docs\\history\\implementation-passes\\chapter01-blueprint-world-r2\\internal\\no-ui\\08_boss-arena.png",
+      "sha256": "09945c5fcd6dded28da51f511be962895541bd08fff6c6414b8085c6ec7c6d1b"
+    },
+    {
+      "path": "docs\\history\\implementation-passes\\chapter01-blueprint-world-r2\\internal\\no-ui\\08_boss-arena_facility_walk.png",
+      "sha256": "5708aefcfb264aa0b1c7a093aad3e2b4aeb5601bcc5ac8dfbb48e5e18318fee2"
+    }
+  ],
+  "fiveMinuteSoak": {
+    "completed": true,
+    "seconds": 300.00080460000004,
+    "meanEditorFrameMs": 1.0286812640754393,
+    "maxEditorFrameMs": 495.16558837890625,
+    "frames": 292129,
+    "maxLiveEnemies": 20,
+    "maxParticles": 96,
+    "gen0Collections": 29,
+    "reachedWaypoints": 62,
+    "method": "Unity Editor realtime combat/traversal observation; includes test runner and editor overhead; no Android GPU/FPS claim"
+  },
+  "fiveMinuteRealLocomotion": {
+    "seconds": 300.0004765999999,
+    "worstFrameGapMilliseconds": 61.52699999995548,
+    "frames": 278194,
+    "completedStops": 14,
+    "initialTransforms": 2867,
+    "finalTransforms": 3361,
+    "initialMaterials": 39,
+    "finalMaterials": 39,
+    "initialActorTransforms": 695,
+    "finalActorTransforms": 1189,
+    "initialFidelityTransforms": 228,
+    "finalFidelityTransforms": 228,
+    "maximumLiveEnemies": 20,
+    "assimilation": 100,
+    "mode": "Editor graphics, development gate unlock and god mode; real locomotion, combat, cooldowns and saves"
+  },
+  "adbDevices": [],
+  "shaderPackingValidated": true,
+  "actualSerializedWorldEntries": [
+    "RepairHub / authored industrial sector",
+    "RelayYard / authored industrial sector",
+    "CapacitorField / authored industrial sector",
+    "CuttingFloor / authored industrial sector",
+    "ShieldDump / authored industrial sector",
+    "HaulerGraveyard / authored industrial sector",
+    "MagnetarComplex / authored industrial sector",
+    "CustodianCore / authored industrial sector",
+    "Chapter 01 Blueprint World R2",
+    "Authored cross-sector service network"
+  ],
+  "performanceLimitations": "Editor batch realtime and frustum inventories do not establish Android GPU/FPS or allocation guarantees. Static local lights have no shadows and bounded ranges. Device 60 FPS and owner visual acceptance remain pending.",
+  "assumptions": "VersionCode 49 is the next development candidate. R1 physical topology, positions, collision, minimap and gameplay are frozen; presentation changes retain the real production camera."
+}

@@ -20,9 +20,21 @@ namespace Gravivore.Tests.PlayMode
                 playerVisual = scene.Root.PlayerObject.transform.Find("Player Visual Root/G0_V3_Live_Tier0");
             Assert.IsNotNull(playerVisual);
             Assert.That(playerVisual.GetComponentsInChildren<Renderer>(true), Has.Length.GreaterThanOrEqualTo(3));
+            if(scene.Root.VisualEnvironment.BlueprintWorldOnly)
+            {
+                foreach(var id in new[]{"relay-yard","hauler-graveyard"})
+                {
+                    var region=scene.Root.VisualEnvironment.GetRegion(id);
+                    Assert.IsNotEmpty(region.Root.GetComponentsInChildren<Renderer>());
+                    Assert.IsNull(region.Landmark.Find("Landmark "+id+"/S15 Visual ["+id+"]"));
+                }
+            }
+            else
+            {
             // Prototype landmarks remain available beneath their inactive visual anchors.
             Assert.IsNotNull(scene.Root.VisualEnvironment.GetRegion("relay-yard").Landmark.Find("Landmark relay-yard/S15 Visual [relay-yard]"));
             Assert.IsNotNull(scene.Root.VisualEnvironment.GetRegion("hauler-graveyard").Landmark.Find("Landmark hauler-graveyard/S15 Visual [hauler-graveyard]"));
+            }
 
             yield return scene.Cleanup();
         }

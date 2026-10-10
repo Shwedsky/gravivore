@@ -385,6 +385,6 @@ hose('Hanging displaced supply',[(-1.2,.6,1.6),(-1.82,.3,.84),(-1.66,-1.27,.15),
 shell('Detached armor patch',(1.24,-1.25,.13),1.24,1.14,.17,14)
 export('Pressure_Wreck_V2')
 
-(ROOT/'docs/concept-fidelity-v2').mkdir(parents=True,exist_ok=True)
-(ROOT/'docs/concept-fidelity-v2/asset_metrics.json').write_text(json.dumps(metrics,indent=2))
+(ROOT/'docs/history/visual-stages/chapter01-visual-passes/concept-fidelity-v2').mkdir(parents=True,exist_ok=True)
+(ROOT/'docs/history/visual-stages/chapter01-visual-passes/concept-fidelity-v2/asset_metrics.json').write_text(json.dumps(metrics,indent=2))
 print('CONCEPT_FIDELITY_BLENDER_ASSETS_COMPLETE',json.dumps(metrics))

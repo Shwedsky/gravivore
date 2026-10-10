@@ -70,24 +70,46 @@ namespace Gravivore.Tests.PlayMode
         }
         [UnityTest] public IEnumerator ContinuousHeroRouteCameraReviewAndStablePresentationInventory()
         {
-            yield return Load();var root=_scene.Root;var route=root.VisualEnvironment.Floor.Find("Chapter 01 Concept Fidelity V2");Assert.NotNull(route);
+            yield return Load();var root=_scene.Root;var blueprint=root.VisualEnvironment.BlueprintWorldOnly;
+            var route=blueprint?root.VisualEnvironment.Floor:root.VisualEnvironment.Floor.Find("Chapter 01 Concept Fidelity V2");Assert.NotNull(route);
             Assert.That(route.GetComponentsInChildren<Collider>(true).Length,Is.Zero);
-            var materials=route.GetComponentsInChildren<Renderer>(true).Select(r=>r.sharedMaterial).Distinct().ToArray();Assert.That(materials.Length,Is.EqualTo(1));
+            var materials=route.GetComponentsInChildren<Renderer>(true).SelectMany(r=>r.sharedMaterials).Distinct().ToArray();Assert.That(materials.Length,Is.EqualTo(blueprint?4:1));
+            if(blueprint)
+            {
+                Assert.IsNull(route.Find("Chapter 01 Concept Fidelity V2"));
+                var floors=route.GetComponentsInChildren<Renderer>().Where(r=>r.name.Contains("_floor_")).ToArray();Assert.IsNotEmpty(floors);
+                foreach(var floor in floors)Assert.That(floor.bounds.size.y,Is.LessThan(1.1f),"Flush deck and structural foundation: "+floor.name);
+            }
+            else
+            {
             Assert.NotNull(route.Find("Continuous worn deck"));Assert.NotNull(route.Find("Industrial focal points"));
             foreach(var tile in route.Find("Continuous worn deck").GetComponentsInChildren<Renderer>())
             {
                 Assert.That(tile.bounds.size.y,Is.LessThan(.4f),"Deck must lie flat: "+tile.name);
                 Assert.That(tile.bounds.size.x,Is.GreaterThan(5.9f));Assert.That(tile.bounds.size.z,Is.GreaterThan(5.9f));
             }
+            }
             var renderers=root.GetComponentsInChildren<Renderer>(true).Length;var transforms=root.GetComponentsInChildren<Transform>(true).Length;
-            foreach(var pair in new[]{("02_spawn",new Vector3(0,0,-28)),("03_capacitors",new Vector3(-20,0,-12)),("04_haulers",new Vector3(20,0,-12)),
+            var reviewPoints=blueprint?new[]{
+                ("02_spawn",root.RepairHub.RepairPosition),
+                ("03_capacitors",root.VisualEnvironment.GetRegion("capacitor-field").Root.position),
+                ("04_haulers",root.VisualEnvironment.GetRegion("hauler-graveyard").Root.position),
+                ("05_corridor",new Vector3(0,0,21)),
+                ("06_relay",root.VisualEnvironment.GetRegion("relay-yard").Root.position),
+                ("07_shield",root.VisualEnvironment.GetRegion("shield-dump").Root.position),
+                ("08_cutting",root.VisualEnvironment.GetRegion("cutting-floor").Root.position),
+                ("09_elite_approach",root.WorldPresenter.Configuration.EliteGate.Position+Vector3.back*3),
+                ("10_magnetar",root.MagnetarGuard.transform.position),
+                ("11_containment",root.WorldPresenter.Configuration.BossArenaCenter)}:
+                new[]{("02_spawn",new Vector3(0,0,-28)),("03_capacitors",new Vector3(-20,0,-12)),("04_haulers",new Vector3(20,0,-12)),
                 ("05_corridor",new Vector3(0,0,10)),("06_relay",new Vector3(-26,0,20)),("07_shield",new Vector3(26,0,20)),
                 ("08_cutting",new Vector3(0,0,40)),("09_elite_approach",new Vector3(0,0,54)),("10_magnetar",new Vector3(0,0,68)),
-                ("11_containment",new Vector3(0,0,84))})
+                ("11_containment",new Vector3(0,0,84))};
+            foreach(var pair in reviewPoints)
             {Move(root,pair.Item2);yield return null;Capture(root,pair.Item1);}
             root.WorldUnlocks.PrepareEliteEncounterForDevelopment();root.Chapter1Encounters.Tick();
             root.MagnetarGuard.ApplyDamage(new DamageRequest(100000,DamageType.Gravity));
-            Move(root,new Vector3(0,0,89.5f));root.CustodianBoss.Tick(0);yield return null;
+            Move(root,root.WorldPresenter.Configuration.BossArenaCenter+Vector3.back*4.5f);root.CustodianBoss.Tick(0);yield return null;
             var bossAnimator=root.CustodianBoss.GetComponent<CharacterVisualBinding>().ActiveModel.GetComponentInChildren<Animator>();
             // Freeze the observer only for explicit pose captures; otherwise its
             // authoritative state restores windup while the capture is being sampled.
@@ -98,8 +120,8 @@ namespace Gravivore.Tests.PlayMode
             {Sample(bossAnimator,pair.Item2,.55f);yield return null;yield return null;Capture(root,pair.Item1);}
             Assert.That(root.GetComponentsInChildren<Renderer>(true).Length,Is.EqualTo(renderers));
             Assert.That(root.GetComponentsInChildren<Transform>(true).Length,Is.EqualTo(transforms));
-            Directory.CreateDirectory("docs/concept-fidelity-v2/verification");
-            File.WriteAllText("docs/concept-fidelity-v2/verification/runtime_inventory.json",JsonUtility.ToJson(new Inventory{
+            Directory.CreateDirectory("docs/history/visual-stages/chapter01-visual-passes/concept-fidelity-v2/verification");
+            File.WriteAllText("docs/history/visual-stages/chapter01-visual-passes/concept-fidelity-v2/verification/runtime_inventory.json",JsonUtility.ToJson(new Inventory{
                 transforms=transforms,renderers=renderers,sharedMaterials=MaterialCount(root),
                 realtimeLights=root.GetComponentsInChildren<Light>(true).Length,heroRouteRenderers=route.GetComponentsInChildren<Renderer>(true).Length},true));
         }
@@ -118,7 +140,7 @@ namespace Gravivore.Tests.PlayMode
         private static int ActorTransformCount(S01SceneCompositionRoot root)=>
             TransformCount(root.EnemyPopulation)+TransformCount(root.PlayerObject.transform);
         private static int FidelityTransformCount(S01SceneCompositionRoot root)=>
-            TransformCount(root.VisualEnvironment.Floor.Find("Chapter 01 Concept Fidelity V2"))+
+            TransformCount(root.VisualEnvironment.BlueprintWorldOnly?root.VisualEnvironment.Floor:root.VisualEnvironment.Floor.Find("Chapter 01 Concept Fidelity V2"))+
             TransformCount(root.RepairHub.Manipulators)+TransformCount(root.GetComponentInChildren<FidelityAtmospherePresenter>());
         [Serializable] private sealed class SustainedEvidence
         {public double seconds,worstFrameGapMilliseconds;public int frames,completedStops,initialTransforms,finalTransforms,initialMaterials,finalMaterials,
@@ -133,8 +155,10 @@ namespace Gravivore.Tests.PlayMode
             Physics.SyncTransforms();
             var input=new RouteInput();var camera=UnityEngine.Camera.main;
             root.PlayerObject.GetComponent<PlayerLocomotion>().Initialize(input,camera.transform,root.PlayerStats,360);
-            var stops=new[]{new Vector3(-20,0,-12),new Vector3(20,0,-12),new Vector3(0,0,10),new Vector3(-26,0,20),
-                new Vector3(26,0,20),new Vector3(0,0,40),new Vector3(0,0,68),new Vector3(0,0,89.5f),new Vector3(0,0,-28)};
+            var stops=new[]{root.EnemyPopulation.GetSpot(3).Position,root.EnemyPopulation.GetSpot(4).Position,
+                new Vector3(0,0,-1.25f),root.EnemyPopulation.GetSpot(0).Position,root.EnemyPopulation.GetSpot(2).Position,
+                root.EnemyPopulation.GetSpot(1).Position,root.MagnetarGuard.transform.position+Vector3.back,
+                root.WorldPresenter.Configuration.BossArenaCenter+Vector3.back*4.5f,root.RepairHub.RepairPosition};
             var evidence=new SustainedEvidence{initialTransforms=root.GetComponentsInChildren<Transform>(true).Length,
                 initialMaterials=MaterialCount(root),initialActorTransforms=ActorTransformCount(root),initialFidelityTransforms=FidelityTransformCount(root)};
             var started=Time.realtimeSinceStartupAsDouble;var previous=started;var index=0;var point=0;var dwellUntil=0d;
@@ -173,8 +197,8 @@ namespace Gravivore.Tests.PlayMode
             evidence.finalFidelityTransforms=FidelityTransformCount(root);
             evidence.assimilation=root.Progression.State.TotalAssimilationScore;
             // Evidence is written before assertions so a failed soak still exposes its inventories.
-            Directory.CreateDirectory("docs/concept-fidelity-v2/verification");
-            File.WriteAllText("docs/concept-fidelity-v2/verification/five_minute_runtime.json",JsonUtility.ToJson(evidence,true));
+            Directory.CreateDirectory("docs/history/visual-stages/chapter01-visual-passes/concept-fidelity-v2/verification");
+            File.WriteAllText("docs/history/visual-stages/chapter01-visual-passes/concept-fidelity-v2/verification/five_minute_runtime.json",JsonUtility.ToJson(evidence,true));
             Assert.That(evidence.completedStops,Is.GreaterThanOrEqualTo(stops.Length),"Five-minute traversal must cover the whole route.");
             Assert.That(evidence.maximumLiveEnemies,Is.LessThanOrEqualTo(root.EnemyPopulation.GlobalLiveEnemyCap));
             Assert.That(evidence.finalFidelityTransforms,Is.EqualTo(evidence.initialFidelityTransforms));
@@ -188,7 +212,7 @@ namespace Gravivore.Tests.PlayMode
             Assert.IsTrue(root.FlushNow());
             var diagnostics=root.GetComponentInChildren<Gravivore.Presentation.Development.ColdStartDiagnostics>();
             Assert.IsFalse(diagnostics.enabled);Assert.IsTrue(File.Exists(diagnostics.OutputPath));
-            File.Copy(diagnostics.OutputPath,"docs/concept-fidelity-v2/verification/cold-start-fidelity-editor.json",true);
+            File.Copy(diagnostics.OutputPath,"docs/history/visual-stages/chapter01-visual-passes/concept-fidelity-v2/verification/cold-start-fidelity-editor.json",true);
         }
         private static void Capture(S01SceneCompositionRoot root,string name)
         {
@@ -200,8 +224,8 @@ namespace Gravivore.Tests.PlayMode
             {
                 canvas.renderMode=RenderMode.ScreenSpaceCamera;canvas.worldCamera=camera;canvas.planeDistance=1;
                 camera.targetTexture=render;Canvas.ForceUpdateCanvases();camera.Render();RenderTexture.active=render;
-                texture.ReadPixels(new Rect(0,0,540,960),0,0);texture.Apply();Directory.CreateDirectory("docs/concept-fidelity-v2/internal");
-                File.WriteAllBytes("docs/concept-fidelity-v2/internal/"+name+".png",texture.EncodeToPNG());
+                texture.ReadPixels(new Rect(0,0,540,960),0,0);texture.Apply();Directory.CreateDirectory("docs/history/visual-stages/chapter01-visual-passes/concept-fidelity-v2/internal");
+                File.WriteAllBytes("docs/history/visual-stages/chapter01-visual-passes/concept-fidelity-v2/internal/"+name+".png",texture.EncodeToPNG());
             }
             finally
             {canvas.renderMode=mode;canvas.worldCamera=priorCamera;camera.targetTexture=priorTarget;RenderTexture.active=priorActive;render.Release();Object.Destroy(render);Object.Destroy(texture);}

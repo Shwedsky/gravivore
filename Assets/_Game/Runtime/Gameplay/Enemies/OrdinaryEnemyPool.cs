@@ -27,7 +27,8 @@ namespace Gravivore.Gameplay.Enemies
             int targetLayer,
             Material visualMaterial,
             IEnemyVisualFactory visualFactory,
-            PlayerStatsState playerStats = null)
+            PlayerStatsState playerStats = null,
+            AmbientPatrolParameters ambientMotion = default)
         {
             _poolRoot = poolRoot != null ? poolRoot : throw new ArgumentNullException(nameof(poolRoot));
             if (capacity < 1)
@@ -51,6 +52,7 @@ namespace Gravivore.Gameplay.Enemies
             for (var i = 0; i < capacity; i++)
             {
                 var enemy = CreateEnemy(i);
+                enemy.ConfigureAmbientMotion(ambientMotion,(uint)(1709+i*7919));
                 enemy.PrepareForPool(_poolRoot.position);
                 _available.Push(enemy);
             }

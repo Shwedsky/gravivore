@@ -31,28 +31,38 @@ namespace Gravivore.Tests.PlayMode
             Assert.That(root.EnemyPopulation.GetSpot(0).GetLiveEnemy(0).GetComponent<CharacterVisualBinding>().ActiveModel.name, Is.EqualTo("Scout_V1"));
             Assert.That(root.EnemyPopulation.GetSpot(1).GetLiveEnemy(0).GetComponent<CharacterVisualBinding>().ActiveModel.name, Is.EqualTo("Cutter_V1"));
             Assert.That(root.MagnetarGuard.GetComponent<CharacterVisualBinding>().ActiveModel.name, Is.EqualTo("Magnetar_V1"));
-            Assert.IsNotNull(root.VisualEnvironment.Floor.Find("First Visual Slice Industrial Containment"));
-            var oldRoutes = root.VisualEnvironment.Floor.Find("Phase3C Routes");
-            foreach (Transform panel in oldRoutes)
-                Assert.IsTrue(panel.localPosition.z < 36f || panel.localPosition.z > 76f,
-                    "Old corridor surface must not cover the rebuilt floor: " + panel.name);
+            if(root.VisualEnvironment.BlueprintWorldOnly)
+            {
+                foreach(var id in new[]{"repair-hub","relay-yard","capacitor-field","cutting-floor","shield-dump","hauler-graveyard","elite-arena","boss-arena"})
+                    Assert.IsNotEmpty(root.VisualEnvironment.GetRegion(id).Root.GetComponentsInChildren<Renderer>());
+                Assert.IsNull(root.VisualEnvironment.Floor.Find("Phase3C Routes"));
+            }
+            else
+            {
+                Assert.IsNotNull(root.VisualEnvironment.Floor.Find("First Visual Slice Industrial Containment"));
+                var oldRoutes = root.VisualEnvironment.Floor.Find("Phase3C Routes");
+                foreach (Transform panel in oldRoutes)
+                    Assert.IsTrue(panel.GetComponentsInChildren<Renderer>(true).All(r=>!r.enabled),
+                        "Old corridor surface must not cover the rebuilt floor: " + panel.name);
+                Assert.IsNotNull(root.VisualEnvironment.Floor.Find("Chapter 01 Full Production/Facility deck segmentation"));
+            }
             Assert.IsTrue(root.VisualEnvironment.FullChapterProduction);
-            Assert.IsNotNull(root.VisualEnvironment.Floor.Find("Chapter 01 Full Production/Facility deck segmentation"));
             Assert.IsEmpty(root.VisualEnvironment.GetComponentsInChildren<Collider>(true));
             Assert.That(root.PlayerObject.GetComponent<CharacterController>().radius, Is.EqualTo(.42f));
             Assert.That(root.PlayerObject.GetComponent<CharacterController>().height, Is.EqualTo(1.4f));
-            Assert.That(root.WorldPresenter.EnvironmentBlockerCount, Is.EqualTo(2 + root.VisualEnvironment.SliceObstacleCount));
+            Assert.That(root.WorldPresenter.EnvironmentBlockerCount, Is.EqualTo(root.WorldPresenter.Layout != null ? root.WorldPresenter.Layout.BlockerCount : 2 + root.VisualEnvironment.SliceObstacleCount));
             // The main approach, strong-spot and elite centres remain reachable when the normal gate unlocks.
-            root.WorldPresenter.EliteGate.SetLocked(false); Physics.SyncTransforms();
-            for (var z = 37; z < 79; z++)
+            root.WorldPresenter.EliteGate.SetLocked(false); root.WorldPresenter.BossGate.SetLocked(false); Physics.SyncTransforms();
+            for (var z = Mathf.CeilToInt(root.WorldPresenter.Configuration.EliteGate.Position.z-1); z < root.WorldPresenter.Configuration.BossGate.Position.z-1; z++)
                 Assert.IsFalse(Physics.CheckCapsule(new Vector3(0,.45f,z), new Vector3(0,1.05f,z), .42f,
                     LayerMask.GetMask("HardBlocker"), QueryTriggerInteraction.Ignore), "central route at " + z);
             foreach (var spot in root.StrongSpots)
                 Assert.IsFalse(Physics.CheckCapsule(spot.Position + Vector3.up*.45f, spot.Position + Vector3.up*1.05f, .42f,
                     LayerMask.GetMask("HardBlocker"), QueryTriggerInteraction.Ignore), spot.Id);
-            for (var x = -18; x <= 0; x++)
-                Assert.IsFalse(Physics.CheckCapsule(new Vector3(x,.45f,54),new Vector3(x,1.05f,54),.42f,
-                    LayerMask.GetMask("HardBlocker"), QueryTriggerInteraction.Ignore), "strong side passage at " + x);
+            var body=root.PlayerObject.GetComponent<CharacterController>();
+            foreach(var other in root.GetComponentsInChildren<CharacterController>(true))if(other!=body)other.enabled=false;
+            foreach(var strong in root.StrongSpots)
+                Chapter1DeviceStabilizationSmokeTests.WalkCapsulePath(root,body,strong.Position);
         }
         [UnityTest] public IEnumerator OrdinaryShutdownAnimationOutlivesImmediateRecycleWithoutDelayingReward()
         {
@@ -72,7 +82,7 @@ namespace Gravivore.Tests.PlayMode
         {
             yield return Load(); var root = _scene.Root;
             var body = root.PlayerObject.GetComponent<CharacterController>();
-            body.enabled = false; root.PlayerObject.transform.position = new Vector3(0,0,66); body.enabled = true;
+            body.enabled = false; root.PlayerObject.transform.position = root.MagnetarGuard.transform.position+Vector3.back*4; body.enabled = true;
             root.MagnetarGuard.ActivateEncounter();
             yield return new WaitForSeconds(.5f);
             var camera = Camera.main;
@@ -82,12 +92,12 @@ namespace Gravivore.Tests.PlayMode
             {
                 camera.targetTexture = target; camera.Render(); RenderTexture.active = target;
                 texture.ReadPixels(new Rect(0,0,540,960),0,0); texture.Apply();
-                Directory.CreateDirectory("docs/first-visual-slice/internal");
-                File.WriteAllLines("docs/first-visual-slice/internal/arena_surface_bounds.txt",
+                Directory.CreateDirectory("docs/history/visual-stages/chapter01-visual-passes/first-visual-slice/internal");
+                File.WriteAllLines("docs/history/visual-stages/chapter01-visual-passes/first-visual-slice/internal/arena_surface_bounds.txt",
                     root.GetComponentsInChildren<Renderer>().Where(r => r.enabled && r.bounds.min.x <= 0 && r.bounds.max.x >= 0 &&
                         r.bounds.min.z <= 66 && r.bounds.max.z >= 66 && r.bounds.max.y < 1)
                         .Select(r => r.name + " | " + r.bounds + " | " + r.sharedMaterial.name));
-                File.WriteAllBytes("docs/first-visual-slice/internal/live_elite_area.png", texture.EncodeToPNG());
+                File.WriteAllBytes("docs/history/visual-stages/chapter01-visual-passes/first-visual-slice/internal/live_elite_area.png", texture.EncodeToPNG());
                 Assert.That(root.PlayerHealth.IsAlive, Is.True);
                 Assert.IsTrue(root.MagnetarGuard.IsAlive);
             }

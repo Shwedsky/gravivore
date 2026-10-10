@@ -102,13 +102,13 @@ namespace Gravivore.Tests.PlayMode
         {
             yield return Load(); var root = _scene.Root; var camera = Camera.main;
             var body = root.PlayerObject.GetComponent<CharacterController>(); body.enabled = false;
-            root.PlayerObject.transform.SetPositionAndRotation(new Vector3(0,0,66),Quaternion.Euler(0,180,0)); body.enabled = true;
+            root.PlayerObject.transform.SetPositionAndRotation(root.MagnetarGuard.transform.position+Vector3.back*3,Quaternion.Euler(0,180,0)); body.enabled = true;
             root.MagnetarGuard.ActivateEncounter();
             camera.GetComponent<Gravivore.Presentation.Camera.PortraitFollowCamera>().SnapToTarget();
             var map = root.GetComponentInChildren<MapMinimapPresenter>(true); map.RefreshNow();
-            Assert.That(map.CurrentZoneText,Is.EqualTo("Контур Магнетара"));
+            Assert.That(map.CurrentZoneText,Is.EqualTo("Комплекс Магнетара"));
             var view = root.PlayerObject.GetComponent<PlayerEvolutionView>();
-            Directory.CreateDirectory("docs/device-correction/internal");
+            Directory.CreateDirectory("docs/history/visual-stages/chapter01-visual-passes/device-correction/internal");
             foreach (var tier in new[] { EvolutionTier.Tier0,EvolutionTier.Tier1,EvolutionTier.Tier2 })
             {
                 view.Apply(new EvolutionVisualState(tier,view.CurrentDominantStat));
@@ -120,7 +120,7 @@ namespace Gravivore.Tests.PlayMode
                 try { camera.targetTexture = target; canvas.renderMode = RenderMode.ScreenSpaceCamera; canvas.worldCamera = camera;
                     canvas.planeDistance = 1; Canvas.ForceUpdateCanvases(); camera.Render(); RenderTexture.active = target;
                     texture.ReadPixels(new Rect(0,0,540,960),0,0); texture.Apply();
-                    File.WriteAllBytes("docs/device-correction/internal/live_tier"+(int)tier+".png",texture.EncodeToPNG()); }
+                    File.WriteAllBytes("docs/history/visual-stages/chapter01-visual-passes/device-correction/internal/live_tier"+(int)tier+".png",texture.EncodeToPNG()); }
                 finally { canvas.renderMode = mode; canvas.worldCamera = canvasCamera; camera.targetTexture = null;
                     RenderTexture.active = prior; target.Release(); Object.Destroy(target); Object.Destroy(texture); }
             }

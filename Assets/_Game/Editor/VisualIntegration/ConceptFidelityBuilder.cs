@@ -120,8 +120,8 @@ namespace Gravivore.Editor.VisualIntegration
             Lighting(env);
             EditorSceneManager.MarkSceneDirty(scene);EditorSceneManager.SaveScene(scene);AssetDatabase.SaveAssets();
             ValidateOrThrow();
-            Directory.CreateDirectory("docs/concept-fidelity-v2");
-            File.WriteAllText("docs/concept-fidelity-v2/hero_route.json",JsonUtility.ToJson(new RouteEvidence(),true));
+            Directory.CreateDirectory("docs/history/visual-stages/chapter01-visual-passes/concept-fidelity-v2");
+            File.WriteAllText("docs/history/visual-stages/chapter01-visual-passes/concept-fidelity-v2/hero_route.json",JsonUtility.ToJson(new RouteEvidence(),true));
             Debug.Log("CONCEPT_FIDELITY_V2_INTEGRATED");
         }
         [Serializable] private sealed class RouteEvidence
@@ -246,6 +246,7 @@ namespace Gravivore.Editor.VisualIntegration
         }
         public static void ValidateOrThrow()
         {
+            if (Chapter01BlueprintWorldBuilder.IsBlueprintWorld()) { Chapter01BlueprintWorldBuilder.Audit(); return; }
             foreach(var name in StaticAssets.Concat(AnimatedAssets))
             {
                 var prefab=AssetDatabase.LoadAssetAtPath<GameObject>(Prefab(name));

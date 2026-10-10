@@ -159,6 +159,8 @@ namespace Gravivore.Editor
             ValidateCanonicalScenes();
             VisualIntegration.VisualIntegrationValidator.ValidateOrThrow();
             VisualIntegration.Chapter01V3Builder.ValidateOrThrow();
+            VisualIntegration.VisualReplacementV3Audit.ValidateOrThrow();
+            VisualIntegration.SurfaceHeroV46Audit.ValidateOrThrow();
         }
 
         private static void ValidateS20Balance()
@@ -667,13 +669,9 @@ namespace Gravivore.Editor
             }
 
             var configuration = definition.Configuration;
-            var expected = new Dictionary<string, Vector3>(StringComparer.Ordinal)
+            var expected = new HashSet<string>(StringComparer.Ordinal)
             {
-                { "relay-yard", new Vector3(-26f, 0f, 20f) },
-                { "cutting-floor", new Vector3(0f, 0f, 40f) },
-                { "shield-dump", new Vector3(26f, 0f, 20f) },
-                { "capacitor-field", new Vector3(-20f, 0f, -12f) },
-                { "hauler-graveyard", new Vector3(20f, 0f, -12f) }
+                "relay-yard", "cutting-floor", "shield-dump", "capacitor-field", "hauler-graveyard"
             };
             var spawnConfigurations = new Dictionary<string, SpawnSpotRuntimeConfiguration>(StringComparer.Ordinal);
             var spawnPaths = new[]
@@ -699,8 +697,7 @@ namespace Gravivore.Editor
             for (var i = 0; i < configuration.ZoneCount; i++)
             {
                 var zone = configuration.GetZone(i);
-                if (!expected.TryGetValue(zone.Id, out var expectedCenter) ||
-                    Vector3.Distance(zone.Center, expectedCenter) > 0.01f ||
+                if (!expected.Contains(zone.Id) ||
                     !spawnConfigurations.TryGetValue(zone.Id, out var spawnConfiguration) ||
                     Vector3.Distance(zone.Center, spawnConfiguration.WorldOrigin) > 0.01f)
                 {
@@ -733,7 +730,8 @@ namespace Gravivore.Editor
 
                 for (var otherIndex = i + 1; otherIndex < configuration.ZoneCount; otherIndex++)
                 {
-                    if (Vector3.Distance(zone.Center, configuration.GetZone(otherIndex).Center) < 28f)
+                    // V45 trims transit while retaining separate 8m ordinary combat aprons.
+                    if (Vector3.Distance(zone.Center, configuration.GetZone(otherIndex).Center) < 20f)
                     {
                         throw new InvalidOperationException(
                             $"Ordinary zones {zone.Id} and {configuration.GetZone(otherIndex).Id} are too close for S20 spatial readability.");
@@ -764,9 +762,9 @@ namespace Gravivore.Editor
             }
 
             if (configuration.EliteRequirement.MinimumAssimilationScore < 1 ||
-                configuration.GroundSize.x < 65f || configuration.GroundSize.y < 120f ||
+                configuration.GroundSize.x < 50f || configuration.GroundSize.y < 110f ||
                 string.Equals(configuration.EliteGate.Id, configuration.BossGate.Id, StringComparison.Ordinal) ||
-                configuration.EliteGate.Position.z - northernmostOrdinaryZ < 18f ||
+                configuration.EliteGate.Position.z - northernmostOrdinaryZ < 12f ||
                 configuration.EliteGate.Position.z >= configuration.BossGate.Position.z ||
                 configuration.BossGate.Position.z - configuration.EliteGate.Position.z < 18f ||
                 configuration.BossGate.Position.z >= configuration.BossArenaCenter.z ||

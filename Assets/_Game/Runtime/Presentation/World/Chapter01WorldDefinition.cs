@@ -35,6 +35,8 @@ namespace Gravivore.Presentation.World
     public sealed class Chapter01WorldDefinition : ScriptableObject
     {
         [SerializeField] private string _worldId = "chapter01-scrap-exclusion";
+        [SerializeField] private ChapterWorldLayoutDefinition _layout;
+        public ChapterWorldLayoutDefinition Layout => _layout;
         [SerializeField] private Vector3 _basinCenter;
         [SerializeField] private Vector3 _groundCenter = new Vector3(0f, 0f, 8f);
         [SerializeField] private Vector2 _groundSize = new Vector2(40f, 48f);
@@ -78,6 +80,10 @@ namespace Gravivore.Presentation.World
                 new EliteGateRequirement(_requiredQuestObjectiveIds, _minimumAssimilationScore));
         }
 
-        public void ValidateOrThrow() => _ = CreateConfiguration();
+        public void ValidateOrThrow()
+        {
+            _ = CreateConfiguration();
+            if (_layout != null) _layout.ValidateOrThrow();
+        }
     }
 }

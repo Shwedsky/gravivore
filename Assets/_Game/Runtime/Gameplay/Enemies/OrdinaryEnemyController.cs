@@ -68,6 +68,13 @@ namespace Gravivore.Gameplay.Enemies
         private PlayerStatsState _playerStats;
         private bool _isActive;
         private bool _isInitialized;
+        private AmbientPatrolParameters _ambientSettings;
+        private AmbientPatrolState _ambient;
+        private uint _ambientSeed;
+        public Vector3 AmbientHome => _ambient.Home;
+        public float AmbientRadius => _ambientSettings.Radius;
+        public void ConfigureAmbientMotion(in AmbientPatrolParameters settings, uint seed)
+        { _ambientSettings=settings; _ambientSeed=seed; }
 
         public event Action<DamageRequest> AttackRequested;
 
@@ -156,6 +163,7 @@ namespace Gravivore.Gameplay.Enemies
             transform.position = position;
             transform.rotation = Quaternion.identity;
             _body.enabled = true;
+            _ambient.Reset(position,++_ambientSeed,_ambientSettings);
             _visualState?.Apply(configuration.Id);
             _isActive = true;
             gameObject.name = $"Enemy [{configuration.Id}]";
@@ -172,6 +180,7 @@ namespace Gravivore.Gameplay.Enemies
             _playerStats = null;
             _recycleRequested = null;
             _lifeId = default;
+            _ambient=default;
             AttackRequested = null;
             Damaged = null;
             Died = null;
@@ -228,7 +237,8 @@ namespace Gravivore.Gameplay.Enemies
             return true;
         }
 
-        private void Update()
+        private void Update() => Tick(Time.deltaTime);
+        public void Tick(float deltaTime)
         {
             if (!_isActive || !_health.IsAlive || _aggroTarget == null || _attackTarget == null)
             {
@@ -242,11 +252,20 @@ namespace Gravivore.Gameplay.Enemies
                     _playerStats.DerivedStats,
                     _configuration)
                 : _configuration.Behavior.AggroRadius;
-            var decision = _brain.Tick(Time.deltaTime, true, offset.magnitude, proactiveAggroRadius);
+            var decision = _brain.Tick(deltaTime, true, offset.magnitude, proactiveAggroRadius);
+            if (decision.State==OrdinaryEnemyBrainState.Idle)
+            {
+                var ambientStep=_ambient.Step(transform.position,deltaTime,_ambientSettings);
+                if (ambientStep.sqrMagnitude>0)
+                {
+                    _body.Move(ambientStep);
+                    transform.rotation=Quaternion.RotateTowards(transform.rotation,Quaternion.LookRotation(ambientStep),_ambientSettings.TurnSpeed*deltaTime);
+                }
+            }
             if (decision.ShouldApproach && offset.sqrMagnitude > Mathf.Epsilon)
             {
                 var direction = offset.normalized;
-                _body.Move(direction * (_configuration.MoveSpeed * Time.deltaTime));
+                _body.Move(direction * (_configuration.MoveSpeed * deltaTime));
                 transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
             }
 

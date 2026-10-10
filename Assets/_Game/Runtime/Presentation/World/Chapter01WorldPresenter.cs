@@ -18,6 +18,8 @@ namespace Gravivore.Presentation.World
         private readonly List<Collider> _environmentBlockers = new List<Collider>();
         private bool _initialized;
         private ChapterVisualEnvironment _environment;
+        private ChapterWorldLayoutDefinition _layout;
+        public ChapterWorldLayoutDefinition Layout => _layout;
         public Transform GameplayRoot { get; private set; }
         public Transform VisualRoot { get; private set; }
 
@@ -30,7 +32,8 @@ namespace Gravivore.Presentation.World
             WorldUnlockState state,
             Material litMaterial,
             S15VisualCatalog s15VisualCatalog = null,
-            ChapterVisualEnvironment environment = null)
+            ChapterVisualEnvironment environment = null,
+            ChapterWorldLayoutDefinition layout = null)
         {
             if (_initialized) throw new InvalidOperationException("World presenter is already initialized.");
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
@@ -38,6 +41,8 @@ namespace Gravivore.Presentation.World
             _litMaterial = litMaterial != null ? litMaterial : throw new ArgumentNullException(nameof(litMaterial));
             _s15VisualCatalog = s15VisualCatalog;
             _environment = environment;
+            _layout = layout;
+            if (_layout != null) _layout.ValidateOrThrow();
             GameplayRoot = new GameObject("Gameplay Geometry").transform;
             GameplayRoot.SetParent(transform, false);
             VisualRoot = new GameObject("Chapter 01 Placeholder Geometry").transform;
@@ -45,9 +50,12 @@ namespace Gravivore.Presentation.World
 
             BuildGround();
             BuildPerimeterBoundaries();
-            BuildBasin();
-            BuildZonesAndPaths();
-            BuildBossArena();
+            if (_layout == null)
+            {
+                BuildBasin();
+                BuildZonesAndPaths();
+                BuildBossArena();
+            }
             BuildEnvironmentBlockers();
             EliteGate = BuildGate(_configuration.EliteGate, new Color(0.9f, 0.55f, 0.12f, 1f));
             BossGate = BuildGate(_configuration.BossGate, new Color(0.84f, 0.18f, 0.22f, 1f));
@@ -87,6 +95,12 @@ namespace Gravivore.Presentation.World
 
         private void BuildGround()
         {
+            if (_layout != null)
+            {
+                for (var i = 0; i < _layout.SurfaceCount; i++)
+                    BuildLayoutVolume(_layout.GetSurface(i), 0);
+                return;
+            }
             var ground = GameObject.CreatePrimitive(PrimitiveType.Cube);
             ground.name = "Chapter 01 Movement Ground";
             ground.transform.SetParent(GameplayRoot, false);
@@ -226,6 +240,14 @@ namespace Gravivore.Presentation.World
         private void BuildEnvironmentBlockers()
         {
             _environmentBlockers.Clear();
+            if (_layout != null)
+            {
+                var layer = LayerMask.NameToLayer("HardBlocker");
+                if (layer < 0) throw new InvalidOperationException("HardBlocker layer is required.");
+                for (var i = 0; i < _layout.BlockerCount; i++)
+                    _environmentBlockers.Add(BuildLayoutVolume(_layout.GetBlocker(i), layer));
+                return;
+            }
             if (_environment == null) return;
 
             var hardBlockerLayer = LayerMask.NameToLayer("HardBlocker");
@@ -305,6 +327,17 @@ namespace Gravivore.Presentation.World
             path.transform.localScale = new Vector3(1.15f, 0.035f, delta.magnitude);
             path.transform.rotation = Quaternion.LookRotation(delta.normalized, Vector3.up);
             SetMaterial(path, new Color(0.22f, 0.25f, 0.25f, 1f));
+        }
+
+        private BoxCollider BuildLayoutVolume(WorldLayoutVolume volume, int layer)
+        {
+            var obj = new GameObject(volume.Id, typeof(BoxCollider));
+            obj.layer = layer;
+            obj.transform.SetParent(GameplayRoot, false);
+            obj.transform.position = volume.Center;
+            var collider = obj.GetComponent<BoxCollider>();
+            collider.size = volume.Size;
+            return collider;
         }
 
         private GameObject CreateVisualPrimitive(string name, PrimitiveType type, Vector3 position)

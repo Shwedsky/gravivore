@@ -146,8 +146,8 @@ namespace Gravivore.Editor.VisualIntegration
             data.ApplyModifiedPropertiesWithoutUndo();
             env.ValidateOrThrow(); EditorSceneManager.MarkSceneDirty(scene); EditorSceneManager.SaveScene(scene);
             AssetDatabase.SaveAssets(); AssetDatabase.Refresh();
-            Directory.CreateDirectory("docs/chapter01-production");
-            File.WriteAllLines("docs/chapter01-production/environment_manifest.txt",Manifest);
+            Directory.CreateDirectory("docs/history/visual-stages/chapter01-visual-passes/chapter01-production");
+            File.WriteAllLines("docs/history/visual-stages/chapter01-visual-passes/chapter01-production/environment_manifest.txt",Manifest);
             Chapter01ProductionDependencies.ValidateOrThrow();
             Debug.Log("CHAPTER01_FULL_PRODUCTION_INTEGRATED");
         }

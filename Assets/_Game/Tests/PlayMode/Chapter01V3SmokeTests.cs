@@ -41,6 +41,28 @@ namespace Gravivore.Tests.PlayMode
             yield return Load();var root=_scene.Root;var body=root.PlayerObject.GetComponent<CharacterController>();
             foreach(var collider in root.GetComponentsInChildren<CharacterController>(true))if(collider!=body)collider.enabled=false;
             Assert.IsFalse(root.WorldPresenter.GameplayRoot.GetComponentsInChildren<Transform>().Any(t=>t.name=="Repair Hub Right Service Frame"));
+            if(root.VisualEnvironment.BlueprintWorldOnly)
+            {
+                var layout=root.WorldPresenter.Layout;Assert.NotNull(layout);
+                Assert.IsNull(root.VisualEnvironment.Floor.Find("Chapter 01 V3 richness"));
+                Assert.IsEmpty(root.VisualEnvironment.Floor.GetComponentsInChildren<Collider>(true));
+                Assert.That(root.VisualEnvironment.Floor.GetComponentsInChildren<Renderer>().Length,Is.GreaterThan(75));
+                root.WorldPresenter.EliteGate.SetLocked(false);root.WorldPresenter.BossGate.SetLocked(false);
+                Move(root,layout.GetRoutePoint(0));
+                for(var routeIndex=1;routeIndex<layout.RoutePointCount;routeIndex++)
+                {
+                    var target=layout.GetRoutePoint(routeIndex);var reached=false;
+                    for(var step=0;step<400;step++)
+                    {
+                        var delta=target-body.transform.position;delta.y=0;
+                        if(delta.magnitude<.09f){reached=true;break;}
+                        body.Move(Vector3.ClampMagnitude(delta,.25f)+Vector3.down*.015f);Physics.SyncTransforms();
+                        Assert.That(body.transform.position.y,Is.InRange(-.15f,.3f));
+                    }
+                    Assert.IsTrue(reached,"New authored service route: "+target);yield return null;
+                }
+                yield break;
+            }
             Move(root,new Vector3(0,0,-27));for(var i=0;i<24;i++)body.Move(Vector3.right*.25f);
             var near=Physics.OverlapCapsule(body.transform.position+Vector3.up*.5f,body.transform.position+Vector3.up*.9f,body.radius+.25f,LayerMask.GetMask("HardBlocker"));
             Assert.That(body.transform.position.x,Is.EqualTo(6).Within(.1f),string.Join("; ",near.Select(c=>c.name+" center="+c.bounds.center+" size="+c.bounds.size)));Assert.That(body.transform.position.z,Is.EqualTo(-27).Within(.1f));
@@ -48,7 +70,8 @@ namespace Gravivore.Tests.PlayMode
             Assert.That(richness.GetComponentsInChildren<Collider>(true).Length,Is.Zero);
             Assert.That(richness.GetComponentsInChildren<Renderer>().Length,Is.GreaterThan(75));
             root.WorldPresenter.EliteGate.SetLocked(false);root.WorldPresenter.BossGate.SetLocked(false);
-            foreach(var pair in new[]{new Vector3(-34,0,-32),new Vector3(34,0,-32),new Vector3(-34,0,48),new Vector3(34,0,48),new Vector3(-34,0,90),new Vector3(34,0,90)})
+            var bounds=root.WorldPresenter.Bounds;
+            foreach(var pair in new[]{new Vector3(bounds.MinX+2,0,-32),new Vector3(bounds.MaxX-2,0,-32),new Vector3(bounds.MinX+2,0,32),new Vector3(bounds.MaxX-2,0,32),new Vector3(bounds.MinX+2,0,bounds.MaxZ-10),new Vector3(bounds.MaxX-2,0,bounds.MaxZ-10)})
             {
                 Move(root,pair);for(var i=0;i<12;i++)body.Move(Vector3.forward*.25f);
                 Assert.That(body.transform.position.z,Is.EqualTo(pair.z+3).Within(.15f));Capture(root,"edge_"+pair.x+"_"+pair.z);
@@ -137,7 +160,7 @@ namespace Gravivore.Tests.PlayMode
             var mode=canvas.renderMode;var priorCamera=canvas.worldCamera;var priorTarget=camera.targetTexture;var priorActive=RenderTexture.active;
             var render=new RenderTexture(540,960,24,RenderTextureFormat.ARGBHalf);var texture=new Texture2D(540,960,TextureFormat.RGB24,false);
             try{canvas.renderMode=RenderMode.ScreenSpaceCamera;canvas.worldCamera=camera;canvas.planeDistance=1;camera.targetTexture=render;Canvas.ForceUpdateCanvases();camera.Render();RenderTexture.active=render;
-                texture.ReadPixels(new Rect(0,0,540,960),0,0);texture.Apply();Directory.CreateDirectory("docs/chapter01-v3/internal");File.WriteAllBytes("docs/chapter01-v3/internal/"+name+".png",texture.EncodeToPNG());}
+                texture.ReadPixels(new Rect(0,0,540,960),0,0);texture.Apply();Directory.CreateDirectory("docs/history/visual-stages/chapter01-visual-passes/chapter01-v3/internal");File.WriteAllBytes("docs/history/visual-stages/chapter01-visual-passes/chapter01-v3/internal/"+name+".png",texture.EncodeToPNG());}
             finally{canvas.renderMode=mode;canvas.worldCamera=priorCamera;camera.targetTexture=priorTarget;RenderTexture.active=priorActive;render.Release();Object.Destroy(render);Object.Destroy(texture);}
         }
     }
