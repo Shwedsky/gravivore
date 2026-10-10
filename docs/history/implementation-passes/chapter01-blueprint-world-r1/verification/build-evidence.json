@@ -1,0 +1,54 @@
+{
+  "validated": true,
+  "executedGates": {
+    "compile": {
+      "passed": true,
+      "unityExitCode": 0,
+      "log": "docs/history/implementation-passes/chapter01-blueprint-world-r1/verification/compile-delivery-final.log",
+      "logSha256": "0d5ce6de66ac86e48f58be61cffc4534a487f17caed42b757531848a1068465e"
+    },
+    "projectValidator": {
+      "passed": true,
+      "unityExitCode": 0,
+      "log": "docs/history/implementation-passes/chapter01-blueprint-world-r1/verification/validator-delivery-final.log",
+      "logSha256": "67b04b92f59db58e7f2612c8e889b605a5bf5ce52c83e51b109a4dc27178193a"
+    },
+    "androidBuild": {
+      "passed": true,
+      "unityExitCode": 0,
+      "log": "Builds/Logs/android-dev-20261009-225604.log",
+      "logSha256": "b39529913ceeef41e652695bdc69bbc51504d481a8a9cff9596e7e3dae723a4e"
+    }
+  },
+  "apkSha256": "3e9a76807adbba9e7a44e495eba4286a52c0dc0f2418698f7546736ac3fc65ad",
+  "proofTextNormalization": "Trailing whitespace removed from copied packed-asset and shader-variant lists; substantive entries unchanged.",
+  "manifest": "package: name='com.gravivore.mobile.dev' versionCode='48' versionName='0.1.0' platformBuildVersionName='16' platformBuildVersionCode='36' compileSdkVersion='36' compileSdkVersionCodename='16'\nminSdkVersion:'26'\ntargetSdkVersion:'36'\napplication-debuggable\nnative-code: 'arm64-v8a'",
+  "adbDevices": [],
+  "androidDeviceMeasurementPerformed": false,
+  "shaderAuditPassed": true,
+  "compiledShaderVariantRows": 54,
+  "serializedWorldEntries": [
+    "RepairHub / authored industrial sector",
+    "RelayYard / authored industrial sector",
+    "CapacitorField / authored industrial sector",
+    "CuttingFloor / authored industrial sector",
+    "ShieldDump / authored industrial sector",
+    "HaulerGraveyard / authored industrial sector",
+    "MagnetarComplex / authored industrial sector",
+    "CustodianCore / authored industrial sector",
+    "Chapter 01 Blueprint World R1",
+    "Authored cross-sector service network"
+  ],
+  "serializedOldWorldLayersAbsent": true,
+  "oldWorldAbsenceMethod": "Executed Chapter01BlueprintWorldBuildAudit checks length-prefixed serialized scene names in the actual APK and fails the build on V45/V46/V47 world or old deck names.",
+  "proofFiles": {
+    "apk-required-resources.txt": "ecf7806b90e12b282905c0e7dd51be5f8fe8ca2a9015ebf72ce607da488005c0",
+    "apk-packed-assets.txt": "08ba1cd8444c2f6967e7500781d005f6e4f43f3e80c81c4a945a62efce82b15b",
+    "apk-world-serialized-sectors.txt": "09908be659af7833ad0ceab45261ce5a69ac18928f6bc298bb082c203072755d",
+    "compiled_shader_variants.txt": "5744d0b6845c310ff2182132d791663debf857aa3ba49370186bf623a911d220",
+    "render_dependency_report.json": "d877cc830dfeaa5249c431e83174064ac52fc6a4526f5261a243e87d62e46878",
+    "render_profile.json": "a353924b10bbfd81387ceca010b7bc04fc96014d5dcd937051bf6963d031cb7c",
+    "serialized_scene_renderers.txt": "7c22a018ef9feb0092112cb077f4ff63b175d819ec187c507390643b623d4463",
+    "apk-post-device-combat.json": "0b1fa4c4e6d3cfe433e74ad9e49cf0218ff8f8cd9520bac0eedb8d4d6208bd74"
+  }
+}
