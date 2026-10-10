@@ -1,12 +1,16 @@
 # GRAVIVORE — approved enemy visual targets
 
-Status: **CURRENT / OWNER-APPROVED**  
+Status: **SUPERSEDED / RETAINED V1 DESIGN EVIDENCE; NOT CURRENT ANATOMY AUTHORITY**
 Original approval: 2026-10-06  
 Scope: Scout, Cutter and Magnetar Guard.
 
-Read with `docs/CURRENT_VISUAL_TARGET.md`. This file defines hostile-role specifics; it does not override the current bipedal G-0 direction.
+Superseded on 2026-10-10 by [Chapter 01 Actor Visual Targets V2](../visual-blueprints/chapter01-actors/CHAPTER01_ACTOR_VISUAL_TARGETS_V2.md) and its exact owner-approved PNG. Newest owner correction > V2 PNG > V2 text > CURRENT visual target > ART_DIRECTION > donor audit/matrix > historical evidence. This V1 file cannot restore superseded requirements or serve as a missing-image fallback.
 
-If the original binary reference board is unavailable to the execution environment, these text rules remain authoritative. Do not substitute historical Phase/Art-Spike images as a newer target.
+**Scout correction:** the current Scout is a light two-legged biped with long integrated blade-arm terminations. The radial/spider Scout text below is preserved as superseded evidence, not instructions. Warden carries two separate arm/hand-controlled shields; Carrier is a low streamlined vehicle. Current G-0 remains bipedal. Read the complete eight-actor V2 package before production; stop if its primary PNG is missing.
+
+## Retained V1 design evidence
+
+The original design sections below are retained for comparison. They do not determine current anatomy, acceptance criteria, donor selection or fallback authority.
 
 ## Shared faction language
 

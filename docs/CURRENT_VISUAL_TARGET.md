@@ -12,11 +12,11 @@ It is **not** a low-poly-aesthetic game, a primitive/proxy-art game, a toy-mech 
 
 The owner's approved GRAVIVORE concept board is the artistic target for world density, industrial composition, enemy hierarchy, lighting mood, materials, combat readability and presentation quality.
 
-Current reference names used during development include:
-- `Концепт GRAVIVORE: Мехи и окружение.png`
-- the approved Scout / Cutter / Magnetar visual-target board when available
+Chapter 01 actor visual anatomy is governed by the exact owner-approved [Actor Visual Targets V2 PNG](visual-blueprints/chapter01-actors/CHAPTER01_ACTOR_VISUAL_TARGETS_V2.png), its [V2 textual contract](visual-blueprints/chapter01-actors/CHAPTER01_ACTOR_VISUAL_TARGETS_V2.md) and [package README](visual-blueprints/chapter01-actors/README.md). Inspect the exact image before production. If it is missing, **stop and report missing actor visual authority**; do not generate, replace, reinterpret or fall back to old enemy boards/text as a substitute.
 
-If a binary reference is not available inside a Codex execution environment, **do not replace the concept with an older phase document**. Use this file, `ART_DIRECTION.md`, the approved enemy target document, and the current explicit task. Record the missing binary as an evidence limitation.
+Actor-anatomy precedence: newest explicit owner correction > V2 PNG > V2 text > this CURRENT visual target > `ART_DIRECTION.md` > donor audit/matrix > historical evidence. Donors cannot reshape the approved anatomy.
+
+World/composition remains governed by [Chapter 01 Visual Blueprint V1](visual-blueprints/chapter01/CHAPTER01_VISUAL_BLUEPRINT_V1.md) and its original board. The older `Концепт GRAVIVORE: Мехи и окружение.png` and V1 enemy references cannot override newer actor corrections. For general visual planning where a non-actor reference binary is missing, record that evidence limitation and use the current domain text; a full world rebuild still follows the world blueprint's image gate.
 
 ### Explicit G-0 exception
 
@@ -35,7 +35,7 @@ Production presentation should read as authored game art at the real portrait ga
 - PBR response with base color, normal relief, metallic/roughness or smoothness variation, occlusion and localized emission where appropriate;
 - restrained wear, edge exposure, recesses, seams, fasteners, vents, heat or damage where the object function supports them;
 - cyan/blue energy for player/neutral/service technology;
-- red/orange energy for hostile/dangerous machinery;
+- red/orange energy for hostile/dangerous machinery by default; the approved Actor V2 Arc Drone retains its visible blue contained core/weapon energy rather than being recolored by this general rule;
 - no neon used as a substitute for geometry or material definition;
 - no large clean default planes or sparse prop scattering as a finished environment solution;
 - no stock-donor identity left obvious in hero actors or major landmarks.
@@ -66,7 +66,9 @@ Enemy roles must be distinguishable by silhouette and function before color:
 - elite: materially and mechanically more complex than ordinary units, not merely scaled up;
 - boss: arena-defining machinery with unique mass, weapon causality and readable telegraphs.
 
-See `docs/visual-production-v2/ENEMY_VISUAL_TARGETS_APPROVED_V1.md` for the approved Scout/Cutter/Magnetar rules. Current G-0 bipedal anatomy remains separate from hostile radial/spider design language.
+Use [Actor Visual Targets V2](visual-blueprints/chapter01-actors/CHAPTER01_ACTOR_VISUAL_TARGETS_V2.md) for G-0, Scout, Cutter, Warden, Arc Drone, Carrier, Magnetar and Custodian. Scout is a light **biped with two long blade-arm terminations**, Warden is a heavy **biped carrying two separate shields through its arms/hands**, Carrier is a **low enclosed streamlined vehicle**, and Arc Drone is **airborne**. Cutter may use quadruped mechanics; Magnetar and Custodian require their own substantially custom heavy architectures.
+
+`docs/visual-production-v2/ENEMY_VISUAL_TARGETS_APPROVED_V1.md` is superseded design evidence, including its radial/spider Scout rule. Hostiles do not share one universal radial/spider anatomy. G-0 remains the approved bipedal player mech, distinct through its player finish, core/equipment and silhouette. The next actor task is the [Scout / Warden / Carrier proof contract](actor-production-v1/SCOUT_WARDEN_CARRIER_PRODUCTION_PROOF_BRIEF.md).
 
 ## Equipment and attack presentation
 
