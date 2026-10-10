@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using Gravivore.Gameplay.Combat;
@@ -50,7 +51,13 @@ namespace Gravivore.Tests.PlayMode
             Assert.DoesNotThrow(environment.ValidateOrThrow); Assert.That(environment.RegionCount,Is.EqualTo(11));
             Assert.That(environment.GetComponentsInChildren<Collider>(true),Is.Empty);
             Assert.That(environment.GetComponentsInChildren<MonoBehaviour>(true),Has.Length.EqualTo(1));
-            Assert.That(environment.GetComponentsInChildren<Light>(true),Has.Length.EqualTo(1));
+            var worldLights=environment.GetComponentsInChildren<Light>(true);
+            Assert.That(worldLights,Has.Length.EqualTo(environment.BlueprintWorldOnly?17:1));
+            foreach(var local in worldLights.Where(l=>l!=environment.KeyLight))
+            {
+                Assert.That(local.shadows,Is.EqualTo(LightShadows.None));
+                Assert.That(local.range,Is.LessThanOrEqualTo(9.01f));
+            }
             Assert.That(environment.KeyLight.shadows,Is.EqualTo(LightShadows.Soft));
             var hub = environment.GetRegion("repair-hub").Root;
             Assert.That(hub.Find("PlayerDockPoint").position,Is.EqualTo(root.PlayerObject.transform.position));

@@ -18,7 +18,7 @@ namespace Gravivore.Tests.PlayMode
 {
     public sealed class Chapter01BlueprintWorldSmokeTests
     {
-        private const string Output="docs/history/implementation-passes/chapter01-blueprint-world-r1";
+        private const string Output="docs/history/implementation-passes/chapter01-blueprint-world-r2";
         private CanonicalSceneTestScope _scene;
         [UnityTearDown] public IEnumerator Cleanup(){if(_scene!=null)yield return _scene.Cleanup();}
         private IEnumerator Load(bool controlled=true)
@@ -41,7 +41,7 @@ namespace Gravivore.Tests.PlayMode
                 if(i==6){root.WorldUnlocks.PrepareEliteEncounterForDevelopment();root.Chapter1Encounters.Tick();}
                 if(i==7)root.MagnetarGuard.ApplyDamage(new DamageRequest(100000,DamageType.Gravity));
                 var position=root.VisualEnvironment.GetRegion(ids[i]).Root.position;
-                Move(root,position+(i==6?new Vector3(-1.5f,0,-2):i==7?new Vector3(3,0,-2):Vector3.zero));
+                Move(root,position+(i>=6?new Vector3(0,0,-3):Vector3.zero));
                 root.EnemyPopulation.Tick(0);
                 foreach(var enemy in root.GetComponentsInChildren<OrdinaryEnemyController>(true))enemy.enabled=false;
                 yield return null;Capture(root,$"{i+1:00}_{ids[i]}");
@@ -129,6 +129,18 @@ namespace Gravivore.Tests.PlayMode
                 camera.targetTexture=render;Canvas.ForceUpdateCanvases();camera.Render();RenderTexture.active=render;
                 texture.ReadPixels(new Rect(0,0,540,960),0,0);texture.Apply();Directory.CreateDirectory(Output+"/internal");
                 File.WriteAllBytes(Output+"/internal/"+name+".png",texture.EncodeToPNG());
+                if(name!="09_remapped_chapter_map")
+                {
+                    var canvases=root.GetComponentsInChildren<Canvas>(true);var enabled=canvases.Select(c=>c.enabled).ToArray();
+                    try
+                    {
+                        foreach(var item in canvases)item.enabled=false;
+                        camera.Render();RenderTexture.active=render;texture.ReadPixels(new Rect(0,0,540,960),0,0);texture.Apply();
+                        Directory.CreateDirectory(Output+"/internal/no-ui");
+                        File.WriteAllBytes(Output+"/internal/no-ui/"+name+".png",texture.EncodeToPNG());
+                    }
+                    finally {for(var i=0;i<canvases.Length;i++)canvases[i].enabled=enabled[i];}
+                }
                 var planes=GeometryUtility.CalculateFrustumPlanes(camera);
                 var visible=root.GetComponentsInChildren<Renderer>(true).Where(r=>r.enabled&&r.gameObject.activeInHierarchy&&GeometryUtility.TestPlanesAABB(planes,r.bounds)).ToArray();
                 var triangles=0L;

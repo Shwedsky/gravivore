@@ -33,7 +33,7 @@ namespace Gravivore.Editor.VisualIntegration
                 {
                     using var source = entry.Open(); using var memory = new MemoryStream(); source.CopyTo(memory); var bytes = memory.ToArray();
                     for (var i = 0; i < names.Length; i++) found[i] |= ContainsSerialized(bytes,names[i]);
-                    foreach (var old in new[] { ConceptCorrectiveV45Builder.Layer,SurfaceHeroV46Builder.Layer,ConceptConvergenceV47Builder.Layer,"Flush industrial panel deck V47","Compact small-panel deck" })
+                    foreach (var old in new[] { ConceptCorrectiveV45Builder.Layer,SurfaceHeroV46Builder.Layer,ConceptConvergenceV47Builder.Layer,"Chapter 01 Blueprint World R1","Flush industrial panel deck V47","Compact small-panel deck" })
                         if (ContainsSerialized(bytes,old)) throw new BuildFailedException("Historical world remains in serialized production scene: " + old);
                 }
             for (var i = 0; i < found.Length; i++) if (!found[i]) throw new BuildFailedException("Rebuilt sector absent from APK: " + names[i]);

@@ -1,6 +1,6 @@
 # Chapter 01 Blueprint World-only R1 — APK 48 delivery
 
-Status: implementation, internal portrait review, automated validation and development APK build completed. PR #71 remains Draft for the owner's real-device world review.
+Status: implementation, internal portrait review, automated validation and development APK build completed. **Subsequent owner device review rejected R1 visual acceptance.** Its technical topology/traversal are retained as the R2 baseline; this report remains historical build evidence. See `../chapter01-blueprint-world-r2/OWNER_DEVICE_REVIEW_R1.md`. PR #71 remains Draft.
 
 ## Branch and build identity
 

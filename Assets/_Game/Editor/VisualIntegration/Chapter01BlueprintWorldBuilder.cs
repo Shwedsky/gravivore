@@ -17,8 +17,8 @@ namespace Gravivore.Editor.VisualIntegration
     public static class Chapter01BlueprintWorldBuilder
     {
         public const string Root = "Assets/_Game/Content/BlueprintWorldR1";
-        public const string Output = "docs/history/implementation-passes/chapter01-blueprint-world-r1/verification";
-        public const string Layer = "Chapter 01 Blueprint World R1";
+        public const string Output = "docs/history/implementation-passes/chapter01-blueprint-world-r2/verification";
+        public const string Layer = "Chapter 01 Blueprint World R2";
         public const string ScenePath = "Assets/_Game/Content/Scenes/Chapter01_ScrapExclusion.unity";
         private const string WorldPath = "Assets/_Game/Content/Definitions/S08_Chapter01World.asset";
         [Serializable] public sealed class Volume { public string id; public Vector3 center, size; }
@@ -39,7 +39,9 @@ namespace Gravivore.Editor.VisualIntegration
         }
         public static bool IsBlueprintWorld() => AssetDatabase.LoadAssetAtPath<Chapter01WorldDefinition>(WorldPath)?.Layout != null;
         public static LayoutDocument ReadLayout() => JsonUtility.FromJson<LayoutDocument>(File.ReadAllText("Tools/blueprint-world-r1/layout.json"));
-        public static void Build()
+        public static void Build() => Build(false);
+        public static void BuildR2() => Build(true);
+        private static void Build(bool preserveR1Topology)
         {
             Directory.CreateDirectory(Output);
             Directory.CreateDirectory(Root + "/Materials");
@@ -48,8 +50,11 @@ namespace Gravivore.Editor.VisualIntegration
             BuildMaterials();
             var layout = ReadLayout();
             foreach (var name in layout.sectors.Select(s => s.model).Concat(new[] { "ServiceNetwork", "GateBarrier" })) BuildPrefab(name);
-            var authority = BuildLayout(layout);
-            RemapDefinitions(layout, authority);
+            if (!preserveR1Topology)
+            {
+                var authority = BuildLayout(layout);
+                RemapDefinitions(layout, authority);
+            }
             var scene = EditorSceneManager.OpenScene(ScenePath);
             var root = scene.GetRootGameObjects().SelectMany(o => o.GetComponentsInChildren<S01SceneCompositionRoot>(true)).Single();
             var old = root.VisualEnvironment;
@@ -70,8 +75,8 @@ namespace Gravivore.Editor.VisualIntegration
             data.ApplyModifiedPropertiesWithoutUndo();
             keyLight.transform.SetParent(environment.Lighting, false);
             var light = keyLight.GetComponent<Light>();
-            light.color = new Color(.80f,.88f,1f); light.intensity = 1.65f;
-            light.transform.rotation = Quaternion.Euler(51,-32,0);
+            light.color = new Color(.88f,.92f,1f); light.intensity = 1.05f;
+            light.transform.rotation = Quaternion.Euler(58,-35,0);
             data = new SerializedObject(environment); data.FindProperty("_keyLight").objectReferenceValue = light;
             data.FindProperty("_sliceGate").objectReferenceValue = Prefab("GateBarrier");
             data.FindProperty("_sliceObstacles").arraySize = 0;
@@ -95,6 +100,7 @@ namespace Gravivore.Editor.VisualIntegration
                 var fault = Group(anchor, "Fidelity service fault"); fault.localPosition = new Vector3(sector.id == "boss-arena" ? -9 : -6, .3f, 6);
                 var energy = Group(anchor, "Fidelity light " + (sector.id == "repair-hub" || sector.id == "capacitor-field" ? "cyan" : "amber"));
                 energy.localPosition = new Vector3(sector.id == "elite-arena" ? 8.5f : -6, 2.5f, 6);
+                BuildSectorLights(environment.Lighting,sector);
             }
             bindings.Add(("start-region", "", new Vector3(0,0,-30)));
             bindings.Add(("elite-approach", "", new Vector3(0,0,44)));
@@ -124,14 +130,35 @@ namespace Gravivore.Editor.VisualIntegration
                 GameObjectUtility.SetStaticEditorFlags(node.gameObject, StaticEditorFlags.BatchingStatic);
             environment.ValidateOrThrow();
             RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Trilight;
-            RenderSettings.ambientSkyColor = new Color(.40f,.48f,.58f);
-            RenderSettings.ambientEquatorColor = new Color(.20f,.26f,.32f);
-            RenderSettings.ambientGroundColor = new Color(.075f,.085f,.10f);
+            RenderSettings.ambientSkyColor = new Color(.20f,.24f,.29f);
+            RenderSettings.ambientEquatorColor = new Color(.08f,.105f,.14f);
+            RenderSettings.ambientGroundColor = new Color(.03f,.039f,.055f);
             BuildIndustrialReflection();
             EditorSceneManager.MarkSceneDirty(scene); EditorSceneManager.SaveScene(scene);
             AssetDatabase.SaveAssets();
             Audit();
-            Debug.Log("CHAPTER01_BLUEPRINT_WORLD_R1_AUTHORED");
+            Debug.Log("CHAPTER01_BLUEPRINT_WORLD_R2_AUTHORED");
+        }
+        private static void BuildSectorLights(Transform parent,Sector sector)
+        {
+            var cyan=new Color(.04f,.65f,1f);var amber=new Color(1f,.34f,.055f);var red=new Color(1f,.07f,.025f);
+            var cool=new Color(.34f,.58f,1f);
+            var service=sector.id=="repair-hub"||sector.id=="capacitor-field";
+            var hot=sector.id=="cutting-floor"||sector.id=="boss-arena";
+            var keyColor=service?cyan:hot?red:amber;
+            var intensity=sector.id=="shield-dump"?24f:sector.id=="capacitor-field"?60f:45f;
+            for(var i=0;i<2;i++)
+            {
+                var node=Group(parent,sector.id+(i==0?" / machinery light pool":" / service rim pool"));
+                var local=i==0?new Vector3(-2.8f,3.6f,2.0f):new Vector3(3.5f,3.0f,-2.6f);
+                if(sector.id=="elite-arena"&&i==0)local=new Vector3(-5,3.8f,3.3f);
+                if(sector.id=="boss-arena"&&i==0)local=new Vector3(0,4.2f,6.5f);
+                node.position=sector.center+local;
+                var light=node.gameObject.AddComponent<Light>();light.type=LightType.Point;
+                light.color=i==0?keyColor:hot?amber:cool;light.intensity=i==0?intensity:18f;
+                light.range=i==0?9f:6.5f;light.shadows=LightShadows.None;
+                light.renderMode=LightRenderMode.ForcePixel;light.bounceIntensity=0;
+            }
         }
         private static Transform Group(Transform parent, string name)
         { var node = new GameObject(name).transform; node.SetParent(parent,false); return node; }
@@ -172,7 +199,7 @@ namespace Gravivore.Editor.VisualIntegration
             }
             cube.Apply(true,false);EditorUtility.SetDirty(cube);
             RenderSettings.defaultReflectionMode=UnityEngine.Rendering.DefaultReflectionMode.Custom;
-            RenderSettings.customReflectionTexture=cube;RenderSettings.reflectionIntensity=.8f;
+            RenderSettings.customReflectionTexture=cube;RenderSettings.reflectionIntensity=.40f;
         }
         private static void BuildMaterials()
         {
@@ -201,7 +228,7 @@ namespace Gravivore.Editor.VisualIntegration
                 material.SetFloat("_BumpScale",.8f); material.SetFloat("_Smoothness",.65f); material.SetFloat("_OcclusionStrength",1);
                 material.EnableKeyword("_NORMALMAP"); material.EnableKeyword("_METALLICSPECGLOSSMAP"); material.EnableKeyword("_OCCLUSIONMAP");
                 if (material.GetTexture("_EmissionMap") != null)
-                { material.globalIlluminationFlags = MaterialGlobalIlluminationFlags.BakedEmissive; material.EnableKeyword("_EMISSION"); material.SetColor("_EmissionColor",Color.white*2.4f); }
+                { material.globalIlluminationFlags = MaterialGlobalIlluminationFlags.BakedEmissive; material.EnableKeyword("_EMISSION"); material.SetColor("_EmissionColor",Color.white*1.55f); }
                 material.enableInstancing = true; EditorUtility.SetDirty(material);
             }
         }
@@ -305,6 +332,9 @@ namespace Gravivore.Editor.VisualIntegration
                     activeRepeatedDeck = names.Count(n => n.Contains("Compact small-panel deck") || n.Contains("Flush industrial panel deck V47")),
                     staticRenderers = renderers.Length, materials = renderers.SelectMany(r => r.sharedMaterials).Distinct().Count(),
                     lights = environment.GetComponentsInChildren<Light>(true).Count(l => l.enabled), dependencies = AssetDatabase.GetDependencies(ScenePath,true) };
+                var localLights=environment.GetComponentsInChildren<Light>(true).Where(l=>l.enabled&&l!=environment.KeyLight).ToArray();
+                if(localLights.Length!=16||localLights.Any(l=>l.shadows!=LightShadows.None||l.range>9.01f))
+                    throw new InvalidOperationException("R2 local lighting must remain sixteen bounded unshadowed pools.");
                 if (report.activeV45 + report.activeV46 + report.activeV47 + report.activeRepeatedDeck != 0)
                     throw new InvalidOperationException("Historical world implementation remains active.");
                 foreach (var renderer in renderers)
@@ -331,7 +361,7 @@ namespace Gravivore.Editor.VisualIntegration
                 ConceptConvergenceV47Builder.AuditActors();
                 File.WriteAllText(Output + "/world-audit.json",JsonUtility.ToJson(report,true));
                 File.WriteAllLines(Output + "/production-dependencies.txt",report.dependencies);
-                Debug.Log("CHAPTER01_BLUEPRINT_WORLD_R1_AUDIT_PASS");
+                Debug.Log("CHAPTER01_BLUEPRINT_WORLD_R2_AUDIT_PASS");
             }
             finally
             {
