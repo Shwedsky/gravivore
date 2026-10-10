@@ -10,13 +10,14 @@ This file exists to stop historical phase documents from silently becoming requi
 2. `docs/CURRENT_AUTHORITIES.md`
 3. `docs/CURRENT_VISUAL_TARGET.md` for any presentation, world, art, VFX, UI, model, material, lighting or asset task
 4. `docs/visual-blueprints/chapter01/CHAPTER01_VISUAL_BLUEPRINT_V1.md` for any Chapter 01 world-layout, environment-composition, facility, collision-layout, minimap-geometry or full visual-rebuild task
-5. `docs/ASSET_SOURCE_OF_TRUTH.md` for any task that touches external or project-owned art assets
-6. `docs/DECISIONS.md`
-7. `docs/PROJECT_BIBLE.md`
-8. `docs/GAME_DESIGN.md`
-9. `docs/ARCHITECTURE.md`
-10. the active specification or explicit task
-11. `docs/TEST_STRATEGY.md` and `docs/BUILD_AND_RELEASE.md`
+5. `docs/visual-blueprints/chapter01-actors/README.md`, the exact `CHAPTER01_ACTOR_VISUAL_TARGETS_V2.png` and `CHAPTER01_ACTOR_VISUAL_TARGETS_V2.md` for any Chapter 01 actor anatomy/presentation/production task; inspect the image before authoring and stop if it is missing
+6. `docs/ASSET_SOURCE_OF_TRUTH.md` for any task that touches external or project-owned art assets
+7. `docs/DECISIONS.md`
+8. `docs/PROJECT_BIBLE.md`
+9. `docs/GAME_DESIGN.md`
+10. `docs/ARCHITECTURE.md`
+11. the active specification or explicit task
+12. `docs/TEST_STRATEGY.md` and `docs/BUILD_AND_RELEASE.md`
 
 The current explicit human task still has highest authority.
 
@@ -55,6 +56,10 @@ Low polygon counts, LODs, shared materials, atlases, batching and restrained dyn
 
 The current visual contract is defined in `docs/CURRENT_VISUAL_TARGET.md` and `docs/ART_DIRECTION.md`.
 
+For Chapter 01 actors, the primary visual authority is the exact owner-approved `docs/visual-blueprints/chapter01-actors/CHAPTER01_ACTOR_VISUAL_TARGETS_V2.png`, normalized by its V2 Markdown contract. Newest explicit owner correction > V2 PNG > V2 text > CURRENT visual target > ART_DIRECTION > donor audit/matrix > historical evidence. Donors define manufacturing possibilities, never approved anatomy. Historical documents cannot restore superseded requirements.
+
+Actor V2 supersedes the radial/spider Scout in `docs/visual-production-v2/ENEMY_VISUAL_TARGETS_APPROVED_V1.md`: Scout is a light two-legged biped with long blade-arm terminations. Warden carries two separate arm/hand-controlled shields; Carrier is a low enclosed streamlined vehicle. Arc Drone stays airborne and retains the blue energy visibly approved in the V2 PNG. This actor authority does not redefine world/layout or gameplay.
+
 For Chapter 01, `docs/visual-blueprints/chapter01/CHAPTER01_VISUAL_BLUEPRINT_V1.md` is the current scene-composition authority. It intentionally supersedes the old practice of preserving V44–V47 physical presentation layout/collision fingerprint while merely replacing props.
 
 ## Current asset authority
@@ -68,6 +73,12 @@ Do not discover current assets by scanning old local caches, old worktrees or hi
 G-0 is a **bipedal robotic combat mech** in the current game. Any historical four-support, spider-like, radial or tank-like G-0 description is superseded.
 
 The owner concept remains the visual-quality and world-composition target, except for that G-0 anatomy override and any later explicit owner correction.
+
+The current V2 actor board already depicts bipedal G-0. Retain the approved current player direction and its distinction from the hostile faction; do not use the proof trio as scope to replace G-0.
+
+## Next actor production contract
+
+`docs/actor-production-v1/SCOUT_WARDEN_CARRIER_PRODUCTION_PROOF_BRIEF.md` defines **SCOUT_WARDEN_CARRIER_PRODUCTION_PROOF**: agile integrated-blade biped, heavy shield-carrying biped and non-biped vehicle. This is the next production task, not an asset implementation delivered by the authority package. PR #72's audit is pinned manufacturing evidence; PR #71's world work remains separate.
 
 ## Conflict-audit status
 

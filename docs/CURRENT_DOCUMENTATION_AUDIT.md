@@ -14,6 +14,28 @@ Purpose: verify that new Codex work is no longer pulled toward superseded protot
 
 **Resolved.** Current authority says G-0 is bipedal. Historical radial/four-support/tank-like player directions cannot override it.
 
+### Chapter 01 actor V2 anatomy and old Scout authority
+
+**Resolved at documentation level, 2026-10-10.** On baseline `38e0ed8fe5c95ff41ab5dbb246f45ed26bdcf9cc`, `docs/visual-production-v2/ENEMY_VISUAL_TARGETS_APPROVED_V1.md` still called itself CURRENT and prescribed Scout as a low radial/spider-like body. `CURRENT_VISUAL_TARGET.md` referred to that file and described hostile radial/spider language; `ART_DIRECTION.md` also directed actor work to V1. Those current entry points now route to the exact owner-approved Actor V2 PNG and normalized textual contract.
+
+The old V1 file is explicitly SUPERSEDED; its design sections remain as comparison evidence. No `docs/history/` content was rewritten. The newer Scout is a light two-legged biped with two long integrated blade-arm weapons. Warden must visibly carry two separate shields through functional arms/hands rather than use pauldrons/torso wings. Carrier is a low enclosed streamlined vehicle, never a walking mech/cart. No current Warden-pauldron or Carrier-on-legs rule was found in the searched current authorities; these are locked owner rejection conditions now made explicit.
+
+### Missing actor PNG fallback and generic hostile colors
+
+**Resolved at documentation level.** The old visual/asset text permitted current text to stand in when concept binaries were unavailable, and the V1 enemy text declared itself authoritative in that case. Chapter 01 actor production now stops when the exact Actor V2 PNG is missing, with no replacement generation or historical fallback. The V2 package records the original SHA-256 and requires unchanged reference custody.
+
+The same obsolete fallback was found in `docs/current-visual/reference/README.md` and corrected to the current actor/world packages. The `docs/free-asset-intake-v2/` library still contains radial Scout recommendations in `UNFILLED_ART_GAPS.md`, `RECOMMENDED_ASSET_STACK.md` and old authority links in `SOURCE_DISCOVERY_REPORT.md`. Its README already declares REFERENCE / EVIDENCE, NOT CURRENT IMPLEMENTATION INSTRUCTIONS; those measured historical selection records were left intact. Actor V2 explicitly supersedes their anatomy assumptions, and the current source-of-truth entry points do not route actor design to them.
+
+The board visibly uses blue energy for Arc Drone despite the older blanket red/orange hostile rule. Current visual/art authorities now state the actor-specific blue exception. Arc Drone remains airborne under the explicit owner correction; drawn downward appendages do not authorize a ground gait. Number-badge colors and approximate scale labels are not new material or collider/balance rules.
+
+### Donor design vs visual authority, and separate world scope
+
+**Resolved at documentation level.** Actor V2 uses PR #72 audit/matrix at pinned commit `628f51d220a379fdaa14a60536b68275924976a9` as manufacturing evidence only. George -> Scout, Striker -> Warden, QuadShell -> Cutter, EyeDrone -> Arc Drone and UnityFan 012 -> Carrier are reusable-component paths, not accepted designs. Magnetar/Custodian require substantial new heavy architecture. G-0 is retained.
+
+World/layout remains governed by Chapter 01 Visual Blueprint V1; its board and contract were not edited. `PROJECT_BIBLE.md` uses legacy labels such as "Scout Drone" and "Carrier: high HP, slow heavy swing" for gameplay description. These were inspected and retained: they do not prescribe actor anatomy or authorize this visual task to retune controllers/speed/attacks. V2's fast/aggressive vehicle read is visual language, not a new gameplay balance rule.
+
+Audit scope: `CURRENT_AUTHORITIES`, `CURRENT_VISUAL_TARGET`, `ART_DIRECTION`, `ASSET_SOURCE_OF_TRUTH`, `DECISIONS`, `PROJECT_BIBLE`, `GAME_DESIGN`, `ARCHITECTURE`, current world blueprint, V1 actor target, `TEST_STRATEGY`, `BUILD_AND_RELEASE` and active `specs/` actor mentions. This is documentation conflict resolution, not a claim that legacy runtime models/controllers have already been replaced or that device visual acceptance passed.
+
 ### Empty/quiet environment language
 
 **Resolved.** Current art direction requires dense but readable functional industrial composition: layered floor, substantial gates/walls, connected services, large machinery/facilities, wreckage and edge massing while combat centres remain clear.
@@ -94,6 +116,9 @@ For new visual work, the active documentation no longer requires or prefers:
 
 - a low-poly aesthetic;
 - four-support G-0;
+- radial/spider Scout or a universal radial hostile body family;
+- Warden shields treated as shoulder armor or Carrier treated as a walking mech;
+- historical/text-only substitution for a missing Actor V2 PNG;
 - quiet/open sparse industrial floors as the target;
 - primitive proxy geometry as production art;
 - tiny decorative spawn markers instead of functional facilities;
