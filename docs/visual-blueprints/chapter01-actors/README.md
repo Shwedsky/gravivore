@@ -32,4 +32,4 @@ Donors may supply rigs, animation or selected mechanical parts. They never defin
 
 [Chapter 01 Visual Blueprint V1](../chapter01/CHAPTER01_VISUAL_BLUEPRINT_V1.md) remains authoritative for world composition/layout. Actor V2 does not change sector topology, scene wiring, progression, collision or minimap geometry. PR #71 owns world rebuilding and PR #72 owns donor intake; this package does not modify either branch.
 
-The next production contract is the Scout / Warden / Carrier proof trio, documented under `docs/actor-production-v1/SCOUT_WARDEN_CARRIER_PRODUCTION_PROOF_BRIEF.md` when the normalization checkpoint is complete. No actor is modeled by this authority task.
+The next production contract is the [Scout / Warden / Carrier proof trio](../../actor-production-v1/SCOUT_WARDEN_CARRIER_PRODUCTION_PROOF_BRIEF.md), identifier **SCOUT_WARDEN_CARRIER_PRODUCTION_PROOF**. No actor is modeled by this authority task.
