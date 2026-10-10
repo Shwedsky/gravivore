@@ -135,6 +135,22 @@ class Actor:
   for s in [-1,1]:
    self.ring(name+' bearing '+str(s),c+Vector((s*r*.96,0,0)),r*.76,r*.21,r*.13,2,bone,(1,0,0),24)
    self.tube(name+' hex retainer '+str(s),c+Vector((s*r*.98,0,0)),c+Vector((s*r*1.1,0,0)),r*.28,mat=7,bone=bone,steps=6)
+ def armored_rail(self,name,a,b,width,bone,mat=1):
+  a=Vector(a); b=Vector(b); d=b-a; q=d.to_track_quat('Z','Y'); length=d.length
+  outline=[(-width*.65,length*.12),(-width,length*.26),(-width*.83,length*.73),(-width*.38,length*.89),(width*.35,length*.86),(width*.85,length*.63),(width*.91,length*.24),(width*.56,length*.11)]
+  o=self.panel(name+' segmented armor landing',outline,-width*.7,width*.19,mat,bone,width*.11,width*.05)
+  for v in o.data.vertices: v.co=a+q@v.co
+  for f in [.31,.58]:
+   pa=a+q@Vector((-width*.67,-width*.87,length*f)); pb=a+q@Vector((width*.64,-width*.87,length*f+.016))
+   self.tube(name+' machined transverse interruption '+str(f),pa,pb,width*.035,mat=0,bone=bone,steps=8)
+ def sector(self,name,c,r,w,start,end,bone='BODY',mat=1):
+  c=Vector(c); count=16; vs=[]
+  for y,rad in [(-w*.20,r-w*.50),(-w*.20,r+w*.50),(w*.2,r+w*.50),(w*.2,r-w*.5)]:
+   vs += [c+Vector((math.sin(start+(end-start)*i/count)*rad,y,math.cos(start+(end-start)*i/count)*rad)) for i in range(count+1)]
+  n=count+1; fs=[]
+  for j in range(4): fs += [(j*n+i,j*n+i+1,((j+1)%4)*n+i+1,((j+1)%4)*n+i) for i in range(count)]
+  fs += [(0,n,2*n,3*n),(n-1,2*n-1,3*n-1,4*n-1)]
+  self.mesh(name,vs,fs,mat,bone,.006,True)
  def actuator(self,name,a,b,r,bone):
   a=Vector(a); b=Vector(b); mid=a+(b-a)*.59
   self.tube(name+' cylinder',a,mid,r,mat=0,bone=bone); self.tube(name+' chrome ram',mid,b,r*.42,mat=2,bone=bone)
@@ -167,7 +183,7 @@ class Actor:
   self.ring(name+' machined aperture',c+Vector((0,-r*.18,0)),r*.91,r*.10,r*.16,2,bone)
   self.ring(name+' internal field coil',c+Vector((0,-r*.16,0)),r*.72,r*.11,r*.11,6,bone)
   bpy.ops.mesh.primitive_uv_sphere_add(segments=32,ring_count=16,radius=1,location=c)
-  o=bpy.context.object; o.name=name+' contained lens'; o.scale=(r*.64,r*.37,r*.64); activate(o); bpy.ops.object.transform_apply(location=True,rotation=True,scale=True)
+  o=bpy.context.object; o.name=name+' contained lens'; o.scale=(r*.64,r*.52,r*.64); activate(o); bpy.ops.object.transform_apply(location=True,rotation=True,scale=True)
   for co in list(o.users_collection): co.objects.unlink(o)
   self.edit.objects.link(o); o['binding']=bone; o['trim_region']=6
   for i in range(8): o.data.materials.append(self.mat)
@@ -178,6 +194,12 @@ class Actor:
    t=i*2*math.pi/count; off=Vector((math.sin(t)*r,0,math.cos(t)*r))
    self.tube(name+' radial clamp '+str(i),c+off*.73+Vector((0,-r*.22,0)),c+off*1.17+Vector((0,-r*.10,0)),r*.071,mat=7,bone=bone,steps=8)
    self.tube(name+' clamp stud '+str(i),c+off*1.06+Vector((0,-r*.10,0)),c+off*1.06+Vector((0,-r*.23,0)),r*.047,mat=2,bone=bone,steps=6)
+  if r>.10:
+   for i in range(4):
+    start=i*math.pi/2+.18; end=(i+1)*math.pi/2-.18
+    self.sector(name+' segmented containment armor '+str(i),c+Vector((0,r*.02,0)),r*1.15,r*.19,start,end,bone,7 if heavy else 1)
+   self.ring(name+' contained axial coil',c+Vector((0,-r*.31,0)),r*.43,r*.034,r*.025,2,bone)
+   self.tube(name+' central field pole',c+Vector((0,-r*.34,0)),c+Vector((0,-r*.54,0)),r*.105,mat=6,bone=bone,steps=12)
  def socket(self,name,position,parent='BODY'):
   self.sockets[name]=(Vector(position),parent)
  def finish(self):
@@ -437,6 +459,9 @@ def supports(a,heavy=False,boss=False):
   a.joint('Support '+str(i)+' root',hip,w*1.4,'BODY'); a.joint('Support '+str(i)+' knuckle',knee,w*1.2,'SUPPORT_'+str(i))
   a.limb('Support '+str(i)+' armored upper load path',hip,knee,w,'SUPPORT_'+str(i),3 if boss else 1)
   a.limb('Support '+str(i)+' tibial shield',knee,foot,w*.79,'KNEE_'+str(i),3 if boss else 1)
+  if heavy or boss:
+   a.armored_rail('Support '+str(i)+' heavy upper segmented armor',hip,knee,w*1.24,'SUPPORT_'+str(i),3 if boss else 1)
+   a.armored_rail('Support '+str(i)+' heavy lower segmented armor',knee,foot,w*1.05,'KNEE_'+str(i),7 if boss else 1)
   a.actuator('Support '+str(i)+' weight cylinder',Vector(hip)+Vector((s*w,-w,0)),Vector(knee)+Vector((s*w,-w,w*.5)),w*.26,'SUPPORT_'+str(i))
   if heavy or boss:
    # Broad split contact shoe supplies mass and load spread, not a needle foot.
@@ -454,11 +479,13 @@ def cutter():
   a.bone('TOOL_'+side,(s*.32,-.29,.73),(s*.49,-.67,.52),'BODY')
   a.joint(side+' cutting drive',(s*.33,-.31,.73),.09,'TOOL_'+side)
   a.limb(side+' cutting drive housing',(s*.34,-.35,.73),(s*.5,-.68,.54),.09,'TOOL_'+side,3)
+  a.armored_rail(side+' layered cutter drive',(s*.34,-.35,.73),(s*.5,-.68,.54),.105,'TOOL_'+side,3)
   a.blade(side+' dominant forward cutting assembly',(s*.5,-.67,.56),(s*.52,-1.18,.08),.12,'TOOL_'+side)
   a.actuator(side+' tool control piston',(s*.21,-.28,.65),(s*.45,-.61,.53),.036,'TOOL_'+side)
   a.socket('AttackOrigin_'+side,(s*.48,-.72,.47),'TOOL_'+side); a.socket('CutterTip_'+side,(s*.52,-1.18,.08),'TOOL_'+side)
   for y in [.13,.25,.37]:
    a.tube(side+' rear heat sink',(s*.10,y,.83),(s*.26,y,.78),.017,mat=7)
+  a.panel(side+' layered dorsal predator shell',[(s*.04,.82),(s*.10,.88),(s*.25,.84),(s*.34,.76),(s*.28,.67),(s*.09,.73)],.06,.31,3,'BODY',.024,.005)
  a.core('Frontal cutting power cell',(0,-.385,.64),.11)
  a.panel('Top armored spine',[(-.09,.70),(-.08,.86),(.08,.86),(.09,.70)],.15,.32,3,'BODY',.02)
  common_sockets(a,.90); a.finish()
@@ -497,10 +524,12 @@ def magnetar():
   a.tube(side+' core power feed',(s*.28,-.31,1.57),(s*.52,-.21,1.53),.038,mat=5,bone='REACTOR')
   a.bone('TOOL_'+side,(s*.69,-.10,2.02),(s*.91,-.36,1.44),'CAGE_'+side)
   a.limb(side+' magnetic actuator arm',(s*.69,-.10,2.02),(s*.91,-.36,1.44),.115,'TOOL_'+side,7)
+  a.armored_rail(side+' magnetic manipulator shielding',(s*.69,-.10,2.02),(s*.91,-.36,1.44),.13,'TOOL_'+side,7)
   a.ring(side+' induction release terminal',(s*.92,-.40,1.43),.12,.034,.08,2,'TOOL_'+side,(0,-1,0),32)
   a.ring(side+' terminal field coil',(s*.92,-.44,1.43),.08,.02,.018,6,'TOOL_'+side,(0,-1,0),32)
   a.socket('FieldOrigin_'+side,(s*.92,-.46,1.43),'TOOL_'+side)
   for z in [1.72,1.84,1.96,2.08]: a.tube(side+' rear cooling rib',(s*.22,.41,z),(s*.39,.40,z),.025,mat=7,bone='REACTOR')
+  a.panel(side+' independent upper containment manifold',[(s*.18,2.26),(s*.35,2.51),(s*.53,2.48),(s*.66,2.24),(s*.42,2.19)],.04,.22,7,'CAGE_'+side,.036,.009)
  a.ring('Upper flux containment crown',(0,.055,2.42),.23,.038,.07,2,'REACTOR',(0,0,1),48)
  a.ring('Upper amber contained coil',(0,.055,2.46),.17,.024,.02,6,'REACTOR',(0,0,1),40)
  a.socket('MagneticCore',(0,-.38,1.90),'REACTOR'); a.socket('AttackOrigin',(0,-.38,1.90),'REACTOR'); common_sockets(a,2.48); a.finish()
