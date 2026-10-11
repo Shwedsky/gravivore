@@ -3,6 +3,7 @@ using Gravivore.Gameplay.Combat;
 using Gravivore.Gameplay.Enemies;
 using Gravivore.Presentation.AudioVfx;
 using Gravivore.Presentation.Feedback;
+using Gravivore.Presentation.Assets;
 using UnityEngine;
 
 namespace Gravivore.Presentation.Combat
@@ -29,6 +30,7 @@ namespace Gravivore.Presentation.Combat
             public float Remaining;
             public Vector3 Destination;
             public ITargetable Target;
+            public CharacterVisualBinding Binding;
             public EnemyLifeId Life;
             public bool Active;
             public Phase6BVfxInstance Effect;
@@ -138,6 +140,7 @@ namespace Gravivore.Presentation.Combat
             sequence.Phase = GravityLashCue.Windup;
             sequence.Remaining = remainingUntilCommit;
             SetTarget(sequence, destination, target);
+            destination=sequence.Destination;
             _charging = sequence;
             ActiveCount++;
 
@@ -168,6 +171,12 @@ namespace Gravivore.Presentation.Combat
         public void Play(Vector3 origin, Vector3 destination, ITargetable presentationTarget)
         {
             EnsureInitialized();
+            // Damage can recycle the hostile before the release presentation callback.
+            // Keep that life's authored hit socket instead of falling back to its ground root.
+            var hasChargeSnapshot = _charging != null && ReferenceEquals(_charging.Target, presentationTarget) &&
+                (!(presentationTarget is OrdinaryEnemyController chargedEnemy) || chargedEnemy.LifeId.Equals(_charging.Life) ||
+                    !chargedEnemy.IsAlive && chargedEnemy.LifeId.Equals(default(EnemyLifeId)));
+            var chargeSnapshot = hasChargeSnapshot ? _charging.Destination : destination;
             if (_charging != null && (!ReferenceEquals(_charging.Target, presentationTarget) ||
                                       _charging.Target != null && !IsTargetLive(_charging)))
                 CancelCharge();
@@ -182,6 +191,8 @@ namespace Gravivore.Presentation.Combat
             _charging = null;
             _vfx.StopCue(Phase6BVfxCue.PlayerCharge);
             SetTarget(sequence, destination, presentationTarget);
+            if (hasChargeSnapshot && !IsTargetLive(sequence)) sequence.Destination = chargeSnapshot;
+            destination=sequence.Destination;
             sequence.Phase = GravityLashCue.Beam;
             sequence.Remaining = _beamDuration;
             LastAttackVariant = sequence.Variant; CurrentPresentationTarget = presentationTarget;
@@ -195,21 +206,21 @@ namespace Gravivore.Presentation.Combat
             LastPlayedObject = sequence.Effect.gameObject;
         }
 
-        public void PlayEnemyHit(Vector3 position, int variationSeed)
+        public void PlayEnemyHit(Vector3 position, int variationSeed, Vector3? visualOrigin = null)
         {
             EnsureInitialized();
             _audio.TryPlay(Phase6BAudioCue.EnemyMechanicalHit, position, variationSeed);
-            var origin = position + Vector3.up * 0.7f;
+            var origin = visualOrigin ?? position + Vector3.up * 0.7f;
             var direction = ResolveOrigin(transform.position) - position;
             direction.y = 0.25f;
             _vfx.TryPlay(Phase6BVfxCue.HostileImpact, origin, origin + direction.normalized);
         }
 
-        public void PlayEnemyShutdown(Vector3 position, int variationSeed)
+        public void PlayEnemyShutdown(Vector3 position, int variationSeed, Vector3? visualOrigin = null)
         {
             EnsureInitialized();
             _audio.TryPlay(Phase6BAudioCue.EnemyShutdown, position, variationSeed);
-            _vfx.TryPlay(Phase6BVfxCue.MechanicalKillBurst, position + Vector3.up * 0.7f, position);
+            _vfx.TryPlay(Phase6BVfxCue.MechanicalKillBurst, visualOrigin ?? position + Vector3.up * 0.7f, position);
         }
 
         public void Tick(float deltaTime)
@@ -232,7 +243,8 @@ namespace Gravivore.Presentation.Combat
                     continue;
                 }
 
-                if (IsTargetLive(sequence)) sequence.Destination = sequence.Target.TargetPoint.position;
+                if (IsTargetLive(sequence)) sequence.Destination = sequence.Binding != null ?
+                    sequence.Binding.GetSocketOr(PresentationSocket.HitCenter,sequence.Target.TargetPoint).position : sequence.Target.TargetPoint.position;
                 else sequence.Target = null;
 
                 sequence.Remaining = Mathf.Max(0f, sequence.Remaining - deltaTime);
@@ -294,6 +306,9 @@ namespace Gravivore.Presentation.Combat
         {
             sequence.Destination = destination;
             sequence.Target = target;
+            sequence.Binding = target is Component owner ? owner.GetComponent<CharacterVisualBinding>() : null;
+            if(sequence.Binding != null && sequence.Binding.Sockets != null && sequence.Binding.Sockets.TryGet(PresentationSocket.HitCenter,out var hit))
+                sequence.Destination=hit.position;
             sequence.Life = target is OrdinaryEnemyController enemy ? enemy.LifeId : default;
         }
 
@@ -317,6 +332,7 @@ namespace Gravivore.Presentation.Combat
             sequence.Active = false;
             sequence.Remaining = 0f;
             sequence.Target = null;
+            sequence.Binding = null;
             sequence.Life = default;
         }
 

@@ -84,6 +84,9 @@ namespace Gravivore.Presentation.UI
             HudUiFactory.CreateButton(panel, "Volume Up", new Vector2(0.63f, 0.11f), new Vector2(0.75f, 0.19f), "+", IncreaseVolume);
             _hapticsButton = HudUiFactory.CreateButton(panel, "Haptics Toggle", new Vector2(0.08f, 0.02f), new Vector2(0.55f, 0.1f), string.Empty, ToggleHaptics);
             HudUiFactory.CreateButton(panel, "Resume Button", new Vector2(0.58f, 0.02f), new Vector2(0.92f, 0.1f), RussianUiText.Resume, Resume);
+            var credits=HudUiFactory.CreateText(_root,"UI Attribution",new Vector2(.07f,.025f),new Vector2(.93f,.067f),
+                "Оформление: EXE — Catherine Laserna · CC BY 4.0\ncjlaserna.itch.io/exe · Цвета и компоновка изменены",18,TextAnchor.MiddleCenter,new Color(.5f,.62f,.65f,1));
+            credits.resizeTextForBestFit=true;credits.resizeTextMinSize=12;credits.resizeTextMaxSize=18;
             _root.gameObject.SetActive(false);
             RefreshContent();
         }

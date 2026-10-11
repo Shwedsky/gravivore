@@ -106,22 +106,25 @@ namespace Gravivore.Gameplay.Enemies
     {
         public static IReadOnlyList<StrongOrdinarySpotDefinition> Create(
             Chapter01WorldConfiguration world,
-            IReadOnlyCollection<Vector3> existingOrdinaryPositions = null)
+            IReadOnlyCollection<Vector3> existingOrdinaryPositions = null,
+            IReadOnlyList<Vector3> authoredPositions = null)
         {
             if (world == null) throw new ArgumentNullException(nameof(world));
+            if (authoredPositions != null && authoredPositions.Count != 4)
+                throw new ArgumentException("Four authored strong encounter positions are required.", nameof(authoredPositions));
             var eliteBase = world.EliteGate.Position;
             var bossBase = world.BossArenaCenter;
             var pressure = new AdaptiveRespawnPolicy(3, 2f, 3, 35f, 20f);
             var spots = new[]
             {
                 new StrongOrdinarySpotDefinition("strong-elite-a", StrongOrdinaryRegion.Elite,
-                    ClampInside(world.Bounds, eliteBase + new Vector3(-18f, 0f, -5f)), 1.7f, 1.3f, 1.75f, 14f, pressure),
+                    authoredPositions != null ? authoredPositions[0] : ClampInside(world.Bounds, eliteBase + new Vector3(-18f, 0f, -5f)), 1.7f, 1.3f, 1.75f, 14f, pressure),
                 new StrongOrdinarySpotDefinition("strong-elite-b", StrongOrdinaryRegion.Elite,
-                    ClampInside(world.Bounds, eliteBase + new Vector3(20f, 0f, 4f)), 1.85f, 1.4f, 2f, 16f, pressure),
+                    authoredPositions != null ? authoredPositions[1] : ClampInside(world.Bounds, eliteBase + new Vector3(20f, 0f, 4f)), 1.85f, 1.4f, 2f, 16f, pressure),
                 new StrongOrdinarySpotDefinition("strong-boss-a", StrongOrdinaryRegion.Boss,
-                    ClampInside(world.Bounds, bossBase + new Vector3(-18f, 0f, 0f)), 2f, 1.45f, 2.25f, 16f, pressure),
+                    authoredPositions != null ? authoredPositions[2] : ClampInside(world.Bounds, bossBase + new Vector3(-18f, 0f, 0f)), 2f, 1.45f, 2.25f, 16f, pressure),
                 new StrongOrdinarySpotDefinition("strong-boss-b", StrongOrdinaryRegion.Boss,
-                    ClampInside(world.Bounds, bossBase + new Vector3(18f, 0f, -world.BossArenaRadius * 0.35f)), 2.2f, 1.6f, 2.75f, 19f, pressure)
+                    authoredPositions != null ? authoredPositions[3] : ClampInside(world.Bounds, bossBase + new Vector3(18f, 0f, -world.BossArenaRadius * 0.35f)), 2.2f, 1.6f, 2.75f, 19f, pressure)
             };
             ValidateDistinct(spots, existingOrdinaryPositions);
             return spots;

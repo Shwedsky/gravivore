@@ -71,6 +71,7 @@ namespace Gravivore.Presentation.Map
         public static RectTransform CreatePanel(Transform parent, string name, Color color, bool raycastTarget = false)
         {
             var image = CreateImage(parent, name, color, raycastTarget);
+            ProductionUiSkinScope.Frame(image.rectTransform,color);
             return image.rectTransform;
         }
 

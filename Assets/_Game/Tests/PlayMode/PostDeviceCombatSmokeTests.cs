@@ -113,10 +113,10 @@ namespace Gravivore.Tests.PlayMode
                 }
             }
             foreach (var spot in root.StrongSpots) Assert.IsTrue(visited[Cell(spot.Position)], spot.Id + " requires a complete capsule corridor.");
-            body.enabled = false; body.transform.position = new Vector3(0,0,64); body.enabled = true;
+            body.enabled = false; body.transform.position = root.MagnetarGuard.transform.position+Vector3.back*5; body.enabled = true;
             for (var i = 0; i < 72; i++) body.Move(Vector3.right * .25f);
             Assert.That(body.transform.position.x, Is.EqualTo(18).Within(.25f), "Visible service portal must be traversable with the real controller, including its ground/skin tolerance.");
-            Assert.That(body.transform.position.z, Is.EqualTo(64).Within(.08f));
+            Assert.That(body.transform.position.z, Is.EqualTo(root.MagnetarGuard.transform.position.z-5).Within(.08f));
         }
         private sealed class TestInput : IMovementInput { public Vector2 Movement { get; set; } }
         [UnityTest] public IEnumerator HealthAndRewardPreviewReadAuthority_DamageUsesResolvedResult_DeathRewardsExactlyOnce()
@@ -221,7 +221,7 @@ namespace Gravivore.Tests.PlayMode
         {
             yield return Load(); var root=_scene.Root;
             var body=root.PlayerObject.GetComponent<CharacterController>(); body.enabled=false;
-            root.PlayerObject.transform.position=new Vector3(0,0,64); body.enabled=true;
+            root.PlayerObject.transform.position=root.MagnetarGuard.transform.position+Vector3.back*5; body.enabled=true;
             root.WorldPresenter.EliteGate.SetLocked(false); root.WorldUnlocks.PrepareEliteEncounterForDevelopment(); root.Chapter1Encounters.Tick();
             var enemy=root.EnemyPopulation.GetSpot(0).GetLiveEnemy(0);
             var enemyBody=enemy.GetComponent<CharacterController>(); enemyBody.enabled=false;
@@ -243,8 +243,8 @@ namespace Gravivore.Tests.PlayMode
                 canvas.renderMode=RenderMode.ScreenSpaceCamera; canvas.worldCamera=camera; canvas.planeDistance=1;
                 camera.targetTexture=render; Canvas.ForceUpdateCanvases(); root.CombatReadability.Tick(0); camera.Render(); RenderTexture.active=render;
                 texture.ReadPixels(new Rect(0,0,540,960),0,0); texture.Apply();
-                Directory.CreateDirectory("docs/post-device-combat-readability/internal");
-                File.WriteAllBytes("docs/post-device-combat-readability/internal/combat.png",texture.EncodeToPNG());
+                Directory.CreateDirectory("docs/history/visual-stages/chapter01-visual-passes/post-device-combat-readability/internal");
+                File.WriteAllBytes("docs/history/visual-stages/chapter01-visual-passes/post-device-combat-readability/internal/combat.png",texture.EncodeToPNG());
                 Assert.That(root.CombatReadability.VisiblePlateCount,Is.GreaterThan(0));
                 var overlay=canvas.transform.Find("Enemy Combat Overlay");
                 Assert.That(overlay.GetSiblingIndex(),Is.Zero,"HUD controls must draw over combat annotations.");

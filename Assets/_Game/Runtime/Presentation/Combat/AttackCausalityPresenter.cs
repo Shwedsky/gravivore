@@ -22,6 +22,8 @@ namespace Gravivore.Presentation.Combat
         private OrdinaryEnemyController[] _enemies;
         private Transform[] _origins;
         private Action<DamageRequest>[] _handlers;
+        private EnemyLifeId[] _lives;
+        private CharacterVisualBinding[] _bindings;
         private Transform _eliteOrigin, _bossOrigin;
         private Phase6BVfxPool _pool;
         private Travel[] _travel;
@@ -43,9 +45,11 @@ namespace Gravivore.Presentation.Combat
             _travel = new Travel[6]; for(var i=0;i<_travel.Length;i++) _travel[i]=new Travel();
             _enemies=root.EnemyPopulation.GetComponentsInChildren<OrdinaryEnemyController>(true);
             _origins=new Transform[_enemies.Length]; _handlers=new Action<DamageRequest>[_enemies.Length];
+            _lives=new EnemyLifeId[_enemies.Length]; _bindings=new CharacterVisualBinding[_enemies.Length];
             for(var i=0;i<_enemies.Length;i++)
             {
                 var index=i;_origins[i]=FindSource(_enemies[i].transform,_enemies[i].TargetPoint);
+                _bindings[i]=_enemies[i].GetComponent<CharacterVisualBinding>();_lives[i]=_enemies[i].LifeId;
                 _handlers[i]=request=>OrdinaryAttack(index);_enemies[i].AttackRequested+=_handlers[i];
             }
             _eliteOrigin=FindSource(root.MagnetarGuard.transform,root.MagnetarGuard.TargetPoint);
@@ -76,7 +80,7 @@ namespace Gravivore.Presentation.Combat
         {
             if(!_enemies[index].IsAlive)return;
             // A pooled actor can switch archetype; its binding already caches the active sockets.
-            var binding=_enemies[index].GetComponent<CharacterVisualBinding>();
+            var binding=_bindings[index];
             var source=(binding!=null?binding.GetSocketOr(PresentationSocket.AttackOrigin,_enemies[index].TargetPoint):_origins[index]).position;Source(source,.1f);
             Release(source,_root.PlayerObject.transform.position+Vector3.up,true);
         }
@@ -93,7 +97,10 @@ namespace Gravivore.Presentation.Combat
         }
         private void BossSpecial(BossAttackResolvedEvent value)
         {
-            var source=_bossOrigin.position;
+            var binding=_root.CustodianBoss.GetComponent<CharacterVisualBinding>();
+            var role=value.Attack==BossAttackType.LineCharge?PresentationSocket.AttackLineOrigin:
+                value.Attack==BossAttackType.CirclePulse?PresentationSocket.AttackCircleOrigin:PresentationSocket.AttackConeOrigin;
+            var source=binding.GetSocketOr(role,_bossOrigin).position;
             if(value.Attack==BossAttackType.CirclePulse)
             {
                 for(var i=0;i<4;i++)Release(source,_bossWarning.Origin+Quaternion.Euler(0,i*90,0)*Vector3.forward*_bossWarning.Range+Vector3.up*.25f,true);
@@ -110,6 +117,13 @@ namespace Gravivore.Presentation.Combat
         public void Tick(float dt)
         {
             if(_travel==null)return;
+            // Authoritative recycle clears event subscriptions. Reattach only on a new life.
+            for(var i=0;i<_enemies.Length;i++)
+                if(_enemies[i].IsAlive && !_lives[i].Equals(_enemies[i].LifeId))
+                {
+                    _enemies[i].AttackRequested-=_handlers[i];_enemies[i].AttackRequested+=_handlers[i];
+                    _lives[i]=_enemies[i].LifeId;
+                }
             foreach(var slot in _travel)
             {
                 if(!slot.Active)continue;slot.Remaining-=dt;if(slot.Remaining>0)continue;slot.Active=false;

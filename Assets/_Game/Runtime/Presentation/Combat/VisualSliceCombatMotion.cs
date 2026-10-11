@@ -15,9 +15,12 @@ namespace Gravivore.Presentation.Combat
         private sealed class Actor
         {
             public CharacterVisualBinding Binding;
+            public HostilePresentationDefinition Profiles;
+            public HostileMotionProfile Profile;
             public Transform Authority, Model;
             public Vector3 RestPosition, BeforePull;
             public Quaternion RestRotation;
+            public Quaternion WorldRotation;
             public EnemyLifeId Life, PendingLife;
             public float Cooldown, CueRemaining;
             public bool PendingPull, Cutter;
@@ -30,6 +33,8 @@ namespace Gravivore.Presentation.Combat
                 Model = Binding.ActiveModel; Trail = default; PendingPull = false;
                 if (Model == null) return;
                 RestPosition = Model.localPosition; RestRotation = Model.localRotation;
+                WorldRotation=Model.rotation;
+                Profile=Profiles?.Get(Model.GetComponentInChildren<Animator>(true)?.runtimeAnimatorController);
                 Cutter = Model.name.StartsWith("Cutter",System.StringComparison.Ordinal);
             }
         }
@@ -39,12 +44,18 @@ namespace Gravivore.Presentation.Combat
         private OrdinaryEnemyController[] _enemies;
         private Actor[] _actors;
         private Actor _elite;
+        private Actor _boss;
+        private HostilePresentationDefinition _profiles;
+        private readonly Collider[] _nearWalls=new Collider[32];
+        private int _wallMask;
+        public float MaximumWallOffset { get; private set; }
         public int ActivePullCount { get; private set; }
         public float MaximumActivePullOffset { get; private set; }
 
-        public void Initialize(S01SceneCompositionRoot root, GravityLashVfxPool lash, DeviceCorrectionDefinition settings)
+        public void Initialize(S01SceneCompositionRoot root, GravityLashVfxPool lash, DeviceCorrectionDefinition settings, HostilePresentationDefinition profiles=null)
         {
             _root = root; _lash = lash; _settings = settings;
+            _profiles=profiles;_wallMask=LayerMask.GetMask("HardBlocker");
             _enemies = root.EnemyPopulation.GetComponentsInChildren<OrdinaryEnemyController>(true);
             _actors = new Actor[_enemies.Length];
             for (var i = 0; i < _actors.Length; i++)
@@ -53,11 +64,12 @@ namespace Gravivore.Presentation.Combat
                 _actors[i].Life = _enemies[i].LifeId; _actors[i].Cooldown = _enemies[i].AttackCooldown;
             }
             _elite = CreateActor(root.MagnetarGuard.transform);
+            _boss = CreateActor(root.CustodianBoss.transform);
             lash.CuePlayed += Lash; root.MagnetarGuard.ShockwaveResolved += EliteImpact;
         }
         private Actor CreateActor(Transform authority)
         {
-            var actor = new Actor { Authority = authority, Binding = authority.GetComponent<CharacterVisualBinding>() };
+            var actor = new Actor { Authority = authority, Binding = authority.GetComponent<CharacterVisualBinding>(),Profiles=_profiles };
             actor.Refresh(); actor.PullLine = Line("Pooled gravity drag",2); actor.AttackLine = Line("Pooled mechanical strike",13);
             return actor;
         }
@@ -89,7 +101,7 @@ namespace Gravivore.Presentation.Combat
         public void Tick(float dt)
         {
             if (_actors == null) return;
-            ActivePullCount = 0; MaximumActivePullOffset = 0;
+            ActivePullCount = 0; MaximumActivePullOffset = 0; MaximumWallOffset=0;
             for (var i = 0; i < _actors.Length; i++)
             {
                 var actor = _actors[i]; var enemy = _enemies[i]; actor.Refresh();
@@ -104,8 +116,9 @@ namespace Gravivore.Presentation.Combat
                 Pose(actor,dt,false);
             }
             _elite.Refresh();
-            if (_root.MagnetarGuard.IsAlive && _elite.Model != null) Pose(_elite,dt,true);
+            if (_elite.Model != null && (_root.MagnetarGuard.IsAlive || _elite.Profile!=null)) Pose(_elite,dt,true);
             else Reset(_elite);
+            _boss.Refresh();if(_boss.Model!=null && _boss.Profile!=null)Pose(_boss,dt,false);
         }
         private void Pose(Actor actor,float dt,bool elite)
         {
@@ -116,9 +129,20 @@ namespace Gravivore.Presentation.Combat
             }
             actor.Trail.Tick(Mathf.Max(0,dt));
             var offset = actor.Trail.Offset;
+            if(actor.Profile!=null)
+            {
+                var wallOffset=ClearanceOffset(actor,offset);
+                MaximumWallOffset=Mathf.Max(MaximumWallOffset,wallOffset.magnitude);
+                offset+=wallOffset;
+            }
             actor.Model.localPosition = actor.RestPosition + actor.Model.parent.InverseTransformVector(offset);
             var lean = actor.Model.parent.InverseTransformDirection(offset);
-            actor.Model.localRotation = actor.RestRotation * Quaternion.Euler(lean.z * 5,0,-lean.x * 5);
+            if(actor.Profile!=null)
+            {
+                actor.WorldRotation=Quaternion.RotateTowards(actor.WorldRotation,actor.Authority.rotation*actor.RestRotation,actor.Profile.TurnDegreesPerSecond*Mathf.Max(0,dt));
+                actor.Model.rotation=actor.WorldRotation;
+            }
+            else actor.Model.localRotation = actor.RestRotation * Quaternion.Euler(lean.z * 5,0,-lean.x * 5);
             actor.PullLine.enabled = actor.Trail.Active && offset.sqrMagnitude > .001f;
             if (actor.Trail.Active)
             {
@@ -134,7 +158,7 @@ namespace Gravivore.Presentation.Combat
             var fraction = actor.CueRemaining/duration;
             var color = elite ? new Color(1,.55f,.10f,.6f*fraction) : new Color(1,.28f,.12f,.65f*fraction);
             actor.AttackLine.startColor = actor.AttackLine.endColor = color;
-            var center = actor.Model.position+Vector3.up*(elite ? .9f : .55f);
+            var center = actor.Binding.GetSocketOr(PresentationSocket.AttackOrigin,actor.Model).position;
             var aim = _root.PlayerObject.transform.position-actor.Authority.position; aim.y = 0;
             var rotation = aim.sqrMagnitude > .001f ? Quaternion.LookRotation(aim) : actor.Authority.rotation;
             actor.AttackLine.loop = elite;
@@ -147,6 +171,24 @@ namespace Gravivore.Presentation.Combat
                 else point = center + rotation * Vector3.forward * (u*.82f*(1-fraction));
                 actor.AttackLine.SetPosition(i,point);
             }
+        }
+        private Vector3 ClearanceOffset(Actor actor,Vector3 pull)
+        {
+            var origin=actor.Authority.position+actor.Model.parent.TransformVector(actor.RestPosition)+pull;
+            var center=origin+Vector3.up*.55f;
+            var offset=Vector3.zero;var profile=actor.Profile;
+            var count=Physics.OverlapSphereNonAlloc(center,profile.VisualRadius+.1f,_nearWalls,_wallMask,QueryTriggerInteraction.Ignore);
+            // Solve presentation separation only; controllers, sensors and telegraph authority are untouched.
+            for(var pass=0;pass<3;pass++)
+                for(var i=0;i<count;i++)
+                {
+                    var sample=center+offset;var closest=_nearWalls[i].ClosestPoint(sample);
+                    var away=sample-closest;away.y=0;var distance=away.magnitude;
+                    if(distance<.001f || distance>=profile.VisualRadius+profile.WallInset)continue;
+                    offset+=away/distance*(profile.VisualRadius+profile.WallInset-distance);
+                    offset=Vector3.ClampMagnitude(offset,profile.MaximumWallOffset);
+                }
+            return offset;
         }
         private static void Reset(Actor actor)
         {

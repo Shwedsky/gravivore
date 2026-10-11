@@ -5,7 +5,7 @@ from mathutils import Vector, Matrix
 ROOT=Path(__file__).resolve().parents[2]
 OUT=ROOT/'Assets/_Game/Content/Chapter01V3'
 SOURCE=ROOT/'art/chapter01-v3'
-for path in (OUT/'Models',SOURCE,ROOT/'docs/chapter01-v3'):path.mkdir(parents=True,exist_ok=True)
+for path in (OUT/'Models',SOURCE,ROOT/'docs/history/visual-stages/chapter01-visual-passes/chapter01-v3'):path.mkdir(parents=True,exist_ok=True)
 bpy.ops.wm.read_factory_settings(use_empty=True)
 bpy.context.scene.unit_settings.system='METRIC';bpy.context.scene.unit_settings.scale_length=1
 palette=[(.075,.105,.13),(.36,.46,.51),(.66,.72,.70),(.13,.19,.22),(.75,.48,.11),(1,.12,.045),(1,.52,.055),(.08,.86,.98),(.022,.030,.036),(.18,.105,.065),(.22,.72,.38),(.42,.18,.66),(.16,.30,.34),(.54,.36,.12),(.28,.32,.33),(.065,.09,.105)]
@@ -87,5 +87,5 @@ reset();arc('Collapsed bowed hull',(0,0,.85),1.53,1.12,.21,-.5,3.8,1.09,14)
 hose('Torn powered wreck cable',[(-.82,.21,.8),(-1.54,-.38,.27),(-.48,-1.17,.12),(.85,-1.04,.16)],.05,6)
 for i in range(4):shell('Detached scorched armor',(i*.42-.85,-.69,.08+i*.018),.61,.86,.07,9 if i%2 else 2)
 export('Collapsed_Hull_V3')
-(ROOT/'docs/chapter01-v3/asset_metrics.json').write_text(json.dumps(metrics,indent=2))
+(ROOT/'docs/history/visual-stages/chapter01-visual-passes/chapter01-v3/asset_metrics.json').write_text(json.dumps(metrics,indent=2))
 print('CHAPTER01_V3_ASSETS_COMPLETE',json.dumps(metrics))

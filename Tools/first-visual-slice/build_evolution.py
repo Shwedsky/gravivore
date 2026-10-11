@@ -49,5 +49,5 @@ for tier in (1, 2):
     bpy.ops.wm.save_as_mainfile(filepath=str(SOURCE/('G0_Tier'+str(tier)+'Armor.blend')))
     reports[str(tier)] = {'triangles':[len(q.data.polygons) for q in meshes], 'bones':18,
         'materials':1, 'source':'Original project-owned armor on G0 production rig', 'forward':'Blender -Y / imported Unity -Z'}
-(ROOT/'docs/device-correction').mkdir(exist_ok=True)
-(ROOT/'docs/device-correction/evolution_geometry.json').write_text(json.dumps(reports,indent=2),encoding='utf-8')
+(ROOT/'docs/history/visual-stages/chapter01-visual-passes/device-correction').mkdir(exist_ok=True)
+(ROOT/'docs/history/visual-stages/chapter01-visual-passes/device-correction/evolution_geometry.json').write_text(json.dumps(reports,indent=2),encoding='utf-8')

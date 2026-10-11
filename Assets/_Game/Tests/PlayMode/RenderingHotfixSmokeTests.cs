@@ -53,11 +53,11 @@ namespace Gravivore.Tests.PlayMode
             try{
                 canvas.renderMode=RenderMode.ScreenSpaceCamera;canvas.worldCamera=camera;canvas.planeDistance=1;camera.targetTexture=target;
                 image.material=error;yield return null;Canvas.ForceUpdateCanvases();camera.Render();RenderTexture.active=target;pixels.ReadPixels(new Rect(0,0,270,480),0,0);pixels.Apply();
-                Directory.CreateDirectory("docs/render-hotfix/internal");File.WriteAllBytes("docs/render-hotfix/internal/ui_error_reproduction_editor.png",pixels.EncodeToPNG());
+                Directory.CreateDirectory("docs/history/visual-stages/chapter01-visual-passes/render-hotfix/internal");File.WriteAllBytes("docs/history/visual-stages/chapter01-visual-passes/render-hotfix/internal/ui_error_reproduction_editor.png",pixels.EncodeToPNG());
                 Assert.That(MagentaFraction(pixels),Is.GreaterThan(.85f),"Error shader must cover the camera despite nearly transparent UI color.");
                 image.material=null;Canvas.ForceUpdateCanvases();camera.Render();pixels.ReadPixels(new Rect(0,0,270,480),0,0);pixels.Apply();
                 Assert.That(MagentaFraction(pixels),Is.LessThan(.01f));Assert.IsTrue(image.material.shader.isSupported);Assert.That(image.material.shader.name,Is.EqualTo("UI/Default"));
-                File.WriteAllBytes("docs/render-hotfix/internal/ui_restored_editor.png",pixels.EncodeToPNG());
+                File.WriteAllBytes("docs/history/visual-stages/chapter01-visual-passes/render-hotfix/internal/ui_restored_editor.png",pixels.EncodeToPNG());
             }finally{canvas.renderMode=priorMode;canvas.worldCamera=priorCamera;camera.targetTexture=priorTarget;RenderTexture.active=priorActive;target.Release();Object.Destroy(target);Object.Destroy(pixels);Object.Destroy(error);Object.Destroy(panel);}
         }
         private static float MagentaFraction(Texture2D image){var colors=image.GetPixels32();return colors.Count(c=>c.r>180&&c.b>180&&c.g<90)/(float)colors.Length;}

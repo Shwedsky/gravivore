@@ -55,6 +55,8 @@ Low polygon counts, LODs, shared materials, atlases, batching and restrained dyn
 
 The current visual contract is defined in `docs/CURRENT_VISUAL_TARGET.md` and `docs/ART_DIRECTION.md`.
 
+Chapter 01 hostile anatomy and material exceptions are defined by the exact owner-approved `docs/visual-blueprints/chapter01-actors/CHAPTER01_ACTOR_VISUAL_TARGETS_V2.png` and its V2 text. G-0 remains unchanged in the R2 + Actor V2 integration.
+
 For Chapter 01, `docs/visual-blueprints/chapter01/CHAPTER01_VISUAL_BLUEPRINT_V1.md` is the current scene-composition authority. It intentionally supersedes the old practice of preserving V44–V47 physical presentation layout/collision fingerprint while merely replacing props.
 
 ## Current asset authority

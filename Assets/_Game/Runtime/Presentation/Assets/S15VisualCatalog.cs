@@ -55,6 +55,8 @@ namespace Gravivore.Presentation.Assets
         [SerializeField] private S15VisualRecipe _player;
         [SerializeField] private S15VisualRecipe[] _enemies = Array.Empty<S15VisualRecipe>();
         [SerializeField] private S15VisualRecipe[] _landmarks = Array.Empty<S15VisualRecipe>();
+        [SerializeField] private HostilePresentationDefinition _hostilePresentation;
+        public HostilePresentationDefinition HostilePresentation => _hostilePresentation;
 
         public S15VisualRecipe Player => _player;
         public int EnemyCount => _enemies?.Length ?? 0;

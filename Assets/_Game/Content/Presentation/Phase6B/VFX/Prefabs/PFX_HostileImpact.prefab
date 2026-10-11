@@ -13,6 +13,9 @@ GameObject:
   m_Layer: 0
   m_Name: PFX_HostileImpact
   m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &100062
 Transform:
@@ -25,8 +28,10 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &100063
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35,16 +40,23 @@ MonoBehaviour:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 100061}
   m_Enabled: 1
+  m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 26efcc22181d6c14f046e01130f51d9d, type: 3}
+  m_Name: 
   m_EditorClassIdentifier: Gravivore.Presentation::Gravivore.Presentation.AudioVfx.Phase6BVfxInstance
   _cue: 6
   _shape: 6
   _duration: 0.18
   _color: {r: 1, g: 0.68, b: 0.28, a: 0.8}
   _particleCount: 10
-  _sparkSize: 0.12
-  _sparkSpeed: 4
   _range: 0.5
   _width: 0.05
   _angleDegrees: 45
-  _material: {fileID: 2100000, guid: 0e3eed95318b12d5a571781a85deebb1, type: 2}
+  _material: {fileID: 2100000, guid: 09a80c71b74c93f47bfd98071835daf3, type: 2}
+  _sparkSize: 0.12
+  _sparkSpeed: 4
+  _warningFillMaterial: {fileID: 0}
+  _warningFillAlpha: 0.18
+  _pulseWidthMultiplier: 2.1
+  _arcWidthMultiplier: 1.35
+  _arcBend: 0.3

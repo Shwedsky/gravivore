@@ -1,0 +1,75 @@
+{
+  "validated": true,
+  "compileExit": 0,
+  "projectValidatorExit": 0,
+  "tests": [
+    {
+      "suite": "EditModeFull",
+      "total": 485,
+      "passed": 485,
+      "failed": 0,
+      "skipped": 0,
+      "xml": "EditModeFull.xml",
+      "ignored": []
+    },
+    {
+      "suite": "PlayModeFull",
+      "total": 138,
+      "passed": 137,
+      "failed": 0,
+      "skipped": 1,
+      "xml": "PlayModeFull.xml",
+      "ignored": [
+        "Gravivore.Tests.PlayMode.VisualIntegrationSmokeTests.CaptureStructuralFoundationWhenRequested"
+      ]
+    },
+    {
+      "suite": "PortablePathsEditMode",
+      "total": 8,
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0,
+      "xml": "PortablePathsEditMode.xml",
+      "ignored": []
+    },
+    {
+      "suite": "PortablePathsPlayMode",
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "xml": "PortablePathsPlayMode.xml",
+      "ignored": []
+    }
+  ],
+  "materialAudit": {
+    "flatColorOnlyHeroRenderers": 0,
+    "primitiveOnlyHeroProps": 0,
+    "heroMaterialRows": 376,
+    "enabledRenderers": 1008,
+    "staticTriangles": 1611176
+  },
+  "capsuleTraversalIncludedInFullPlayMode": true,
+  "fiveMinuteSoak": {
+    "seconds": 300.0004027,
+    "worstFrameGapMilliseconds": 86.2639999999999,
+    "frames": 247698,
+    "completedStops": 17,
+    "initialTransforms": 7395,
+    "finalTransforms": 7705,
+    "initialMaterials": 68,
+    "finalMaterials": 68,
+    "initialActorTransforms": 695,
+    "finalActorTransforms": 1005,
+    "initialFidelityTransforms": 397,
+    "finalFidelityTransforms": 397,
+    "maximumLiveEnemies": 20,
+    "assimilation": 103,
+    "mode": "Editor graphics, development gate unlock and god mode; real locomotion, combat, cooldowns and saves"
+  },
+  "licenseAuditPassed": true,
+  "blenderSourcesReopened": 9,
+  "frozenScopeFiles": 763,
+  "internalVisualGatePassed": true,
+  "executedOnAndroid": false
+}

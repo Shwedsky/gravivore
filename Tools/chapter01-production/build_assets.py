@@ -255,6 +255,6 @@ for x in [-2.6,2.6]:
         for s in [-1,1]:box('Service direction chevron',(x+s*.14,y,.02),(.055,.37,.014),2,angle=s*.65,bevel=0)
 export_static('Service_Markings')
 
-(ROOT/'docs/chapter01-production').mkdir(parents=True,exist_ok=True)
-(ROOT/'docs/chapter01-production/asset_metrics.json').write_text(json.dumps(metrics,indent=2))
+(ROOT/'docs/history/visual-stages/chapter01-visual-passes/chapter01-production').mkdir(parents=True,exist_ok=True)
+(ROOT/'docs/history/visual-stages/chapter01-visual-passes/chapter01-production/asset_metrics.json').write_text(json.dumps(metrics,indent=2))
 print('CHAPTER01_ORIGINAL_ASSETS_COMPLETE',json.dumps(metrics))

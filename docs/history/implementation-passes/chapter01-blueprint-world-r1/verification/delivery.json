@@ -1,0 +1,286 @@
+{
+  "synchronizedMainSHA": "38e0ed8fe5c95ff41ab5dbb246f45ed26bdcf9cc",
+  "preImplementationMergedBranchSHA": "db8828fdd33f157fc0e2591eaad387b906520175",
+  "branch": "art/chapter01-blueprint-rebuild-v1",
+  "draftPR": "https://github.com/Shwedsky/gravivore/pull/71",
+  "productionScene": "Assets/_Game/Content/Scenes/Chapter01_ScrapExclusion.unity",
+  "apk": {
+    "path": "Builds/Android/gravivore-dev-0.1.0+48.apk",
+    "deliveredPath": "C:\\Users\\pamak\\Documents\\ChatGPT\\gravivore\\Builds\\Android\\gravivore-dev-0.1.0+48.apk",
+    "bytes": 95416825,
+    "sha256": "3e9a76807adbba9e7a44e495eba4286a52c0dc0f2418698f7546736ac3fc65ad",
+    "metadata": {
+      "flavor": "Dev",
+      "version": "0.1.0",
+      "versionCode": 48,
+      "applicationId": "com.gravivore.mobile.dev",
+      "buildTimestampUtc": "2026-10-09T23:15:13.8036619Z",
+      "gitCommitSha": "d7786a73e03e8721e0f44737d4d06c5240744c27",
+      "unityVersion": "6000.3.0f1",
+      "developmentBuild": true,
+      "allowDebugging": true,
+      "targetArchitecture": "ARM64",
+      "apkFilename": "gravivore-dev-0.1.0+48.apk"
+    },
+    "nativeLibraries": [
+      "lib/arm64-v8a/lib_burst_generated.so",
+      "lib/arm64-v8a/libc++_shared.so",
+      "lib/arm64-v8a/libgame.so",
+      "lib/arm64-v8a/libil2cpp.so",
+      "lib/arm64-v8a/libmain.so",
+      "lib/arm64-v8a/libswappywrapper.so",
+      "lib/arm64-v8a/libunity.so"
+    ]
+  },
+  "tests": {
+    "editMode": {
+      "total": 502,
+      "passed": 502,
+      "failed": 0,
+      "skipped": 0,
+      "xml": "docs\\history\\implementation-passes\\chapter01-blueprint-world-r1\\verification\\editmode-delivery-final.xml",
+      "sha256": "4d8107d1add2eefd5c3489e9595aaaf98fbc10d47e745a27761a9077d950dd2e"
+    },
+    "playMode": {
+      "totalUniqueCases": 142,
+      "passedUniqueCases": 142,
+      "unresolvedCases": [],
+      "fullRun": {
+        "total": 142,
+        "passed": 140,
+        "failed": 2,
+        "skipped": 0,
+        "xml": "docs\\history\\implementation-passes\\chapter01-blueprint-world-r1\\verification\\playmode-full-final.xml"
+      },
+      "focusedFixtureRerun": {
+        "total": 2,
+        "passed": 2,
+        "cases": [
+          "Gravivore.Tests.PlayMode.Chapter1DeviceStabilizationSmokeTests.FreshProfile_PreEliteStrongPackSpawnsWithoutUnlockAndPhysicalGatesRemainIntact",
+          "Gravivore.Tests.PlayMode.Phase3CIntegrationSmokeTests.ActualBindingsSocketsAndCoveredEnvironmentPreserveAuthority"
+        ],
+        "xml": "docs\\history\\implementation-passes\\chapter01-blueprint-world-r1\\verification\\playmode-fixture-retest.xml"
+      },
+      "method": "Full 142-case run plus focused rerun of two test-fixture corrections. No runtime, asset or layout changes after the full run; original XML results retained."
+    }
+  },
+  "buildEvidence": {
+    "validated": true,
+    "executedGates": {
+      "compile": {
+        "passed": true,
+        "unityExitCode": 0,
+        "log": "docs/history/implementation-passes/chapter01-blueprint-world-r1/verification/compile-delivery-final.log",
+        "logSha256": "0d5ce6de66ac86e48f58be61cffc4534a487f17caed42b757531848a1068465e"
+      },
+      "projectValidator": {
+        "passed": true,
+        "unityExitCode": 0,
+        "log": "docs/history/implementation-passes/chapter01-blueprint-world-r1/verification/validator-delivery-final.log",
+        "logSha256": "67b04b92f59db58e7f2612c8e889b605a5bf5ce52c83e51b109a4dc27178193a"
+      },
+      "androidBuild": {
+        "passed": true,
+        "unityExitCode": 0,
+        "log": "Builds/Logs/android-dev-20261009-225604.log",
+        "logSha256": "b39529913ceeef41e652695bdc69bbc51504d481a8a9cff9596e7e3dae723a4e"
+      }
+    },
+    "apkSha256": "3e9a76807adbba9e7a44e495eba4286a52c0dc0f2418698f7546736ac3fc65ad",
+    "proofTextNormalization": "Trailing whitespace removed from copied packed-asset and shader-variant lists; substantive entries unchanged.",
+    "manifest": "package: name='com.gravivore.mobile.dev' versionCode='48' versionName='0.1.0' platformBuildVersionName='16' platformBuildVersionCode='36' compileSdkVersion='36' compileSdkVersionCodename='16'\nminSdkVersion:'26'\ntargetSdkVersion:'36'\napplication-debuggable\nnative-code: 'arm64-v8a'",
+    "adbDevices": [],
+    "androidDeviceMeasurementPerformed": false,
+    "shaderAuditPassed": true,
+    "compiledShaderVariantRows": 54,
+    "serializedWorldEntries": [
+      "RepairHub / authored industrial sector",
+      "RelayYard / authored industrial sector",
+      "CapacitorField / authored industrial sector",
+      "CuttingFloor / authored industrial sector",
+      "ShieldDump / authored industrial sector",
+      "HaulerGraveyard / authored industrial sector",
+      "MagnetarComplex / authored industrial sector",
+      "CustodianCore / authored industrial sector",
+      "Chapter 01 Blueprint World R1",
+      "Authored cross-sector service network"
+    ],
+    "serializedOldWorldLayersAbsent": true,
+    "oldWorldAbsenceMethod": "Executed Chapter01BlueprintWorldBuildAudit checks length-prefixed serialized scene names in the actual APK and fails the build on V45/V46/V47 world or old deck names.",
+    "proofFiles": {
+      "apk-required-resources.txt": "ecf7806b90e12b282905c0e7dd51be5f8fe8ca2a9015ebf72ce607da488005c0",
+      "apk-packed-assets.txt": "08ba1cd8444c2f6967e7500781d005f6e4f43f3e80c81c4a945a62efce82b15b",
+      "apk-world-serialized-sectors.txt": "09908be659af7833ad0ceab45261ce5a69ac18928f6bc298bb082c203072755d",
+      "compiled_shader_variants.txt": "5744d0b6845c310ff2182132d791663debf857aa3ba49370186bf623a911d220",
+      "render_dependency_report.json": "d877cc830dfeaa5249c431e83174064ac52fc6a4526f5261a243e87d62e46878",
+      "render_profile.json": "a353924b10bbfd81387ceca010b7bc04fc96014d5dcd937051bf6963d031cb7c",
+      "serialized_scene_renderers.txt": "7c22a018ef9feb0092112cb077f4ff63b175d819ec187c507390643b623d4463",
+      "apk-post-device-combat.json": "0b1fa4c4e6d3cfe433e74ad9e49cf0218ff8f8cd9520bac0eedb8d4d6208bd74"
+    }
+  },
+  "worldAudit": {
+    "validated": true,
+    "actorsRedesigned": false,
+    "uiRedesigned": false,
+    "oldCollisionFingerprintRequired": false,
+    "sectors": 8,
+    "movementSurfaces": 12,
+    "architecturalBlockers": 76,
+    "activeV45": 0,
+    "activeV46": 0,
+    "activeV47": 0,
+    "activeRepeatedDeck": 0,
+    "staticRenderers": 124,
+    "materials": 4,
+    "lights": 1,
+    "missingMaterials": 0,
+    "missingMeshes": 0,
+    "staticTriangles": 803699,
+    "textureBytes": 90347313
+  },
+  "protectedFiles": 645,
+  "fiveMinuteSoak": {
+    "completed": true,
+    "seconds": 300.0005491,
+    "meanEditorFrameMs": 1.5250958931505487,
+    "maxEditorFrameMs": 6547.2265625,
+    "frames": 197038,
+    "maxLiveEnemies": 20,
+    "maxParticles": 96,
+    "gen0Collections": 29,
+    "reachedWaypoints": 68,
+    "method": "Unity Editor realtime combat/traversal observation; includes test runner and editor overhead; no Android GPU/FPS claim"
+  },
+  "fiveMinuteRealLocomotion": {
+    "seconds": 300.00102990000005,
+    "worstFrameGapMilliseconds": 407.0378000000119,
+    "frames": 208595,
+    "completedStops": 14,
+    "initialTransforms": 2843,
+    "finalTransforms": 3317,
+    "initialMaterials": 39,
+    "finalMaterials": 39,
+    "initialActorTransforms": 695,
+    "finalActorTransforms": 1169,
+    "initialFidelityTransforms": 220,
+    "finalFidelityTransforms": 220,
+    "maximumLiveEnemies": 20,
+    "assimilation": 100,
+    "mode": "Editor graphics, development gate unlock and god mode; real locomotion, combat, cooldowns and saves"
+  },
+  "ownerOriginalsPreserved": true,
+  "finalCaptures": [
+    {
+      "path": "docs/history/implementation-passes/chapter01-blueprint-world-r1/internal/01_repair-hub.png",
+      "sha256": "0b5d1a88b911cb8d0e9794e05af2b9922423917b8e5a498c26c0d9b5f1accf1c",
+      "inventory": {
+        "renderers": 40,
+        "materials": 7,
+        "triangles": 709215,
+        "method": "Production-camera frustum AABB inventory; includes occluded bounds, excludes UI and shadow passes; no device FPS claim"
+      }
+    },
+    {
+      "path": "docs/history/implementation-passes/chapter01-blueprint-world-r1/internal/02_relay-yard.png",
+      "sha256": "f56339c7e5ce0a8b56bbe9a29dbd88597e48e3b155b43953bafbdf9968f863fe",
+      "inventory": {
+        "renderers": 41,
+        "materials": 7,
+        "triangles": 714676,
+        "method": "Production-camera frustum AABB inventory; includes occluded bounds, excludes UI and shadow passes; no device FPS claim"
+      }
+    },
+    {
+      "path": "docs/history/implementation-passes/chapter01-blueprint-world-r1/internal/03_capacitor-field.png",
+      "sha256": "1bb875053001e706de77b499dd83a6609185a0d3d8ed862744c135b9e6084355",
+      "inventory": {
+        "renderers": 39,
+        "materials": 7,
+        "triangles": 699200,
+        "method": "Production-camera frustum AABB inventory; includes occluded bounds, excludes UI and shadow passes; no device FPS claim"
+      }
+    },
+    {
+      "path": "docs/history/implementation-passes/chapter01-blueprint-world-r1/internal/04_cutting-floor.png",
+      "sha256": "75aa58edce2f0f817007abd2681efc4005c1c5fb1902b7d56846b4b5dee97652",
+      "inventory": {
+        "renderers": 38,
+        "materials": 7,
+        "triangles": 745880,
+        "method": "Production-camera frustum AABB inventory; includes occluded bounds, excludes UI and shadow passes; no device FPS claim"
+      }
+    },
+    {
+      "path": "docs/history/implementation-passes/chapter01-blueprint-world-r1/internal/05_shield-dump.png",
+      "sha256": "0c4df381efe7a9515d04c52b5b5231d9475ee8bcc80f877d456f92c5b33167b2",
+      "inventory": {
+        "renderers": 45,
+        "materials": 7,
+        "triangles": 799034,
+        "method": "Production-camera frustum AABB inventory; includes occluded bounds, excludes UI and shadow passes; no device FPS claim"
+      }
+    },
+    {
+      "path": "docs/history/implementation-passes/chapter01-blueprint-world-r1/internal/06_hauler-graveyard.png",
+      "sha256": "c4b6ed306f28f308c93ea81e428db489358dad3fb55dec735bbf8308621bded9",
+      "inventory": {
+        "renderers": 39,
+        "materials": 7,
+        "triangles": 798982,
+        "method": "Production-camera frustum AABB inventory; includes occluded bounds, excludes UI and shadow passes; no device FPS claim"
+      }
+    },
+    {
+      "path": "docs/history/implementation-passes/chapter01-blueprint-world-r1/internal/07_elite-arena.png",
+      "sha256": "8f00db10220b4906819cd427dbbe92c6b079a1f94ee0d62bf7ae83accbe18624",
+      "inventory": {
+        "renderers": 40,
+        "materials": 6,
+        "triangles": 936715,
+        "method": "Production-camera frustum AABB inventory; includes occluded bounds, excludes UI and shadow passes; no device FPS claim"
+      }
+    },
+    {
+      "path": "docs/history/implementation-passes/chapter01-blueprint-world-r1/internal/07_elite-arena_facility_walk.png",
+      "sha256": "872b186921ccb20910c6f8391eff12c0f54fa3cac055d2b821294439b2878e81",
+      "inventory": {
+        "renderers": 33,
+        "materials": 5,
+        "triangles": 913013,
+        "method": "Production-camera frustum AABB inventory; includes occluded bounds, excludes UI and shadow passes; no device FPS claim"
+      }
+    },
+    {
+      "path": "docs/history/implementation-passes/chapter01-blueprint-world-r1/internal/08_boss-arena.png",
+      "sha256": "9444b0ac878f270a9e14c41f72f35270b6aba3a1ccb64eb7bd0bc931be33d0ec",
+      "inventory": {
+        "renderers": 30,
+        "materials": 7,
+        "triangles": 766484,
+        "method": "Production-camera frustum AABB inventory; includes occluded bounds, excludes UI and shadow passes; no device FPS claim"
+      }
+    },
+    {
+      "path": "docs/history/implementation-passes/chapter01-blueprint-world-r1/internal/08_boss-arena_facility_walk.png",
+      "sha256": "41f4049e110183eaf2ab6f9e8cd7dd5d04f2b15ff6b7fee1462426d432263b00",
+      "inventory": {
+        "renderers": 25,
+        "materials": 7,
+        "triangles": 658269,
+        "method": "Production-camera frustum AABB inventory; includes occluded bounds, excludes UI and shadow passes; no device FPS claim"
+      }
+    },
+    {
+      "path": "docs/history/implementation-passes/chapter01-blueprint-world-r1/internal/09_remapped_chapter_map.png",
+      "sha256": "6e58d41e446fcf29f71571aaacae90ada007f0f353234cb1090dc2f0e27c5753",
+      "inventory": {
+        "renderers": 25,
+        "materials": 7,
+        "triangles": 658269,
+        "method": "Production-camera frustum AABB inventory; includes occluded bounds, excludes UI and shadow passes; no device FPS claim"
+      }
+    }
+  ],
+  "performanceLimitations": "Editor batch-mode realtime observation and frustum inventories are not Android GPU/FPS measurements. Frustum inventories may include occluded, inactive LOD and combined static-mesh geometry. Device 60 FPS and human concept-fidelity acceptance are pending.",
+  "assumptions": "Approved blueprint macro-layout with explicit new collision/encounter coordinates; accepted V47 actors, M0, UI and gameplay source preserved against the merged pre-implementation branch."
+}

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.IO;
+using System.Linq;
 using Gravivore.Gameplay.Combat;
 using Gravivore.Gameplay.Enemies;
 using Gravivore.Gameplay.Player;
@@ -73,7 +74,7 @@ namespace Gravivore.Tests.PlayMode
         {
             yield return Load();var root=_scene.Root;var map=root.MapIntegration.MapPresenter;var topology=map.Topology;
             Physics.SyncTransforms();
-            Assert.NotNull(topology);Assert.That(topology.BlockerCount,Is.EqualTo(root.WorldPresenter.GameplayRoot.GetComponentsInChildren<BoxCollider>(true).Length-1));
+            Assert.NotNull(topology);Assert.That(topology.BlockerCount,Is.EqualTo(root.WorldPresenter.GameplayRoot.GetComponentsInChildren<BoxCollider>(true).Count(c=>c.gameObject.layer==LayerMask.NameToLayer("HardBlocker"))));
             for(var i=0;i<topology.BlockerCount;i++)
             {
                 var f=topology.GetBlocker(i);var box=(BoxCollider)f.Authority;

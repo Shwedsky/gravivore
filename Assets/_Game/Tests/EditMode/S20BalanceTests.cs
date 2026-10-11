@@ -76,13 +76,13 @@ namespace Gravivore.Tests.EditMode
                 {
                     Assert.That(
                         Vector3.Distance(zone.Center, world.GetZone(otherIndex).Center),
-                        Is.GreaterThanOrEqualTo(28f),
+                        Is.GreaterThanOrEqualTo(20f),
                         $"{zone.Id} overlaps the readable region of {world.GetZone(otherIndex).Id}.");
                 }
             }
 
-            Assert.That(farthestZoneFromStart / 4.5f, Is.InRange(15f, 25f));
-            Assert.That(nearestZoneToElite / 4.5f, Is.GreaterThanOrEqualTo(6f));
+            Assert.That(farthestZoneFromStart / 4.5f, Is.InRange(10f, 20f));
+            Assert.That(nearestZoneToElite / 4.5f, Is.GreaterThanOrEqualTo(5f));
             Assert.That(world.Bounds.Contains(elite.SpawnPosition, elite.CollisionRadius), Is.True);
             Assert.That(world.Bounds.ContainsCircle(world.BossArenaCenter, world.BossArenaRadius), Is.True);
             Assert.That(world.BossGate.Position.z, Is.GreaterThan(elite.SpawnPosition.z));

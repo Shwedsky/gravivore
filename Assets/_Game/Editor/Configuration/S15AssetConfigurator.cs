@@ -115,6 +115,15 @@ namespace Gravivore.Editor
 
         private static void SetRecipe(SerializedProperty property, string id, params PartData[] parts)
         {
+            // A promoted whole prefab owns its authored presentation. Configuration
+            // must not repopulate obsolete kitbash dependencies into its recipe.
+            if(property.propertyPath.StartsWith("_enemies.Array",StringComparison.Ordinal) &&
+                property.FindPropertyRelative("_presentationPrefab").objectReferenceValue != null)
+            {
+                property.FindPropertyRelative("_id").stringValue=id;
+                property.FindPropertyRelative("_parts").arraySize=0;
+                return;
+            }
             property.FindPropertyRelative("_id").stringValue = id;
             var serializedParts = property.FindPropertyRelative("_parts");
             serializedParts.arraySize = parts.Length;

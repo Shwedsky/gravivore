@@ -153,7 +153,7 @@ namespace Gravivore.ArtSpike.Tests
                 "Assets/_Game/Content/Definitions/S15_VisualCatalog.asset", "Assets/_Game/Content/Definitions/S07_Evolution.asset" })
             {
                 var dependencies = AssetDatabase.GetDependencies(path, true);
-                var acceptedArt = path.EndsWith("S15_VisualCatalog.asset") ? "Assets/_Game/Content/VisualSlice/Models/Scout_V1.fbx" : null;
+                var acceptedArt = path.EndsWith("S15_VisualCatalog.asset") ? "Assets/_Game/Content/ActorProductionV2/Models/Scout_V2.fbx" : null;
                 Assert.That(acceptedArt != null ? dependencies.Contains(acceptedArt) : dependencies.Any(p => p.StartsWith(ArtSpikeBuilder.Root + "/")), Is.True, path);
                 // Phase3B environment is legitimate runtime content. The isolated comparison-bay
                 // scenery and lighting must still never become a Chapter01 dependency.

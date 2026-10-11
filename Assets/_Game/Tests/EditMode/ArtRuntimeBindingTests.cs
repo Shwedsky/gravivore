@@ -39,15 +39,10 @@ namespace Gravivore.Tests.EditMode
             foreach (var id in new[] { "scout-drone", "cutter-unit", "warden", "arc-drone", "carrier" })
             {
                 Assert.IsTrue(catalog.TryGetEnemy(id, out var recipe));
-                if (id == "cutter-unit" || id == "scout-drone")
-                    Assert.That(AssetDatabase.GetAssetPath(recipe.PresentationPrefab), Is.EqualTo(
-                        Gravivore.Editor.VisualIntegration.FirstVisualSliceBuilder.Prefab(id == "cutter-unit" ? "Cutter_V1" : "Scout_V1")));
-                else
-                {
-                    var model=id=="warden"?"Warden_V1":id=="arc-drone"?"ArcDrone_V1":"Carrier_V1";
-                    Assert.That(AssetDatabase.GetAssetPath(recipe.PresentationPrefab), Is.EqualTo(Gravivore.Editor.VisualIntegration.Chapter01ProductionBuilder.Prefab(model)),id);
-                    Assert.DoesNotThrow(() => PresentationPrefabValidation.ValidateOrThrow(recipe.PresentationPrefab));
-                }
+                var model=id=="cutter-unit"?"Cutter":id=="scout-drone"?"Scout":id=="warden"?"Warden":id=="arc-drone"?"ArcDrone":"Carrier";
+                Assert.That(AssetDatabase.GetAssetPath(recipe.PresentationPrefab), Is.EqualTo(Gravivore.Editor.VisualIntegration.Chapter01ActorIntegrationBuilder.Prefab(model)),id);
+                Assert.That(recipe.PartCount,Is.Zero);
+                Assert.DoesNotThrow(() => PresentationPrefabValidation.ValidateOrThrow(recipe.PresentationPrefab));
                 for (var i = 0; i < recipe.PartCount; i++)
                     Assert.That(AssetDatabase.GetAssetPath(recipe.GetPart(i).SourceModel),
                         Does.StartWith(Gravivore.Editor.S15AssetConfigurator.ModelRoot));

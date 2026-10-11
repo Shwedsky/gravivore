@@ -1,0 +1,120 @@
+{
+  "tests": {
+    "EditModeCandidate": {
+      "result": "Passed",
+      "total": "511",
+      "passed": "511",
+      "failed": "0",
+      "skipped": "0",
+      "duration": "17,3299099",
+      "start-time": "2026-10-11 18:57:58Z",
+      "end-time": "2026-10-11 18:58:15Z",
+      "nonPassingCases": []
+    },
+    "PlayModeCandidate": {
+      "result": "Skipped:Ignored",
+      "total": "149",
+      "passed": "148",
+      "failed": "0",
+      "skipped": "1",
+      "duration": "789,601523",
+      "start-time": "2026-10-11 15:37:23Z",
+      "end-time": "2026-10-11 15:50:33Z",
+      "nonPassingCases": [
+        {
+          "name": "Gravivore.Tests.PlayMode.VisualIntegrationSmokeTests.CaptureStructuralFoundationWhenRequested",
+          "result": "Skipped",
+          "reason": "Set GRAVIVORE_VISUAL_INTEGRATION_QA to export structural review captures."
+        }
+      ]
+    },
+    "DamageAnchorRegression": {
+      "result": "Passed",
+      "total": "1",
+      "passed": "1",
+      "failed": "0",
+      "skipped": "0",
+      "duration": "1,4232998",
+      "start-time": "2026-10-11 15:30:09Z",
+      "end-time": "2026-10-11 15:30:10Z",
+      "nonPassingCases": []
+    },
+    "GallerySynchronization": {
+      "result": "Passed",
+      "total": "1",
+      "passed": "1",
+      "failed": "0",
+      "skipped": "0",
+      "duration": "10,625192",
+      "start-time": "2026-10-11 18:26:32Z",
+      "end-time": "2026-10-11 18:26:43Z",
+      "nonPassingCases": []
+    },
+    "ActorIntegrationFinal": {
+      "result": "Passed",
+      "total": "7",
+      "passed": "7",
+      "failed": "0",
+      "skipped": "0",
+      "duration": "20,4588542",
+      "start-time": "2026-10-11 18:59:17Z",
+      "end-time": "2026-10-11 18:59:38Z",
+      "nonPassingCases": []
+    }
+  },
+  "clearance": {
+    "samples": 766,
+    "perActor": {
+      "Scout": 105,
+      "Cutter": 105,
+      "Warden": 121,
+      "ArcDrone": 105,
+      "Carrier": 105,
+      "Magnetar": 103,
+      "Custodian": 122
+    },
+    "penetratingVertices": 0,
+    "minimumFloorHeight": 0.024260520935058594,
+    "perActorMinimumY": {
+      "ArcDrone": 0.11519196629524231,
+      "Carrier": 0.024999916553497314,
+      "Custodian": 0.024866372346878052,
+      "Cutter": 0.024965107440948486,
+      "Magnetar": 0.024912968277931213,
+      "Scout": 0.024526432156562805,
+      "Warden": 0.024260520935058594
+    }
+  },
+  "editorPerformance": {
+    "method": "Actual playable Chapter01 Editor observation; CPU/GC include Unity Editor and test runner. Renderer/triangle inventory counts all enabled LOD objects, not submitted GPU draws. Potential lights are bounding-sphere candidates, not measured per-pixel lights. No Android performance acceptance.",
+    "frames": 240,
+    "peakEnemyPopulation": 20,
+    "peakVfx": 3,
+    "activeRendererObjects": 226,
+    "activeSkinObjects": 69,
+    "materials": 11,
+    "lights": 19,
+    "maxPotentialLightsAtSkin": 4,
+    "meanEditorFrameMs": 1.2108508082746994,
+    "editorFps": 825.8655758134781,
+    "meanMainThreadMs": 1.1983779166666662,
+    "recorderGcValid": true,
+    "recorderCpuValid": true,
+    "totalEditorGcBytes": 2898387,
+    "maxEditorGcBytes": 171599,
+    "inventoryTriangles": 2409694
+  },
+  "fiveMinuteSoak": {
+    "completed": true,
+    "seconds": 300.000678,
+    "meanEditorFrameMs": 1.048490699622911,
+    "maxEditorFrameMs": 402.599609375,
+    "frames": 286522,
+    "maxLiveEnemies": 20,
+    "maxParticles": 122,
+    "gen0Collections": 45,
+    "reachedWaypoints": 63,
+    "method": "Unity Editor realtime combat/traversal observation; includes test runner and editor overhead; no Android GPU/FPS claim"
+  },
+  "deviceAcceptance": "NOT RUN: no connected Android device; final visual/device acceptance belongs to owner"
+}

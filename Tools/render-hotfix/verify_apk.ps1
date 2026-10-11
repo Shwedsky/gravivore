@@ -2,8 +2,8 @@
 param([Parameter(Mandatory=$true)][string]$ExpectedSourceSha)
 $ErrorActionPreference='Stop'
 $renderRoot=Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
-$renderOutput=Join-Path $renderRoot 'docs/render-hotfix/verification'
-& (Join-Path $renderRoot 'Tools/chapter01-v3/verify_apk.ps1') -ExpectedSourceSha $ExpectedSourceSha -VersionCode 43 -OutputDirectory 'docs/render-hotfix/verification'
+$renderOutput=Join-Path $renderRoot 'docs/history/visual-stages/chapter01-visual-passes/render-hotfix/verification'
+& (Join-Path $renderRoot 'Tools/chapter01-v3/verify_apk.ps1') -ExpectedSourceSha $ExpectedSourceSha -VersionCode 43 -OutputDirectory 'docs/history/visual-stages/chapter01-visual-passes/render-hotfix/verification'
 if($LASTEXITCODE){throw 'Base v43 APK verification failed'}
 $renderApk=Join-Path $renderRoot 'Builds/Android/gravivore-dev-0.1.0+43.apk'
 $renderPython='C:/Users/pamak/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/python.exe'

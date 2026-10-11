@@ -1,0 +1,1628 @@
+[Licensing::Module] Trying to connect to existing licensing client channel...
+Built from '6000.3/staging' branch; Version is '6000.3.0f1 (d1870ce95baf) revision 13731596'; Using compiler version '194234433'; Build Type 'Release'
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-pamak" at "2026-10-11T15:29:43.4772645Z"
+OS: 'Windows 11  (10.0.26200) 64bit Professional' Language: 'ru' Physical Memory: 13234 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1
+Date: 2026-10-11T15:29:43Z
+[Licensing::Client] Code 10 while verifying Licensing Client signature (process Id: 19808, path: "C:/Program Files/Unity Hub/UnityLicensingClient_V1/Unity.Licensing.Client.exe")
+[Licensing::Module] LicensingClient has failed validation; ignoring
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.18.3+d7ffd15
+  Session Id:              37180df6dc5f4aba9564e0d6a144dd20
+  Correlation Id:          7c459fd213b30416cfc1ac241770b025
+  External correlation Id: 6413350618114169085
+  Machine Id:              s1AHeOo89097k/AuI7TRxz7wi4Q=
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-pamak" (connect: 0.00s, validation: 0.00s, handshake: 0.05s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-pamak-notifications" at "2026-10-11T15:29:43.5252337Z"
+[Licensing::Module] Error: Access token is unavailable; failed to update
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: 5774129981942-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+[Licensing::Client] Successfully updated license, isAsync: True, time: 0.00
+[Licensing::Module] Licensing Background thread has ended after 0.05s
+
+COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Unity.exe
+-batchmode
+-projectPath
+C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\chapter01-r2-actors-v2-integration
+-logFile
+C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\chapter01-r2-actors-v2-integration\docs\history\implementation-passes\chapter01-r2-actors-v2-integration\verification\DamageAnchorRegression.log
+-runTests
+-testPlatform
+PlayMode
+-testResults
+C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\chapter01-r2-actors-v2-integration\docs\history\implementation-passes\chapter01-r2-actors-v2-integration\verification\DamageAnchorRegression.xml
+-testFilter
+RealLethalGravityAttackKeepsDamageTextAtTheAuthoredAnchor
+Successfully changed project path to: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\chapter01-r2-actors-v2-integration
+C:/Users/pamak/Documents/ChatGPT/gravivore/.codex-worktrees/chapter01-r2-actors-v2-integration
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-gfx=262144"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+Player connection [19764]  Target information:
+
+Player connection [19764]  * "[IP] 192.168.1.49 [Port] 55504 [Flags] 2 [Guid] 3329481648 [EditorId] 3329481648 [Version] 1048832 [Id] WindowsEditor(7,DESKTOP-FT9PDRO) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [19764]  * "[IP] 172.30.224.1 [Port] 55504 [Flags] 2 [Guid] 3329481648 [EditorId] 3329481648 [Version] 1048832 [Id] WindowsEditor(7,DESKTOP-FT9PDRO) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [19764]  * "[IP] 198.18.0.1 [Port] 55504 [Flags] 2 [Guid] 3329481648 [EditorId] 3329481648 [Version] 1048832 [Id] WindowsEditor(7,DESKTOP-FT9PDRO) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [19764] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [19764] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+[Package Manager] Connected to IPC stream "Upm-2524" after 0.3 seconds.
+[Licensing::Client] Successfully resolved entitlement details
+Library Redirect Path: Library/
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+Artifact Garbage Collection - Removed 1 unused hashed content files
+Refreshing native plugins compatible for Editor in 0.10 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 6000.3.0f1 (d1870ce95baf)
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/6000.3.0f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/Users/pamak/Documents/ChatGPT/gravivore/.codex-worktrees/chapter01-r2-actors-v2-integration/Assets
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: AMD Radeon(TM) Graphics (ID=0x1638)
+    Vendor:   ATI
+    VRAM:     6617 MB
+    Driver:   31.0.21921.1000
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/6000.3.0f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/6000.3.0f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/6000.3.0f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56524
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+ImportWorker Server TCP listen port: 0
+AcceleratorClientConnectionCallback - disconnected - :0
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.3.0f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+[Licensing::Client] Successfully resolved entitlement details
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.3.0f1/Editor/Data/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll
+Registered in 0.010054 seconds.
+- Loaded All Assemblies, in  0.563 seconds
+Native extension for Android target not found
+Android Extension - Scanning For ADB Devices 2237 ms
+Native extension for WindowsStandalone target not found
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  2.707 seconds
+Domain Reload Profiling: 3266ms
+	BeginReloadAssembly (254ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (0ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (1ms)
+	RebuildCommonClasses (38ms)
+	RebuildNativeTypeToScriptingClass (12ms)
+	initialDomainReloadingComplete (59ms)
+	LoadAllAssembliesAndSetupDomain (196ms)
+		LoadAssemblies (249ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (191ms)
+			TypeCache.Refresh (189ms)
+				TypeCache.ScanAssembly (175ms)
+			BuildScriptInfoCaches (0ms)
+			ResolveRequiredComponents (1ms)
+	FinalizeReload (2707ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (2670ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (2330ms)
+			SetLoadedEditorAssemblies (4ms)
+			BeforeProcessingInitializeOnLoad (83ms)
+			ProcessInitializeOnLoadAttributes (143ms)
+			ProcessInitializeOnLoadMethodAttributes (110ms)
+			AfterProcessingInitializeOnLoad (0ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (0ms)
+[Licensing::Client] Successfully resolved entitlement details
+Application.AssetDatabase Initial Refresh Start
+Package Manager log level set to [2]
+[Package Manager] Restoring resolved packages state from cache
+[Licensing::Client] Successfully resolved entitlement details
+[Package Manager] Registered 23 packages:
+  Packages from [https://packages.unity.com]:
+    com.unity.ide.visualstudio@2.0.22 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\chapter01-r2-actors-v2-integration\Library\PackageCache\com.unity.ide.visualstudio@8140e851d83e)
+    com.unity.searcher@4.9.4 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\chapter01-r2-actors-v2-integration\Library\PackageCache\com.unity.searcher@d45a78918735)
+    com.unity.burst@1.8.25 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\chapter01-r2-actors-v2-integration\Library\PackageCache\com.unity.burst@1df634d836b8)
+    com.unity.mathematics@1.3.3 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\chapter01-r2-actors-v2-integration\Library\PackageCache\com.unity.mathematics@19a9377c4ffa)
+    com.unity.collections@2.6.2 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\chapter01-r2-actors-v2-integration\Library\PackageCache\com.unity.collections@aea9d3bd5e19)
+    com.unity.nuget.mono-cecil@1.11.6 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\chapter01-r2-actors-v2-integration\Library\PackageCache\com.unity.nuget.mono-cecil@ecb9724e46ff)
+    com.unity.test-framework.performance@3.2.0 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\chapter01-r2-actors-v2-integration\Library\PackageCache\com.unity.test-framework.performance@0840f58e4562)
+  Built-in packages:
+    com.unity.render-pipelines.universal@17.3.0 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\chapter01-r2-actors-v2-integration\Library\PackageCache\com.unity.render-pipelines.universal@d9aadd996b24)
+    com.unity.test-framework@1.6.0 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\chapter01-r2-actors-v2-integration\Library\PackageCache\com.unity.test-framework@0b7a23ab2e1d)
+    com.unity.ugui@2.0.0 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\chapter01-r2-actors-v2-integration\Library\PackageCache\com.unity.ugui@4ee0fac0c6e4)
+    com.unity.modules.animation@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.animation)
+    com.unity.modules.audio@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.audio)
+    com.unity.modules.imageconversion@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.imageconversion)
+    com.unity.modules.particlesystem@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.particlesystem)
+    com.unity.modules.ui@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.ui)
+    com.unity.modules.imgui@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.imgui)
+    com.unity.ext.nunit@2.0.5 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\chapter01-r2-actors-v2-integration\Library\PackageCache\com.unity.ext.nunit@d8c07649098d)
+    com.unity.modules.jsonserialize@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.jsonserialize)
+    com.unity.render-pipelines.core@17.3.0 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\chapter01-r2-actors-v2-integration\Library\PackageCache\com.unity.render-pipelines.core@33b0f6d355dd)
+    com.unity.shadergraph@17.3.0 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\chapter01-r2-actors-v2-integration\Library\PackageCache\com.unity.shadergraph@bd2576295577)
+    com.unity.render-pipelines.universal-config@17.0.3 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\chapter01-r2-actors-v2-integration\Library\PackageCache\com.unity.render-pipelines.universal-config@8dc1aab4af1d)
+    com.unity.modules.physics@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.physics)
+    com.unity.modules.terrain@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.terrain)
+[Subsystems] No new subsystems found in resolved package list.
+[Package Manager] Done registering packages in 0.01 seconds
+[ScriptCompilation] Requested script compilation because: Assetdatabase observed changes in script compilation related files
+Starting: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Tools\BuildPipeline\bee_backend.exe --ipc --defer-dag-verification --dagfile="Library/Bee/1900b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
+WorkingDir: C:/Users/pamak/Documents/ChatGPT/gravivore/.codex-worktrees/chapter01-r2-actors-v2-integration
+DisplayProgressbar: Compiling Scripts
+ExitCode: 0 Duration: 2s121ms
+[517/648    0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+[644/648    1s] Csc Library/Bee/artifacts/1900b0aE.dag/Gravivore.PlayModeTests.dll (+2 others)
+[645/648    0s] ILPostProcess Library/Bee/artifacts/1900b0aE.dag/post-processed/Gravivore.PlayModeTests.dll (+pdb)
+Processing assembly Library/Bee/artifacts/1900b0aE.dag/Gravivore.PlayModeTests.dll, with 137 defines and 241 references
+
+processors: Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[646/648    0s] CopyFiles Library/ScriptAssemblies/Gravivore.PlayModeTests.pdb
+[647/648    0s] CopyFiles Library/ScriptAssemblies/Gravivore.PlayModeTests.dll
+*** Tundra build success (2.07 seconds), 5 items updated, 648 evaluated
+AssetDatabase: script compilation time: 2.564205s
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  1.007 seconds
+Refreshing native plugins compatible for Editor in 0.27 ms, found 0 plugins.
+Native extension for Android target not found
+Native extension for WindowsStandalone target not found
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  2.746 seconds
+Domain Reload Profiling: 3745ms
+	BeginReloadAssembly (330ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (12ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (173ms)
+	RebuildCommonClasses (36ms)
+	RebuildNativeTypeToScriptingClass (12ms)
+	initialDomainReloadingComplete (33ms)
+	LoadAllAssembliesAndSetupDomain (588ms)
+		LoadAssemblies (569ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (125ms)
+			TypeCache.Refresh (89ms)
+				TypeCache.ScanAssembly (80ms)
+			BuildScriptInfoCaches (24ms)
+			ResolveRequiredComponents (9ms)
+	FinalizeReload (2746ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (2571ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (38ms)
+			SetLoadedEditorAssemblies (4ms)
+			BeforeProcessingInitializeOnLoad (173ms)
+			ProcessInitializeOnLoadAttributes (2030ms)
+			ProcessInitializeOnLoadMethodAttributes (316ms)
+			AfterProcessingInitializeOnLoad (9ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (11ms)
+Start importing ProjectSettings/GraphicsSettings.asset using Guid(00000000000000006100000000000000) (LibraryAssetImporter) -> (artifact id: '296e99c4f3ea37acc63782250a0b2ed0') in 0.0106566 seconds
+Start importing ProjectSettings/ProjectSettings.asset using Guid(00000000000000004000000000000000) (LibraryAssetImporter) -> (artifact id: '3b9cd4ad8e95a34cc92d62882bf23743') in 0.0025418 seconds
+Refreshing native plugins compatible for Editor in 0.28 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=1612b390d67b3a24abdeb8ba31766f71): Total: 7.040 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
+	Summary:
+		Imports: total=2 (actual=2, local cache=0, cache server=0)
+		Asset DB Process Time: managed=3 ms, native=3122 ms
+		Asset DB Callback time: managed=276 ms, native=18 ms
+		Scripting: domain reloads=1, domain reload time=1008 ms, compile time=2566 ms, other=45 ms
+		Project Asset Count: scripts=868, non-scripts=2166
+		Asset File Changes: new=0, changed=1, moved=0, deleted=0
+		Scan Filter Count: 1
+	InvokeCustomDependenciesCallbacks: 0.002ms
+	InvokePackagesCallback: 16.669ms
+	ApplyChangesToAssetFolders: 0.639ms
+	Scan: 102.224ms
+	OnSourceAssetsModified: 0.964ms
+	CategorizeAssetsWithTransientArtifact: 29.079ms
+	ProcessAssetsWithTransientArtifactChanges: 41.766ms
+	CategorizeAssets: 40.308ms
+	ImportOutOfDateAssets: 2769.342ms (184.349ms without children)
+		ImportManagerImport: 15.325ms (1.538ms without children)
+			ImportInProcess: 13.742ms
+			UpdateCategorizedAssets: 0.045ms
+		CompileScripts: 2565.622ms
+		ReloadNativeAssets: 0.075ms
+		UnloadImportedAssets: 1.409ms
+		ReloadImportedAssets: 0.220ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 1.340ms
+		InitializingProgressBar: 0.001ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.001ms
+		OnDemandSchedulerStart: 1.000ms
+	PostProcessAllAssets: 328.875ms
+	Hotreload: 1.465ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.348ms
+	UnloadStreamsBegin: 1.336ms
+	PersistCurrentRevisions: 0.234ms
+	UnloadStreamsEnd: 0.003ms
+	GenerateScriptTypeHashes: 2.313ms
+	Untracked: 3706.542ms
+
+Application.AssetDatabase Initial Refresh End
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.02 seconds
+Scanning for USB devices : 7.811ms
+Initializing Unity extensions:
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+[MODES] Loading mode Default (0) for mode-current-id-GRAVIVORE
+GetVirtualKey: Could not map char: z (122) to any virtual key
+GetVirtualKey: Could not map char: y (121) to any virtual key
+GetVirtualKey: Could not map char: x (120) to any virtual key
+GetVirtualKey: Could not map char: c (99) to any virtual key
+GetVirtualKey: Could not map char: v (118) to any virtual key
+GetVirtualKey: Could not map char: V (86) to any virtual key
+GetVirtualKey: Could not map char: d (100) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: a (97) to any virtual key
+GetVirtualKey: Could not map char: d (100) to any virtual key
+GetVirtualKey: Could not map char: c (99) to any virtual key
+GetVirtualKey: Could not map char: r (114) to any virtual key
+GetVirtualKey: Could not map char: i (105) to any virtual key
+GetVirtualKey: Could not map char: l (108) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: k (107) to any virtual key
+GetVirtualKey: Could not map char: p (112) to any virtual key
+GetVirtualKey: Could not map char: p (112) to any virtual key
+GetVirtualKey: Could not map char: p (112) to any virtual key
+GetVirtualKey: Could not map char: c (99) to any virtual key
+GetVirtualKey: Could not map char: r (114) to any virtual key
+GetVirtualKey: Could not map char: P (80) to any virtual key
+GetVirtualKey: Could not map char: n (110) to any virtual key
+GetVirtualKey: Could not map char: n (110) to any virtual key
+GetVirtualKey: Could not map char: g (103) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: a (97) to any virtual key
+GetVirtualKey: Could not map char: a (97) to any virtual key
+GetVirtualKey: Could not map char: n (110) to any virtual key
+GetVirtualKey: Could not map char: o (111) to any virtual key
+GetVirtualKey: Could not map char: s (115) to any virtual key
+GetVirtualKey: Could not map char: s (115) to any virtual key
+GetVirtualKey: Could not map char: b (98) to any virtual key
+GetVirtualKey: Could not map char: b (98) to any virtual key
+GetVirtualKey: Could not map char: c (99) to any virtual key
+GetVirtualKey: Could not map char: u (117) to any virtual key
+Unloading 54 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 3594 unused Assets / (10.6 MB). Loaded Objects now: 4308.
+Memory consumption went from 167.3 MB to 156.6 MB.
+Total: 11.280700 ms (FindLiveObjects: 0.367100 ms CreateObjectMapping: 0.185800 ms MarkObjects: 6.793700 ms  DeleteObjects: 3.933300 ms)
+
+GetVirtualKey: Could not map char: z (122) to any virtual key
+GetVirtualKey: Could not map char: y (121) to any virtual key
+GetVirtualKey: Could not map char: x (120) to any virtual key
+GetVirtualKey: Could not map char: c (99) to any virtual key
+GetVirtualKey: Could not map char: v (118) to any virtual key
+GetVirtualKey: Could not map char: V (86) to any virtual key
+GetVirtualKey: Could not map char: d (100) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: a (97) to any virtual key
+GetVirtualKey: Could not map char: d (100) to any virtual key
+GetVirtualKey: Could not map char: c (99) to any virtual key
+GetVirtualKey: Could not map char: r (114) to any virtual key
+GetVirtualKey: Could not map char: i (105) to any virtual key
+GetVirtualKey: Could not map char: l (108) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: k (107) to any virtual key
+GetVirtualKey: Could not map char: p (112) to any virtual key
+GetVirtualKey: Could not map char: p (112) to any virtual key
+GetVirtualKey: Could not map char: p (112) to any virtual key
+GetVirtualKey: Could not map char: c (99) to any virtual key
+GetVirtualKey: Could not map char: r (114) to any virtual key
+GetVirtualKey: Could not map char: P (80) to any virtual key
+GetVirtualKey: Could not map char: n (110) to any virtual key
+GetVirtualKey: Could not map char: n (110) to any virtual key
+GetVirtualKey: Could not map char: g (103) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: a (97) to any virtual key
+GetVirtualKey: Could not map char: a (97) to any virtual key
+GetVirtualKey: Could not map char: n (110) to any virtual key
+GetVirtualKey: Could not map char: o (111) to any virtual key
+GetVirtualKey: Could not map char: s (115) to any virtual key
+GetVirtualKey: Could not map char: s (115) to any virtual key
+GetVirtualKey: Could not map char: b (98) to any virtual key
+GetVirtualKey: Could not map char: b (98) to any virtual key
+GetVirtualKey: Could not map char: c (99) to any virtual key
+GetVirtualKey: Could not map char: u (117) to any virtual key
+D3D11 device created for Microsoft Media Foundation video decoding.
+[Project] Loading completed in 14.491 seconds
+	Project init time: 				11.647 seconds
+		Template init time: 		0.000 seconds
+		Package Manager init time: 		0.322 seconds
+		Asset Database init time: 		0.213 seconds
+		Global illumination init time: 	0.003 seconds
+		Assemblies load time: 			3.305 seconds
+		Unity extensions init time: 	0.006 seconds
+		Asset Database refresh time: 	7.040 seconds
+	Scene opening time: 			2.576 seconds
+##utp:{"type":"ProjectInfo","version":2,"phase":"Immediate","time":1791732597941,"processId":2524,"projectLoad":14.4910259,"projectInit":11.646747,"templateInit":0.0,"packageManagerInit":0.3219571,"assetDatabaseInit":0.2125782,"globalIlluminationInit":0.0028917,"assembliesLoad":3.3054777,"unityExtensionsInit":0.0055732,"assetDatabaseRefresh":7.0398897,"sceneOpening":2.5759571}
+##utp:{"type":"EditorInfo","version":2,"phase":"Immediate","time":1791732597941,"processId":2524,"editorVersion":"6000.3.0f1 (d1870ce95baf)","branch":"6000.3/staging","buildType":"Release","platform":"Windows"}
+Asset Pipeline Refresh (id=80dd4d8cc3239d141bcb37d24663a21b): Total: 0.052 seconds - Initiated by RefreshV2(NoUpdateAssetOptions)
+Running tests for ExecutionSettings with details:
+targetPlatform = 
+playerHeartbeatTimeout = 600
+filters[0] = 
+   Filter with settings:
+   testMode = PlayMode
+   targetPlatform = 
+   testNames = null
+   groupNames = RealLethalGravityAttackKeepsDamageTextAtTheAuthoredAnchor
+   categoryNames = null
+   assemblyNames = null
+ignoreTests = {}
+featureFlags = null
+
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+UnityEditor.TestTools.TestRunner.CommandLineTest.Executer:InitializeAndExecuteRun (string[]) (at ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEditor.TestRunner/CommandLineTest/Executer.cs:53)
+UnityEditor.TestTools.TestRunner.CommandLineTest.TestStarter:InitializeAndExecuteRun () (at ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEditor.TestRunner/CommandLineTest/TestStarter.cs:64)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+(Filename: ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEditor.TestRunner/CommandLineTest/Executer.cs Line: 53)
+
+DisplayProgressbar: Material Upgrader re-import
+Start importing Assets/_Game/Content/ConceptCorrectiveV45/Materials/V45_Graphite.mat using Guid(003a3ac184e977e4a96547696b17542a) (NativeFormatImporter) -> (artifact id: '7805481d653c1c9bcb5fd9464f1a34da') in 0.0035968 seconds
+Start importing Assets/_Game/Content/VisualReplacementV3/Materials/VR3_IndustrialTrimAtlas.mat using Guid(6046e0cb17228db43a5764a0b915cd06) (NativeFormatImporter) -> (artifact id: '1a46dec6a2659f9b284731fe5009ff19') in 0.0034735 seconds
+Start importing Assets/_Game/ArtSpike/Materials/Gravivore_PlayerCore.mat using Guid(e020acffcae8a7944849c3d36df80863) (NativeFormatImporter) -> (artifact id: 'f88a74123485a659563da48ab8a2c037') in 0.0025918 seconds
+Start importing Assets/_Game/ArtSpike/Materials/Gravivore_ProxyArmor_PBR.mat using Guid(012e2ea144c362c47a278de9a2ff16be) (NativeFormatImporter) -> (artifact id: 'a358c20fbb357b8ef0ae6de5c9ad06b0') in 0.0026152 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/Materials/Decal.mat using Guid(31d0dcc6f2dd4e4408d18036a2c93862) (NativeFormatImporter) -> (artifact id: '8f3d32c29394a79b41f28a25b53defe8') in 0.0020625 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/Materials/Lit.mat using Guid(31321ba15b8f8eb4c954353edc038b1d) (NativeFormatImporter) -> (artifact id: '960643f9fe6857c5d72b0d2fd2085c0e') in 0.0025735 seconds
+Start importing Assets/_Game/Content/ConceptCorrectiveV45/Materials/V45_HostileRed.mat using Guid(41e20ff27cf1aa044b1b1baa9c00650d) (NativeFormatImporter) -> (artifact id: '88543d84f81edbf352148461436c8d3a') in 0.0031857 seconds
+Start importing Assets/_Game/Phase3D/Materials/Phase3D_StructuralMetal.mat using Guid(51d3a9c7e4f146f0891a2b3c4d5e6001) (NativeFormatImporter) -> (artifact id: 'af6650dfd328090d93c3c04103d7ae83') in 0.0026199 seconds
+Start importing Assets/_Game/Phase3D/Materials/Phase3D_WornPaintedMachinery.mat using Guid(51d3a9c7e4f146f0891a2b3c4d5e6002) (NativeFormatImporter) -> (artifact id: '9c5eae58f88d762fe4c324f4f511a4ef') in 0.002623 seconds
+Start importing Assets/_Game/Phase3D/Materials/Phase3D_HeatStainedMetal.mat using Guid(51d3a9c7e4f146f0891a2b3c4d5e6003) (NativeFormatImporter) -> (artifact id: 'a5832b1aa1652a847d6ff7a2a605eb25') in 0.0024019 seconds
+Start importing Assets/_Game/Phase3D/Materials/Phase3D_RubberCable.mat using Guid(51d3a9c7e4f146f0891a2b3c4d5e6004) (NativeFormatImporter)Main Object Name 'Gravivore_DarkMetal' does not match filename 'Phase3D_RubberCable'
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEditor.Rendering.AssetReimportUtils:ReimportAll<UnityEngine.Material> (double&,uint&,System.Func`2<string, bool>) (at ./Library/PackageCache/com.unity.render-pipelines.core@33b0f6d355dd/Editor/Material/AssetReimportUtils.cs:44)
+UnityEditor.Rendering.Universal.MaterialReimporter:ReimportAllMaterials () (at ./Library/PackageCache/com.unity.render-pipelines.universal@d9aadd996b24/Editor/AssetPostProcessors/MaterialPostprocessor.cs:37)
+UnityEditor.Rendering.Universal.MaterialReimporter/<>c:<RegisterUpgraderReimport>b__2_0 () (at ./Library/PackageCache/com.unity.render-pipelines.universal@d9aadd996b24/Editor/AssetPostProcessors/MaterialPostprocessor.cs:76)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+[./Library/PackageCache/com.unity.render-pipelines.universal@d9aadd996b24/Editor/AssetPostProcessors/MaterialPostprocessor.cs line 37]
+
+ -> (artifact id: 'b4b7c809e86478f3a7e8f509d26ba5f6') in 0.0024991 seconds
+Start importing Assets/_Game/Phase3D/Materials/Phase3D_DirtyDeck.mat using Guid(51d3a9c7e4f146f0891a2b3c4d5e6005) (NativeFormatImporter) -> (artifact id: '182f6f08c069b1d1d43003aa63ac4167') in 0.0026507 seconds
+Start importing Assets/_Game/Phase3D/Materials/Phase3D_SubtleEnergy.mat using Guid(51d3a9c7e4f146f0891a2b3c4d5e6006) (NativeFormatImporter) -> (artifact id: '8804c253ccf11667fda0043c572e1050') in 0.0032122 seconds
+Start importing Assets/_Game/Content/Chapter01Production/Materials/Chapter01_IndustrialAtlas.mat using Guid(61d0ebd83a95c384ab7c91a056417f4c) (NativeFormatImporter) -> (artifact id: '26ae34cdf810b2e42db1388cbb248695') in 0.0023081 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/Materials/Mesh2D-Unlit-Default.mat using Guid(71942363c5608a64bb62421349d39c9c) (NativeFormatImporter) -> (artifact id: 'ef7311a66811940111367c78fa0cdd5d') in 0.0032091 seconds
+Start importing Assets/_Game/ArtSpike/Materials/Gravivore_Armor.mat using Guid(91fa4a592008ee74c85ce23876d57d8f) (NativeFormatImporter) -> (artifact id: 'fda410c43e4cab902aae378e53dccea9') in 0.0025731 seconds
+Start importing Assets/_Game/ArtSpike/Materials/Gravivore_HostileCore.mat using Guid(a14e5241c54e82a439702ecebe6a111a) (NativeFormatImporter) -> (artifact id: 'bd20b5652e9288f2ef872f477e7c1595') in 0.002297 seconds
+Start importing Assets/_Game/Content/ActorProductionV2/Materials/HostileV2_Amber.mat using Guid(c11ff1ccf1a19bf48b321eab32abd528) (NativeFormatImporter) -> (artifact id: 'b78d1ee53756bdcee49130c47e6e6ccd') in 0.0029525 seconds
+Start importing Assets/_Game/ArtReview/G0V21/Materials/Hero_4.mat using Guid(f1b4dc70707c38f44a0cc5a4b70cdb3a) (NativeFormatImporter)Main Object Name 'G0 _ machined actuator' does not match filename 'Hero_4'
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEditor.Rendering.AssetReimportUtils:ReimportAll<UnityEngine.Material> (double&,uint&,System.Func`2<string, bool>) (at ./Library/PackageCache/com.unity.render-pipelines.core@33b0f6d355dd/Editor/Material/AssetReimportUtils.cs:44)
+UnityEditor.Rendering.Universal.MaterialReimporter:ReimportAllMaterials () (at ./Library/PackageCache/com.unity.render-pipelines.universal@d9aadd996b24/Editor/AssetPostProcessors/MaterialPostprocessor.cs:37)
+UnityEditor.Rendering.Universal.MaterialReimporter/<>c:<RegisterUpgraderReimport>b__2_0 () (at ./Library/PackageCache/com.unity.render-pipelines.universal@d9aadd996b24/Editor/AssetPostProcessors/MaterialPostprocessor.cs:76)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+[./Library/PackageCache/com.unity.render-pipelines.universal@d9aadd996b24/Editor/AssetPostProcessors/MaterialPostprocessor.cs line 37]
+
+ -> (artifact id: 'a02a50c1edee6e92864b23b2ea242106') in 0.0029648 seconds
+Start importing Assets/_Game/Content/Materials/S15_MachineryDark.mat using Guid(52283fea483c6114d8b5a808d14e2b77) (NativeFormatImporter) -> (artifact id: 'e9b93659f98a1424e78e9ae0cde2247a') in 0.0022996 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Editor/SceneTemplates/Materials/Emissive.mat using Guid(92f845725428c954b878da352f657fe5) (NativeFormatImporter) -> (artifact id: 'b1f26f5eeb8ffbff6a8f6611506c4115') in 0.0024011 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Editor/SceneTemplates/Materials/Gold.mat using Guid(c2e40fa84d53ccd428f640eac126b1fb) (NativeFormatImporter) -> (artifact id: '9f9661d44e363023702c87ca4956e3f6') in 0.0025209 seconds
+Start importing Assets/_Game/Content/ConceptCorrectiveV45/Materials/V45_ServiceCyan.mat using Guid(d22bb767d0a77904ba9f307d84129721) (NativeFormatImporter) -> (artifact id: '7b6a6a66a95ec59d66a5025203e5e9c8') in 0.0026933 seconds
+Start importing Assets/_Game/Content/VisualSlice/Materials/Slice_IndustrialAtlas.mat using Guid(d20fff92df9c6d94089c00c627e0c6bb) (NativeFormatImporter) -> (artifact id: '29dfdb66637980024c9c65c37ea9df82') in 0.0029541 seconds
+Start importing Assets/_Game/Content/SurfaceHeroV46/Materials/V46_HeroCyan.mat using Guid(63cbfc0a03798ea4ca0fcc776f386a24) (NativeFormatImporter) -> (artifact id: 'a778a609e0cd47e1df7b8dd7141138db') in 0.0026711 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Editor/SceneTemplates/Materials/Metal_Black.mat using Guid(b34b07a45ba63ce47896c9e674f3a7a7) (NativeFormatImporter) -> (artifact id: '2e543c70b0a48798291a154a0176c0e2') in 0.0024001 seconds
+Start importing Assets/_Game/ArtSpike/Materials/Gravivore_IndustrialEnergy.mat using Guid(1485f7a02d6727c48a354b4b4dd3d83b) (NativeFormatImporter) -> (artifact id: '2f4c83917895e29697079e7b84b78159') in 0.0023247 seconds
+Start importing Assets/_Game/Content/Presentation/Phase6B/VFX/Materials/M_Phase6B_HostileRing.mat using Guid(24ff931e843385fc117d2d0e2faf61b4) (NativeFormatImporter) -> (artifact id: 'f4de13402395bebc98b96bc2d286c8fc') in 0.0024538 seconds
+Start importing Assets/_Game/Content/ConceptFidelityV2/Materials/Fidelity_IndustrialAtlas.mat using Guid(54c1d7324a857a346870e25a341db71c) (NativeFormatImporter) -> (artifact id: '0c81fa0eaa67329b5e391ecfacafc7a2') in 0.0028491 seconds
+Start importing Assets/_Game/Content/ConceptCorrectiveV45/Materials/V45_UtilityWhite.mat using Guid(54373409a3546a44f9286ce49a1f9dd0) (NativeFormatImporter) -> (artifact id: '885f4a84a2e3e269d60ce143821356f8') in 0.0032173 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/Materials/Mesh2D-Lit-Default.mat using Guid(9452ae1262a74094f8a68013fbcd1834) (NativeFormatImporter) -> (artifact id: 'a9f6a1c64081483a70fbc1be53f18baa') in 0.0021468 seconds
+Start importing Assets/_Game/ArtReview/G0V21/Materials/Hero_1.mat using Guid(9455fc63b7c3fd341bab68c91f181c34) (NativeFormatImporter)Main Object Name 'G0 _ ceramic titanium edge' does not match filename 'Hero_1'
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEditor.Rendering.AssetReimportUtils:ReimportAll<UnityEngine.Material> (double&,uint&,System.Func`2<string, bool>) (at ./Library/PackageCache/com.unity.render-pipelines.core@33b0f6d355dd/Editor/Material/AssetReimportUtils.cs:44)
+UnityEditor.Rendering.Universal.MaterialReimporter:ReimportAllMaterials () (at ./Library/PackageCache/com.unity.render-pipelines.universal@d9aadd996b24/Editor/AssetPostProcessors/MaterialPostprocessor.cs:37)
+UnityEditor.Rendering.Universal.MaterialReimporter/<>c:<RegisterUpgraderReimport>b__2_0 () (at ./Library/PackageCache/com.unity.render-pipelines.universal@d9aadd996b24/Editor/AssetPostProcessors/MaterialPostprocessor.cs:76)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+[./Library/PackageCache/com.unity.render-pipelines.universal@d9aadd996b24/Editor/AssetPostProcessors/MaterialPostprocessor.cs line 37]
+
+ -> (artifact id: '8833667e3daa8e92e190fe2993384459') in 0.0027785 seconds
+Start importing Assets/_Game/Content/VisualSlice/Materials/G0_V3_Tier0.mat using Guid(e4b3da027f50c2541a2668442442984b) (NativeFormatImporter) -> (artifact id: 'cf43316357de73ac544ac2e54f95aabb') in 0.0021255 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/Materials/SpriteMask-Default.mat using Guid(15d0c3709176029428a0da2f8cecf0b5) (NativeFormatImporter) -> (artifact id: '9b9123c1145efbdb38e316f85cad951e') in 0.0020781 seconds
+Start importing Assets/_Game/ArtReview/G0ProductionV3/Materials/G0_V3_IndustrialAtlas.mat using Guid(652392b7e381d5a4ebca79aa57715b00) (NativeFormatImporter) -> (artifact id: '0ec80ab1671d644c4b3806928dfb8533') in 0.0023313 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/Materials/SpatialMappingOcclusion.mat using Guid(b51db210fe78df745a372851b3db949e) (NativeFormatImporter) -> (artifact id: 'e725b235a682e6bf286c10ab07552b74') in 0.0036041 seconds
+Start importing Assets/_Game/Content/Presentation/Phase6B/VFX/Materials/M_Phase6B_RepairStreak.mat using Guid(06d314f9ecbace78e1f277ff7a2a04fe) (NativeFormatImporter) -> (artifact id: '65b08735dacb0df9c288709b5adf83b8') in 0.0020765 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Editor/SceneTemplates/Materials/Ground.mat using Guid(761d8e1f988ed2345a28312145c79c6e) (NativeFormatImporter) -> (artifact id: '27ce923cbd5bcc4047b0e855e6fb0af9') in 0.0023039 seconds
+Start importing Assets/_Game/Content/Materials/Gravivore_Lit.mat using Guid(86fd6dfa2d53d5d42bc738c73a8d0afd) (NativeFormatImporter) -> (artifact id: 'ddffd04238e3da35a3d487699492b80f') in 0.0021451 seconds
+Start importing Assets/_Game/ArtReview/G0V21/Materials/World_001.mat using Guid(96f444a232f021a43ac6117943a3931e) (NativeFormatImporter)Main Object Name 'Gravivore_Lit' does not match filename 'World_001'
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEditor.Rendering.AssetReimportUtils:ReimportAll<UnityEngine.Material> (double&,uint&,System.Func`2<string, bool>) (at ./Library/PackageCache/com.unity.render-pipelines.core@33b0f6d355dd/Editor/Material/AssetReimportUtils.cs:44)
+UnityEditor.Rendering.Universal.MaterialReimporter:ReimportAllMaterials () (at ./Library/PackageCache/com.unity.render-pipelines.universal@d9aadd996b24/Editor/AssetPostProcessors/MaterialPostprocessor.cs:37)
+UnityEditor.Rendering.Universal.MaterialReimporter/<>c:<RegisterUpgraderReimport>b__2_0 () (at ./Library/PackageCache/com.unity.render-pipelines.universal@d9aadd996b24/Editor/AssetPostProcessors/MaterialPostprocessor.cs:76)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+[./Library/PackageCache/com.unity.render-pipelines.universal@d9aadd996b24/Editor/AssetPostProcessors/MaterialPostprocessor.cs line 37]
+
+ -> (artifact id: 'b61db7c34bad7598d0c3054700cf3bec') in 0.0026279 seconds
+Start importing Assets/_Game/Content/ActorProductionV2/Materials/HostileV2_Red.mat using Guid(b6f2c5d90be5c2f4089b6f7f19f53337) (NativeFormatImporter) -> (artifact id: 'bfbe3e516531363352fd5988a5ab3332') in 0.0024372 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/Materials/RenderAs2D-Flattening.mat using Guid(b697f6a938056384e968ccf6527dac83) (NativeFormatImporter) -> (artifact id: '5ecfe90ca8080262222ed764ee85060b') in 0.0038075 seconds
+Start importing Assets/_Game/Content/Materials/S15_EnergyAccent.mat using Guid(f6b6db4eee120c149af1b5412860b546) (NativeFormatImporter) -> (artifact id: '0983f5403c35e4bc240edbbbca715b25') in 0.00218 seconds
+Start importing Assets/_Game/Content/VisualSlice/Materials/G0_V3_Tier1.mat using Guid(27c827dbb6132da4fbbc421b871871be) (NativeFormatImporter) -> (artifact id: '23797ece3669aec3c4d1324b93bb0d38') in 0.0023177 seconds
+Start importing Assets/_Game/ArtReview/G0V21/Materials/Hero_2.mat using Guid(472f00011e12f374490af112048bf3ca) (NativeFormatImporter)Main Object Name 'G0 _ graphite mechanism' does not match filename 'Hero_2'
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEditor.Rendering.AssetReimportUtils:ReimportAll<UnityEngine.Material> (double&,uint&,System.Func`2<string, bool>) (at ./Library/PackageCache/com.unity.render-pipelines.core@33b0f6d355dd/Editor/Material/AssetReimportUtils.cs:44)
+UnityEditor.Rendering.Universal.MaterialReimporter:ReimportAllMaterials () (at ./Library/PackageCache/com.unity.render-pipelines.universal@d9aadd996b24/Editor/AssetPostProcessors/MaterialPostprocessor.cs:37)
+UnityEditor.Rendering.Universal.MaterialReimporter/<>c:<RegisterUpgraderReimport>b__2_0 () (at ./Library/PackageCache/com.unity.render-pipelines.universal@d9aadd996b24/Editor/AssetPostProcessors/MaterialPostprocessor.cs:76)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+[./Library/PackageCache/com.unity.render-pipelines.universal@d9aadd996b24/Editor/AssetPostProcessors/MaterialPostprocessor.cs line 37]
+
+ -> (artifact id: 'ec0ac9d5eb0b6158316a0bbffda3dc16') in 0.0026455 seconds
+Start importing Assets/_Game/ArtSpike/Materials/Gravivore_SecondaryMetal.mat using Guid(6853f77de5bb18e4b9e678fb8b11410d) (NativeFormatImporter) -> (artifact id: '98b5f15b8075c24b3220e98c490f28a5') in 0.0023095 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/Materials/FullscreenInvertColors.mat using Guid(78a08787ca30045abb69f6f7dd878e09) (NativeFormatImporter) -> (artifact id: 'ee24d1240c4d3093a35a8ce9cd6a6123') in 0.0053377 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/Materials/SpatialMappingWireframe.mat using Guid(9875a245ac49007498213638a307faa1) (NativeFormatImporter) -> (artifact id: '40a3a03ad30c23572795ee7951b74454') in 0.0033654 seconds
+Start importing Assets/_Game/Content/VisualSlice/Materials/G0_V3_Tier2.mat using Guid(a822f21125db891409f26effb542c1c9) (NativeFormatImporter) -> (artifact id: '7c5db30a8427dd48508bde0bc3cb972b') in 0.0021642 seconds
+Start importing Assets/_Game/ArtReview/G0V21/Materials/Footprint.mat using Guid(c8a599888ddbe804ba498c6302b8c559) (NativeFormatImporter) -> (artifact id: '634e93642cfdad7675646aa04512feff') in 0.0025188 seconds
+Start importing Assets/_Game/Content/Presentation/Phase6B/VFX/Materials/M_Phase6B_RepairRing.mat using Guid(d87f0af146a26a75027c30dc6545d516) (NativeFormatImporter) -> (artifact id: 'b7cd541d5a843f4c7868fe1ba04c6614') in 0.002392 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/Materials/ParticlesUnlit.mat using Guid(e823cd5b5d27c0f4b8256e7c12ee3e6d) (NativeFormatImporter) -> (artifact id: 'aa862bff269d59d834f13819255630e6') in 0.002588 seconds
+Start importing Assets/_Game/Content/VisualReplacementV3/Materials/VR3_MetalSpark.mat using Guid(09a80c71b74c93f47bfd98071835daf3) (NativeFormatImporter) -> (artifact id: '656095bcab2d1476aba85eac1d4176d8') in 0.0023732 seconds
+Start importing Assets/_Game/Content/ConceptCorrectiveV45/Materials/V45_ColdSteel.mat using Guid(395f695c6d7b3144690bffe2e41dd228) (NativeFormatImporter) -> (artifact id: 'e31ba6e8f4020fd47e0ef74e418194ef') in 0.0026369 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/Materials/TerrainLit.mat using Guid(594ea882c5a793440b60ff72d896021e) (NativeFormatImporter) -> (artifact id: '32c0756065a4c99773d8b19abfdb7370') in 0.0021764 seconds
+Start importing Assets/_Game/Content/SurfaceHeroV46/Materials/V46_HeroRed.mat using Guid(69e71100b5d78d24cb659e857402853a) (NativeFormatImporter) -> (artifact id: 'fe707c3c7e9d70604c810d4c493bb3a1') in 0.0024354 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/Materials/Sprite-Lit-Default.mat using Guid(a97c105638bdf8b4a8650670310a4cd3) (NativeFormatImporter) -> (artifact id: '6b65b378b739cf40c13c1e455b16dff7') in 0.0020044 seconds
+Start importing Assets/_Game/ArtReview/G0V21/Materials/World_004.mat using Guid(b9e6f572aa3832443a881b2da001086f) (NativeFormatImporter)Main Object Name 'Gravivore_Lit' does not match filename 'World_004'
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEditor.Rendering.AssetReimportUtils:ReimportAll<UnityEngine.Material> (double&,uint&,System.Func`2<string, bool>) (at ./Library/PackageCache/com.unity.render-pipelines.core@33b0f6d355dd/Editor/Material/AssetReimportUtils.cs:44)
+UnityEditor.Rendering.Universal.MaterialReimporter:ReimportAllMaterials () (at ./Library/PackageCache/com.unity.render-pipelines.universal@d9aadd996b24/Editor/AssetPostProcessors/MaterialPostprocessor.cs:37)
+UnityEditor.Rendering.Universal.MaterialReimporter/<>c:<RegisterUpgraderReimport>b__2_0 () (at ./Library/PackageCache/com.unity.render-pipelines.universal@d9aadd996b24/Editor/AssetPostProcessors/MaterialPostprocessor.cs:76)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+[./Library/PackageCache/com.unity.render-pipelines.universal@d9aadd996b24/Editor/AssetPostProcessors/MaterialPostprocessor.cs line 37]
+
+ -> (artifact id: 'd557b70ef9a359e0142b788ede6d254c') in 0.003545 seconds
+Start importing Assets/_Game/Content/BlueprintWorldR1/Materials/R1_Trim2.mat using Guid(d9750d9be32308f42af2ac9c85548e3e) (NativeFormatImporter) -> (artifact id: '08af73d3f495d72e209227836b756526') in 0.0024127 seconds
+Start importing Assets/_Game/Content/Materials/Gravivore_Unlit.mat using Guid(e9e24b32a05c8cf46a011d80984144d3) (NativeFormatImporter) -> (artifact id: '5b80913c4599a6cb822f415e479709a7') in 0.0020007 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Editor/SceneTemplates/Materials/White.mat using Guid(f96821bbefeea864b9b418af4b8615ac) (NativeFormatImporter) -> (artifact id: 'b0a10ce88eba78cadb227317064359ad') in 0.0025252 seconds
+Start importing Assets/_Game/Content/VisualReplacementV3/Materials/VR3_WornIndustrialAtlas.mat using Guid(1a80d332f7a20804ba4b6557fab076a8) (NativeFormatImporter) -> (artifact id: 'ec0f29944f393e05eb9fd0c99c997204') in 0.0022217 seconds
+Start importing Assets/_Game/Content/Materials/Phase3C_WorkDeck.mat using Guid(1a43b608024d8ac4a8ffeb740ceb502a) (NativeFormatImporter) -> (artifact id: 'a4316d55c89607aed64d2f6353a7156f') in 0.0026235 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/Materials/SimpleLit.mat using Guid(6a1143ee683302f4aa628c052723efc1) (NativeFormatImporter) -> (artifact id: '4e947c4ad6c49ec8c3dbccd89f2ba9c5') in 0.004279 seconds
+Start importing Assets/_Game/Content/Presentation/Phase6B/VFX/Materials/M_Phase6B_WarningEdge.mat using Guid(7ae28a3a7a514004a2a2b867ad39a3a7) (NativeFormatImporter) -> (artifact id: '320d1151851c24c1ee03f5aa2749c49e') in 0.0023053 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/RendererFeatures/SurfaceCacheGI/FallbackMaterial.mat using Guid(8a239b3da89050c4e89ac06b168fc684) (NativeFormatImporter) -> (artifact id: '365f287f19db505f8da5f5a7aa1bdbca') in 0.0031139 seconds
+Start importing Assets/_Game/ArtReview/G0V21/Materials/World_003.mat using Guid(4b593f5093d888a4fac3a1ff86159296) (NativeFormatImporter)Main Object Name 'Gravivore_Lit' does not match filename 'World_003'
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEditor.Rendering.AssetReimportUtils:ReimportAll<UnityEngine.Material> (double&,uint&,System.Func`2<string, bool>) (at ./Library/PackageCache/com.unity.render-pipelines.core@33b0f6d355dd/Editor/Material/AssetReimportUtils.cs:44)
+UnityEditor.Rendering.Universal.MaterialReimporter:ReimportAllMaterials () (at ./Library/PackageCache/com.unity.render-pipelines.universal@d9aadd996b24/Editor/AssetPostProcessors/MaterialPostprocessor.cs:37)
+UnityEditor.Rendering.Universal.MaterialReimporter/<>c:<RegisterUpgraderReimport>b__2_0 () (at ./Library/PackageCache/com.unity.render-pipelines.universal@d9aadd996b24/Editor/AssetPostProcessors/MaterialPostprocessor.cs:76)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+[./Library/PackageCache/com.unity.render-pipelines.universal@d9aadd996b24/Editor/AssetPostProcessors/MaterialPostprocessor.cs line 37]
+
+ -> (artifact id: '4489598795a4559f8c0231adc7ff16fb') in 0.0031061 seconds
+Start importing Assets/_Game/Content/Presentation/Phase6B/VFX/Materials/M_Phase6B_PlayerSoft.mat using Guid(4bdd24c3c4b07ef9106a168078a0efbd) (NativeFormatImporter) -> (artifact id: 'b22aa4d01f711991afaa0e03d11a96a7') in 0.0025054 seconds
+Start importing Assets/_Game/Content/ConceptCorrectiveV45/Materials/V45_HazardOchre.mat using Guid(8bbe57602a46fa241a5c6b87faa9d1a9) (NativeFormatImporter) -> (artifact id: '530e3604d85dacbdd75e3a2d07e83301') in 0.0031196 seconds
+Start importing Assets/_Game/Content/BlueprintWorldR1/Materials/R1_Trim1.mat using Guid(db71ab04ccb9ea441b0cb05d7bff12a4) (NativeFormatImporter) -> (artifact id: '8dfcb5cf715317946f877ba5d5d532eb') in 0.002443 seconds
+Start importing Assets/_Game/ArtReview/G0V21/Materials/Hero_5.mat using Guid(1ca443cd0bbfe2f438f4ea242cff5ce3) (NativeFormatImporter)Main Object Name 'G0 _ copper service mark' does not match filename 'Hero_5'
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEditor.Rendering.AssetReimportUtils:ReimportAll<UnityEngine.Material> (double&,uint&,System.Func`2<string, bool>) (at ./Library/PackageCache/com.unity.render-pipelines.core@33b0f6d355dd/Editor/Material/AssetReimportUtils.cs:44)
+UnityEditor.Rendering.Universal.MaterialReimporter:ReimportAllMaterials () (at ./Library/PackageCache/com.unity.render-pipelines.universal@d9aadd996b24/Editor/AssetPostProcessors/MaterialPostprocessor.cs:37)
+UnityEditor.Rendering.Universal.MaterialReimporter/<>c:<RegisterUpgraderReimport>b__2_0 () (at ./Library/PackageCache/com.unity.render-pipelines.universal@d9aadd996b24/Editor/AssetPostProcessors/MaterialPostprocessor.cs:76)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+[./Library/PackageCache/com.unity.render-pipelines.universal@d9aadd996b24/Editor/AssetPostProcessors/MaterialPostprocessor.cs line 37]
+
+ -> (artifact id: 'dd82ffee6f137fe7abe167b5e14253cf') in 0.0030423 seconds
+Start importing Assets/_Game/ArtReview/G0V21/Materials/Hero_3.mat using Guid(3c6a3dc75220f1549986c5532480f8ec) (NativeFormatImporter)Main Object Name 'G0 _ titanium shell' does not match filename 'Hero_3'
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEditor.Rendering.AssetReimportUtils:ReimportAll<UnityEngine.Material> (double&,uint&,System.Func`2<string, bool>) (at ./Library/PackageCache/com.unity.render-pipelines.core@33b0f6d355dd/Editor/Material/AssetReimportUtils.cs:44)
+UnityEditor.Rendering.Universal.MaterialReimporter:ReimportAllMaterials () (at ./Library/PackageCache/com.unity.render-pipelines.universal@d9aadd996b24/Editor/AssetPostProcessors/MaterialPostprocessor.cs:37)
+UnityEditor.Rendering.Universal.MaterialReimporter/<>c:<RegisterUpgraderReimport>b__2_0 () (at ./Library/PackageCache/com.unity.render-pipelines.universal@d9aadd996b24/Editor/AssetPostProcessors/MaterialPostprocessor.cs:76)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+[./Library/PackageCache/com.unity.render-pipelines.universal@d9aadd996b24/Editor/AssetPostProcessors/MaterialPostprocessor.cs line 37]
+
+ -> (artifact id: '067c889d09078d731cc4ec15dd122620') in 0.0029915 seconds
+Start importing Assets/_Game/Content/VisualSlice/Materials/DeviceMotionStreak.mat using Guid(6c7450c5ce16b9946899f1be555dce1f) (NativeFormatImporter) -> (artifact id: '518947fa0d9e07e865de4a06889726e9') in 0.0021418 seconds
+Start importing Assets/_Game/Content/BlueprintWorldR1/Materials/R1_Industrial.mat using Guid(7c120b32410a95c43b352ce92ff90f0f) (NativeFormatImporter) -> (artifact id: 'ae2210e016bd3731ec526502fb5f1c09') in 0.0022413 seconds
+Start importing Assets/_Game/Content/SurfaceHeroV46/Materials/V46_HeroAmber.mat using Guid(8c2f97d34eb870d4f9786b3ed9f9739c) (NativeFormatImporter) -> (artifact id: 'cecfbc6102121ba499afc59f870345ff') in 0.0032302 seconds
+Start importing Assets/_Game/Content/Materials/Phase3C_IndustrialFloor.mat using Guid(bc93f0492926d9242907bf56e5189bb9) (NativeFormatImporter) -> (artifact id: '2ce134d594b37579e9acb30aaa9d443d') in 0.0029234 seconds
+Start importing Assets/_Game/Content/BlueprintWorldR1/Materials/R1_Trim3.mat using Guid(dc7f87225786f2c4a9ce031264f794ed) (NativeFormatImporter) -> (artifact id: '080cfd6d8753a31c192ae95bfe668d58') in 0.002456 seconds
+Start importing Assets/_Game/Content/ConceptConvergenceV47/Materials/V47_WorkingDeck.mat using Guid(2d10e5aabd3d98040be04ee20be50e31) (NativeFormatImporter) -> (artifact id: '9e860164cc4f655e2b14e5dfc78a928f') in 0.0025786 seconds
+Start importing Assets/_Game/Content/ConceptCorrectiveV45/Materials/V45_WornHousing.mat using Guid(9df43b13899b0b346900126724d189a3) (NativeFormatImporter) -> (artifact id: 'f25ea952e96937fdf526c7ead4fd1146') in 0.0025464 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/Materials/Sprite-Unlit-Default.mat using Guid(9dfc825aed78fcd4ba02077103263b40) (NativeFormatImporter) -> (artifact id: '3535407266e63a704ebed07394e8e29d') in 0.0025927 seconds
+Start importing Assets/_Game/Content/Presentation/Phase6B/VFX/Materials/M_Phase6B_RepairSoft.mat using Guid(cd7a531ff662d928e79a472b91f200cb) (NativeFormatImporter) -> (artifact id: '02cb2e242c1ff1c1ffdfaefcc4c21ee3') in 0.0023626 seconds
+Start importing Assets/_Game/Content/ActorProductionV2/Materials/HostileV2_Blue.mat using Guid(ed213977e1eaad247bdbbbf6a84858b3) (NativeFormatImporter) -> (artifact id: '629772328d73bfc719f49f73aa5ab391') in 0.002334 seconds
+Start importing Assets/_Game/Content/Presentation/Phase6B/VFX/Materials/M_Phase6B_WarningFill.mat using Guid(0e3a92c4d07746c3b67fdcde0035f9b9) (NativeFormatImporter) -> (artifact id: '4e36597d0fb3af8d63a1c70a54e9d4d6') in 0.0023005 seconds
+Start importing Assets/_Game/Content/Presentation/Phase6B/VFX/Materials/M_Phase6B_PlayerStreak.mat using Guid(0e3eed95318b12d5a571781a85deebb1) (NativeFormatImporter) -> (artifact id: '5455bb44c05de895aff804119c14fe82') in 0.0023361 seconds
+Start importing Assets/_Game/ArtReview/G0V21/Materials/World_000.mat using Guid(2edbdce8028a257409a345284823a000) (NativeFormatImporter)Main Object Name 'Gravivore_Lit' does not match filename 'World_000'
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEditor.Rendering.AssetReimportUtils:ReimportAll<UnityEngine.Material> (double&,uint&,System.Func`2<string, bool>) (at ./Library/PackageCache/com.unity.render-pipelines.core@33b0f6d355dd/Editor/Material/AssetReimportUtils.cs:44)
+UnityEditor.Rendering.Universal.MaterialReimporter:ReimportAllMaterials () (at ./Library/PackageCache/com.unity.render-pipelines.universal@d9aadd996b24/Editor/AssetPostProcessors/MaterialPostprocessor.cs:37)
+UnityEditor.Rendering.Universal.MaterialReimporter/<>c:<RegisterUpgraderReimport>b__2_0 () (at ./Library/PackageCache/com.unity.render-pipelines.universal@d9aadd996b24/Editor/AssetPostProcessors/MaterialPostprocessor.cs:76)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+[./Library/PackageCache/com.unity.render-pipelines.universal@d9aadd996b24/Editor/AssetPostProcessors/MaterialPostprocessor.cs line 37]
+
+ -> (artifact id: '569a21f9f99e6f54b0e1488795c0802c') in 0.0029321 seconds
+Start importing Assets/_Game/ArtSpike/Materials/Gravivore_DarkMetal.mat using Guid(5e651967c9e94b843955e72191469efb) (NativeFormatImporter) -> (artifact id: '47addc05698d3cda95673b75b701e5c7') in 0.0030125 seconds
+Start importing Assets/_Game/ArtSpike/Materials/Gravivore_Floor.mat using Guid(ce48775edc8a7464e8da8dce3f44aac2) (NativeFormatImporter) -> (artifact id: '3c22d8ea71f8553924c28a2b997f3e1a') in 0.0028022 seconds
+Start importing Assets/_Game/Content/Presentation/Phase6B/VFX/Materials/M_Phase6B_HostileSoft.mat using Guid(de8a1538f5b78153c557baffa6ab3d5c) (NativeFormatImporter) -> (artifact id: 'f52ac3ef74745645986a777836fb8505') in 0.0023166 seconds
+Start importing Assets/_Game/Content/Materials/S15_FactoryBody.mat using Guid(eeccc229876dbe244a39de39b9ccebf5) (NativeFormatImporter) -> (artifact id: '0443510e4ea8633924262f7f2fd4b487') in 0.0023051 seconds
+Start importing Assets/_Game/Content/ConceptCorrectiveV45/Materials/V45_UtilityAmber.mat using Guid(0f5c96289adf4a240b12e425381192fa) (NativeFormatImporter) -> (artifact id: 'bcfa1de2f5e09157a28855b2393db1bf') in 0.0030451 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Editor/SceneTemplates/Materials/Black.mat using Guid(4f1ef37ae953c484bbc5d5e4049147e5) (NativeFormatImporter) -> (artifact id: 'c073248664ba5268b69bc9cf80293393') in 0.0026552 seconds
+Start importing Assets/_Game/ArtSpike/Materials/Gravivore_ProxyMetal_PBR.mat using Guid(9f63fae9b667f634bb2d2191cdbfb83e) (NativeFormatImporter) -> (artifact id: '2222ffcf8e1ab364f28936857a219774') in 0.0028233 seconds
+Start importing Assets/_Game/ArtReview/G0V21/Materials/World_002.mat using Guid(afee8b5b96d88bb4f8c1d4e887f476d9) (NativeFormatImporter)Main Object Name 'Gravivore_Lit' does not match filename 'World_002'
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEditor.Rendering.AssetReimportUtils:ReimportAll<UnityEngine.Material> (double&,uint&,System.Func`2<string, bool>) (at ./Library/PackageCache/com.unity.render-pipelines.core@33b0f6d355dd/Editor/Material/AssetReimportUtils.cs:44)
+UnityEditor.Rendering.Universal.MaterialReimporter:ReimportAllMaterials () (at ./Library/PackageCache/com.unity.render-pipelines.universal@d9aadd996b24/Editor/AssetPostProcessors/MaterialPostprocessor.cs:37)
+UnityEditor.Rendering.Universal.MaterialReimporter/<>c:<RegisterUpgraderReimport>b__2_0 () (at ./Library/PackageCache/com.unity.render-pipelines.universal@d9aadd996b24/Editor/AssetPostProcessors/MaterialPostprocessor.cs:76)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+[./Library/PackageCache/com.unity.render-pipelines.universal@d9aadd996b24/Editor/AssetPostProcessors/MaterialPostprocessor.cs line 37]
+
+ -> (artifact id: 'ffde21f3e98311fa73c84655bac91d6a') in 0.004062 seconds
+Start importing Assets/_Game/ArtReview/G0V21/Materials/Hero_0.mat using Guid(cfa15d5dfba083b49aa23f958f2a2f0d) (NativeFormatImporter)Main Object Name 'G0 _ cyan gravity cell' does not match filename 'Hero_0'
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEditor.Rendering.AssetReimportUtils:ReimportAll<UnityEngine.Material> (double&,uint&,System.Func`2<string, bool>) (at ./Library/PackageCache/com.unity.render-pipelines.core@33b0f6d355dd/Editor/Material/AssetReimportUtils.cs:44)
+UnityEditor.Rendering.Universal.MaterialReimporter:ReimportAllMaterials () (at ./Library/PackageCache/com.unity.render-pipelines.universal@d9aadd996b24/Editor/AssetPostProcessors/MaterialPostprocessor.cs:37)
+UnityEditor.Rendering.Universal.MaterialReimporter/<>c:<RegisterUpgraderReimport>b__2_0 () (at ./Library/PackageCache/com.unity.render-pipelines.universal@d9aadd996b24/Editor/AssetPostProcessors/MaterialPostprocessor.cs:76)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+[./Library/PackageCache/com.unity.render-pipelines.universal@d9aadd996b24/Editor/AssetPostProcessors/MaterialPostprocessor.cs line 37]
+
+ -> (artifact id: 'ae2d448bed2863d653388209ffa7bb48') in 0.0027714 seconds
+Start importing Packages/com.unity.searcher/Editor/Resources/FlatSkin/Font/Roboto-Black.ttf using Guid(1062c701058745940ae5dca6219c64c8) (TrueTypeFontImporter) -> (artifact id: 'fcfd246391a0ea71ca2a779a06bcb3ac') in 0.0070592 seconds
+Start importing Packages/com.unity.searcher/Editor/Resources/FlatSkin/Font/Roboto-Regular.ttf using Guid(30dc370b164eefc43b95744fc796dad0) (TrueTypeFontImporter) -> (artifact id: 'e88265dec696838b96bfa89259eca3ee') in 0.0045383 seconds
+Start importing Packages/com.unity.searcher/Editor/Resources/FlatSkin/Font/Roboto-ThinItalic.ttf using Guid(b2ea3b3f1765e544b9eb5bd1a93a91ce) (TrueTypeFontImporter) -> (artifact id: 'ebed3587f31469b7ed1f215111200e64') in 0.0039857 seconds
+Start importing Packages/com.unity.render-pipelines.core/Runtime/Debugging/Prefabs/Fonts/PerfectDOSVGA437.ttf using Guid(74a5091d8707f334b9a5c31ef71a64ba) (TrueTypeFontImporter) -> (artifact id: '17baae82c87969a57920915e78c06aca') in 0.0033037 seconds
+Start importing Packages/com.unity.searcher/Editor/Resources/FlatSkin/Font/Roboto-Medium.ttf using Guid(a51a3aebb43ac044989270407476b208) (TrueTypeFontImporter) -> (artifact id: 'c7ced244834c79c4d9a56b36e5ad331e') in 0.0048544 seconds
+Start importing Packages/com.unity.searcher/Editor/Resources/FlatSkin/Font/Roboto-Bold.ttf using Guid(3750c318f40cab44a97d3a81beaefeb3) (TrueTypeFontImporter) -> (artifact id: '77cfd2f7ac0b12233821a3de72324c7e') in 0.0047535 seconds
+Start importing Packages/com.unity.searcher/Editor/Resources/FlatSkin/Font/Roboto-Italic.ttf using Guid(c839255fc8f6b4b4d90bf8c1af9f9bd1) (TrueTypeFontImporter) -> (artifact id: '34aea38e6f5ad75c669903fb2eec0ef8') in 0.0042992 seconds
+Start importing Packages/com.unity.searcher/Editor/Resources/FlatSkin/Font/Roboto-Thin.ttf using Guid(19a9abb883540be48b75b951a927ae03) (TrueTypeFontImporter) -> (artifact id: 'e8d19da7ff636d3206784d80f5127fa1') in 0.0046395 seconds
+Start importing Packages/com.unity.searcher/Editor/Resources/FlatSkin/Font/Roboto-MediumItalic.ttf using Guid(d93c1bc57fdf1ac4dad1bf04fac05464) (TrueTypeFontImporter) -> (artifact id: 'ab2288725cdc36cc9451e88898f02f8a') in 0.0044982 seconds
+Start importing Packages/com.unity.searcher/Editor/Resources/FlatSkin/Font/Roboto-BlackItalic.ttf using Guid(f95147a9bab9fe649b8070170fa7ebd2) (TrueTypeFontImporter) -> (artifact id: '9c0c207a65eaebb5461a5bd9b6761002') in 0.0043395 seconds
+Start importing Packages/com.unity.searcher/Editor/Resources/FlatSkin/Font/Roboto-Light.ttf using Guid(2a29e27936eb547458f646f71125b264) (TrueTypeFontImporter) -> (artifact id: '8f695168e63791c8e295a36a555f03a5') in 0.0043956 seconds
+Start importing Packages/com.unity.searcher/Editor/Resources/FlatSkin/Font/Roboto-LightItalic.ttf using Guid(5e63515167650a541b309ba3bfd4db3d) (TrueTypeFontImporter) -> (artifact id: '06e9040f082a33cb064bc66f23766c41') in 0.0052419 seconds
+Start importing Packages/com.unity.searcher/Editor/Resources/FlatSkin/Font/Roboto-BoldItalic.ttf using Guid(dfb97a9307a577a41bcacba34b9a7e32) (TrueTypeFontImporter) -> (artifact id: 'd506485d512ee8ab5f45626384ac7773') in 0.0040837 seconds
+Start importing Packages/com.unity.shadergraph/GraphTemplates/BuiltIn/BuiltIn Lit Basic.shadergraph using Guid(2019d78ad3d1c5c4a8d309a857ca449f) (ScriptedImporter) -> (artifact id: '5819615a0d1fb5b7fb16143b61115b7c') in 0.361553 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/Materials/ArnoldStandardSurface/ArnoldStandardSurfaceTransparent.shadergraph using Guid(30fa68ce467463643a86b839ca0eb195) (ScriptedImporter) -> (artifact id: '266708eadb0166519ccccbe6fd4b7319') in 0.2179263 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Shaders/AutodeskInteractive/AutodeskInteractiveMasked.shadergraph using Guid(80aa867ac363ac043847b06ad71604cd) (ScriptedImporter) -> (artifact id: '553f20a3c04c15ecf16cc0c16138abba') in 0.1449449 seconds
+Start importing Packages/com.unity.shadergraph/GraphTemplates/Cross Pipeline/0_Lit Basic.shadergraph using Guid(a2407126e3372f64cacb75ed466a5621) (ScriptedImporter) -> (artifact id: '7c7c64dc67a8925cce24a00f786b6c28') in 0.1369417 seconds
+Start importing Packages/com.unity.shadergraph/GraphTemplates/Cross Pipeline/Unlit Simple.shadergraph using Guid(2476a2d151e824143af40dce1fc93a12) (ScriptedImporter) -> (artifact id: '172a4fdda9f5d72bcbf95f1e54489377') in 0.1176291 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Shaders/2D/VFXSpriteLit.shadergraph using Guid(24a73dccd7b6fad4798be282f96a21f4) (ScriptedImporter) -> (artifact id: 'e8df9d17c6d7c50be25118507d94eda9') in 0.1068652 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/Materials/PhysicalMaterial3DsMax/PhysicalMaterial3DsMax.shadergraph using Guid(44245ab89240f51459a5077d7145c452) (ScriptedImporter) -> (artifact id: 'f2a176fd446d2a536a7dde932862feb9') in 0.1836355 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/GraphTemplates/2D/1_2D Sprite Unlit.shadergraph using Guid(25a0ebb4827f3cc47a1af2c79005f65b) (ScriptedImporter) -> (artifact id: '3f6461045dc1c6e75e0ab2a996b587ea') in 0.1545997 seconds
+Start importing Packages/com.unity.shadergraph/GraphTemplates/BuiltIn/BuiltIn Unlit Basic.shadergraph using Guid(9618d41bb71f74048bb6cace8785b93d) (ScriptedImporter) -> (artifact id: '9d7e3cdf8b817ef181b93ebfd9ab5ef8') in 0.1343902 seconds
+Start importing Packages/com.unity.shadergraph/GraphTemplates/Cross Pipeline/2_Particle Lit.shadergraph using Guid(a680d9a9f8b66514abbfd3ae1c8f77f7) (ScriptedImporter) -> (artifact id: 'a93aff258a60814404a2a859e9fef43e') in 0.2646291 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/GraphTemplates/UITKBasicTemplate.shadergraph using Guid(0738648e2f2f84b489a2f0076b69e30a) (ScriptedImporter) -> (artifact id: 'e8f4c6263623be5332bd4dadcb11760c') in 0.0879477 seconds
+Start importing Packages/com.unity.shadergraph/GraphTemplates/Cross Pipeline/1_Decal Material Volume.shadergraph using Guid(1716ff8c1e51af14280cc97fbcba3b11) (ScriptedImporter) -> (artifact id: '0edad3fc3998b1a6357aaf8818463846') in 0.1662425 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/Materials/ArnoldStandardSurface/ArnoldStandardSurface.shadergraph using Guid(3739e562a03fc0b4982d8aa66cc50865) (ScriptedImporter) -> (artifact id: '68a656105838412b6f96c506752ffb1d') in 0.145399 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Shaders/2D/VFXSpriteUnlit.shadergraph using Guid(d7288f66e4fb0634c9afef98c31b722a) (ScriptedImporter) -> (artifact id: '89315038565a716a4a460117fa79a5ce') in 0.0901441 seconds
+Start importing Packages/com.unity.shadergraph/GraphTemplates/Cross Pipeline/0_Decal Simple.shadergraph using Guid(39144937a5efe954dac51acbbe54157e) (ScriptedImporter) -> (artifact id: '76200f5db4bace5599ce526257c866ee') in 0.1173659 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Shaders/Nature/SpeedTree8_PBRLit.shadergraph using Guid(9920c1f1781549a46ba081a2a15a16ec) (ScriptedImporter) -> (artifact id: 'b8a152ba68b54f1dbecf948e935f3707') in 0.3189271 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/Materials/PhysicalMaterial3DsMax/PhysicalMaterial3DsMaxTransparent.shadergraph using Guid(1a207e3bee00db44b940e6f362a8e148) (ScriptedImporter) -> (artifact id: '5264b46e14bdd3af4296308b887aeac5') in 0.1456922 seconds
+Start importing Packages/com.unity.shadergraph/GraphTemplates/Cross Pipeline/UGUI Canvas Basic.shadergraph using Guid(5a4a765e921b8554eb959f7cf697b3be) (ScriptedImporter) -> (artifact id: '339928c19272d74b75e4ff0747510cb8') in 0.1049681 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Shaders/Decal.shadergraph using Guid(9b4e681081e2b4c469111bb649e2f7ee) (ScriptedImporter) -> (artifact id: 'fabcc0493da2e1d3dd1e642e8802d235') in 0.1326827 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Shaders/Nature/SpeedTree9_URP.shadergraph using Guid(cbd3e1cc4ae141c42a30e33b4d666a61) (ScriptedImporter) -> (artifact id: 'e3a570fe90eac00e92eff0288161ea32') in 0.2000127 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Shaders/FullscreenInvertColors.shadergraph using Guid(fb6390f650ca44a5ba3246d8dda47927) (ScriptedImporter) -> (artifact id: 'b01acdc430e4503560dcfb46781cb898') in 0.0798508 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Shaders/AutodeskInteractive/AutodeskInteractiveTransparent.shadergraph using Guid(5c81372d981403744adbdda4433c9c11) (ScriptedImporter) -> (artifact id: '3f6eaf271410d62592a3b1a21696b2a3') in 0.1324179 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/GraphTemplates/Terrain Standard 4 Layers URP.shadergraph using Guid(bc3def193b270c649b041063a70a1a1f) (ScriptedImporter)Shader 'Hidden/Terrain/Terrain Standard 4 Layers URP': dependency 'AddPassShader' shader 'Hidden/Hidden/Terrain/Terrain Standard 4 Layers URP_AddPass' not found
+Shader 'Hidden/Terrain/Terrain Standard 4 Layers URP': dependency 'BaseMapGenShader' shader 'Hidden/Hidden/Terrain/Terrain Standard 4 Layers URP_BaseMapGen' not found
+Shader 'Hidden/Terrain/Terrain Standard 4 Layers URP': dependency 'AddPassShader' shader 'Hidden/Hidden/Terrain/Terrain Standard 4 Layers URP_AddPass' not found
+Shader 'Hidden/Terrain/Terrain Standard 4 Layers URP': dependency 'BaseMapGenShader' shader 'Hidden/Hidden/Terrain/Terrain Standard 4 Layers URP_BaseMapGen' not found
+ -> (artifact id: '1ea35854689f8a86abf76d5e3831cc2c') in 0.4148957 seconds
+Start importing Packages/com.unity.shadergraph/GraphTemplates/Cross Pipeline/UGUI Canvas Meter.shadergraph using Guid(9d4e8ca8c5046914c87ca6ccef140dac) (ScriptedImporter) -> (artifact id: '731f204a2bcc6a7afd44b5153f801baf') in 0.0881381 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/GraphTemplates/2D/0_2D Sprite Lit.shadergraph using Guid(bde135b320597544b9ac325092409f8b) (ScriptedImporter) -> (artifact id: '997d4ef2f1c3c65fa425fa473cfe1593') in 0.0966619 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Shaders/AutodeskInteractive/AutodeskInteractive.shadergraph using Guid(0e9d5a909a1f7e84882a534d0d11e49f) (ScriptedImporter) -> (artifact id: '67b9ea2fac1619de837a7d5f86c3fd3a') in 0.1287386 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/GraphTemplates/UITKFullTemplate.shadergraph using Guid(3e01bbae25716b24ea9da11102b44902) (ScriptedImporter) -> (artifact id: '740e7e663d589dff5ea9be70a9a814fe') in 0.0694944 seconds
+Start importing Packages/com.unity.shadergraph/GraphTemplates/Custom Render Texture.shadergraph using Guid(7ef2cf71ad164fe479662ae612dff99e) (ScriptedImporter) -> (artifact id: '53175422724d6c5bed296c250fc060fd') in 0.0276954 seconds
+Start importing Packages/com.unity.shadergraph/GraphTemplates/Cross Pipeline/1_Lit Full.shadergraph using Guid(aee84ce0dab81b049bb88017d78a63cd) (ScriptedImporter) -> (artifact id: '1a3f9c36d8229528df4b72feb4e3c522') in 0.1875865 seconds
+Start importing Packages/com.unity.shadergraph/GraphTemplates/Cross Pipeline/Terrain Simple.shadergraph using Guid(def488a52add6574d9f295a507032cb8) (ScriptedImporter)Shader 'Hidden/Terrain/Terrain Simple': dependency 'AddPassShader' shader 'Hidden/Hidden/Terrain/Terrain Simple_AddPass' not found
+Shader 'Hidden/Terrain/Terrain Simple': dependency 'BaseMapGenShader' shader 'Hidden/Hidden/Terrain/Terrain Simple_BaseMapGen' not found
+Shader 'Hidden/Terrain/Terrain Simple': dependency 'AddPassShader' shader 'Hidden/Hidden/Terrain/Terrain Simple_AddPass' not found
+Shader 'Hidden/Terrain/Terrain Simple': dependency 'BaseMapGenShader' shader 'Hidden/Hidden/Terrain/Terrain Simple_BaseMapGen' not found
+ -> (artifact id: '29691a1dc89426fbb1800e80383c4830') in 0.2619772 seconds
+Start importing Packages/com.unity.shadergraph/GraphTemplates/Cross Pipeline/0_Particle Unlit.shadergraph using Guid(af66091e0eca0c04a9c3584ae867418a) (ScriptedImporter) -> (artifact id: '0f5195f485e3505a265a2a41e1631512') in 0.1233315 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/GraphTemplates/2D/2_2D Sprite Custom Lit.shadergraph using Guid(bfad0aba0faa90547b68abd10bb6be86) (ScriptedImporter) -> (artifact id: '0bc030c5eb7584ecde0b2d063bd73774') in 0.1016142 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/GraphTemplates/Fullscreen Basic URP.shadergraph using Guid(df41eefe8c13d444ca890dddbbc61f8d) (ScriptedImporter) -> (artifact id: '9e226bcae5126c3b77dfcc6b96e25d20') in 0.0673065 seconds
+Start importing Assets/_Game/Content/BlueprintWorldR1/Models/R1_CapacitorField.fbx using Guid(9042c8cb179db6e43a8fdfacaeb6f387) (FBXImporter) -> (artifact id: '1beaaf3b3711cbec77d11f1f754b7db2') in 0.172313 seconds
+Start importing Assets/_Game/Content/BlueprintWorldR1/Models/R1_RelayYard.fbx using Guid(f00b889799283994ebd90f797c2245be) (FBXImporter) -> (artifact id: 'fb5eb43bb1fd83d8fda0524c2d4cd416') in 0.1893613 seconds
+Start importing Assets/_Game/Content/BlueprintWorldR1/Models/R1_ServiceNetwork.fbx using Guid(02aa38c22c2d48d48b0862f03b55ec34) (FBXImporter) -> (artifact id: '304e31856186f9754ff7b347fca77caa') in 0.2448989 seconds
+Start importing Packages/com.unity.render-pipelines.core/Runtime/RenderPipelineResources/Mesh/SamplesFixture.fbx using Guid(b28fa67a0ff82c5478f27368dc627683) (FBXImporter) -> (artifact id: '79491db5fadb53bdbd137321e721aa3e') in 0.029341 seconds
+Start importing Assets/_Game/Content/BlueprintWorldR1/Models/R1_ShieldDump.fbx using Guid(04053ce8ea0dedc40a537ab5d9280e6f) (FBXImporter) -> (artifact id: 'be80f4bff649ce59ab195ba7cda15496') in 0.1116527 seconds
+Start importing Assets/_Game/Content/BlueprintWorldR1/Models/R1_HaulerGraveyard.fbx using Guid(35a533c4ceefcca438f581319d4e661a) (FBXImporter) -> (artifact id: '8bf666cc51fc6c9bcca835988d39d83a') in 0.1368828 seconds
+Start importing Assets/_Game/Content/BlueprintWorldR1/Models/R1_CuttingFloor.fbx using Guid(98151e9ffb32a9349b4d740cd7ddde98) (FBXImporter) -> (artifact id: '13a36a739570db92abd363dad5ada2cf') in 0.1157544 seconds
+Start importing Assets/_Game/ArtReview/G0V21/Models/G0_Bipedal_V21_Review.fbx using Guid(8947be4964879514e996dff2e52a0d1e) (FBXImporter) -> (artifact id: '806fd7c3313cba0df3482a089c53128b') in 0.0991607 seconds
+Start importing Assets/_Game/Content/BlueprintWorldR1/Models/R1_MagnetarComplex.fbx using Guid(1bddb9d557e11724d93e332235dac61b) (FBXImporter) -> (artifact id: 'c460c44e73c7ffd890e7ea3d8b954861') in 0.2051237 seconds
+Start importing Packages/com.unity.render-pipelines.core/Runtime/RenderPipelineResources/Mesh/SamplesFloorSpotlight.fbx using Guid(1dbf28c1bb322474d981b2dc555e28b0) (FBXImporter) -> (artifact id: '97dfb4d7201c74f299a3de4ff50b1e0e') in 0.0188836 seconds
+Start importing Assets/_Game/Content/BlueprintWorldR1/Models/R1_GateBarrier.fbx using Guid(ad5e352720f77014cad8b2935389d575) (FBXImporter) -> (artifact id: '9dfc3d7606e08ef0218f5e4cfb6b0fc1') in 0.0183447 seconds
+Start importing Assets/_Game/Content/BlueprintWorldR1/Models/R1_CustodianCore.fbx using Guid(5eec13a6f548f7947a8c3da7b2617689) (FBXImporter) -> (artifact id: 'dc489c0452c2928987e8d6ab18b84424') in 0.5211165 seconds
+Start importing Assets/_Game/Content/BlueprintWorldR1/Models/R1_RepairHub.fbx using Guid(df4b4dd0f367a8f41bdb0f6940602a20) (FBXImporter) -> (artifact id: '83c5e327162394eff803b1ddde4aa753') in 0.1883777 seconds
+Refreshing native plugins compatible for Editor in 0.40 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=6dca1a5c9864e9648a4496112ecaf35e): Total: 8.384 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+	Summary:
+		Imports: total=153 (actual=153, local cache=0, cache server=0)
+		Asset DB Process Time: managed=36 ms, native=7624 ms
+		Asset DB Callback time: managed=188 ms, native=533 ms
+		Scripting: domain reloads=0, domain reload time=0 ms, compile time=0 ms, other=0 ms
+		Project Asset Count: scripts=868, non-scripts=2166
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 223
+	InvokeCustomDependenciesCallbacks: 0.000ms
+	InvokePackagesCallback: 0.000ms
+	ApplyChangesToAssetFolders: 0.040ms
+	Scan: 18.681ms
+	OnSourceAssetsModified: 0.001ms
+	CategorizeAssetsWithTransientArtifact: 0.098ms
+	ProcessAssetsWithTransientArtifactChanges: 0.031ms
+	CategorizeAssets: 1.097ms
+	ImportOutOfDateAssets: 7638.270ms (-7.626ms without children)
+		ImportManagerImport: 7636.309ms (107.131ms without children)
+			ImportInProcess: 7523.656ms
+			UpdateCategorizedAssets: 5.522ms
+		ReloadNativeAssets: 0.022ms
+		UnloadImportedAssets: 1.058ms
+		ReloadImportedAssets: 7.851ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.329ms
+		InitializingProgressBar: 0.004ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.000ms
+		OnDemandSchedulerStart: 0.323ms
+	PostProcessAllAssets: 652.872ms
+	Hotreload: 69.053ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.105ms
+	UnloadStreamsBegin: 0.002ms
+	PersistCurrentRevisions: 0.076ms
+	UnloadStreamsEnd: 0.114ms
+	Untracked: 3.130ms
+
+[Indexing] Starting Initial Indexing for Assets
+GetVirtualKey: Could not map char: z (122) to any virtual key
+GetVirtualKey: Could not map char: y (121) to any virtual key
+GetVirtualKey: Could not map char: x (120) to any virtual key
+GetVirtualKey: Could not map char: c (99) to any virtual key
+GetVirtualKey: Could not map char: v (118) to any virtual key
+GetVirtualKey: Could not map char: V (86) to any virtual key
+GetVirtualKey: Could not map char: d (100) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: a (97) to any virtual key
+GetVirtualKey: Could not map char: d (100) to any virtual key
+GetVirtualKey: Could not map char: c (99) to any virtual key
+GetVirtualKey: Could not map char: r (114) to any virtual key
+GetVirtualKey: Could not map char: i (105) to any virtual key
+GetVirtualKey: Could not map char: l (108) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: k (107) to any virtual key
+GetVirtualKey: Could not map char: p (112) to any virtual key
+GetVirtualKey: Could not map char: p (112) to any virtual key
+GetVirtualKey: Could not map char: p (112) to any virtual key
+GetVirtualKey: Could not map char: c (99) to any virtual key
+GetVirtualKey: Could not map char: r (114) to any virtual key
+GetVirtualKey: Could not map char: P (80) to any virtual key
+GetVirtualKey: Could not map char: n (110) to any virtual key
+GetVirtualKey: Could not map char: n (110) to any virtual key
+GetVirtualKey: Could not map char: g (103) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: a (97) to any virtual key
+GetVirtualKey: Could not map char: a (97) to any virtual key
+GetVirtualKey: Could not map char: c (99) to any virtual key
+GetVirtualKey: Could not map char: u (117) to any virtual key
+GetVirtualKey: Could not map char: n (110) to any virtual key
+GetVirtualKey: Could not map char: o (111) to any virtual key
+GetVirtualKey: Could not map char: s (115) to any virtual key
+GetVirtualKey: Could not map char: s (115) to any virtual key
+GetVirtualKey: Could not map char: b (98) to any virtual key
+GetVirtualKey: Could not map char: b (98) to any virtual key
+[UnityConnectServicesConfig] config is NOT valid, switching to default
+Created GICache directory at C:/Users/pamak/AppData/LocalLow/Unity/Caches/GiCache. Took: 0.045s, timestamps: [14.495 - 14.540]
+Unloading 275 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 1885 unused Assets / (76.5 MB). Loaded Objects now: 4351.
+Memory consumption went from 332.5 MB to 256.0 MB.
+Total: 21.192100 ms (FindLiveObjects: 0.280500 ms CreateObjectMapping: 0.157800 ms MarkObjects: 14.063500 ms  DeleteObjects: 6.689100 ms)
+
+Start importing Assets/InitTestScene888af1f8-e5ee-455c-89de-af66319488fd.unity using Guid(b6528edb1086d1144984a3f02c4e4582) (DefaultImporter) -> (artifact id: 'dad15847ce7367707bc8b01f90f6b003') in 0.0053595 seconds
+Refreshing native plugins compatible for Editor in 0.21 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=70910b9a254795d4993e7d7ed76b591b): Total: 0.041 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Executing IPrebuildSetup for: Unity.PerformanceTesting.Editor.TestRunBuilder.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+UnityEditor.TestTools.TestRunner.TestRun.Tasks.BuildActionTaskBase`1/<ExecuteMethods>d__8<UnityEngine.TestTools.IPrebuildSetup>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEditor.TestRunner/TestRun/Tasks/BuildActionTaskBase.cs:48)
+UnityEditor.TestTools.TestRunner.TestRun.Tasks.BuildActionTaskBase`1/<Execute>d__7<UnityEngine.TestTools.IPrebuildSetup>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEditor.TestRunner/TestRun/Tasks/BuildActionTaskBase.cs:34)
+UnityEditor.TestTools.TestRunner.TestRun.TestJobRunner:ExecuteStep () (at ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEditor.TestRunner/TestRun/TestJobRunner.cs:173)
+UnityEditor.TestTools.TestRunner.TestRun.TestJobRunner:ExecuteCallback () (at ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEditor.TestRunner/TestRun/TestJobRunner.cs:108)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+(Filename: ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEditor.TestRunner/TestRun/Tasks/BuildActionTaskBase.cs Line: 48)
+
+Reloading assemblies for play mode.
+Reloading assemblies after forced synchronous recompile.
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.745 seconds
+Refreshing native plugins compatible for Editor in 0.28 ms, found 0 plugins.
+Native extension for Android target not found
+Native extension for WindowsStandalone target not found
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.877 seconds
+Domain Reload Profiling: 1615ms
+	BeginReloadAssembly (526ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (33ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (350ms)
+	RebuildCommonClasses (38ms)
+	RebuildNativeTypeToScriptingClass (13ms)
+	initialDomainReloadingComplete (33ms)
+	LoadAllAssembliesAndSetupDomain (127ms)
+		LoadAssemblies (136ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (94ms)
+			TypeCache.Refresh (6ms)
+				TypeCache.ScanAssembly (0ms)
+			BuildScriptInfoCaches (76ms)
+			ResolveRequiredComponents (10ms)
+	FinalizeReload (877ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (580ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (40ms)
+			SetLoadedEditorAssemblies (3ms)
+			BeforeProcessingInitializeOnLoad (166ms)
+			ProcessInitializeOnLoadAttributes (198ms)
+			ProcessInitializeOnLoadMethodAttributes (163ms)
+			AfterProcessingInitializeOnLoad (10ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (38ms)
+Asset Pipeline Refresh (id=f59345ad61c79f94e8c0ad1c9506fd73): Total: 1.761 seconds - Initiated by StopAssetImportingV2(ForceSynchronousImport | ForceDomainReload)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=955 ms
+		Asset DB Callback time: managed=37 ms, native=0 ms
+		Scripting: domain reloads=1, domain reload time=765 ms, compile time=1 ms, other=0 ms
+		Project Asset Count: scripts=868, non-scripts=2167
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 0
+	InvokeCustomDependenciesCallbacks: 0.001ms
+	InvokePackagesCallback: 2.537ms
+	ApplyChangesToAssetFolders: 0.179ms
+	Scan: 0.001ms
+	OnSourceAssetsModified: 0.002ms
+	CategorizeAssetsWithTransientArtifact: 0.003ms
+	ProcessAssetsWithTransientArtifactChanges: 2.686ms
+	CategorizeAssets: 39.324ms
+	ImportOutOfDateAssets: 881.334ms (876.892ms without children)
+		CompileScripts: 1.218ms
+		CollectScriptTypesHashes: 1.557ms
+		ReloadNativeAssets: 0.846ms
+		UnloadImportedAssets: 0.107ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.433ms
+		InitializingProgressBar: 0.000ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.000ms
+		OnDemandSchedulerStart: 0.280ms
+	PostProcessAllAssets: 37.918ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.117ms
+	UnloadStreamsBegin: 0.197ms
+	PersistCurrentRevisions: 0.077ms
+	UnloadStreamsEnd: 0.001ms
+	GenerateScriptTypeHashes: 3.792ms
+	Untracked: 796.243ms
+
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            0.937 ms
+	Integration:            188.953 ms
+	Integration of assets:  0.001 ms
+	Thread Wait Time:       0.019 ms
+	Total Operation Time:   189.911 ms
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+GetVirtualKey: Could not map char: z (122) to any virtual key
+GetVirtualKey: Could not map char: y (121) to any virtual key
+GetVirtualKey: Could not map char: x (120) to any virtual key
+GetVirtualKey: Could not map char: c (99) to any virtual key
+GetVirtualKey: Could not map char: v (118) to any virtual key
+GetVirtualKey: Could not map char: V (86) to any virtual key
+GetVirtualKey: Could not map char: d (100) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: a (97) to any virtual key
+GetVirtualKey: Could not map char: d (100) to any virtual key
+GetVirtualKey: Could not map char: c (99) to any virtual key
+GetVirtualKey: Could not map char: r (114) to any virtual key
+GetVirtualKey: Could not map char: i (105) to any virtual key
+GetVirtualKey: Could not map char: l (108) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: k (107) to any virtual key
+GetVirtualKey: Could not map char: p (112) to any virtual key
+GetVirtualKey: Could not map char: p (112) to any virtual key
+GetVirtualKey: Could not map char: p (112) to any virtual key
+GetVirtualKey: Could not map char: c (99) to any virtual key
+GetVirtualKey: Could not map char: r (114) to any virtual key
+GetVirtualKey: Could not map char: P (80) to any virtual key
+GetVirtualKey: Could not map char: n (110) to any virtual key
+GetVirtualKey: Could not map char: n (110) to any virtual key
+GetVirtualKey: Could not map char: g (103) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: a (97) to any virtual key
+GetVirtualKey: Could not map char: a (97) to any virtual key
+GetVirtualKey: Could not map char: n (110) to any virtual key
+GetVirtualKey: Could not map char: o (111) to any virtual key
+GetVirtualKey: Could not map char: s (115) to any virtual key
+GetVirtualKey: Could not map char: s (115) to any virtual key
+GetVirtualKey: Could not map char: b (98) to any virtual key
+GetVirtualKey: Could not map char: b (98) to any virtual key
+GetVirtualKey: Could not map char: c (99) to any virtual key
+GetVirtualKey: Could not map char: u (117) to any virtual key
+Unloading 304 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 0.275000 ms
+Loaded scene 'Assets/_Game/Content/Scenes/Chapter01_ScrapExclusion.unity'
+	Deserialize:            314.368 ms
+	Integration:            242.224 ms
+	Integration of assets:  78.868 ms
+	Thread Wait Time:       19.864 ms
+	Total Operation Time:   655.324 ms
+RENDER_BOOT pipeline=Gravivore_URP; api=Direct3D11; device=AMD Radeon(TM) Graphics; version=Direct3D 11.0 [level 11.1]; colorSpace=Gamma; cameraHDR=True; HDRFormat=R16G16B16A16_SFloat
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Initialize (UnityEngine.Transform,UnityEngine.Camera) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:21)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Compose () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:326)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Start () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:167)
+
+(Filename: Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs Line: 21)
+
+RENDER_BOOT material=R1_Trim3; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[_METALLICSPECGLOSSMAP,_NORMALMAP,_OCCLUSIONMAP]; owner=RepairHub_architecture_-1
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Record (UnityEngine.Material,string,System.Collections.Generic.HashSet`1<UnityEngine.Material>) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:40)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Initialize (UnityEngine.Transform,UnityEngine.Camera) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:24)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Compose () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:326)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Start () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:167)
+
+(Filename: Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs Line: 40)
+
+RENDER_BOOT material=R1_Trim2; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[_METALLICSPECGLOSSMAP,_NORMALMAP,_OCCLUSIONMAP]; owner=RepairHub_architecture_-1
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Record (UnityEngine.Material,string,System.Collections.Generic.HashSet`1<UnityEngine.Material>) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:40)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Initialize (UnityEngine.Transform,UnityEngine.Camera) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:24)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Compose () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:326)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Start () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:167)
+
+(Filename: Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs Line: 40)
+
+RENDER_BOOT material=R1_Trim1; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[_EMISSION,_METALLICSPECGLOSSMAP,_NORMALMAP,_OCCLUSIONMAP]; owner=RepairHub_architecture_-1
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Record (UnityEngine.Material,string,System.Collections.Generic.HashSet`1<UnityEngine.Material>) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:40)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Initialize (UnityEngine.Transform,UnityEngine.Camera) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:24)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Compose () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:326)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Start () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:167)
+
+(Filename: Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs Line: 40)
+
+RENDER_BOOT material=R1_Industrial; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[_EMISSION,_METALLICSPECGLOSSMAP,_NORMALMAP,_OCCLUSIONMAP]; owner=RepairHub_architecture_-1
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Record (UnityEngine.Material,string,System.Collections.Generic.HashSet`1<UnityEngine.Material>) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:40)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Initialize (UnityEngine.Transform,UnityEngine.Camera) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:24)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Compose () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:326)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Start () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:167)
+
+(Filename: Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs Line: 40)
+
+RENDER_BOOT material=Gravivore_Lit; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[]; owner=West World Boundary Visual
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Record (UnityEngine.Material,string,System.Collections.Generic.HashSet`1<UnityEngine.Material>) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:40)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Initialize (UnityEngine.Transform,UnityEngine.Camera) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:24)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Compose () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:326)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Start () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:167)
+
+(Filename: Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs Line: 40)
+
+RENDER_BOOT material=Gravivore_Lit; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[]; owner=Physical Gate Barrier Visual
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Record (UnityEngine.Material,string,System.Collections.Generic.HashSet`1<UnityEngine.Material>) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:40)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Initialize (UnityEngine.Transform,UnityEngine.Camera) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:24)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Compose () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:326)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Start () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:167)
+
+(Filename: Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs Line: 40)
+
+RENDER_BOOT material=Gravivore_Lit; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[]; owner=Physical Gate Barrier Visual
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Record (UnityEngine.Material,string,System.Collections.Generic.HashSet`1<UnityEngine.Material>) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:40)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Initialize (UnityEngine.Transform,UnityEngine.Camera) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:24)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Compose () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:326)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Start () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:167)
+
+(Filename: Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs Line: 40)
+
+RENDER_BOOT material=G0_V3_Tier0; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[_EMISSION,_METALLICSPECGLOSSMAP,_NORMALMAP,_OCCLUSIONMAP]; owner=G0_LOD0
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Record (UnityEngine.Material,string,System.Collections.Generic.HashSet`1<UnityEngine.Material>) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:40)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Initialize (UnityEngine.Transform,UnityEngine.Camera) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:24)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Compose () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:326)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Start () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:167)
+
+(Filename: Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs Line: 40)
+
+RENDER_BOOT material=VR3_WornIndustrialAtlas; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[_EMISSION,_METALLICSPECGLOSSMAP,_NORMALMAP,_OCCLUSIONMAP]; owner=M0_Rank1(Clone)
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Record (UnityEngine.Material,string,System.Collections.Generic.HashSet`1<UnityEngine.Material>) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:40)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Initialize (UnityEngine.Transform,UnityEngine.Camera) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:24)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Compose () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:326)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Start () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:167)
+
+(Filename: Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs Line: 40)
+
+RENDER_BOOT material=G0_V3_Tier1; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[_EMISSION,_METALLICSPECGLOSSMAP,_NORMALMAP,_OCCLUSIONMAP]; owner=G0_LOD0
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Record (UnityEngine.Material,string,System.Collections.Generic.HashSet`1<UnityEngine.Material>) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:40)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Initialize (UnityEngine.Transform,UnityEngine.Camera) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:24)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Compose () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:326)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Start () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:167)
+
+(Filename: Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs Line: 40)
+
+RENDER_BOOT material=Slice_IndustrialAtlas; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[_EMISSION,_METALLICSPECGLOSSMAP,_NORMALMAP,_OCCLUSIONMAP]; owner=G0_Tier1Armor_LOD0
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Record (UnityEngine.Material,string,System.Collections.Generic.HashSet`1<UnityEngine.Material>) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:40)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Initialize (UnityEngine.Transform,UnityEngine.Camera) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:24)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Compose () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:326)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Start () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:167)
+
+(Filename: Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs Line: 40)
+
+RENDER_BOOT material=G0_V3_Tier2; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[_EMISSION,_METALLICSPECGLOSSMAP,_NORMALMAP,_OCCLUSIONMAP]; owner=G0_LOD0
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Record (UnityEngine.Material,string,System.Collections.Generic.HashSet`1<UnityEngine.Material>) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:40)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Initialize (UnityEngine.Transform,UnityEngine.Camera) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:24)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Compose () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:326)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Start () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:167)
+
+(Filename: Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs Line: 40)
+
+RENDER_BOOT material=M_Phase6B_PlayerSoft; shader=Universal Render Pipeline/Particles/Unlit; supported=True; queue=3000; keywords=[_SURFACE_TYPE_TRANSPARENT,_FLIPBOOKBLENDING_OFF]; owner=Phase 6B Particles
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Record (UnityEngine.Material,string,System.Collections.Generic.HashSet`1<UnityEngine.Material>) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:40)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Initialize (UnityEngine.Transform,UnityEngine.Camera) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:24)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Compose () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:326)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Start () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:167)
+
+(Filename: Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs Line: 40)
+
+RENDER_BOOT material=M_Phase6B_PlayerStreak; shader=Universal Render Pipeline/Particles/Unlit; supported=True; queue=3000; keywords=[_SURFACE_TYPE_TRANSPARENT,_FLIPBOOKBLENDING_OFF]; owner=Phase 6B Geometry
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Record (UnityEngine.Material,string,System.Collections.Generic.HashSet`1<UnityEngine.Material>) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:40)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Initialize (UnityEngine.Transform,UnityEngine.Camera) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:24)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Compose () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:326)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Start () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:167)
+
+(Filename: Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs Line: 40)
+
+RENDER_BOOT material=VR3_MetalSpark; shader=Universal Render Pipeline/Particles/Unlit; supported=True; queue=3000; keywords=[_SURFACE_TYPE_TRANSPARENT,_FLIPBOOKBLENDING_OFF]; owner=Phase 6B Particles
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Record (UnityEngine.Material,string,System.Collections.Generic.HashSet`1<UnityEngine.Material>) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:40)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Initialize (UnityEngine.Transform,UnityEngine.Camera) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:24)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Compose () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:326)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Start () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:167)
+
+(Filename: Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs Line: 40)
+
+RENDER_BOOT material=M_Phase6B_WarningEdge; shader=Universal Render Pipeline/Particles/Unlit; supported=True; queue=3000; keywords=[_SURFACE_TYPE_TRANSPARENT,_FLIPBOOKBLENDING_OFF]; owner=Phase 6B Geometry
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Record (UnityEngine.Material,string,System.Collections.Generic.HashSet`1<UnityEngine.Material>) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:40)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Initialize (UnityEngine.Transform,UnityEngine.Camera) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:24)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Compose () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:326)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Start () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:167)
+
+(Filename: Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs Line: 40)
+
+RENDER_BOOT material=M_Phase6B_WarningFill; shader=Universal Render Pipeline/Unlit; supported=True; queue=3000; keywords=[_SURFACE_TYPE_TRANSPARENT]; owner=Phase6B Danger Fill
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Record (UnityEngine.Material,string,System.Collections.Generic.HashSet`1<UnityEngine.Material>) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:40)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Initialize (UnityEngine.Transform,UnityEngine.Camera) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:24)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Compose () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:326)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Start () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:167)
+
+(Filename: Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs Line: 40)
+
+RENDER_BOOT material=Gravivore_Lit; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[]; owner=Magnetar Guard Visual
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Record (UnityEngine.Material,string,System.Collections.Generic.HashSet`1<UnityEngine.Material>) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:40)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Initialize (UnityEngine.Transform,UnityEngine.Camera) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:24)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Compose () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:326)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Start () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:167)
+
+(Filename: Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs Line: 40)
+
+RENDER_BOOT material=HostileV2_Amber; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[_EMISSION,_METALLICSPECGLOSSMAP,_NORMALMAP,_OCCLUSIONMAP]; owner=Magnetar_LOD0
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Record (UnityEngine.Material,string,System.Collections.Generic.HashSet`1<UnityEngine.Material>) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:40)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Initialize (UnityEngine.Transform,UnityEngine.Camera) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:24)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Compose () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:326)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Start () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:167)
+
+(Filename: Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs Line: 40)
+
+RENDER_BOOT material=Gravivore_Lit; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[]; owner=Custodian M-0 Visual
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Record (UnityEngine.Material,string,System.Collections.Generic.HashSet`1<UnityEngine.Material>) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:40)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Initialize (UnityEngine.Transform,UnityEngine.Camera) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:24)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Compose () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:326)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Start () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:167)
+
+(Filename: Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs Line: 40)
+
+RENDER_BOOT material=HostileV2_Red; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[_EMISSION,_METALLICSPECGLOSSMAP,_NORMALMAP,_OCCLUSIONMAP]; owner=Custodian_LOD0
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Record (UnityEngine.Material,string,System.Collections.Generic.HashSet`1<UnityEngine.Material>) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:40)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Initialize (UnityEngine.Transform,UnityEngine.Camera) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:24)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Compose () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:326)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Start () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:167)
+
+(Filename: Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs Line: 40)
+
+RENDER_BOOT material=Gravivore_Lit; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[]; owner=Elite Shockwave Telegraph
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Record (UnityEngine.Material,string,System.Collections.Generic.HashSet`1<UnityEngine.Material>) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:40)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Initialize (UnityEngine.Transform,UnityEngine.Camera) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:24)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Compose () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:326)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Start () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:167)
+
+(Filename: Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs Line: 40)
+
+RENDER_BOOT material=Gravivore_Lit; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[]; owner=Boss Circle Telegraph
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Record (UnityEngine.Material,string,System.Collections.Generic.HashSet`1<UnityEngine.Material>) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:40)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Initialize (UnityEngine.Transform,UnityEngine.Camera) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:24)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Compose () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:326)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Start () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:167)
+
+(Filename: Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs Line: 40)
+
+RENDER_BOOT material=Gravivore_Lit; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[]; owner=Boss Cone Telegraph
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Record (UnityEngine.Material,string,System.Collections.Generic.HashSet`1<UnityEngine.Material>) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:40)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Initialize (UnityEngine.Transform,UnityEngine.Camera) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:24)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Compose () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:326)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Start () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:167)
+
+(Filename: Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs Line: 40)
+
+RENDER_BOOT material=Gravivore_Lit; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[]; owner=Boss Line Telegraph
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Record (UnityEngine.Material,string,System.Collections.Generic.HashSet`1<UnityEngine.Material>) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:40)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Initialize (UnityEngine.Transform,UnityEngine.Camera) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:24)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Compose () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:326)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Start () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:167)
+
+(Filename: Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs Line: 40)
+
+RENDER_BOOT material=Gravivore_Lit; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[]; owner=Boss Damage Impact
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Record (UnityEngine.Material,string,System.Collections.Generic.HashSet`1<UnityEngine.Material>) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:40)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Initialize (UnityEngine.Transform,UnityEngine.Camera) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:24)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Compose () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:326)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Start () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:167)
+
+(Filename: Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs Line: 40)
+
+RENDER_BOOT material=Gravivore_Lit; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[]; owner=Quest World Marker
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Record (UnityEngine.Material,string,System.Collections.Generic.HashSet`1<UnityEngine.Material>) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:40)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Initialize (UnityEngine.Transform,UnityEngine.Camera) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:24)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Compose () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:326)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Start () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:167)
+
+(Filename: Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs Line: 40)
+
+RENDER_BOOT material=Gravivore_Lit; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[]; owner=Physical Gate Barrier
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Record (UnityEngine.Material,string,System.Collections.Generic.HashSet`1<UnityEngine.Material>) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:40)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Initialize (UnityEngine.Transform,UnityEngine.Camera) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:24)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Compose () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:326)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Start () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:167)
+
+(Filename: Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs Line: 40)
+
+RENDER_BOOT material=Gravivore_Lit; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[]; owner=Physical Gate Barrier
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Record (UnityEngine.Material,string,System.Collections.Generic.HashSet`1<UnityEngine.Material>) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:40)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Initialize (UnityEngine.Transform,UnityEngine.Camera) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:24)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Compose () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:326)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Start () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:167)
+
+(Filename: Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs Line: 40)
+
+RENDER_BOOT material=M_Phase6B_HostileSoft; shader=Universal Render Pipeline/Particles/Unlit; supported=True; queue=3000; keywords=[_SURFACE_TYPE_TRANSPARENT,_FLIPBOOKBLENDING_OFF]; owner=Phase 6B Particles
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Record (UnityEngine.Material,string,System.Collections.Generic.HashSet`1<UnityEngine.Material>) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:40)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Initialize (UnityEngine.Transform,UnityEngine.Camera) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:24)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Compose () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:326)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Start () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:167)
+
+(Filename: Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs Line: 40)
+
+RENDER_BOOT material=M_Phase6B_RepairStreak; shader=Universal Render Pipeline/Particles/Unlit; supported=True; queue=3000; keywords=[_SURFACE_TYPE_TRANSPARENT,_FLIPBOOKBLENDING_OFF]; owner=Phase 6B Geometry
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Record (UnityEngine.Material,string,System.Collections.Generic.HashSet`1<UnityEngine.Material>) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:40)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Initialize (UnityEngine.Transform,UnityEngine.Camera) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:24)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Compose () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:326)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Start () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:167)
+
+(Filename: Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs Line: 40)
+
+RENDER_BOOT material=M_Phase6B_RepairSoft; shader=Universal Render Pipeline/Particles/Unlit; supported=True; queue=3000; keywords=[_SURFACE_TYPE_TRANSPARENT,_FLIPBOOKBLENDING_OFF]; owner=Phase 6B Particles
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Record (UnityEngine.Material,string,System.Collections.Generic.HashSet`1<UnityEngine.Material>) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:40)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Initialize (UnityEngine.Transform,UnityEngine.Camera) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:24)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Compose () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:326)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Start () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:167)
+
+(Filename: Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs Line: 40)
+
+RENDER_BOOT material=M_Phase6B_RepairRing; shader=Universal Render Pipeline/Particles/Unlit; supported=True; queue=3000; keywords=[_SURFACE_TYPE_TRANSPARENT,_FLIPBOOKBLENDING_OFF]; owner=Phase 6B Geometry
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Record (UnityEngine.Material,string,System.Collections.Generic.HashSet`1<UnityEngine.Material>) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:40)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Initialize (UnityEngine.Transform,UnityEngine.Camera) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:24)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Compose () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:326)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Start () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:167)
+
+(Filename: Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs Line: 40)
+
+RENDER_BOOT material=Fidelity_IndustrialAtlas; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[_EMISSION,_METALLICSPECGLOSSMAP,_NORMALMAP,_OCCLUSIONMAP]; owner=Repair_Pedestal_V2(Clone)
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Record (UnityEngine.Material,string,System.Collections.Generic.HashSet`1<UnityEngine.Material>) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:40)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Initialize (UnityEngine.Transform,UnityEngine.Camera) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:24)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Compose () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:326)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Start () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:167)
+
+(Filename: Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs Line: 40)
+
+RENDER_BOOT material=Gravivore_Unlit; shader=Universal Render Pipeline/Unlit; supported=True; queue=2000; keywords=[]; owner=Pooled Pulse 0
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Record (UnityEngine.Material,string,System.Collections.Generic.HashSet`1<UnityEngine.Material>) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:40)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Initialize (UnityEngine.Transform,UnityEngine.Camera) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:24)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Compose () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:326)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Start () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:167)
+
+(Filename: Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs Line: 40)
+
+RENDER_BOOT material=Gravivore_Unlit; shader=Universal Render Pipeline/Unlit; supported=True; queue=2000; keywords=[]; owner=Pooled Pulse 0
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Record (UnityEngine.Material,string,System.Collections.Generic.HashSet`1<UnityEngine.Material>) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:40)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Initialize (UnityEngine.Transform,UnityEngine.Camera) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:24)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Compose () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:326)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Start () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:167)
+
+(Filename: Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs Line: 40)
+
+RENDER_BOOT material=Gravivore_Unlit; shader=Universal Render Pipeline/Unlit; supported=True; queue=2000; keywords=[]; owner=Pooled Pulse 0
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Record (UnityEngine.Material,string,System.Collections.Generic.HashSet`1<UnityEngine.Material>) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:40)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Initialize (UnityEngine.Transform,UnityEngine.Camera) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:24)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Compose () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:326)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Start () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:167)
+
+(Filename: Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs Line: 40)
+
+RENDER_BOOT material=Gravivore_Unlit; shader=Universal Render Pipeline/Unlit; supported=True; queue=2000; keywords=[]; owner=Pooled Pulse 0
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Record (UnityEngine.Material,string,System.Collections.Generic.HashSet`1<UnityEngine.Material>) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:40)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Initialize (UnityEngine.Transform,UnityEngine.Camera) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:24)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Compose () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:326)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Start () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:167)
+
+(Filename: Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs Line: 40)
+
+RENDER_BOOT material=Gravivore_Unlit; shader=Universal Render Pipeline/Unlit; supported=True; queue=2000; keywords=[]; owner=Pooled Pulse 0
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Record (UnityEngine.Material,string,System.Collections.Generic.HashSet`1<UnityEngine.Material>) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:40)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Initialize (UnityEngine.Transform,UnityEngine.Camera) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:24)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Compose () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:326)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Start () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:167)
+
+(Filename: Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs Line: 40)
+
+RENDER_BOOT material=Gravivore_Unlit; shader=Universal Render Pipeline/Unlit; supported=True; queue=2000; keywords=[]; owner=Pooled Pulse 0
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Record (UnityEngine.Material,string,System.Collections.Generic.HashSet`1<UnityEngine.Material>) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:40)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Initialize (UnityEngine.Transform,UnityEngine.Camera) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:24)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Compose () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:326)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Start () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:167)
+
+(Filename: Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs Line: 40)
+
+RENDER_BOOT material=DeviceMotionStreak; shader=Universal Render Pipeline/Particles/Unlit; supported=True; queue=3000; keywords=[_SURFACE_TYPE_TRANSPARENT,_FLIPBOOKBLENDING_OFF]; owner=Pooled gravity drag
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Record (UnityEngine.Material,string,System.Collections.Generic.HashSet`1<UnityEngine.Material>) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:40)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Initialize (UnityEngine.Transform,UnityEngine.Camera) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:24)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Compose () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:326)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Start () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:167)
+
+(Filename: Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs Line: 40)
+
+RENDER_BOOT material=HostileV2_Blue; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[_EMISSION,_METALLICSPECGLOSSMAP,_NORMALMAP,_OCCLUSIONMAP]; owner=ArcDrone_LOD0
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Record (UnityEngine.Material,string,System.Collections.Generic.HashSet`1<UnityEngine.Material>) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:40)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Initialize (UnityEngine.Transform,UnityEngine.Camera) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:24)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Compose () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:326)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Start () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:167)
+
+(Filename: Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs Line: 40)
+
+RENDER_BOOT material=Default UI Material; shader=UI/Default; supported=True; queue=3000; keywords=[]; owner=Enemy Plate 0
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Record (UnityEngine.Material,string,System.Collections.Generic.HashSet`1<UnityEngine.Material>) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:40)
+Gravivore.Presentation.Development.RenderingBootDiagnostics:Initialize (UnityEngine.Transform,UnityEngine.Camera) (at Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs:26)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Compose () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:326)
+Gravivore.Presentation.Composition.S01SceneCompositionRoot:Start () (at Assets/_Game/Runtime/Presentation/Composition/S01SceneCompositionRoot.cs:167)
+
+(Filename: Assets/_Game/Runtime/Presentation/Development/RenderingBootDiagnostics.cs Line: 40)
+
+Unloading 862 unused Assets / (52.7 MB). Loaded Objects now: 18145.
+Memory consumption went from 452.1 MB to 399.4 MB.
+Total: 11.467000 ms (FindLiveObjects: 0.966000 ms CreateObjectMapping: 0.320600 ms MarkObjects: 8.457900 ms  DeleteObjects: 1.721700 ms)
+
+Saving results to: C:/Users/pamak/AppData/LocalLow/Project Gravivore/GRAVIVORE\TestResults.xml
+Saving results to: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\chapter01-r2-actors-v2-integration\docs\history\implementation-passes\chapter01-r2-actors-v2-integration\verification\DamageAnchorRegression.xml
+Unloading 2 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            0.592 ms
+	Integration:            167.488 ms
+	Integration of assets:  0.001 ms
+	Thread Wait Time:       0.012 ms
+	Total Operation Time:   168.094 ms
+Unloading 2094 unused Assets / (132.9 MB). Loaded Objects now: 4363.
+Memory consumption went from 324.8 MB to 191.9 MB.
+Total: 15.145500 ms (FindLiveObjects: 0.351300 ms CreateObjectMapping: 0.139600 ms MarkObjects: 8.294100 ms  DeleteObjects: 6.358600 ms)
+
+Executing IPostBuildCleanup for: Unity.PerformanceTesting.Editor.TestRunBuilder.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+UnityEditor.TestTools.TestRunner.TestRun.Tasks.BuildActionTaskBase`1/<ExecuteMethods>d__8<UnityEngine.TestTools.IPostBuildCleanup>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEditor.TestRunner/TestRun/Tasks/BuildActionTaskBase.cs:48)
+UnityEditor.TestTools.TestRunner.TestRun.Tasks.BuildActionTaskBase`1/<Execute>d__7<UnityEngine.TestTools.IPostBuildCleanup>:MoveNext () (at ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEditor.TestRunner/TestRun/Tasks/BuildActionTaskBase.cs:34)
+UnityEditor.TestTools.TestRunner.TestRun.TestJobRunner:ExecuteStep () (at ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEditor.TestRunner/TestRun/TestJobRunner.cs:173)
+UnityEditor.TestTools.TestRunner.TestRun.TestJobRunner:ExecuteCallback () (at ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEditor.TestRunner/TestRun/TestJobRunner.cs:108)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+(Filename: ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEditor.TestRunner/TestRun/Tasks/BuildActionTaskBase.cs Line: 48)
+
+Asset Pipeline Refresh (id=3bd28219d1974e443a00d717d294f394): Total: 0.024 seconds - Initiated by RefreshV2(NoUpdateAssetOptions)
+Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 0 unused Assets / (0 B). Loaded Objects now: 4368.
+Memory consumption went from 171.5 MB to 171.5 MB.
+Total: 8.766200 ms (FindLiveObjects: 0.175000 ms CreateObjectMapping: 0.083400 ms MarkObjects: 8.499600 ms  DeleteObjects: 0.007800 ms)
+
+Refreshing native plugins compatible for Editor in 0.26 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=e64a189ac60cbec45b4e78aea303f9f2): Total: 0.074 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+DisplayProgressbar: Undo
+Test run completed. Exiting with code 0 (Ok). Run completed.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+UnityEditor.TestTools.TestRunner.CommandLineTest.Executer:ExitApplication (UnityEditor.TestTools.TestRunner.CommandLineTest.Executer/ReturnCodes,string) (at ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEditor.TestRunner/CommandLineTest/Executer.cs:81)
+UnityEditor.TestTools.TestRunner.CommandLineTest.Executer:ExitIfRunIsCompleted () (at ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEditor.TestRunner/CommandLineTest/Executer.cs:74)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+(Filename: ./Library/PackageCache/com.unity.test-framework@0b7a23ab2e1d/UnityEditor.TestRunner/CommandLineTest/Executer.cs Line: 81)
+
+Killing ADB server in 0,0601997 seconds.
+Start importing ProjectSettings/ProjectSettings.asset using Guid(00000000000000004000000000000000) (LibraryAssetImporter) -> (artifact id: '3b9cd4ad8e95a34cc92d62882bf23743') in 0.0085156 seconds
+Refreshing native plugins compatible for Editor in 0.28 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=664e72b601e29434ab2883d0d967c37d): Total: 0.027 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+[Physics::Module] Cleanup current backend.
+[Physics::Module] Id: 0xf2b8ea05
+Input System module state changed to: ShutdownInProgress.
+Input System polling thread exited.
+Input System module state changed to: Shutdown.
+[Licensing::IpcConnector] LicenseClient-pamak-notifications channel disconnected successfully.
+[Licensing::IpcConnector] LicenseClient-pamak channel disconnected successfully.
+AcceleratorClientConnectionCallback - disconnected - :0
+Cleanup mono
+Checking for leaked weakptr:
+  Found no leaked weakptrs.
+[Package Manager] Server process was shutdown
+##utp:{"type":"MemoryLeaks","version":2,"phase":"Immediate","time":1791732612166,"processId":2524,"allocatedMemory":16235187,"memoryLabels":[{"Default":14409},{"Permanent":15524},{"NewDelete":70715},{"Thread":4230344},{"Manager":34367},{"VertexData":8},{"Geometry":816},{"Texture":296},{"Shader":79358},{"Material":24},{"GfxDevice":55257},{"Animation":392},{"Audio":3040},{"Font":1782565},{"FreeType":50544},{"FontEngine":256},{"Physics":2090},{"Serialization":592},{"Input":14984},{"JobScheduler":33024},{"TextLib":192},{"Mono":32},{"MonoCode":64},{"ScriptingNativeRuntime":155060},{"BaseObject":1620736},{"Resource":1336},{"Renderer":3000},{"Transform":4685},{"File":12716},{"WebCam":616},{"Culling":32},{"Terrain":11394},{"Wind":24},{"STL":40},{"String":14314},{"DynamicArray":102364},{"HashMap":90402},{"Utility":2660678},{"Curl":2579},{"PoolAlloc":2152},{"AI":40},{"TypeTree":5341},{"ScriptManager":512},{"RuntimeInitializeOnLoadManager":64},{"SpriteAtlas":112},{"GI":7792},{"Director":8240},{"CloudService":432},{"WebRequest":808},{"VR":47994},{"SceneManager":504},{"Video":208},{"LazyScriptCache":32},{"Camera":17},{"Secure":2113},{"SerializationCache":1576},{"APIUpdating":10320},{"Subsystems":336},{"VirtualTexturing":57888},{"StaticSafetyDebugInfo":278528},{"Analytics":256},{"Hierarchy":608},{"CoreStats":13000},{"Identifiers":12960},{"Gui":88},{"EditorUtility":113712},{"VersionControl":4},{"Undo":947},{"AssetDatabase":4554883},{"EditorGi":328},{"UnityConnect":29232},{"Upm":1896},{"AssetCompliance":64},{"DrivenProperties":72},{"LocalIPC":260},{"ProfilerEditor":9746},{"CoreBusinessMetrics":2629},{"Licensing":664},{"AssetReference":32},{"IPCStream":32}]}

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="2" result="Passed" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-09 22:47:49Z" end-time="2026-10-09 22:48:06Z" duration="16,8910581">
+  <test-suite type="TestSuite" id="1189" name="GRAVIVORE" fullname="GRAVIVORE" runstate="Runnable" testcasecount="142" result="Passed" start-time="2026-10-09 22:47:49Z" end-time="2026-10-09 22:48:06Z" duration="16.891058" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1183" name="Gravivore.PlayModeTests.dll" fullname="C:/Users/pamak/Documents/ChatGPT/gravivore/.codex-worktrees/blueprint-world-r1/Library/ScriptAssemblies/Gravivore.PlayModeTests.dll" runstate="Runnable" testcasecount="142" result="Passed" start-time="2026-10-09 22:47:49Z" end-time="2026-10-09 22:48:06Z" duration="16.720708" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="21692" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1184" name="Gravivore" fullname="Gravivore" runstate="Runnable" testcasecount="142" result="Passed" start-time="2026-10-09 22:47:49Z" end-time="2026-10-09 22:48:06Z" duration="16.676849" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1185" name="Tests" fullname="Gravivore.Tests" runstate="Runnable" testcasecount="142" result="Passed" start-time="2026-10-09 22:47:49Z" end-time="2026-10-09 22:48:06Z" duration="16.634247" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1186" name="PlayMode" fullname="Gravivore.Tests.PlayMode" runstate="Runnable" testcasecount="142" result="Passed" start-time="2026-10-09 22:47:49Z" end-time="2026-10-09 22:48:06Z" duration="16.597860" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1034" name="Chapter1DeviceStabilizationSmokeTests" fullname="Gravivore.Tests.PlayMode.Chapter1DeviceStabilizationSmokeTests" classname="Gravivore.Tests.PlayMode.Chapter1DeviceStabilizationSmokeTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-09 22:47:49Z" end-time="2026-10-09 22:48:05Z" duration="15.590833" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1035" name="FreshProfile_PreEliteStrongPackSpawnsWithoutUnlockAndPhysicalGatesRemainIntact" fullname="Gravivore.Tests.PlayMode.Chapter1DeviceStabilizationSmokeTests.FreshProfile_PreEliteStrongPackSpawnsWithoutUnlockAndPhysicalGatesRemainIntact" methodname="FreshProfile_PreEliteStrongPackSpawnsWithoutUnlockAndPhysicalGatesRemainIntact" classname="Gravivore.Tests.PlayMode.Chapter1DeviceStabilizationSmokeTests" runstate="Runnable" seed="1603548722" result="Passed" start-time="2026-10-09 22:47:50Z" end-time="2026-10-09 22:48:05Z" duration="15.471438" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[RENDER_BOOT pipeline=Gravivore_URP; api=Direct3D11; device=AMD Radeon(TM) Graphics; version=Direct3D 11.0 [level 11.1]; colorSpace=Gamma; cameraHDR=True; HDRFormat=R16G16B16A16_SFloat
+RENDER_BOOT material=R1_Trim3; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[_METALLICSPECGLOSSMAP,_NORMALMAP,_OCCLUSIONMAP]; owner=RepairHub_architecture_-1
+RENDER_BOOT material=R1_Trim2; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[_METALLICSPECGLOSSMAP,_NORMALMAP,_OCCLUSIONMAP]; owner=RepairHub_architecture_-1
+RENDER_BOOT material=R1_Trim1; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[_EMISSION,_METALLICSPECGLOSSMAP,_NORMALMAP,_OCCLUSIONMAP]; owner=RepairHub_architecture_-1
+RENDER_BOOT material=R1_Industrial; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[_EMISSION,_METALLICSPECGLOSSMAP,_NORMALMAP,_OCCLUSIONMAP]; owner=RepairHub_architecture_-1
+RENDER_BOOT material=Gravivore_Lit; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[]; owner=West World Boundary Visual
+RENDER_BOOT material=Gravivore_Lit; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[]; owner=Physical Gate Barrier Visual
+RENDER_BOOT material=Gravivore_Lit; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[]; owner=Physical Gate Barrier Visual
+RENDER_BOOT material=G0_V3_Tier0; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[_EMISSION,_METALLICSPECGLOSSMAP,_NORMALMAP,_OCCLUSIONMAP]; owner=G0_LOD0
+RENDER_BOOT material=VR3_WornIndustrialAtlas; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[_EMISSION,_METALLICSPECGLOSSMAP,_NORMALMAP,_OCCLUSIONMAP]; owner=M0_Rank1(Clone)
+RENDER_BOOT material=G0_V3_Tier1; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[_EMISSION,_METALLICSPECGLOSSMAP,_NORMALMAP,_OCCLUSIONMAP]; owner=G0_LOD0
+RENDER_BOOT material=Slice_IndustrialAtlas; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[_EMISSION,_METALLICSPECGLOSSMAP,_NORMALMAP,_OCCLUSIONMAP]; owner=G0_Tier1Armor_LOD0
+RENDER_BOOT material=G0_V3_Tier2; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[_EMISSION,_METALLICSPECGLOSSMAP,_NORMALMAP,_OCCLUSIONMAP]; owner=G0_LOD0
+RENDER_BOOT material=M_Phase6B_PlayerSoft; shader=Universal Render Pipeline/Particles/Unlit; supported=True; queue=3000; keywords=[_SURFACE_TYPE_TRANSPARENT,_FLIPBOOKBLENDING_OFF]; owner=Phase 6B Particles
+RENDER_BOOT material=M_Phase6B_PlayerStreak; shader=Universal Render Pipeline/Particles/Unlit; supported=True; queue=3000; keywords=[_SURFACE_TYPE_TRANSPARENT,_FLIPBOOKBLENDING_OFF]; owner=Phase 6B Geometry
+RENDER_BOOT material=VR3_MetalSpark; shader=Universal Render Pipeline/Particles/Unlit; supported=True; queue=3000; keywords=[_SURFACE_TYPE_TRANSPARENT,_FLIPBOOKBLENDING_OFF]; owner=Phase 6B Particles
+RENDER_BOOT material=M_Phase6B_WarningEdge; shader=Universal Render Pipeline/Particles/Unlit; supported=True; queue=3000; keywords=[_SURFACE_TYPE_TRANSPARENT,_FLIPBOOKBLENDING_OFF]; owner=Phase 6B Geometry
+RENDER_BOOT material=M_Phase6B_WarningFill; shader=Universal Render Pipeline/Unlit; supported=True; queue=3000; keywords=[_SURFACE_TYPE_TRANSPARENT]; owner=Phase6B Danger Fill
+RENDER_BOOT material=Gravivore_Lit; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[]; owner=Magnetar Guard Visual
+RENDER_BOOT material=V46_HeroAmber; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[_EMISSION,_METALLICSPECGLOSSMAP,_NORMALMAP,_OCCLUSIONMAP]; owner=Magnetar_V1_LOD0
+RENDER_BOOT material=Gravivore_Lit; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[]; owner=Custodian M-0 Visual
+RENDER_BOOT material=V46_HeroRed; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[_EMISSION,_METALLICSPECGLOSSMAP,_NORMALMAP,_OCCLUSIONMAP]; owner=Custodian_V3_LOD0
+RENDER_BOOT material=Gravivore_Lit; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[]; owner=Elite Shockwave Telegraph
+RENDER_BOOT material=Gravivore_Lit; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[]; owner=Boss Circle Telegraph
+RENDER_BOOT material=Gravivore_Lit; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[]; owner=Boss Cone Telegraph
+RENDER_BOOT material=Gravivore_Lit; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[]; owner=Boss Line Telegraph
+RENDER_BOOT material=Gravivore_Lit; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[]; owner=Boss Damage Impact
+RENDER_BOOT material=Gravivore_Lit; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[]; owner=Quest World Marker
+RENDER_BOOT material=Gravivore_Lit; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[]; owner=Physical Gate Barrier
+RENDER_BOOT material=Gravivore_Lit; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[]; owner=Physical Gate Barrier
+RENDER_BOOT material=M_Phase6B_HostileSoft; shader=Universal Render Pipeline/Particles/Unlit; supported=True; queue=3000; keywords=[_SURFACE_TYPE_TRANSPARENT,_FLIPBOOKBLENDING_OFF]; owner=Phase 6B Particles
+RENDER_BOOT material=M_Phase6B_RepairStreak; shader=Universal Render Pipeline/Particles/Unlit; supported=True; queue=3000; keywords=[_SURFACE_TYPE_TRANSPARENT,_FLIPBOOKBLENDING_OFF]; owner=Phase 6B Geometry
+RENDER_BOOT material=M_Phase6B_RepairSoft; shader=Universal Render Pipeline/Particles/Unlit; supported=True; queue=3000; keywords=[_SURFACE_TYPE_TRANSPARENT,_FLIPBOOKBLENDING_OFF]; owner=Phase 6B Particles
+RENDER_BOOT material=M_Phase6B_RepairRing; shader=Universal Render Pipeline/Particles/Unlit; supported=True; queue=3000; keywords=[_SURFACE_TYPE_TRANSPARENT,_FLIPBOOKBLENDING_OFF]; owner=Phase 6B Geometry
+RENDER_BOOT material=Fidelity_IndustrialAtlas; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[_EMISSION,_METALLICSPECGLOSSMAP,_NORMALMAP,_OCCLUSIONMAP]; owner=Repair_Pedestal_V2(Clone)
+RENDER_BOOT material=Gravivore_Unlit; shader=Universal Render Pipeline/Unlit; supported=True; queue=2000; keywords=[]; owner=Pooled Pulse 0
+RENDER_BOOT material=Gravivore_Unlit; shader=Universal Render Pipeline/Unlit; supported=True; queue=2000; keywords=[]; owner=Pooled Pulse 0
+RENDER_BOOT material=Gravivore_Unlit; shader=Universal Render Pipeline/Unlit; supported=True; queue=2000; keywords=[]; owner=Pooled Pulse 0
+RENDER_BOOT material=Gravivore_Unlit; shader=Universal Render Pipeline/Unlit; supported=True; queue=2000; keywords=[]; owner=Pooled Pulse 0
+RENDER_BOOT material=Gravivore_Unlit; shader=Universal Render Pipeline/Unlit; supported=True; queue=2000; keywords=[]; owner=Pooled Pulse 0
+RENDER_BOOT material=Gravivore_Unlit; shader=Universal Render Pipeline/Unlit; supported=True; queue=2000; keywords=[]; owner=Pooled Pulse 0
+RENDER_BOOT material=DeviceMotionStreak; shader=Universal Render Pipeline/Particles/Unlit; supported=True; queue=3000; keywords=[_SURFACE_TYPE_TRANSPARENT,_FLIPBOOKBLENDING_OFF]; owner=Pooled gravity drag
+RENDER_BOOT material=Default UI Material; shader=UI/Default; supported=True; queue=3000; keywords=[]; owner=Enemy Plate 0
+[Hitch] Bounded diagnostic snapshot: C:/Users/pamak/AppData/LocalLow/Project Gravivore/GRAVIVORE\hitch-diagnostics\hitch-0.json
+]]></output>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1091" name="Phase3CIntegrationSmokeTests" fullname="Gravivore.Tests.PlayMode.Phase3CIntegrationSmokeTests" classname="Gravivore.Tests.PlayMode.Phase3CIntegrationSmokeTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-09 22:48:05Z" end-time="2026-10-09 22:48:06Z" duration="0.825852" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1092" name="ActualBindingsSocketsAndCoveredEnvironmentPreserveAuthority" fullname="Gravivore.Tests.PlayMode.Phase3CIntegrationSmokeTests.ActualBindingsSocketsAndCoveredEnvironmentPreserveAuthority" methodname="ActualBindingsSocketsAndCoveredEnvironmentPreserveAuthority" classname="Gravivore.Tests.PlayMode.Phase3CIntegrationSmokeTests" runstate="Runnable" seed="1896100608" result="Passed" start-time="2026-10-09 22:48:05Z" end-time="2026-10-09 22:48:06Z" duration="0.821991" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[RENDER_BOOT pipeline=Gravivore_URP; api=Direct3D11; device=AMD Radeon(TM) Graphics; version=Direct3D 11.0 [level 11.1]; colorSpace=Gamma; cameraHDR=True; HDRFormat=R16G16B16A16_SFloat
+RENDER_BOOT material=R1_Trim3; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[_METALLICSPECGLOSSMAP,_NORMALMAP,_OCCLUSIONMAP]; owner=RepairHub_architecture_-1
+RENDER_BOOT material=R1_Trim2; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[_METALLICSPECGLOSSMAP,_NORMALMAP,_OCCLUSIONMAP]; owner=RepairHub_architecture_-1
+RENDER_BOOT material=R1_Trim1; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[_EMISSION,_METALLICSPECGLOSSMAP,_NORMALMAP,_OCCLUSIONMAP]; owner=RepairHub_architecture_-1
+RENDER_BOOT material=R1_Industrial; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[_EMISSION,_METALLICSPECGLOSSMAP,_NORMALMAP,_OCCLUSIONMAP]; owner=RepairHub_architecture_-1
+RENDER_BOOT material=Gravivore_Lit; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[]; owner=West World Boundary Visual
+RENDER_BOOT material=Gravivore_Lit; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[]; owner=Physical Gate Barrier Visual
+RENDER_BOOT material=Gravivore_Lit; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[]; owner=Physical Gate Barrier Visual
+RENDER_BOOT material=G0_V3_Tier0; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[_EMISSION,_METALLICSPECGLOSSMAP,_NORMALMAP,_OCCLUSIONMAP]; owner=G0_LOD0
+RENDER_BOOT material=VR3_WornIndustrialAtlas; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[_EMISSION,_METALLICSPECGLOSSMAP,_NORMALMAP,_OCCLUSIONMAP]; owner=M0_Rank1(Clone)
+RENDER_BOOT material=G0_V3_Tier1; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[_EMISSION,_METALLICSPECGLOSSMAP,_NORMALMAP,_OCCLUSIONMAP]; owner=G0_LOD0
+RENDER_BOOT material=Slice_IndustrialAtlas; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[_EMISSION,_METALLICSPECGLOSSMAP,_NORMALMAP,_OCCLUSIONMAP]; owner=G0_Tier1Armor_LOD0
+RENDER_BOOT material=G0_V3_Tier2; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[_EMISSION,_METALLICSPECGLOSSMAP,_NORMALMAP,_OCCLUSIONMAP]; owner=G0_LOD0
+RENDER_BOOT material=M_Phase6B_PlayerSoft; shader=Universal Render Pipeline/Particles/Unlit; supported=True; queue=3000; keywords=[_SURFACE_TYPE_TRANSPARENT,_FLIPBOOKBLENDING_OFF]; owner=Phase 6B Particles
+RENDER_BOOT material=M_Phase6B_PlayerStreak; shader=Universal Render Pipeline/Particles/Unlit; supported=True; queue=3000; keywords=[_SURFACE_TYPE_TRANSPARENT,_FLIPBOOKBLENDING_OFF]; owner=Phase 6B Geometry
+RENDER_BOOT material=VR3_MetalSpark; shader=Universal Render Pipeline/Particles/Unlit; supported=True; queue=3000; keywords=[_SURFACE_TYPE_TRANSPARENT,_FLIPBOOKBLENDING_OFF]; owner=Phase 6B Particles
+RENDER_BOOT material=M_Phase6B_WarningEdge; shader=Universal Render Pipeline/Particles/Unlit; supported=True; queue=3000; keywords=[_SURFACE_TYPE_TRANSPARENT,_FLIPBOOKBLENDING_OFF]; owner=Phase 6B Geometry
+RENDER_BOOT material=M_Phase6B_WarningFill; shader=Universal Render Pipeline/Unlit; supported=True; queue=3000; keywords=[_SURFACE_TYPE_TRANSPARENT]; owner=Phase6B Danger Fill
+RENDER_BOOT material=Gravivore_Lit; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[]; owner=Magnetar Guard Visual
+RENDER_BOOT material=V46_HeroAmber; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[_EMISSION,_METALLICSPECGLOSSMAP,_NORMALMAP,_OCCLUSIONMAP]; owner=Magnetar_V1_LOD0
+RENDER_BOOT material=Gravivore_Lit; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[]; owner=Custodian M-0 Visual
+RENDER_BOOT material=V46_HeroRed; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[_EMISSION,_METALLICSPECGLOSSMAP,_NORMALMAP,_OCCLUSIONMAP]; owner=Custodian_V3_LOD0
+RENDER_BOOT material=Gravivore_Lit; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[]; owner=Elite Shockwave Telegraph
+RENDER_BOOT material=Gravivore_Lit; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[]; owner=Boss Circle Telegraph
+RENDER_BOOT material=Gravivore_Lit; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[]; owner=Boss Cone Telegraph
+RENDER_BOOT material=Gravivore_Lit; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[]; owner=Boss Line Telegraph
+RENDER_BOOT material=Gravivore_Lit; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[]; owner=Boss Damage Impact
+RENDER_BOOT material=Gravivore_Lit; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[]; owner=Quest World Marker
+RENDER_BOOT material=Gravivore_Lit; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[]; owner=Physical Gate Barrier
+RENDER_BOOT material=Gravivore_Lit; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[]; owner=Physical Gate Barrier
+RENDER_BOOT material=M_Phase6B_HostileSoft; shader=Universal Render Pipeline/Particles/Unlit; supported=True; queue=3000; keywords=[_SURFACE_TYPE_TRANSPARENT,_FLIPBOOKBLENDING_OFF]; owner=Phase 6B Particles
+RENDER_BOOT material=M_Phase6B_RepairStreak; shader=Universal Render Pipeline/Particles/Unlit; supported=True; queue=3000; keywords=[_SURFACE_TYPE_TRANSPARENT,_FLIPBOOKBLENDING_OFF]; owner=Phase 6B Geometry
+RENDER_BOOT material=M_Phase6B_RepairSoft; shader=Universal Render Pipeline/Particles/Unlit; supported=True; queue=3000; keywords=[_SURFACE_TYPE_TRANSPARENT,_FLIPBOOKBLENDING_OFF]; owner=Phase 6B Particles
+RENDER_BOOT material=M_Phase6B_RepairRing; shader=Universal Render Pipeline/Particles/Unlit; supported=True; queue=3000; keywords=[_SURFACE_TYPE_TRANSPARENT,_FLIPBOOKBLENDING_OFF]; owner=Phase 6B Geometry
+RENDER_BOOT material=Fidelity_IndustrialAtlas; shader=Universal Render Pipeline/Lit; supported=True; queue=2000; keywords=[_EMISSION,_METALLICSPECGLOSSMAP,_NORMALMAP,_OCCLUSIONMAP]; owner=Repair_Pedestal_V2(Clone)
+RENDER_BOOT material=Gravivore_Unlit; shader=Universal Render Pipeline/Unlit; supported=True; queue=2000; keywords=[]; owner=Pooled Pulse 0
+RENDER_BOOT material=Gravivore_Unlit; shader=Universal Render Pipeline/Unlit; supported=True; queue=2000; keywords=[]; owner=Pooled Pulse 0
+RENDER_BOOT material=Gravivore_Unlit; shader=Universal Render Pipeline/Unlit; supported=True; queue=2000; keywords=[]; owner=Pooled Pulse 0
+RENDER_BOOT material=Gravivore_Unlit; shader=Universal Render Pipeline/Unlit; supported=True; queue=2000; keywords=[]; owner=Pooled Pulse 0
+RENDER_BOOT material=Gravivore_Unlit; shader=Universal Render Pipeline/Unlit; supported=True; queue=2000; keywords=[]; owner=Pooled Pulse 0
+RENDER_BOOT material=Gravivore_Unlit; shader=Universal Render Pipeline/Unlit; supported=True; queue=2000; keywords=[]; owner=Pooled Pulse 0
+RENDER_BOOT material=DeviceMotionStreak; shader=Universal Render Pipeline/Particles/Unlit; supported=True; queue=3000; keywords=[_SURFACE_TYPE_TRANSPARENT,_FLIPBOOKBLENDING_OFF]; owner=Pooled gravity drag
+RENDER_BOOT material=Default UI Material; shader=UI/Default; supported=True; queue=3000; keywords=[]; owner=Enemy Plate 0
+Saving results to: C:/Users/pamak/AppData/LocalLow/Project Gravivore/GRAVIVORE\TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

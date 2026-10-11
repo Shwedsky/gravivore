@@ -10,7 +10,7 @@ namespace Gravivore.Presentation.UI
 
         public static readonly Color PanelColor = new Color(0.025f, 0.045f, 0.055f, 0.88f);
         public static readonly Color ModalBackdropColor = new Color(0.01f, 0.018f, 0.025f, 0.82f);
-        public static readonly Color AccentColor = new Color(0.12f, 0.82f, 0.68f, 1f);
+        public static readonly Color AccentColor = new Color(0.18f, 0.69f, 0.80f, 1f);
         public static readonly Color WarningColor = new Color(0.95f, 0.32f, 0.28f, 1f);
 
         public static RectTransform CreatePanel(
@@ -28,6 +28,7 @@ namespace Gravivore.Presentation.UI
             var image = gameObject.GetComponent<Image>();
             image.color = color;
             image.raycastTarget = raycastTarget;
+            ProductionUiSkinScope.Frame(rect,color);
             return rect;
         }
 
@@ -73,6 +74,8 @@ namespace Gravivore.Presentation.UI
                 new Color(0.08f, 0.22f, 0.24f, 0.96f),
                 true);
             var button = rect.gameObject.AddComponent<Button>();
+            var skin=rect.GetComponentInParent<ProductionUiSkinScope>()?.Definition;
+            if(skin?.Button!=null){var surface=rect.GetComponent<Image>();surface.sprite=skin.Button;surface.type=Image.Type.Sliced;}
             var colors = button.colors;
             colors.highlightedColor = new Color(0.16f, 0.48f, 0.46f, 1f);
             colors.pressedColor = new Color(0.08f, 0.62f, 0.54f, 1f);

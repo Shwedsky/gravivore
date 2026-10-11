@@ -5,7 +5,7 @@ import re
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[2]
-OUTPUT = ROOT / "docs/post-device-combat-readability/verification"
+OUTPUT = ROOT / "docs/history/visual-stages/chapter01-visual-passes/post-device-combat-readability/verification"
 
 def sanitize(source, destination=None):
     text = source.read_text(encoding="utf-8-sig", errors="replace")

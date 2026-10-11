@@ -11,43 +11,44 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e8000000000000000000000000000011, type: 3}
   m_Name: S08_Chapter01World
-  m_EditorClassIdentifier:
+  m_EditorClassIdentifier: 
   _worldId: chapter01-scrap-exclusion
+  _layout: {fileID: 11400000, guid: fd38e23597886aa4f948f8e7c10ef3f1, type: 2}
   _basinCenter: {x: 0, y: 0, z: -30}
-  _groundCenter: {x: 0, y: 0, z: 30}
-  _groundSize: {x: 72, y: 140}
+  _groundCenter: {x: 0, y: 0, z: 25}
+  _groundSize: {x: 54, y: 134}
   _boundaryThickness: 0.6
   _boundaryHeight: 2.5
   _zones:
   - _id: relay-yard
-    _center: {x: -26, y: 0, z: 20}
-    _landmarkPosition: {x: -30, y: 0, z: 20}
+    _center: {x: 0, y: 0, z: -10}
+    _landmarkPosition: {x: 0, y: 0, z: -2}
     _color: {r: 0.18, g: 0.56, b: 0.72, a: 1}
   - _id: cutting-floor
-    _center: {x: 0, y: 0, z: 40}
-    _landmarkPosition: {x: 0, y: 0, z: 45}
+    _center: {x: 15, y: 0, z: 10}
+    _landmarkPosition: {x: 15, y: 0, z: 18}
     _color: {r: 0.82, g: 0.3, b: 0.22, a: 1}
   - _id: shield-dump
-    _center: {x: 26, y: 0, z: 20}
-    _landmarkPosition: {x: 30, y: 0, z: 20}
+    _center: {x: -15, y: 0, z: 32}
+    _landmarkPosition: {x: -15, y: 0, z: 40}
     _color: {r: 0.28, g: 0.68, b: 0.38, a: 1}
   - _id: capacitor-field
-    _center: {x: -20, y: 0, z: -12}
-    _landmarkPosition: {x: -24, y: 0, z: -15}
+    _center: {x: -15, y: 0, z: 10}
+    _landmarkPosition: {x: -15, y: 0, z: 18}
     _color: {r: 0.74, g: 0.62, b: 0.18, a: 1}
   - _id: hauler-graveyard
-    _center: {x: 20, y: 0, z: -12}
-    _landmarkPosition: {x: 24, y: 0, z: -15}
+    _center: {x: 15, y: 0, z: 32}
+    _landmarkPosition: {x: 15, y: 0, z: 40}
     _color: {r: 0.58, g: 0.34, b: 0.72, a: 1}
   _eliteGate:
     _id: elite-gate
-    _position: {x: 0, y: 0, z: 60}
-    _size: {x: 5, y: 2.5, z: 0.6}
+    _position: {x: 0, y: 0, z: 44}
+    _size: {x: 8, y: 2.5, z: 0.6}
   _bossGate:
     _id: boss-gate
-    _position: {x: 0, y: 0, z: 80}
-    _size: {x: 5, y: 2.5, z: 0.6}
-  _bossArenaCenter: {x: 0, y: 0, z: 94}
+    _position: {x: 0, y: 0, z: 64}
+    _size: {x: 8, y: 2.5, z: 0.6}
+  _bossArenaCenter: {x: 0, y: 0, z: 76}
   _bossArenaRadius: 5
   _eliteEnemyId: magnetar-guard
   _requiredQuestObjectiveIds:

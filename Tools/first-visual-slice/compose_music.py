@@ -59,4 +59,4 @@ for name, data in [('Containment_Exploration',explore),('Containment_CombatLayer
         'peak':float(np.max(np.abs(data))),'rms':float(np.sqrt(np.mean(data**2))),
         'seam_delta':float(np.max(np.abs(data[-1]-data[0]))),
         'sha256':hashlib.sha256(path.read_bytes()).hexdigest(), 'source':'Original procedural composition; no samples'}
-(ROOT/'docs/device-correction/music_masters.json').write_text(json.dumps(report,indent=2),encoding='utf-8')
+(ROOT/'docs/history/visual-stages/chapter01-visual-passes/device-correction/music_masters.json').write_text(json.dumps(report,indent=2),encoding='utf-8')

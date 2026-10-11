@@ -85,6 +85,29 @@ Expanded original-source research, licenses and rejection/acquisition reasons ar
 - V2.1 revision (2026-10-06): the same 17 adapted mechanisms continue in `art/visual-production-v2/g0/G0_Bipedal_Blockout_V21.blend` and static review export `Assets/_Game/ArtReview/G0V21/Models/G0_Bipedal_V21_Review.fbx`. V2.1 shortens/reframes the legs and widens pelvis/limb mechanisms; original V2 attribution text remains embedded. Review-only Unity import, no donor animation or production binding. Preserve this credit with both source and export.
 - Production V3 (2026-10-06): these low-identity internal mechanisms also continue in `art/g0-production-v3/G0_Production_V3.blend` and `Assets/_Game/ArtReview/G0ProductionV3/Models/G0_Production_V3.fbx`. Modifications include surface/normal cleanup, consolidation into a rigid skinned mesh, original game skeleton/animations, new project UV/material atlas and silhouette-preserving LOD simplification. The hidden donor comparison and embedded original title/author/source/license text remain in the Blender source; neither donor textures nor donor animations are exported. Keep this credit with the source and FBX package. No endorsement is implied.
 
+## Chapter01 Visual Replacement V3 — production donors
+
+Verified on 2026-10-09 against the retained V2 provenance, included license text and exact source SHA256 records in `docs/visual-replacement-v3/ingestion_manifest.json`. Local source archives remain ignored and preserved.
+
+- Quaternius Modular SciFi MegaKit Standard: https://quaternius.com/packs/modularscifimegakit.html — CC0 1.0. Selected deck, trim, frame, cable, column and vent geometry/textures. Changes: retained trim UV detail in a cold-metal atlas, material/submesh consolidation, pivot normalization and composition around existing gameplay proxies.
+- Molten Maps SciFi Asset Pack by Moltenbolt: https://moltenmaps.itch.io/molten-maps-scifi-pack — CC0 1.0. Selected Generator, Generator Pile, Cryo Tube, Centrifuge, Command Console and grated floor geometry. Changes: common industrial palette, atlas UVs, material consolidation and production scaling.
+- Quaternius Sci-Fi Essentials Kit Standard: https://quaternius.com/packs/scifiessentialskit.html — CC0 1.0. Selected crate geometry and selectively extracted QuadShell/Trilobite upper plating. No unchanged stock enemy replaces an approved GRAVIVORE role.
+- Quaternius Modular Sci Fi Guns: https://quaternius.com/packs/scifimodularguns.html — CC0 1.0. Selected barrel/body modules. Changes: mech-mounted M-0 emitter ranks, original housing/coils/capacitors, common atlas. Human grips and stocks are excluded.
+- Kenney UI Pack Sci-fi: https://kenney.nl/assets/ui-pack-sci-fi — CC0 1.0. Secondary bar utility artwork.
+- **EXE - Mini SciFi UI Pack by Catherine Laserna (cjlaserna)**: https://cjlaserna.itch.io/exe — **Creative Commons Attribution 4.0 International**, https://creativecommons.org/licenses/by/4.0/. Changes: recoloring, 9-slice frame adaptation and composition into GRAVIVORE panels, buttons and equipment states. No endorsement is implied. Bundled fonts are excluded. Preserve this attribution with redistributed UI derivatives and in the game's third-party notices.
+
+Production derivatives: `Assets/_Game/Content/VisualReplacementV3/`. Included license evidence: its `Licenses/` directory. Asset Store sources, unknown/mixed-rights sources, TechLab, Tiago and Meshy are excluded from this public production integration. All new custom damage surfaces, mechanism shells and VFX masks are original project work.
+
+## Chapter 01 Blueprint World-only R1 — environment donors
+
+- Verified: 2026-10-10 against the two owner-local canonical archives, their bundled CC0 license files and the official source pages.
+- Quaternius Modular Sci-Fi MegaKit Standard by Quaternius: https://quaternius.com/packs/modularscifimegakit.html — CC0 1.0 Universal. Runtime-used families: Column_Pipes, Column_Astra, Door_Frame_A, Door_Frame_SquareTall, Platform_Round1, WallAstra_Straight, WallAstra_Straight_Broken, TopCables_Straight and Prop_Vent_Wide. Native trim UVs retained; structures consolidated into authored sector meshes, with controlled URP PBR channel conversion.
+- Molten Maps SciFi Asset Pack by Moltenbolt: https://moltenmaps.itch.io/molten-maps-scifi-pack — CC0 1.0 Universal. Runtime-used families: Generator, Generator Pile Large/Small, Cryo Tube ON, Centrifuge, Command Console, Wall Command and Catwalk. Machinery was resized, regrouped, given industrial atlas UVs and integrated with original housings, presses, gantries, conduits and containment structures.
+- License: https://creativecommons.org/publicdomain/zero/1.0/; attribution is voluntary. No author endorsement is implied.
+- Runtime derivatives: `Assets/_Game/Content/BlueprintWorldR1/`; editable authored source: `art/blueprint-world-r1/Chapter01_BlueprintWorld_R1.blend`; reproducible intake/authoring: `Tools/blueprint-world-r1/`.
+- Exact archive SHA256, source entries and individual source hashes: `docs/history/implementation-passes/chapter01-blueprint-world-r1/asset-intake.json`. Bundled license evidence: `Assets/_Game/Content/BlueprintWorldR1/Licenses/`.
+- Original archives and inspection sources remain ignored under `ExternalAssetIntake/Current/`. This pass replaces environment geometry only; accepted actor, weapon and UI art retain their existing notices.
+
 ## Import template (future additions)
 
 When importing any external asset, append:

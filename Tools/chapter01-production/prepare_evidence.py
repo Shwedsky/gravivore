@@ -7,7 +7,7 @@ import subprocess
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[2]
-OUTPUT = ROOT / 'docs/chapter01-production/verification'
+OUTPUT = ROOT / 'docs/history/visual-stages/chapter01-visual-passes/chapter01-production/verification'
 BASELINE = '0152ec421eed53cc64c0b07fb10c4496589ae047'
 PRESERVED = [
     'Assets/_Game/Content/VisualSlice/Models', 'Assets/_Game/Content/VisualSlice/Materials',
@@ -49,6 +49,6 @@ audit = {'validated': True, 'baseline': BASELINE, 'buildSourceSha': results['sou
 (OUTPUT / 'preservation_audit.json').write_text(json.dumps(audit, indent=2), encoding='utf8')
 paths = git('diff', '--name-only', BASELINE, results['sourceSha']).splitlines()
 (OUTPUT / 'source_files_changed.txt').write_text('\n'.join(paths) + '\n', encoding='utf8')
-captures = {path.name: hashlib.sha256(path.read_bytes()).hexdigest() for path in (ROOT / 'docs/chapter01-production/internal').glob('*.png')}
+captures = {path.name: hashlib.sha256(path.read_bytes()).hexdigest() for path in (ROOT / 'docs/history/visual-stages/chapter01-visual-passes/chapter01-production/internal').glob('*.png')}
 (OUTPUT / 'internal_capture_hashes.json').write_text(json.dumps(captures, indent=2), encoding='utf8')
 print(json.dumps(results, indent=2))

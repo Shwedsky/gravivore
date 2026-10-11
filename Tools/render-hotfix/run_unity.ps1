@@ -2,7 +2,7 @@
 param([ValidateSet('Compile','Validate','EditMode','PlayMode','Build')][string]$Action,[string]$TestFilter='')
 $ErrorActionPreference='Stop'
 $renderRoot=Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
-$renderOutput=Join-Path $renderRoot 'docs/render-hotfix/verification'
+$renderOutput=Join-Path $renderRoot 'docs/history/visual-stages/chapter01-visual-passes/render-hotfix/verification'
 New-Item -ItemType Directory -Force -Path $renderOutput | Out-Null
 $renderLabel=if($TestFilter){$Action+'Filtered'}else{$Action}
 $renderArgs=@('-batchmode','-projectPath',('"'+$renderRoot+'"'),'-logFile',('"'+(Join-Path $renderOutput ($renderLabel+'.log'))+'"'))

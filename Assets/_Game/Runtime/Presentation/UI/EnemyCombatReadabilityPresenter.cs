@@ -17,6 +17,7 @@ namespace Gravivore.Presentation.UI
     {
         private sealed class Actor
         {
+            public Gravivore.Presentation.Assets.CharacterVisualBinding Binding;
             public OrdinaryEnemyController Enemy;
             public Transform Root;
             public EnemyLifeId Life;
@@ -65,6 +66,9 @@ namespace Gravivore.Presentation.UI
         private Floating[] _floating;
         private int _damageCursor, _rewardCursor, _incomingCursor;
         private int _lastIncoming=-1;
+        private Vector3 _lastDamagePosition, _lastDamageAnchor;
+        private bool _hasDamageAnchor;
+        public Vector3 LastDamageAnchor => _lastDamageAnchor;
         public int IncomingFeedbackCount { get; private set; }
         public string LastIncomingText { get; private set; }
         public int PlateCapacity => _plates?.Length ?? 0;
@@ -90,8 +94,8 @@ namespace Gravivore.Presentation.UI
             _compactMap=root.MapIntegration.MapPresenter.CompactSurface.parent as RectTransform;
             var enemies = root.EnemyPopulation.GetComponentsInChildren<OrdinaryEnemyController>(true);
             _actors = new Actor[enemies.Length+1]; _order = new int[_actors.Length];
-            for (var i=0;i<enemies.Length;i++) _actors[i] = new Actor { Enemy=enemies[i],Root=enemies[i].transform };
-            _actors[enemies.Length] = new Actor { Root=root.MagnetarGuard.transform,Strong=true };
+            for (var i=0;i<enemies.Length;i++) _actors[i] = new Actor { Enemy=enemies[i],Root=enemies[i].transform,Binding=enemies[i].GetComponent<Gravivore.Presentation.Assets.CharacterVisualBinding>() };
+            _actors[enemies.Length] = new Actor { Root=root.MagnetarGuard.transform,Strong=true,Binding=root.MagnetarGuard.GetComponent<Gravivore.Presentation.Assets.CharacterVisualBinding>() };
             _plates = new Plate[settings.VisibleBars];
             for(var i=0;i<_plates.Length;i++) _plates[i]=CreatePlate(i);
             _floating = new Floating[settings.DamageTextCapacity+settings.RewardTextCapacity+3];
@@ -101,6 +105,8 @@ namespace Gravivore.Presentation.UI
             root.EnemyPopulation.EnemyDamaged += Damaged;
             root.Progression.RewardGranted += RewardGranted;
             root.Chapter1Encounters.Transactions.RewardApplied += EncounterReward;
+            root.MagnetarGuard.Damaged += EliteDamaged;
+            root.CustodianBoss.Damaged += BossDamaged;
         }
         private Plate CreatePlate(int i)
         {
@@ -125,6 +131,7 @@ namespace Gravivore.Presentation.UI
         {
             for(var i=0;i<_actors.Length;i++) if(_actors[i].Enemy!=null && _actors[i].Enemy.LifeId.Equals(value.LifeId))
             {
+                SnapshotDamage(_actors[i].Enemy.TargetPoint,_actors[i].Binding);
                 if(!_actors[i].Life.Equals(value.LifeId)) BindLife(_actors[i]);
                 _actors[i].RecentUntil=Time.unscaledTime+_settings.RecentDamageSeconds;
             }
@@ -135,8 +142,18 @@ namespace Gravivore.Presentation.UI
         private void AttackResolved(PlayerAttackResolvedEvent value)
         {
             LastAppliedDamage=value.Result.AppliedDamage; LastDamageText=FormatDamage(LastAppliedDamage); DamageFeedbackCount++;
-            ShowText(value.Position+Vector3.up*1.4f,LastDamageText,new Color(.80f,1f,1f,1),false);
+            var anchor=_hasDamageAnchor && (value.Position-_lastDamagePosition).sqrMagnitude<.01f ? _lastDamageAnchor : value.Position+Vector3.up*1.4f;
+            ShowText(anchor,LastDamageText,new Color(.80f,1f,1f,1),false);
+            _lastDamageAnchor=anchor;_hasDamageAnchor=false;
         }
+        private void SnapshotDamage(Transform actor,Gravivore.Presentation.Assets.CharacterVisualBinding binding)
+        {
+            _lastDamagePosition=actor.position;
+            _lastDamageAnchor=binding?.GetSocketOr(Gravivore.Presentation.Assets.PresentationSocket.DamageNumberAnchor,actor).position ?? actor.position+Vector3.up*1.4f;
+            _hasDamageAnchor=true;
+        }
+        private void EliteDamaged(DamageResult value)=>SnapshotDamage(_root.MagnetarGuard.TargetPoint,_root.MagnetarGuard.GetComponent<Gravivore.Presentation.Assets.CharacterVisualBinding>());
+        private void BossDamaged(DamageResult value)=>SnapshotDamage(_root.CustodianBoss.TargetPoint,_root.CustodianBoss.GetComponent<Gravivore.Presentation.Assets.CharacterVisualBinding>());
         private void IncomingDamaged(DamageResult value)
         {
             if (value.AppliedDamage <= 0) return;
@@ -188,7 +205,8 @@ namespace Gravivore.Presentation.UI
                 var selected=ReferenceEquals(target,actor.Enemy!=null?(ITargetable)actor.Enemy:_root.MagnetarGuard);
                 var recent=Time.unscaledTime<actor.RecentUntil;
                 if(distance>_settings.RelevanceRange*_settings.RelevanceRange && !recent && !selected) continue;
-                actor.Anchor=actor.Root.position+Vector3.up*(actor.Enemy!=null?actor.Enemy.TargetPoint.localPosition.y+1.05f:2.1f);
+                actor.Anchor=actor.Binding?.Sockets!=null && actor.Binding.Sockets.TryGet(Gravivore.Presentation.Assets.PresentationSocket.HealthBarAnchor,out var barAnchor) ?
+                    barAnchor.position : actor.Root.position+Vector3.up*(actor.Enemy!=null?actor.Enemy.TargetPoint.localPosition.y+1.05f:2.1f);
                 if(!OnScreen(actor.Anchor,out _)) continue;
                 actor.Score=distance-(selected?10000:recent?1000:actor.Strong?100:0);
                 var j=count; while(j>0 && _actors[_order[j-1]].Score>actor.Score) { _order[j]=_order[j-1]; j--; }
@@ -293,6 +311,8 @@ namespace Gravivore.Presentation.UI
             if(_root.EnemyPopulation!=null) _root.EnemyPopulation.EnemyDamaged-=Damaged;
             if(_root.Progression!=null) _root.Progression.RewardGranted-=RewardGranted;
             if(_root.Chapter1Encounters!=null) _root.Chapter1Encounters.Transactions.RewardApplied-=EncounterReward;
+            if(_root.MagnetarGuard!=null) _root.MagnetarGuard.Damaged-=EliteDamaged;
+            if(_root.CustodianBoss!=null) _root.CustodianBoss.Damaged-=BossDamaged;
         }
     }
 }
