@@ -6,7 +6,7 @@ ROOT=Path(__file__).resolve().parents[2]
 BASE=ROOT/"docs/history/implementation-passes/chapter01-r2-actors-v2-integration"
 OUT=BASE/"verification"
 tests={}
-for label in ["EditModeCandidate","PlayModeCandidate","DamageAnchorRegression","GallerySynchronization"]:
+for label in ["EditModeCandidate","PlayModeCandidate","DamageAnchorRegression","GallerySynchronization","ActorIntegrationFinal"]:
     node=ET.parse(OUT/(label+".xml")).getroot()
     tests[label]={k:node.attrib.get(k) for k in ["result","total","passed","failed","skipped","duration","start-time","end-time"]}
     tests[label]["nonPassingCases"]=[dict(name=c.attrib["fullname"],result=c.attrib["result"],reason="".join(c.find("reason").itertext()).strip() if c.find("reason") is not None else "")

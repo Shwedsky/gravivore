@@ -7,6 +7,7 @@ using System.Text;
 using UnityEditor;
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
+using UnityEngine;
 
 namespace Gravivore.Editor.VisualIntegration
 {
@@ -43,12 +44,13 @@ namespace Gravivore.Editor.VisualIntegration
         }
         public static string[] RequiredResourcePaths()
         {
-            // The production catalogs select actor generations. Requiring historical actors here
-            // would reject a valid presentation replacement even when the R2 world is preserved.
+            // Production dependencies select actor generations. Static facility meshes are baked
+            // into scene batches and are checked by serialized sector names below, not source FBX paths.
             var deps = AssetDatabase.GetDependencies(Chapter01BlueprintWorldBuilder.ScenePath,true);
             return deps.Where(p => p.StartsWith(Chapter01BlueprintWorldBuilder.Root + "/Textures/",StringComparison.Ordinal) ||
                 p.StartsWith(Chapter01BlueprintWorldBuilder.Root + "/Materials/",StringComparison.Ordinal) ||
-                p.EndsWith(".fbx",StringComparison.OrdinalIgnoreCase)).Distinct().ToArray();
+                p.EndsWith(".fbx",StringComparison.OrdinalIgnoreCase) &&
+                AssetDatabase.LoadAssetAtPath<GameObject>(p)?.GetComponentInChildren<SkinnedMeshRenderer>(true) != null).Distinct().ToArray();
         }
         private static bool ContainsSerialized(byte[] bytes, string value)
         {

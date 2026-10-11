@@ -240,8 +240,8 @@ namespace Gravivore.Tests.PlayMode
             var eliteAnimator=elite.GetComponent<CharacterVisualBinding>().ActiveModel.GetComponentInChildren<Animator>();eliteAnimator.cullingMode=AnimatorCullingMode.AlwaysAnimate;
             elite.Tick(0);bridge.Tick();eliteAnimator.Update(.1f);
             Assert.IsTrue(eliteAnimator.GetCurrentAnimatorStateInfo(0).IsName("Charge"));
-            Capture(root,"Magnetar_event_charge");elite.Tick(2);bridge.Tick();eliteAnimator.Update(.1f);
-            Assert.IsTrue(eliteAnimator.GetCurrentAnimatorStateInfo(0).IsName("Vent"));Capture(root,"Magnetar_event_vent");
+            yield return null;Capture(root,"Magnetar_event_charge");elite.Tick(2);bridge.Tick();eliteAnimator.Update(.1f);
+            Assert.IsTrue(eliteAnimator.GetCurrentAnimatorStateInfo(0).IsName("Vent"));yield return null;Capture(root,"Magnetar_event_vent");
             elite.ApplyDamage(new DamageRequest(100000,DamageType.Gravity));bridge.Tick();yield return null;
             var boss=root.CustodianBoss;Move(root,boss.transform.position+Vector3.back*4.5f);boss.Tick(0);
             var animator=boss.GetComponent<CharacterVisualBinding>().ActiveModel.GetComponentInChildren<Animator>();animator.cullingMode=AnimatorCullingMode.AlwaysAnimate;
@@ -249,11 +249,11 @@ namespace Gravivore.Tests.PlayMode
             for(var i=0;i<3;i++)
             {
                 bridge.Tick();animator.Update(.1f);Assert.IsTrue(animator.GetCurrentAnimatorStateInfo(0).IsName("Telegraph"));
-                Capture(root,"Custodian_event_telegraph_"+i);
+                yield return null;Capture(root,"Custodian_event_telegraph_"+i);
                 var hp=root.PlayerHealth.CurrentHitPoints;boss.Tick(.25f);
                 Assert.That(root.PlayerHealth.CurrentHitPoints,Is.EqualTo(hp),"Animation cannot move the damage commit frame");
                 boss.Tick(2);bridge.Tick();animator.Update(.1f);
-                Assert.IsTrue(animator.GetCurrentAnimatorStateInfo(0).IsName(states[i]),states[i]);Capture(root,"Custodian_event_"+states[i]);
+                Assert.IsTrue(animator.GetCurrentAnimatorStateInfo(0).IsName(states[i]),states[i]);yield return null;Capture(root,"Custodian_event_"+states[i]);
                 boss.Tick(0);boss.Tick(2);if(i<2)boss.Tick(0);
             }
             boss.ResetEncounter();bridge.Tick();animator.Update(.1f);Assert.IsFalse(animator.GetCurrentAnimatorStateInfo(0).IsName("Death"));

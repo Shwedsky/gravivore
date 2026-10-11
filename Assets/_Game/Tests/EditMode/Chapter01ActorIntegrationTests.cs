@@ -22,6 +22,7 @@ namespace Gravivore.Tests.EditMode
             Assert.Contains("Assets/_Game/ArtReview/G0ProductionV3/Models/G0_Production_V3.fbx",required,"Preserved G-0 must still be required");
             Assert.IsFalse(required.Any(p=>p.EndsWith("/Scout_V1.fbx",StringComparison.Ordinal)),"Retired hostile cannot remain a build requirement");
             Assert.IsTrue(required.Any(p=>p.StartsWith(Chapter01BlueprintWorldBuilder.Root+"/Textures/",StringComparison.Ordinal)));
+            Assert.IsFalse(required.Any(p=>p.StartsWith(Chapter01BlueprintWorldBuilder.Root+"/Models/",StringComparison.Ordinal)),"Static world geometry is validated after scene batching");
         }
 
         [TestCase("Scout")] [TestCase("Cutter")] [TestCase("Warden")]

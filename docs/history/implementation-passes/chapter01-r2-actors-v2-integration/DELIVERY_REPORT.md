@@ -27,8 +27,9 @@ Carrier Bank loops and turns as a vehicle. Warden retains two separate arm-contr
 Magnetar Charge/Vent and Custodian phase poses follow existing authoritative timing.
 Custodian basic Windup/Attack remain distinct from Telegraph and phase attacks.
 Localized emission is enabled with modest actor-only material gains; authored PBR maps are retained.
-The world build audit now derives required FBX resources from the current scene/catalog dependencies,
+The world build audit now derives animated actor FBX resources from the current scene/catalog dependencies,
 retaining R2 sector/material/texture checks and G-0 while allowing the retired hostile models to leave the APK.
+Static facilities remain checked in serialized scene batches rather than requiring their source FBX path.
 
 No gameplay collider is changed. Bounded cosmetic wall separation preserves the source model
 scale/envelope and leaves controller/sensor/ground telegraph authority unchanged. Full technical
@@ -53,11 +54,12 @@ test captures are restored before committing. See [preservation.json](verificati
 
 - Explicit Unity 6000.3.0f1 compilation gate: exit 0.
 - ProjectValidator: exit 0. Production actor dependency/socket validation also runs before Android packaging.
-- EditModeCandidate: 511 passed, 0 failed, 0 skipped, total 511; 13,9971425 seconds. Raw [NUnit XML](verification/EditModeCandidate.xml).
+- EditModeCandidate: 511 passed, 0 failed, 0 skipped, total 511; 17,3299099 seconds. Raw [NUnit XML](verification/EditModeCandidate.xml).
 - PlayModeCandidate: 148 passed, 0 failed, 1 skipped, total 149; 789,601523 seconds. Raw [NUnit XML](verification/PlayModeCandidate.xml).
   - Gravivore.Tests.PlayMode.VisualIntegrationSmokeTests.CaptureStructuralFoundationWhenRequested: Skipped; Set GRAVIVORE_VISUAL_INTEGRATION_QA to export structural review captures.
 - DamageAnchorRegression: 1 passed, 0 failed, 0 skipped, total 1; 1,4232998 seconds. Raw [NUnit XML](verification/DamageAnchorRegression.xml).
 - GallerySynchronization: 1 passed, 0 failed, 0 skipped, total 1; 10,625192 seconds. Raw [NUnit XML](verification/GallerySynchronization.xml).
+- ActorIntegrationFinal: 7 passed, 0 failed, 0 skipped, total 7; 20,4588542 seconds. Raw [NUnit XML](verification/ActorIntegrationFinal.xml).
 - All ordinary roles: actual attack events, death/recycle, fresh animation/socket state on new life, repeat wave.
 - Save/reload, equipment-derived stats, legitimate boss loot, ranking, exactly-once rewards, first-clear/repeat
   Magnetar/Custodian cooldown loops and boss HUD/reset/death are covered by existing full-scene regressions.
@@ -71,15 +73,15 @@ test captures are restored before committing. See [preservation.json](verificati
 
 ## Performance observations
 
-The 240-frame playable Editor observation measured 1.116 ms mean wall-frame time
-(896.2 reciprocal FPS), 1.107 ms mean recorded main-thread time,
+The 240-frame playable Editor observation measured 1.211 ms mean wall-frame time
+(825.9 reciprocal FPS), 1.198 ms mean recorded main-thread time,
 peak 20 live enemies and peak 3 pooled VFX instances.
 Inventory: 226 enabled renderer objects, 69 skinned objects,
 2,409,694 triangles across enabled LOD objects, 11 material objects,
 19 lights and at most 4 light bounding-sphere candidates at a skin.
 These are object/frustum inventories, not submitted draw/triangle counts or measured per-pixel lights.
 
-Editor GC recorder: 2,737,292 total bytes, 18,942 maximum per frame;
+Editor GC recorder: 2,898,387 total bytes, 171,599 maximum per frame;
 both CPU/GC recorders valid. The soak records 45 generation-0 collections and
 402.60 ms maximum Editor frame. Editor/test-runner overhead is included.
 This evidence establishes neither Android 60 FPS nor zero-allocation gameplay. High skin geometry,
