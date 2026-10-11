@@ -28,9 +28,9 @@ namespace Gravivore.Tests.PlayMode
         {
             yield return Load(); var root = _scene.Root;
             Assert.That(root.PlayerObject.GetComponent<CharacterVisualBinding>().ActiveModel.name, Does.StartWith("G0_V3_Live"));
-            Assert.That(root.EnemyPopulation.GetSpot(0).GetLiveEnemy(0).GetComponent<CharacterVisualBinding>().ActiveModel.name, Is.EqualTo("Scout_V1"));
-            Assert.That(root.EnemyPopulation.GetSpot(1).GetLiveEnemy(0).GetComponent<CharacterVisualBinding>().ActiveModel.name, Is.EqualTo("Cutter_V1"));
-            Assert.That(root.MagnetarGuard.GetComponent<CharacterVisualBinding>().ActiveModel.name, Is.EqualTo("Magnetar_V1"));
+            Assert.That(root.EnemyPopulation.GetSpot(0).GetLiveEnemy(0).GetComponent<CharacterVisualBinding>().ActiveModel.name, Is.EqualTo("Scout_V2"));
+            Assert.That(root.EnemyPopulation.GetSpot(1).GetLiveEnemy(0).GetComponent<CharacterVisualBinding>().ActiveModel.name, Is.EqualTo("Cutter_V2"));
+            Assert.That(root.MagnetarGuard.GetComponent<CharacterVisualBinding>().ActiveModel.name, Is.EqualTo("Magnetar_V2"));
             if(root.VisualEnvironment.BlueprintWorldOnly)
             {
                 foreach(var id in new[]{"repair-hub","relay-yard","capacitor-field","cutting-floor","shield-dump","hauler-graveyard","elite-arena","boss-arena"})

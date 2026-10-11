@@ -18,7 +18,7 @@ namespace Gravivore.Tests.PlayMode
 {
     public sealed class Chapter01BlueprintWorldSmokeTests
     {
-        private const string Output="docs/history/implementation-passes/chapter01-blueprint-world-r2";
+        private const string Output="docs/history/implementation-passes/chapter01-r2-actors-v2-integration/full-chapter";
         private CanonicalSceneTestScope _scene;
         [UnityTearDown] public IEnumerator Cleanup(){if(_scene!=null)yield return _scene.Cleanup();}
         private IEnumerator Load(bool controlled=true)

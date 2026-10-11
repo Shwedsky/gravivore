@@ -101,12 +101,26 @@ namespace Gravivore.Tests.PlayMode
             for(var i=0;i<100;i++){root.MagnetarGuard.Tick(.1f);presentation.Tick(.1f);}
             Assert.That(eliteCount,Is.GreaterThanOrEqualTo(2));UnlockBoss(root);
             Move(root,root.CustodianBoss.transform.position+Vector3.back*4.5f);
-            var bossCount=0;root.CustodianBoss.BasicAttackResolved+=value=>{if(value.Hit)bossCount++;};
-            for(var i=0;i<120;i++){root.CustodianBoss.Tick(.1f);presentation.Tick(.1f);}
+            var bossCount=0;var basicStarted=false;var basicResolved=false;var poseChecks=0;
+            root.CustodianBoss.BasicAttackStarted+=_=>basicStarted=true;
+            root.CustodianBoss.BasicAttackResolved+=value=>{basicResolved=true;if(value.Hit)bossCount++;};
+            var animation=root.GetComponent<VisualSliceAnimationBridge>();
+            var animator=root.CustodianBoss.GetComponent<CharacterVisualBinding>().ActiveModel.GetComponentInChildren<Animator>();
+            animator.cullingMode=AnimatorCullingMode.AlwaysAnimate;
+            for(var i=0;i<120;i++)
+            {
+                basicStarted=false;basicResolved=false;root.CustodianBoss.Tick(.1f);presentation.Tick(.1f);animation.Tick(.1f);animator.Update(.1f);
+                if(root.CustodianBoss.State==CustodianBossState.Engaging||root.CustodianBoss.State==CustodianBossState.Recovery)
+                {
+                    if(basicStarted){Assert.IsTrue(animator.GetCurrentAnimatorStateInfo(0).IsName("Windup"));poseChecks++;}
+                    if(basicResolved){Assert.IsTrue(animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"));poseChecks++;}
+                }
+            }
+            Assert.That(poseChecks,Is.GreaterThanOrEqualTo(4),"Basic attacks need separate production Windup/Attack poses");
             Assert.That(bossCount,Is.GreaterThanOrEqualTo(2));Assert.That(presentation.SourceCount,Is.GreaterThan(3));
             Assert.That(presentation.TravelCount,Is.GreaterThan(3));Assert.That(presentation.ImpactCount,Is.GreaterThan(3));
             Assert.That(presentation.Capacity,Is.EqualTo(16));Assert.That(Vector3.Distance(presentation.LastSource,presentation.LastTarget),Is.GreaterThan(.5f));
-            StringAssert.StartsWith("Custodian_V3",root.CustodianBoss.GetComponent<CharacterVisualBinding>().ActiveModel.name);
+            StringAssert.StartsWith("Custodian_V2",root.CustodianBoss.GetComponent<CharacterVisualBinding>().ActiveModel.name);
             Capture(root,"custodian_v3_pressure");
         }
         [UnityTest] public IEnumerator BossUsesSmallAdmissionThenWideCombatLeashAndOnlyResetsBeyondGrace()

@@ -34,13 +34,10 @@ namespace Gravivore.Tests.EditMode
             foreach (var id in expected)
             {
                 Assert.IsTrue(catalog.TryGetEnemy(id, out var recipe), id);
-                Assert.That(recipe.PartCount, Is.GreaterThanOrEqualTo(2), id);
-                var signature = recipe.PartCount.ToString();
-                for (var i = 0; i < recipe.PartCount; i++)
-                {
-                    var part = recipe.GetPart(i);
-                    signature += $"|{part.SourceModel.name}:{part.LocalPosition}:{part.LocalScale}";
-                }
+                Assert.IsNotNull(recipe.PresentationPrefab, id);
+                Assert.That(recipe.PartCount, Is.Zero, "Whole production models must not retain obsolete kitbash dependencies");
+                var signature = AssetDatabase.GetAssetPath(recipe.PresentationPrefab);
+                Assert.That(signature, Does.StartWith("Assets/_Game/Content/ActorProductionV2/Prefabs/"));
                 Assert.IsTrue(signatures.Add(signature), $"Enemy {id} duplicates another visual shape.");
             }
         }
@@ -87,7 +84,11 @@ namespace Gravivore.Tests.EditMode
         {
             var catalog = AssetDatabase.LoadAssetAtPath<S15VisualCatalog>(
                 Gravivore.Editor.S15AssetConfigurator.CatalogPath);
-            var part = FindPart(catalog, modelName);
+            // Exercise the legacy factory directly; production hostile recipes use whole prefabs.
+            var part = new S15VisualPart();
+            typeof(S15VisualPart).GetField("_sourceModel",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic)
+                .SetValue(part,AssetDatabase.LoadAssetAtPath<GameObject>(Gravivore.Editor.S15AssetConfigurator.ModelRoot+modelName));
+            Assert.IsNotNull(part.SourceModel);
             var sourceMeshCount = part.SourceModel.GetComponentsInChildren<MeshFilter>(true).Length;
             var root = new GameObject($"S15 {modelName} Hierarchy Test");
             try

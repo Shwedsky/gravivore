@@ -14,6 +14,12 @@ When an asset is already integrated and tracked there, use that runtime asset fi
 
 Current scene/definition/prefab references are more authoritative than historical filenames.
 
+The Chapter01 R2 + Actor V2 integration candidate promotes the seven project-owned hostile models,
+controllers, PBR maps and clean production prefabs under `Assets/_Game/Content/ActorProductionV2/`.
+Their editable source is `art/chapter01-actor-production-v2/`; their exact Actor V2 source commit is
+`a3b5c279f48a932127a1d3cebe63069bedc7f6f5`. Actor review scenes, playback helpers and review prefabs
+are not production dependencies. World R2 and G-0 keep their existing runtime source references.
+
 ## 2. Project-owned editable source art
 
 Editable project-owned source art belongs under:

@@ -66,7 +66,7 @@ Enemy roles must be distinguishable by silhouette and function before color:
 - elite: materially and mechanically more complex than ordinary units, not merely scaled up;
 - boss: arena-defining machinery with unique mass, weapon causality and readable telegraphs.
 
-See `docs/visual-production-v2/ENEMY_VISUAL_TARGETS_APPROVED_V1.md` for the approved Scout/Cutter/Magnetar rules. Current G-0 bipedal anatomy remains separate from hostile radial/spider design language.
+For Chapter 01 actors use `docs/visual-blueprints/chapter01-actors/CHAPTER01_ACTOR_VISUAL_TARGETS_V2.md` and the exact approved PNG. The V2 anatomy supersedes older Scout/Cutter/Magnetar targets. Scout and Warden are bipedal, Arc Drone is airborne with blue energy, and Carrier is a vehicle. Current G-0 remains bipedal.
 
 ## Equipment and attack presentation
 

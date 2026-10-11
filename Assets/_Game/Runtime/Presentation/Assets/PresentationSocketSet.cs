@@ -6,7 +6,8 @@ namespace Gravivore.Presentation.Assets
     public enum PresentationSocket
     {
         Root, Core, Sensor, WeaponLeft, WeaponRight, AttackOrigin, HitCenter,
-        GroundContact, VfxTop, VfxRear, TelegraphOrigin
+        GroundContact, VfxTop, VfxRear, TelegraphOrigin, DamageNumberAnchor, HealthBarAnchor,
+        DeathVfxOrigin, ProjectileSource, AttackLineOrigin, AttackCircleOrigin, AttackConeOrigin
     }
 
     /// <summary>Optional exact-name transforms, cached once inside one visual hierarchy. No gameplay references.</summary>

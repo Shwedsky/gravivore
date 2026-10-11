@@ -67,7 +67,7 @@ namespace Gravivore.Tests.PlayMode
                 Assert.That(form.GetComponentsInChildren<MonoBehaviour>(true), Is.Empty);
                 Assert.That(form.GetComponentsInChildren<Renderer>().Length, Is.EqualTo(3));
                 Assert.IsTrue(form.GetComponentsInChildren<Renderer>().All(r =>
-                    r.sharedMaterial.name == "V46_HeroRed" &&
+                    r.sharedMaterial.name == "HostileV2_Red" &&
                     r.sharedMaterial.shader.name == "Universal Render Pipeline/Lit" &&
                     r.sharedMaterial.IsKeywordEnabled("_METALLICSPECGLOSSMAP") &&
                     new[]{"_BaseMap","_BumpMap","_MetallicGlossMap","_OcclusionMap","_EmissionMap"}
@@ -121,7 +121,7 @@ namespace Gravivore.Tests.PlayMode
             Assert.IsTrue(scene.Root.Progression.TryGrant(new EnemyDeathEvent(
                 new EnemyLifeId(Guid.NewGuid()), "scout-drone", Vector3.zero)));
         private static Transform CutterForm(OrdinaryEnemyController enemy) =>
-            enemy.transform.Find("Enemy Art Root/S15 Visual [cutter-unit]/Cutter_V1");
+            enemy.transform.Find("Enemy Art Root/S15 Visual [cutter-unit]/Cutter_V2");
         private static OrdinaryEnemyController[] Cutters(CanonicalSceneTestScope scene) =>
             scene.Root.GetComponentsInChildren<OrdinaryEnemyController>()
                 .Where(e => e.IsAlive && CutterForm(e) != null && CutterForm(e).gameObject.activeInHierarchy).ToArray();

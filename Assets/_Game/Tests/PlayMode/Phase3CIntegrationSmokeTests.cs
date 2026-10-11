@@ -21,7 +21,7 @@ namespace Gravivore.Tests.PlayMode
     public sealed class Phase3CIntegrationSmokeTests
     {
         private CanonicalSceneTestScope _scene;
-        private static readonly string[] Names = { "Scout_V1", "Cutter_V1", "Warden_V1", "ArcDrone_V1", "Carrier_V1" };
+        private static readonly string[] Names = { "Scout_V2", "Cutter_V2", "Warden_V2", "ArcDrone_V2", "Carrier_V2" };
         private static readonly PresentationSocket[] Roles = { PresentationSocket.Core, PresentationSocket.Sensor,
             PresentationSocket.AttackOrigin,PresentationSocket.HitCenter,PresentationSocket.GroundContact,
             PresentationSocket.VfxTop,PresentationSocket.VfxRear,PresentationSocket.TelegraphOrigin };
@@ -78,9 +78,10 @@ namespace Gravivore.Tests.PlayMode
             Assert.That(root.RepairHub.Manipulators.transform.position,Is.EqualTo(root.RepairHub.RepairPosition));
             Assert.NotNull(root.RepairHub.Manipulators.transform.Find("Authored repair pedestal 0"));
             Assert.NotNull(root.RepairHub.Manipulators.transform.Find("Authored repair pedestal 1"));
-            Assert.That(root.CustodianBoss.GetComponent<CharacterVisualBinding>().ActiveModel.Find("ConeAttackOrigin"),Is.Not.Null);
-            Assert.That(root.CustodianBoss.GetComponent<CharacterVisualBinding>().ActiveModel.Find("LineAttackOrigin"),Is.Not.Null);
-            Assert.That(root.CustodianBoss.GetComponent<CharacterVisualBinding>().ActiveModel.Find("CircleAttackOrigin"),Is.Not.Null);
+            var bossSockets=root.CustodianBoss.GetComponent<CharacterVisualBinding>().Sockets;
+            Assert.IsTrue(bossSockets.TryGet(PresentationSocket.AttackConeOrigin,out _));
+            Assert.IsTrue(bossSockets.TryGet(PresentationSocket.AttackLineOrigin,out _));
+            Assert.IsTrue(bossSockets.TryGet(PresentationSocket.AttackCircleOrigin,out _));
             Assert.IsTrue(root.WorldPresenter.EliteGate.BlockingCollider.enabled);
             var barrier = environment.Structures.Find("elite-gate Visuals/Physical Gate Barrier Visual");
             Assert.IsNotNull(barrier); Assert.IsTrue(barrier.gameObject.activeInHierarchy);
@@ -117,8 +118,8 @@ namespace Gravivore.Tests.PlayMode
             pool.Return(enemy); Assert.IsNull(binding.ActiveModel); Assert.IsNull(binding.Sockets);
             var reused = pool.Acquire(Config("carrier"),_scene.Root.PlayerObject.transform,_scene.Root.PlayerHealth,Vector3.one,pool.Return);
             Assert.AreSame(enemy,reused); Assert.That(reused.LifeId,Is.Not.EqualTo(life));
-            Assert.That(binding.ActiveModel.name,Is.EqualTo("Carrier_V1"));
-            Assert.AreSame(reused.TargetPoint,binding.GetSocketOr(PresentationSocket.Sensor,reused.TargetPoint));
+            Assert.That(binding.ActiveModel.name,Is.EqualTo("Carrier_V2"));
+            Assert.AreNotSame(oldSensor,binding.GetSocketOr(PresentationSocket.Sensor,reused.TargetPoint));
             Assert.IsFalse(oldSensor.gameObject.activeInHierarchy);
             Assert.That(binding.VisualRoot.localPosition,Is.EqualTo(Vector3.zero));
             Assert.That(reused.transform.localScale,Is.EqualTo(Vector3.one));

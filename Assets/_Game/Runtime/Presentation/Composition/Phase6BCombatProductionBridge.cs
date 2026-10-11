@@ -4,6 +4,7 @@ using Gravivore.Gameplay.Enemies;
 using Gravivore.Gameplay.Encounters;
 using Gravivore.Presentation.AudioVfx;
 using Gravivore.Presentation.Combat;
+using Gravivore.Presentation.Assets;
 using UnityEngine;
 
 namespace Gravivore.Presentation.Composition
@@ -15,6 +16,9 @@ namespace Gravivore.Presentation.Composition
         private S01SceneCompositionRoot _root;
         private GravityLashVfxPool _presentation;
         private float _groundEffectVisualLift;
+        private OrdinaryEnemyController[] _enemies;
+        private CharacterVisualBinding[] _bindings;
+        private CharacterVisualBinding _eliteBinding,_bossBinding;
         public Phase6BVfxCue LastTelegraphCue { get; private set; }
         public float LastTelegraphDuration { get; private set; }
         public int EnemyHitCount { get; private set; }
@@ -29,6 +33,11 @@ namespace Gravivore.Presentation.Composition
             _presentation = presentation != null ? presentation : throw new ArgumentNullException(nameof(presentation));
             if (definition == null) throw new ArgumentNullException(nameof(definition));
             _groundEffectVisualLift = definition.GroundEffectVisualLift;
+            _enemies=root.EnemyPopulation.GetComponentsInChildren<OrdinaryEnemyController>(true);
+            _bindings=new CharacterVisualBinding[_enemies.Length];
+            for(var i=0;i<_enemies.Length;i++)_bindings[i]=_enemies[i].GetComponent<CharacterVisualBinding>();
+            _eliteBinding=root.MagnetarGuard.GetComponent<CharacterVisualBinding>();
+            _bossBinding=root.CustodianBoss.GetComponent<CharacterVisualBinding>();
             if (!presentation.UsesPhase6BProductionPack) throw new InvalidOperationException("Phase6B pack required.");
             root.EnemyPopulation.EnemyDamaged += EnemyDamaged;
             root.EnemyPopulation.EnemyDied += EnemyDied;
@@ -48,13 +57,20 @@ namespace Gravivore.Presentation.Composition
         {
             if (value.Result.WasLethal) return;
             EnemyHitCount++;
-            _presentation.PlayEnemyHit(value.Position, value.LifeId.GetHashCode());
+            _presentation.PlayEnemyHit(value.Position, value.LifeId.GetHashCode(),EnemySocket(value.LifeId,PresentationSocket.HitCenter,value.Position));
         }
         private void EnemyDied(EnemyDeathEvent value)
         {
             EnemyDeathCount++;
-            _presentation.PlayEnemyShutdown(value.Position, value.LifeId.GetHashCode());
+            _presentation.PlayEnemyShutdown(value.Position, value.LifeId.GetHashCode(),EnemySocket(value.LifeId,PresentationSocket.DeathVfxOrigin,value.Position));
         }
+        private Vector3 EnemySocket(EnemyLifeId life,PresentationSocket role,Vector3 fallback)
+        {
+            for(var i=0;i<_enemies.Length;i++)if(_enemies[i].LifeId.Equals(life) && _bindings[i]?.Sockets!=null && _bindings[i].Sockets.TryGet(role,out var socket))return socket.position;
+            return fallback+Vector3.up*.7f;
+        }
+        private static Vector3 Socket(CharacterVisualBinding binding,PresentationSocket role,Transform fallback)=>
+            binding?.GetSocketOr(role,fallback).position ?? fallback.position;
         private void EliteTelegraph(EliteShockwaveTelegraphEvent value)
         {
             EliteAttackCount++;
@@ -71,12 +87,12 @@ namespace Gravivore.Presentation.Composition
         private void EliteCancelled(EliteShockwaveCancelledEvent value) => Vfx.StopCue(Phase6BVfxCue.HostileTelegraphBase);
         private void EliteDamaged(DamageResult value)
         {
-            if (!value.WasLethal) _presentation.PlayEnemyHit(_root.MagnetarGuard.transform.position, 0);
+            if (!value.WasLethal) _presentation.PlayEnemyHit(_root.MagnetarGuard.transform.position, 0,Socket(_eliteBinding,PresentationSocket.HitCenter,_root.MagnetarGuard.transform));
         }
         private void EliteDefeated(MagnetarGuardDefeatedEvent value)
         {
             Vfx.StopCue(Phase6BVfxCue.HostileTelegraphBase);
-            _presentation.PlayEnemyShutdown(value.Position, 0);
+            _presentation.PlayEnemyShutdown(value.Position, 0,Socket(_eliteBinding,PresentationSocket.DeathVfxOrigin,_root.MagnetarGuard.transform));
         }
         private void BossTelegraph(BossTelegraphEvent value)
         {
@@ -104,12 +120,12 @@ namespace Gravivore.Presentation.Composition
         private void BossReset(BossEncounterResetEvent value) => StopBossTelegraphs();
         private void BossDamaged(DamageResult value)
         {
-            if (!value.WasLethal) _presentation.PlayEnemyHit(_root.CustodianBoss.transform.position, 1);
+            if (!value.WasLethal) _presentation.PlayEnemyHit(_root.CustodianBoss.transform.position, 1,Socket(_bossBinding,PresentationSocket.HitCenter,_root.CustodianBoss.transform));
         }
         private void BossDefeated(BossDefeatedEvent value)
         {
             StopBossTelegraphs();
-            _presentation.PlayEnemyShutdown(value.Position, 1);
+            _presentation.PlayEnemyShutdown(value.Position, 1,Socket(_bossBinding,PresentationSocket.DeathVfxOrigin,_root.CustodianBoss.transform));
         }
         private void StopBossTelegraphs()
         {

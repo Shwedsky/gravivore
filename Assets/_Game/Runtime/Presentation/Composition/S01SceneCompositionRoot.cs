@@ -277,7 +277,7 @@ namespace Gravivore.Presentation.Composition
             {
                 _gravityLashVfx.EnablePresentationVariants();
                 gameObject.AddComponent<IndustrialMusicPresenter>().Initialize(this, _gravityLashVfx, _deviceCorrection);
-                gameObject.AddComponent<Gravivore.Presentation.Combat.VisualSliceCombatMotion>().Initialize(this,_gravityLashVfx,_deviceCorrection);
+                gameObject.AddComponent<Gravivore.Presentation.Combat.VisualSliceCombatMotion>().Initialize(this,_gravityLashVfx,_deviceCorrection,_s15VisualCatalog.HostilePresentation);
             }
             if (_visualEnvironment != null && _visualEnvironment.SliceGate != null)
                 gameObject.AddComponent<Gravivore.Presentation.Player.VisualSliceAnimationBridge>().Initialize(this, _gravityLashVfx, _s15VisualCatalog);

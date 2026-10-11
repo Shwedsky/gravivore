@@ -1,0 +1,98 @@
+{
+  "tests": {
+    "EditModeCandidate": {
+      "result": "Passed",
+      "total": "510",
+      "passed": "510",
+      "failed": "0",
+      "skipped": "0",
+      "duration": "12,8161971",
+      "start-time": "2026-10-11 15:34:51Z",
+      "end-time": "2026-10-11 15:35:03Z",
+      "nonPassingCases": []
+    },
+    "PlayModeCandidate": {
+      "result": "Skipped:Ignored",
+      "total": "149",
+      "passed": "148",
+      "failed": "0",
+      "skipped": "1",
+      "duration": "789,601523",
+      "start-time": "2026-10-11 15:37:23Z",
+      "end-time": "2026-10-11 15:50:33Z",
+      "nonPassingCases": [
+        {
+          "name": "Gravivore.Tests.PlayMode.VisualIntegrationSmokeTests.CaptureStructuralFoundationWhenRequested",
+          "result": "Skipped",
+          "reason": "Set GRAVIVORE_VISUAL_INTEGRATION_QA to export structural review captures."
+        }
+      ]
+    },
+    "DamageAnchorRegression": {
+      "result": "Passed",
+      "total": "1",
+      "passed": "1",
+      "failed": "0",
+      "skipped": "0",
+      "duration": "1,4232998",
+      "start-time": "2026-10-11 15:30:09Z",
+      "end-time": "2026-10-11 15:30:10Z",
+      "nonPassingCases": []
+    }
+  },
+  "clearance": {
+    "samples": 766,
+    "perActor": {
+      "Scout": 105,
+      "Cutter": 105,
+      "Warden": 121,
+      "ArcDrone": 105,
+      "Carrier": 105,
+      "Magnetar": 103,
+      "Custodian": 122
+    },
+    "penetratingVertices": 0,
+    "minimumFloorHeight": 0.024260513484477997,
+    "perActorMinimumY": {
+      "ArcDrone": 0.11519202589988708,
+      "Carrier": 0.024999797344207764,
+      "Custodian": 0.024866372346878052,
+      "Cutter": 0.02496516704559326,
+      "Magnetar": 0.024912968277931213,
+      "Scout": 0.024526432156562805,
+      "Warden": 0.024260513484477997
+    }
+  },
+  "editorPerformance": {
+    "method": "Actual playable Chapter01 Editor observation; CPU/GC include Unity Editor and test runner. Renderer/triangle inventory counts all enabled LOD objects, not submitted GPU draws. Potential lights are bounding-sphere candidates, not measured per-pixel lights. No Android performance acceptance.",
+    "frames": 240,
+    "peakEnemyPopulation": 20,
+    "peakVfx": 3,
+    "activeRendererObjects": 226,
+    "activeSkinObjects": 69,
+    "materials": 11,
+    "lights": 19,
+    "maxPotentialLightsAtSkin": 4,
+    "meanEditorFrameMs": 1.1157608195693076,
+    "editorFps": 896.2494312947894,
+    "meanMainThreadMs": 1.107007083333333,
+    "recorderGcValid": true,
+    "recorderCpuValid": true,
+    "totalEditorGcBytes": 2737292,
+    "maxEditorGcBytes": 18942,
+    "inventoryTriangles": 2409694
+  },
+  "fiveMinuteSoak": {
+    "completed": true,
+    "seconds": 300.000678,
+    "meanEditorFrameMs": 1.048490699622911,
+    "maxEditorFrameMs": 402.599609375,
+    "frames": 286522,
+    "maxLiveEnemies": 20,
+    "maxParticles": 122,
+    "gen0Collections": 45,
+    "reachedWaypoints": 63,
+    "method": "Unity Editor realtime combat/traversal observation; includes test runner and editor overhead; no Android GPU/FPS claim"
+  },
+  "deviceAcceptance": "NOT RUN: no connected Android device; final visual/device acceptance belongs to owner"
+}

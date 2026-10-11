@@ -35,7 +35,7 @@ Shared faction language:
 - no color-only role differentiation;
 - no generic stock identity after production adaptation.
 
-Scout/Cutter/Magnetar specifics remain in `docs/visual-production-v2/ENEMY_VISUAL_TARGETS_APPROVED_V1.md`.
+Chapter 01 hostile anatomy follows `docs/visual-blueprints/chapter01-actors/CHAPTER01_ACTOR_VISUAL_TARGETS_V2.md` and its exact PNG. Arc Drone retains the approved blue contained energy exception. Scout is a light blade-arm biped, Warden carries two separate arm-controlled shields, and Carrier is an enclosed vehicle.
 
 ## Environment
 

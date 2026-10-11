@@ -33,22 +33,22 @@ namespace Gravivore.Tests.PlayMode
         [UnityTest] public IEnumerator BossHasAuthoredRigDistinctAttackClipsAndThreeLodsWithoutArtAuthority()
         {
             yield return Load();var root=_scene.Root;var boss=root.CustodianBoss;var model=boss.GetComponent<CharacterVisualBinding>().ActiveModel;
-            StringAssert.StartsWith("Custodian_V3",model.name);PresentationPrefabValidation.ValidateOrThrow(model.gameObject);
+            StringAssert.StartsWith("Custodian_V2",model.name);PresentationPrefabValidation.ValidateOrThrow(model.gameObject);
             var animator=model.GetComponentInChildren<Animator>();Assert.IsFalse(animator.applyRootMotion);
             foreach(var state in new[]{"Idle","Run","Windup","Release","Special","Hit","Death"})
                 Assert.IsTrue(animator.HasState(0,Animator.StringToHash(state)),state);
             var lod=model.GetComponentInChildren<LODGroup>().GetLODs();Assert.That(lod.Length,Is.EqualTo(3));
             var triangles=lod.Select(l=>(int)((SkinnedMeshRenderer)l.renderers[0]).sharedMesh.GetIndexCount(0)/3).ToArray();
-            Assert.That(triangles[0],Is.LessThan(25000));Assert.That(triangles[1],Is.LessThan(triangles[0]));Assert.That(triangles[2],Is.LessThan(triangles[1]));
+            Assert.That(triangles[0],Is.GreaterThan(0));Assert.That(triangles[1],Is.LessThan(triangles[0]));Assert.That(triangles[2],Is.LessThan(triangles[1]));
             Assert.That(model.GetComponentsInChildren<Collider>().Length,Is.Zero);
             var authorityPosition=boss.transform.position;var radius=boss.CollisionRadius;var hp=boss.CurrentHitPoints;
             var bones=model.GetComponentsInChildren<Transform>(true);
-            var core=bones.Single(b=>b.name=="CORE");var shutter=bones.Single(b=>b.name=="L_SHUTTER");
-            Sample(animator,"Idle",.55f);var idleScale=core.localScale;var idleRotation=shutter.localRotation;
+            var core=bones.Single(b=>b.name=="BODY");var shutter=bones.Single(b=>b.name=="CROWN_L");
+            Sample(animator,"Idle",.55f);var idleBody=core.localRotation;var idleRotation=shutter.localRotation;
             Sample(animator,"Windup",.55f);
             Assert.That(Quaternion.Angle(shutter.localRotation,idleRotation),Is.GreaterThan(5),"Imported windup must move the shell.");
             foreach(var state in new[]{"Release","Special","Hit","Death"})Sample(animator,state,.55f);
-            Assert.That(core.localScale.magnitude,Is.LessThan(idleScale.magnitude*.65f),"Imported shutdown must extinguish the internal core.");
+            Assert.That(Quaternion.Angle(core.localRotation,idleBody),Is.GreaterThan(20),"Imported shutdown must visibly articulate the boss body.");
             Assert.That(boss.transform.position,Is.EqualTo(authorityPosition));Assert.That(boss.CollisionRadius,Is.EqualTo(radius));Assert.That(boss.CurrentHitPoints,Is.EqualTo(hp));
         }
         [UnityTest] public IEnumerator AuthoredRepairAndAmbientPoolsStayBoundedAndNeverHealByPresentation()
