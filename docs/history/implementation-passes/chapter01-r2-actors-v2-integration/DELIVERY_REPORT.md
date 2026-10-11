@@ -90,7 +90,16 @@ memory/thermal and GC profiling risks. See [final-gates](verification/final-gate
 
 ## APK
 
-Android build/delivery pending. This implementation commit freezes tested production content before building.
+- Delivered APK: `C:\Users\pamak\Documents\ChatGPT\gravivore\Builds\Android\gravivore-dev-0.1.0+50.apk`.
+- Version: 0.1.0, versionCode **50**; 118,962,914 bytes.
+- SHA256: `6d172d4125c80b39960e50f16aa76b3f85055cf8394e6bda42a67b998bf630ca`.
+- Build source commit: `57dfde50485a0db3d966e980bd94dddd1ea48488`.
+- Verified actual manifest: `com.gravivore.mobile.dev`, portrait, debuggable, ARM64 only. IL2CPP native library is present.
+- APK signature verifies and matches the Android Debug certificate of APK 49.
+- Serialized APK contents contain all seven production wrappers and all 21 actor LOD names plus World R2.
+- Build scenes: Bootstrap, then Chapter01_ScrapExclusion. Actor review scenes are absent from startup/dependencies.
+- All 22 previous delivery files retain their baseline bytes/hash, including APK 49.
+- [Manifest](verification/apk-manifest.txt), [signer](verification/apk-signer.txt), [packing](verification/apk-actor-world-packing.json), [metadata](verification/apk-metadata.json).
 
 ## Gallery and remaining visual issues
 
