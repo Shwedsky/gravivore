@@ -17,6 +17,7 @@ namespace Gravivore.Tests.PlayMode
             var player=scope.Root.PlayerObject;var body=player.GetComponent<CharacterController>();
             var position=player.transform.position;var camera=Camera.main;
             var cameraPosition=camera.transform.position;var cameraRotation=camera.transform.rotation;
+            var cameraFov=camera.fieldOfView;
             var gate=scope.Root.WorldPresenter.EliteGate.BlockingCollider.bounds;
             Assert.IsNull(player.transform.Find("G-0 V2.1 PRESENTATION ONLY"));
             var scene=SceneManager.CreateScene("G0 V21 isolated geometry smoke");
@@ -30,7 +31,7 @@ namespace Gravivore.Tests.PlayMode
                 Assert.That(body.radius,Is.EqualTo(.42f));Assert.That(body.height,Is.EqualTo(1.4f));
                 Assert.That(body.center,Is.EqualTo(new Vector3(0,.7f,0)));
                 Assert.That(player.transform.position,Is.EqualTo(position));Assert.That(player.transform.localScale,Is.EqualTo(Vector3.one));
-                Assert.That(camera.fieldOfView,Is.EqualTo(46));Assert.That(camera.transform.position,Is.EqualTo(cameraPosition));
+                Assert.That(camera.fieldOfView,Is.EqualTo(cameraFov));Assert.That(camera.transform.position,Is.EqualTo(cameraPosition));
                 Assert.That(camera.transform.rotation,Is.EqualTo(cameraRotation));
                 Assert.That(scope.Root.WorldPresenter.EliteGate.BlockingCollider.bounds,Is.EqualTo(gate));
             }

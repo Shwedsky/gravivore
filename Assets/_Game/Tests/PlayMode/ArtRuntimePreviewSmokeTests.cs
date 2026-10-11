@@ -92,10 +92,9 @@ namespace Gravivore.Tests.PlayMode
             player.transform.position = previewPosition;
             var camera = Camera.main;
             Assert.IsNotNull(camera);
-            camera.transform.position = player.transform.position + new Vector3(0, 14.8f, -11.2f);
-            camera.transform.LookAt(player.transform.position + Vector3.up * .9f);
+            camera.GetComponent<Gravivore.Presentation.Camera.PortraitFollowCamera>().SnapToTarget();
             camera.aspect = 9f / 16f;
-            Assert.That(camera.fieldOfView, Is.EqualTo(46));
+            Assert.That(camera.fieldOfView, Is.EqualTo(UnityEditor.AssetDatabase.LoadAssetAtPath<Gravivore.Presentation.Camera.CameraFollowSettings>("Assets/_Game/Content/Definitions/S01_CameraFollowSettings.asset").FieldOfView));
             var cutters = Cutters(scene);
             Assert.That(cutters.Length, Is.EqualTo(4));
             var forms = new[] { player.transform.Find("Player Visual Root/G0_V3_Live_Tier2") }

@@ -73,7 +73,18 @@ namespace Gravivore.Tests.PlayMode
             yield return Load();var root=_scene.Root;var blueprint=root.VisualEnvironment.BlueprintWorldOnly;
             var route=blueprint?root.VisualEnvironment.Floor:root.VisualEnvironment.Floor.Find("Chapter 01 Concept Fidelity V2");Assert.NotNull(route);
             Assert.That(route.GetComponentsInChildren<Collider>(true).Length,Is.Zero);
-            var materials=route.GetComponentsInChildren<Renderer>(true).SelectMany(r=>r.sharedMaterials).Distinct().ToArray();Assert.That(materials.Length,Is.EqualTo(blueprint?4:1));
+            var materials=route.GetComponentsInChildren<Renderer>(true).SelectMany(r=>r.sharedMaterials).Distinct().ToArray();
+            var capacitorSurfaces=materials.Where(m=>m!=null&&m.name.StartsWith("CF_",StringComparison.Ordinal)).ToArray();
+            // A separately authored reference sector adds real surface families;
+            // retain the four context materials without freezing the new art to them.
+            Assert.That(materials.Length-capacitorSurfaces.Length,Is.EqualTo(blueprint?4:1));
+            if(capacitorSurfaces.Length>0)
+            {
+                foreach(var name in new[]{"CF_Graphite","CF_Shell","CF_Steel","CF_Deck"})
+                    Assert.IsTrue(capacitorSurfaces.Any(m=>m.name==name),"Missing functional sector surface: "+name);
+                foreach(var material in capacitorSurfaces)
+                {Assert.NotNull(material.shader);Assert.AreEqual("Universal Render Pipeline/Lit",material.shader.name);}
+            }
             if(blueprint)
             {
                 Assert.IsNull(route.Find("Chapter 01 Concept Fidelity V2"));

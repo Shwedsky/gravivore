@@ -10,6 +10,7 @@ namespace Gravivore.Editor
     {
         public const string UrpAssetPath = "Assets/_Game/Content/Settings/Gravivore_URP.asset";
         public const string RendererDataPath = "Assets/_Game/Content/Settings/Gravivore_URP_Renderer.asset";
+        public const string PostProcessDataPath = "Packages/com.unity.render-pipelines.universal/Runtime/Data/PostProcessData.asset";
 
         public static void ConfigureUrp()
         {
@@ -34,6 +35,15 @@ namespace Gravivore.Editor
 
             GraphicsSettings.defaultRenderPipeline = pipelineAsset;
             QualitySettings.renderPipeline = pipelineAsset;
+            // CreateInstance does not populate the package post-processing
+            // resources. A camera flag/Volume alone silently had no effect.
+            if (rendererData.postProcessData == null)
+            {
+                rendererData.postProcessData = AssetDatabase.LoadAssetAtPath<PostProcessData>(PostProcessDataPath);
+                if (rendererData.postProcessData == null)
+                    throw new InvalidDataException("URP post-processing resource asset is unavailable.");
+                EditorUtility.SetDirty(rendererData);
+            }
             Rendering.RenderingBuildAudit.EnsureRuntimeUiShaders();
             AssetDatabase.SaveAssets();
         }

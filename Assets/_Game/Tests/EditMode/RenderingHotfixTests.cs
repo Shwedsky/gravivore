@@ -66,7 +66,9 @@ namespace Gravivore.Tests.EditMode
             var renderer=new SerializedObject(AssetDatabase.LoadAssetAtPath<Object>(UrpConfigurator.RendererDataPath));
             Assert.IsTrue(pipeline.FindProperty("m_SupportsHDR").boolValue);Assert.That(pipeline.FindProperty("m_MSAA").intValue,Is.EqualTo(1));Assert.That(pipeline.FindProperty("m_RenderScale").floatValue,Is.EqualTo(1));
             Assert.That(renderer.FindProperty("m_RendererFeatures").arraySize,Is.Zero);Assert.That(pipeline.FindProperty("m_RendererDataList").GetArrayElementAtIndex(0).objectReferenceValue,Is.SameAs(renderer.targetObject));
-            Assert.That(PlayerSettings.colorSpace,Is.EqualTo(ColorSpace.Gamma));Assert.That(PlayerSettings.GetGraphicsAPIs(BuildTarget.Android),Does.Contain(GraphicsDeviceType.OpenGLES3));
+            Assert.That(PlayerSettings.colorSpace,Is.EqualTo(ColorSpace.Linear));
+            Assert.NotNull(renderer.FindProperty("postProcessData").objectReferenceValue);
+            Assert.That(PlayerSettings.GetGraphicsAPIs(BuildTarget.Android),Does.Contain(GraphicsDeviceType.OpenGLES3));
         }
         [Test] public void StaticBatchSubsetUsesEffectiveMaterialCoverageAndRejectsInvalidRanges()
         {

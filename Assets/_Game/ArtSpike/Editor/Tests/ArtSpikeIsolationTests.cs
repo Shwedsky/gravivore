@@ -178,9 +178,11 @@ namespace Gravivore.ArtSpike.Tests
                 var expected = ArtSpikeScene.GameplayCamera("Expected_S20", player.transform.position);
                 try
                 {
-                    Assert.That(camera.fieldOfView, Is.EqualTo(expected.fieldOfView));
-                    Assert.That(Vector3.Distance(camera.transform.position, expected.transform.position), Is.LessThan(.0001f));
-                    Assert.That(Quaternion.Angle(camera.transform.rotation, expected.transform.rotation), Is.LessThan(.001f));
+                    // This excluded historical bay keeps its frozen S20 camera.
+                    // Production camera changes must not force a review rebuild.
+                    Assert.That(camera.fieldOfView, Is.EqualTo(46f));
+                    Assert.That(Vector3.Distance(camera.transform.position, player.transform.position+new Vector3(0,14.8f,-11.2f)), Is.LessThan(.0001f));
+                    Assert.That(Quaternion.Angle(camera.transform.rotation,Quaternion.LookRotation(player.transform.position+Vector3.up*.9f-camera.transform.position)), Is.LessThan(.001f));
                     Assert.That(expected.aspect, Is.EqualTo(9f / 16f).Within(.0001f));
                     Assert.That(camera.cullingMask, Is.EqualTo(1 << 25));
                 }

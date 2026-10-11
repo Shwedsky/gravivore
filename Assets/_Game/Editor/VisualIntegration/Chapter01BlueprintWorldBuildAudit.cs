@@ -49,6 +49,8 @@ namespace Gravivore.Editor.VisualIntegration
             var deps = AssetDatabase.GetDependencies(Chapter01BlueprintWorldBuilder.ScenePath,true);
             return deps.Where(p => p.StartsWith(Chapter01BlueprintWorldBuilder.Root + "/Textures/",StringComparison.Ordinal) ||
                 p.StartsWith(Chapter01BlueprintWorldBuilder.Root + "/Materials/",StringComparison.Ordinal) ||
+                p.StartsWith(CapacitorFieldProofBuilder.Root + "/Textures/",StringComparison.Ordinal) ||
+                p.StartsWith(CapacitorFieldProofBuilder.Root + "/Materials/",StringComparison.Ordinal) ||
                 p.EndsWith(".fbx",StringComparison.OrdinalIgnoreCase) &&
                 AssetDatabase.LoadAssetAtPath<GameObject>(p)?.GetComponentInChildren<SkinnedMeshRenderer>(true) != null).Distinct().ToArray();
         }
