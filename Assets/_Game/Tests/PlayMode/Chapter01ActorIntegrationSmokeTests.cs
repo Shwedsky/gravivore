@@ -87,10 +87,13 @@ namespace Gravivore.Tests.PlayMode
                 Move(root,original+Vector3.back*3);yield return null;
                 Capture(root,Names[i]+"_normal");
                 var profile=Profile(binding);var animator=binding.ActiveModel.GetComponentInChildren<Animator>();animator.cullingMode=AnimatorCullingMode.AlwaysAnimate;
+                var bridge=root.GetComponent<VisualSliceAnimationBridge>();var priorBridge=bridge.enabled;
+                var priorState=animator.GetCurrentAnimatorStateInfo(0);var priorSpeed=animator.speed;
+                bridge.enabled=false;animator.speed=0;
                 for(var heading=0;heading<4;heading++)
                 {
                     enemy.transform.rotation=Quaternion.Euler(0,heading*90,0);
-                    animator.Play(profile.Idle,0,.25f);animator.Update(0);Capture(root,Names[i]+"_heading_"+heading);
+                    animator.Play(profile.Idle,0,.25f);animator.Update(0);yield return null;Capture(root,Names[i]+"_heading_"+heading);
                     foreach(var state in new[]{profile.Idle,profile.Move,profile.Attack,"Hit","Death",profile.Block}.Distinct())
                         for(var frame=0;frame<4;frame++)
                         {
@@ -99,8 +102,10 @@ namespace Gravivore.Tests.PlayMode
                         }
                 }
                 enemy.transform.rotation=Quaternion.identity;
-                animator.Play(profile.Attack,0,.5f);animator.Update(0);Capture(root,Names[i]+"_attack");
-                if(Names[i]=="Warden"){animator.Play(profile.Block,0,.5f);animator.Update(0);Capture(root,"Warden_Block");}
+                animator.Play(profile.Attack,0,.5f);animator.Update(0);yield return null;Capture(root,Names[i]+"_attack");
+                Assert.IsFalse(File.ReadAllBytes(Output+"/gallery/"+Names[i]+"_heading_0.png").SequenceEqual(File.ReadAllBytes(Output+"/gallery/"+Names[i]+"_attack.png")),"Rendered attack pose must differ from idle");
+                if(Names[i]=="Warden"){animator.Play(profile.Block,0,.5f);animator.Update(0);yield return null;Capture(root,"Warden_Block");}
+                animator.Play(priorState.fullPathHash,0,priorState.normalizedTime);animator.Update(0);animator.speed=priorSpeed;bridge.enabled=priorBridge;
                 Move(root,original+Vector3.back*.8f);
                 for(var frame=0;frame<30;frame++){enemy.Tick(.05f);root.GetComponent<VisualSliceAnimationBridge>().Tick(.05f);yield return null;}
                 Capture(root,Names[i]+"_combat");
@@ -119,13 +124,13 @@ namespace Gravivore.Tests.PlayMode
             Move(root,root.MagnetarGuard.transform.position+Vector3.back*4);root.MagnetarGuard.Tick(.01f);
             yield return null;Capture(root,"Magnetar_normal");
             var eliteBinding=root.MagnetarGuard.GetComponent<CharacterVisualBinding>();
-            SampleEncounter(root,"Magnetar",eliteBinding,blockers,records,new[]{"Idle","Run","Attack","Charge","Vent","Hit","Death"});
+            yield return SampleEncounter(root,"Magnetar",eliteBinding,blockers,records,new[]{"Idle","Run","Attack","Charge","Vent","Hit","Death"});
             root.MagnetarGuard.ApplyDamage(new DamageRequest(100000,DamageType.Gravity));
             yield return null;Capture(root,"Magnetar_death");
             Move(root,root.CustodianBoss.transform.position+Vector3.back*4);root.CustodianBoss.Tick(.01f);
             yield return null;Capture(root,"Custodian_normal");
             var bossBinding=root.CustodianBoss.GetComponent<CharacterVisualBinding>();
-            SampleEncounter(root,"Custodian",bossBinding,blockers,records,new[]{"Idle","Run","Attack","Windup","Telegraph","AttackLine","AttackCircle","AttackCone","Hit","Death"});
+            yield return SampleEncounter(root,"Custodian",bossBinding,blockers,records,new[]{"Idle","Run","Attack","Windup","Telegraph","AttackLine","AttackCircle","AttackCone","Hit","Death"});
             root.CustodianBoss.ApplyDamage(new DamageRequest(100000,DamageType.Gravity));
             yield return null;Capture(root,"Custodian_death");
             Directory.CreateDirectory(Output+"/verification");
@@ -317,14 +322,22 @@ namespace Gravivore.Tests.PlayMode
             var catalog=Resources.FindObjectsOfTypeAll<S15VisualCatalog>().First(c=>c.HostilePresentation!=null);
             return catalog.HostilePresentation.Get(binding.ActiveModel.GetComponentInChildren<Animator>().runtimeAnimatorController);
         }
-        private static void SampleEncounter(S01SceneCompositionRoot root,string name,CharacterVisualBinding binding,BoxCollider[] blockers,List<Clearance> records,string[] states)
+        private static IEnumerator SampleEncounter(S01SceneCompositionRoot root,string name,CharacterVisualBinding binding,BoxCollider[] blockers,List<Clearance> records,string[] states)
         {
             var animator=binding.ActiveModel.GetComponentInChildren<Animator>();animator.cullingMode=AnimatorCullingMode.AlwaysAnimate;
+            var bridge=root.GetComponent<VisualSliceAnimationBridge>();var priorBridge=bridge.enabled;
+            var priorState=animator.GetCurrentAnimatorStateInfo(0);var priorSpeed=animator.speed;
+            bridge.enabled=false;animator.speed=0;
             foreach(var state in states)
             {
-                animator.Play(state,0,.5f);animator.Update(0);Capture(root,name+"_"+state);
+                animator.Play(state,0,.5f);animator.Update(0);
+                // GPU skin matrices are refreshed at the next frame; immediate repeated Camera.Render
+                // calls can otherwise capture the preceding pose despite correct CPU BakeMesh results.
+                yield return null;Assert.IsTrue(animator.GetCurrentAnimatorStateInfo(0).IsName(state));Capture(root,name+"_"+state);
                 records.Add(CheckMesh(name,state,"arena-center",binding,blockers));
             }
+            Assert.IsFalse(File.ReadAllBytes(Output+"/gallery/"+name+"_Idle.png").SequenceEqual(File.ReadAllBytes(Output+"/gallery/"+name+"_Attack.png")),"Rendered encounter attack pose must differ from idle");
+            animator.Play(priorState.fullPathHash,0,priorState.normalizedTime);animator.Update(0);animator.speed=priorSpeed;bridge.enabled=priorBridge;
         }
         [Serializable] private sealed class ClearanceReport{public Clearance[] samples;}
         [Serializable] private sealed class Clearance

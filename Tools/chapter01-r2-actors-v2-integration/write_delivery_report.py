@@ -49,6 +49,8 @@ Carrier Bank loops and turns as a vehicle. Warden retains two separate arm-contr
 Magnetar Charge/Vent and Custodian phase poses follow existing authoritative timing.
 Custodian basic Windup/Attack remain distinct from Telegraph and phase attacks.
 Localized emission is enabled with modest actor-only material gains; authored PBR maps are retained.
+The world build audit now derives required FBX resources from the current scene/catalog dependencies,
+retaining R2 sector/material/texture checks and G-0 while allowing the retired hostile models to leave the APK.
 
 No gameplay collider is changed. Bounded cosmetic wall separation preserves the source model
 scale/envelope and leaves controller/sensor/ground telegraph authority unchanged. Full technical

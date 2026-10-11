@@ -14,6 +14,16 @@ namespace Gravivore.Tests.EditMode
         [Test] public void AllSevenAreProductionDependenciesWithAuthoredSockets()
         { Assert.DoesNotThrow(Chapter01ActorIntegrationBuilder.Validate); }
 
+        [Test] public void WorldPackingAuditRequiresCurrentActorsAndPreservedG0()
+        {
+            var required=Chapter01BlueprintWorldBuildAudit.RequiredResourcePaths();
+            foreach(var actor in Chapter01ActorIntegrationBuilder.Actors)
+                Assert.Contains(Chapter01ActorIntegrationBuilder.Root+"/Models/"+actor+"_V2.fbx",required);
+            Assert.Contains("Assets/_Game/ArtReview/G0ProductionV3/Models/G0_Production_V3.fbx",required,"Preserved G-0 must still be required");
+            Assert.IsFalse(required.Any(p=>p.EndsWith("/Scout_V1.fbx",StringComparison.Ordinal)),"Retired hostile cannot remain a build requirement");
+            Assert.IsTrue(required.Any(p=>p.StartsWith(Chapter01BlueprintWorldBuilder.Root+"/Textures/",StringComparison.Ordinal)));
+        }
+
         [TestCase("Scout")] [TestCase("Cutter")] [TestCase("Warden")]
         [TestCase("ArcDrone")] [TestCase("Carrier")] [TestCase("Magnetar")] [TestCase("Custodian")]
         public void ProductionPrefabRetainsRigMaterialsLodsAndStationaryAuthority(string actor)

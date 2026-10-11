@@ -19,6 +19,7 @@ controller state/clip content are retained from the pinned Actor V2 commit.
   Vent on authoritative resolution. Telegraph duration controls visual playback speed only.
 - Custodian M-0 → Custodian_V2: Idle / Run / Attack / Hit / Death; Telegraph on windup,
   AttackLine / AttackCircle / AttackCone on the corresponding authoritative phase event.
+  Basic attacks use Windup then Attack, independently of special Telegraph/phase attacks.
 
 `HostileMotion.asset` stores the presentation-only mapping, movement-cycle distance, recovery,
 turn rate and clearance envelope. Movement animation speed follows actual displacement with a bounded

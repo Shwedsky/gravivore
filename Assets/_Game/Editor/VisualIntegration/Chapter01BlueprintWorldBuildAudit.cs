@@ -19,10 +19,7 @@ namespace Gravivore.Editor.VisualIntegration
         {
             if (!Chapter01BlueprintWorldBuilder.IsBlueprintWorld()) return;
             var packed = report.packedAssets.SelectMany(p => p.contents).Select(c => c.sourceAssetPath).Distinct().ToArray();
-            var deps = AssetDatabase.GetDependencies(Chapter01BlueprintWorldBuilder.ScenePath,true);
-            var required = deps.Where(p => p.StartsWith(Chapter01BlueprintWorldBuilder.Root + "/Textures/",StringComparison.Ordinal) ||
-                p.StartsWith(Chapter01BlueprintWorldBuilder.Root + "/Materials/",StringComparison.Ordinal)).Concat(
-                ConceptConvergenceV47Builder.Actors.Select(a => "Assets/_Game/Content/" + a.folder + "/Models/" + a.name + ".fbx")).ToArray();
+            var required = RequiredResourcePaths();
             foreach (var path in required)
                 if (!packed.Contains(path)) throw new BuildFailedException("Rebuilt world or preserved actor resource not packed: " + path);
             var names = Chapter01BlueprintWorldBuilder.ReadLayout().sectors.Select(s => s.model + " / authored industrial sector")
@@ -43,6 +40,15 @@ namespace Gravivore.Editor.VisualIntegration
             File.WriteAllLines(Chapter01BlueprintWorldBuilder.Output + "/apk-required-resources.txt",required);
             File.WriteAllLines(Chapter01BlueprintWorldBuilder.Output + "/apk-world-serialized-sectors.txt",names);
             File.WriteAllLines(Chapter01BlueprintWorldBuilder.Output + "/apk-packed-assets.txt",packed);
+        }
+        public static string[] RequiredResourcePaths()
+        {
+            // The production catalogs select actor generations. Requiring historical actors here
+            // would reject a valid presentation replacement even when the R2 world is preserved.
+            var deps = AssetDatabase.GetDependencies(Chapter01BlueprintWorldBuilder.ScenePath,true);
+            return deps.Where(p => p.StartsWith(Chapter01BlueprintWorldBuilder.Root + "/Textures/",StringComparison.Ordinal) ||
+                p.StartsWith(Chapter01BlueprintWorldBuilder.Root + "/Materials/",StringComparison.Ordinal) ||
+                p.EndsWith(".fbx",StringComparison.OrdinalIgnoreCase)).Distinct().ToArray();
         }
         private static bool ContainsSerialized(byte[] bytes, string value)
         {
