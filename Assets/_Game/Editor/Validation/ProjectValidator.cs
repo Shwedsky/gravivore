@@ -167,7 +167,9 @@ namespace Gravivore.Editor
         {
             var camera = AssetDatabase.LoadAssetAtPath<CameraFollowSettings>(
                 "Assets/_Game/Content/Definitions/S01_CameraFollowSettings.asset");
-            if (camera == null || camera.Offset.y < 14f || camera.Offset.y > 16f ||
+            if (VisualIntegration.CapacitorFieldProofBuilder.IsInstalled)
+                VisualIntegration.CapacitorFieldProofBuilder.ValidateCameraOrThrow();
+            else if (camera == null || camera.Offset.y < 14f || camera.Offset.y > 16f ||
                 camera.Offset.z < -13f || camera.Offset.z > -10f ||
                 camera.FieldOfView < 44f || camera.FieldOfView > 50f ||
                 camera.PositionDamping < 0f || camera.PositionDamping > 0.5f)
@@ -938,6 +940,8 @@ namespace Gravivore.Editor
             {
                 throw new InvalidOperationException("The URP pipeline asset must reference the canonical Universal Renderer Data asset.");
             }
+            if (rendererData.postProcessData == null)
+                throw new InvalidOperationException("URP Renderer requires its package post-processing resources.");
 
             if (GraphicsSettings.defaultRenderPipeline != pipelineAsset)
             {

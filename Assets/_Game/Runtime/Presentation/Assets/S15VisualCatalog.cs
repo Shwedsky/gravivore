@@ -50,6 +50,8 @@ namespace Gravivore.Presentation.Assets
     public sealed class S15VisualCatalog : ScriptableObject
     {
         [SerializeField] private Material _bodyMaterial;
+        [SerializeField,Min(0)] private float _playerWallEnvelopeRadius;
+        public float PlayerWallEnvelopeRadius=>_playerWallEnvelopeRadius;
         [SerializeField] private Material _accentMaterial;
         [SerializeField] private Material _darkMaterial;
         [SerializeField] private S15VisualRecipe _player;

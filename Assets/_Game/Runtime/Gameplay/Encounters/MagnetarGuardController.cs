@@ -23,6 +23,9 @@ namespace Gravivore.Gameplay.Encounters
         private bool _encounterActive;
         private bool _initialized;
         private EncounterBasicAttackCadence _basic;
+        private readonly Gravivore.Gameplay.World.ActorWallEnvelope _wallEnvelope = new Gravivore.Gameplay.World.ActorWallEnvelope();
+        public void ConfigureWallEnvelope(float radius, int mask) => _wallEnvelope.Configure(radius, mask);
+        public float WallEnvelopeRadius => _wallEnvelope.Radius;
         public event Action<EncounterBasicAttackEvent> BasicAttackStarted;
         public event Action<EncounterBasicAttackEvent> BasicAttackResolved;
 
@@ -122,7 +125,7 @@ namespace Gravivore.Gameplay.Encounters
         public bool TryDisplace(Vector3 destination, in DisplacementContext context)
         {
             if (!CanBeTargeted) return false;
-            _body.Move(destination - transform.position);
+            _body.Move(_wallEnvelope.Resolve(transform.position, destination - transform.position));
             return true;
         }
 
@@ -136,7 +139,7 @@ namespace Gravivore.Gameplay.Encounters
             if (decision.ShouldApproach && offset.sqrMagnitude > Mathf.Epsilon)
             {
                 var direction = offset.normalized;
-                _body.Move(direction * (_configuration.MoveSpeed * deltaTime));
+                _body.Move(_wallEnvelope.Resolve(transform.position, direction * (_configuration.MoveSpeed * deltaTime)));
                 transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
             }
 

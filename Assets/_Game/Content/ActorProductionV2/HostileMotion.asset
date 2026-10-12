@@ -28,8 +28,12 @@ MonoBehaviour:
     AttackRecovery: 0.52
     VisualRadius: 0.76
     WallInset: 0.025
-    MaximumWallOffset: 0.43
+    MaximumWallOffset: 0.08
     TurnDegreesPerSecond: 540
+    AttackColor: {r: 1, g: 0.18, b: 0.08, a: 0.8}
+    ElectricalTravel: 0
+    PairedAttackSources: 1
+    AttackStartNormalizedTime: 0.28
   - Controller: {fileID: 9100000, guid: e33acbf90e279a241a176b1e10215daa, type: 2}
     RunCycleDistance: 1.7
     Idle: Idle
@@ -45,8 +49,12 @@ MonoBehaviour:
     AttackRecovery: 0.52
     VisualRadius: 1.46
     WallInset: 0.025
-    MaximumWallOffset: 1.08
+    MaximumWallOffset: 0.08
     TurnDegreesPerSecond: 360
+    AttackColor: {r: 1, g: 0.18, b: 0.08, a: 0.8}
+    ElectricalTravel: 0
+    PairedAttackSources: 1
+    AttackStartNormalizedTime: 0.28
   - Controller: {fileID: 9100000, guid: 43881c5c7d64eb74d82697d2b40808b5, type: 2}
     RunCycleDistance: 1.35
     Idle: Idle
@@ -62,8 +70,12 @@ MonoBehaviour:
     AttackRecovery: 0.52
     VisualRadius: 1.17
     WallInset: 0.025
-    MaximumWallOffset: 0.71
+    MaximumWallOffset: 0.08
     TurnDegreesPerSecond: 240
+    AttackColor: {r: 1, g: 0.48, b: 0.075, a: 0.8}
+    ElectricalTravel: 0
+    PairedAttackSources: 1
+    AttackStartNormalizedTime: 0.28
   - Controller: {fileID: 9100000, guid: 14492f8ae57e8b84797642125fd110c8, type: 2}
     RunCycleDistance: 2
     Idle: Hover
@@ -79,8 +91,12 @@ MonoBehaviour:
     AttackRecovery: 0.52
     VisualRadius: 0.85
     WallInset: 0.025
-    MaximumWallOffset: 0.51
+    MaximumWallOffset: 0.08
     TurnDegreesPerSecond: 420
+    AttackColor: {r: 0.12, g: 0.58, b: 1, a: 0.85}
+    ElectricalTravel: 1
+    PairedAttackSources: 0
+    AttackStartNormalizedTime: 0
   - Controller: {fileID: 9100000, guid: a5a2ac8a7f91eff46b013cf5ab468625, type: 2}
     RunCycleDistance: 2.2
     Idle: Idle
@@ -96,8 +112,12 @@ MonoBehaviour:
     AttackRecovery: 0.52
     VisualRadius: 1.3
     WallInset: 0.025
-    MaximumWallOffset: 0.8
+    MaximumWallOffset: 0.08
     TurnDegreesPerSecond: 150
+    AttackColor: {r: 1, g: 0.48, b: 0.075, a: 0.8}
+    ElectricalTravel: 0
+    PairedAttackSources: 0
+    AttackStartNormalizedTime: 0
   - Controller: {fileID: 9100000, guid: 1b3e728b5fc47de47bdfef0491c37a0d, type: 2}
     RunCycleDistance: 1.4
     Idle: Idle
@@ -113,8 +133,12 @@ MonoBehaviour:
     AttackRecovery: 0.52
     VisualRadius: 2.11
     WallInset: 0.025
-    MaximumWallOffset: 1.48
+    MaximumWallOffset: 0.08
     TurnDegreesPerSecond: 180
+    AttackColor: {r: 1, g: 0.48, b: 0.075, a: 0.8}
+    ElectricalTravel: 1
+    PairedAttackSources: 0
+    AttackStartNormalizedTime: 0
   - Controller: {fileID: 9100000, guid: 525534dc1257bff4d92921a13670b4db, type: 2}
     RunCycleDistance: 1.4
     Idle: Idle
@@ -130,5 +154,9 @@ MonoBehaviour:
     AttackRecovery: 0.52
     VisualRadius: 2.98
     WallInset: 0.025
-    MaximumWallOffset: 2
+    MaximumWallOffset: 0.08
     TurnDegreesPerSecond: 180
+    AttackColor: {r: 1, g: 0.18, b: 0.08, a: 0.8}
+    ElectricalTravel: 1
+    PairedAttackSources: 0
+    AttackStartNormalizedTime: 0

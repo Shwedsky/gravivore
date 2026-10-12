@@ -103,6 +103,8 @@ namespace Gravivore.Tests.PlayMode
         [UnityTest] public IEnumerator CompleteWorldLockedAndUnlockedCapsuleRoutesAndActualControllerTraversal()
         {
             yield return Load();var root=_scene.Root;var body=root.PlayerObject.GetComponent<CharacterController>();
+            var locomotion=root.PlayerObject.GetComponent<PlayerLocomotion>();locomotion.enabled=false;
+            var input=new TraversalInput();locomotion.Initialize(input,UnityEngine.Camera.main.transform,root.PlayerStats,540);
             foreach(var controller in root.GetComponentsInChildren<CharacterController>(true))if(controller!=body)controller.enabled=false;
             Physics.SyncTransforms();var start=body.transform.position;
             var locked=new RouteGrid(root,start);
@@ -112,7 +114,8 @@ namespace Gravivore.Tests.PlayMode
             var world=root.WorldPresenter.Configuration;
             foreach(var spot in root.StrongSpots)Assert.That(locked.Reaches(spot.Position),Is.EqualTo(spot.Position.z<world.EliteGate.Position.z),"Locked: "+spot.Id);
             Assert.IsTrue(locked.Reaches(world.EliteGate.Position+Vector3.back*2));Assert.IsFalse(locked.Reaches(root.MagnetarGuard.transform.position));
-            Assert.IsFalse(locked.Reaches(world.BossGate.Position+Vector3.back*2));Assert.IsFalse(locked.Reaches(root.CustodianBoss.transform.position));
+            var bossApproach=world.BossGate.Position+Vector3.back*2+Vector3.right*2;
+            Assert.IsFalse(locked.Reaches(bossApproach));Assert.IsFalse(locked.Reaches(root.CustodianBoss.transform.position));
             root.WorldUnlocks.PrepareEliteEncounterForDevelopment();root.Chapter1Encounters.Tick();
             root.MagnetarGuard.ApplyDamage(new DamageRequest(100000,DamageType.Gravity));Physics.SyncTransforms();
             var opened=new RouteGrid(root,start);var targets=new List<(string id,Vector3 point)>();
@@ -121,18 +124,21 @@ namespace Gravivore.Tests.PlayMode
             {var config=definition.CreateRuntimeConfiguration();foreach(var anchor in config.AnchorOffsets)targets.Add((config.Id+" anchor "+anchor,config.WorldOrigin+anchor));}
             foreach(var spot in root.StrongSpots)targets.Add((spot.Id,spot.Position));
             targets.Add(("elite approach",world.EliteGate.Position+Vector3.back*2));targets.Add(("Magnetar",root.MagnetarGuard.transform.position));
-            targets.Add(("boss gate approach",world.BossGate.Position+Vector3.back*2));targets.Add(("Custodian arena",root.CustodianBoss.transform.position));
+            targets.Add(("boss gate approach",bossApproach));targets.Add(("Custodian arena",root.CustodianBoss.transform.position));
             foreach(var target in targets)
             {
                 Assert.IsTrue(opened.Reaches(target.point),target.id+" must have a capsule route.");
-                Move(root,start);foreach(var point in opened.Path(target.point))Walk(body,point,target.id);Walk(body,target.point,target.id);
+                Move(root,start);foreach(var point in opened.Path(target.point))Walk(body,locomotion,input,point,target.id);Walk(body,locomotion,input,target.point,target.id);
                 Assert.That(Vector3.Distance(body.transform.position,target.point),Is.LessThan(.2f),target.id+" actual controller");
             }
             Directory.CreateDirectory("docs/history/visual-stages/chapter01-visual-passes/chapter01-production/verification");
-            File.WriteAllLines("docs/history/visual-stages/chapter01-visual-passes/chapter01-production/verification/reachability.txt",targets.Select(t=>t.id+" => "+t.point+" capsule + CharacterController PASS"));
+            File.WriteAllLines("docs/history/visual-stages/chapter01-visual-passes/chapter01-production/verification/reachability.txt",targets.Select(t=>t.id+" => "+t.point+" full wall envelope + PlayerLocomotion + CharacterController PASS"));
         }
-        private static void Walk(CharacterController body,Vector3 point,string label)
-        {for(var i=0;i<40;i++){var delta=point-body.transform.position;delta.y=0;if(delta.magnitude<.08f)return;body.Move(Vector3.ClampMagnitude(delta,.16f));Physics.SyncTransforms();}
+        private sealed class TraversalInput : IMovementInput { public Vector2 Movement { get; set; } }
+        private static void Walk(CharacterController body,PlayerLocomotion locomotion,TraversalInput input,Vector3 point,string label)
+        {for(var i=0;i<160;i++){var delta=point-body.transform.position;delta.y=0;if(delta.magnitude<.08f){input.Movement=Vector2.zero;return;}
+                var camera=UnityEngine.Camera.main.transform;var forward=Vector3.ProjectOnPlane(camera.forward,Vector3.up).normalized;var right=Vector3.ProjectOnPlane(camera.right,Vector3.up).normalized;
+                input.Movement=new Vector2(Vector3.Dot(delta.normalized,right),Vector3.Dot(delta.normalized,forward));locomotion.Step(.02f);Physics.SyncTransforms();}
             Assert.Fail(label+" controller blocked at "+body.transform.position+" towards "+point);}
         internal sealed class RouteGrid
         {
@@ -142,7 +148,7 @@ namespace Gravivore.Tests.PlayMode
                 var bounds=root.WorldPresenter.Bounds;_width=Mathf.RoundToInt(bounds.Size.x/Spacing)-1;_height=Mathf.RoundToInt(bounds.Size.y/Spacing)-1;
                 _origin=new Vector3(bounds.MinX+Spacing,0,bounds.MinZ+Spacing);_parents=Enumerable.Repeat(-1,_width*_height).ToArray();
                 _start=Cell(start);_parents[_start]=_start;var queue=new Queue<int>();queue.Enqueue(_start);
-                var radius=root.PlayerObject.GetComponent<CharacterController>().radius+.06f;var mask=LayerMask.GetMask("HardBlocker");
+                var radius=Mathf.Max(root.PlayerObject.GetComponent<CharacterController>().radius,root.PlayerObject.GetComponent<PlayerLocomotion>().WallEnvelopeRadius)+.06f;var mask=LayerMask.GetMask("HardBlocker");
                 while(queue.Count>0)
                 {
                     var current=queue.Dequeue();var x=current%_width;var z=current/_width;

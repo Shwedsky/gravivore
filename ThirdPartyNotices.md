@@ -108,6 +108,14 @@ Production derivatives: `Assets/_Game/Content/VisualReplacementV3/`. Included li
 - Exact archive SHA256, source entries and individual source hashes: `docs/history/implementation-passes/chapter01-blueprint-world-r1/asset-intake.json`. Bundled license evidence: `Assets/_Game/Content/BlueprintWorldR1/Licenses/`.
 - Original archives and inspection sources remain ignored under `ExternalAssetIntake/Current/`. This pass replaces environment geometry only; accepted actor, weapon and UI art retain their existing notices.
 
+## Capacitor Field playable concept proof (2026-10-12)
+
+- Quaternius Modular Sci-Fi MegaKit Standard: `Column_Pipes`, `Prop_PipeHolder`, `Prop_AccessPoint`; https://quaternius.com/packs/modularscifimegakit.html; CC0 1.0.
+- Molten Maps SciFi Asset Pack: `Command Console` and its original Imphenzia gradient palette; https://moltenbolt.itch.io/molten-maps-scifi; bundled CC0 license.
+- Runtime derivative: `Assets/_Game/Content/CapacitorFieldProof/Models/CapacitorField.fbx`. Native donor UVs are preserved and Quaternius uses the previously promoted R1 trim maps. Main chambers, manifold, transformers, foundation and geometric service trenches are original project work.
+- Exact canonical archive entries, SHA256 and bundled license bytes: `docs/history/implementation-passes/capacitor-field-proof/provenance.json` and `Assets/_Game/Content/CapacitorFieldProof/Licenses/`. Raw archives/extracted donor FBXs remain in ignored CURRENT intake.
+- No paid package, vendor script execution or commercial-game source is introduced. Attribution is optional under these bundled CC0 terms.
+
 ## Import template (future additions)
 
 When importing any external asset, append:

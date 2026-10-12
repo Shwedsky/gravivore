@@ -2,6 +2,7 @@ using System;
 using Gravivore.Core.Events;
 using Gravivore.Gameplay.Combat;
 using Gravivore.Gameplay.Player;
+using Gravivore.Gameplay.World;
 using UnityEngine;
 
 namespace Gravivore.Gameplay.Enemies
@@ -68,6 +69,8 @@ namespace Gravivore.Gameplay.Enemies
         private PlayerStatsState _playerStats;
         private bool _isActive;
         private bool _isInitialized;
+        private readonly ActorWallEnvelope _wallEnvelope = new ActorWallEnvelope();
+        public float WallEnvelopeRadius => _wallEnvelope.Radius;
         private AmbientPatrolParameters _ambientSettings;
         private AmbientPatrolState _ambient;
         private uint _ambientSeed;
@@ -165,6 +168,7 @@ namespace Gravivore.Gameplay.Enemies
             _body.enabled = true;
             _ambient.Reset(position,++_ambientSeed,_ambientSettings);
             _visualState?.Apply(configuration.Id);
+            _wallEnvelope.Configure((_visualState as IActorWallEnvelopeSource)?.WallEnvelopeRadius ?? 0, LayerMask.GetMask("HardBlocker"));
             _isActive = true;
             gameObject.name = $"Enemy [{configuration.Id}]";
             gameObject.SetActive(true);
@@ -233,7 +237,7 @@ namespace Gravivore.Gameplay.Enemies
                 return false;
             }
 
-            _body.Move(destination - transform.position);
+            _body.Move(_wallEnvelope.Resolve(transform.position, destination - transform.position));
             return true;
         }
 
@@ -258,14 +262,14 @@ namespace Gravivore.Gameplay.Enemies
                 var ambientStep=_ambient.Step(transform.position,deltaTime,_ambientSettings);
                 if (ambientStep.sqrMagnitude>0)
                 {
-                    _body.Move(ambientStep);
+                    _body.Move(_wallEnvelope.Resolve(transform.position, ambientStep));
                     transform.rotation=Quaternion.RotateTowards(transform.rotation,Quaternion.LookRotation(ambientStep),_ambientSettings.TurnSpeed*deltaTime);
                 }
             }
             if (decision.ShouldApproach && offset.sqrMagnitude > Mathf.Epsilon)
             {
                 var direction = offset.normalized;
-                _body.Move(direction * (_configuration.MoveSpeed * deltaTime));
+                _body.Move(_wallEnvelope.Resolve(transform.position, direction * (_configuration.MoveSpeed * deltaTime)));
                 transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
             }
 

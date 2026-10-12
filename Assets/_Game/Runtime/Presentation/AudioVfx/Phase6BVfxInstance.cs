@@ -6,6 +6,13 @@ namespace Gravivore.Presentation.AudioVfx {
 [SerializeField] Material _warningFillMaterial; [SerializeField,Range(.05f,.3f)] float _warningFillAlpha=.18f;
 Phase6BWarningFill _warningFill;
 int _playerVariant;
+Color _authoredColor; bool _mechanicalTravel;
+public Color PresentedColor => _color;
+public void ConfigureIndustrialAttack(Color? color, bool mechanical)
+{
+    EnsureBuilt(); _color=color??_authoredColor; _mechanicalTravel=mechanical;
+    if(_particles!=null){var main=_particles.main;main.startColor=_color;}
+}
 [SerializeField,Min(1)] float _pulseWidthMultiplier=2.1f, _arcWidthMultiplier=1.35f;
 [SerializeField,Min(.01f)] float _arcBend=.30f;
 public int PlayerVariant=>_playerVariant;
@@ -31,7 +38,7 @@ public void Tick(float dt){if(_remaining<=0||!gameObject.activeSelf)return;_rema
 public void StopImmediate(){_authoredRange=-1f;_authoredHalfAngle=-1f;_authoredLineWidth=0f;transform.rotation=Quaternion.identity;_remaining=0;_warningFill?.Stop();if(_particles!=null)_particles.Stop(true,ParticleSystemStopBehavior.StopEmittingAndClear);gameObject.SetActive(false);}
 public void ValidateOrThrow(){if(_duration<=0||_particleCount<1||_particleCount>64||_range<=0||_width<=0)throw new InvalidOperationException($"{name}: invalid VFX limits.");if(IsWarning && _warningFillMaterial==null)throw new InvalidOperationException($"{name}: warning fill material missing.");if(_material==null)throw new InvalidOperationException($"{name}: material missing.");}
 static bool UsesLine(Phase6BVfxShape s)=>s==Phase6BVfxShape.Beam||s==Phase6BVfxShape.Circle||s==Phase6BVfxShape.Cone||s==Phase6BVfxShape.Line||s==Phase6BVfxShape.Scanner;
-void EnsureBuilt(){if(_built)return;ValidateOrThrow();if(UsesLine(_shape))BuildLine();else BuildParticles();_built=true;}
+void EnsureBuilt(){if(_built)return;_authoredColor=_color;ValidateOrThrow();if(UsesLine(_shape))BuildLine();else BuildParticles();_built=true;}
 void BuildLine(){var go=new GameObject("Phase 6B Geometry",typeof(LineRenderer));go.transform.SetParent(transform,false);_line=go.GetComponent<LineRenderer>();_line.useWorldSpace=true;_line.widthMultiplier=_width;_line.numCapVertices=2;_line.numCornerVertices=2;_line.shadowCastingMode=ShadowCastingMode.Off;_line.receiveShadows=false;_line.lightProbeUsage=LightProbeUsage.Off;_line.reflectionProbeUsage=ReflectionProbeUsage.Off;_line.sharedMaterial=_material;if(IsWarning)_warningFill=new Phase6BWarningFill(transform,_warningFillMaterial,_shape==Phase6BVfxShape.Cone?22:_shape==Phase6BVfxShape.Line?4:32);}
 void BuildParticles(){var go=new GameObject("Phase 6B Particles",typeof(ParticleSystem));go.transform.SetParent(transform,false);_particles=go.GetComponent<ParticleSystem>();_particles.Stop(true,ParticleSystemStopBehavior.StopEmittingAndClear);var m=_particles.main;m.playOnAwake=false;m.loop=false;m.duration=Mathf.Max(.05f,_duration);m.startLifetime=Mathf.Min(_duration,_shape==Phase6BVfxShape.Sparks?.28f:.18f);m.startColor=_color;m.maxParticles=Mathf.Clamp(_particleCount,1,64);m.simulationSpace=ParticleSystemSimulationSpace.World;m.startSize=_shape==Phase6BVfxShape.Burst?.16f:_sparkSize;m.startSpeed=_shape==Phase6BVfxShape.Charge?-.7f:_shape==Phase6BVfxShape.Sparks?_sparkSpeed:1.4f;m.gravityModifier=_shape==Phase6BVfxShape.Sparks?.35f:0;var e=_particles.emission;e.enabled=false;var sh=_particles.shape;sh.enabled=true;sh.shapeType=_shape==Phase6BVfxShape.Sparks?ParticleSystemShapeType.Cone:ParticleSystemShapeType.Sphere;sh.radius=_shape==Phase6BVfxShape.Charge?.42f:.08f;if(_shape==Phase6BVfxShape.Sparks)sh.angle=22;var r=_particles.GetComponent<ParticleSystemRenderer>();r.sharedMaterial=_material;r.renderMode=_cue==Phase6BVfxCue.HostileImpact?ParticleSystemRenderMode.Stretch:ParticleSystemRenderMode.Billboard;if(_cue==Phase6BVfxCue.HostileImpact){r.lengthScale=2f;r.velocityScale=.12f;}r.shadowCastingMode=ShadowCastingMode.Off;r.receiveShadows=false;r.lightProbeUsage=LightProbeUsage.Off;r.reflectionProbeUsage=ReflectionProbeUsage.Off;}
 void ConfigureLine(float n){var c=_color;c.a*=IsWarning?(0.9f+0.1f*Mathf.Cos(n*Mathf.PI*4f))*Mathf.Clamp01((1-n)*20f):Mathf.Clamp01(1-n);if(IsWarning){var fill=_color;fill.a=_warningFillAlpha*Mathf.Clamp01((1-n)*20f);_warningFill.SetColor(fill);}_line.startColor=c;_line.endColor=new Color(c.r,c.g,c.b,c.a*.55f);_line.widthMultiplier=_width;if(_shape==Phase6BVfxShape.Line && _authoredLineWidth > 0f){
@@ -45,6 +52,12 @@ if(_shape==Phase6BVfxShape.Beam||_shape==Phase6BVfxShape.Line){
     _line.loop=false;
     var end=(_destination-_origin).sqrMagnitude>.0001f?_destination:_origin+transform.forward*_range;
     if(_cue==Phase6BVfxCue.HostileTravel){
+        if(_mechanicalTravel){
+            _line.positionCount=7;
+            var side=Vector3.Cross((end-_origin).normalized,Vector3.up);
+            for(var i=0;i<7;i++){var u=i/6f;var t=Mathf.Lerp(Mathf.Max(0,n-.3f),Mathf.Clamp01(n+.24f),u);_line.SetPosition(i,Vector3.Lerp(_origin,end,t)+side*Mathf.Sin(u*Mathf.PI)*.13f*(1-n));}
+            return;
+        }
         _line.positionCount=2;
         _line.SetPosition(0,Vector3.Lerp(_origin,end,Mathf.Max(0,n-.24f)));
         _line.SetPosition(1,Vector3.Lerp(_origin,end,Mathf.Clamp01(n+.20f)));return;

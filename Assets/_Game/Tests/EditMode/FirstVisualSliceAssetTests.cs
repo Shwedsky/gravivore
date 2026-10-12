@@ -26,7 +26,7 @@ namespace Gravivore.Tests.EditMode
             if(Chapter01BlueprintWorldBuilder.IsBlueprintWorld())
             {
                 foreach(var sector in Chapter01BlueprintWorldBuilder.ReadLayout().sectors)
-                    Assert.Contains(Chapter01BlueprintWorldBuilder.Root+"/Models/R1_"+sector.model+".fbx",deps);
+                    Assert.Contains(sector.id=="capacitor-field" ? CapacitorFieldProofBuilder.Model : sector.id=="cutting-floor"&&ConnectedConceptSectorsBuilder.IsInstalled?ConnectedConceptSectorsBuilder.Model("CuttingFloor"):Chapter01CompleteConceptBuilder.IsInstalled?Chapter01CompleteConceptBuilder.Model(sector.model):Chapter01BlueprintWorldBuilder.Root+"/Models/R1_"+sector.model+".fbx",deps);
                 foreach(var path in FirstVisualSliceDependencies.Required.Where(p=>p!=FirstVisualSliceBuilder.Prefab("Environment_Slice") && !p.EndsWith("Deck_ServiceMarkings.fbx") && !p.EndsWith("Scout_V1.fbx") && !p.EndsWith("Cutter_V1.fbx") && !p.EndsWith("Magnetar_V1.fbx")))
                     Assert.Contains(path,deps);
                 Assert.IsFalse(deps.Contains(FirstVisualSliceBuilder.Prefab("Environment_Slice")),"Historical world is not a production dependency.");

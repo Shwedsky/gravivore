@@ -58,8 +58,7 @@ namespace Gravivore.Tests.EditMode
         public void CurrentS20CameraAndGameplayBuildScenesExcludeTheArtBay()
         {
             var camera = AssetDatabase.LoadAssetAtPath<CameraFollowSettings>("Assets/_Game/Content/Definitions/S01_CameraFollowSettings.asset");
-            Assert.That(camera.Offset, Is.EqualTo(new Vector3(0, 14.8f, -11.2f)));
-            Assert.That(camera.FieldOfView, Is.EqualTo(46));
+            Assert.DoesNotThrow(Gravivore.Editor.VisualIntegration.CapacitorFieldProofBuilder.ValidateCameraOrThrow);
             CollectionAssert.AreEqual(new[] { "Assets/_Game/Content/Scenes/Bootstrap.unity",
                 "Assets/_Game/Content/Scenes/Chapter01_ScrapExclusion.unity" }, Gravivore.Editor.Build.AndroidBuild.BuildScenes);
         }

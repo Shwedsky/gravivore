@@ -73,12 +73,24 @@ namespace Gravivore.Tests.PlayMode
             yield return Load();var root=_scene.Root;var blueprint=root.VisualEnvironment.BlueprintWorldOnly;
             var route=blueprint?root.VisualEnvironment.Floor:root.VisualEnvironment.Floor.Find("Chapter 01 Concept Fidelity V2");Assert.NotNull(route);
             Assert.That(route.GetComponentsInChildren<Collider>(true).Length,Is.Zero);
-            var materials=route.GetComponentsInChildren<Renderer>(true).SelectMany(r=>r.sharedMaterials).Distinct().ToArray();Assert.That(materials.Length,Is.EqualTo(blueprint?4:1));
+            var materials=route.GetComponentsInChildren<Renderer>(true).SelectMany(r=>r.sharedMaterials).Distinct().ToArray();
+            var capacitorSurfaces=materials.Where(m=>m!=null&&(m.name.StartsWith("CF_",StringComparison.Ordinal)||m.name.StartsWith("CS_",StringComparison.Ordinal)||m.name.StartsWith("CH_",StringComparison.Ordinal))).ToArray();
+            // Installed production families may replace all legacy context surfaces.
+            // Require opaque PBR vocabulary rather than a historical material count.
+            if(!blueprint)Assert.That(materials.Length,Is.EqualTo(1));
+            else foreach(var material in materials){Assert.NotNull(material);Assert.That(material.renderQueue,Is.LessThanOrEqualTo(2500));}
+            if(capacitorSurfaces.Length>0)
+            {
+                foreach(var name in new[]{"CF_Graphite","CF_Shell","CF_Steel","CF_Deck"})
+                    Assert.IsTrue(capacitorSurfaces.Any(m=>m.name==name),"Missing functional sector surface: "+name);
+                foreach(var material in capacitorSurfaces)
+                {Assert.NotNull(material.shader);Assert.AreEqual("Universal Render Pipeline/Lit",material.shader.name);}
+            }
             if(blueprint)
             {
                 Assert.IsNull(route.Find("Chapter 01 Concept Fidelity V2"));
                 var floors=route.GetComponentsInChildren<Renderer>().Where(r=>r.name.Contains("_floor_")).ToArray();Assert.IsNotEmpty(floors);
-                foreach(var floor in floors)Assert.That(floor.bounds.size.y,Is.LessThan(1.1f),"Flush deck and structural foundation: "+floor.name);
+                foreach(var floor in floors)Assert.That(floor.bounds.size.y,Is.LessThan(floor.name.StartsWith("CS_")||floor.name.StartsWith("CH_")?1.5f:1.1f),"Walk plane with authored undercroft: "+floor.name);
             }
             else
             {
@@ -177,7 +189,7 @@ namespace Gravivore.Tests.PlayMode
                         Assert.IsTrue(grid.Reaches(stops[index]),"Unchanged collision route: "+index);
                         path=grid.Path(stops[index]);point=0;
                     }
-                    while(point<path.Count&&Vector3.Distance(root.PlayerObject.transform.position,path[point])<.40f)point++;
+                    while(point<path.Count&&Vector3.Distance(root.PlayerObject.transform.position,path[point])<.12f)point++;
                     if(point==path.Count)
                     {input.Movement=Vector2.zero;path=null;index=(index+1)%stops.Length;dwellUntil=now+7;evidence.completedStops++;}
                     else

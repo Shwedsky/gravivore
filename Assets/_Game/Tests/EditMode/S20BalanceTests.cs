@@ -47,10 +47,7 @@ namespace Gravivore.Tests.EditMode
 
             Assert.That(offline.Efficiency, Is.InRange(0.2d, 0.3d));
             Assert.That(offline.MaximumEligibleDuration, Is.EqualTo(TimeSpan.FromHours(2)));
-            Assert.That(camera.Offset.y, Is.InRange(14f, 16f));
-            Assert.That(camera.Offset.z, Is.InRange(-13f, -10f));
-            Assert.That(camera.FieldOfView, Is.InRange(44f, 50f));
-            Assert.That(camera.PositionDamping, Is.InRange(0f, 0.5f));
+            Assert.DoesNotThrow(Gravivore.Editor.VisualIntegration.CapacitorFieldProofBuilder.ValidateCameraOrThrow);
         }
 
         [Test]

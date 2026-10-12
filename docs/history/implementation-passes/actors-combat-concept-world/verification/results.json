@@ -1,0 +1,52 @@
+{
+  "executed": [
+    {
+      "run": "EditModeFinal",
+      "total": 529,
+      "passed": 529,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 30.0437502,
+      "failures": [],
+      "skippedTests": []
+    },
+    {
+      "run": "PlayModeAccepted",
+      "total": 169,
+      "passed": 166,
+      "failed": 2,
+      "skipped": 1,
+      "seconds": 1116.3993873,
+      "failures": [
+        {
+          "name": "Gravivore.Tests.PlayMode.CapacitorFieldProofSmokeTests.UninterruptedRecordedMovementAndCombatAtTheProductionCamera",
+          "message": "  Expected: greater than or equal to 10\n  But was:  4\n"
+        },
+        {
+          "name": "Gravivore.Tests.PlayMode.Chapter01ProductionSmokeTests.CompleteWorldLockedAndUnlockedCapsuleRoutesAndActualControllerTraversal",
+          "message": "  boss gate approach must have a capsule route.\n  Expected: True\n  But was:  False\n"
+        }
+      ],
+      "skippedTests": [
+        "Gravivore.Tests.PlayMode.VisualIntegrationSmokeTests.CaptureStructuralFoundationWhenRequested"
+      ]
+    },
+    {
+      "run": "FinalRouteRetry",
+      "total": 2,
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 26.4624537,
+      "failures": [],
+      "skippedTests": []
+    }
+  ],
+  "closedPlayModeRegression": {
+    "total": 169,
+    "passed": 168,
+    "failed": 0,
+    "skipped": 1,
+    "method": "Full PlayMode suite followed by targeted execution of both corrected route fixtures. This combines actually executed results; the original full-run XML retains its failures."
+  }
+}

@@ -89,8 +89,7 @@ namespace Gravivore.Tests.EditMode
         {
             var camera = AssetDatabase.LoadAssetAtPath<CameraFollowSettings>(
                 "Assets/_Game/Content/Definitions/S01_CameraFollowSettings.asset");
-            Assert.That(camera.Offset, Is.EqualTo(new Vector3(0f, 14.8f, -11.2f)));
-            Assert.That(camera.FieldOfView, Is.EqualTo(46f));
+            Assert.DoesNotThrow(CapacitorFieldProofBuilder.ValidateCameraOrThrow);
             Assert.DoesNotThrow(VisualIntegrationValidator.ValidateOrThrow);
         }
 

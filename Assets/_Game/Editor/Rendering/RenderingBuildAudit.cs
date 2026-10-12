@@ -17,6 +17,7 @@ namespace Gravivore.Editor.Rendering
     {
         public const string Output = "docs/history/visual-stages/chapter01-visual-passes/render-hotfix/verification";
         public static readonly string[] UiShaders = { "UI/Default", "UI/DefaultETC1" };
+        public static readonly string[] PostShaders = { "Hidden/Universal Render Pipeline/Bloom", "Hidden/Universal Render Pipeline/UberPost" };
         public static readonly string[] V3Prefabs = { "Custodian_V3", "Emitter_M0", "Broken_Edge_V3_0", "Broken_Edge_V3_1", "Service_Trench_V3", "Collapsed_Hull_V3", "HostileChargeV3", "HostileTravelV3" };
         public const string Atlas = "Assets/_Game/Content/ConceptFidelityV2/Materials/Fidelity_IndustrialAtlas.mat";
         public const string Hostile = "Assets/_Game/Content/Presentation/Phase6B/VFX/Materials/M_Phase6B_HostileSoft.mat";
@@ -39,6 +40,10 @@ namespace Gravivore.Editor.Rendering
         }
         public static void ValidateOrThrow()
         {
+            if(AssetDatabase.LoadAssetAtPath<Shader>("Assets/_Game/Content/ActorProductionV2/Shaders/ActorIndustrialLit.shader")!=null)VisualIntegration.ActorConceptWorldBuildAudit.Validate();
+            if (VisualIntegration.CapacitorFieldProofBuilder.IsInstalled) VisualIntegration.CapacitorFieldProofBuilder.ValidateOrThrow();
+            if (VisualIntegration.ConnectedConceptSectorsBuilder.IsInstalled) VisualIntegration.ConnectedConceptSectorsBuilder.ValidateOrThrow();
+            if (VisualIntegration.Chapter01CompleteConceptBuilder.IsInstalled) VisualIntegration.Chapter01CompleteConceptBuilder.ValidateOrThrow();
             var included = GraphicsObject().FindProperty("m_AlwaysIncludedShaders");
             foreach (var name in UiShaders)
             {
@@ -92,14 +97,14 @@ namespace Gravivore.Editor.Rendering
         }
         public void OnProcessShader(Shader shader, ShaderSnippetData snippet, IList<ShaderCompilerData> variants)
         {
-            if (!UiShaders.Contains(shader.name) && shader.name != "Universal Render Pipeline/Lit" && shader.name != "Universal Render Pipeline/Particles/Unlit") return;
+            if (!UiShaders.Contains(shader.name) && !PostShaders.Contains(shader.name) && shader.name != "Universal Render Pipeline/Lit" && shader.name != "Universal Render Pipeline/Particles/Unlit") return;
             foreach (var variant in variants)
             {
                 var keywords = variant.shaderKeywordSet.GetShaderKeywords().Select(k => k.name).ToArray();
                 var isUi = UiShaders.Contains(shader.name);
                 var isAtlas = shader.name == "Universal Render Pipeline/Lit" && keywords.Contains("_EMISSION") && keywords.Contains("_METALLICSPECGLOSSMAP");
                 var isHostile = shader.name == "Universal Render Pipeline/Particles/Unlit" && keywords.Contains("_SURFACE_TYPE_TRANSPARENT");
-                if (isUi || isAtlas || isHostile) Compiled.Add(shader.name + " | " + snippet.passName + " | " + snippet.shaderType + " | " + variant.shaderCompilerPlatform + " | " + string.Join(",", keywords.OrderBy(k => k)));
+                if (isUi || isAtlas || isHostile || PostShaders.Contains(shader.name)) Compiled.Add(shader.name + " | " + snippet.passName + " | " + snippet.shaderType + " | " + variant.shaderCompilerPlatform + " | " + string.Join(",", keywords.OrderBy(k => k)));
             }
         }
         public void OnPostprocessBuild(BuildReport report)
@@ -109,9 +114,19 @@ namespace Gravivore.Editor.Rendering
                 if (!sceneAudit.Contains(scene + ": renderers=")) throw new BuildFailedException("MAGENTA_GUARD scene renderer audit incomplete: " + scene);
             var packed = report.packedAssets.SelectMany(p => p.contents).Select(c => c.sourceAssetPath).Distinct().OrderBy(p => p).ToArray();
             var required = new[] { UrpConfigurator.UrpAssetPath, UrpConfigurator.RendererDataPath, Atlas, Hostile, AssetDatabase.GetAssetPath(AssetDatabase.LoadAssetAtPath<Material>(Atlas).shader), AssetDatabase.GetAssetPath(AssetDatabase.LoadAssetAtPath<Material>(Hostile).shader) };
+            if (VisualIntegration.CapacitorFieldProofBuilder.IsInstalled)
+                required = required.Concat(new[] { UrpConfigurator.PostProcessDataPath }).Concat(PostShaders.Select(n => AssetDatabase.GetAssetPath(Shader.Find(n)))).ToArray();
             foreach (var path in required) if (!packed.Contains(path)) throw new BuildFailedException("MAGENTA_GUARD render dependency omitted: " + path);
             foreach (var name in new[] { "UI/Default", "UI/DefaultETC1", "Universal Render Pipeline/Lit", "Universal Render Pipeline/Particles/Unlit" })
                 if (!Compiled.Any(c => c.StartsWith(name + " | ", StringComparison.Ordinal))) throw new BuildFailedException("MAGENTA_GUARD no retained target shader variant: " + name);
+            if (VisualIntegration.CapacitorFieldProofBuilder.IsInstalled)
+            {
+                foreach (var name in PostShaders)
+                    if (!Compiled.Any(c => c.StartsWith(name + " | ", StringComparison.Ordinal))) throw new BuildFailedException("CF_RENDER post-processing shader omitted: " + name);
+                var uber = Compiled.Where(c => c.StartsWith(PostShaders[1] + " | ", StringComparison.Ordinal)).ToArray();
+                if (!uber.Any(c => c.Contains("_TONEMAP_ACES")) || !uber.Any(c => c.Contains("_BLOOM_LQ")))
+                    throw new BuildFailedException("CF_RENDER reviewed ACES/restrained bloom variants omitted.");
+            }
             File.WriteAllText(Path.Combine(Output, "compiled_shader_variants.txt"), string.Join("\n", Compiled.OrderBy(c => c)));
             File.WriteAllText(Path.Combine(Output, "render_dependency_report.json"), JsonUtility.ToJson(new Packing { validated=true, required=required, packed=packed }, true));
         }
