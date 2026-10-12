@@ -343,7 +343,8 @@ namespace Gravivore.Editor.VisualIntegration
                     var mesh = renderer.GetComponent<MeshFilter>()?.sharedMesh;
                     if (mesh == null) throw new InvalidOperationException("Missing world mesh.");
                     if (!AssetDatabase.GetAssetPath(mesh).StartsWith(Root + "/Models/",StringComparison.Ordinal) &&
-                        !AssetDatabase.GetAssetPath(mesh).StartsWith(CapacitorFieldProofBuilder.Root + "/Models/",StringComparison.Ordinal))
+                        !AssetDatabase.GetAssetPath(mesh).StartsWith(CapacitorFieldProofBuilder.Root + "/Models/",StringComparison.Ordinal) &&
+                        !AssetDatabase.GetAssetPath(mesh).StartsWith(ConnectedConceptSectorsBuilder.Root + "/Models/",StringComparison.Ordinal))
                         throw new InvalidOperationException("World uses a stale or primitive presentation mesh: " + renderer.name);
                     for (var i = 0; i < mesh.subMeshCount; i++) report.staticTriangles += (long)mesh.GetIndexCount(i)/3;
                     foreach (var material in renderer.sharedMaterials)

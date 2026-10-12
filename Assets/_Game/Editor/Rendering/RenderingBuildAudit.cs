@@ -41,6 +41,7 @@ namespace Gravivore.Editor.Rendering
         public static void ValidateOrThrow()
         {
             if (VisualIntegration.CapacitorFieldProofBuilder.IsInstalled) VisualIntegration.CapacitorFieldProofBuilder.ValidateOrThrow();
+            if (VisualIntegration.ConnectedConceptSectorsBuilder.IsInstalled) VisualIntegration.ConnectedConceptSectorsBuilder.ValidateOrThrow();
             var included = GraphicsObject().FindProperty("m_AlwaysIncludedShaders");
             foreach (var name in UiShaders)
             {

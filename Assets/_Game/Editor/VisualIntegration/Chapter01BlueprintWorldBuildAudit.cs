@@ -51,6 +51,8 @@ namespace Gravivore.Editor.VisualIntegration
                 p.StartsWith(Chapter01BlueprintWorldBuilder.Root + "/Materials/",StringComparison.Ordinal) ||
                 p.StartsWith(CapacitorFieldProofBuilder.Root + "/Textures/",StringComparison.Ordinal) ||
                 p.StartsWith(CapacitorFieldProofBuilder.Root + "/Materials/",StringComparison.Ordinal) ||
+                p.StartsWith(ConnectedConceptSectorsBuilder.Root + "/Textures/",StringComparison.Ordinal) ||
+                p.StartsWith(ConnectedConceptSectorsBuilder.Root + "/Materials/",StringComparison.Ordinal) ||
                 p.EndsWith(".fbx",StringComparison.OrdinalIgnoreCase) &&
                 AssetDatabase.LoadAssetAtPath<GameObject>(p)?.GetComponentInChildren<SkinnedMeshRenderer>(true) != null).Distinct().ToArray();
         }

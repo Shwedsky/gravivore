@@ -74,7 +74,7 @@ namespace Gravivore.Tests.PlayMode
             var route=blueprint?root.VisualEnvironment.Floor:root.VisualEnvironment.Floor.Find("Chapter 01 Concept Fidelity V2");Assert.NotNull(route);
             Assert.That(route.GetComponentsInChildren<Collider>(true).Length,Is.Zero);
             var materials=route.GetComponentsInChildren<Renderer>(true).SelectMany(r=>r.sharedMaterials).Distinct().ToArray();
-            var capacitorSurfaces=materials.Where(m=>m!=null&&m.name.StartsWith("CF_",StringComparison.Ordinal)).ToArray();
+            var capacitorSurfaces=materials.Where(m=>m!=null&&(m.name.StartsWith("CF_",StringComparison.Ordinal)||m.name.StartsWith("CS_",StringComparison.Ordinal))).ToArray();
             // A separately authored reference sector adds real surface families;
             // retain the four context materials without freezing the new art to them.
             Assert.That(materials.Length-capacitorSurfaces.Length,Is.EqualTo(blueprint?4:1));
@@ -89,7 +89,7 @@ namespace Gravivore.Tests.PlayMode
             {
                 Assert.IsNull(route.Find("Chapter 01 Concept Fidelity V2"));
                 var floors=route.GetComponentsInChildren<Renderer>().Where(r=>r.name.Contains("_floor_")).ToArray();Assert.IsNotEmpty(floors);
-                foreach(var floor in floors)Assert.That(floor.bounds.size.y,Is.LessThan(1.1f),"Flush deck and structural foundation: "+floor.name);
+                foreach(var floor in floors)Assert.That(floor.bounds.size.y,Is.LessThan(floor.name.StartsWith("CS_")?1.5f:1.1f),"Walk plane with authored undercroft: "+floor.name);
             }
             else
             {
