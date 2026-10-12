@@ -50,6 +50,7 @@ Both source archives explicitly contain CC0 licenses. Their exact license bytes 
 - Core armor currently repeats a small number of panels; a production mesh needs purpose-specific removable plates, stronger inspection seams, cleaner curved shading and authored per-part AO rather than relying entirely on existing tiling surfaces.
 - Rear-node occlusion and side-frame cropping are real camera findings. A full Chapter integration needs approach/circulation composition and player visibility checks; this proof deliberately does not edit Chapter runtime, map topology, collision or gameplay camera settings.
 - No Android device performance profile or owner visual gate has been run. Triangle/render counts are measurements, not a claim of 60 FPS. No percentage-based acceptance target is used.
+- The first full-project Android attempt packaged the APK but reported `Failed`: seven global production post-build checks expected unrelated Chapter scenes/actors/resources. Its receipt is retained as `verification/android-main-project-attempt.json`. The isolated alternative mirrors the exact proof scene and native visual dependency closure into ignored `Builds/EnergyChamberStage/`, with zero project C# or DLL dependencies. Its own builder validates presentation authority, missing scripts/materials, the reviewed lens and G-0 scale. Production callbacks remain unchanged; the standalone result is recorded in `verification/android-result.json`.
 
 ## Production follow-up
 
@@ -70,6 +71,6 @@ All six mandatory categories are present, plus the true player-position anchor:
 
 Machine-readable camera/scale and component bounds: [camera-and-scale.json](camera-and-scale.json), [component-bounds.json](component-bounds.json). Installation metrics: [verification/assembly.json](verification/assembly.json), 28 renderers / 119,120 triangles, four nodes, four routes, zero gameplay MonoBehaviours and colliders in the installation prefab. G-0 and the inspection backdrop are excluded from those metrics.
 
-Test/build results and exact changed-file manifest are recorded separately in the final delivery record. Scope is additive under the dedicated proof, source, tools and evidence paths; shared gameplay/presentation assets are dependencies only.
+Test/build results are recorded in [delivery.json](delivery.json); the complete exact changed-file manifest is [FILES_CHANGED.txt](FILES_CHANGED.txt). Scope is additive under the dedicated proof, source, tools and evidence paths; shared gameplay/presentation assets are dependencies only. Unity's automatic importer/configuration/validation reserialization outside those paths is restored before delivery and excluded from the PR.
 
 Assumption: no separate Energy Chamber-specific concept bitmap was supplied in this request or located in current authoritative paths. The explicit structural brief and current industrial visual target define this feasibility proof. Pixel-level reproduction of a missing chamber concept is not claimed.

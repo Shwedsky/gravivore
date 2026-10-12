@@ -3,8 +3,6 @@ using System.IO;
 using System.Linq;
 using Gravivore.Presentation.Camera;
 using UnityEditor;
-using UnityEditor.Build;
-using UnityEditor.Build.Reporting;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -275,21 +273,5 @@ namespace Gravivore.ArtProof.EnergyChamber
         }
         private static T Required<T>(string path) where T:Object => AssetDatabase.LoadAssetAtPath<T>(path) ?? throw new InvalidDataException("Missing proof dependency: "+path);
 
-        public static void BuildAndroid()
-        {
-            Validate();
-            if(!EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android,BuildTarget.Android))throw new InvalidOperationException("Android module unavailable.");
-            var oldId=PlayerSettings.GetApplicationIdentifier(NamedBuildTarget.Android);var oldName=PlayerSettings.productName;
-            try
-            {
-                PlayerSettings.SetApplicationIdentifier(NamedBuildTarget.Android,"com.gravivore.energychamberproof");PlayerSettings.productName="GRAVIVORE Energy Chamber Proof";
-                Directory.CreateDirectory("Builds/Android");
-                var report=BuildPipeline.BuildPlayer(new BuildPlayerOptions{scenes=new[]{ScenePath},locationPathName="Builds/Android/gravivore-energy-chamber-proof-v1-dev.apk",target=BuildTarget.Android,options=BuildOptions.Development|BuildOptions.AllowDebugging|BuildOptions.DetailedBuildReport});
-                File.WriteAllText(Evidence+"/verification/android-result.json",JsonUtility.ToJson(new BuildRecord{result=report.summary.result.ToString(),errors=report.summary.totalErrors,bytes=report.summary.totalSize,path=report.summary.outputPath},true));
-                if(report.summary.result!=BuildResult.Succeeded)throw new InvalidOperationException("Energy Chamber Android proof failed: "+report.summary.result);
-            }
-            finally {PlayerSettings.SetApplicationIdentifier(NamedBuildTarget.Android,oldId);PlayerSettings.productName=oldName;AssetDatabase.SaveAssets();}
-        }
-        [Serializable] private sealed class BuildRecord {public string result,path;public int errors;public ulong bytes;}
     }
 }
