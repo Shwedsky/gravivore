@@ -19,7 +19,8 @@ switch($Action){
 $proofProcess=Start-Process -FilePath 'C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Unity.exe' -ArgumentList $proofArgs -WorkingDirectory $proofRoot -WindowStyle Hidden -PassThru
 $proofProcess.WaitForExit()
 if($Action -eq 'Android' -and $proofProcess.ExitCode -eq 0){
- $proofStageRoot=Join-Path $proofRoot 'Builds/EnergyChamberStage'
+ $proofOwnerRoot=Split-Path -Parent (Split-Path -Parent $proofRoot)
+ $proofStageRoot=Join-Path $proofOwnerRoot '.utmp/ec77'
  $proofStageArgs=@('-batchmode','-quit','-buildTarget','Android','-projectPath',('"'+$proofStageRoot+'"'),'-logFile',('"'+(Join-Path $proofOutput 'AndroidStandalone.log')+'"'),'-executeMethod','EnergyChamberStageBuild.Build')
  $proofStageProcess=Start-Process -FilePath 'C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Unity.exe' -ArgumentList $proofStageArgs -WorkingDirectory $proofStageRoot -WindowStyle Hidden -PassThru
  $proofStageProcess.WaitForExit();Write-Output ('UNITY_AndroidStandalone_EXIT='+$proofStageProcess.ExitCode);exit $proofStageProcess.ExitCode

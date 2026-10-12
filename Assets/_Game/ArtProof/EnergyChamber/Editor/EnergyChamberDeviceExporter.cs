@@ -14,8 +14,10 @@ namespace Gravivore.ArtProof.EnergyChamber
         public static void Export()
         {
             EnergyChamberProofBuilder.Validate();
-            var source=Directory.GetCurrentDirectory();var stage=Path.Combine(source,"Builds/EnergyChamberStage");
+            var source=Directory.GetCurrentDirectory();var owner=Directory.GetParent(source).Parent.FullName;
+            var stage=Path.Combine(owner,".utmp/ec77");
             Directory.CreateDirectory(stage);
+            File.WriteAllText(Path.Combine(stage,".gitignore"),"*\n");
             var inputs=new[]{EnergyChamberProofBuilder.ScenePath,AssetDatabase.GetAssetPath(GraphicsSettings.defaultRenderPipeline),"Assets/UniversalRenderPipelineGlobalSettings.asset"};
             var dependencies=AssetDatabase.GetDependencies(inputs,true).Where(p=>p.StartsWith("Assets/",StringComparison.Ordinal)).Distinct().OrderBy(p=>p).ToArray();
             var scripts=dependencies.Where(p=>p.EndsWith(".cs",StringComparison.Ordinal)||p.EndsWith(".dll",StringComparison.Ordinal)).ToArray();
