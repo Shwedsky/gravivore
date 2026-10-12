@@ -126,13 +126,31 @@ gate prerequisites и god mode. Баланс production assets не изменё
 после первого кадра нет телепортаций и lethal damage injections. Это
 не запись нового профиля с 30–45 минутами progression grind и не Android запись.
 
-DEV APK 53 собирается из отдельного зафиксированного source commit;
-результат SDK/signature/packing проверки добавляется после сборки.
+DEV Android APK **53 — BUILD PASS**, нормальный пакет
+`com.gravivore.mobile.dev`, версия 0.1.0, ARM64 IL2CPP, portrait,
+Unity 6000.3.0f1. Build source commit:
+`3b1396e70a5f1942d3bcafa99d1f7f6db754f623`.
+
+Поставка:
+`C:/Users/pamak/Documents/ChatGPT/gravivore/Builds/Android/gravivore-dev-0.1.0+53.apk`.
+135021309 bytes. SHA-256:
+`1adbe84861d27fd7de1d6ebf9cd3d33476f5b614ea2102286addf2831074e108`.
+SDK aapt2/apksigner и ZIP проверки пройдены: подпись совпадает с APK 52,
+только ARM64 библиотеки, libil2cpp присутствует, manifest portrait.
+Build audits подтвердили сериализованные восемь установок и два соединения,
+новые PBR ресурсы и общий reflection cubemap. Сохранены 1458 вариантов
+постобработки для GLES3x/Vulkan, включая ACES и Bloom LQ.
+APK 50–52 и их исходные фиксации сохранены; merge/push не выполнялись.
 
 ## Производительность и Android
 
-Есть отдельные наблюдения Editor по восьми игровым положениям без screenshot
-readback и длительные регрессии. Они включают Editor/test overhead и не
+Есть отдельные 240-frame наблюдения Editor по восьми игровым положениям без
+screenshot readback: среднее время Editor loop 1.17–1.80 ms, максимум
+live ordinary enemies в этих выборках 23. Первый 300-second soak завершил
+65 waypoint, максимум 20 enemies и 100 particles. Во втором сохранены
+574/574 transforms презентации и 55/55 материалов; эволюция/пулы актёров
+подняли общий transform count с 4338 до 5331. Эти данные включают
+Editor/test overhead и не
 подтверждают 60 FPS, thermal режим или отсутствие managed allocations на Android.
 Презентация статическая, без новых per-frame gameplay компонентов;
 импортированный инвентарь геометрии записан в `verification/geometry-imported.json`.
