@@ -1,6 +1,6 @@
 # GRAVIVORE — Actor and Combat Presentation in the Concept World
 
-Статус: изготовление и регрессия завершены; Android APK готовится из отдельного зафиксированного source commit.
+Статус: изготовление, регрессия и DEV APK 54 доставлены; Android visual/performance gate остаётся открытым из-за отсутствия устройства.
 Ветка: `codex/actors-combat-concept-world`. Исходная поставка главы:
 `7dcd6652c0c7232aaaed5e134edbfc5ea1c3c7e2`, APK 53 / build source `3b1396e`.
 Merge не выполняется.
@@ -119,7 +119,32 @@ development gate prerequisites, god mode; без teleport после начал�
 без lethal damage injection. Это запись боя, не fresh-save progression
 grind и не замер FPS. MP4 декодирован Blender: проверены first/middle/last.
 
-Android build/signature/resource результаты добавляются после сборки APK 54.
+Android DEV build: **PASS / Unity exit 0**, Unity 6000.3.0f1,
+ARM64 / IL2CPP, portrait, `com.gravivore.mobile.dev`, version code **54**.
+APK build source: **`2d38ac9692e991b7cabd5f3422d5f8f5b9002cd2`**.
+Последующий evidence commit меняет только отчёт и инструменты инспекции;
+source commit APK не переименован и не amend-ится.
+
+Доставлен `C:/Users/pamak/Documents/ChatGPT/gravivore/Builds/Android/gravivore-dev-0.1.0+54.apk`
+и соседние build/post-device JSON. Размер: 135,615,947 bytes.
+SHA-256: `220a3ab3e7f2287a39e0ffa7dbf5df8a625111f1aae90f8c2efc3a9410b6f066`.
+Копия в основном каталоге проверена по checksum. SDK aapt2/apksigner и ZIP
+inspection подтвердили package/version/debug/portrait, только ARM64 libs,
+`libil2cpp.so` и прежний DEV signing certificate APK 53.
+
+Actual build audits подтвердили упаковку восьми секторов, семи actor models/
+prefabs/controllers, карт и материалов. Actor shader имеет **14**
+target variants для GLES3/Vulkan, включая emission/no-emission.
+SRP Batcher после реального рендера: **0 / OK**; no-graphics author probe
+«Not initialized» не трактуется как rendering failure.
+
+Первичная APK inspection ошибочно ожидала отдельные `.mask` в packed paths.
+Проверка исправлена на чтение **реальных native AnimatorController class 91**
+из APK: G-0, Magnetar и Custodian имеют по два слоя, compiled gait state/
+parameter, default support weight 0 и 24/49/52 skeleton-mask entries.
+Все path hashes/weights точно совпадают с authored AvatarMask. Unity
+компилирует эти данные в controller; отдельные class 319 объекты не нужны.
+Файл `verification/apk54-native-controllers.json` содержит результат.
 
 `adb devices -l`: подключённых Android-устройств нет. Остаются
 непроверенными actual Android CPU/GPU, submitted draws,

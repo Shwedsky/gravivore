@@ -25,7 +25,11 @@ Both use the existing Blender 5.2 encoder; no new dependency is needed.
 the retained owner APK 53. `summarize.py` retains the original failed full XML
 and separately records the successful targeted retries. `verify_apk.py`
 executes SDK/ZIP checks and verifies packed actor resources and actual
-GLES3/Vulkan shader variants after APK 54 is built.
+GLES3/Vulkan shader variants after APK 54 is built. `inspect_controllers.py`
+uses the existing typed SerializedFile reader to decode native class 91
+controllers and compare compiled skeleton mask hashes/weights to the source
+AvatarMasks. Unity compiles these masks into the controllers; standalone
+class 319 mask objects are not required in the APK.
 
 Evidence: `docs/history/implementation-passes/actors-combat-concept-world/`.
 Editor profiling and generated APK do not establish Android performance.
