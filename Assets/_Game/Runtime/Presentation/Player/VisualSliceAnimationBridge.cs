@@ -25,6 +25,9 @@ namespace Gravivore.Presentation.Player
             public int WindupPose = Windup, ReleasePose = Release, LinePose, CirclePose, ConePose;
             public float WindupSeconds = 1;
             public float BasicWindupSeconds = 1;
+            public int SupportLayer=-1;
+            public float GaitPhase;
+            private static readonly int GaitParameter=UnityEngine.Animator.StringToHash("IndustrialGaitPhase");
             public CharacterVisualBinding Binding;
             public Transform Model;
             public Animator Animator;
@@ -54,6 +57,7 @@ namespace Gravivore.Presentation.Player
                     CirclePose = Profile != null ? Profile.State(Profile.Circle) : Special;
                     ConePose = Profile != null ? Profile.State(Profile.Cone) : Release;
                     Animator.applyRootMotion = false;
+                    SupportLayer=Animator.GetLayerIndex("Industrial moving supports");GaitPhase=0;
                     AnimatorRestRotation = Animator.transform.localRotation;
                     foreach (var clip in Animator.runtimeAnimatorController.animationClips)
                     {
@@ -72,18 +76,28 @@ namespace Gravivore.Presentation.Player
             {
                 Refresh();
                 if (Animator == null || !Animator.gameObject.activeInHierarchy || State == state) return;
-                Animator.CrossFadeInFixedTime(state, .065f, 0, 0);
+                if(Profile!=null && state==AttackPose && Profile.AttackStartNormalizedTime>0)
+                    Animator.Play(state,0,Profile.AttackStartNormalizedTime);
+                else Animator.CrossFadeInFixedTime(state, .065f, 0, 0);
                 State = state;
             }
             public void ResetLife()
             {
                 Refresh(); State = 0; ReactionUntil = 0;
                 if (Animator != null) { Animator.Rebind(); Animator.Update(0); Animator.speed = 1; }
+                GaitPhase=0;
             }
             public void Locomotion(float distance, float dt, bool moving)
             {
                 if (Animator == null || Profile == null) return;
                 Animator.speed = moving && dt > 0 ? Mathf.Clamp(distance / dt * RunSeconds / Profile.RunCycleDistance, .45f, 2.5f) : 1;
+            }
+            public void MovingSupports(float distance,float cycle,float dt,bool moving)
+            {
+                if(Animator==null||SupportLayer<0)return;
+                if(moving)GaitPhase=Mathf.Repeat(GaitPhase+distance/Mathf.Max(.1f,cycle),1);
+                Animator.SetFloat(GaitParameter,GaitPhase);
+                Animator.SetLayerWeight(SupportLayer,Mathf.MoveTowards(Animator.GetLayerWeight(SupportLayer),moving?1:0,Mathf.Max(0,dt)*16));
             }
         }
         private sealed class FootContact
@@ -193,7 +207,7 @@ namespace Gravivore.Presentation.Player
             _player.State = 0; _player.Pose(Attack);
         }
         private void PlayerDamaged(DamageResult result) { if (!result.WasLethal) _playerHitUntil = Time.time + .28f; }
-        private void PlayerDied(PlayerDeathEvent value) { _playerDeathUntil = Time.time + .85f; _player.State = 0; _player.Pose(Death); }
+        private void PlayerDied(PlayerDeathEvent value) { _playerDeathUntil = Time.time + .85f; _player.State = 0; _player.Pose(Death);if(_player.SupportLayer>=0)_player.Animator.SetLayerWeight(_player.SupportLayer,0); }
         private void EliteAttack(EliteShockwaveTelegraphEvent value)
         { _eliteSpecial = true; _eliteAttackUntil = Time.time + value.Duration; _elite.State = 0; _elite.Refresh();
           if (_elite.Animator != null) _elite.Animator.speed = _elite.WindupSeconds / Mathf.Max(.01f, value.Duration); }
@@ -250,12 +264,13 @@ namespace Gravivore.Presentation.Player
                 _visualSpeed=Mathf.MoveTowards(_visualSpeed,velocity.magnitude, _root.PlayerStats.MoveSpeed*dt/_locomotionSettings.LocomotionBlendSeconds);
                 PlayerRunPlaybackRate=state==Run ? Mathf.Clamp(_visualSpeed*_player.RunSeconds/_locomotionSettings.RunCycleDistance,.25f,3f) : 1;
                 _player.Animator.speed=PlayerRunPlaybackRate;
+                _player.MovingSupports(delta.magnitude,_locomotionSettings.RunCycleDistance,deltaTime,moving&&state!=Death);
                 var lean=state==Run?_player.Model.InverseTransformDirection(velocity)/Mathf.Max(1,_root.PlayerStats.MoveSpeed):Vector3.zero;
                 _player.Animator.transform.localRotation=Quaternion.Euler(Mathf.Clamp(lean.z*2,-2,2),0,Mathf.Clamp(-lean.x*2,-2,2))*_player.AnimatorRestRotation;
                 var animation=_player.Animator.GetCurrentAnimatorStateInfo(0);
                 MaximumFootContactOffset=0;
                 for(var i=0;i<_player.Feet.Length;i++) MaximumFootContactOffset=Mathf.Max(MaximumFootContactOffset,
-                    _player.Feet[i].Apply(animation.normalizedTime+i*.5f,_locomotionSettings.FootContactCorrection,state==Run && animation.shortNameHash==Run));
+                    _player.Feet[i].Apply((_player.SupportLayer>=0?_player.GaitPhase:animation.normalizedTime)+i*.5f,_locomotionSettings.FootContactCorrection,moving&&state!=Death&&(_player.SupportLayer>=0||state==Run&&animation.shortNameHash==Run)));
             }
             PlayerState = state == Death ? "Death" : state == Hit ? "Hit" : state == Attack ? "Attack" : state == Run ? "Run" : "Idle";
             for (var i = 0; i < _actors.Length; i++)
@@ -278,11 +293,16 @@ namespace Gravivore.Presentation.Player
                 actor.Pose(state); actor.Position = position; actor.Hp = enemy.CurrentHitPoints; actor.Cooldown = enemy.AttackCooldown;
             }
             _elite.Refresh();
-            _elite.Pose(_root.MagnetarGuard.State == MagnetarGuardState.Dead ? Death : Time.time < _eliteAttackUntil ?
+            var eliteDistance=Vector3.Distance(_root.MagnetarGuard.transform.position,_elite.Position);
+            var elitePose=_root.MagnetarGuard.State == MagnetarGuardState.Dead ? Death : Time.time < _eliteAttackUntil ?
                 (_eliteSpecial && _elite.Profile != null ? _elite.WindupPose : _elite.AttackPose) :
                 Time.time < _eliteReleaseUntil && _elite.Profile != null ? _elite.ReleasePose :
-                Time.time < _eliteHitUntil ? _elite.HitPose : _elite.IdlePose);
+                Time.time < _eliteHitUntil ? _elite.HitPose : eliteDistance>.001f?_elite.MovePose:_elite.IdlePose;
+            _elite.Pose(elitePose);
             if (_elite.Animator != null && Time.time >= _eliteAttackUntil) _elite.Animator.speed=1;
+            if(elitePose==_elite.MovePose)_elite.Locomotion(eliteDistance,deltaTime,true);
+            _elite.MovingSupports(eliteDistance,_elite.Profile?.RunCycleDistance??1.4f,deltaTime,eliteDistance>.001f&&elitePose!=Death);
+            _elite.Position=_root.MagnetarGuard.transform.position;
             var boss = _root.CustodianBoss;
             if (boss.CurrentHitPoints < _boss.Hp) _boss.ReactionUntil = Time.time + .23f;
             _boss.Refresh();
@@ -306,8 +326,11 @@ namespace Gravivore.Presentation.Player
                     pose == CustodianPresentationPose.Hit ? _boss.HitPose :
                     pose == CustodianPresentationPose.Run ? _boss.MovePose : _boss.IdlePose;
             }
+            var bossDistance=Vector3.Distance(boss.transform.position,_boss.Position);
             _boss.Pose(bossState); _boss.Hp=boss.CurrentHitPoints; _boss.Position=boss.transform.position;
             if(_boss.Animator!=null)_boss.Animator.speed=authoredBoss&&pose==CustodianPresentationPose.Windup?_boss.WindupSeconds/_bossWindupDuration:1;
+            if(bossState==_boss.MovePose)_boss.Locomotion(bossDistance,deltaTime,true);
+            _boss.MovingSupports(bossDistance,_boss.Profile?.RunCycleDistance??1.4f,deltaTime,movingBoss&&bossState!=Death);
             if(_boss.Profile!=null && _boss.Animator!=null && Time.time<_bossBasicWindupUntil && bossState==Windup)
                 _boss.Animator.speed=_boss.BasicWindupSeconds/_bossBasicWindupDuration;
             ActiveShutdownCount = 0;

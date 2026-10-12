@@ -172,9 +172,9 @@ namespace Gravivore.Tests.PlayMode
                 }
                 body.enabled=false;
             }
-            SampleArenaEdges(root,"Magnetar",root.MagnetarGuard.transform,root.MagnetarGuard.CollisionRadius,
+            SampleArenaEdges(root,"Magnetar",root.MagnetarGuard.transform,Mathf.Max(root.MagnetarGuard.CollisionRadius,root.MagnetarGuard.WallEnvelopeRadius),
                 new[]{"Idle","Run","Charge","Vent","Hit","Death"},motion,blockers,records);
-            SampleArenaEdges(root,"Custodian",root.CustodianBoss.transform,root.CustodianBoss.CollisionRadius,
+            SampleArenaEdges(root,"Custodian",root.CustodianBoss.transform,Mathf.Max(root.CustodianBoss.CollisionRadius,root.CustodianBoss.WallEnvelopeRadius),
                 new[]{"Idle","Telegraph","AttackLine","AttackCircle","AttackCone","Windup","Death"},motion,blockers,records);
             Directory.CreateDirectory(Output+"/verification");File.WriteAllLines(Output+"/verification/actor-traversal.txt",traversal);
             File.WriteAllText(Output+"/verification/route-arena-clearance.json",JsonUtility.ToJson(new ClearanceReport{samples=records.ToArray()},true));
@@ -196,13 +196,26 @@ namespace Gravivore.Tests.PlayMode
                 // Keep real ground/capsule clearance; never place the fixture through collision.
                 var tangent=Vector3.Cross(away,Vector3.up);
                 var valid=false;
-                foreach(var lateral in new[]{0f,1f,-1f,2f,-2f,3f,-3f,4f,-4f,6f,-6f,8f,-8f})
+                // Full machine hulls cannot approach every console along the diagonal
+                // from the spawn point. Sample the actual box faces and nearby clear
+                // approach positions, with the complete movement envelope on ground.
+                foreach(var face in new[]{away,Vector3.back,Vector3.forward,Vector3.left,Vector3.right})
                 {
-                    var candidate=wallPosition+tangent*lateral;
-                    if(!root.WorldPresenter.Layout.HasGround(candidate,radius))continue;
-                    if(Physics.CheckCapsule(candidate+Vector3.up*radius,candidate+Vector3.up*1.7f,radius,
-                        LayerMask.GetMask("HardBlocker"),QueryTriggerInteraction.Ignore))continue;
-                    actor.position=candidate;valid=true;break;
+                    var facePoint=face==away?contact:wall.ClosestPoint(wall.bounds.center+face*100);
+                    var faceTangent=Vector3.Cross(face,Vector3.up);
+                    foreach(var extra in new[]{0f,.3f,.6f,1.2f})
+                    {
+                        foreach(var lateral in new[]{0f,1f,-1f,2f,-2f,3f,-3f,4f,-4f,6f,-6f,8f,-8f})
+                        {
+                            var candidate=facePoint+face*(radius+.15f+extra)+faceTangent*lateral;candidate.y=start.y;
+                            if(!root.WorldPresenter.Layout.HasGround(candidate,radius))continue;
+                            if(Physics.CheckCapsule(candidate+Vector3.up*radius,candidate+Vector3.up*1.7f,radius,
+                                LayerMask.GetMask("HardBlocker"),QueryTriggerInteraction.Ignore))continue;
+                            actor.position=candidate;valid=true;break;
+                        }
+                        if(valid)break;
+                    }
+                    if(valid)break;
                 }
                 Assert.IsTrue(valid,"No reachable near-wall fixture for "+wall.name);
                 for(var heading=0;heading<4;heading++)
@@ -367,7 +380,7 @@ namespace Gravivore.Tests.PlayMode
             var camera=UnityEngine.Camera.main;camera.GetComponent<PortraitFollowCamera>().SnapToTarget();
             var canvases=root.GetComponentsInChildren<Canvas>(true);var enabled=canvases.Select(c=>c.enabled).ToArray();
             var prior=camera.targetTexture;var active=RenderTexture.active;
-            var render=new RenderTexture(540,960,24,RenderTextureFormat.ARGBHalf);var texture=new Texture2D(540,960,TextureFormat.RGB24,false);
+            var render=new RenderTexture(540,960,24,RenderTextureFormat.ARGB32,RenderTextureReadWrite.sRGB);var texture=new Texture2D(540,960,TextureFormat.RGB24,false);
             try
             {
                 foreach(var canvas in canvases)canvas.enabled=false;

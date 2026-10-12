@@ -31,6 +31,9 @@ namespace Gravivore.Gameplay.Encounters
         private bool _initialized;
         private float _outsideArenaSeconds;
         private EncounterBasicAttackCadence _basic;
+        private readonly Gravivore.Gameplay.World.ActorWallEnvelope _wallEnvelope = new Gravivore.Gameplay.World.ActorWallEnvelope();
+        public void ConfigureWallEnvelope(float radius, int mask) => _wallEnvelope.Configure(radius, mask);
+        public float WallEnvelopeRadius => _wallEnvelope.Radius;
         public event Action<EncounterBasicAttackEvent> BasicAttackStarted;
         public event Action<EncounterBasicAttackEvent> BasicAttackResolved;
         public float OutsideCombatLeashSeconds => _outsideArenaSeconds;
@@ -204,7 +207,7 @@ namespace Gravivore.Gameplay.Encounters
                 requested.x = Mathf.Clamp(requested.x, bounds.MinX + _configuration.CollisionRadius, bounds.MaxX - _configuration.CollisionRadius);
                 requested.z = Mathf.Clamp(requested.z, bounds.MinZ + _configuration.CollisionRadius, bounds.MaxZ - _configuration.CollisionRadius);
                 var safe = _chargeResolver.Resolve(transform.position, requested, _configuration.CollisionRadius);
-                _body.Move(safe - transform.position);
+                _body.Move(_wallEnvelope.Resolve(transform.position, safe - transform.position));
                 transform.rotation = Quaternion.LookRotation(offset.normalized, Vector3.up);
             }
             _basic.Tick(deltaTime, offset.magnitude, betweenSpecials && _playerHealth.IsAlive);
@@ -333,7 +336,7 @@ namespace Gravivore.Gameplay.Encounters
                         _telegraphOrigin,
                         requestedCharge,
                         _configuration.CollisionRadius);
-                    _body.Move(safeCharge - transform.position);
+                    _body.Move(_wallEnvelope.Resolve(transform.position, safeCharge - transform.position));
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(attackType));

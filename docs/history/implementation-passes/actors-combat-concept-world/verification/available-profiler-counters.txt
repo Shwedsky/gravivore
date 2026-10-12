@@ -1,0 +1,238 @@
+Physics2D: Physics2D.DrawGizmoTilemapCollider2D / TimeNanoseconds
+Physics2D: Physics2D.DrawGizmoRigidbody2D / TimeNanoseconds
+Physics2D: Physics2D.DrawGizmoCustomCollider2D / TimeNanoseconds
+Physics2D: Physics2D.DrawGizmoCompositeCollider2D / TimeNanoseconds
+Physics2D: Physics2D.DrawGizmoPolygonCollider2D / TimeNanoseconds
+Physics2D: Physics2D.DrawGizmoBoxCollider2D / TimeNanoseconds
+Physics2D: Physics2D.DrawGizmoEdgeCollider2D / TimeNanoseconds
+Physics2D: Physics2D.DrawGizmoCapsuleCollider2D / TimeNanoseconds
+Physics2D: Physics2D.DrawGizmoCircleCollider2D / TimeNanoseconds
+Other: TimelineView.DrawLabels / TimeNanoseconds
+Other: TimelineView.DrawMeshes / TimeNanoseconds
+Other: TimelineView.Draw / TimeNanoseconds
+Overhead: Profiler.SortThreadMetadata / TimeNanoseconds
+Overhead: ProfilerFrameData.DeleteThreadData / TimeNanoseconds
+Other: Profiler.CalculateMainAndRenderThreadActiveTimes / TimeNanoseconds
+Other: Profiler.ParseThreadData / TimeNanoseconds
+Physics: Physics.RecordShapeDraws / TimeNanoseconds
+Physics: Physics.IssueDraws / TimeNanoseconds
+Physics: Physics.DrawAllActors / TimeNanoseconds
+Other: QSortFastMultiThreaded / TimeNanoseconds
+Loading: LoadAtPathAsync.IntegrateMainThread / TimeNanoseconds
+VSync: XR.WaitForGPU / TimeNanoseconds
+Virtual Texturing: GraphineGfxDevice.UploadGPURectangles / TimeNanoseconds
+Virtual Texturing: TranslationTableGenerator.UpsampleGPUSubmission.ConstantBufferUpdate / TimeNanoseconds
+Virtual Texturing: TranslationTableGenerator.UpsampleGPUSubmissionDispatch / TimeNanoseconds
+Virtual Texturing: TranslationTableGenerator.UpsampleGPUSubmission / TimeNanoseconds
+VFX: VFX.ParticleSystem.RenderTriangleIndirect / TimeNanoseconds
+VFX: VFX.ParticleSystem.RenderTriangle / TimeNanoseconds
+Render: UIR.DrawChain / TimeNanoseconds
+Render: UIR.DrawRanges / TimeNanoseconds
+UI Render: FontEngine.LoadFontFace_From_Memory / TimeNanoseconds
+Physics2D: LowLevelPhysics2D.PhysicsJoint.Debug.Draw / TimeNanoseconds
+Physics2D: LowLevelPhysics2D.PhysicsShape.Debug.Draw / TimeNanoseconds
+Physics2D: LowLevelPhysics2D.PhysicsBody.Debug.Draw / TimeNanoseconds
+Physics2D: LowLevelPhysics2D.PhysicsWorld.DrawTransformAxis / TimeNanoseconds
+Physics2D: LowLevelPhysics2D.PhysicsWorld.DrawBox / TimeNanoseconds
+Physics2D: LowLevelPhysics2D.PhysicsWorld.DrawLineStrip / TimeNanoseconds
+Physics2D: LowLevelPhysics2D.PhysicsWorld.DrawLine / TimeNanoseconds
+Physics2D: LowLevelPhysics2D.PhysicsWorld.DrawPoint / TimeNanoseconds
+Physics2D: LowLevelPhysics2D.PhysicsWorld.DrawCapsule / TimeNanoseconds
+Physics2D: LowLevelPhysics2D.PhysicsWorld.DrawCircle / TimeNanoseconds
+Physics2D: LowLevelPhysics2D.PhysicsWorld.DrawSegmentGeometry / TimeNanoseconds
+Physics2D: LowLevelPhysics2D.PhysicsWorld.DrawPolygonGeometry / TimeNanoseconds
+Physics2D: LowLevelPhysics2D.PhysicsWorld.DrawCapsuleGeometry / TimeNanoseconds
+Physics2D: LowLevelPhysics2D.PhysicsWorld.DrawCircleGeometry / TimeNanoseconds
+Physics2D: LowLevelPhysics2D.PhysicsWorld.Draw / TimeNanoseconds
+Physics: FastCookTriangleMesh / TimeNanoseconds
+Render: ParticleSystem.Draw / TimeNanoseconds
+Render: ParticleSystem.DrawSystem / TimeNanoseconds
+Internal: MemoryManager.FallbackDeallocation / TimeNanoseconds
+Memory: MemoryManager.FallbackAllocation / TimeNanoseconds
+Lighting: RadeonRaysJobCompositeLightmap.CompositeLightmapGPU / TimeNanoseconds
+Lighting: GPULightmapper.Lightmaps.CopyCurrentBakedTileResultFromGPUToCPU / TimeNanoseconds
+Lighting: GPULightmapper.Lightmaps.IncrementTilingPassNumAndUpdateBuffersIfNeeded / TimeNanoseconds
+Lighting: GPULightmapper.Lightmaps.Render / TimeNanoseconds
+Lighting: GPULightmapper.RadeonRaysMeshManager.AddInstance / TimeNanoseconds
+Lighting: GPULightmapper.UpdateGPUTimings / TimeNanoseconds
+Lighting: GPULightmapper.Lightprobes.IntegrateFromAsyncReadBack / TimeNanoseconds
+Lighting: GPULightmapper.Lightprobes.UpdateFromAsyncReadBack / TimeNanoseconds
+Lighting: GPULightmapper.Lightprobes.ApplyLatestProbeData / TimeNanoseconds
+Lighting: GPULightmapper.Lightprobes.ApplyUpdateFromAsyncReadBacks / TimeNanoseconds
+Lighting: GPULightmapper.Lightprobes.TryUpdateFromAsyncReadBacks / TimeNanoseconds
+Lighting: GPULightmapper.Lightmap.UpdateFromAsyncReadBack / TimeNanoseconds
+Lighting: GPULightmapper.EnqueueReadBuffer / TimeNanoseconds
+Lighting: GPULightmapper.EnqueueWriteBuffer / TimeNanoseconds
+Lighting: GPULightmapper.IsCLEventCompleted / TimeNanoseconds
+Lighting: BakeContextManager.CalculateTotalTriangleCount / TimeNanoseconds
+Other: GizmoManager.DrawAllGizmos / TimeNanoseconds
+Loading: LoadFileAndForgetAsync.IntegrateMainThread / TimeNanoseconds
+Render: Shader.ParseMainThread / TimeNanoseconds
+Render: Shader.ParseThreaded / TimeNanoseconds
+Render: Shader.MainThreadCleanup / TimeNanoseconds
+Loading: Loading.MemoryFileSystemWrite / TimeNanoseconds
+Loading: Loading.MemoryFileSystemRead / TimeNanoseconds
+Loading: Loading.MemoryFileSystemSize / TimeNanoseconds
+Loading: Loading.MemoryFileSystemClose / TimeNanoseconds
+Loading: Loading.MemoryFileSystemOpen / TimeNanoseconds
+Loading: Loading.ArchiveFileSystemMountFromMemory / TimeNanoseconds
+Loading: TextureStreamingManager.MemoryBudget / TimeNanoseconds
+Render: Shader.DynamicLoadGPUProgram / TimeNanoseconds
+Render: Shader.CompileGPUProgram / TimeNanoseconds
+Render: Shader.CreateGPUProgram / TimeNanoseconds
+Loading: LoadFileThreaded / TimeNanoseconds
+Loading: LoadFileThreaded_LoadObjects / TimeNanoseconds
+Loading: LoadObjectsThreaded / TimeNanoseconds
+Loading: AwakeFromLoad Threaded / TimeNanoseconds
+Loading: IntegrateAllThreadedObjects / TimeNanoseconds
+Loading: Loading.ReadObjectThreaded / TimeNanoseconds
+Loading: Loading.LoadObjectsThreaded / TimeNanoseconds
+Loading: Loading.FindInThreadedActivationQueue / TimeNanoseconds
+Other: MemoryProfiler.TakeSnapshot / TimeNanoseconds
+Overhead: CollectGPUSamples / TimeNanoseconds
+Internal: Main Thread / TimeNanoseconds
+Overhead: Profiler.FlushMemoryCounters / TimeNanoseconds
+Loading: BatchDeleteObjectsThread / TimeNanoseconds
+Render: SRPBatcher.DrawCommandsInjection / TimeNanoseconds
+Render: RenderLoop.ScheduleDraw / TimeNanoseconds
+Render: RenderLoop.DrawSRPBatcher / TimeNanoseconds
+Render: RenderLoop.Draw / TimeNanoseconds
+Render: Shadows.ExecuteDrawShadows / TimeNanoseconds
+Render: Shadows.PrepareDrawShadows / TimeNanoseconds
+Render: Shadows.DrawSRPBatcher / TimeNanoseconds
+Render: Shadows.Draw / TimeNanoseconds
+Render: MeshSkinning.GPUBatchedSkinInPlace / TimeNanoseconds
+Render: MeshSkinning.GPUBatchedSkin / TimeNanoseconds
+Render: MeshSkinning.GPUBatchedBlendShape / TimeNanoseconds
+Render: MeshSkinning.GPUBatchedCopy / TimeNanoseconds
+Render: MeshSkinning.SkinOnGPUNonBatched / TimeNanoseconds
+Render: MeshSkinning.SkinOnGPU / TimeNanoseconds
+Render: MeshSkinning.WaitForSkinThreads / TimeNanoseconds
+Render: Graphics.DrawProcedural / TimeNanoseconds
+Render: Mesh.DrawVBO / TimeNanoseconds
+Loading: Async.DirectTextureRequestGPU / TimeNanoseconds
+Lighting: MaterialRenderer.MeshDraw / TimeNanoseconds
+Internal: Gfx.WaitForGfxCommandsFromMainThread / TimeNanoseconds
+Render: Gfx.WaitForRenderThread / TimeNanoseconds
+Render: Gfx.WaitForPresentOnGfxThread / TimeNanoseconds
+Render: Batch.DrawDynamic / TimeNanoseconds
+Render: Batch.DrawStatic / TimeNanoseconds
+Render: Batch.DrawInstanced / TimeNanoseconds
+Render: FrameTime.GPU / TimeNanoseconds
+Render: CreateThreadableGfxDevice / TimeNanoseconds
+Render: DrawBuffersBatchMode / TimeNanoseconds
+Render: Gfx.CreateTextureThreaded / TimeNanoseconds
+Loading: InstantiateMultiple.IntegrateInMainThread / TimeNanoseconds
+Loading: InstantiateMultiple.CancelAndCleanupInMainThread / TimeNanoseconds
+Render: QueuePrepareIntegrateMainThreadObjects / TimeNanoseconds
+Render: DrawingMultiCustomPost / TimeNanoseconds
+Render: DrawingMultiCustom / TimeNanoseconds
+Render: DrawingMultiCustomPre / TimeNanoseconds
+Render: Drawing / TimeNanoseconds
+Render: GPUDrivenProcessor.CollectSpeedTreeWindData / TimeNanoseconds
+Render: GPUDrivenProcessor.FillScriptingListFromUnityObjects / TimeNanoseconds
+Render: GPUDrivenProcessor.CollectMaterialDataJob / TimeNanoseconds
+Render: GPUDrivenProcessor.CollectMeshDataJob / TimeNanoseconds
+Render: GPUDrivenProcessor.CollectRendererDataJob / TimeNanoseconds
+Render: GPUDrivenProcessor.FilterRenderersByMaterial / TimeNanoseconds
+Render: GPUDrivenProcessor.FilterValidMaterials / TimeNanoseconds
+Render: GPUDrivenProcessor.FilterRenderersAndCollectMaterials / TimeNanoseconds
+Render: GPUDrivenProcessor.CollectLODGroupDataJob / TimeNanoseconds
+Render: GPUDrivenProcessor.CollectLODGroupData / TimeNanoseconds
+Render: GPUDrivenProcessor.CollectRendererData / TimeNanoseconds
+Render: GPUDrivenProcessor.FilterOutInvalidLODGroups / TimeNanoseconds
+Render: GPUDrivenProcessor.DispatchSpeedTreeWindData / TimeNanoseconds
+Render: GPUDrivenProcessor.DispatchMaterialData / TimeNanoseconds
+Render: GPUDrivenProcessor.DispatchLODGroupData / TimeNanoseconds
+Render: GPUDrivenProcessor.EnableGPUDrivenRenderingAndDispatchRendererData / TimeNanoseconds
+Render: GfxDeviceD3D12.WaitForLastPresentation.WaitForGPU / TimeNanoseconds
+Render: GfxDeviceD3D12.ReserveScratchMemory / TimeNanoseconds
+Render: GfxDeviceD3D12.WaitForGPU / TimeNanoseconds
+Render: GUITexture.Draw / TimeNanoseconds
+Overhead: GraphicsTexture.ReleaseUploadMemory / TimeNanoseconds
+Overhead: GraphicsTexture.CopyToTextureMemory / TimeNanoseconds
+Overhead: GraphicsTexture.AcquireUploadMemory / TimeNanoseconds
+Render: GPUProfiler.EndQueries / TimeNanoseconds
+Render: GPUProfiler.BeginQueries / TimeNanoseconds
+Render: Gfx.DrawDynamic / TimeNanoseconds
+Loading: AsyncInstantiateOperation.IntegrateInMainThread / TimeNanoseconds
+Loading: AsyncInstantiateOperation.CancelAndCleanupInMainThread / TimeNanoseconds
+Audio: AudioClip.CreateMemoryAudioSampleProvider / TimeNanoseconds
+Audio: PlatformAudioDevice.MixThread / TimeNanoseconds
+Audio: AudioManager.GetMemory / TimeNanoseconds
+Audio: Audio.Thread / TimeNanoseconds
+Ai: NavMesh.DebugDraw / TimeNanoseconds
+Ai: NavMesh.MeshTriangles / TimeNanoseconds
+Ai: NavMesh.Recast.RasterizeTriangles / TimeNanoseconds
+Memory: System Used Memory / Bytes
+Memory: System Total Used Memory / Bytes
+Memory: App Resident Memory / Bytes
+Memory: App Committed Memory / Bytes
+Memory: Total Used Memory / Bytes
+Memory: Total Reserved Memory / Bytes
+Memory: GC Used Memory / Bytes
+Memory: GC Reserved Memory / Bytes
+Memory: Profiler Used Memory / Bytes
+Memory: Profiler Reserved Memory / Bytes
+Memory: Audio Used Memory / Bytes
+Memory: Audio Reserved Memory / Bytes
+Memory: Video Used Memory / Bytes
+Memory: Video Reserved Memory / Bytes
+Memory: Gfx Used Memory / Bytes
+Memory: Gfx Reserved Memory / Bytes
+Memory: Texture Memory / Bytes
+Memory: Mesh Memory / Bytes
+Memory: Material Memory / Bytes
+Memory: AnimationClip Memory / Bytes
+Memory: AudioClip Memory / Bytes
+Virtual Texturing: Total GPU Cache Size / Bytes
+Memory: Physics Used Memory (2D) / Bytes
+Memory: Physics Used Memory / Bytes
+Render: Draw Calls Count / Count
+Render: Indirect Draw Calls Count / Count
+Render: Triangles Count / Count
+Render: Video Memory Bytes / Bytes
+Render: Dynamic Batched Draw Calls Count / Count
+Render: Dynamic Batched Triangles Count / Count
+Render: Static Batched Draw Calls Count / Count
+Render: Static Batched Triangles Count / Count
+Render: Instanced Batched Draw Calls Count / Count
+Render: Instanced Batched Triangles Count / Count
+Render: CPU Main Thread Frame Time / TimeNanoseconds
+Render: CPU Render Thread Frame Time / TimeNanoseconds
+Render: GPU Frame Time / TimeNanoseconds
+Scripts: AssemblyDataFrom Unity.RenderPipelines.GPUDriven.Runtime.dll / TimeNanoseconds
+Managed Jobs: GPUResidentDrawer:FindRenderersFromMaterialOrMeshJob / TimeNanoseconds
+Burst Jobs: GPUResidentDrawer:FindRenderersFromMaterialOrMeshJob (Burst) / TimeNanoseconds
+Managed Jobs: GPUResidentDrawer:FindRenderersFromMaterialOrMeshJob (Cleanup) / TimeNanoseconds
+Managed Jobs: PrefixSumDrawsAndInstances / TimeNanoseconds
+Burst Jobs: PrefixSumDrawsAndInstances (Burst) / TimeNanoseconds
+Managed Jobs: PrefixSumDrawsAndInstances (Cleanup) / TimeNanoseconds
+Managed Jobs: DrawCommandOutputPerBatch / TimeNanoseconds
+Managed Jobs: PrefixSumDrawInstancesJob / TimeNanoseconds
+Burst Jobs: DrawCommandOutputPerBatch (Burst) / TimeNanoseconds
+Burst Jobs: PrefixSumDrawInstancesJob (Burst) / TimeNanoseconds
+Managed Jobs: DrawCommandOutputPerBatch (Cleanup) / TimeNanoseconds
+Managed Jobs: PrefixSumDrawInstancesJob (Cleanup) / TimeNanoseconds
+Managed Jobs: DrawCommandOutputFiltering / TimeNanoseconds
+Burst Jobs: DrawCommandOutputFiltering (Burst) / TimeNanoseconds
+Managed Jobs: DrawCommandOutputFiltering (Cleanup) / TimeNanoseconds
+Managed Jobs: FindDrawInstancesJob / TimeNanoseconds
+Burst Jobs: FindDrawInstancesJob (Burst) / TimeNanoseconds
+Managed Jobs: FindDrawInstancesJob (Cleanup) / TimeNanoseconds
+Managed Jobs: FindMaterialDrawInstancesJob / TimeNanoseconds
+Burst Jobs: FindMaterialDrawInstancesJob (Burst) / TimeNanoseconds
+Managed Jobs: FindMaterialDrawInstancesJob (Cleanup) / TimeNanoseconds
+Managed Jobs: BuildDrawListsJob / TimeNanoseconds
+Burst Jobs: BuildDrawListsJob (Burst) / TimeNanoseconds
+Managed Jobs: BuildDrawListsJob (Cleanup) / TimeNanoseconds
+Managed Jobs: GPUInstanceDataBuffer:ConvertCPUInstancesToGPUInstancesJob / TimeNanoseconds
+Burst Jobs: GPUInstanceDataBuffer:ConvertCPUInstancesToGPUInstancesJob (Burst) / TimeNanoseconds
+Managed Jobs: GPUInstanceDataBuffer:ConvertCPUInstancesToGPUInstancesJob (Cleanup) / TimeNanoseconds
+Managed Jobs: GPUInstanceDataBufferUploader:WriteInstanceDataParameterJob / TimeNanoseconds
+Burst Jobs: GPUInstanceDataBufferUploader:WriteInstanceDataParameterJob (Burst) / TimeNanoseconds
+Managed Jobs: GPUInstanceDataBufferUploader:WriteInstanceDataParameterJob (Cleanup) / TimeNanoseconds
+PlayerLoop: EarlyUpdate.ExecuteMainThreadJobs / TimeNanoseconds
+PlayerLoop: PostLateUpdate.MemoryFrameMaintenance / TimeNanoseconds
+Scripts: UIR.BeforeDraw / TimeNanoseconds
+Scripts: ActualCameraSubmissionLodsMemoryAndFragmentCoverageAcrossCompleteChapter / TimeNanoseconds

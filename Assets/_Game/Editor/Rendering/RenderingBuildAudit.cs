@@ -40,6 +40,7 @@ namespace Gravivore.Editor.Rendering
         }
         public static void ValidateOrThrow()
         {
+            if(AssetDatabase.LoadAssetAtPath<Shader>("Assets/_Game/Content/ActorProductionV2/Shaders/ActorIndustrialLit.shader")!=null)VisualIntegration.ActorConceptWorldBuildAudit.Validate();
             if (VisualIntegration.CapacitorFieldProofBuilder.IsInstalled) VisualIntegration.CapacitorFieldProofBuilder.ValidateOrThrow();
             if (VisualIntegration.ConnectedConceptSectorsBuilder.IsInstalled) VisualIntegration.ConnectedConceptSectorsBuilder.ValidateOrThrow();
             if (VisualIntegration.Chapter01CompleteConceptBuilder.IsInstalled) VisualIntegration.Chapter01CompleteConceptBuilder.ValidateOrThrow();

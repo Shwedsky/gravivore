@@ -17,6 +17,7 @@ namespace Gravivore.Presentation.Combat
             public Vector3 Target;
             public float Remaining;
             public bool Active, Impact;
+            public Color Color;
         }
         private S01SceneCompositionRoot _root;
         private OrdinaryEnemyController[] _enemies;
@@ -24,6 +25,10 @@ namespace Gravivore.Presentation.Combat
         private Action<DamageRequest>[] _handlers;
         private EnemyLifeId[] _lives;
         private CharacterVisualBinding[] _bindings;
+        private int[] _sourceSides;
+        private HostilePresentationDefinition _profiles;
+        private Color _attackColor=new Color(1,.25f,.07f,.8f);
+        private bool _mechanicalTravel;
         private Transform _eliteOrigin, _bossOrigin;
         private Phase6BVfxPool _pool;
         private Travel[] _travel;
@@ -36,9 +41,12 @@ namespace Gravivore.Presentation.Combat
         public int Capacity => _pool?.CreatedInstanceCount ?? 0;
         public Vector3 LastSource { get; private set; }
         public Vector3 LastTarget { get; private set; }
-        public void Initialize(S01SceneCompositionRoot root, Phase6BVfxInstance charge, Phase6BVfxInstance travel, Phase6BVfxInstance impact)
+        public Color LastPresentedColor { get; private set; }
+        public bool LastMechanicalTravel { get; private set; }
+        public void Initialize(S01SceneCompositionRoot root, Phase6BVfxInstance charge, Phase6BVfxInstance travel, Phase6BVfxInstance impact, HostilePresentationDefinition profiles=null)
         {
             _root = root;
+            _profiles=profiles;
             _pool = gameObject.AddComponent<Phase6BVfxPool>();
             _pool.Initialize(new[] { new Phase6BVfxPool.Binding(Phase6BVfxCue.HostileCharge, charge, 4),
                 new Phase6BVfxPool.Binding(Phase6BVfxCue.HostileTravel, travel, 6), new Phase6BVfxPool.Binding(Phase6BVfxCue.HostileImpact, impact, 6) });
@@ -46,6 +54,7 @@ namespace Gravivore.Presentation.Combat
             _enemies=root.EnemyPopulation.GetComponentsInChildren<OrdinaryEnemyController>(true);
             _origins=new Transform[_enemies.Length]; _handlers=new Action<DamageRequest>[_enemies.Length];
             _lives=new EnemyLifeId[_enemies.Length]; _bindings=new CharacterVisualBinding[_enemies.Length];
+            _sourceSides=new int[_enemies.Length];
             for(var i=0;i<_enemies.Length;i++)
             {
                 var index=i;_origins[i]=FindSource(_enemies[i].transform,_enemies[i].TargetPoint);
@@ -69,38 +78,47 @@ namespace Gravivore.Presentation.Combat
             return fallback;
         }
         private void Source(Vector3 position,float duration)
-        { SourceCount++;LastSource=position;_pool.TryPlay(Phase6BVfxCue.HostileCharge,position,position,duration); }
+        { SourceCount++;LastSource=position;LastPresentedColor=_attackColor;_pool.TryPlay(Phase6BVfxCue.HostileCharge,position,position,duration,industrialColor:_attackColor); }
         private void Release(Vector3 source,Vector3 target,bool impact)
         {
             LastSource=source;LastTarget=target;TravelCount++;
-            _pool.TryPlay(Phase6BVfxCue.HostileTravel,source,target);
-            var slot=_travel[_cursor++%_travel.Length];slot.Target=target;slot.Remaining=.14f;slot.Active=true;slot.Impact=impact;
+            LastPresentedColor=_attackColor;LastMechanicalTravel=_mechanicalTravel;
+            _pool.TryPlay(Phase6BVfxCue.HostileTravel,source,target,industrialColor:_attackColor,mechanicalTravel:_mechanicalTravel);
+            var slot=_travel[_cursor++%_travel.Length];slot.Target=target;slot.Remaining=.14f;slot.Active=true;slot.Impact=impact;slot.Color=_attackColor;
         }
         private void OrdinaryAttack(int index)
         {
             if(!_enemies[index].IsAlive)return;
             // A pooled actor can switch archetype; its binding already caches the active sockets.
             var binding=_bindings[index];
-            var source=(binding!=null?binding.GetSocketOr(PresentationSocket.AttackOrigin,_enemies[index].TargetPoint):_origins[index]).position;Source(source,.1f);
+            var profile=Profile(binding);_attackColor=profile?.AttackColor??new Color(1,.25f,.07f,.8f);_mechanicalTravel=profile!=null&&!profile.ElectricalTravel;
+            var role=profile?.PairedAttackSources==true?((_sourceSides[index]++&1)==0?PresentationSocket.WeaponLeft:PresentationSocket.WeaponRight):PresentationSocket.AttackOrigin;
+            var source=(binding!=null?binding.GetSocketOr(role,_enemies[index].TargetPoint):_origins[index]).position;Source(source,.1f);
             Release(source,_root.PlayerObject.transform.position+Vector3.up,true);
         }
-        private void EliteBasicStart(EncounterBasicAttackEvent value)=>Source(_eliteOrigin.position,value.Duration);
-        private void BossBasicStart(EncounterBasicAttackEvent value)=>Source(_bossOrigin.position,value.Duration);
-        private void EliteBasicResolve(EncounterBasicAttackEvent value)=>Release(_eliteOrigin.position,value.Target,value.Hit);
-        private void BossBasicResolve(EncounterBasicAttackEvent value)=>Release(_bossOrigin.position,value.Target,value.Hit);
-        private void EliteWarning(EliteShockwaveTelegraphEvent value){_eliteWarning=value;Source(_eliteOrigin.position,value.Duration);}
-        private void BossWarning(BossTelegraphEvent value){_bossWarning=value;Source(_bossOrigin.position,value.Duration);}
+        private HostileMotionProfile Profile(CharacterVisualBinding binding)=>binding?.ActiveModel==null?null:_profiles?.Get(binding.ActiveModel.GetComponentInChildren<Animator>()?.runtimeAnimatorController);
+        private void EncounterPalette(Transform actor){_attackColor=Profile(actor.GetComponent<CharacterVisualBinding>())?.AttackColor??new Color(1,.25f,.07f,.8f);_mechanicalTravel=false;}
+        private void EliteBasicStart(EncounterBasicAttackEvent value){EncounterPalette(_root.MagnetarGuard.transform);Source(_eliteOrigin.position,value.Duration);}
+        private void BossBasicStart(EncounterBasicAttackEvent value){EncounterPalette(_root.CustodianBoss.transform);Source(_bossOrigin.position,value.Duration);}
+        private void EliteBasicResolve(EncounterBasicAttackEvent value){EncounterPalette(_root.MagnetarGuard.transform);Release(_eliteOrigin.position,value.Target,value.Hit);}
+        private void BossBasicResolve(EncounterBasicAttackEvent value){EncounterPalette(_root.CustodianBoss.transform);Release(_bossOrigin.position,value.Target,value.Hit);}
+        private void EliteWarning(EliteShockwaveTelegraphEvent value){EncounterPalette(_root.MagnetarGuard.transform);_eliteWarning=value;Source(_eliteOrigin.position,value.Duration);}
+        private Vector3 BossOrigin(BossAttackType attack)
+        {
+            var binding=_root.CustodianBoss.GetComponent<CharacterVisualBinding>();
+            var role=attack==BossAttackType.LineCharge?PresentationSocket.AttackLineOrigin:attack==BossAttackType.CirclePulse?PresentationSocket.AttackCircleOrigin:PresentationSocket.AttackConeOrigin;
+            return binding.GetSocketOr(role,_bossOrigin).position;
+        }
+        private void BossWarning(BossTelegraphEvent value){EncounterPalette(_root.CustodianBoss.transform);_bossWarning=value;Source(BossOrigin(value.Attack),value.Duration);}
         private void EliteSpecial(EliteShockwaveResolvedEvent value)
         {
+            EncounterPalette(_root.MagnetarGuard.transform);
             for(var i=0;i<4;i++)
                 Release(_eliteOrigin.position,_eliteWarning.Origin+Quaternion.Euler(0,i*90,0)*Vector3.forward*_eliteWarning.Radius+Vector3.up*.25f,true);
         }
         private void BossSpecial(BossAttackResolvedEvent value)
         {
-            var binding=_root.CustodianBoss.GetComponent<CharacterVisualBinding>();
-            var role=value.Attack==BossAttackType.LineCharge?PresentationSocket.AttackLineOrigin:
-                value.Attack==BossAttackType.CirclePulse?PresentationSocket.AttackCircleOrigin:PresentationSocket.AttackConeOrigin;
-            var source=binding.GetSocketOr(role,_bossOrigin).position;
+            EncounterPalette(_root.CustodianBoss.transform);var source=BossOrigin(value.Attack);
             if(value.Attack==BossAttackType.CirclePulse)
             {
                 for(var i=0;i<4;i++)Release(source,_bossWarning.Origin+Quaternion.Euler(0,i*90,0)*Vector3.forward*_bossWarning.Range+Vector3.up*.25f,true);
@@ -123,11 +141,12 @@ namespace Gravivore.Presentation.Combat
                 {
                     _enemies[i].AttackRequested-=_handlers[i];_enemies[i].AttackRequested+=_handlers[i];
                     _lives[i]=_enemies[i].LifeId;
+                    _sourceSides[i]=0;
                 }
             foreach(var slot in _travel)
             {
                 if(!slot.Active)continue;slot.Remaining-=dt;if(slot.Remaining>0)continue;slot.Active=false;
-                if(!slot.Impact)continue;ImpactCount++;_pool.TryPlay(Phase6BVfxCue.HostileImpact,slot.Target,slot.Target);
+                if(!slot.Impact)continue;ImpactCount++;_pool.TryPlay(Phase6BVfxCue.HostileImpact,slot.Target,slot.Target,industrialColor:slot.Color);
             }
         }
         private void OnDisable()

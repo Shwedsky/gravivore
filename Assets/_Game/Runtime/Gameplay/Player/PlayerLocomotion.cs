@@ -14,6 +14,9 @@ namespace Gravivore.Gameplay.Player
         private float _fixedMoveSpeed;
         private float _rotationDegreesPerSecond;
         private bool _isInitialized;
+        private readonly Gravivore.Gameplay.World.ActorWallEnvelope _wallEnvelope=new Gravivore.Gameplay.World.ActorWallEnvelope();
+        public float WallEnvelopeRadius=>_wallEnvelope.Radius;
+        public void ConfigureWallEnvelope(float radius,int mask)=>_wallEnvelope.Configure(radius,mask);
         public bool HasMovementIntent => _isInitialized && _movementInput.Movement.sqrMagnitude > Mathf.Epsilon;
 
         public void Initialize(
@@ -92,7 +95,7 @@ namespace Gravivore.Gameplay.Player
             var movement = (cameraRight * input.x) + (cameraForward * input.y);
 
             var moveSpeed = _moveSpeedProvider != null ? _moveSpeedProvider.MoveSpeed : _fixedMoveSpeed;
-            _characterController.Move(movement * (moveSpeed * deltaTime));
+            _characterController.Move(_wallEnvelope.Resolve(transform.position,movement * (moveSpeed * deltaTime)));
 
             var targetRotation = Quaternion.LookRotation(movement.normalized, Vector3.up);
             transform.rotation = Quaternion.RotateTowards(

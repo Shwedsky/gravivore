@@ -225,6 +225,7 @@ namespace Gravivore.Presentation.Composition
             CreateHud(out var uiTouchExclusion, out var topTouchExclusion, out var joystickView);
             _movementInput = CreateMovementInput(uiTouchExclusion, joystickView);
             var locomotion = CreatePlayer();
+            locomotion.ConfigureWallEnvelope(_s15VisualCatalog.PlayerWallEnvelopeRadius,_gravityAttackSettings.HardBlockerLayers);
             var cameraTransform = CreateCamera(PlayerObject.transform);
 
             locomotion.Initialize(
@@ -258,7 +259,7 @@ namespace Gravivore.Presentation.Composition
             Phase6BCombat = gameObject.AddComponent<Phase6BCombatProductionBridge>();
             Phase6BCombat.Initialize(this, _gravityLashVfx, _phase6BProductionDefinition);
             if (_visualEnvironment?.Definition.HostileTravel != null)
-                gameObject.AddComponent<AttackCausalityPresenter>().Initialize(this, _visualEnvironment.Definition.HostileCharge, _visualEnvironment.Definition.HostileTravel, _visualEnvironment.Definition.HostileImpact);
+                gameObject.AddComponent<AttackCausalityPresenter>().Initialize(this, _visualEnvironment.Definition.HostileCharge, _visualEnvironment.Definition.HostileTravel, _visualEnvironment.Definition.HostileImpact, _s15VisualCatalog.HostilePresentation);
             var repairObject = new GameObject("Repair Hub Presentation", typeof(RepairHubProductionPresenter));
             repairObject.transform.SetParent(transform, false);
             RepairHub = repairObject.GetComponent<RepairHubProductionPresenter>();
@@ -758,6 +759,10 @@ namespace Gravivore.Presentation.Composition
                 BossCompletion, externalDefeatAuthority: true);
             ApplyEncounterBinding(eliteObject.transform, _visualEnvironment?.Definition.Elite);
             ApplyEncounterBinding(bossObject.transform, _visualEnvironment?.Definition.Boss);
+            float Envelope(Transform actor) => _s15VisualCatalog.HostilePresentation?.Get(
+                actor.GetComponent<CharacterVisualBinding>().ActiveModel.GetComponentInChildren<Animator>()?.runtimeAnimatorController)?.VisualRadius ?? 0;
+            MagnetarGuard.ConfigureWallEnvelope(Envelope(eliteObject.transform), _gravityAttackSettings.HardBlockerLayers);
+            CustodianBoss.ConfigureWallEnvelope(Envelope(bossObject.transform), _gravityAttackSettings.HardBlockerLayers);
 
             var presentationObject = new GameObject("Encounter Telegraph Presentation", typeof(EncounterTelegraphPresenter));
             presentationObject.transform.SetParent(transform, false);

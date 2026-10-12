@@ -29,7 +29,7 @@ namespace Gravivore.Tests.PlayMode
             Assert.That(_scene.Root.VisualEnvironment.GetRegion("capacitor-field").Root.GetComponentsInChildren<MeshRenderer>().Any(r=>r.name.StartsWith("CF_")),Is.True);
         }
         private SpawnSpotRuntime Arc => Enumerable.Range(0,_scene.Root.EnemyPopulation.SpotCount).Select(_scene.Root.EnemyPopulation.GetSpot).Single(s=>s.Id=="capacitor-field");
-        private static readonly Vector3[] Positions={new Vector3(-8,0,10),new Vector3(-15,0,10),new Vector3(-15,0,12.9f),new Vector3(-18.5f,0,8),new Vector3(-9,0,10)};
+        private static readonly Vector3[] Positions={new Vector3(-8,0,10),new Vector3(-15,0,10),new Vector3(-15,0,12.1f),new Vector3(-18.1f,0,8),new Vector3(-9,0,10)};
         private static readonly string[] Names={"01_entry","02_combat","03_installation_approach","04_edge","05_return_exit"};
 
         [UnityTest] public IEnumerator FiveNormalGameplayPositionsAndPostProcessingActuallyChangesPixels()
@@ -62,7 +62,7 @@ namespace Gravivore.Tests.PlayMode
             var body=root.PlayerObject.GetComponent<CharacterController>();
             foreach(var occupant in root.GetComponentsInChildren<CharacterController>(true))if(occupant!=body)occupant.enabled=false;
             foreach(var enemy in root.GetComponentsInChildren<OrdinaryEnemyController>(true))enemy.enabled=false;
-            var route=new[]{new Vector3(-4,0,10),Positions[0],Positions[1],Positions[2],new Vector3(-18.5f,0,12.4f),Positions[3],new Vector3(-18.5f,0,4.5f),new Vector3(-15,0,6),Positions[1],Positions[4],new Vector3(-4,0,10)};
+            var route=new[]{new Vector3(-4,0,10),Positions[0],Positions[1],Positions[2],new Vector3(-18.1f,0,12.0f),Positions[3],new Vector3(-18.1f,0,4.5f),new Vector3(-15,0,6),Positions[1],Positions[4],new Vector3(-4,0,10)};
             Move(route[0]);var records=new List<string>();
             for(var i=1;i<route.Length;i++)
             {
@@ -113,7 +113,7 @@ namespace Gravivore.Tests.PlayMode
             yield return Load();var root=_scene.Root;root.PlayerHealth.SetDevelopmentGodMode(true);
             var locomotion=root.PlayerObject.GetComponent<PlayerLocomotion>();locomotion.enabled=false;
             var input=new RouteInput();locomotion.Initialize(input,UnityEngine.Camera.main.transform,root.PlayerStats,540);
-            var route=new[]{new Vector3(-4,0,10),Positions[0],Positions[1],Positions[2],new Vector3(-18.5f,0,12.4f),Positions[3],new Vector3(-15,0,6),Positions[1],Positions[4],new Vector3(-4,0,10)};
+            var route=new[]{new Vector3(-4,0,10),Positions[0],Positions[1],Positions[2],new Vector3(-18.1f,0,12.0f),Positions[3],new Vector3(-15,0,6),Positions[1],Positions[4],new Vector3(-4,0,10)};
             Move(route[0]);var index=1;var frame=0;var started=Time.time;var wait=0f;var nextCapture=0f;
             var attacks=root.GetComponent<AttackCausalityPresenter>().SourceCount;
             var deaths=0;foreach(var enemy in root.GetComponentsInChildren<OrdinaryEnemyController>(true))enemy.Died+=_=>deaths++;

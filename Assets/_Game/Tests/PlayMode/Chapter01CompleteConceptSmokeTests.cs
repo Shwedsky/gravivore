@@ -29,7 +29,7 @@ namespace Gravivore.Tests.PlayMode
         private static readonly Vector3[] Positions={
             new Vector3(0,0,-34.5f),new Vector3(0,0,-30),new Vector3(0,0,-27),
             new Vector3(0,0,-14),new Vector3(0,0,-10),new Vector3(0,0,-6.3f),
-            new Vector3(-8,0,10),new Vector3(-15,0,10),new Vector3(-15,0,12.9f),
+            new Vector3(-8,0,10),new Vector3(-15,0,10),new Vector3(-15,0,12.1f),
             new Vector3(8,0,10),new Vector3(15,0,10),new Vector3(15,0,12.8f),
             new Vector3(-8,0,32),new Vector3(-15,0,32),new Vector3(-15,0,34.8f),
             new Vector3(8,0,32),new Vector3(15,0,32),new Vector3(15,0,35.5f),
@@ -143,7 +143,7 @@ namespace Gravivore.Tests.PlayMode
             root.WorldUnlocks.PrepareEliteEncounterForDevelopment();root.Chapter1Encounters.Tick();
             var locomotion=root.PlayerObject.GetComponent<PlayerLocomotion>();locomotion.enabled=false;
             var input=new RouteInput();locomotion.Initialize(input,UnityEngine.Camera.main.transform,root.PlayerStats,540);
-            var route=new[]{new Vector3(0,0,-30),new Vector3(0,0,-27),new Vector3(0,0,-10),new Vector3(0,0,-6.3f),new Vector3(0,0,10),new Vector3(-15,0,10),new Vector3(-15,0,12.9f),new Vector3(-15,0,10),new Vector3(0,0,10),new Vector3(15,0,10),new Vector3(15,0,12.8f),new Vector3(15,0,10),new Vector3(0,0,10),new Vector3(0,0,32),new Vector3(-15,0,32),new Vector3(-15,0,34.8f),new Vector3(-15,0,32),new Vector3(0,0,32),new Vector3(15,0,32),new Vector3(15,0,35.5f),new Vector3(15,0,32),new Vector3(0,0,32),new Vector3(0,0,51.5f),new Vector3(-5,0,53.8f),new Vector3(0,0,51.5f),new Vector3(2,0,54),new Vector3(2,0,63),new Vector3(0,0,67),new Vector3(0,0,70),new Vector3(0,0,73),new Vector3(6.5f,0,80),new Vector3(0,0,73)};
+            var route=new[]{new Vector3(0,0,-30),new Vector3(0,0,-27),new Vector3(0,0,-10),new Vector3(0,0,-6.3f),new Vector3(0,0,10),new Vector3(-15,0,10),new Vector3(-15,0,12.1f),new Vector3(-15,0,10),new Vector3(0,0,10),new Vector3(15,0,10),new Vector3(15,0,12.8f),new Vector3(15,0,10),new Vector3(0,0,10),new Vector3(0,0,32),new Vector3(-15,0,32),new Vector3(-15,0,34.8f),new Vector3(-15,0,32),new Vector3(0,0,32),new Vector3(15,0,32),new Vector3(15,0,35.5f),new Vector3(15,0,32),new Vector3(0,0,32),new Vector3(0,0,51.5f),new Vector3(-5,0,53.8f),new Vector3(0,0,51.5f),new Vector3(2,0,54),new Vector3(2,0,63),new Vector3(0,0,67),new Vector3(0,0,70),new Vector3(0,0,73),new Vector3(6.5f,0,80),new Vector3(0,0,73)};
             Move(route[0]);var index=1;var frame=0;var started=Time.time;var wait=0f;var nextCapture=0f;
             var attacks=root.GetComponent<AttackCausalityPresenter>().SourceCount;var deaths=0;var maxEnemies=0;
             foreach(var enemy in root.GetComponentsInChildren<OrdinaryEnemyController>(true))enemy.Died+=_=>deaths++;

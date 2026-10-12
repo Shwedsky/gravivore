@@ -16,6 +16,10 @@ namespace Gravivore.Presentation.Assets
         public float WallInset = .025f;
         public float MaximumWallOffset;
         public float TurnDegreesPerSecond = 360;
+        public Color AttackColor = new Color(1, .25f, .07f, .8f);
+        public bool ElectricalTravel = true;
+        public bool PairedAttackSources;
+        [Range(0, .5f)] public float AttackStartNormalizedTime;
         public int State(string state) => Animator.StringToHash(state);
     }
 

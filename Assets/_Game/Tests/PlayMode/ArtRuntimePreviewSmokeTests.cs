@@ -67,9 +67,9 @@ namespace Gravivore.Tests.PlayMode
                 Assert.That(form.GetComponentsInChildren<MonoBehaviour>(true), Is.Empty);
                 Assert.That(form.GetComponentsInChildren<Renderer>().Length, Is.EqualTo(3));
                 Assert.IsTrue(form.GetComponentsInChildren<Renderer>().All(r =>
-                    r.sharedMaterial.name == "HostileV2_Red" &&
-                    r.sharedMaterial.shader.name == "Universal Render Pipeline/Lit" &&
-                    r.sharedMaterial.IsKeywordEnabled("_METALLICSPECGLOSSMAP") &&
+                    r.sharedMaterial.name == "Cutter_ConceptShell" &&
+                    r.sharedMaterial.shader.name == "Gravivore/Actor Industrial Lit" &&
+                    r.sharedMaterial.renderQueue == 2000 &&
                     new[]{"_BaseMap","_BumpMap","_MetallicGlossMap","_OcclusionMap","_EmissionMap"}
                         .All(map=>r.sharedMaterial.GetTexture(map)!=null)));
             }

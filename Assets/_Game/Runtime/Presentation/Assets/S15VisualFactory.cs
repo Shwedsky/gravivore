@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Gravivore.Gameplay.Enemies;
+using Gravivore.Gameplay.World;
 using UnityEngine;
 
 namespace Gravivore.Presentation.Assets
@@ -20,7 +21,7 @@ namespace Gravivore.Presentation.Assets
         }
     }
 
-    public sealed class S15EnemyVisualState : IEnemyVisualState
+    public sealed class S15EnemyVisualState : IEnemyVisualState, IActorWallEnvelopeSource
     {
         private readonly Transform _root;
         private readonly S15VisualCatalog _catalog;
@@ -77,6 +78,8 @@ namespace Gravivore.Presentation.Assets
         }
 
         public string ActiveId => _activeId;
+        public float WallEnvelopeRadius => _binding.ActiveModel == null ? 0 :
+            _catalog.HostilePresentation?.Get(_binding.ActiveModel.GetComponentInChildren<Animator>()?.runtimeAnimatorController)?.VisualRadius ?? 0;
     }
 
     public static class S15VisualFactory

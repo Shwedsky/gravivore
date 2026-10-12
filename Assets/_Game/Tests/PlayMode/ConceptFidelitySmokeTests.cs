@@ -189,7 +189,7 @@ namespace Gravivore.Tests.PlayMode
                         Assert.IsTrue(grid.Reaches(stops[index]),"Unchanged collision route: "+index);
                         path=grid.Path(stops[index]);point=0;
                     }
-                    while(point<path.Count&&Vector3.Distance(root.PlayerObject.transform.position,path[point])<.40f)point++;
+                    while(point<path.Count&&Vector3.Distance(root.PlayerObject.transform.position,path[point])<.12f)point++;
                     if(point==path.Count)
                     {input.Movement=Vector2.zero;path=null;index=(index+1)%stops.Length;dwellUntil=now+7;evidence.completedStops++;}
                     else
