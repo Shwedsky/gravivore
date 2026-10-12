@@ -24,7 +24,7 @@ namespace Gravivore.Editor.VisualIntegration
             foreach (var path in required)
                 if (!packed.Contains(path)) throw new BuildFailedException("Rebuilt world or preserved actor resource not packed: " + path);
             var names = Chapter01BlueprintWorldBuilder.ReadLayout().sectors.Select(s => s.model + " / authored industrial sector")
-                .Concat(new[] { Chapter01BlueprintWorldBuilder.Layer,"Authored cross-sector service network" }).ToArray();
+                .Concat(new[] { Chapter01BlueprintWorldBuilder.Layer,Chapter01CompleteConceptBuilder.IsInstalled?Chapter01CompleteConceptBuilder.NetworkName:"Authored cross-sector service network" }).ToArray();
             var found = new bool[names.Length];
             using (var archive = ZipFile.OpenRead(report.summary.outputPath))
                 foreach (var entry in archive.Entries.Where(e => e.FullName.StartsWith("assets/bin/Data/level",StringComparison.Ordinal) && !e.FullName.EndsWith(".resS",StringComparison.Ordinal)))
@@ -53,6 +53,8 @@ namespace Gravivore.Editor.VisualIntegration
                 p.StartsWith(CapacitorFieldProofBuilder.Root + "/Materials/",StringComparison.Ordinal) ||
                 p.StartsWith(ConnectedConceptSectorsBuilder.Root + "/Textures/",StringComparison.Ordinal) ||
                 p.StartsWith(ConnectedConceptSectorsBuilder.Root + "/Materials/",StringComparison.Ordinal) ||
+                p.StartsWith(Chapter01CompleteConceptBuilder.Root + "/Textures/",StringComparison.Ordinal) ||
+                p.StartsWith(Chapter01CompleteConceptBuilder.Root + "/Materials/",StringComparison.Ordinal) ||
                 p.EndsWith(".fbx",StringComparison.OrdinalIgnoreCase) &&
                 AssetDatabase.LoadAssetAtPath<GameObject>(p)?.GetComponentInChildren<SkinnedMeshRenderer>(true) != null).Distinct().ToArray();
         }

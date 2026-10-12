@@ -191,12 +191,15 @@ namespace Gravivore.Tests.PlayMode
                 var contact=wall.ClosestPoint(start+Vector3.up*.55f);var away=start+Vector3.up*.55f-contact;away.y=0;away.Normalize();
                 var wallPosition=contact+away*(radius+.15f);wallPosition.y=start.y;
                 // A near face of one wall can be inside a different reactor proxy.
-                // Choose a reachable controller centre, never place the fixture through collision.
+                // Search nearby positions on the same face before the old broad offsets.
+                // Dense facility alcoves cannot be sampled only at 0 and +/-8 metres.
+                // Keep real ground/capsule clearance; never place the fixture through collision.
                 var tangent=Vector3.Cross(away,Vector3.up);
                 var valid=false;
-                foreach(var lateral in new[]{0f,8f,-8f})
+                foreach(var lateral in new[]{0f,1f,-1f,2f,-2f,3f,-3f,4f,-4f,6f,-6f,8f,-8f})
                 {
                     var candidate=wallPosition+tangent*lateral;
+                    if(!root.WorldPresenter.Layout.HasGround(candidate,radius))continue;
                     if(Physics.CheckCapsule(candidate+Vector3.up*radius,candidate+Vector3.up*1.7f,radius,
                         LayerMask.GetMask("HardBlocker"),QueryTriggerInteraction.Ignore))continue;
                     actor.position=candidate;valid=true;break;
