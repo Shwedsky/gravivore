@@ -1,0 +1,126 @@
+{
+  "date": "2026-10-10",
+  "result": "passed",
+  "checks": [
+    {
+      "check": "path_guard_examples",
+      "passed": true,
+      "detail": "3 accepted and 7 rejected examples"
+    },
+    {
+      "check": "unique_sources_and_coverage",
+      "passed": true,
+      "detail": "24 warehouse + 6 pre-existing archives; 30 unique source/licence/texture entries"
+    },
+    {
+      "check": "curation_partition",
+      "passed": true,
+      "detail": "19 copied; 5 rejected; 6 retained"
+    },
+    {
+      "check": "source_associations",
+      "passed": true,
+      "detail": "Every archive has licence and texture records"
+    },
+    {
+      "check": "warehouse_formats",
+      "passed": true,
+      "detail": "9 ZIP, 15 UnityPackage"
+    },
+    {
+      "check": "archive_paths_counts_hashes",
+      "passed": true,
+      "detail": "7047 member records safe; extension counts agree; no archive inspection errors"
+    },
+    {
+      "check": "nested_paths",
+      "passed": true,
+      "detail": "2 embedded Unity packages and 5 RAR listings; all paths safe"
+    },
+    {
+      "check": "copy_manifest_associations",
+      "passed": true,
+      "detail": "All source/destination paths and hashes match archive records"
+    },
+    {
+      "check": "model_measurement_coverage",
+      "passed": true,
+      "detail": "53 Blender measurements; 25 static ASCII-parser measurements; no failed rows"
+    },
+    {
+      "check": "model_geometry_rig_action_integrity",
+      "passed": true,
+      "detail": "78 geometry totals, source-member links, rig counts, frame ranges and donor grades validated"
+    },
+    {
+      "check": "vehicle_motion_not_invented",
+      "passed": true,
+      "detail": "All four UnityFan vehicles have no rig or clips"
+    },
+    {
+      "check": "raw_restrictions_recorded",
+      "passed": true,
+      "detail": "Unity raw sources and conflicting Quaternius notices conservatively stay local"
+    },
+    {
+      "check": "local_warehouse_exact_coverage",
+      "passed": true,
+      "detail": "All actual warehouse files present, none omitted or invented"
+    },
+    {
+      "check": "original_and_retained_hashes",
+      "passed": true,
+      "detail": "All 30 original/retained archive SHA-256 hashes unchanged, including both active world payloads"
+    },
+    {
+      "check": "local_copy_hashes",
+      "passed": true,
+      "detail": "All 19 canonical copies byte-identical to original warehouse payloads"
+    },
+    {
+      "check": "measured_source_hashes",
+      "passed": true,
+      "detail": "78 measured model sources + 7 nested archives match recorded hashes; no saved model changes"
+    },
+    {
+      "check": "canonical_raw_gitignored",
+      "passed": true,
+      "detail": "All 25 canonical payload paths are ignored"
+    }
+  ],
+  "totals": {
+    "warehouse_payloads": 24,
+    "new_canonical_copies": 19,
+    "rejected": 5,
+    "retained": 6,
+    "model_rows": 78,
+    "archive_member_records": 7047
+  },
+  "unity_compile": "not run: audit/docs-only; no production import and parallel Unity session",
+  "gameplay_tests": "not run: no runtime changes",
+  "project_scene_validation": "not run: no scene changes; audit manifest validation executed instead",
+  "android_build": "not run: no production import; no APK",
+  "device_visual_performance_gate": "not run; donor grade does not certify production art or performance",
+  "git_scope": {
+    "branch": "chore/actor-asset-intake-v1",
+    "baseline": "38e0ed8fe5c95ff41ab5dbb246f45ed26bdcf9cc",
+    "changed_files": [
+      "docs/actor-production-v1/ACTOR_ASSET_INTAKE_AUDIT.md",
+      "docs/actor-production-v1/ACTOR_DONOR_MATRIX.md",
+      "docs/actor-production-v1/ARCHIVE_MANIFEST.json",
+      "docs/actor-production-v1/COPY_MANIFEST.json",
+      "docs/actor-production-v1/INTAKE_PLAN.md",
+      "docs/actor-production-v1/MODEL_INVENTORY.md",
+      "docs/actor-production-v1/MODEL_METRICS.json",
+      "docs/actor-production-v1/NESTED_ARCHIVES.json",
+      "docs/actor-production-v1/SOURCE_LICENSES.json",
+      "docs/actor-production-v1/TEXTURE_INVENTORY.json",
+      "docs/actor-production-v1/VALIDATE_MANIFESTS.py",
+      "docs/actor-production-v1/VALIDATION_SUMMARY.json"
+    ],
+    "scope": "All 12 changed files under docs/actor-production-v1; no raw bytes or production files staged",
+    "diff_whitespace_check": "passed after removing one trailing empty line",
+    "draft_pr": "https://github.com/Shwedsky/gravivore/pull/72",
+    "merged": false
+  }
+}
