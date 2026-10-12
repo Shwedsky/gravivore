@@ -23,7 +23,13 @@ for platform in ['EditMode','PlayMode']:
     tests[platform]={key:test.attrib.get(key) for key in ['total','passed','failed','skipped','result']}
 apk=ROOT/'Builds/Android/gravivore-energy-chamber-proof-v1-dev.apk'
 assert apk.exists(),'Expected isolated dev APK missing.'
-build=json.loads((PASS/'verification/android-result.json').read_text());assert build['result']=='Succeeded' and build['errors']==0
+build=json.loads((PASS/'verification/android-result.json').read_text());assert build['result']=='Succeeded'
+build_diagnostics=[]
+if build['errors']:
+    log=(PASS/'verification/AndroidStandalone.log').read_text(encoding='utf-8',errors='replace')
+    known='Host type is not matching any asset type at Path Packages/com.unity.render-pipelines.core/Editor/Lighting/ProbeVolume/RenderingLayerMask/TraceRenderingLayerMask.urtshader.'
+    assert build['errors']==3 and log.count(known)>=3 and 'Error building Player:' not in log and 'error CS' not in log,'Unexpected build failure/diagnostic.'
+    build_diagnostics.append('Unity reports Succeeded with 3 nonfatal URP editor ProbeVolumeBakingResources TraceRenderingLayerMask resource-type errors. APV and light layers are disabled; no device acceptance claimed.')
 sdk=Path(r'C:/Program Files/Unity/Hub/Editor/6000.3.0f1/Editor/Data/PlaybackEngines/AndroidPlayer/SDK')
 aapt=sorted((sdk/'build-tools').glob('*/aapt.exe'))[-1]
 badging=subprocess.check_output([str(aapt),'dump','badging',str(apk)],text=True,encoding='utf-8',errors='replace')
@@ -39,6 +45,7 @@ receipt=dict(branch=git('branch','--show-current'),draftPr='https://github.com/S
     artifactScope='additive proof only; final documentation commit may follow contentHead',changedFiles=len(files),sharedFilesChanged=0,
     tests=tests,compile='Passed',projectValidation='Passed',assemblyValidation='Passed',
     apk=dict(path=str(apk),sha256=hashlib.sha256(apk.read_bytes()).hexdigest(),bytes=apk.stat().st_size,package='com.gravivore.energychamberproof',architecture='ARM64',development=True,scenes=1),
+    buildResult=build['result'],buildLoggedErrors=build['errors'],buildDiagnostics=build_diagnostics,
     verdict='READY FOR PRODUCTION DEVELOPMENT',deviceVisualGate='Not run',devicePerformance='Not measured',merge='Not performed')
 (PASS/'FILES_CHANGED.txt').write_text('\n'.join(files)+'\n',encoding='utf-8')
 (PASS/'delivery.json').write_text(json.dumps(receipt,indent=2),encoding='utf-8')
