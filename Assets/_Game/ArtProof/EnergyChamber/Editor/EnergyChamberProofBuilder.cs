@@ -56,7 +56,7 @@ namespace Gravivore.ArtProof.EnergyChamber
             foreach(var renderer in owner.GetComponentsInChildren<Renderer>()) renderer.shadowCastingMode=ShadowCastingMode.On;
             PrefabUtility.SaveAsPrefabAsset(owner,PrefabPath);Object.DestroyImmediate(owner);
             var scene=EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);
-            PrefabUtility.InstantiatePrefab(Required<GameObject>(PrefabPath));
+            var installation=(GameObject)PrefabUtility.InstantiatePrefab(Required<GameObject>(PrefabPath));installation.name="Energy Chamber / hybrid proof V1";
             var g0=(GameObject)PrefabUtility.InstantiatePrefab(Required<GameObject>(G0Path));
             g0.name="G-0 / unchanged current Tier 0 scale reference";g0.transform.position=PlayerPosition;
             // The accepted presentation prefab is referenced at its production
@@ -102,7 +102,7 @@ namespace Gravivore.ArtProof.EnergyChamber
 
         private static GameObject Custom(string name,Transform parent)
         {
-            var obj=Object.Instantiate(Required<GameObject>(Root+"/Models/EC_"+name+".fbx"),parent,false);obj.name="EC_"+name;
+            var obj=ModelUnder(Root+"/Models/EC_"+name+".fbx",parent,"EC_"+name);
             foreach(var renderer in obj.GetComponentsInChildren<Renderer>())
                 renderer.sharedMaterials=renderer.sharedMaterials.Select(m=>Required<Material>(Root+"/Materials/"+m.name+".mat")).ToArray();
             return obj;
@@ -136,16 +136,22 @@ namespace Gravivore.ArtProof.EnergyChamber
             // preserves human proportions; upper tread meets the 1.32 m deck.
             for(var i=0;i<2;i++)
             {
-                var stair=Object.Instantiate(Required<GameObject>(Root+"/Donors/Platform_Stairs_4.fbx"),service.transform,false);
-                stair.name="Service stair "+(i+1);MapTrim(stair);
-                var bounds=BoundsOf(stair);var scale=1.31f/bounds.size.y;stair.transform.localScale=Vector3.one*scale;
-                var rotation=Quaternion.Euler(0,i==0 ? 0 : 180,0);stair.transform.localRotation=rotation;
-                stair.transform.localPosition=new Vector3(0,.015f,i==0 ? -3.03f : 3.03f)-rotation*new Vector3(bounds.center.x,bounds.min.y,bounds.center.z)*scale;
+                var stair=ModelUnder(Root+"/Donors/Platform_Stairs_4.fbx",service.transform,"Service stair "+(i+1));MapTrim(stair);
+                var bounds=LocalBoundsOf(stair);var scale=1.31f/bounds.size.y;stair.transform.localScale=Vector3.one*scale;
+                var rotation=Quaternion.Euler(0,45+i*180,0);stair.transform.localRotation=rotation;
+                stair.transform.localPosition=rotation*new Vector3(0,.015f,-3.15f)-rotation*new Vector3(bounds.center.x,bounds.min.y,bounds.center.z)*scale;
+                var vertices=stair.GetComponentsInChildren<MeshFilter>().SelectMany(f=>f.sharedMesh.vertices.Select(v=>f.transform.TransformPoint(v))).ToArray();
+                var top=vertices.Where(v=>v.y>vertices.Max(p=>p.y)-.035f).Aggregate(Vector3.zero,(sum,v)=>sum+v);
+                top/=vertices.Count(v=>v.y>vertices.Max(p=>p.y)-.035f);
+                if(new Vector2(top.x,top.z).magnitude>3.15f)
+                {
+                    rotation=Quaternion.Euler(0,225+i*180,0);stair.transform.localRotation=rotation;
+                    stair.transform.localPosition=Quaternion.Euler(0,45+i*180,0)*new Vector3(0,.015f,-3.15f)-rotation*new Vector3(bounds.center.x,bounds.min.y,bounds.center.z)*scale;
+                }
             }
             for(var i=0;i<4;i++)
             {
-                var rail=Object.Instantiate(Required<GameObject>(Root+"/Donors/Prop_Rail_Round_Big.fbx"),service.transform,false);
-                rail.name="Service quadrant safety rail "+(i+1);MapTrim(rail);
+                var rail=ModelUnder(Root+"/Donors/Prop_Rail_Round_Big.fbx",service.transform,"Service quadrant safety rail "+(i+1));MapTrim(rail);
                 rail.transform.localScale=Vector3.one*.63f;rail.transform.localRotation=Quaternion.Euler(0,45+i*90,0);
                 rail.transform.localPosition=Vector3.up*1.37f;
             }
@@ -154,6 +160,13 @@ namespace Gravivore.ArtProof.EnergyChamber
         {
             foreach(var renderer in obj.GetComponentsInChildren<Renderer>())
                 renderer.sharedMaterials=renderer.sharedMaterials.Select(m=>Required<Material>("Assets/_Game/Content/BlueprintWorldR1/Materials/R1_Trim"+(m.name.Contains("Trim_01") ? "1" : "2")+".mat")).ToArray();
+        }
+        private static GameObject ModelUnder(string path,Transform parent,string name)
+        {
+            // FBX roots may encode both axis conversion and unit scale. Keep
+            // those intact; assembly transforms belong on a neutral wrapper.
+            var wrapper=new GameObject(name);wrapper.transform.SetParent(parent,false);
+            Object.Instantiate(Required<GameObject>(path),wrapper.transform,false);return wrapper;
         }
 
         private static void BuildStage()
@@ -176,7 +189,7 @@ namespace Gravivore.ArtProof.EnergyChamber
             RenderSettings.ambientEquatorColor=new Color(.16f,.20f,.25f);RenderSettings.ambientGroundColor=new Color(.08f,.10f,.13f);
             RenderSettings.defaultReflectionMode=DefaultReflectionMode.Custom;
             RenderSettings.customReflectionTexture=Required<Cubemap>("Assets/_Game/Content/BlueprintWorldR1/Textures/R1_IndustrialReflection.asset");RenderSettings.reflectionIntensity=.70f;
-            var key=new GameObject("Inspection directional key",typeof(Light)).GetComponent<Light>();key.type=LightType.Directional;key.intensity=1.7f;key.color=new Color(.83f,.91f,1);key.shadows=LightShadows.Soft;key.transform.rotation=Quaternion.Euler(45,-35,0);
+            var key=new GameObject("Inspection directional key",typeof(Light)).GetComponent<Light>();key.type=LightType.Directional;key.intensity=1.7f;key.color=new Color(.83f,.91f,1);key.shadows=LightShadows.Soft;key.transform.rotation=Quaternion.Euler(45,-35,0);RenderSettings.sun=key;
             var rim=new GameObject("Inspection unshadowed fill",typeof(Light)).GetComponent<Light>();rim.type=LightType.Directional;rim.intensity=.32f;rim.color=new Color(.62f,.72f,.86f);rim.shadows=LightShadows.None;rim.transform.rotation=Quaternion.Euler(30,135,0);
         }
         public static void ApplyGameplayCamera(UnityEngine.Camera camera,Vector3 target)
@@ -218,17 +231,20 @@ namespace Gravivore.ArtProof.EnergyChamber
             camera.transform.SetPositionAndRotation(originalPos,originalRot);camera.fieldOfView=originalFov;
             var settings=Required<CameraFollowSettings>(CameraSettingsPath);var assembly=roots.Single(g=>g.name.StartsWith("Energy Chamber",StringComparison.Ordinal));
             File.WriteAllText(Evidence+"/camera-and-scale.json",JsonUtility.ToJson(new CameraRecord{settings=CameraSettingsPath,offset=settings.Offset,fieldOfView=settings.FieldOfView,lookAtHeight=settings.LookAtHeight,inspectionAnchor=GameplayTarget,playerAnchor=PlayerPosition,g0Source=G0Path,g0Scale=g0.transform.localScale,g0Bounds=BoundsOf(g0).size,installationBounds=BoundsOf(assembly).size},true));
+            File.WriteAllText(Evidence+"/component-bounds.json",JsonUtility.ToJson(new BoundRecords{items=assembly.GetComponentsInChildren<Renderer>().Select(r=>new BoundRecord{name=r.name,position=r.transform.position,size=r.bounds.size,center=r.bounds.center}).ToArray()},true));
             Debug.Log("ENERGY_CHAMBER_REVIEW_CAPTURED");
         }
         private static void SetView(UnityEngine.Camera camera,Vector3 position,Vector3 look,float fov)
         {camera.transform.position=position;camera.transform.LookAt(look);camera.fieldOfView=fov;}
         private static void Render(UnityEngine.Camera camera,string name,int width,int height)
         {
-            var target=new RenderTexture(width,height,24,RenderTextureFormat.ARGBHalf);var texture=new Texture2D(width,height,TextureFormat.RGB24,false);var previous=RenderTexture.active;
+            var target=new RenderTexture(width,height,24,RenderTextureFormat.ARGB32,RenderTextureReadWrite.sRGB);var texture=new Texture2D(width,height,TextureFormat.RGB24,false);var previous=RenderTexture.active;
             try {camera.targetTexture=target;camera.aspect=(float)width/height;for(var i=0;i<3;i++)camera.Render();RenderTexture.active=target;texture.ReadPixels(new Rect(0,0,width,height),0,0);texture.Apply();File.WriteAllBytes(Evidence+"/screenshots/"+name+".png",texture.EncodeToPNG());}
             finally {camera.targetTexture=null;RenderTexture.active=previous;target.Release();Object.DestroyImmediate(target);Object.DestroyImmediate(texture);}
         }
         [Serializable] private sealed class CameraRecord {public string settings,g0Source;public Vector3 offset,inspectionAnchor,playerAnchor,g0Scale,g0Bounds,installationBounds;public float fieldOfView,lookAtHeight;}
+        [Serializable] private sealed class BoundRecords {public BoundRecord[] items;}
+        [Serializable] private sealed class BoundRecord {public string name;public Vector3 position,size,center;}
 
         public static void Validate()
         {

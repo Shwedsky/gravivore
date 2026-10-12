@@ -38,4 +38,30 @@ public sealed class EnergyChamberProofTests
         }
         finally {EditorSceneManager.CloseScene(scene,true);}
     }
+
+    [Test]
+    public void EnergyChamberProof_FbxAssemblyRetainsSourceUnitsAndElevatedConnections()
+    {
+        var instance=Object.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>(EnergyChamberProofBuilder.PrefabPath));
+        try
+        {
+            foreach(var route in instance.transform.Cast<Transform>().Where(t=>t.name.StartsWith("Core-to-node route ")))
+            {
+                var bounds=EnergyChamberProofBuilder.BoundsOf(route.gameObject);
+                Assert.That(bounds.min.y,Is.GreaterThan(.5f),"A lost FBX axis rotation puts the conduit below its carrier.");
+                Assert.That(bounds.max.y,Is.GreaterThan(2f),"Feed must meet the raised central pressure seat.");
+            }
+            var stairs=instance.GetComponentsInChildren<Transform>().Where(t=>t.name.StartsWith("Service stair ")).ToArray();
+            Assert.That(stairs.Length,Is.EqualTo(2));
+            foreach(var stair in stairs)
+            {
+                var bounds=EnergyChamberProofBuilder.BoundsOf(stair.gameObject);
+                Assert.That(bounds.min.y,Is.EqualTo(.015f).Within(.02f));
+                Assert.That(bounds.max.y,Is.EqualTo(1.325f).Within(.02f));
+            }
+            foreach(var rail in instance.GetComponentsInChildren<Transform>().Where(t=>t.name.StartsWith("Service quadrant safety rail ")))
+                Assert.That(EnergyChamberProofBuilder.BoundsOf(rail.gameObject).size.y,Is.GreaterThan(.5f),"The original FBX unit conversion must survive uniform placement scale.");
+        }
+        finally {Object.DestroyImmediate(instance);}
+    }
 }
