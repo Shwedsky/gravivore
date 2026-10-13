@@ -1,6 +1,6 @@
 """Check isolation, accepted mesh bytes, captures, tests and optional APK receipt."""
 from pathlib import Path
-import subprocess,hashlib,json,xml.etree.ElementTree as ET
+import subprocess,hashlib,json,xml.etree.ElementTree as ET,zipfile
 ROOT=Path(__file__).resolve().parents[2]
 PASS=ROOT/'docs/history/implementation-passes/energy-chamber-visual-polish-v1'
 BASE='5d1c981a4e5796335e5d0e8a2059d28200d45a4e'
@@ -38,5 +38,29 @@ record=dict(acceptedBaseline=BASE,preservedPrimaryMeshes=preserved,changedTracke
 if apk.exists():record['apk']=dict(path=str(apk),bytes=apk.stat().st_size,sha256=sha(apk.read_bytes()))
 receipt=PASS/'verification/android-result.json'
 if receipt.exists():record['android']=json.loads(receipt.read_text());assert record['android']['result']=='Succeeded'
+if apk.exists():
+    with zipfile.ZipFile(apk) as z:
+        entries=z.namelist()
+        assert 'assets/bin/Data/level0' in entries
+        assert 'lib/arm64-v8a/libil2cpp.so' in entries
+        assert 'assets/ThirdPartyNotices.txt' in entries and 'assets/EnergyChamberNotices.txt' in entries
+        record['apk']['archiveVerified']=['level0','ARM64 IL2CPP','third-party notices','Energy Chamber notices']
+    stage=ROOT.parents[1]/'.utmp/ec77'
+    scene='Assets/_Game/ArtProof/EnergyChamber/Scenes/EnergyChamber_HybridProof.unity'
+    assert (stage/scene).read_bytes()==(ROOT/scene).read_bytes(),'Device scene differs from the reviewed saved scene'
+    record['apk']['sourceSceneSha256']=sha((ROOT/scene).read_bytes())
+    sdk=Path('C:/Program Files/Unity/Hub/Editor/6000.3.0f1/Editor/Data/PlaybackEngines/AndroidPlayer/SDK')
+    aapt=sorted((sdk/'build-tools').glob('*/aapt.exe'))[-1]
+    badging=subprocess.check_output([str(aapt),'dump','badging',str(apk)],text=True,encoding='utf-8',errors='replace')
+    assert "package: name='com.gravivore.energychamberproof'" in badging
+    assert "native-code: 'arm64-v8a'" in badging
+    assert "sdkVersion:'26'" in badging
+    (PASS/'verification/apk-badging.txt').write_text(badging,encoding='utf-8')
+    record['apk']['package']='com.gravivore.energychamberproof'
+files=git('diff','--name-only',BASE).decode().splitlines()
+for name in ['REPORT.md','FILES_CHANGED.txt']:
+    path=f'docs/history/implementation-passes/energy-chamber-visual-polish-v1/{name}'
+    if (ROOT/path).exists() and path not in files:files.append(path)
+(PASS/'FILES_CHANGED.txt').write_text('\n'.join(sorted(files))+'\n')
 (PASS/'verification/preservation-and-delivery.json').write_text(json.dumps(record,indent=2),encoding='utf-8')
 print('PRESERVED_BASELINE_AND_SCOPE',len(preserved),'primary models;',len(captures),'captures;',tests.keys())
