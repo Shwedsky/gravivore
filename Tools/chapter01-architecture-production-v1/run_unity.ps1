@@ -1,6 +1,6 @@
 [CmdletBinding()]
-param([ValidateSet('Compile','Author','Lod','Inspect','Capture','Validate','EditMode','PlayMode','Android')][string]$Action,
-      [string]$TestFilter='', [string]$Label='')
+param([ValidateSet('Compile','Author','Lod','Inspect','Capture','Validate','EditMode','PlayMode','Android','AndroidOffline')][string]$Action,
+      [string]$TestFilter='', [string]$Label='', [string]$SdkRoot='')
 $ErrorActionPreference='Stop'
 $architectureRoot=Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $architectureOutput=Join-Path $architectureRoot 'docs/history/implementation-passes/chapter01-architecture-production-v1/verification'
@@ -17,7 +17,12 @@ switch($Action){
  'Validate' {$architectureArgs+=@('-quit','-executeMethod','Gravivore.Editor.ProjectValidator.ValidateOrThrow')}
  'EditMode' {$architectureArgs+=@('-runTests','-testPlatform','EditMode','-testResults',('"'+(Join-Path $architectureOutput ($architectureLabel+'.xml'))+'"'))}
  'PlayMode' {$architectureArgs+=@('-runTests','-testPlatform','PlayMode','-testResults',('"'+(Join-Path $architectureOutput ($architectureLabel+'.xml'))+'"'))}
- 'Android' {$architectureArgs+=@('-quit','-executeMethod','Gravivore.Editor.AndroidBuild.BuildDev','-GravivoreVersion','0.1.0','-VersionCode','55')}
+ 'Android' {$architectureArgs+=@('-quit','-executeMethod','Gravivore.Editor.Build.AndroidBuild.BuildDev','-GravivoreVersion','0.1.0','-VersionCode','55')}
+ 'AndroidOffline' {
+    if(-not $SdkRoot -or -not (Test-Path -LiteralPath $SdkRoot -PathType Container)){throw 'An installed SDK mirror path is required'}
+    $env:GRAVIVORE_ARCHITECTURE_OFFLINE_SDK=$SdkRoot
+    $architectureArgs+=@('-quit','-executeMethod','Gravivore.Editor.VisualIntegration.ArchitectureAndroidBuild.BuildWithInstalledSdk','-GravivoreVersion','0.1.0','-VersionCode','55')
+ }
 }
 if($TestFilter){$architectureArgs+=@('-testFilter',$TestFilter)}
 $architectureProcess=Start-Process -FilePath 'C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Unity.exe' -ArgumentList $architectureArgs -WorkingDirectory $architectureRoot -WindowStyle Hidden -PassThru

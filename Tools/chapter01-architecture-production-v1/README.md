@@ -7,3 +7,5 @@
 Validation actions: `Validate`, `EditMode`, `PlayMode`, `Capture` and `Android`. Optional `TestFilter` and `Label` keep distinct test receipts. `Capture` creates static Chapter architecture inspection views, while `Chapter01ArchitectureProductionSmokeTests` produces actual playable Chapter captures, map collision assertions and controller/locomotion traversal receipts.
 
 Run from this isolated checkout with Unity 6000.3.0f1. Runtime content references neither proof scenes nor proof tooling. Generated logs/APKs/caches remain local; result XML/JSON and final screenshots are delivery evidence.
+
+If the installed SDK's remote metadata query stalls, `prepare_offline_sdk.py` wraps package listing in an already copied, ignored workspace SDK mirror. It uses the official installed-only query and leaves the original SDK unchanged. `AndroidOffline -SdkRoot <mirror>` selects that SDK for the unchanged Dev build and restores the previous SDK selection. See the Android build note; no packages or fake version records are introduced.

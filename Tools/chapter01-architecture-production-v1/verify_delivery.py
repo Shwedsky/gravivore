@@ -33,6 +33,13 @@ assert all(b[k]==re.sub(r'  _architecturalCollisionRoots:\n  - \{fileID: \d+\}\n
 changed=git('diff','--name-only',BASE).decode().splitlines()
 for p in changed:
     assert not p.startswith(('Assets/_Game/Runtime/Gameplay/', 'Assets/_Game/Runtime/Core/', 'Assets/_Game/Runtime/Persistence/', 'Assets/_Game/Runtime/Platform/', 'Assets/_Game/Content/ActorProductionV2/', 'Assets/_Game/Content/Definitions/')),p
+layout='Assets/_Game/Content/BlueprintWorldR1/Chapter01WorldLayout.asset'
+old_layout=norm(git('show',BASE+':'+layout)).decode()
+new_layout=norm((ROOT/layout).read_bytes()).decode()
+for line in ['  - {x: 4, y: 0, z: 58}\n','  - {x: 18, y: 0, z: 58}\n']:
+    assert new_layout.count(line)==2
+    new_layout=new_layout.replace(line,'')
+assert old_layout==new_layout,'Layout changed outside four architecture route waypoints'
 guids={}; duplicates=[]
 for p in (ROOT/'Assets').rglob('*.meta'):
     match=re.search(r'^guid: ([0-9a-f]{32})',p.read_text(errors='ignore'),re.M)
@@ -43,6 +50,6 @@ for p in (ROOT/'Assets').rglob('*.meta'):
 assert not duplicates,duplicates
 metrics=json.loads((OUT/'energy-chamber-metrics.json').read_text())
 assert not any(p.startswith('Assets/') and ('/ArtProof/' in p or '/Editor/' in p or p.endswith('.unity')) for p in metrics['dependencies'])
-report=dict(validated=True,source=SOURCE,base=BASE,acceptedAssets=assets,sceneExistingRecordsPreserved=len(unchanged),sceneNewRecords=len(c)-len(b),duplicateGuids=duplicates,runtimeDependencies=len(metrics['dependencies']),noGameplayOrActorDataChanges=True)
+report=dict(validated=True,source=SOURCE,base=BASE,acceptedAssets=assets,sceneExistingFieldsPreserved=len(unchanged),sceneNewRecords=len(c)-len(b),duplicateGuids=duplicates,runtimeDependencies=len(metrics['dependencies']),noGameplayDomainOrActorChanges=True,layoutOnlyAddsFourRouteWaypoints=True)
 (OUT/'preservation.json').write_text(json.dumps(report,indent=2)+'\n')
 print('PASS immutable accepted assets:',len(assets),'Chapter records:',len(unchanged),'GUIDs:',len(guids),'runtime dependencies:',len(metrics['dependencies']))
