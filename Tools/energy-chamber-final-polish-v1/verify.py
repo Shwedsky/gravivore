@@ -41,7 +41,11 @@ camera=json.loads((evidence/'camera-and-scale.json').read_text())
 assert all(abs(camera['installationBounds'][k]-v)<.02 for k,v in [('x',11.48),('y',6.095),('z',11.48)])
 context=json.loads((evidence/'verification/chapter-context.json').read_text())
 assert context['sourceGeometryMaterialsTransformsPreserved'] and context['raisedMeshIntersections']==0
-assert context['sourceSha256']==sha((root/context['source']).read_bytes())
+# Unity and Git may switch the unchanged production YAML between LF and CRLF.
+# same_source above checks every serialized byte after line-ending normalization.
+source_lf=(root/context['source']).read_bytes().replace(b'\r\n',b'\n')
+assert context['sourceSha256'] in {sha(source_lf),sha(source_lf.replace(b'\n',b'\r\n'))}
+context['sourceLfSha256']=sha(source_lf)
 
 tests={}
 for name in ['EditMode','PlayMode']:
@@ -63,8 +67,18 @@ assert emission['changedPixels']>3000,'Shader emission did not survive reload'
 apk=root/'Builds/Android/gravivore-energy-chamber-final-polish-v1-dev.apk'
 receipt=json.loads((evidence/'verification/android-result.json').read_text());assert receipt['result']=='Succeeded'
 with zipfile.ZipFile(apk) as z:
-    for name in ['assets/bin/Data/level0','lib/arm64-v8a/libil2cpp.so','assets/ThirdPartyNotices.txt','assets/EnergyChamberNotices.txt']:
+    for name in ['lib/arm64-v8a/libil2cpp.so','assets/ThirdPartyNotices.txt','assets/EnergyChamberNotices.txt']:
         assert name in z.namelist()
+    level='assets/bin/Data/level0'
+    parts=[n for n in z.namelist() if n.startswith(level+'.split')]
+    if parts:
+        parts.sort(key=lambda n:int(n.split('.split')[-1]))
+        assert [int(n.split('.split')[-1]) for n in parts]==list(range(len(parts)))
+    else:parts=[level]
+    scene_binary=b''.join(z.read(n) for n in parts)
+    for label in [b'Energy Chamber / hybrid proof V1',b'G-0 / unchanged current Tier 0 scale reference',b'Chapter 01 Blueprint World R2']:
+        assert label in scene_binary,label
+    assert z.testzip() is None
 sdk=Path('C:/Program Files/Unity/Hub/Editor/6000.3.0f1/Editor/Data/PlaybackEngines/AndroidPlayer/SDK')
 aapt=sorted((sdk/'build-tools').glob('*/aapt.exe'))[-1]
 badging=subprocess.check_output([str(aapt),'dump','badging',str(apk)],text=True,encoding='utf-8',errors='replace')
@@ -73,7 +87,7 @@ assert "package: name='com.gravivore.energychamberproof'" in badging and "native
 scene=context['scene'];assert (root/scene).read_bytes()==(root.parents[1]/'.utmp/ec77'/scene).read_bytes()
 record=dict(acceptedBaseline=baseline,preservedMeshes=preserved,assemblyTransformsAndBoundsPreserved=True,
             camera=camera,chapter=context,emission=emission,tests=tests,
-            apk=dict(path=str(apk),bytes=apk.stat().st_size,sha256=sha(apk.read_bytes()),sceneSha256=sha((root/scene).read_bytes()),receipt=receipt),files=files)
+            apk=dict(path=str(apk),bytes=apk.stat().st_size,sha256=sha(apk.read_bytes()),sceneSha256=sha((root/scene).read_bytes()),sceneBinaryParts=len(parts),sceneBinarySha256=sha(scene_binary),receipt=receipt),files=files)
 (evidence/'FILES_CHANGED.txt').write_text('\n'.join(sorted(files))+'\n')
 (evidence/'verification/preservation-and-delivery.json').write_text(json.dumps(record,indent=2),encoding='utf-8')
 print('FINAL_PROOF_VERIFIED: 11 unchanged meshes; 45 unchanged renderer bounds/transforms; isolated Chapter context; tests and Android build passed')

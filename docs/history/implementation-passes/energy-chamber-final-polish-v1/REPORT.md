@@ -39,9 +39,11 @@ Close views still expose faceted ring shading and repetitive service-rail constr
 
 ## Validation / delivery
 
-Unity compilation passed. EditMode: **535 passed, 0 failed**. PlayMode: **2 passed, 0 failed**, isolated proof and Chapter context. Project validation and Android receipt are recorded under `verification/`; the final delivery receipt provides hashes, exact changed-file inventory, camera/bounds preservation and build result.
+Unity compilation and project validation passed. EditMode: **535 passed, 0 failed**. PlayMode: **2 passed, 0 failed**, isolated proof and Chapter context. All eleven meshes and all 45 renderer transforms/bounds passed preservation checks against the accepted baseline. The final delivery receipt provides hashes, exact changed-file inventory, camera/bounds preservation and build result. Production YAML is compared after LF/CRLF normalization; the original snapshot receipt retains its raw source-file hash.
 
-Android review build targets the static Chapter-context scene in an isolated dependency-closure project, not the full gameplay application. Project-specific production Chapter build callbacks do not apply to that visual-only project. No phone human visual gate or device FPS measurement was performed by this pass. This review APK is not a production APK.
+Android review build **succeeded**: `Builds/Android/gravivore-energy-chamber-final-polish-v1-dev.apk`, **107,699,369 bytes**, ARM64 IL2CPP, portrait. The APK contains the exact reviewed Chapter-context scene and both third-party notice files; export contains **247 native asset dependencies and zero project scripts**. Three known installed URP Core probe-volume resource/type errors are recorded by Unity despite the successful build. Full logs and the Unity receipt are retained.
+
+The build targets the static Chapter-context scene in an isolated dependency-closure project, not the full gameplay application. Project-specific production Chapter build callbacks do not apply to that visual-only project. No phone human visual gate or device FPS measurement was performed by this pass. This review APK is not a production APK.
 
 Proof prefab: `Assets/_Game/ArtProof/EnergyChamber/Prefabs/EnergyChamber_HybridProof.prefab`. Isolated technical scene: `Assets/_Game/ArtProof/EnergyChamber/Scenes/EnergyChamber_HybridProof.unity`. New surface tool: `Tools/energy-chamber-final-polish-v1/materials.py`. Exact file list: [FILES_CHANGED.txt](FILES_CHANGED.txt). All new textures/markings are project-owned. Previously selected CC0 machinery, stairs and rails retain their recorded origin and notices; no raw external source archives changed.
 
