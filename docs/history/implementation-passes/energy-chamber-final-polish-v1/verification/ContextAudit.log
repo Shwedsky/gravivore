@@ -1,0 +1,473 @@
+[Licensing::Module] Trying to connect to existing licensing client channel...
+Built from '6000.3/staging' branch; Version is '6000.3.0f1 (d1870ce95baf) revision 13731596'; Using compiler version '194234433'; Build Type 'Release'
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-pamak" at "2026-10-13T08:16:26.2976599Z"
+OS: 'Windows 11  (10.0.26200) 64bit Professional' Language: 'ru' Physical Memory: 13234 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1
+Date: 2026-10-13T08:16:26Z
+[Licensing::Client] Code 10 while verifying Licensing Client signature (process Id: 19808, path: "C:/Program Files/Unity Hub/UnityLicensingClient_V1/Unity.Licensing.Client.exe")
+[Licensing::Module] LicensingClient has failed validation; ignoring
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.18.3+d7ffd15
+  Session Id:              bb99e98761aa46f9a5cd3c3fa6b4d8bb
+  Correlation Id:          7c459fd213b30416cfc1ac241770b025
+  External correlation Id: 8198181365097662106
+  Machine Id:              s1AHeOo89097k/AuI7TRxz7wi4Q=
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-pamak" (connect: 0.00s, validation: 0.00s, handshake: 0.05s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-pamak-notifications" at "2026-10-13T08:16:26.3503158Z"
+[Licensing::Module] Error: Access token is unavailable; failed to update
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: 5774129981942-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+[Licensing::Client] Successfully updated license, isAsync: True, time: 0.00
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] Licensing Background thread has ended after 0.06s
+
+COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Unity.exe
+-batchmode
+-projectPath
+C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\energy-chamber-hybrid-proof-v1
+-logFile
+C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\energy-chamber-hybrid-proof-v1\docs\history\implementation-passes\energy-chamber-final-polish-v1\verification\ContextAudit.log
+-quit
+-executeMethod
+Gravivore.ArtProof.EnergyChamber.EnergyChamberChapterContext.Audit
+Successfully changed project path to: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\energy-chamber-hybrid-proof-v1
+C:/Users/pamak/Documents/ChatGPT/gravivore/.codex-worktrees/energy-chamber-hybrid-proof-v1
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-gfx=262144"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+Player connection [28448]  Target information:
+
+Player connection [28448]  * "[IP] 192.168.1.49 [Port] 55504 [Flags] 2 [Guid] 1273899851 [EditorId] 1273899851 [Version] 1048832 [Id] WindowsEditor(7,DESKTOP-FT9PDRO) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [28448]  * "[IP] 172.30.224.1 [Port] 55504 [Flags] 2 [Guid] 1273899851 [EditorId] 1273899851 [Version] 1048832 [Id] WindowsEditor(7,DESKTOP-FT9PDRO) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [28448]  * "[IP] 198.18.0.1 [Port] 55504 [Flags] 2 [Guid] 1273899851 [EditorId] 1273899851 [Version] 1048832 [Id] WindowsEditor(7,DESKTOP-FT9PDRO) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [28448] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [28448] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+[Package Manager] Connected to IPC stream "Upm-25344" after 0.3 seconds.
+[Licensing::Client] Successfully resolved entitlement details
+Library Redirect Path: Library/
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+[Licensing::Client] Successfully resolved entitlement details
+Refreshing native plugins compatible for Editor in 0.13 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 6000.3.0f1 (d1870ce95baf)
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/6000.3.0f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/Users/pamak/Documents/ChatGPT/gravivore/.codex-worktrees/energy-chamber-hybrid-proof-v1/Assets
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: AMD Radeon(TM) Graphics (ID=0x1638)
+    Vendor:   ATI
+    VRAM:     6617 MB
+    Driver:   31.0.21921.1000
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/6000.3.0f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/6000.3.0f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/6000.3.0f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56344
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+ImportWorker Server TCP listen port: 0
+AcceleratorClientConnectionCallback - disconnected - :0
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.3.0f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.3.0f1/Editor/Data/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll
+Registered in 0.008511 seconds.
+- Loaded All Assemblies, in  0.603 seconds
+Native extension for Android target not found
+Android Extension - Scanning For ADB Devices 2344 ms
+Native extension for WindowsStandalone target not found
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  2.864 seconds
+Domain Reload Profiling: 3462ms
+	BeginReloadAssembly (287ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (0ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (18ms)
+	RebuildCommonClasses (39ms)
+	RebuildNativeTypeToScriptingClass (12ms)
+	initialDomainReloadingComplete (64ms)
+	LoadAllAssembliesAndSetupDomain (196ms)
+		LoadAssemblies (266ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (190ms)
+			TypeCache.Refresh (188ms)
+				TypeCache.ScanAssembly (175ms)
+			BuildScriptInfoCaches (0ms)
+			ResolveRequiredComponents (1ms)
+	FinalizeReload (2864ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (2825ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (2451ms)
+			SetLoadedEditorAssemblies (4ms)
+			BeforeProcessingInitializeOnLoad (91ms)
+			ProcessInitializeOnLoadAttributes (159ms)
+			ProcessInitializeOnLoadMethodAttributes (119ms)
+			AfterProcessingInitializeOnLoad (0ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (0ms)
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Client] Successfully resolved entitlement details
+Application.AssetDatabase Initial Refresh Start
+Package Manager log level set to [2]
+[Package Manager] Restoring resolved packages state from cache
+[Licensing::Client] Successfully resolved entitlement details
+[Package Manager] Registered 23 packages:
+  Packages from [https://packages.unity.com]:
+    com.unity.ide.visualstudio@2.0.22 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\energy-chamber-hybrid-proof-v1\Library\PackageCache\com.unity.ide.visualstudio@8140e851d83e)
+    com.unity.searcher@4.9.4 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\energy-chamber-hybrid-proof-v1\Library\PackageCache\com.unity.searcher@d45a78918735)
+    com.unity.burst@1.8.25 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\energy-chamber-hybrid-proof-v1\Library\PackageCache\com.unity.burst@1df634d836b8)
+    com.unity.mathematics@1.3.3 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\energy-chamber-hybrid-proof-v1\Library\PackageCache\com.unity.mathematics@19a9377c4ffa)
+    com.unity.collections@2.6.2 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\energy-chamber-hybrid-proof-v1\Library\PackageCache\com.unity.collections@aea9d3bd5e19)
+    com.unity.nuget.mono-cecil@1.11.6 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\energy-chamber-hybrid-proof-v1\Library\PackageCache\com.unity.nuget.mono-cecil@ecb9724e46ff)
+    com.unity.test-framework.performance@3.2.0 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\energy-chamber-hybrid-proof-v1\Library\PackageCache\com.unity.test-framework.performance@0840f58e4562)
+  Built-in packages:
+    com.unity.render-pipelines.universal@17.3.0 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\energy-chamber-hybrid-proof-v1\Library\PackageCache\com.unity.render-pipelines.universal@d9aadd996b24)
+    com.unity.test-framework@1.6.0 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\energy-chamber-hybrid-proof-v1\Library\PackageCache\com.unity.test-framework@0b7a23ab2e1d)
+    com.unity.ugui@2.0.0 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\energy-chamber-hybrid-proof-v1\Library\PackageCache\com.unity.ugui@4ee0fac0c6e4)
+    com.unity.modules.animation@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.animation)
+    com.unity.modules.audio@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.audio)
+    com.unity.modules.imageconversion@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.imageconversion)
+    com.unity.modules.particlesystem@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.particlesystem)
+    com.unity.modules.ui@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.ui)
+    com.unity.modules.imgui@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.imgui)
+    com.unity.ext.nunit@2.0.5 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\energy-chamber-hybrid-proof-v1\Library\PackageCache\com.unity.ext.nunit@d8c07649098d)
+    com.unity.modules.jsonserialize@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.jsonserialize)
+    com.unity.render-pipelines.core@17.3.0 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\energy-chamber-hybrid-proof-v1\Library\PackageCache\com.unity.render-pipelines.core@33b0f6d355dd)
+    com.unity.shadergraph@17.3.0 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\energy-chamber-hybrid-proof-v1\Library\PackageCache\com.unity.shadergraph@bd2576295577)
+    com.unity.render-pipelines.universal-config@17.0.3 (location: C:\Users\pamak\Documents\ChatGPT\gravivore\.codex-worktrees\energy-chamber-hybrid-proof-v1\Library\PackageCache\com.unity.render-pipelines.universal-config@8dc1aab4af1d)
+    com.unity.modules.physics@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.physics)
+    com.unity.modules.terrain@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.terrain)
+[Subsystems] No new subsystems found in resolved package list.
+[Package Manager] Done registering packages in 0.01 seconds
+[ScriptCompilation] Requested script compilation because: Assetdatabase observed changes in script compilation related files
+Starting: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Tools\BuildPipeline\bee_backend.exe --ipc --defer-dag-verification --dagfile="Library/Bee/1300b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
+WorkingDir: C:/Users/pamak/Documents/ChatGPT/gravivore/.codex-worktrees/energy-chamber-hybrid-proof-v1
+DisplayProgressbar: Compiling Scripts
+ExitCode: 4 Duration: 4s252ms
+Rebuilding DAG because FileSignature timestamp changed: Library/Bee/1300b0aE-inputdata.json
+[537/678    0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+[538/678    3s] Csc Library/Bee/artifacts/1300b0aE.dag/Gravivore.EnergyChamberProof.Editor.dll (+2 others)
+*** Tundra requires additional run (4.18 seconds), 2 items updated, 536 evaluated
+Starting: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\netcorerun\netcorerun.exe "C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Tools\BuildPipeline\ScriptCompilationBuildProgram.exe" "Library/Bee/1300b0aE.dag.json" "Library/Bee/1300b0aE-inputdata.json" "Library\Bee\buildprogram0.traceevents"
+WorkingDir: C:/Users/pamak/Documents/ChatGPT/gravivore/.codex-worktrees/energy-chamber-hybrid-proof-v1
+ExitCode: 0 Duration: 1s43ms
+Starting: C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Data\Tools\BuildPipeline\bee_backend.exe --ipc --defer-dag-verification --dagfile="Library/Bee/1300b0aE.dag" --continue-on-failure --dagfilejson="Library\Bee\1300b0aE.dag.json" --profile="Library/Bee/backend2.traceevents" ScriptAssemblies
+WorkingDir: C:/Users/pamak/Documents/ChatGPT/gravivore/.codex-worktrees/energy-chamber-hybrid-proof-v1
+ExitCode: 0 Duration: 0s977ms
+Finished compiling graph: 682 nodes, 10887 flattened edges (9007 ToBuild, 102 ToUse), maximum node priority 736
+[402/678    0s] WriteText Library/Bee/artifacts/1300b0aE.dag/Gravivore.EnergyChamberProof.Editor.rsp
+[537/678    0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+[670/678    0s] Csc Library/Bee/artifacts/1300b0aE.dag/Gravivore.EnergyChamberProof.Editor.dll (+2 others)
+[671/678    0s] ILPostProcess Library/Bee/artifacts/1300b0aE.dag/post-processed/Gravivore.EnergyChamberProof.Editor.dll (+pdb)
+Processing assembly Library/Bee/artifacts/1300b0aE.dag/Gravivore.EnergyChamberProof.Editor.dll, with 145 defines and 281 references
+
+processors: Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[672/678    0s] CopyFiles Library/ScriptAssemblies/Gravivore.EnergyChamberProof.Editor.pdb
+[673/678    0s] Csc Library/Bee/artifacts/1300b0aE.dag/Gravivore.EnergyChamberProof.EditModeTests.dll (+2 others)
+[674/678    0s] CopyFiles Library/ScriptAssemblies/Gravivore.EnergyChamberProof.Editor.dll
+[675/678    0s] ILPostProcess Library/Bee/artifacts/1300b0aE.dag/post-processed/Gravivore.EnergyChamberProof.EditModeTests.dll (+pdb)
+Processing assembly Library/Bee/artifacts/1300b0aE.dag/Gravivore.EnergyChamberProof.EditModeTests.dll, with 145 defines and 274 references
+
+processors: Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[676/678    0s] CopyFiles Library/ScriptAssemblies/Gravivore.EnergyChamberProof.EditModeTests.dll
+[677/678    0s] CopyFiles Library/ScriptAssemblies/Gravivore.EnergyChamberProof.EditModeTests.pdb
+*** Tundra build success (0.94 seconds), 10 items updated, 678 evaluated
+AssetDatabase: script compilation time: 6.913773s
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  1.116 seconds
+Start importing ProjectSettings/ProjectSettings.asset using Guid(00000000000000004000000000000000) (LibraryAssetImporter) -> (artifact id: '7473a9c855b76ec249edeef2e517764d') in 0.0561334 seconds
+Start importing ProjectSettings/GraphicsSettings.asset using Guid(00000000000000006100000000000000) (LibraryAssetImporter) -> (artifact id: 'c8585935740f6e99c989ccc04a765d44') in 0.0110398 seconds
+Refreshing native plugins compatible for Editor in 0.51 ms, found 0 plugins.
+Native extension for Android target not found
+Native extension for WindowsStandalone target not found
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  3.206 seconds
+Domain Reload Profiling: 4315ms
+	BeginReloadAssembly (336ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (13ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (157ms)
+	RebuildCommonClasses (39ms)
+	RebuildNativeTypeToScriptingClass (13ms)
+	initialDomainReloadingComplete (33ms)
+	LoadAllAssembliesAndSetupDomain (687ms)
+		LoadAssemblies (651ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (151ms)
+			TypeCache.Refresh (112ms)
+				TypeCache.ScanAssembly (100ms)
+			BuildScriptInfoCaches (28ms)
+			ResolveRequiredComponents (9ms)
+	FinalizeReload (3207ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (2775ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (40ms)
+			SetLoadedEditorAssemblies (5ms)
+			BeforeProcessingInitializeOnLoad (180ms)
+			ProcessInitializeOnLoadAttributes (2442ms)
+			ProcessInitializeOnLoadMethodAttributes (97ms)
+			AfterProcessingInitializeOnLoad (11ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (14ms)
+Start importing Assets/_Game/Content/Presentation/Phase6B/VFX/Materials/M_Phase6B_HostileRing.mat using Guid(24ff931e843385fc117d2d0e2faf61b4) (NativeFormatImporter) -> (artifact id: 'c00809b9b7a85ff68f4d67f02f723ac9') in 0.0121259 seconds
+Start importing Assets/_Game/Content/Presentation/Phase6B/VFX/Materials/M_Phase6B_RepairRing.mat using Guid(d87f0af146a26a75027c30dc6545d516) (NativeFormatImporter) -> (artifact id: '003cd7cc81ebd40bc347f1ca9175cfd5') in 0.0030994 seconds
+Start importing Assets/ThirdParty/KenneyFactoryKit/Models/pipe-large-long.fbx using Guid(6068ed0bc2fe5804cb4fb72e4f098731) (FBXImporter) -> (artifact id: 'ca0014faf0d59a32c60ef94ffc195da4') in 0.231797 seconds
+Start importing Assets/ThirdParty/KenneyFactoryKit/Models/machine-fortified.fbx using Guid(72c632c2ded00e34f829f0d4e66c2504) (FBXImporter) -> (artifact id: 'a833868b9b719605bcec1370da60e91c') in 0.0239118 seconds
+Start importing Assets/ThirdParty/KenneyFactoryKit/Models/crane-magnet.fbx using Guid(23d4c8ea86bdc7b429d899d84f627815) (FBXImporter) -> (artifact id: '4b1e0a6db41645fd2fcc758003d61cb3') in 0.0259528 seconds
+Start importing Assets/ThirdParty/KenneyFactoryKit/Models/box-large.fbx using Guid(44e6d4b11f6fc0b448a36ddb5bbec316) (FBXImporter) -> (artifact id: '1dab13a4caa6b72ec44e93bce4f24d65') in 0.0329371 seconds
+Start importing Assets/ThirdParty/KenneyFactoryKit/Models/cog-b.fbx using Guid(b402b60b206166f43b65d817574599db) (FBXImporter) -> (artifact id: '79675f4a687d35c7cf3502626b7c153a') in 0.0214997 seconds
+Start importing Assets/ThirdParty/KenneyFactoryKit/Models/piston-round.fbx using Guid(f44df4eb4eeaba24a8e8d0a6cdbe518c) (FBXImporter) -> (artifact id: '8a3023465cfb25ec3dff41a1d87147e1') in 0.0363926 seconds
+Start importing Assets/ThirdParty/KenneyFactoryKit/Models/cone.fbx using Guid(55d4be2a8489db84f80d6877306f1729) (FBXImporter) -> (artifact id: '2363971ec7d7358d99e7f2edf93cc6ae') in 0.0252007 seconds
+Start importing Assets/ThirdParty/KenneyFactoryKit/Models/structure-wall.fbx using Guid(d596b495223043a4d85781d3fae37bd5) (FBXImporter) -> (artifact id: '78138b109eb1dfaf4a43ca996d50a900') in 0.0313668 seconds
+Start importing Assets/ThirdParty/KenneyFactoryKit/Models/robot-arm-a.fbx using Guid(e5a984a9c05f8fa42b757eec50771eba) (FBXImporter) -> (artifact id: '82a99687af895b21d7684cf4095bd6b9') in 0.0234907 seconds
+Start importing Assets/ThirdParty/KenneyFactoryKit/Models/door-wide-closed.fbx using Guid(0826ebee67816af479a2f29de83664e3) (FBXImporter) -> (artifact id: '628d6a2adbad3978b165513ab53aedcc') in 0.0209558 seconds
+Start importing Assets/ThirdParty/KenneyFactoryKit/Models/cog-a.fbx using Guid(6bff01ddc646e444b87a8cf0a0056049) (FBXImporter) -> (artifact id: 'b559154ce83b92fe642abad57088672a') in 0.0327314 seconds
+Start importing Assets/ThirdParty/KenneyFactoryKit/Models/hopper-round.fbx using Guid(0d94413d967a23c47b346f8843b3f7cf) (FBXImporter) -> (artifact id: 'e2b26aa6bb85429f1574ab6bdf1613f5') in 0.0281919 seconds
+Start importing Assets/ThirdParty/KenneyFactoryKit/Models/structure-yellow-medium.fbx using Guid(0d6948a79a4aacf4db36f7fc65065d41) (FBXImporter) -> (artifact id: '89cad90761647bdc23981428cd276205') in 0.0291007 seconds
+Start importing Assets/ThirdParty/KenneyFactoryKit/Models/machine-connection-hole.fbx using Guid(6f5bd5e00b62e3c428bc3aa74c69e16c) (FBXImporter) -> (artifact id: 'c16ca76cfe12b8c201e217fe8dccd6b1') in 0.023557 seconds
+Start importing ProjectSettings/ProjectSettings.asset using Guid(00000000000000004000000000000000) (LibraryAssetImporter) -> (artifact id: 'dfb1af64ee3b93fcfdcf54796ffced80') in 0.008563 seconds
+Start importing ProjectSettings/GraphicsSettings.asset using Guid(00000000000000006100000000000000) (LibraryAssetImporter) -> (artifact id: 'e39a1fc4e5b3ffcfe88e239ef945f7e1') in 0.0024448 seconds
+Start importing ProjectSettings/ProjectSettings.asset using Guid(00000000000000004000000000000000) (LibraryAssetImporter) -> (artifact id: '075906b29fc884bf223d0e8874e21c11') in 0.0037579 seconds
+Refreshing native plugins compatible for Editor in 0.42 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=804b79987799d064fbb5edcedbd3f1d7): Total: 13.550 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
+	Summary:
+		Imports: total=19 (actual=19, local cache=0, cache server=0)
+		Asset DB Process Time: managed=28 ms, native=4612 ms
+		Asset DB Callback time: managed=751 ms, native=74 ms
+		Scripting: domain reloads=1, domain reload time=1117 ms, compile time=6916 ms, other=50 ms
+		Project Asset Count: scripts=902, non-scripts=2370
+		Asset File Changes: new=1, changed=23, moved=0, deleted=0
+		Scan Filter Count: 1
+	InvokeCustomDependenciesCallbacks: 0.003ms
+	InvokePackagesCallback: 18.981ms
+	ApplyChangesToAssetFolders: 0.632ms
+	Scan: 267.683ms
+	OnSourceAssetsModified: 1.877ms
+	CategorizeAssetsWithTransientArtifact: 37.720ms
+	ProcessAssetsWithTransientArtifactChanges: 58.715ms
+	CategorizeAssets: 91.410ms
+	ImportOutOfDateAssets: 3962.999ms (-3690.240ms without children)
+		ImportManagerImport: 720.653ms (9.293ms without children)
+			ImportInProcess: 711.137ms
+			UpdateCategorizedAssets: 0.223ms
+		CompileScripts: 6915.564ms
+		ReloadNativeAssets: 0.118ms
+		UnloadImportedAssets: 5.462ms
+		ReloadImportedAssets: 0.190ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 1.996ms
+		InitializingProgressBar: 0.017ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.003ms
+		OnDemandSchedulerStart: 9.237ms
+	PostProcessAllAssets: 892.244ms
+	Hotreload: 11.311ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.391ms
+	UnloadStreamsBegin: 2.410ms
+	PersistCurrentRevisions: 0.476ms
+	UnloadStreamsEnd: 0.003ms
+	GenerateScriptTypeHashes: 9.472ms
+	Untracked: 8203.313ms
+
+Application.AssetDatabase Initial Refresh End
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.11 seconds
+Scanning for USB devices : 8.551ms
+Initializing Unity extensions:
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+[MODES] Loading mode Default (0) for mode-current-id-GRAVIVORE
+GetVirtualKey: Could not map char: z (122) to any virtual key
+GetVirtualKey: Could not map char: y (121) to any virtual key
+GetVirtualKey: Could not map char: x (120) to any virtual key
+GetVirtualKey: Could not map char: c (99) to any virtual key
+GetVirtualKey: Could not map char: v (118) to any virtual key
+GetVirtualKey: Could not map char: V (86) to any virtual key
+GetVirtualKey: Could not map char: d (100) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: a (97) to any virtual key
+GetVirtualKey: Could not map char: d (100) to any virtual key
+GetVirtualKey: Could not map char: c (99) to any virtual key
+GetVirtualKey: Could not map char: r (114) to any virtual key
+GetVirtualKey: Could not map char: i (105) to any virtual key
+GetVirtualKey: Could not map char: l (108) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: k (107) to any virtual key
+GetVirtualKey: Could not map char: p (112) to any virtual key
+GetVirtualKey: Could not map char: p (112) to any virtual key
+GetVirtualKey: Could not map char: p (112) to any virtual key
+GetVirtualKey: Could not map char: c (99) to any virtual key
+GetVirtualKey: Could not map char: r (114) to any virtual key
+GetVirtualKey: Could not map char: P (80) to any virtual key
+GetVirtualKey: Could not map char: n (110) to any virtual key
+GetVirtualKey: Could not map char: n (110) to any virtual key
+GetVirtualKey: Could not map char: g (103) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: a (97) to any virtual key
+GetVirtualKey: Could not map char: a (97) to any virtual key
+GetVirtualKey: Could not map char: n (110) to any virtual key
+GetVirtualKey: Could not map char: o (111) to any virtual key
+GetVirtualKey: Could not map char: s (115) to any virtual key
+GetVirtualKey: Could not map char: s (115) to any virtual key
+GetVirtualKey: Could not map char: b (98) to any virtual key
+GetVirtualKey: Could not map char: b (98) to any virtual key
+GetVirtualKey: Could not map char: c (99) to any virtual key
+GetVirtualKey: Could not map char: u (117) to any virtual key
+Curl error 35: Cert verify failed. Certificate could not be verified (either omitted or unsupported). UnityTls error code: 7
+Unloading 52 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 3750 unused Assets / (7.0 MB). Loaded Objects now: 4391.
+Memory consumption went from 170.3 MB to 163.3 MB.
+Total: 14.985100 ms (FindLiveObjects: 0.387300 ms CreateObjectMapping: 0.224500 ms MarkObjects: 11.575600 ms  DeleteObjects: 2.796300 ms)
+
+GetVirtualKey: Could not map char: z (122) to any virtual key
+GetVirtualKey: Could not map char: y (121) to any virtual key
+GetVirtualKey: Could not map char: x (120) to any virtual key
+GetVirtualKey: Could not map char: c (99) to any virtual key
+GetVirtualKey: Could not map char: v (118) to any virtual key
+GetVirtualKey: Could not map char: V (86) to any virtual key
+GetVirtualKey: Could not map char: d (100) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: a (97) to any virtual key
+GetVirtualKey: Could not map char: d (100) to any virtual key
+GetVirtualKey: Could not map char: c (99) to any virtual key
+GetVirtualKey: Could not map char: r (114) to any virtual key
+GetVirtualKey: Could not map char: i (105) to any virtual key
+GetVirtualKey: Could not map char: l (108) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: k (107) to any virtual key
+GetVirtualKey: Could not map char: p (112) to any virtual key
+GetVirtualKey: Could not map char: p (112) to any virtual key
+GetVirtualKey: Could not map char: p (112) to any virtual key
+GetVirtualKey: Could not map char: c (99) to any virtual key
+GetVirtualKey: Could not map char: r (114) to any virtual key
+GetVirtualKey: Could not map char: P (80) to any virtual key
+GetVirtualKey: Could not map char: n (110) to any virtual key
+GetVirtualKey: Could not map char: n (110) to any virtual key
+GetVirtualKey: Could not map char: g (103) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: f (102) to any virtual key
+GetVirtualKey: Could not map char: a (97) to any virtual key
+GetVirtualKey: Could not map char: a (97) to any virtual key
+GetVirtualKey: Could not map char: n (110) to any virtual key
+GetVirtualKey: Could not map char: o (111) to any virtual key
+GetVirtualKey: Could not map char: s (115) to any virtual key
+GetVirtualKey: Could not map char: s (115) to any virtual key
+GetVirtualKey: Could not map char: b (98) to any virtual key
+GetVirtualKey: Could not map char: b (98) to any virtual key
+GetVirtualKey: Could not map char: c (99) to any virtual key
+GetVirtualKey: Could not map char: u (117) to any virtual key
+Curl error 35: Cert verify failed. Certificate could not be verified (either omitted or unsupported). UnityTls error code: 7
+Opening scene 'Assets/_Game/Content/Scenes/Chapter01_ScrapExclusion.unity'
+Unloading 173 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Assets/_Game/Content/Scenes/Chapter01_ScrapExclusion.unity'
+	Deserialize:            451.116 ms
+	Integration:            1179.143 ms
+	Integration of assets:  271.917 ms
+	Thread Wait Time:       -0.025 ms
+	Total Operation Time:   1902.150 ms
+Unloading 5 unused Assets / (47.7 KB). Loaded Objects now: 10823.
+Memory consumption went from 357.7 MB to 357.7 MB.
+Total: 7.686500 ms (FindLiveObjects: 0.618100 ms CreateObjectMapping: 0.415400 ms MarkObjects: 6.524700 ms  DeleteObjects: 0.126600 ms)
+
+ENERGY_CHAMBER_CHAPTER_AUDITED renderers=476
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Gravivore.ArtProof.EnergyChamber.EnergyChamberChapterContext:Audit () (at Assets/_Game/ArtProof/EnergyChamber/Editor/EnergyChamberChapterContext.cs:22)
+
+(Filename: Assets/_Game/ArtProof/EnergyChamber/Editor/EnergyChamberChapterContext.cs Line: 22)
+
+Unloading 77 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 4313 unused Assets / (39.8 MB). Loaded Objects now: 4402.
+Memory consumption went from 356.7 MB to 316.8 MB.
+Total: 13.469200 ms (FindLiveObjects: 0.488900 ms CreateObjectMapping: 0.481800 ms MarkObjects: 7.061200 ms  DeleteObjects: 5.435700 ms)
+
+Batchmode quit successfully invoked - shutting down!
+Killing ADB server in 0,0667481 seconds.
+Start importing Assets/_Game/Content/Presentation/Phase6B/VFX/Materials/M_Phase6B_HostileRing.mat using Guid(24ff931e843385fc117d2d0e2faf61b4) (NativeFormatImporter) -> (artifact id: 'ce55bbf857f49af5bbedaa4cc03a64ca') in 0.0166018 seconds
+Start importing Assets/_Game/Content/Presentation/Phase6B/VFX/Materials/M_Phase6B_RepairRing.mat using Guid(d87f0af146a26a75027c30dc6545d516) (NativeFormatImporter) -> (artifact id: '687bc2d89a85f27e67c88fe15a9fe03f') in 0.0026015 seconds
+Refreshing native plugins compatible for Editor in 0.24 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=75f738f477209684e99b39a42cd0138a): Total: 0.088 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+[Physics::Module] Cleanup current backend.
+[Physics::Module] Id: 0xf2b8ea05
+Input System module state changed to: ShutdownInProgress.
+Input System polling thread exited.
+Input System module state changed to: Shutdown.
+[Licensing::IpcConnector] LicenseClient-pamak-notifications channel disconnected successfully.
+[Licensing::IpcConnector] LicenseClient-pamak channel disconnected successfully.
+AcceleratorClientConnectionCallback - disconnected - :0
+Cleanup mono
+Exiting batchmode successfully now!
+Exiting without the bug reporter. Application will terminate with return code 0

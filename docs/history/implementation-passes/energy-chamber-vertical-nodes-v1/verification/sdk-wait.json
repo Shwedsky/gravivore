@@ -1,0 +1,10 @@
+{
+  "build": "Succeeded on the original attempt. The remote SDK query completed naturally while diagnostics were running, before restart was attempted.",
+  "verifiedOwnedProcesses": {"unity": 20308, "sdkCmd": 22984, "sdkJava": 22288},
+  "threadDump": ["main: RemoteRepoLoaderImpl.fetchPackages / RepoManagerImpl.loadSynchronously", "pool worker: SSLSocketInputRecord.readHeader / HttpURLConnection.getInputStream / DownloadCache.openCachedUrl"],
+  "installedSdkPlatforms": [34, 35, 36],
+  "observedWait": "sdkmanager --list remote metadata request exceeded 600 seconds; installed local SDK platforms were present",
+  "restart": "Not performed: the verified proof Unity process had already exited successfully when the stop command ran. No retry or timeout modification was needed or retained.",
+  "scope": "No SDK files, timeout wrappers or persistent environment settings were authored; other Unity session retained.",
+  "localLog": "AndroidStandalone-sdk-wait.log"
+}

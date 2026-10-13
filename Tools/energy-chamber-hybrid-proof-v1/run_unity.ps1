@@ -1,0 +1,32 @@
+[CmdletBinding()]
+param([ValidateSet('Compile','Author','Capture','ContextAudit','ContextBuild','ContextCapture','Validate','ProjectValidate','EditMode','PlayMode','Android')][string]$Action)
+$ErrorActionPreference='Stop'
+$proofRoot=Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
+$proofOutput=Join-Path $proofRoot 'docs/history/implementation-passes/energy-chamber-final-polish-v1/verification'
+New-Item -ItemType Directory -Force -Path $proofOutput | Out-Null
+$proofArgs=@('-batchmode','-projectPath',('"'+$proofRoot+'"'),'-logFile',('"'+(Join-Path $proofOutput ($Action+'.log'))+'"'))
+if($Action -in @('Compile','Validate','ProjectValidate','EditMode')){$proofArgs+='-nographics'}
+switch($Action){
+ 'Compile' {$proofArgs+='-quit'}
+ 'Author' {$proofArgs+=@('-quit','-executeMethod','Gravivore.ArtProof.EnergyChamber.EnergyChamberProofBuilder.Build')}
+ 'Capture' {$proofArgs+=@('-quit','-executeMethod','Gravivore.ArtProof.EnergyChamber.EnergyChamberProofBuilder.Capture')}
+ 'ContextAudit' {$proofArgs+=@('-quit','-executeMethod','Gravivore.ArtProof.EnergyChamber.EnergyChamberChapterContext.Audit')}
+ 'ContextBuild' {$proofArgs+=@('-quit','-executeMethod','Gravivore.ArtProof.EnergyChamber.EnergyChamberChapterContext.Build')}
+ 'ContextCapture' {$proofArgs+=@('-quit','-executeMethod','Gravivore.ArtProof.EnergyChamber.EnergyChamberChapterContext.Capture')}
+ 'Validate' {$proofArgs+=@('-quit','-executeMethod','Gravivore.ArtProof.EnergyChamber.EnergyChamberProofBuilder.Validate')}
+ 'ProjectValidate' {$proofArgs+=@('-quit','-executeMethod','Gravivore.Editor.ProjectValidator.ValidateOrThrow')}
+ 'EditMode' {$proofArgs+=@('-runTests','-testPlatform','EditMode','-testResults',('"'+(Join-Path $proofOutput 'EditMode.xml')+'"'))}
+ 'PlayMode' {$proofArgs+=@('-runTests','-testPlatform','PlayMode','-testFilter','EnergyChamberProof','-testResults',('"'+(Join-Path $proofOutput 'PlayMode.xml')+'"'))}
+ 'Android' {$proofArgs+=@('-quit','-executeMethod','Gravivore.ArtProof.EnergyChamber.EnergyChamberDeviceExporter.Export')}
+}
+$proofProcess=Start-Process -FilePath 'C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Unity.exe' -ArgumentList $proofArgs -WorkingDirectory $proofRoot -WindowStyle Hidden -PassThru
+$proofProcess.WaitForExit()
+if($Action -eq 'Android' -and $proofProcess.ExitCode -eq 0){
+ $proofOwnerRoot=Split-Path -Parent (Split-Path -Parent $proofRoot)
+ $proofStageRoot=Join-Path $proofOwnerRoot '.utmp/ec77'
+ $proofStageArgs=@('-batchmode','-quit','-buildTarget','Android','-projectPath',('"'+$proofStageRoot+'"'),'-logFile',('"'+(Join-Path $proofOutput 'AndroidStandalone.log')+'"'),'-executeMethod','EnergyChamberStageBuild.Build')
+ $proofStageProcess=Start-Process -FilePath 'C:\Program Files\Unity\Hub\Editor\6000.3.0f1\Editor\Unity.exe' -ArgumentList $proofStageArgs -WorkingDirectory $proofStageRoot -WindowStyle Hidden -PassThru
+ $proofStageProcess.WaitForExit();Write-Output ('UNITY_AndroidStandalone_EXIT='+$proofStageProcess.ExitCode);exit $proofStageProcess.ExitCode
+}
+Write-Output ('UNITY_'+$Action+'_EXIT='+$proofProcess.ExitCode)
+exit $proofProcess.ExitCode
