@@ -9,6 +9,30 @@ using UnityEngine;
 public sealed class EnergyChamberProofTests
 {
     [Test]
+    public void EnergyChamberProof_VerticalStabilizersKeepReservoirsAndWarmCoolMaterialHierarchy()
+    {
+        var instance=Object.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>(EnergyChamberProofBuilder.PrefabPath));
+        try
+        {
+            var nodes=instance.transform.Cast<Transform>().Where(t=>t.name.StartsWith("Distribution node ")).ToArray();
+            foreach(var node in nodes)
+            {
+                var module=node.Find("EC_VerticalDistribution");Assert.That(module,Is.Not.Null);
+                Assert.That(EnergyChamberProofBuilder.BoundsOf(module.gameObject).max.y,Is.GreaterThan(4f));
+                Assert.That(node.Find("VR3_generator"),Is.Not.Null,"The horizontal reservoir remains supporting machinery.");
+                var cool=module.GetComponentsInChildren<Renderer>().SelectMany(r=>r.sharedMaterials).Single(m=>m.name=="EC_NodeCool");
+                Assert.That(cool.IsKeywordEnabled("_EMISSION"),Is.True);
+                Assert.That(cool.GetColor("_EmissionColor").b,Is.GreaterThan(cool.GetColor("_EmissionColor").r*3));
+            }
+            var core=instance.transform.Find("EC_CentralChamber");
+            var warm=core.GetComponentsInChildren<Renderer>().SelectMany(r=>r.sharedMaterials).Single(m=>m.name=="EC_CoreWarm");
+            Assert.That(warm.GetColor("_EmissionColor").r,Is.GreaterThan(warm.GetColor("_EmissionColor").b*3));
+            Assert.That(EnergyChamberProofBuilder.BoundsOf(core.gameObject).max.y,Is.GreaterThan(6f));
+        }
+        finally {Object.DestroyImmediate(instance);}
+    }
+
+    [Test]
     public void EnergyChamberProof_PolishPreservesAcceptedFootprintAndCardinalNodeTransforms()
     {
         var instance=Object.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>(EnergyChamberProofBuilder.PrefabPath));

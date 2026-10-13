@@ -20,7 +20,7 @@ namespace Gravivore.ArtProof.EnergyChamber
         public const string NodePath = Root + "/Prefabs/DistributionNode.prefab";
         public const string CameraSettingsPath = "Assets/_Game/Content/Definitions/S01_CameraFollowSettings.asset";
         public const string G0Path = "Assets/_Game/Content/VisualSlice/Prefabs/G0_V3_Live_Tier0.prefab";
-        public const string Evidence = "docs/history/implementation-passes/energy-chamber-visual-polish-v1";
+        public const string Evidence = "docs/history/implementation-passes/energy-chamber-vertical-nodes-v1";
         private const string Vr3 = "Assets/_Game/Content/VisualReplacementV3";
         private static readonly Vector3 GameplayTarget = new Vector3(0,0,-1.6f);
         private static readonly Vector3 PlayerPosition = new Vector3(2.7f,0,-3.65f);
@@ -41,6 +41,7 @@ namespace Gravivore.ArtProof.EnergyChamber
             var owner=new GameObject("Energy Chamber / hybrid proof V1");
             Custom("Foundation",owner.transform); Custom("CentralChamber",owner.transform);
             Custom("FoundationPolish",owner.transform);Custom("ChamberPolish",owner.transform);
+            Custom("CoreHeart",owner.transform);
             for(var i=0;i<4;i++)
             {
                 var angle=i*90f;
@@ -83,7 +84,7 @@ namespace Gravivore.ArtProof.EnergyChamber
         private static void BuildMaterials()
         {
             const string maps=Root+"/Textures/PolishV1/";
-            foreach(var path in Directory.GetFiles(maps,"*.png"))
+            foreach(var path in Directory.GetFiles(Root+"/Textures","*.png",SearchOption.AllDirectories))
             {
                 var importer=(TextureImporter)AssetImporter.GetAtPath(path);
                 importer.textureType=path.Contains("_Normal")?TextureImporterType.NormalMap:TextureImporterType.Default;
@@ -104,7 +105,7 @@ namespace Gravivore.ArtProof.EnergyChamber
                     material.SetTexture(map.Item1,Required<Texture2D>(maps+"EC_"+name+"_"+map.Item2+".png"));
                 material.SetColor("_BaseColor",Color.white);material.SetFloat("_Smoothness",.90f);material.SetFloat("_BumpScale",.40f);
                 material.EnableKeyword("_NORMALMAP");material.EnableKeyword("_METALLICSPECGLOSSMAP");material.EnableKeyword("_OCCLUSIONMAP");material.enableInstancing=true;
-                if(name=="Cold"){material.EnableKeyword("_EMISSION");material.SetColor("_EmissionColor",new Color(.06f,.48f,.62f));}
+                if(name=="Cold"){material.globalIlluminationFlags=MaterialGlobalIlluminationFlags.BakedEmissive;material.EnableKeyword("_EMISSION");material.SetColor("_EmissionColor",new Color(.06f,.48f,.62f));}
                 else {material.DisableKeyword("_EMISSION");material.SetColor("_EmissionColor",Color.black);}
                 EditorUtility.SetDirty(material);
             }
@@ -120,6 +121,25 @@ namespace Gravivore.ArtProof.EnergyChamber
             var ground=MaterialAt("ReviewGround");ground.SetTexture("_BaseMap",Required<Texture2D>(maps+"EC_Deck_BaseColor.png"));
             ground.SetColor("_BaseColor",new Color(.46f,.49f,.48f));ground.SetFloat("_Metallic",.12f);ground.SetFloat("_Smoothness",.25f);
             ground.DisableKeyword("_EMISSION");EditorUtility.SetDirty(ground);
+            // Owner's explicit concept correction: warm central containment,
+            // cool smaller peripheral stabilizers. Scope stays in proof materials.
+            foreach(var preset in new[]{
+                (name:"CoreWarm",map:"CoreWarm",emission:new Color(2.6f,.48f,.045f)),
+                (name:"CoreInnerWarm",map:"CoreWarm",emission:new Color(1.8f,.29f,.025f)),
+                (name:"NodeCool",map:"NodeCool",emission:new Color(.055f,.90f,1.8f))})
+            {
+                var m=MaterialAt(preset.name);const string energy=Root+"/Textures/VerticalNodesV1/EC_";
+                foreach(var map in new[]{("_BaseMap","BaseColor"),("_BumpMap","Normal"),("_MetallicGlossMap","MetallicSmoothness"),("_OcclusionMap","Occlusion"),("_EmissionMap","Emission")})
+                    m.SetTexture(map.Item1,Required<Texture2D>(energy+preset.map+"_"+map.Item2+".png"));
+                m.SetColor("_BaseColor",Color.white);m.SetColor("_EmissionColor",preset.emission);
+                m.SetFloat("_Smoothness",.80f);m.SetFloat("_BumpScale",.30f);
+                // This installed URP validates _EMISSION using AnyEmissive.
+                // BakedEmissive keeps the surface keyword through import/reload;
+                // this review scene does not bake GI or add realtime local lights.
+                m.globalIlluminationFlags=MaterialGlobalIlluminationFlags.BakedEmissive;
+                m.EnableKeyword("_NORMALMAP");m.EnableKeyword("_METALLICSPECGLOSSMAP");m.EnableKeyword("_OCCLUSIONMAP");m.EnableKeyword("_EMISSION");
+                EditorUtility.SetDirty(m);
+            }
         }
 
         private static Material MaterialAt(string name)
@@ -133,7 +153,16 @@ namespace Gravivore.ArtProof.EnergyChamber
         {
             var obj=ModelUnder(Root+"/Models/EC_"+name+".fbx",parent,"EC_"+name);
             foreach(var renderer in obj.GetComponentsInChildren<Renderer>())
-                renderer.sharedMaterials=renderer.sharedMaterials.Select(m=>Required<Material>(Root+"/Materials/"+m.name+".mat")).ToArray();
+                renderer.sharedMaterials=renderer.sharedMaterials.Select(m=>
+                {
+                    var materialName=m.name;
+                    if(name=="CentralChamber" || name=="ChamberPolish")
+                    {
+                        if(materialName=="EC_Cold")materialName="EC_CoreWarm";
+                        if(materialName=="EC_Coil")materialName="EC_CoreInnerWarm";
+                    }
+                    return Required<Material>(Root+"/Materials/"+materialName+".mat");
+                }).ToArray();
             return obj;
         }
 
@@ -141,6 +170,7 @@ namespace Gravivore.ArtProof.EnergyChamber
         {
             var owner=new GameObject("Distribution node / master assembly");Custom("SideNode",owner.transform);
             Custom("NodePolish",owner.transform);
+            Custom("VerticalDistribution",owner.transform);
             Existing("VR3_generator",owner.transform,new Vector3(.04f,.49f,-.10f),1.96f,90);
             Existing("VR3_centrifuge",owner.transform,new Vector3(.78f,.49f,.78f),.70f,0);
             PrefabUtility.SaveAsPrefabAsset(owner,NodePath);Object.DestroyImmediate(owner);
@@ -260,6 +290,14 @@ namespace Gravivore.ArtProof.EnergyChamber
             finally {for(var i=0;i<renderers.Length;i++)renderers[i].sharedMaterials=originalMaterials[i];foreach(var m in diagnostic.Values)Object.DestroyImmediate(m);}
             SetView(camera,new Vector3(9,9,-13),new Vector3(0,2.1f,0),46);Render(camera,"06_normal_material_lighting",1600,1400);
             SetView(camera,new Vector3(6.4f,6.8f,-8.2f),new Vector3(.1f,3.2f,0),42);Render(camera,"07_close_three_quarter",1600,1600);
+            var installation=roots.Single(g=>g.name.StartsWith("Energy Chamber",StringComparison.Ordinal));
+            installation.SetActive(false);g0.SetActive(false);
+            var nodeDetail=Object.Instantiate(Required<GameObject>(NodePath));
+            try
+            {
+                SetView(camera,new Vector3(4.8f,4.6f,-6.4f),new Vector3(0,1.9f,0),40);Render(camera,"08_vertical_node_detail",1400,1600);
+            }
+            finally {Object.DestroyImmediate(nodeDetail);installation.SetActive(true);g0.SetActive(true);}
             camera.transform.SetPositionAndRotation(originalPos,originalRot);camera.fieldOfView=originalFov;
             var settings=Required<CameraFollowSettings>(CameraSettingsPath);var assembly=roots.Single(g=>g.name.StartsWith("Energy Chamber",StringComparison.Ordinal));
             File.WriteAllText(Evidence+"/camera-and-scale.json",JsonUtility.ToJson(new CameraRecord{settings=CameraSettingsPath,offset=settings.Offset,fieldOfView=settings.FieldOfView,lookAtHeight=settings.LookAtHeight,inspectionAnchor=GameplayTarget,playerAnchor=PlayerPosition,g0Source=G0Path,g0Scale=g0.transform.localScale,g0Bounds=BoundsOf(g0).size,installationBounds=BoundsOf(assembly).size},true));

@@ -11,10 +11,13 @@ $proofRestoreOutside=@($proofRestoreChanged | Where-Object {
     -not $_.StartsWith('Assets/_Game/ArtProof/') -and
     -not $_.StartsWith('Tools/energy-chamber-hybrid-proof-v1/') -and
     -not $_.StartsWith('Tools/energy-chamber-visual-polish-v1/') -and
+    -not $_.StartsWith('Tools/energy-chamber-vertical-nodes-v1/') -and
     -not $_.StartsWith('art/energy-chamber-hybrid-proof-v1/') -and
     -not $_.StartsWith('art/energy-chamber-visual-polish-v1/') -and
+    -not $_.StartsWith('art/energy-chamber-vertical-nodes-v1/') -and
     -not $_.StartsWith('docs/history/implementation-passes/energy-chamber-hybrid-proof-v1/') -and
-    -not $_.StartsWith('docs/history/implementation-passes/energy-chamber-visual-polish-v1/')
+    -not $_.StartsWith('docs/history/implementation-passes/energy-chamber-visual-polish-v1/') -and
+    -not $_.StartsWith('docs/history/implementation-passes/energy-chamber-vertical-nodes-v1/')
 })
 foreach($proofRestoreRelative in $proofRestoreOutside){
     $proofRestoreAbsolute=[IO.Path]::GetFullPath((Join-Path $proofRestoreRoot $proofRestoreRelative))

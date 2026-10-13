@@ -37,7 +37,7 @@ namespace Gravivore.ArtProof.EnergyChamber
             Directory.CreateDirectory(stage+"/Assets/StreamingAssets");
             File.Copy("ThirdPartyNotices.md",stage+"/Assets/StreamingAssets/ThirdPartyNotices.txt",true);
             File.Copy(EnergyChamberProofBuilder.Root+"/Licenses/ThirdPartyNotices.md",stage+"/Assets/StreamingAssets/EnergyChamberNotices.txt",true);
-            File.WriteAllText(stage+"/stage-build.json",JsonUtility.ToJson(new StageConfig{scene=EnergyChamberProofBuilder.ScenePath,output=Path.Combine(source,"Builds/Android/gravivore-energy-chamber-polish-v1-dev.apk"),result=Path.Combine(source,EnergyChamberProofBuilder.Evidence+"/verification/android-result.json")},true));
+            File.WriteAllText(stage+"/stage-build.json",JsonUtility.ToJson(new StageConfig{scene=EnergyChamberProofBuilder.ScenePath,output=Path.Combine(source,"Builds/Android/gravivore-energy-chamber-vertical-nodes-v1-dev.apk"),result=Path.Combine(source,EnergyChamberProofBuilder.Evidence+"/verification/android-result.json")},true));
             File.WriteAllText(EnergyChamberProofBuilder.Evidence+"/verification/device-project-dependencies.txt",string.Join("\n",dependencies)+"\n");
             Debug.Log("ENERGY_CHAMBER_VISUAL_DEVICE_PROJECT_EXPORTED assets="+dependencies.Length+" projectScripts=0");
         }
