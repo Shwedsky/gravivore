@@ -26,7 +26,7 @@ public static class EnergyChamberStageBuild
             foreach(var transform in root.GetComponentsInChildren<Transform>(true))
                 if(GameObjectUtility.GetMonoBehavioursWithMissingScriptCount(transform.gameObject)!=0)throw new InvalidDataException("Missing snapshot script.");
             foreach(var script in root.GetComponentsInChildren<MonoBehaviour>(true))
-                if(!(script is Volume) && !(script is UniversalAdditionalCameraData))throw new InvalidDataException("Unexpected project behaviour in visual device snapshot: "+script.GetType().FullName);
+                if(!(script is Volume) && !(script is UniversalAdditionalCameraData) && !(script is UniversalAdditionalLightData))throw new InvalidDataException("Unexpected project behaviour in visual device snapshot: "+script.GetType().FullName);
             foreach(var renderer in root.GetComponentsInChildren<Renderer>(true))
                 foreach(var material in renderer.sharedMaterials)
                     if(material==null || material.shader==null || !material.shader.isSupported)throw new InvalidDataException("Missing/unsupported device material on "+renderer.name);

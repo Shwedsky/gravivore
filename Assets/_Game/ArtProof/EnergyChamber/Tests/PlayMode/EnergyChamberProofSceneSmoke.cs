@@ -13,6 +13,15 @@ public sealed class EnergyChamberProofSceneSmoke
     public IEnumerator EnergyChamberProof_LoadsAndRendersWithoutGameplayInitialization()
     {
         const string path="Assets/_Game/ArtProof/EnergyChamber/Scenes/EnergyChamber_HybridProof.unity";
+        return LoadAndCheck(path);
+    }
+    [UnityTest]
+    public IEnumerator EnergyChamberProof_ChapterContextLoadsWithoutGameplayInitialization()
+    {
+        return LoadAndCheck("Assets/_Game/ArtProof/EnergyChamber/Scenes/EnergyChamber_Chapter01Context.unity");
+    }
+    private static IEnumerator LoadAndCheck(string path)
+    {
         EditorSceneManager.LoadSceneInPlayMode(path,new LoadSceneParameters(LoadSceneMode.Single));
         yield return null;yield return null;
         var roots=SceneManager.GetActiveScene().GetRootGameObjects();

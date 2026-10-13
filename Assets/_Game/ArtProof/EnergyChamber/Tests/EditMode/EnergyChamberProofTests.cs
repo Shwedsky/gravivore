@@ -87,6 +87,32 @@ public sealed class EnergyChamberProofTests
     }
 
     [Test]
+    public void EnergyChamberProof_ChapterContextRetainsChapterPresentationAndExactPlayerFollowAnchor()
+    {
+        var scene=EditorSceneManager.OpenScene(EnergyChamberChapterContext.ScenePath,OpenSceneMode.Additive);
+        try
+        {
+            var roots=scene.GetRootGameObjects();
+            var assembly=roots.Single(g=>g.name.StartsWith("Energy Chamber /"));
+            Assert.That(assembly.transform.position,Is.EqualTo(EnergyChamberChapterContext.InstallationPosition));
+            var camera=roots.SelectMany(g=>g.GetComponentsInChildren<Camera>()).Single();
+            var settings=AssetDatabase.LoadAssetAtPath<CameraFollowSettings>(EnergyChamberProofBuilder.CameraSettingsPath);
+            Assert.That(Vector3.Distance(camera.transform.position,EnergyChamberChapterContext.PlayerPosition+settings.Offset),Is.LessThan(.001f));
+            Assert.That(camera.fieldOfView,Is.EqualTo(settings.FieldOfView));
+            var look=EnergyChamberChapterContext.PlayerPosition+Vector3.up*settings.LookAtHeight-camera.transform.position;
+            Assert.That(Vector3.Angle(camera.transform.forward,look),Is.LessThan(.01f));
+            var context=roots.Single(g=>g.name=="S01 Composition Root");
+            Assert.That(context.GetComponentsInChildren<Renderer>(true).Length,Is.EqualTo(476));
+            Assert.That(roots.SelectMany(g=>g.GetComponentsInChildren<Light>(true)).Count(),Is.EqualTo(17));
+            Assert.That(context.GetComponentsInChildren<Collider>(true),Is.Empty);
+            // Package components keep the authored lighting/volume settings;
+            // application behaviours cannot enter the static review scene.
+            Assert.That(context.GetComponentsInChildren<MonoBehaviour>(true).All(m=>m.GetType().Namespace?.StartsWith("UnityEngine.Rendering")==true),Is.True);
+        }
+        finally {EditorSceneManager.CloseScene(scene,true);}
+    }
+
+    [Test]
     public void EnergyChamberProof_FbxAssemblyRetainsSourceUnitsAndElevatedConnections()
     {
         var instance=Object.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>(EnergyChamberProofBuilder.PrefabPath));

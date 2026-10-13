@@ -20,7 +20,7 @@ namespace Gravivore.ArtProof.EnergyChamber
         public const string NodePath = Root + "/Prefabs/DistributionNode.prefab";
         public const string CameraSettingsPath = "Assets/_Game/Content/Definitions/S01_CameraFollowSettings.asset";
         public const string G0Path = "Assets/_Game/Content/VisualSlice/Prefabs/G0_V3_Live_Tier0.prefab";
-        public const string Evidence = "docs/history/implementation-passes/energy-chamber-vertical-nodes-v1";
+        public const string Evidence = "docs/history/implementation-passes/energy-chamber-final-polish-v1";
         private const string Vr3 = "Assets/_Game/Content/VisualReplacementV3";
         private static readonly Vector3 GameplayTarget = new Vector3(0,0,-1.6f);
         private static readonly Vector3 PlayerPosition = new Vector3(2.7f,0,-3.65f);
@@ -125,10 +125,10 @@ namespace Gravivore.ArtProof.EnergyChamber
             // cool smaller peripheral stabilizers. Scope stays in proof materials.
             foreach(var preset in new[]{
                 (name:"CoreWarm",map:"CoreWarm",emission:new Color(2.6f,.48f,.045f)),
-                (name:"CoreInnerWarm",map:"CoreWarm",emission:new Color(1.8f,.29f,.025f)),
-                (name:"NodeCool",map:"NodeCool",emission:new Color(.055f,.90f,1.8f))})
+                (name:"CoreInnerWarm",map:"CoreInnerWarm",emission:new Color(2.1f,.32f,.025f)),
+                (name:"NodeCool",map:"NodeCool",emission:new Color(.045f,.80f,1.45f))})
             {
-                var m=MaterialAt(preset.name);const string energy=Root+"/Textures/VerticalNodesV1/EC_";
+                var m=MaterialAt(preset.name);const string energy=Root+"/Textures/FinalPolishV1/EC_";
                 foreach(var map in new[]{("_BaseMap","BaseColor"),("_BumpMap","Normal"),("_MetallicGlossMap","MetallicSmoothness"),("_OcclusionMap","Occlusion"),("_EmissionMap","Emission")})
                     m.SetTexture(map.Item1,Required<Texture2D>(energy+preset.map+"_"+map.Item2+".png"));
                 m.SetColor("_BaseColor",Color.white);m.SetColor("_EmissionColor",preset.emission);
@@ -140,6 +140,17 @@ namespace Gravivore.ArtProof.EnergyChamber
                 m.EnableKeyword("_NORMALMAP");m.EnableKeyword("_METALLICSPECGLOSSMAP");m.EnableKeyword("_OCCLUSIONMAP");m.EnableKeyword("_EMISSION");
                 EditorUtility.SetDirty(m);
             }
+            foreach(var role in new[]{"BaseIron","BaseCassette","ChamberCasing","Frame","PipeSteel","NodeCasing","Interface"})
+            {
+                var m=MaterialAt(role);
+                foreach(var map in new[]{("_BaseMap","BaseColor"),("_BumpMap","Normal"),("_MetallicGlossMap","MetallicSmoothness"),("_OcclusionMap","Occlusion")})
+                    m.SetTexture(map.Item1,Required<Texture2D>(Root+"/Textures/FinalPolishV1/EC_"+role+"_"+map.Item2+".png"));
+                m.SetColor("_BaseColor",Color.white);m.SetFloat("_Smoothness",.90f);m.SetFloat("_BumpScale",.30f);
+                m.EnableKeyword("_NORMALMAP");m.EnableKeyword("_METALLICSPECGLOSSMAP");m.EnableKeyword("_OCCLUSIONMAP");
+                m.DisableKeyword("_EMISSION");m.SetColor("_EmissionColor",Color.black);EditorUtility.SetDirty(m);
+            }
+            markings.SetTexture("_BaseMap",Required<Texture2D>(Root+"/Textures/FinalPolishV1/EC_Markings_BaseColor.png"));
+            EditorUtility.SetDirty(markings);
         }
 
         private static Material MaterialAt(string name)
@@ -161,6 +172,15 @@ namespace Gravivore.ArtProof.EnergyChamber
                         if(materialName=="EC_Cold")materialName="EC_CoreWarm";
                         if(materialName=="EC_Coil")materialName="EC_CoreInnerWarm";
                     }
+                    // Existing submesh roles only: no model, vertex or assembly
+                    // transform changes in the final surface pass.
+                    var foundation=name.StartsWith("Foundation",StringComparison.Ordinal);
+                    var chamber=name=="CentralChamber" || name=="ChamberPolish";
+                    var node=name=="SideNode" || name=="NodePolish" || name=="NodeVariant" || name=="VerticalDistribution";
+                    if(materialName=="EC_Graphite")materialName=foundation?"EC_BaseIron":"EC_Frame";
+                    if(materialName=="EC_Shell")materialName=foundation?"EC_BaseCassette":chamber?"EC_ChamberCasing":node?"EC_NodeCasing":"EC_Shell";
+                    if(materialName=="EC_Plate")materialName="EC_Interface";
+                    if(materialName=="EC_Steel" && name.StartsWith("Connector",StringComparison.Ordinal))materialName="EC_PipeSteel";
                     return Required<Material>(Root+"/Materials/"+materialName+".mat");
                 }).ToArray();
             return obj;
@@ -304,9 +324,9 @@ namespace Gravivore.ArtProof.EnergyChamber
             File.WriteAllText(Evidence+"/component-bounds.json",JsonUtility.ToJson(new BoundRecords{items=assembly.GetComponentsInChildren<Renderer>().Select(r=>new BoundRecord{name=r.name,position=r.transform.position,size=r.bounds.size,center=r.bounds.center}).ToArray()},true));
             Debug.Log("ENERGY_CHAMBER_REVIEW_CAPTURED");
         }
-        private static void SetView(UnityEngine.Camera camera,Vector3 position,Vector3 look,float fov)
+        public static void SetView(UnityEngine.Camera camera,Vector3 position,Vector3 look,float fov)
         {camera.transform.position=position;camera.transform.LookAt(look);camera.fieldOfView=fov;}
-        private static void Render(UnityEngine.Camera camera,string name,int width,int height)
+        public static void Render(UnityEngine.Camera camera,string name,int width,int height)
         {
             var target=new RenderTexture(width,height,24,RenderTextureFormat.ARGB32,RenderTextureReadWrite.sRGB);var texture=new Texture2D(width,height,TextureFormat.RGB24,false);var previous=RenderTexture.active;
             try {camera.targetTexture=target;camera.aspect=(float)width/height;for(var i=0;i<3;i++)camera.Render();RenderTexture.active=target;texture.ReadPixels(new Rect(0,0,width,height),0,0);texture.Apply();File.WriteAllBytes(Evidence+"/screenshots/"+name+".png",texture.EncodeToPNG());}

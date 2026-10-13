@@ -1,8 +1,8 @@
 [CmdletBinding()]
-param([ValidateSet('Compile','Author','Capture','Validate','ProjectValidate','EditMode','PlayMode','Android')][string]$Action)
+param([ValidateSet('Compile','Author','Capture','ContextAudit','ContextBuild','ContextCapture','Validate','ProjectValidate','EditMode','PlayMode','Android')][string]$Action)
 $ErrorActionPreference='Stop'
 $proofRoot=Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
-$proofOutput=Join-Path $proofRoot 'docs/history/implementation-passes/energy-chamber-vertical-nodes-v1/verification'
+$proofOutput=Join-Path $proofRoot 'docs/history/implementation-passes/energy-chamber-final-polish-v1/verification'
 New-Item -ItemType Directory -Force -Path $proofOutput | Out-Null
 $proofArgs=@('-batchmode','-projectPath',('"'+$proofRoot+'"'),'-logFile',('"'+(Join-Path $proofOutput ($Action+'.log'))+'"'))
 if($Action -in @('Compile','Validate','ProjectValidate','EditMode')){$proofArgs+='-nographics'}
@@ -10,6 +10,9 @@ switch($Action){
  'Compile' {$proofArgs+='-quit'}
  'Author' {$proofArgs+=@('-quit','-executeMethod','Gravivore.ArtProof.EnergyChamber.EnergyChamberProofBuilder.Build')}
  'Capture' {$proofArgs+=@('-quit','-executeMethod','Gravivore.ArtProof.EnergyChamber.EnergyChamberProofBuilder.Capture')}
+ 'ContextAudit' {$proofArgs+=@('-quit','-executeMethod','Gravivore.ArtProof.EnergyChamber.EnergyChamberChapterContext.Audit')}
+ 'ContextBuild' {$proofArgs+=@('-quit','-executeMethod','Gravivore.ArtProof.EnergyChamber.EnergyChamberChapterContext.Build')}
+ 'ContextCapture' {$proofArgs+=@('-quit','-executeMethod','Gravivore.ArtProof.EnergyChamber.EnergyChamberChapterContext.Capture')}
  'Validate' {$proofArgs+=@('-quit','-executeMethod','Gravivore.ArtProof.EnergyChamber.EnergyChamberProofBuilder.Validate')}
  'ProjectValidate' {$proofArgs+=@('-quit','-executeMethod','Gravivore.Editor.ProjectValidator.ValidateOrThrow')}
  'EditMode' {$proofArgs+=@('-runTests','-testPlatform','EditMode','-testResults',('"'+(Join-Path $proofOutput 'EditMode.xml')+'"'))}
