@@ -2,7 +2,7 @@
 param([ValidateSet('Compile','Author','Capture','Validate','ProjectValidate','EditMode','PlayMode','Android')][string]$Action)
 $ErrorActionPreference='Stop'
 $proofRoot=Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
-$proofOutput=Join-Path $proofRoot 'docs/history/implementation-passes/energy-chamber-hybrid-proof-v1/verification'
+$proofOutput=Join-Path $proofRoot 'docs/history/implementation-passes/energy-chamber-visual-polish-v1/verification'
 New-Item -ItemType Directory -Force -Path $proofOutput | Out-Null
 $proofArgs=@('-batchmode','-projectPath',('"'+$proofRoot+'"'),'-logFile',('"'+(Join-Path $proofOutput ($Action+'.log'))+'"'))
 if($Action -in @('Compile','Validate','ProjectValidate','EditMode')){$proofArgs+='-nographics'}

@@ -20,7 +20,7 @@ namespace Gravivore.ArtProof.EnergyChamber
         public const string NodePath = Root + "/Prefabs/DistributionNode.prefab";
         public const string CameraSettingsPath = "Assets/_Game/Content/Definitions/S01_CameraFollowSettings.asset";
         public const string G0Path = "Assets/_Game/Content/VisualSlice/Prefabs/G0_V3_Live_Tier0.prefab";
-        public const string Evidence = "docs/history/implementation-passes/energy-chamber-hybrid-proof-v1";
+        public const string Evidence = "docs/history/implementation-passes/energy-chamber-visual-polish-v1";
         private const string Vr3 = "Assets/_Game/Content/VisualReplacementV3";
         private static readonly Vector3 GameplayTarget = new Vector3(0,0,-1.6f);
         private static readonly Vector3 PlayerPosition = new Vector3(2.7f,0,-3.65f);
@@ -40,13 +40,16 @@ namespace Gravivore.ArtProof.EnergyChamber
             BuildNode();
             var owner=new GameObject("Energy Chamber / hybrid proof V1");
             Custom("Foundation",owner.transform); Custom("CentralChamber",owner.transform);
+            Custom("FoundationPolish",owner.transform);Custom("ChamberPolish",owner.transform);
             for(var i=0;i<4;i++)
             {
                 var angle=i*90f;
                 var radial=Quaternion.Euler(0,angle,0);
                 var node=(GameObject)PrefabUtility.InstantiatePrefab(Required<GameObject>(NodePath),owner.transform);
                 node.name="Distribution node "+(i+1);node.transform.localPosition=radial*new Vector3(4.40f,0,0);node.transform.localRotation=radial;
+                if(i==1 || i==3)Custom("NodeVariant",node.transform);
                 var connector=Custom("Connector",owner.transform);connector.name="Core-to-node route "+(i+1);connector.transform.localRotation=radial;
+                Custom("ConnectorPolish",connector.transform);
                 var holder=Existing("VR3_proppipeholder",connector.transform,new Vector3(3.48f,.84f,0),.68f,90);
                 holder.name="Existing pipe-holder / carrier bridge support";
             }
@@ -79,23 +82,51 @@ namespace Gravivore.ArtProof.EnergyChamber
 
         private static void BuildMaterials()
         {
-            foreach(var name in new[]{"Graphite","Shell","Steel","Deck","Ceramic","Warning","Coil","Cold"})
+            const string maps=Root+"/Textures/PolishV1/";
+            foreach(var path in Directory.GetFiles(maps,"*.png"))
+            {
+                var importer=(TextureImporter)AssetImporter.GetAtPath(path);
+                importer.textureType=path.Contains("_Normal")?TextureImporterType.NormalMap:TextureImporterType.Default;
+                importer.sRGBTexture=path.Contains("BaseColor") || path.Contains("Palette");
+                importer.mipmapEnabled=true;importer.maxTextureSize=1024;
+                importer.wrapMode=path.Contains("Markings")?TextureWrapMode.Clamp:TextureWrapMode.Repeat;
+                importer.textureCompression=TextureImporterCompression.CompressedHQ;
+                var android=importer.GetPlatformTextureSettings("Android");android.overridden=true;android.maxTextureSize=1024;
+                android.format=path.Contains("Markings")?TextureImporterFormat.ASTC_4x4:TextureImporterFormat.ASTC_6x6;
+                importer.SetPlatformTextureSettings(android);importer.SaveAndReimport();
+            }
+            foreach(var name in new[]{"Graphite","Shell","Steel","Deck","Ceramic","Warning","Coil","Cold","Copper","Gasket","Plate"})
             {
                 var path=Root+"/Materials/EC_"+name+".mat";
                 var material=AssetDatabase.LoadAssetAtPath<Material>(path);
                 if(material==null){material=new Material(Shader.Find("Universal Render Pipeline/Lit"));AssetDatabase.CreateAsset(material,path);}
                 foreach(var map in new[]{("_BaseMap","BaseColor"),("_BumpMap","Normal"),("_MetallicGlossMap","MetallicSmoothness"),("_OcclusionMap","Occlusion")})
-                    material.SetTexture(map.Item1,Required<Texture2D>("Assets/_Game/Content/CapacitorFieldProof/Textures/CF_"+name+"_"+map.Item2+".png"));
-                material.SetColor("_BaseColor",Color.white);material.SetFloat("_Smoothness",.70f);material.SetFloat("_BumpScale",.48f);
+                    material.SetTexture(map.Item1,Required<Texture2D>(maps+"EC_"+name+"_"+map.Item2+".png"));
+                material.SetColor("_BaseColor",Color.white);material.SetFloat("_Smoothness",.90f);material.SetFloat("_BumpScale",.40f);
                 material.EnableKeyword("_NORMALMAP");material.EnableKeyword("_METALLICSPECGLOSSMAP");material.EnableKeyword("_OCCLUSIONMAP");material.enableInstancing=true;
-                if(name=="Cold"){material.EnableKeyword("_EMISSION");material.SetColor("_EmissionColor",new Color(.08f,.58f,.95f));}
+                if(name=="Cold"){material.EnableKeyword("_EMISSION");material.SetColor("_EmissionColor",new Color(.06f,.48f,.62f));}
                 else {material.DisableKeyword("_EMISSION");material.SetColor("_EmissionColor",Color.black);}
                 EditorUtility.SetDirty(material);
             }
             var donorPath=Root+"/Materials/EC_DonorMachinery.mat";
             var donor=AssetDatabase.LoadAssetAtPath<Material>(donorPath);
             if(donor==null){donor=new Material(Required<Material>(Vr3+"/Materials/VR3_WornIndustrialAtlas.mat"));AssetDatabase.CreateAsset(donor,donorPath);}
-            donor.SetColor("_EmissionColor",new Color(.28f,.28f,.28f));EditorUtility.SetDirty(donor);
+            donor.SetTexture("_BaseMap",Required<Texture2D>(maps+"EC_DonorPalette.png"));
+            donor.SetTexture("_MetallicGlossMap",null);donor.DisableKeyword("_METALLICSPECGLOSSMAP");
+            donor.SetFloat("_Metallic",.38f);donor.SetFloat("_Smoothness",.43f);donor.SetFloat("_OcclusionStrength",.55f);
+            donor.SetColor("_EmissionColor",new Color(.12f,.16f,.16f));EditorUtility.SetDirty(donor);
+            var markings=MaterialAt("Markings");markings.SetTexture("_BaseMap",Required<Texture2D>(maps+"EC_Markings_BaseColor.png"));
+            markings.SetFloat("_Metallic",.22f);markings.SetFloat("_Smoothness",.35f);EditorUtility.SetDirty(markings);
+            var ground=MaterialAt("ReviewGround");ground.SetTexture("_BaseMap",Required<Texture2D>(maps+"EC_Deck_BaseColor.png"));
+            ground.SetColor("_BaseColor",new Color(.46f,.49f,.48f));ground.SetFloat("_Metallic",.12f);ground.SetFloat("_Smoothness",.25f);
+            ground.DisableKeyword("_EMISSION");EditorUtility.SetDirty(ground);
+        }
+
+        private static Material MaterialAt(string name)
+        {
+            var path=Root+"/Materials/EC_"+name+".mat";var material=AssetDatabase.LoadAssetAtPath<Material>(path);
+            if(material==null){material=new Material(Shader.Find("Universal Render Pipeline/Lit"));AssetDatabase.CreateAsset(material,path);}
+            material.enableInstancing=true;return material;
         }
 
         private static GameObject Custom(string name,Transform parent)
@@ -109,6 +140,7 @@ namespace Gravivore.ArtProof.EnergyChamber
         private static void BuildNode()
         {
             var owner=new GameObject("Distribution node / master assembly");Custom("SideNode",owner.transform);
+            Custom("NodePolish",owner.transform);
             Existing("VR3_generator",owner.transform,new Vector3(.04f,.49f,-.10f),1.96f,90);
             Existing("VR3_centrifuge",owner.transform,new Vector3(.78f,.49f,.78f),.70f,0);
             PrefabUtility.SaveAsPrefabAsset(owner,NodePath);Object.DestroyImmediate(owner);
@@ -178,7 +210,7 @@ namespace Gravivore.ArtProof.EnergyChamber
                 var bounds=BoundsOf(tile);var scale=2.45f/Mathf.Max(bounds.size.x,bounds.size.z);
                 tile.transform.localScale=Vector3.one*scale;
                 tile.transform.localPosition=new Vector3(x*2.48f,-.015f,z*2.48f)-new Vector3(bounds.center.x,bounds.max.y,bounds.center.z)*scale;
-                foreach(var renderer in tile.GetComponentsInChildren<Renderer>())renderer.sharedMaterials=renderer.sharedMaterials.Select(_=>Required<Material>(Root+"/Materials/EC_DonorMachinery.mat")).ToArray();
+                foreach(var renderer in tile.GetComponentsInChildren<Renderer>())renderer.sharedMaterials=renderer.sharedMaterials.Select(_=>Required<Material>(Root+"/Materials/EC_ReviewGround.mat")).ToArray();
             }
         }
         private static void BuildLighting()
@@ -223,9 +255,11 @@ namespace Gravivore.ArtProof.EnergyChamber
                 foreach(var m in diagnostic.Values){m.DisableKeyword("_EMISSION");if(m.HasProperty("_EmissionColor"))m.SetColor("_EmissionColor",Color.black);}
                 for(var i=0;i<renderers.Length;i++)renderers[i].sharedMaterials=originalMaterials[i].Select(m=>diagnostic[m]).ToArray();
                 Render(camera,"05_emission_disabled",1080,1920);
+                SetView(camera,new Vector3(6.4f,6.8f,-8.2f),new Vector3(.1f,3.2f,0),42);Render(camera,"05b_emission_disabled_detail",1600,1600);
             }
             finally {for(var i=0;i<renderers.Length;i++)renderers[i].sharedMaterials=originalMaterials[i];foreach(var m in diagnostic.Values)Object.DestroyImmediate(m);}
             SetView(camera,new Vector3(9,9,-13),new Vector3(0,2.1f,0),46);Render(camera,"06_normal_material_lighting",1600,1400);
+            SetView(camera,new Vector3(6.4f,6.8f,-8.2f),new Vector3(.1f,3.2f,0),42);Render(camera,"07_close_three_quarter",1600,1600);
             camera.transform.SetPositionAndRotation(originalPos,originalRot);camera.fieldOfView=originalFov;
             var settings=Required<CameraFollowSettings>(CameraSettingsPath);var assembly=roots.Single(g=>g.name.StartsWith("Energy Chamber",StringComparison.Ordinal));
             File.WriteAllText(Evidence+"/camera-and-scale.json",JsonUtility.ToJson(new CameraRecord{settings=CameraSettingsPath,offset=settings.Offset,fieldOfView=settings.FieldOfView,lookAtHeight=settings.LookAtHeight,inspectionAnchor=GameplayTarget,playerAnchor=PlayerPosition,g0Source=G0Path,g0Scale=g0.transform.localScale,g0Bounds=BoundsOf(g0).size,installationBounds=BoundsOf(assembly).size},true));

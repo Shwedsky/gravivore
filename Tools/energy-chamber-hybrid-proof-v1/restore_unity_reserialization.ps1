@@ -10,8 +10,11 @@ $proofRestoreOutside=@($proofRestoreChanged | Where-Object {
     $_ -ne 'Assets/_Game/ArtProof.meta' -and
     -not $_.StartsWith('Assets/_Game/ArtProof/') -and
     -not $_.StartsWith('Tools/energy-chamber-hybrid-proof-v1/') -and
+    -not $_.StartsWith('Tools/energy-chamber-visual-polish-v1/') -and
     -not $_.StartsWith('art/energy-chamber-hybrid-proof-v1/') -and
-    -not $_.StartsWith('docs/history/implementation-passes/energy-chamber-hybrid-proof-v1/')
+    -not $_.StartsWith('art/energy-chamber-visual-polish-v1/') -and
+    -not $_.StartsWith('docs/history/implementation-passes/energy-chamber-hybrid-proof-v1/') -and
+    -not $_.StartsWith('docs/history/implementation-passes/energy-chamber-visual-polish-v1/')
 })
 foreach($proofRestoreRelative in $proofRestoreOutside){
     $proofRestoreAbsolute=[IO.Path]::GetFullPath((Join-Path $proofRestoreRoot $proofRestoreRelative))

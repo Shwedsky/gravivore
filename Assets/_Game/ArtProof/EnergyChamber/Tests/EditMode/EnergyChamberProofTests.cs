@@ -9,6 +9,29 @@ using UnityEngine;
 public sealed class EnergyChamberProofTests
 {
     [Test]
+    public void EnergyChamberProof_PolishPreservesAcceptedFootprintAndCardinalNodeTransforms()
+    {
+        var instance=Object.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>(EnergyChamberProofBuilder.PrefabPath));
+        try
+        {
+            var nodes=instance.transform.Cast<Transform>().Where(t=>t.name.StartsWith("Distribution node ")).OrderBy(t=>t.name).ToArray();
+            for(var i=0;i<4;i++)
+            {
+                var rotation=Quaternion.Euler(0,i*90,0);
+                Assert.That(Vector3.Distance(nodes[i].localPosition,rotation*new Vector3(4.40f,0,0)),Is.LessThan(.001f));
+                Assert.That(Quaternion.Angle(nodes[i].localRotation,rotation),Is.LessThan(.001f));
+            }
+            Assert.That(instance.transform.Find("EC_CentralChamber").localPosition,Is.EqualTo(Vector3.zero));
+            var bounds=EnergyChamberProofBuilder.BoundsOf(instance);
+            Assert.That(bounds.size.x,Is.EqualTo(11.48f).Within(.02f));
+            Assert.That(bounds.size.z,Is.EqualTo(11.48f).Within(.02f));
+            Assert.That(bounds.min.y,Is.EqualTo(.015f).Within(.02f));
+            Assert.That(bounds.max.y,Is.EqualTo(6.11f).Within(.02f));
+        }
+        finally {Object.DestroyImmediate(instance);}
+    }
+
+    [Test]
     public void EnergyChamberProof_HasFourInstancesOfTheSameMasterNodeAndNoGameplayAuthority()
     {
         EnergyChamberProofBuilder.Validate();
