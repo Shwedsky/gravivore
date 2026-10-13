@@ -104,9 +104,15 @@
     "docs/history/implementation-passes/energy-chamber-vertical-nodes-v1/source-review.json",
     "docs/history/implementation-passes/energy-chamber-vertical-nodes-v1/verification/.gitignore",
     "docs/history/implementation-passes/energy-chamber-vertical-nodes-v1/verification/EditMode.xml",
+    "docs/history/implementation-passes/energy-chamber-vertical-nodes-v1/verification/PlayMode.xml",
+    "docs/history/implementation-passes/energy-chamber-vertical-nodes-v1/verification/android-result.json",
+    "docs/history/implementation-passes/energy-chamber-vertical-nodes-v1/verification/apk-badging.txt",
     "docs/history/implementation-passes/energy-chamber-vertical-nodes-v1/verification/assembly.json",
+    "docs/history/implementation-passes/energy-chamber-vertical-nodes-v1/verification/checks.json",
+    "docs/history/implementation-passes/energy-chamber-vertical-nodes-v1/verification/device-project-dependencies.txt",
     "docs/history/implementation-passes/energy-chamber-vertical-nodes-v1/verification/emission-visibility.json",
-    "docs/history/implementation-passes/energy-chamber-vertical-nodes-v1/verification/preservation-and-delivery.json"
+    "docs/history/implementation-passes/energy-chamber-vertical-nodes-v1/verification/preservation-and-delivery.json",
+    "docs/history/implementation-passes/energy-chamber-vertical-nodes-v1/verification/sdk-wait.json"
   ],
   "tests": {
     "EditMode": {
@@ -124,6 +130,22 @@
       "start-time": "2026-10-13 06:59:53Z",
       "end-time": "2026-10-13 07:00:27Z",
       "duration": "34,6186074"
+    },
+    "PlayMode": {
+      "id": "2",
+      "testcasecount": "1",
+      "result": "Passed",
+      "total": "1",
+      "passed": "1",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0",
+      "engine-version": "3.5.0.0",
+      "clr-version": "4.0.30319.42000",
+      "start-time": "2026-10-13 07:03:22Z",
+      "end-time": "2026-10-13 07:03:23Z",
+      "duration": "1,5606052"
     }
   },
   "camera": {
@@ -167,5 +189,18 @@
     "meanChannelDelta": 0.6821505272633744,
     "maxChannelDelta": 208,
     "comparison": "Same camera/G-0/lighting; shader emission disabled in diagnostic"
+  },
+  "apk": {
+    "path": "C:\\Users\\pamak\\Documents\\ChatGPT\\gravivore\\.codex-worktrees\\energy-chamber-hybrid-proof-v1\\Builds\\Android\\gravivore-energy-chamber-vertical-nodes-v1-dev.apk",
+    "bytes": 70949045,
+    "sha256": "eeaa891a534aba5e859c8ec64c604edc12997a0cf1f2b08513f2448de6a28275",
+    "sceneSha256": "9ffc50b345e01d09ff3714a9063e87a33d0cf09f850eda454a539a8f3744feaf",
+    "receipt": {
+      "result": "Succeeded",
+      "path": "C:/Users/pamak/Documents/ChatGPT/gravivore/.codex-worktrees/energy-chamber-hybrid-proof-v1/Builds/Android/gravivore-energy-chamber-vertical-nodes-v1-dev.apk",
+      "validation": "Visual dependency closure; no project scripts; no missing scripts/materials; exact camera lens and G-0 unit scale",
+      "errors": 3,
+      "bytes": 826983299
+    }
   }
 }

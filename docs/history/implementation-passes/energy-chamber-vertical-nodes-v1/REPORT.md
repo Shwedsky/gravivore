@@ -81,9 +81,35 @@ production integration or a merge.
 
 ## Validation / source control
 
+Full EditMode suite: **534 passed / 0 failed**, including five proof checks. The
+new regression verifies four vertical modules, retained reservoir instances and
+persisted warm/cool emission wiring. Dedicated scene PlayMode smoke:
+**1 passed / 0 failed**. Direct normal/no-emission captures also demonstrate the
+rendered energy contribution after scene reload; `emission-visibility.json` records
+the comparison. Automated checks do not replace the human art gate.
+
+Unity compile and project validation passed. The three contained-energy materials
+retain `_EMISSION` with valid emission flags after both project reloads. The prefab
+remains presentation-only with zero colliders and zero gameplay MonoBehaviours.
+
 Executed test, compile, validation and APK receipts are recorded in `verification/`.
 The Android build uses the exact saved proof scene in the existing isolated static
 review project, keeping gameplay and production Chapter callbacks out of its package.
+
+Android development APK: **Succeeded**, ARM64 IL2CPP / portrait, separate package
+`com.gravivore.energychamberproof`. File:
+`Builds/Android/gravivore-energy-chamber-vertical-nodes-v1-dev.apk`, **70,949,045 bytes**.
+Actual APK hash, ARM64 archive/license checks and matching saved-scene hash are in
+`preservation-and-delivery.json`; `apk-badging.txt` records package metadata.
+Unity's aggregate build-summary byte count differs from the actual APK file size.
+
+Three non-fatal logged errors remain from the installed URP Core
+`ProbeVolumeBakingResources` loader's `TraceRenderingLayerMask.urtshader` asset type
+mismatch, as in the preceding builds. The snapshot had no missing/unsupported
+materials or C# compile errors. The SDK package-list network request waited over
+600 seconds, then completed naturally; the original build succeeded without a
+restart, SDK modification or retained timeout workaround. `sdk-wait.json` preserves
+the diagnosis. Device performance and human device art acceptance were not run.
 
 Baseline: `bd886ef6e96aab172b9b469877f382dfc83406fd`.
 Branch: `art/energy-chamber-hybrid-proof-v1`.
