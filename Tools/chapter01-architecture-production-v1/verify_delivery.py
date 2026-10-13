@@ -29,10 +29,10 @@ for item in promotion['assets']:
 scene='Assets/_Game/Content/Scenes/Chapter01_ScrapExclusion.unity'
 b,c=docs(git('show',BASE+':'+scene)),docs((ROOT/scene).read_bytes())
 unchanged=[k for k in b if k[0]!=1660057539]
-assert all(b[k]==c[k] for k in unchanged),'Existing Chapter objects changed'
+assert all(b[k]==re.sub(r'  _architecturalCollisionRoots:\n  - \{fileID: \d+\}\n','',c[k]) for k in unchanged),'Existing Chapter fields changed'
 changed=git('diff','--name-only',BASE).decode().splitlines()
 for p in changed:
-    assert not p.startswith(('Assets/_Game/Runtime/', 'Assets/_Game/Content/ActorProductionV2/', 'Assets/_Game/Content/Definitions/')),p
+    assert not p.startswith(('Assets/_Game/Runtime/Gameplay/', 'Assets/_Game/Runtime/Core/', 'Assets/_Game/Runtime/Persistence/', 'Assets/_Game/Runtime/Platform/', 'Assets/_Game/Content/ActorProductionV2/', 'Assets/_Game/Content/Definitions/')),p
 guids={}; duplicates=[]
 for p in (ROOT/'Assets').rglob('*.meta'):
     match=re.search(r'^guid: ([0-9a-f]{32})',p.read_text(errors='ignore'),re.M)

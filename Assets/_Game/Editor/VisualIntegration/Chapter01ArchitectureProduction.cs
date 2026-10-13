@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Gravivore.Presentation.Camera;
+using Gravivore.Presentation.World;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -19,7 +20,7 @@ namespace Gravivore.Editor.VisualIntegration
         public const string Root = "Assets/_Game/Content/Chapter01Architecture/EnergyChamber";
         public const string PrefabPath = Root + "/Prefabs/EnergyChamber_Production.prefab";
         public const string Evidence = "docs/history/implementation-passes/chapter01-architecture-production-v1";
-        public static readonly Vector3 Placement = new Vector3(11, .08f, 51.3f);
+        public static readonly Vector3 Placement = new Vector3(11, .08f, 50.65f);
 
         public static void Build()
         {
@@ -60,7 +61,7 @@ namespace Gravivore.Editor.VisualIntegration
                 var lod1 = all.Where(r => !MeshPath(r).Contains("Polish") && !MeshPath(r).Contains("NodeVariant") && !MeshPath(r).Contains("Prop_Rail_")).ToArray();
                 var lod2 = all.Where(r => new[] {"EC_Foundation.fbx", "EC_CentralChamber.fbx", "EC_CoreHeart.fbx", "EC_SideNode.fbx", "EC_VerticalDistribution.fbx", "EC_Connector.fbx"}.Any(s => MeshPath(r).EndsWith(s, StringComparison.Ordinal))).ToArray();
                 group.fadeMode = LODFadeMode.None;
-                group.SetLODs(new[] {new LOD(.18f, all), new LOD(.085f, lod1), new LOD(.025f, lod2)});
+                group.SetLODs(new[] {new LOD(.38f, all), new LOD(.30f, lod1), new LOD(.08f, lod2)});
                 group.RecalculateBounds();
                 if (all.Length != 45 || Triangles(all) != 279694)
                     throw new InvalidDataException("Accepted LOD0 changed: " + all.Length + " renderers / " + Triangles(all) + " triangles");
@@ -76,15 +77,50 @@ namespace Gravivore.Editor.VisualIntegration
             var installation = (GameObject)PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(PrefabPath));
             installation.name = "Energy Chamber / production";
             installation.transform.position = Placement;
+            BindCollision(scene, installation);
             EditorSceneManager.SaveScene(scene);
             AssetDatabase.SaveAssets();
             Inspect();
             Debug.Log("CHAPTER_ARCHITECTURE_PRODUCTION_BUILT");
         }
 
+        public static void TuneLod()
+        {
+            var contents = PrefabUtility.LoadPrefabContents(PrefabPath);
+            try {
+                var group = contents.GetComponent<LODGroup>();
+                var lods = group.GetLODs();
+                var thresholds = new[] {.38f, .30f, .08f};
+                for (var i = 0; i < lods.Length; i++) lods[i].screenRelativeTransitionHeight = thresholds[i];
+                group.SetLODs(lods);
+                var blockerLayer = LayerMask.NameToLayer("HardBlocker");
+                if (blockerLayer < 0) throw new InvalidDataException("HardBlocker layer is required");
+                foreach (var collider in contents.GetComponentsInChildren<BoxCollider>(true)) collider.gameObject.layer = blockerLayer;
+                PrefabUtility.SaveAsPrefabAsset(contents, PrefabPath);
+            }
+            finally { PrefabUtility.UnloadPrefabContents(contents); }
+            var scene = EditorSceneManager.OpenScene(ScenePath);
+            var installation = scene.GetRootGameObjects().Single(g => g.name == "Energy Chamber / production");
+            installation.transform.position = Placement;
+            BindCollision(scene, installation);
+            EditorSceneManager.SaveScene(scene);
+            Inspect();
+        }
+
+        private static void BindCollision(UnityEngine.SceneManagement.Scene scene, GameObject installation)
+        {
+            var environment = scene.GetRootGameObjects().SelectMany(g => g.GetComponentsInChildren<ChapterVisualEnvironment>(true)).Single(e => e.BlueprintWorldOnly);
+            var serialized = new SerializedObject(environment);
+            var roots = serialized.FindProperty("_architecturalCollisionRoots");
+            roots.arraySize = 1;
+            roots.GetArrayElementAtIndex(0).objectReferenceValue = installation.transform.Find("Architectural collision");
+            serialized.ApplyModifiedPropertiesWithoutUndo();
+        }
+
         private static void Box(Transform owner, string name, Vector3 center, Vector3 size, float yaw = 0)
         {
             var obj = new GameObject(name, typeof(BoxCollider));
+            obj.layer = LayerMask.NameToLayer("HardBlocker");
             obj.transform.SetParent(owner, false);
             obj.transform.localPosition = center;
             obj.transform.localRotation = Quaternion.Euler(0, yaw, 0);
@@ -112,7 +148,7 @@ namespace Gravivore.Editor.VisualIntegration
             var group = installation.GetComponent<LODGroup>();
             Write("energy-chamber-metrics.json", new LandmarkMetrics {
                 position = installation.transform.position, bounds = BoundsOf(installation),
-                colliders = installation.GetComponentsInChildren<Collider>().Length,
+                colliders = installation.GetComponentsInChildren<Collider>().Length, lodSize = group.size,
                 lods = group.GetLODs().Select((lod, i) => new LodRecord {
                     level = i, transition = lod.screenRelativeTransitionHeight,
                     renderers = lod.renderers.Length, triangles = Triangles(lod.renderers),
@@ -202,7 +238,7 @@ namespace Gravivore.Editor.VisualIntegration
         }
         [Serializable] private sealed class Inventory { public ArchitectureRecord[] items; }
         [Serializable] private sealed class ArchitectureRecord { public string name, prefab; public Vector3 position; public Bounds bounds; public int renderers, triangles, materialSlots, colliderCount; public string[] materials; }
-        [Serializable] private sealed class LandmarkMetrics { public Vector3 position; public Bounds bounds; public int colliders; public LodRecord[] lods; public string[] dependencies; }
+        [Serializable] private sealed class LandmarkMetrics { public Vector3 position; public Bounds bounds; public int colliders; public float lodSize; public LodRecord[] lods; public string[] dependencies; }
         [Serializable] private sealed class LodRecord { public int level, renderers, triangles, materialSlots, uniqueMaterials; public float transition; }
         [Serializable] private sealed class CameraReceipt { public string objectPath, screenshot; public Vector3 anchor, camera; public float fov; }
         [Serializable] private sealed class CameraReceipts { public CameraReceipt[] items; }

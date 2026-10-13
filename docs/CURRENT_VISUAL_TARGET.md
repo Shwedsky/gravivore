@@ -122,6 +122,8 @@ Likewise, the rule that presentation art must not own gameplay collision/scripts
 
 ## Production vs proxy
 
+Chapter 01 architecture uses `CHAPTER01_ARCHITECTURE_LANGUAGE_V1.md`, extracted from the owner-accepted Energy Chamber. `CHAPTER01_ARCHITECTURE_AUDIT_V1.md` ranks the remaining landmark work. The chamber is a quality benchmark; other facilities must express their own functions and silhouettes.
+
 Blockouts, primitive rigs, procedural proxy geometry and quick kitbashes are valid for exploration and technical proof.
 
 They are **not acceptable as final production presentation** when the task asks to reach the current visual target. A production pass must replace or substantially refine obvious proxy language rather than merely recolor it.

@@ -57,6 +57,14 @@ namespace Gravivore.Presentation.World
                 BuildBossArena();
             }
             BuildEnvironmentBlockers();
+            if (_environment != null)
+                for (var i = 0; i < _environment.ArchitecturalCollisionRootCount; i++)
+                {
+                    var collisionRoot = _environment.GetArchitecturalCollisionRoot(i);
+                    collisionRoot.SetParent(GameplayRoot, true);
+                    foreach (var collider in collisionRoot.GetComponentsInChildren<BoxCollider>(true))
+                        _environmentBlockers.Add(collider);
+                }
             EliteGate = BuildGate(_configuration.EliteGate, new Color(0.9f, 0.55f, 0.12f, 1f));
             BossGate = BuildGate(_configuration.BossGate, new Color(0.84f, 0.18f, 0.22f, 1f));
             _state.GateUnlocked += HandleGateUnlocked;

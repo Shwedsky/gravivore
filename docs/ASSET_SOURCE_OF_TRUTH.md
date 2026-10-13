@@ -14,6 +14,8 @@ When an asset is already integrated and tracked there, use that runtime asset fi
 
 Current scene/definition/prefab references are more authoritative than historical filenames.
 
+The accepted Energy Chamber is promoted under `Assets/_Game/Content/Chapter01Architecture/EnergyChamber/`, with `Prefabs/EnergyChamber_Production.prefab` placed directly in the Chapter scene. Its mesh/material/texture and donor GUIDs are preserved from accepted PR #77 at `7d0e375f7b0a12a9d46982af685cabe3ce57d731`. Runtime dependencies do not include proof scenes, cameras or proof Editor tooling. Editable source custody is recorded in `art/ENERGY_CHAMBER_SOURCE_CUSTODY.md`; exact donor licenses accompany the production asset. The original ArtProof branch remains an unmerged proof; reconciling its GUID-preserving moves is required before combining it with production paths.
+
 The Chapter01 R2 + Actor V2 integration candidate promotes the seven project-owned hostile models,
 controllers, PBR maps and clean production prefabs under `Assets/_Game/Content/ActorProductionV2/`.
 Their editable source is `art/chapter01-actor-production-v2/`; their exact Actor V2 source commit is

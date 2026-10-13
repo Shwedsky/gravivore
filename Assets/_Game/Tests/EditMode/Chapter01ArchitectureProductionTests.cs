@@ -18,7 +18,7 @@ namespace Gravivore.Tests.EditMode
             Assert.That(asset.GetComponentsInChildren<MeshCollider>(true), Is.Empty);
             var collision = asset.GetComponentsInChildren<Collider>(true);
             Assert.That(collision.Length, Is.EqualTo(25));
-            Assert.That(collision.All(c => c is BoxCollider && !c.isTrigger && c.enabled), Is.True);
+            Assert.That(collision.All(c => c is BoxCollider && !c.isTrigger && c.enabled && c.gameObject.layer == LayerMask.NameToLayer("HardBlocker")), Is.True);
         }
         [Test] public void DistanceLevelsReduceCostWithoutChangingAcceptedNearPresentation()
         {

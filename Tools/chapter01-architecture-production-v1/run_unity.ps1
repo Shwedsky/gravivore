@@ -1,5 +1,5 @@
 [CmdletBinding()]
-param([ValidateSet('Compile','Author','Inspect','Capture','Validate','EditMode','PlayMode','Android')][string]$Action,
+param([ValidateSet('Compile','Author','Lod','Inspect','Capture','Validate','EditMode','PlayMode','Android')][string]$Action,
       [string]$TestFilter='', [string]$Label='')
 $ErrorActionPreference='Stop'
 $architectureRoot=Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
@@ -7,10 +7,11 @@ $architectureOutput=Join-Path $architectureRoot 'docs/history/implementation-pas
 New-Item -ItemType Directory -Force -Path $architectureOutput | Out-Null
 $architectureLabel=if($Label){$Label}else{$Action}
 $architectureArgs=@('-batchmode','-projectPath',('"'+$architectureRoot+'"'),'-logFile',('"'+(Join-Path $architectureOutput ($architectureLabel+'.log'))+'"'))
-if($Action -in @('Compile','Author','Inspect','Validate','EditMode')){$architectureArgs+='-nographics'}
+if($Action -in @('Compile','Author','Lod','Inspect','Validate','EditMode')){$architectureArgs+='-nographics'}
 switch($Action){
  'Compile' {$architectureArgs+='-quit'}
  'Author' {$architectureArgs+=@('-quit','-executeMethod','Gravivore.Editor.VisualIntegration.Chapter01ArchitectureProduction.Build')}
+ 'Lod' {$architectureArgs+=@('-quit','-executeMethod','Gravivore.Editor.VisualIntegration.Chapter01ArchitectureProduction.TuneLod')}
  'Inspect' {$architectureArgs+=@('-quit','-executeMethod','Gravivore.Editor.VisualIntegration.Chapter01ArchitectureProduction.Inspect')}
  'Capture' {$architectureArgs+=@('-quit','-executeMethod','Gravivore.Editor.VisualIntegration.Chapter01ArchitectureProduction.CaptureAudit')}
  'Validate' {$architectureArgs+=@('-quit','-executeMethod','Gravivore.Editor.ProjectValidator.ValidateOrThrow')}

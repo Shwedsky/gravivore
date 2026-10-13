@@ -55,6 +55,7 @@ namespace Gravivore.Presentation.World
         [SerializeField] private bool _showFallbackEnvironment = true;
         [SerializeField] private VisualRegionBinding[] _regions = Array.Empty<VisualRegionBinding>();
         [SerializeField] private EnvironmentDressingBinding[] _dressing = Array.Empty<EnvironmentDressingBinding>();
+        [SerializeField] private Transform[] _architecturalCollisionRoots = Array.Empty<Transform>();
         private Phase3DMechanicalMotionPresenter _phase3DMotion;
         private bool _initialized;
 
@@ -65,6 +66,8 @@ namespace Gravivore.Presentation.World
         public Transform Lighting => _lighting;
         public Light KeyLight => _keyLight;
         public int RegionCount => _regions.Length;
+        public int ArchitecturalCollisionRootCount => _architecturalCollisionRoots.Length;
+        public Transform GetArchitecturalCollisionRoot(int index) => _architecturalCollisionRoots[index];
         public VisualRegionBinding GetRegion(int index) => _regions[index];
         public VisualRegionBinding GetRegion(string id)
         {
@@ -118,6 +121,9 @@ namespace Gravivore.Presentation.World
                     throw new InvalidOperationException("Dressing may attach only inside the visual layer.");
                 entry.Model.ValidateOrThrow();
             }
+            foreach (var collisionRoot in _architecturalCollisionRoots)
+                if (collisionRoot == null || collisionRoot.IsChildOf(transform) || collisionRoot.GetComponentsInChildren<BoxCollider>(true).Length == 0)
+                    throw new InvalidOperationException("Architectural collision requires an explicit external compound-box root.");
             if (GetComponentsInChildren<Collider>(true).Length != 0 ||
                 GetComponentsInChildren<Rigidbody>(true).Length != 0)
                 throw new InvalidOperationException("Visual environment must not own gameplay collision.");
