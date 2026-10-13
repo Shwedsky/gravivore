@@ -1,0 +1,13 @@
+# Energy Chamber accepted editable source custody
+
+Pinned accepted source: `7d0e375f7b0a12a9d46982af685cabe3ce57d731`, PR #77.
+
+- `energy-chamber-hybrid-proof-v1/EnergyChamber_HybridProof.blend`: initial custom foundation, casing, connectors and side-node source.
+- `energy-chamber-visual-polish-v1/EnergyChamber_VisualPolishV1.blend`: accepted layered surfaces and secondary machinery polish.
+- `energy-chamber-vertical-nodes-v1/EnergyChamber_VerticalNodesV1.blend`: accepted central heart and four vertical distribution nodes.
+
+These project-owned sources are preserved byte for byte. Their exports retain the accepted mesh/UV/material assignment data under `Assets/_Game/Content/Chapter01Architecture/EnergyChamber/Models/`. Unity import metadata and all promoted asset GUIDs come from the accepted proof. The production prefab adds a LODGroup and a separate compound-collision hierarchy; it does not alter the accepted nearby geometry, materials, proportions or arrangement.
+
+The production promotion receipt maps source paths/hashes to runtime paths. Third-party source archives remain owner-local under `ExternalAssetIntake/Current/`; only the already-cleared Quaternius CC0 donor FBXs and existing production derivatives are used. Exact Quaternius/Molten license records accompany the production landmark. No new external downloads or destructive mesh optimization were required.
+
+PR #77 is the isolated accepted proof and remains unmerged. Its original ArtProof paths reuse the same GUIDs now promoted into Content. If it is later integrated, reconcile those moves first: do not retain duplicate proof and production assets with identical GUIDs in one Unity project.
