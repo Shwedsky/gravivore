@@ -1,0 +1,319 @@
+{
+  "author": "GRAVIVORE project-owned deterministic surface authoring",
+  "roles": {
+    "Graphite": {
+      "srgbMean": [
+        48,
+        57,
+        63
+      ],
+      "metallic": 0.68,
+      "smoothness": 0.26,
+      "wear": 0.035,
+      "normalRelief": 0.42
+    },
+    "Machined": {
+      "srgbMean": [
+        143,
+        163,
+        176
+      ],
+      "metallic": 0.82,
+      "smoothness": 0.64,
+      "wear": 0.08,
+      "normalRelief": 0.22
+    },
+    "Casing": {
+      "srgbMean": [
+        88,
+        103,
+        114
+      ],
+      "metallic": 0.66,
+      "smoothness": 0.43,
+      "wear": 0.09,
+      "normalRelief": 0.35
+    },
+    "Pipe": {
+      "srgbMean": [
+        108,
+        126,
+        140
+      ],
+      "metallic": 0.85,
+      "smoothness": 0.7,
+      "wear": 0.06,
+      "normalRelief": 0.19
+    },
+    "Recess": {
+      "srgbMean": [
+        14,
+        18,
+        21
+      ],
+      "metallic": 0.12,
+      "smoothness": 0.16,
+      "wear": 0.015,
+      "normalRelief": 0.3
+    },
+    "Copper": {
+      "srgbMean": [
+        125,
+        81,
+        48
+      ],
+      "metallic": 0.75,
+      "smoothness": 0.55,
+      "wear": 0.12,
+      "normalRelief": 0.28
+    },
+    "Deck": {
+      "srgbMean": [
+        77,
+        88,
+        92
+      ],
+      "metallic": 0.45,
+      "smoothness": 0.3,
+      "wear": 0.2,
+      "normalRelief": 0.65
+    },
+    "ColdPanel": {
+      "srgbMean": [
+        158,
+        174,
+        183
+      ],
+      "metallic": 0.68,
+      "smoothness": 0.47,
+      "wear": 0.12,
+      "normalRelief": 0.32
+    }
+  },
+  "maps": [
+    {
+      "file": "Assets/_Game/Content/Chapter01Architecture/EnergyChamber/Textures/RuntimePresentationV1/EC_Graphite_BaseColor.png",
+      "sha256": "46c3127ff2f1fcee0c29ba26cd1fcf6e1db3393de87b2b4adff3cf401f663a12",
+      "size": 512,
+      "role": "Graphite",
+      "kind": "BaseColor"
+    },
+    {
+      "file": "Assets/_Game/Content/Chapter01Architecture/EnergyChamber/Textures/RuntimePresentationV1/EC_Graphite_MetallicSmoothness.png",
+      "sha256": "185be6b3cd420461dea5075d955bf2433af40bdd72ed41e0c9370ca16e394d23",
+      "size": 512,
+      "role": "Graphite",
+      "kind": "MetallicSmoothness"
+    },
+    {
+      "file": "Assets/_Game/Content/Chapter01Architecture/EnergyChamber/Textures/RuntimePresentationV1/EC_Graphite_Normal.png",
+      "sha256": "1cac6253e5d5c00ba7537a3da550e5f88262d196319cdf59e820273fc78b5855",
+      "size": 512,
+      "role": "Graphite",
+      "kind": "Normal"
+    },
+    {
+      "file": "Assets/_Game/Content/Chapter01Architecture/EnergyChamber/Textures/RuntimePresentationV1/EC_Graphite_Occlusion.png",
+      "sha256": "8aa31083551762b2fca3cb0384d08853c0e2592097e77c7574617c4da8663f6c",
+      "size": 512,
+      "role": "Graphite",
+      "kind": "Occlusion"
+    },
+    {
+      "file": "Assets/_Game/Content/Chapter01Architecture/EnergyChamber/Textures/RuntimePresentationV1/EC_Machined_BaseColor.png",
+      "sha256": "eed3247ce5df700313787aae98d703019c5973ed747b20036ea88d5de8973bf6",
+      "size": 512,
+      "role": "Machined",
+      "kind": "BaseColor"
+    },
+    {
+      "file": "Assets/_Game/Content/Chapter01Architecture/EnergyChamber/Textures/RuntimePresentationV1/EC_Machined_MetallicSmoothness.png",
+      "sha256": "5b3b43ed3486bf6d950270a118ba863398bbf24ba789e2e3d2c2aef05e02509e",
+      "size": 512,
+      "role": "Machined",
+      "kind": "MetallicSmoothness"
+    },
+    {
+      "file": "Assets/_Game/Content/Chapter01Architecture/EnergyChamber/Textures/RuntimePresentationV1/EC_Machined_Normal.png",
+      "sha256": "2a7e3efadbb8c444ca44f508cd0d591b3e473cc35332ba49de9945177deb0b4a",
+      "size": 512,
+      "role": "Machined",
+      "kind": "Normal"
+    },
+    {
+      "file": "Assets/_Game/Content/Chapter01Architecture/EnergyChamber/Textures/RuntimePresentationV1/EC_Machined_Occlusion.png",
+      "sha256": "4fc72ce60e7ab82caffa0d5251b7d1120a981e3e8031ce095f3aa6914cc06548",
+      "size": 512,
+      "role": "Machined",
+      "kind": "Occlusion"
+    },
+    {
+      "file": "Assets/_Game/Content/Chapter01Architecture/EnergyChamber/Textures/RuntimePresentationV1/EC_Casing_BaseColor.png",
+      "sha256": "b188c8652e83f77704456ac8203c478fc96e54099a276c5acabaac8ec69ed1af",
+      "size": 512,
+      "role": "Casing",
+      "kind": "BaseColor"
+    },
+    {
+      "file": "Assets/_Game/Content/Chapter01Architecture/EnergyChamber/Textures/RuntimePresentationV1/EC_Casing_MetallicSmoothness.png",
+      "sha256": "cba92a4b08bf0be2ce7ba0bbcd6c23f5fe443e9b492ecdba66ac15f7b2a82cba",
+      "size": 512,
+      "role": "Casing",
+      "kind": "MetallicSmoothness"
+    },
+    {
+      "file": "Assets/_Game/Content/Chapter01Architecture/EnergyChamber/Textures/RuntimePresentationV1/EC_Casing_Normal.png",
+      "sha256": "4f20fd6499344066f52d933258f1c2702f1fe9c5fa3d3cb6c4059a79efec877d",
+      "size": 512,
+      "role": "Casing",
+      "kind": "Normal"
+    },
+    {
+      "file": "Assets/_Game/Content/Chapter01Architecture/EnergyChamber/Textures/RuntimePresentationV1/EC_Casing_Occlusion.png",
+      "sha256": "d233a9c12c15f5af3c3ac480b1efb580a8f97233f0c399e9140f44807d896554",
+      "size": 512,
+      "role": "Casing",
+      "kind": "Occlusion"
+    },
+    {
+      "file": "Assets/_Game/Content/Chapter01Architecture/EnergyChamber/Textures/RuntimePresentationV1/EC_Pipe_BaseColor.png",
+      "sha256": "cf249427b16438f7aa38fb15fa4da6dcac324971096aecbcac2d191309fcbc0c",
+      "size": 512,
+      "role": "Pipe",
+      "kind": "BaseColor"
+    },
+    {
+      "file": "Assets/_Game/Content/Chapter01Architecture/EnergyChamber/Textures/RuntimePresentationV1/EC_Pipe_MetallicSmoothness.png",
+      "sha256": "f05639f87b9373c41833c785802010c6cd0d2ac1e2dfc36d50abacd31f82c018",
+      "size": 512,
+      "role": "Pipe",
+      "kind": "MetallicSmoothness"
+    },
+    {
+      "file": "Assets/_Game/Content/Chapter01Architecture/EnergyChamber/Textures/RuntimePresentationV1/EC_Pipe_Normal.png",
+      "sha256": "9015223d5a99960275e89ad93e79f310d332fec9c036a50f42f2a05d066cbf78",
+      "size": 512,
+      "role": "Pipe",
+      "kind": "Normal"
+    },
+    {
+      "file": "Assets/_Game/Content/Chapter01Architecture/EnergyChamber/Textures/RuntimePresentationV1/EC_Pipe_Occlusion.png",
+      "sha256": "17c6b2cec8941ef9c3b1f5f7d29b1bd34e18ee323b420a314db8b860c92e62e8",
+      "size": 512,
+      "role": "Pipe",
+      "kind": "Occlusion"
+    },
+    {
+      "file": "Assets/_Game/Content/Chapter01Architecture/EnergyChamber/Textures/RuntimePresentationV1/EC_Recess_BaseColor.png",
+      "sha256": "f2866743528bc1af859c4ff5b347f226750dfa3b968c82d05572a645c62a6dbc",
+      "size": 512,
+      "role": "Recess",
+      "kind": "BaseColor"
+    },
+    {
+      "file": "Assets/_Game/Content/Chapter01Architecture/EnergyChamber/Textures/RuntimePresentationV1/EC_Recess_MetallicSmoothness.png",
+      "sha256": "4e6c6da1800cd9244a2b630d7b0d329ef6f10fec35a38310671821e74e3c244f",
+      "size": 512,
+      "role": "Recess",
+      "kind": "MetallicSmoothness"
+    },
+    {
+      "file": "Assets/_Game/Content/Chapter01Architecture/EnergyChamber/Textures/RuntimePresentationV1/EC_Recess_Normal.png",
+      "sha256": "47854aecc0a09119fe9259bb0649f5b92e71bbe0f556b68b0c86f8051d84fb76",
+      "size": 512,
+      "role": "Recess",
+      "kind": "Normal"
+    },
+    {
+      "file": "Assets/_Game/Content/Chapter01Architecture/EnergyChamber/Textures/RuntimePresentationV1/EC_Recess_Occlusion.png",
+      "sha256": "b0fba585915b219658244537284c5f655493c4698875abcdb25aaa6fd54a216e",
+      "size": 512,
+      "role": "Recess",
+      "kind": "Occlusion"
+    },
+    {
+      "file": "Assets/_Game/Content/Chapter01Architecture/EnergyChamber/Textures/RuntimePresentationV1/EC_Copper_BaseColor.png",
+      "sha256": "0745310a09726b19da3c1c4455aa3ab20c03d2f7f070cf5d2d2c0ef44bb3e862",
+      "size": 512,
+      "role": "Copper",
+      "kind": "BaseColor"
+    },
+    {
+      "file": "Assets/_Game/Content/Chapter01Architecture/EnergyChamber/Textures/RuntimePresentationV1/EC_Copper_MetallicSmoothness.png",
+      "sha256": "98c026fb349d6248530e785984bb0d61235300598291ddf72efdd203d0a78c1e",
+      "size": 512,
+      "role": "Copper",
+      "kind": "MetallicSmoothness"
+    },
+    {
+      "file": "Assets/_Game/Content/Chapter01Architecture/EnergyChamber/Textures/RuntimePresentationV1/EC_Copper_Normal.png",
+      "sha256": "39d5dd0aac46073acf108b9c8e7e61338d06fe68f1fb99589bba698f5dbe2470",
+      "size": 512,
+      "role": "Copper",
+      "kind": "Normal"
+    },
+    {
+      "file": "Assets/_Game/Content/Chapter01Architecture/EnergyChamber/Textures/RuntimePresentationV1/EC_Copper_Occlusion.png",
+      "sha256": "84b6c82adc0b87244bc7a4c2accdf539f62b4ce807177c69d2761f775c661f99",
+      "size": 512,
+      "role": "Copper",
+      "kind": "Occlusion"
+    },
+    {
+      "file": "Assets/_Game/Content/Chapter01Architecture/EnergyChamber/Textures/RuntimePresentationV1/EC_Deck_BaseColor.png",
+      "sha256": "8604675e1ec6920c591f1c5ec0fc50b54a2a17e8a8eeb5e652f1fd2567724031",
+      "size": 512,
+      "role": "Deck",
+      "kind": "BaseColor"
+    },
+    {
+      "file": "Assets/_Game/Content/Chapter01Architecture/EnergyChamber/Textures/RuntimePresentationV1/EC_Deck_MetallicSmoothness.png",
+      "sha256": "edc88df71448ade58de9570f25fb7dc8c0402ae3aba8a9f9adf5eeec9620172e",
+      "size": 512,
+      "role": "Deck",
+      "kind": "MetallicSmoothness"
+    },
+    {
+      "file": "Assets/_Game/Content/Chapter01Architecture/EnergyChamber/Textures/RuntimePresentationV1/EC_Deck_Normal.png",
+      "sha256": "980668747fe3a2bb8e9f95afb3237380a34bca2c86ff8e9237e5803c033d03d7",
+      "size": 512,
+      "role": "Deck",
+      "kind": "Normal"
+    },
+    {
+      "file": "Assets/_Game/Content/Chapter01Architecture/EnergyChamber/Textures/RuntimePresentationV1/EC_Deck_Occlusion.png",
+      "sha256": "c183f63076ad25ca76352adda64f074740802734569112d1c3ca391d78e526dd",
+      "size": 512,
+      "role": "Deck",
+      "kind": "Occlusion"
+    },
+    {
+      "file": "Assets/_Game/Content/Chapter01Architecture/EnergyChamber/Textures/RuntimePresentationV1/EC_ColdPanel_BaseColor.png",
+      "sha256": "55ceac351bb1400ae38fbc7a5dae41453ee25c07e8a8d3f7d50e2d10910f787e",
+      "size": 512,
+      "role": "ColdPanel",
+      "kind": "BaseColor"
+    },
+    {
+      "file": "Assets/_Game/Content/Chapter01Architecture/EnergyChamber/Textures/RuntimePresentationV1/EC_ColdPanel_MetallicSmoothness.png",
+      "sha256": "34ca4703aee810658e70adecccd3700ec2dcd3d09d70ffe85b33fad26ba72eb2",
+      "size": 512,
+      "role": "ColdPanel",
+      "kind": "MetallicSmoothness"
+    },
+    {
+      "file": "Assets/_Game/Content/Chapter01Architecture/EnergyChamber/Textures/RuntimePresentationV1/EC_ColdPanel_Normal.png",
+      "sha256": "df5ebe103fa81715eafdd9d0402d6b7c69a74ce4dcf0c89b999a3bdf2111c27b",
+      "size": 512,
+      "role": "ColdPanel",
+      "kind": "Normal"
+    },
+    {
+      "file": "Assets/_Game/Content/Chapter01Architecture/EnergyChamber/Textures/RuntimePresentationV1/EC_ColdPanel_Occlusion.png",
+      "sha256": "e265d2981024589b59899bd1b09ea1e9f877d6597a9bcfa69434bc8cdf36d928",
+      "size": 512,
+      "role": "ColdPanel",
+      "kind": "Occlusion"
+    }
+  ]
+}

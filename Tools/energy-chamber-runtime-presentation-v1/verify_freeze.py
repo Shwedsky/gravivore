@@ -26,7 +26,7 @@ for key,data in before.items():
 extra=[k for k in after if k not in before]
 assert not extra,'Unexpected new prefab component/geometry: '+str(extra)
 protected=('Assets/_Game/Runtime/Core/','Assets/_Game/Runtime/Gameplay/','Assets/_Game/Runtime/Persistence/','Assets/_Game/Runtime/Platform/','Assets/_Game/Content/ActorProductionV2/','Assets/_Game/Content/Definitions/')
-changed=subprocess.check_output(['git','diff','--name-only',manifest['baselineHead']],cwd=ROOT).decode().splitlines()
+changed=subprocess.check_output(['git','diff','--name-only',manifest['baselineHead']],cwd=ROOT,stderr=subprocess.DEVNULL).decode().splitlines()
 assert not [p for p in changed if p.startswith(protected)],'Unrelated gameplay/content touched'
 receipt=dict(frozenFiles=len(manifest['hashes']),prefabRecords=len(before),addedPrefabRecords=len(extra),meshesUVsSourcesCollidersTransformsSceneLayoutUnchanged=True,protectedGameplayChanges=[],baselineHead=manifest['baselineHead'])
 (OUT/'verification/architecture-freeze-verified.json').write_text(json.dumps(receipt,indent=2)+'\n')

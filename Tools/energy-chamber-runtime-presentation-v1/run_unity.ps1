@@ -1,5 +1,5 @@
 [CmdletBinding()]
-param([ValidateSet('Compile','Inspect','FixVisibility','LookDev','Validate','EditMode','PlayMode','Android')][string]$Action,
+param([ValidateSet('Compile','Inspect','Survey','FixVisibility','LookDev','Validate','EditMode','PlayMode','Android')][string]$Action,
       [string]$TestFilter='', [string]$Label='', [string]$Stage='diagnosis', [int]$VersionCode=56)
 $ErrorActionPreference='Stop'
 $presentationRoot=Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
@@ -8,10 +8,11 @@ New-Item -ItemType Directory -Force -Path $presentationOutput | Out-Null
 $presentationLabel=if($Label){$Label}else{$Action}
 $env:GRAVIVORE_ENERGY_PRESENTATION_STAGE=$Stage
 $presentationArgs=@('-batchmode','-projectPath',('"'+$presentationRoot+'"'),'-logFile',('"'+(Join-Path $presentationOutput ($presentationLabel+'.log'))+'"'))
-if($Action -in @('Compile','Inspect','FixVisibility','LookDev','Validate','EditMode')){$presentationArgs+='-nographics'}
+if($Action -in @('Compile','Inspect','Survey','FixVisibility','LookDev','Validate','EditMode')){$presentationArgs+='-nographics'}
 switch($Action){
  'Compile' {$presentationArgs+='-quit'}
  'Inspect' {$presentationArgs+=@('-quit','-executeMethod','Gravivore.Editor.VisualIntegration.EnergyChamberRuntimePresentation.Inspect')}
+ 'Survey' {$presentationArgs+=@('-quit','-executeMethod','Gravivore.Editor.VisualIntegration.EnergyChamberRuntimePresentation.SurveySurfaces')}
  'FixVisibility' {$presentationArgs+=@('-quit','-executeMethod','Gravivore.Editor.VisualIntegration.EnergyChamberRuntimePresentation.FixVisibility')}
  'LookDev' {$presentationArgs+=@('-quit','-executeMethod','Gravivore.Editor.VisualIntegration.EnergyChamberRuntimePresentation.AuthorLookDev')}
  'Validate' {$presentationArgs+=@('-quit','-executeMethod','Gravivore.Editor.ProjectValidator.ValidateOrThrow')}
