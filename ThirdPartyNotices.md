@@ -131,3 +131,7 @@ When importing any external asset, append:
 - Notes:
 
 Only assets compatible with commercial redistribution/use may enter the project. Prefer CC0.
+
+## Energy Chamber production promotion (2026-10-13)
+
+Accepted proof source: PR #77, 7d0e375f7b0a12a9d46982af685cabe3ce57d731. Runtime assets now live under Assets/_Game/Content/Chapter01Architecture/EnergyChamber/ with original GUIDs. Platform_Stairs_4.fbx and Prop_Rail_Round_Big.fbx are unchanged Quaternius Modular Sci-Fi MegaKit Standard CC0 1.0 donors. Generator/Centrifuge and supporting pipe-holder assets retain their existing VisualReplacementV3 source/license records and are referenced without duplication. Exact Quaternius and Molten archive notices are bundled in the production Licenses folder. Source archive entries and accepted provenance are retained in the architecture promotion receipt. No new restricted third-party raw/editable content is introduced. Project-owned editable Blender sources remain under art/.
