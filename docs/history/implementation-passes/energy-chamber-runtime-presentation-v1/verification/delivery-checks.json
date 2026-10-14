@@ -567,6 +567,15 @@
       "Gravivore.Tests.PlayMode.EnergyChamberRuntimePresentationTests.OperationalEnergyIsVisibleRestrainedAndNeedsNoRuntimePresenter"
     ]
   },
+  "phoneAspectPlayMode": {
+    "file": "PhoneAspect.xml",
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "tests": [
+      "Gravivore.Tests.PlayMode.EnergyChamberRuntimePresentationTests.PhoneViewportRetainsInFrustumIdentityAtProblematicPositions"
+    ]
+  },
   "performance": {
     "levels": [
       {
@@ -643,6 +652,7 @@
     "prefabRecords": 248,
     "addedPrefabRecords": 0,
     "meshesUVsSourcesCollidersTransformsSceneLayoutUnchanged": true,
+    "rendererAndLodBoundsUnchanged": true,
     "protectedGameplayChanges": [],
     "baselineHead": "f8ce24a83ca5a50307396c3422a2660787c4cd24"
   },
@@ -653,5 +663,70 @@
     "preserved": true
   },
   "humanAcceptance": "Pending owner review of the new device candidate; accepted architecture remains frozen.",
-  "status": "Checkpoint C runtime implementation validated; APK56 build pending."
+  "android": {
+    "file": "Android56.log",
+    "exitCode": 0,
+    "logSha256": "9db5348a238115ba2fc3e4898884620a4a5bab9d6753b897dd4627f1714d95cb",
+    "path": "C:\\Users\\pamak\\Documents\\ChatGPT\\gravivore\\.codex-worktrees\\chapter01-architecture-production-v1\\Builds\\Android\\gravivore-dev-0.1.0+56.apk",
+    "size": 143808070,
+    "sha256": "fbe8df66e96fb169477fe97d957570a31a5d72cd9de5e8b51962f9ff7d7b9ef8",
+    "metadata": {
+      "flavor": "Dev",
+      "version": "0.1.0",
+      "versionCode": 56,
+      "applicationId": "com.gravivore.mobile.dev",
+      "buildTimestampUtc": "2026-10-14T08:53:43.3233346Z",
+      "gitCommitSha": "339a8bcf1852b7c19e02b4f0cb291362ce0ed125",
+      "unityVersion": "6000.3.0f1",
+      "developmentBuild": true,
+      "allowDebugging": true,
+      "targetArchitecture": "ARM64",
+      "apkFilename": "gravivore-dev-0.1.0+56.apk"
+    },
+    "zipIntegrity": true,
+    "nativeLibraries": [
+      "lib/arm64-v8a/lib_burst_generated.so",
+      "lib/arm64-v8a/libc++_shared.so",
+      "lib/arm64-v8a/libgame.so",
+      "lib/arm64-v8a/libil2cpp.so",
+      "lib/arm64-v8a/libmain.so",
+      "lib/arm64-v8a/libswappywrapper.so",
+      "lib/arm64-v8a/libunity.so"
+    ],
+    "productionPacking": {
+      "GRAVIVORE/EnergyChamberRuntimeLit": [
+        "assets/bin/Data/globalgamemanagers",
+        "assets/bin/Data/sharedassets1.assets.split110"
+      ],
+      "EC_Runtime_R1_Trim1": [
+        "assets/bin/Data/sharedassets1.assets.split0"
+      ],
+      "EC_Runtime_R1_Trim2": [
+        "assets/bin/Data/sharedassets1.assets.split0"
+      ],
+      "Energy Chamber / production": [
+        "assets/bin/Data/level1.split76"
+      ],
+      "Architectural collision": [
+        "assets/bin/Data/Managed/Metadata/global-metadata.dat",
+        "assets/bin/Data/level1.split76"
+      ],
+      "EC_NodeCool": [
+        "assets/bin/Data/sharedassets1.assets.split0",
+        "assets/bin/Data/sharedassets1.assets.split1",
+        "assets/bin/Data/sharedassets1.assets.split21",
+        "assets/bin/Data/sharedassets1.assets.split34",
+        "assets/bin/Data/sharedassets1.assets.split6"
+      ],
+      "EC_CoreWarm": [
+        "assets/bin/Data/sharedassets1.assets.split0",
+        "assets/bin/Data/sharedassets1.assets.split10",
+        "assets/bin/Data/sharedassets1.assets.split17",
+        "assets/bin/Data/sharedassets1.assets.split39",
+        "assets/bin/Data/sharedassets1.assets.split43",
+        "assets/bin/Data/sharedassets1.assets.split7"
+      ]
+    }
+  },
+  "status": "ENERGY CHAMBER FINAL RUNTIME PRESENTATION \u2014 READY FOR HUMAN DEVICE REVIEW"
 }

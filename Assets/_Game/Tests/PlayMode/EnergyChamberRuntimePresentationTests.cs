@@ -151,15 +151,36 @@ namespace Gravivore.Tests.PlayMode
             Assert.That(mean,Is.LessThan(12),"Whole scene modulation is excessive");
             File.WriteAllText(Output+"/verification/lookdev/operational-gpu.json",JsonUtility.ToJson(new Operational {changedPixels=changed,meanByteDifference=mean,newRuntimePresenters=0,newRealtimeLights=0,newParticles=0,times=new[]{0f,9f,21f}},true));
         }
+        [UnityTest] public IEnumerator PhoneViewportRetainsInFrustumIdentityAtProblematicPositions()
+        {
+            yield return Load();
+            var records=new List<View>();var group=_installation.GetComponent<LODGroup>();
+            // Owner JPEGs are 591x1280, including about 50px of OS status bar.
+            // Capture the inferred 591x1230 game viewport, without HUD overlays.
+            for(var i=0;i<2;i++) {
+                foreach(var material in _materialState.Keys){material.SetFloat("_PreviewTime",7.2f);material.SetFloat("_EmissionScale",1);}
+                var anchor=_installation.transform.position+_offsets[i];
+                _walker.enabled=false;_walker.transform.position=anchor;_walker.enabled=true;
+                _camera.GetComponent<PortraitFollowCamera>().SnapToTarget();_camera.aspect=591f/1230;
+                group.ForceLOD(-1);yield return null;
+                Save(_camera,"phone-aspect",_names[i],591,1230);yield return null;
+                var planes=GeometryUtility.CalculateFrustumPlanes(_camera);
+                var visible=group.GetLODs()[0].renderers.Where(r=>GeometryUtility.TestPlanesAABB(planes,r.bounds)).ToArray();
+                Assert.That(visible.All(r=>r.isVisible),Is.True,"In-frustum assembly disappeared at inferred phone aspect");
+                records.Add(new View {name=_names[i],anchor=anchor,camera=_camera.transform.position,aspect=_camera.aspect,fov=_camera.fieldOfView,bias=QualitySettings.lodBias,
+                    items=group.GetLODs()[0].renderers.Select(r=>new Visibility {name=PathOf(r.transform,_installation.transform),inFrustum=GeometryUtility.TestPlanesAABB(planes,r.bounds),cameraVisible=r.isVisible,enabled=r.enabled,active=r.gameObject.activeInHierarchy,member=true,bounds=r.bounds}).ToArray()});
+            }
+            Directory.CreateDirectory(Output+"/verification/phone-aspect");File.WriteAllText(Output+"/verification/phone-aspect/camera-sweep.json",JsonUtility.ToJson(new Views{items=records.ToArray()},true));
+        }
         private static string PathOf(Transform t,Transform root)=>t==root?t.name:PathOf(t.parent,root)+"/"+t.name;
-        private static Color32[] Save(Camera camera,string stage,string name)
+        private static Color32[] Save(Camera camera,string stage,string name,int width=1080,int height=1920)
         {
             Directory.CreateDirectory(Output+"/screenshots/"+stage);
             var old=camera.targetTexture;var active=RenderTexture.active;
-            var target=new RenderTexture(1080,1920,24,RenderTextureFormat.ARGB32,RenderTextureReadWrite.sRGB);
-            var pixels=new Texture2D(1080,1920,TextureFormat.RGB24,false);
+            var target=new RenderTexture(width,height,24,RenderTextureFormat.ARGB32,RenderTextureReadWrite.sRGB);
+            var pixels=new Texture2D(width,height,TextureFormat.RGB24,false);
             try{camera.targetTexture=target;for(var n=0;n<3;n++)camera.Render();RenderTexture.active=target;
-                pixels.ReadPixels(new Rect(0,0,1080,1920),0,0);pixels.Apply();File.WriteAllBytes(Output+"/screenshots/"+stage+"/"+name+".png",pixels.EncodeToPNG());return pixels.GetPixels32();}
+                pixels.ReadPixels(new Rect(0,0,width,height),0,0);pixels.Apply();File.WriteAllBytes(Output+"/screenshots/"+stage+"/"+name+".png",pixels.EncodeToPNG());return pixels.GetPixels32();}
             finally{camera.targetTexture=old;RenderTexture.active=active;Object.DestroyImmediate(target);Object.DestroyImmediate(pixels);}
         }
         [Serializable] private sealed class Views{public View[] items;}

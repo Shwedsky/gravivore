@@ -25,9 +25,14 @@ for key,data in before.items():
     assert authority(key,data)==authority(key,after[key]),'Frozen prefab transform/collision/settings changed: '+str(key)
 extra=[k for k in after if k not in before]
 assert not extra,'Unexpected new prefab component/geometry: '+str(extra)
+baseline_inventory=json.loads((OUT/'verification/diagnosis/renderer-inventory.json').read_text())
+final_inventory=json.loads((OUT/'verification/lookdev/renderer-inventory.json').read_text()) if (OUT/'verification/lookdev/renderer-inventory.json').exists() else json.loads((OUT/'verification/visibility/renderer-inventory.json').read_text())
+assert baseline_inventory['size']==final_inventory['size'] and baseline_inventory['referencePoint']==final_inventory['referencePoint'],'LOD bounds/reference changed'
+original_bounds={r['name']:(r['bounds'],r['localBounds'],r['transformScale'])for r in baseline_inventory['items']}
+assert original_bounds=={r['name']:(r['bounds'],r['localBounds'],r['transformScale'])for r in final_inventory['items']},'Renderer bounds/scale changed'
 protected=('Assets/_Game/Runtime/Core/','Assets/_Game/Runtime/Gameplay/','Assets/_Game/Runtime/Persistence/','Assets/_Game/Runtime/Platform/','Assets/_Game/Content/ActorProductionV2/','Assets/_Game/Content/Definitions/')
 changed=subprocess.check_output(['git','diff','--name-only',manifest['baselineHead']],cwd=ROOT,stderr=subprocess.DEVNULL).decode().splitlines()
 assert not [p for p in changed if p.startswith(protected)],'Unrelated gameplay/content touched'
-receipt=dict(frozenFiles=len(manifest['hashes']),prefabRecords=len(before),addedPrefabRecords=len(extra),meshesUVsSourcesCollidersTransformsSceneLayoutUnchanged=True,protectedGameplayChanges=[],baselineHead=manifest['baselineHead'])
+receipt=dict(frozenFiles=len(manifest['hashes']),prefabRecords=len(before),addedPrefabRecords=len(extra),meshesUVsSourcesCollidersTransformsSceneLayoutUnchanged=True,rendererAndLodBoundsUnchanged=True,protectedGameplayChanges=[],baselineHead=manifest['baselineHead'])
 (OUT/'verification/architecture-freeze-verified.json').write_text(json.dumps(receipt,indent=2)+'\n')
 print('Frozen architecture verified:',len(manifest['hashes']),'source files;',len(before),'prefab records; exact scene/layout.')

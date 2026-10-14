@@ -14,6 +14,7 @@ def successful_log(name):
     assert 'Application will terminate with return code 0' in text,name
     return dict(file=name,exitCode=0,sha256=hashlib.sha256((V/name).read_bytes()).hexdigest())
 checks=dict(compile=successful_log('FinalCompile.log'),projectValidation=successful_log('FinalProjectValidation.log'),editMode=test('FinalEditMode.xml'),playMode=test('FinalPlayMode.xml'))
+if (V/'PhoneAspect.xml').exists():checks['phoneAspectPlayMode']=test('PhoneAspect.xml')
 assert checks['editMode']['passed']==533 and checks['playMode']['passed']==9
 copies={
 'docs/history/implementation-passes/chapter01-architecture-production-v1/verification/g0-traversal.json':'final-g0-traversal.json',
@@ -56,6 +57,7 @@ if args.apk:
             for marker in markers:
                 if marker.encode() in data:markers[marker].append(name)
     assert all(markers.values()),markers
+    build['logSha256']=build.pop('sha256')
     checks['android']=dict(**build,path=str(apk),size=apk.stat().st_size,sha256=hashlib.sha256(apk.read_bytes()).hexdigest(),metadata=metadata,zipIntegrity=True,nativeLibraries=libs,productionPacking=markers)
     sdk=json.loads((ROOT/'docs/history/implementation-passes/chapter01-architecture-production-v1/verification/sdk-preference-restoration.json').read_text())
     assert sdk['before']==sdk['after'],sdk
