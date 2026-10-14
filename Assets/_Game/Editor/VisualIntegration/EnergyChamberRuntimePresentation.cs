@@ -31,7 +31,28 @@ namespace Gravivore.Editor.VisualIntegration
                     triangles=Chapter01ArchitectureProduction.Triangles(l.renderers),slots=l.renderers.Sum(r=>r.sharedMaterials.Length),materials=l.renderers.SelectMany(r=>r.sharedMaterials).Distinct().Count()}).ToArray()
             });
         }
-        public static void FixVisibility() => throw new NotImplementedException("Diagnosis checkpoint must be pushed first.");
+        public static void FixVisibility()
+        {
+            var contents=PrefabUtility.LoadPrefabContents(Prefab);
+            try {
+                var all=contents.GetComponentsInChildren<Renderer>(true);
+                string MeshName(Renderer r)=>Path.GetFileName(AssetDatabase.GetAssetPath(r.GetComponent<MeshFilter>().sharedMesh));
+                var near=all.Where(r=>MeshName(r)!="EC_FoundationPolish.fbx"&&MeshName(r)!="EC_ConnectorPolish.fbx").ToArray();
+                var silhouette=new[]{"EC_Foundation.fbx","EC_CentralChamber.fbx","EC_CoreHeart.fbx","EC_SideNode.fbx","EC_VerticalDistribution.fbx","EC_Connector.fbx",
+                    "EC_ChamberPolish.fbx","EC_NodePolish.fbx","Prop_Rail_Round_Big.fbx","Platform_Stairs_4.fbx"};
+                var far=all.Where(r=>silhouette.Contains(MeshName(r))).ToArray();
+                var group=contents.GetComponent<LODGroup>();
+                group.fadeMode=LODFadeMode.None;
+                group.SetLODs(new[]{new LOD(.26f,all),new LOD(.13f,near),new LOD(.035f,far)});
+                // Bounds already match the accepted meshes; do not inflate them to hide culling.
+                if(all.Length!=45||Chapter01ArchitectureProduction.Triangles(all)!=279694)
+                    throw new InvalidDataException("Frozen near architecture changed.");
+                PrefabUtility.SaveAsPrefabAsset(contents,Prefab);
+            }
+            finally {PrefabUtility.UnloadPrefabContents(contents);}
+            AssetDatabase.SaveAssets();Inspect();
+            Debug.Log("ENERGY_CHAMBER_VISIBILITY_FIXED");
+        }
         public static void AuthorLookDev() => throw new NotImplementedException("Visibility checkpoint precedes LookDev.");
         public static string PathOf(Transform t,Transform root) => t==root?t.name:PathOf(t.parent,root)+"/"+t.name;
         private static void Write(string name,object record) {

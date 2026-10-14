@@ -75,11 +75,44 @@ namespace Gravivore.Tests.PlayMode
                     group.ForceLOD(-1);
                 }
                 records.Add(view);
+                if(stage!="diagnosis"&&i<5) {
+                    Assert.That(level,Is.EqualTo(0),"Android default should retain the complete assembly at ordinary nearby view "+_names[i]);
+                    Assert.That(view.items.Where(v=>v.inFrustum).All(v=>v.cameraVisible),Is.True,"In-frustum near parts vanished at "+_names[i]);
+                }
             }
             Directory.CreateDirectory(Output+"/verification/"+stage);
             File.WriteAllText(Output+"/verification/"+stage+"/camera-sweep.json",JsonUtility.ToJson(new Views{items=records.ToArray()},true));
             Assert.That(_camera.fieldOfView,Is.EqualTo(48).Within(.01f));
             Assert.That(group.GetLODs().Length,Is.EqualTo(3));
+        }
+        [UnityTest] public IEnumerator AutomaticLodRetainsIdentityAcrossQualityBiasesAndReducesDistantCost()
+        {
+            yield return Load();
+            var group=_installation.GetComponent<LODGroup>();var lods=group.GetLODs();
+            var oldBias=QualitySettings.lodBias;var receipts=new List<View>();
+            try {
+                foreach(var bias in new[]{.3f,.4f,.7f,1f,1.5f,2f})
+                foreach(var distance in new[]{22f,30f,50f,80f}) {
+                    QualitySettings.lodBias=bias;
+                    var point=group.transform.TransformPoint(group.localReferencePoint);
+                    _camera.GetComponent<PortraitFollowCamera>().enabled=false;
+                    var direction=new Vector3(3.4f,16.6f,-13.6f).normalized;
+                    _camera.transform.position=point+direction*distance;
+                    _camera.transform.rotation=Quaternion.LookRotation(-direction,Vector3.up);
+                    group.ForceLOD(-1);_camera.aspect=9f/16;
+                    Save(_camera,"visibility","quality_"+bias.ToString("0.0",System.Globalization.CultureInfo.InvariantCulture)+"_distance_"+distance);yield return null;
+                    var relative=group.size*bias/(2*Mathf.Tan(_camera.fieldOfView*.5f*Mathf.Deg2Rad)*distance);
+                    var level=Enumerable.Range(0,3).First(l=>relative>=lods[l].screenRelativeTransitionHeight);
+                    var critical=lods[2].renderers;
+                    var planes=GeometryUtility.CalculateFrustumPlanes(_camera);
+                    Assert.That(critical.Where(r=>GeometryUtility.TestPlanesAABB(planes,r.bounds)).All(r=>r.isVisible),Is.True,"Identity lost at bias "+bias+", distance "+distance);
+                    receipts.Add(new View {name="Automatic quality sweep",bias=bias,distance=distance,relativeHeight=relative,lod=level});
+                }
+            }
+            finally {QualitySettings.lodBias=oldBias;}
+            Assert.That(receipts.Any(r=>r.bias==.7f&&r.lod==1),Is.True,"LOD1 never selected at Android default");
+            Assert.That(receipts.Any(r=>r.bias==.7f&&r.lod==2),Is.True,"LOD2 never selected at Android default");
+            File.WriteAllText(Output+"/verification/visibility/quality-distance-sweep.json",JsonUtility.ToJson(new Views{items=receipts.ToArray()},true));
         }
         private static string PathOf(Transform t,Transform root)=>t==root?t.name:PathOf(t.parent,root)+"/"+t.name;
         private static void Save(Camera camera,string stage,string name)
